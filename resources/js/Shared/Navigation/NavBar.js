@@ -1,6 +1,5 @@
 import React, { Fragment } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
-import { MdClose, MdMenu, MdNotifications } from 'react-icons/md'
 import { usePage, Link } from '@inertiajs/inertia-react'
 
 export default function NavBar () {
@@ -10,7 +9,7 @@ export default function NavBar () {
     return (
       <>
         <div className="flex space-x-4">
-          <a href="" className="nav-link">My Crew Page</a>
+          <Link href="/dashboard" className="nav-link">My Crew Page</Link>
           <Menu as="div" className="ml-3 relative">
             <div>
               <Menu.Button className="nav-link">
@@ -51,7 +50,7 @@ export default function NavBar () {
             <Transition as={Fragment} enter="transition ease-out duration-100" enterFrom="transform opacity-0 scale-95" enterTo="transform opacity-100 scale-100" leave="transition ease-in duration-75" leaveFrom="transform opacity-100 scale-100" leaveTo="transform opacity-0 scale-95">
               <Menu.Items className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white focus:outline-none">
                 <Menu.Item>
-                  {({ active }) => <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Flight Search</a>}
+                  {({ active }) => <Link href="/flights" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Flight Search</Link>}
                 </Menu.Item>
                 <Menu.Item>
                   {({ active }) => <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Live Flights Map</a>}
@@ -80,7 +79,7 @@ export default function NavBar () {
             className="p-1 rounded-full text-gray-700 hover:bg-gray-50 focus:outline-none hidden lg:block"
           >
             <span className="sr-only">View notifications</span>
-            <MdNotifications className="h-6 w-6" aria-hidden="true" />
+            <div className="h-6 w-6" aria-hidden="true"><i className="material-icons">notifications</i></div>
           </button>
 
           <Menu as="div" className="ml-3 relative">
@@ -153,10 +152,10 @@ export default function NavBar () {
                   <span className="sr-only">Open main menu</span>
                   {open
                     ? (
-                    <MdClose className="block h-6 w-6" aria-hidden="true" />
+                      <div className="block h-6 w-6" aria-hidden="true"><i className="material-icons">close</i></div>
                       )
                     : (
-                    <MdMenu className="block h-6 w-6" aria-hidden="true" />
+                      <div className="block h-6 w-6" aria-hidden="true"><i className="material-icons">menu</i></div>
                       )}
                 </Disclosure.Button>
               </div>
@@ -200,7 +199,7 @@ export default function NavBar () {
             : (
               <Disclosure.Panel className="sm:hidden">
                 <div className="px-2 pt-2 pb-3 space-y-1">
-                  <a href="" className="nav-link mobile">My Crew Page</a>
+                  <Link href="/dashboard" className="nav-link mobile">My Crew Page</Link>
                   <Menu as="div" className="relative">
                     <div>
                       <Menu.Button className="nav-link mobile">
@@ -241,7 +240,7 @@ export default function NavBar () {
                     <Transition as={Fragment} enter="transition ease-out duration-100" enterFrom="transform opacity-0 scale-95" enterTo="transform opacity-100 scale-100" leave="transition ease-in duration-75" leaveFrom="transform opacity-100 scale-100" leaveTo="transform opacity-0 scale-95">
                       <Menu.Items className="z-10 origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white focus:outline-none">
                         <Menu.Item>
-                          {({ active }) => <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Flight Search</a>}
+                          {({ active }) => <Link href="/flights" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Flight Search</Link>}
                         </Menu.Item>
                         <Menu.Item>
                           {({ active }) => <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Live Flights Map</a>}

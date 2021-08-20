@@ -4,9 +4,9 @@ namespace App\Models\Enums;
 
 class AircraftStatus
 {
-    public const ACTIVE = 0;
-    public const MAINTENANCE = 1;
-    public const SCRAPPED = 2;
+    public const ACTIVE = 1;
+    public const MAINTENANCE = 2;
+    public const SCRAPPED = 3;
 
     public static $labels = [
         self::ACTIVE => 'Active',
