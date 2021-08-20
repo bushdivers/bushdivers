@@ -6,12 +6,16 @@ import Card from '../../Shared/Elements/Card'
 const FleetCardContent = ({ fleet }) => {
   return (
     <>
-      <div className="flex flex-col md:flex-row items-start">
-        <img className="rounded w-full md:w-auto" src="https://via.placeholder.com/300x150" />
-        <div className="ml-3">
-          <div className="text-2xl">{fleet.type} - {fleet.manufacturer} {fleet.name}</div>
-          <p>{fleet.aircraft.length} aircraft in fleet</p>
-          <div className="flex flex-col md:flex-row mt-4">
+      <div className="flex flex-col md:flex-row items-start justify-between">
+        <div className="flex flex-col md:flex-row">
+          <img className="rounded w-full md:w-auto" src="https://via.placeholder.com/300x150" />
+          <div className="md:ml-3">
+            <div className="text-2xl">{fleet.type} - {fleet.manufacturer} {fleet.name}</div>
+            <p>{fleet.aircraft.length} aircraft in fleet</p>
+          </div>
+        </div>
+        <div>
+          <div className="flex flex-col md:flex-row mt-2 md:mt-0">
             <div className="mr-8">
               <span className="text-md font-bold text-gray-600">Powerplants: </span><br/>
               <span>{fleet.number_of_engines}x {fleet.powerplants}</span>
