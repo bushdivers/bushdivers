@@ -26,4 +26,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/logout', [\App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');
     // Crew
     Route::get('/dashboard', [\App\Http\Controllers\CrewController::class, 'index'])->name('dashboard');
+
+    // Fleet
+    Route::get('/fleet', [\App\Http\Controllers\FleetController::class, 'index'])->name('fleet');
 });
