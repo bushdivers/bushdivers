@@ -2,6 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+.nav-link {
+    @apply text-gray-700 px-3 py-2 rounded-md text-sm font-medium;
+}
+.nav-link.mobile {
+    @apply text-gray-700 block px-3 py-2 rounded-md text-base font-medium
+}
+.nav-link:hover {
+    @apply bg-gray-50 text-gray-700;
+}
+
 .form {
     @apply mt-1 block w-full shadow-sm border-gray-300 rounded-md
 }
