@@ -5,6 +5,14 @@ import { usePage, Link } from '@inertiajs/inertia-react'
 export default function NavBar () {
   const { auth } = usePage().props
 
+  const UserName = () => {
+    return (
+      <>
+        <span className="mx-2 mr-1">{auth.user && auth.user.pilot_id}</span>|<span className="ml-1">{auth.user && auth.user.private_name}</span>
+      </>
+    )
+  }
+
   const PrivateLeftNav = () => {
     return (
       <>
@@ -87,7 +95,7 @@ export default function NavBar () {
               <Menu.Button className="flex items-center text-sm hover:bg-gray-50 rounded-xl">
                 <span className="sr-only">Open user menu</span>
                 <img className="h-8 w-8 rounded-full" src="https://res.cloudinary.com/dji0yvkef/image/upload/v1628691598/BDLogo.png" alt="Bushd Divers logo" />
-                <span className="mx-2">{auth.user && auth.user.pilot_id}</span>
+                <span className="mx-2">{auth.user && <UserName />}</span>
               </Menu.Button>
             </div>
             <Transition as={Fragment} enter="transition ease-out duration-100" enterFrom="transform opacity-0 scale-95" enterTo="transform opacity-100 scale-100" leave="transition ease-in duration-75" leaveFrom="transform opacity-100 scale-100" leaveTo="transform opacity-0 scale-95">

@@ -58,7 +58,7 @@ class User extends Authenticatable
 
     public function getPilotIdAttribute()
     {
-        $number = $this->id + 100;
+        $number = str_pad($this->id, 4, "0", STR_PAD_LEFT);
         return 'BDV'.$number;
     }
 }
