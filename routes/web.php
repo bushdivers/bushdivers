@@ -33,4 +33,6 @@ Route::middleware('auth')->group(function () {
     // Flights
     Route::get('/flights', [\App\Http\Controllers\FlightController::class, 'index'])->name('flights');
     Route::get('/flights/search', [\App\Http\Controllers\FlightController::class, 'search'])->name('flights.search');
+    Route::post('/bookings/create/{flight}', [\App\Http\Controllers\BookingController::class, 'create'])->name('bookings.create');
+    Route::delete('/bookings/cancel/{flight}', [\App\Http\Controllers\BookingController::class, 'delete'])->name('bookings.delete');
 });

@@ -61,4 +61,9 @@ class User extends Authenticatable
         $number = str_pad($this->id, 4, "0", STR_PAD_LEFT);
         return 'BDV'.$number;
     }
+
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class);
+    }
 }

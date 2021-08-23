@@ -5,6 +5,7 @@ import NoContent from '../../Shared/Elements/NoContent'
 import Tooltip from '../../Shared/Elements/Tooltip'
 import FlightModal from '../../Shared/Components/Flights/FlightModal'
 import SearchInput from '../../Shared/Components/Flights/SearchInput'
+import { Inertia } from '@inertiajs/inertia'
 
 const EmptyData = () => {
   return (
@@ -15,16 +16,25 @@ const EmptyData = () => {
   )
 }
 
-const FlightSearch = ({ flights }) => {
+const FlightSearch = ({ flights, bookings }) => {
   const [showDetailModal, setShowDetailModal] = useState(false)
   const [selectedFlight, setSelectedFlight] = useState({})
 
   function toggleDetailModal () {
     setShowDetailModal(!showDetailModal)
   }
+
   function updateSelectedFlight (flight) {
     setSelectedFlight(flight)
     toggleDetailModal()
+  }
+
+  function bookFlight (flight) {
+    Inertia.post(`/bookings/create/${flight.id}`)
+  }
+
+  function cancelBooking (flight) {
+    Inertia.delete(`/bookings/cancel/${flight.id}`)
   }
 
   return (
@@ -61,11 +71,23 @@ const FlightSearch = ({ flights }) => {
                     </td>
                     <td>{flight.distance}</td>
                     <td>
-                      <Tooltip content="Book flight" direction="top">
-                        <button className="btn btn-secondary flex items-center">
-                          <i className="material-icons">airplane_ticket</i>
-                        </button>
-                      </Tooltip>
+                      {bookings.find(f => f.flight_id === flight.id) === undefined
+                        ? (
+                        <Tooltip content="Book flight" direction="top">
+                          <button onClick={() => bookFlight(flight)} className="btn btn-secondary flex items-center">
+                            <i className="material-icons">airplane_ticket</i>
+                          </button>
+                        </Tooltip>
+                          )
+                        : (
+                          <Tooltip content="Cancel flight booking" direction="top">
+                            <button onClick={() => cancelBooking(flight)} className="btn btn-light flex items-center">
+                              <i className="material-icons">close</i>
+                            </button>
+                          </Tooltip>
+                          )
+                      }
+
                     </td>
                   </tr>
                 ))}

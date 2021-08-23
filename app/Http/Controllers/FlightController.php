@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Booking;
 use App\Models\Flight;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -16,7 +17,9 @@ class FlightController extends Controller
             ->where('is_active', true)
             ->get();
 
-        return Inertia::render('Flights/FlightSearch', ['flights' => $flights]);
+        $bookings = Booking::where('user_id', Auth::user()->id)->get();
+
+        return Inertia::render('Flights/FlightSearch', ['flights' => $flights, 'bookings' => $bookings]);
     }
 
     public function search(Request $request)
@@ -32,8 +35,11 @@ class FlightController extends Controller
             ->where($where)
             ->get();
 
+        $bookings = Booking::where('user_id', Auth::user()->id)->get();
+
         return Inertia::render('Flights/FlightSearch', [
-            'flights' => $flights
+            'flights' => $flights,
+            'bookings' => $bookings
         ]);
     }
 }
