@@ -31,5 +31,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/fleet', [\App\Http\Controllers\FleetController::class, 'index'])->name('fleet');
 
     // Flights
-    Route::get('/flights', [\App\Http\Controllers\FlightController::class, 'search'])->name('flights.search');
+    Route::get('/flights', [\App\Http\Controllers\FlightController::class, 'index'])->name('flights');
+    Route::get('/flights/search', [\App\Http\Controllers\FlightController::class, 'search'])->name('flights.search');
 });
