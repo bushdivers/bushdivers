@@ -79,6 +79,13 @@
     @apply bg-orange-500;
 }
 
+.btn-light {
+    @apply bg-gray-100 text-gray-900;
+}
+.btn-light:hover {
+    @apply bg-gray-200;
+}
+
 .table {
     @apply min-w-full divide-y divide-gray-200;
 }
@@ -181,4 +188,8 @@
     top: 50%;
     transform: translateX(0) translateY(-50%);
     border-left-color: var(--tooltip-background-color);
+}
+
+.map-container-small {
+    height: 400px;
 }

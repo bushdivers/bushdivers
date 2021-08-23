@@ -11,7 +11,8 @@ class FlightController extends Controller
 {
     public function index()
     {
-        $flights = Flight::where('dep_airport_id', Auth::user()->current_airport_id)
+        $flights = Flight::with(['depAirport', 'arrAirport'])
+            ->where('dep_airport_id', Auth::user()->current_airport_id)
             ->where('is_active', true)
             ->get();
 
@@ -26,7 +27,8 @@ class FlightController extends Controller
         $where = [];
         if ($dep) $where[] = ['dep_airport_id', $dep];
         if ($arr) $where[] = ['arr_airport_id', $arr];
-        $flights = Flight::where('is_active', true)
+        $flights = Flight::with(['depAirport', 'arrAirport'])
+            ->where('is_active', true)
             ->where($where)
             ->get();
 

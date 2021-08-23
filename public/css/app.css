@@ -28307,6 +28307,18 @@ video {
   background-color: rgba(249, 115, 22, var(--tw-bg-opacity));
 }
 
+.btn-light {
+  --tw-bg-opacity: 1;
+  background-color: rgba(243, 244, 246, var(--tw-bg-opacity));
+  --tw-text-opacity: 1;
+  color: rgba(17, 24, 39, var(--tw-text-opacity));
+}
+
+.btn-light:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgba(229, 231, 235, var(--tw-bg-opacity));
+}
+
 .table {
   min-width: 100%;
 }
@@ -28463,6 +28475,10 @@ video {
   top: 50%;
   transform: translateX(0) translateY(-50%);
   border-left-color: var(--tooltip-background-color);
+}
+
+.map-container-small {
+  height: 400px;
 }
 
 @media (min-width: 640px) {
