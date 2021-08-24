@@ -193,3 +193,7 @@
 .map-container-small {
     height: 400px;
 }
+
+.map-container-large {
+    height: 600px;
+}

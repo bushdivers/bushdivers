@@ -28481,6 +28481,10 @@ video {
   height: 400px;
 }
 
+.map-container-large {
+  height: 600px;
+}
+
 @media (min-width: 640px) {
   .sm\:container {
     width: 100%;

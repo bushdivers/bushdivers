@@ -4,7 +4,6 @@ import { usePage, Link } from '@inertiajs/inertia-react'
 
 export default function NavBar () {
   const { auth } = usePage().props
-
   const UserName = () => {
     return (
       <>
@@ -64,7 +63,7 @@ export default function NavBar () {
                   {({ active }) => <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Live Flights Map</a>}
                 </Menu.Item>
                 <Menu.Item>
-                  {({ active }) => <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">My Bookings</a>}
+                  {({ active }) => <a href="/bookings" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">My Bookings ({auth.user.current_bookings})</a>}
                 </Menu.Item>
                 <Menu.Item>
                   {({ active }) => <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Jumpseat</a>}

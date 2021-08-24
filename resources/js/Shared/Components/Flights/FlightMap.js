@@ -80,7 +80,7 @@ const FlightMap = (props) => {
 
   return (
     <>
-      <div ref={mapContainer} className="map-container-small" />
+      <div ref={mapContainer} className={('map-container-' + props.size)} />
     </>
   )
 }

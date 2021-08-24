@@ -1,4 +1,4 @@
-(self["webpackChunk"] = self["webpackChunk"] || []).push([["resources_js_Pages_Flights_FlightSearch_js"],{
+(self["webpackChunk"] = self["webpackChunk"] || []).push([["resources_js_Pages_Flights_Dispatch_js"],{
 
 /***/ "./node_modules/@headlessui/react/dist/_virtual/_rollupPluginBabelHelpers.js":
 /*!***********************************************************************************!*\
@@ -92,484 +92,6 @@ function _createForOfIteratorHelperLoose(o, allowArrayLike) {
 
 
 //# sourceMappingURL=_rollupPluginBabelHelpers.js.map
-
-
-/***/ }),
-
-/***/ "./node_modules/@headlessui/react/dist/components/description/description.esm.js":
-/*!***************************************************************************************!*\
-  !*** ./node_modules/@headlessui/react/dist/components/description/description.esm.js ***!
-  \***************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Description": () => (/* binding */ Description),
-/* harmony export */   "useDescriptions": () => (/* binding */ useDescriptions)
-/* harmony export */ });
-/* harmony import */ var _virtual_rollupPluginBabelHelpers_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../_virtual/_rollupPluginBabelHelpers.js */ "./node_modules/@headlessui/react/dist/_virtual/_rollupPluginBabelHelpers.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var _utils_render_esm_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../utils/render.esm.js */ "./node_modules/@headlessui/react/dist/utils/render.esm.js");
-/* harmony import */ var _hooks_use_iso_morphic_effect_esm_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../hooks/use-iso-morphic-effect.esm.js */ "./node_modules/@headlessui/react/dist/hooks/use-iso-morphic-effect.esm.js");
-/* harmony import */ var _hooks_use_id_esm_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../hooks/use-id.esm.js */ "./node_modules/@headlessui/react/dist/hooks/use-id.esm.js");
-
-
-
-
-
-
-var DescriptionContext = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.createContext)(null);
-
-function useDescriptionContext() {
-  var context = (0,react__WEBPACK_IMPORTED_MODULE_0__.useContext)(DescriptionContext);
-
-  if (context === null) {
-    var err = new Error('You used a <Description /> component, but it is not inside a relevant parent.');
-    if (Error.captureStackTrace) Error.captureStackTrace(err, useDescriptionContext);
-    throw err;
-  }
-
-  return context;
-}
-
-function useDescriptions() {
-  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
-      descriptionIds = _useState[0],
-      setDescriptionIds = _useState[1];
-
-  return [// The actual id's as string or undefined
-  descriptionIds.length > 0 ? descriptionIds.join(' ') : undefined, // The provider component
-  (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(function () {
-    return function DescriptionProvider(props) {
-      var register = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(function (value) {
-        setDescriptionIds(function (existing) {
-          return [].concat(existing, [value]);
-        });
-        return function () {
-          return setDescriptionIds(function (existing) {
-            var clone = existing.slice();
-            var idx = clone.indexOf(value);
-            if (idx !== -1) clone.splice(idx, 1);
-            return clone;
-          });
-        };
-      }, []);
-      var contextBag = (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(function () {
-        return {
-          register: register,
-          slot: props.slot,
-          name: props.name,
-          props: props.props
-        };
-      }, [register, props.slot, props.name, props.props]);
-      return react__WEBPACK_IMPORTED_MODULE_0__.createElement(DescriptionContext.Provider, {
-        value: contextBag
-      }, props.children);
-    };
-  }, [setDescriptionIds])];
-} // ---
-
-var DEFAULT_DESCRIPTION_TAG = 'p';
-function Description(props) {
-  var context = useDescriptionContext();
-  var id = "headlessui-description-" + (0,_hooks_use_id_esm_js__WEBPACK_IMPORTED_MODULE_1__.useId)();
-  (0,_hooks_use_iso_morphic_effect_esm_js__WEBPACK_IMPORTED_MODULE_2__.useIsoMorphicEffect)(function () {
-    return context.register(id);
-  }, [id, context.register]);
-  var passThroughProps = props;
-
-  var propsWeControl = (0,_virtual_rollupPluginBabelHelpers_js__WEBPACK_IMPORTED_MODULE_3__.extends)({}, context.props, {
-    id: id
-  });
-
-  return (0,_utils_render_esm_js__WEBPACK_IMPORTED_MODULE_4__.render)({
-    props: (0,_virtual_rollupPluginBabelHelpers_js__WEBPACK_IMPORTED_MODULE_3__.extends)({}, passThroughProps, propsWeControl),
-    slot: context.slot || {},
-    defaultTag: DEFAULT_DESCRIPTION_TAG,
-    name: context.name || 'Description'
-  });
-}
-
-
-//# sourceMappingURL=description.esm.js.map
-
-
-/***/ }),
-
-/***/ "./node_modules/@headlessui/react/dist/components/dialog/dialog.esm.js":
-/*!*****************************************************************************!*\
-  !*** ./node_modules/@headlessui/react/dist/components/dialog/dialog.esm.js ***!
-  \*****************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Dialog": () => (/* binding */ Dialog)
-/* harmony export */ });
-/* harmony import */ var _virtual_rollupPluginBabelHelpers_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../_virtual/_rollupPluginBabelHelpers.js */ "./node_modules/@headlessui/react/dist/_virtual/_rollupPluginBabelHelpers.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var _utils_match_esm_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../utils/match.esm.js */ "./node_modules/@headlessui/react/dist/utils/match.esm.js");
-/* harmony import */ var _utils_render_esm_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../utils/render.esm.js */ "./node_modules/@headlessui/react/dist/utils/render.esm.js");
-/* harmony import */ var _hooks_use_sync_refs_esm_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../hooks/use-sync-refs.esm.js */ "./node_modules/@headlessui/react/dist/hooks/use-sync-refs.esm.js");
-/* harmony import */ var _keyboard_esm_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../keyboard.esm.js */ "./node_modules/@headlessui/react/dist/components/keyboard.esm.js");
-/* harmony import */ var _utils_bugs_esm_js__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ../../utils/bugs.esm.js */ "./node_modules/@headlessui/react/dist/utils/bugs.esm.js");
-/* harmony import */ var _hooks_use_server_handoff_complete_esm_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../hooks/use-server-handoff-complete.esm.js */ "./node_modules/@headlessui/react/dist/hooks/use-server-handoff-complete.esm.js");
-/* harmony import */ var _hooks_use_id_esm_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../hooks/use-id.esm.js */ "./node_modules/@headlessui/react/dist/hooks/use-id.esm.js");
-/* harmony import */ var _hooks_use_window_event_esm_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../hooks/use-window-event.esm.js */ "./node_modules/@headlessui/react/dist/hooks/use-window-event.esm.js");
-/* harmony import */ var _hooks_use_focus_trap_esm_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../hooks/use-focus-trap.esm.js */ "./node_modules/@headlessui/react/dist/hooks/use-focus-trap.esm.js");
-/* harmony import */ var _hooks_use_inert_others_esm_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../hooks/use-inert-others.esm.js */ "./node_modules/@headlessui/react/dist/hooks/use-inert-others.esm.js");
-/* harmony import */ var _internal_portal_force_root_esm_js__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../../internal/portal-force-root.esm.js */ "./node_modules/@headlessui/react/dist/internal/portal-force-root.esm.js");
-/* harmony import */ var _portal_portal_esm_js__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../portal/portal.esm.js */ "./node_modules/@headlessui/react/dist/components/portal/portal.esm.js");
-/* harmony import */ var _description_description_esm_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../description/description.esm.js */ "./node_modules/@headlessui/react/dist/components/description/description.esm.js");
-/* harmony import */ var _internal_open_closed_esm_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../internal/open-closed.esm.js */ "./node_modules/@headlessui/react/dist/internal/open-closed.esm.js");
-/* harmony import */ var _internal_stack_context_esm_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../../internal/stack-context.esm.js */ "./node_modules/@headlessui/react/dist/internal/stack-context.esm.js");
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-var _reducers;
-var DialogStates;
-
-(function (DialogStates) {
-  DialogStates[DialogStates["Open"] = 0] = "Open";
-  DialogStates[DialogStates["Closed"] = 1] = "Closed";
-})(DialogStates || (DialogStates = {}));
-
-var ActionTypes;
-
-(function (ActionTypes) {
-  ActionTypes[ActionTypes["SetTitleId"] = 0] = "SetTitleId";
-})(ActionTypes || (ActionTypes = {}));
-
-var reducers = (_reducers = {}, _reducers[ActionTypes.SetTitleId] = function (state, action) {
-  if (state.titleId === action.id) return state;
-  return (0,_virtual_rollupPluginBabelHelpers_js__WEBPACK_IMPORTED_MODULE_1__.extends)({}, state, {
-    titleId: action.id
-  });
-}, _reducers);
-var DialogContext = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.createContext)(null);
-DialogContext.displayName = 'DialogContext';
-
-function useDialogContext(component) {
-  var context = (0,react__WEBPACK_IMPORTED_MODULE_0__.useContext)(DialogContext);
-
-  if (context === null) {
-    var err = new Error("<" + component + " /> is missing a parent <" + Dialog.displayName + " /> component.");
-    if (Error.captureStackTrace) Error.captureStackTrace(err, useDialogContext);
-    throw err;
-  }
-
-  return context;
-}
-
-function stateReducer(state, action) {
-  return (0,_utils_match_esm_js__WEBPACK_IMPORTED_MODULE_2__.match)(action.type, reducers, state, action);
-} // ---
-
-
-var DEFAULT_DIALOG_TAG = 'div';
-var DialogRenderFeatures = _utils_render_esm_js__WEBPACK_IMPORTED_MODULE_3__.Features.RenderStrategy | _utils_render_esm_js__WEBPACK_IMPORTED_MODULE_3__.Features.Static;
-var DialogRoot = /*#__PURE__*/(0,_utils_render_esm_js__WEBPACK_IMPORTED_MODULE_3__.forwardRefWithAs)(function Dialog(props, ref) {
-  var open = props.open,
-      onClose = props.onClose,
-      initialFocus = props.initialFocus,
-      rest = (0,_virtual_rollupPluginBabelHelpers_js__WEBPACK_IMPORTED_MODULE_1__.objectWithoutPropertiesLoose)(props, ["open", "onClose", "initialFocus"]);
-
-  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(0),
-      nestedDialogCount = _useState[0],
-      setNestedDialogCount = _useState[1];
-
-  var usesOpenClosedState = (0,_internal_open_closed_esm_js__WEBPACK_IMPORTED_MODULE_4__.useOpenClosed)();
-
-  if (open === undefined && usesOpenClosedState !== null) {
-    var _match;
-
-    // Update the `open` prop based on the open closed state
-    open = (0,_utils_match_esm_js__WEBPACK_IMPORTED_MODULE_2__.match)(usesOpenClosedState, (_match = {}, _match[_internal_open_closed_esm_js__WEBPACK_IMPORTED_MODULE_4__.State.Open] = true, _match[_internal_open_closed_esm_js__WEBPACK_IMPORTED_MODULE_4__.State.Closed] = false, _match));
-  }
-
-  var containers = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(new Set());
-  var internalDialogRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(null);
-  var dialogRef = (0,_hooks_use_sync_refs_esm_js__WEBPACK_IMPORTED_MODULE_5__.useSyncRefs)(internalDialogRef, ref); // Validations
-
-  var hasOpen = props.hasOwnProperty('open') || usesOpenClosedState !== null;
-  var hasOnClose = props.hasOwnProperty('onClose');
-
-  if (!hasOpen && !hasOnClose) {
-    throw new Error("You have to provide an `open` and an `onClose` prop to the `Dialog` component.");
-  }
-
-  if (!hasOpen) {
-    throw new Error("You provided an `onClose` prop to the `Dialog`, but forgot an `open` prop.");
-  }
-
-  if (!hasOnClose) {
-    throw new Error("You provided an `open` prop to the `Dialog`, but forgot an `onClose` prop.");
-  }
-
-  if (typeof open !== 'boolean') {
-    throw new Error("You provided an `open` prop to the `Dialog`, but the value is not a boolean. Received: " + open);
-  }
-
-  if (typeof onClose !== 'function') {
-    throw new Error("You provided an `onClose` prop to the `Dialog`, but the value is not a function. Received: " + onClose);
-  }
-
-  var dialogState = open ? DialogStates.Open : DialogStates.Closed;
-
-  var visible = function () {
-    if (usesOpenClosedState !== null) {
-      return usesOpenClosedState === _internal_open_closed_esm_js__WEBPACK_IMPORTED_MODULE_4__.State.Open;
-    }
-
-    return dialogState === DialogStates.Open;
-  }();
-
-  var _useReducer = (0,react__WEBPACK_IMPORTED_MODULE_0__.useReducer)(stateReducer, {
-    titleId: null,
-    descriptionId: null
-  }),
-      state = _useReducer[0],
-      dispatch = _useReducer[1];
-
-  var close = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(function () {
-    return onClose(false);
-  }, [onClose]);
-  var setTitleId = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(function (id) {
-    return dispatch({
-      type: ActionTypes.SetTitleId,
-      id: id
-    });
-  }, [dispatch]);
-  var ready = (0,_hooks_use_server_handoff_complete_esm_js__WEBPACK_IMPORTED_MODULE_6__.useServerHandoffComplete)();
-  var enabled = ready && dialogState === DialogStates.Open;
-  var hasNestedDialogs = nestedDialogCount > 1; // 1 is the current dialog
-
-  var hasParentDialog = (0,react__WEBPACK_IMPORTED_MODULE_0__.useContext)(DialogContext) !== null; // If there are multiple dialogs, then you can be the root, the leaf or one
-  // in between. We only care abou whether you are the top most one or not.
-
-  var position = !hasNestedDialogs ? 'leaf' : 'parent';
-  (0,_hooks_use_focus_trap_esm_js__WEBPACK_IMPORTED_MODULE_7__.useFocusTrap)(internalDialogRef, enabled ? (0,_utils_match_esm_js__WEBPACK_IMPORTED_MODULE_2__.match)(position, {
-    parent: _hooks_use_focus_trap_esm_js__WEBPACK_IMPORTED_MODULE_7__.Features.RestoreFocus,
-    leaf: _hooks_use_focus_trap_esm_js__WEBPACK_IMPORTED_MODULE_7__.Features.All
-  }) : _hooks_use_focus_trap_esm_js__WEBPACK_IMPORTED_MODULE_7__.Features.None, {
-    initialFocus: initialFocus,
-    containers: containers
-  });
-  (0,_hooks_use_inert_others_esm_js__WEBPACK_IMPORTED_MODULE_8__.useInertOthers)(internalDialogRef, hasNestedDialogs ? enabled : false); // Handle outside click
-
-  (0,_hooks_use_window_event_esm_js__WEBPACK_IMPORTED_MODULE_9__.useWindowEvent)('mousedown', function (event) {
-    var _internalDialogRef$cu;
-
-    var target = event.target;
-    if (dialogState !== DialogStates.Open) return;
-    if (hasNestedDialogs) return;
-    if ((_internalDialogRef$cu = internalDialogRef.current) == null ? void 0 : _internalDialogRef$cu.contains(target)) return;
-    close();
-  }); // Scroll lock
-
-  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
-    if (dialogState !== DialogStates.Open) return;
-    if (hasParentDialog) return;
-    var overflow = document.documentElement.style.overflow;
-    var paddingRight = document.documentElement.style.paddingRight;
-    var scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
-    document.documentElement.style.overflow = 'hidden';
-    document.documentElement.style.paddingRight = scrollbarWidth + "px";
-    return function () {
-      document.documentElement.style.overflow = overflow;
-      document.documentElement.style.paddingRight = paddingRight;
-    };
-  }, [dialogState, hasParentDialog]); // Trigger close when the FocusTrap gets hidden
-
-  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
-    if (dialogState !== DialogStates.Open) return;
-    if (!internalDialogRef.current) return;
-    var observer = new IntersectionObserver(function (entries) {
-      for (var _iterator = (0,_virtual_rollupPluginBabelHelpers_js__WEBPACK_IMPORTED_MODULE_1__.createForOfIteratorHelperLoose)(entries), _step; !(_step = _iterator()).done;) {
-        var entry = _step.value;
-
-        if (entry.boundingClientRect.x === 0 && entry.boundingClientRect.y === 0 && entry.boundingClientRect.width === 0 && entry.boundingClientRect.height === 0) {
-          close();
-        }
-      }
-    });
-    observer.observe(internalDialogRef.current);
-    return function () {
-      return observer.disconnect();
-    };
-  }, [dialogState, internalDialogRef, close]);
-
-  var _useDescriptions = (0,_description_description_esm_js__WEBPACK_IMPORTED_MODULE_10__.useDescriptions)(),
-      describedby = _useDescriptions[0],
-      DescriptionProvider = _useDescriptions[1];
-
-  var id = "headlessui-dialog-" + (0,_hooks_use_id_esm_js__WEBPACK_IMPORTED_MODULE_11__.useId)();
-  var contextBag = (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(function () {
-    return [{
-      dialogState: dialogState,
-      close: close,
-      setTitleId: setTitleId
-    }, state];
-  }, [dialogState, state, close, setTitleId]);
-  var slot = (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(function () {
-    return {
-      open: dialogState === DialogStates.Open
-    };
-  }, [dialogState]);
-  var propsWeControl = {
-    ref: dialogRef,
-    id: id,
-    role: 'dialog',
-    'aria-modal': dialogState === DialogStates.Open ? true : undefined,
-    'aria-labelledby': state.titleId,
-    'aria-describedby': describedby,
-    onClick: function onClick(event) {
-      event.stopPropagation();
-    },
-    // Handle `Escape` to close
-    onKeyDown: function onKeyDown(event) {
-      if (event.key !== _keyboard_esm_js__WEBPACK_IMPORTED_MODULE_12__.Keys.Escape) return;
-      if (dialogState !== DialogStates.Open) return;
-      if (hasNestedDialogs) return;
-      event.preventDefault();
-      event.stopPropagation();
-      close();
-    }
-  };
-  var passthroughProps = rest;
-  return react__WEBPACK_IMPORTED_MODULE_0__.createElement(_internal_stack_context_esm_js__WEBPACK_IMPORTED_MODULE_13__.StackProvider, {
-    type: "Dialog",
-    element: internalDialogRef,
-    onUpdate: (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(function (message, type, element) {
-      var _match2;
-
-      if (type !== 'Dialog') return;
-      (0,_utils_match_esm_js__WEBPACK_IMPORTED_MODULE_2__.match)(message, (_match2 = {}, _match2[_internal_stack_context_esm_js__WEBPACK_IMPORTED_MODULE_13__.StackMessage.Add] = function () {
-        containers.current.add(element);
-        setNestedDialogCount(function (count) {
-          return count + 1;
-        });
-      }, _match2[_internal_stack_context_esm_js__WEBPACK_IMPORTED_MODULE_13__.StackMessage.Remove] = function () {
-        containers.current.add(element);
-        setNestedDialogCount(function (count) {
-          return count - 1;
-        });
-      }, _match2));
-    }, [])
-  }, react__WEBPACK_IMPORTED_MODULE_0__.createElement(_internal_portal_force_root_esm_js__WEBPACK_IMPORTED_MODULE_14__.ForcePortalRoot, {
-    force: true
-  }, react__WEBPACK_IMPORTED_MODULE_0__.createElement(_portal_portal_esm_js__WEBPACK_IMPORTED_MODULE_15__.Portal, null, react__WEBPACK_IMPORTED_MODULE_0__.createElement(DialogContext.Provider, {
-    value: contextBag
-  }, react__WEBPACK_IMPORTED_MODULE_0__.createElement(_portal_portal_esm_js__WEBPACK_IMPORTED_MODULE_15__.Portal.Group, {
-    target: internalDialogRef
-  }, react__WEBPACK_IMPORTED_MODULE_0__.createElement(_internal_portal_force_root_esm_js__WEBPACK_IMPORTED_MODULE_14__.ForcePortalRoot, {
-    force: false
-  }, react__WEBPACK_IMPORTED_MODULE_0__.createElement(DescriptionProvider, {
-    slot: slot,
-    name: "Dialog.Description"
-  }, (0,_utils_render_esm_js__WEBPACK_IMPORTED_MODULE_3__.render)({
-    props: (0,_virtual_rollupPluginBabelHelpers_js__WEBPACK_IMPORTED_MODULE_1__.extends)({}, passthroughProps, propsWeControl),
-    slot: slot,
-    defaultTag: DEFAULT_DIALOG_TAG,
-    features: DialogRenderFeatures,
-    visible: visible,
-    name: 'Dialog'
-  }))))))));
-}); // ---
-
-var DEFAULT_OVERLAY_TAG = 'div';
-var Overlay = /*#__PURE__*/(0,_utils_render_esm_js__WEBPACK_IMPORTED_MODULE_3__.forwardRefWithAs)(function Overlay(props, ref) {
-  var _useDialogContext = useDialogContext([Dialog.displayName, Overlay.name].join('.')),
-      _useDialogContext$ = _useDialogContext[0],
-      dialogState = _useDialogContext$.dialogState,
-      close = _useDialogContext$.close;
-
-  var overlayRef = (0,_hooks_use_sync_refs_esm_js__WEBPACK_IMPORTED_MODULE_5__.useSyncRefs)(ref);
-  var id = "headlessui-dialog-overlay-" + (0,_hooks_use_id_esm_js__WEBPACK_IMPORTED_MODULE_11__.useId)();
-  var handleClick = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(function (event) {
-    if ((0,_utils_bugs_esm_js__WEBPACK_IMPORTED_MODULE_16__.isDisabledReactIssue7711)(event.currentTarget)) return event.preventDefault();
-    event.preventDefault();
-    event.stopPropagation();
-    close();
-  }, [close]);
-  var slot = (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(function () {
-    return {
-      open: dialogState === DialogStates.Open
-    };
-  }, [dialogState]);
-  var propsWeControl = {
-    ref: overlayRef,
-    id: id,
-    'aria-hidden': true,
-    onClick: handleClick
-  };
-  var passthroughProps = props;
-  return (0,_utils_render_esm_js__WEBPACK_IMPORTED_MODULE_3__.render)({
-    props: (0,_virtual_rollupPluginBabelHelpers_js__WEBPACK_IMPORTED_MODULE_1__.extends)({}, passthroughProps, propsWeControl),
-    slot: slot,
-    defaultTag: DEFAULT_OVERLAY_TAG,
-    name: 'Dialog.Overlay'
-  });
-}); // ---
-
-var DEFAULT_TITLE_TAG = 'h2';
-
-function Title(props) {
-  var _useDialogContext2 = useDialogContext([Dialog.displayName, Title.name].join('.')),
-      _useDialogContext2$ = _useDialogContext2[0],
-      dialogState = _useDialogContext2$.dialogState,
-      setTitleId = _useDialogContext2$.setTitleId;
-
-  var id = "headlessui-dialog-title-" + (0,_hooks_use_id_esm_js__WEBPACK_IMPORTED_MODULE_11__.useId)();
-  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
-    setTitleId(id);
-    return function () {
-      return setTitleId(null);
-    };
-  }, [id, setTitleId]);
-  var slot = (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(function () {
-    return {
-      open: dialogState === DialogStates.Open
-    };
-  }, [dialogState]);
-  var propsWeControl = {
-    id: id
-  };
-  var passthroughProps = props;
-  return (0,_utils_render_esm_js__WEBPACK_IMPORTED_MODULE_3__.render)({
-    props: (0,_virtual_rollupPluginBabelHelpers_js__WEBPACK_IMPORTED_MODULE_1__.extends)({}, passthroughProps, propsWeControl),
-    slot: slot,
-    defaultTag: DEFAULT_TITLE_TAG,
-    name: 'Dialog.Title'
-  });
-} // ---
-
-
-var Dialog = /*#__PURE__*/Object.assign(DialogRoot, {
-  Overlay: Overlay,
-  Title: Title,
-  Description: _description_description_esm_js__WEBPACK_IMPORTED_MODULE_10__.Description
-});
-
-
-//# sourceMappingURL=dialog.esm.js.map
 
 
 /***/ }),
@@ -1609,119 +1131,6 @@ Menu.Item = Item;
 
 /***/ }),
 
-/***/ "./node_modules/@headlessui/react/dist/components/portal/portal.esm.js":
-/*!*****************************************************************************!*\
-  !*** ./node_modules/@headlessui/react/dist/components/portal/portal.esm.js ***!
-  \*****************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Portal": () => (/* binding */ Portal)
-/* harmony export */ });
-/* harmony import */ var _virtual_rollupPluginBabelHelpers_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../_virtual/_rollupPluginBabelHelpers.js */ "./node_modules/@headlessui/react/dist/_virtual/_rollupPluginBabelHelpers.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var _utils_render_esm_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../utils/render.esm.js */ "./node_modules/@headlessui/react/dist/utils/render.esm.js");
-/* harmony import */ var _hooks_use_iso_morphic_effect_esm_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../hooks/use-iso-morphic-effect.esm.js */ "./node_modules/@headlessui/react/dist/hooks/use-iso-morphic-effect.esm.js");
-/* harmony import */ var _hooks_use_server_handoff_complete_esm_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../hooks/use-server-handoff-complete.esm.js */ "./node_modules/@headlessui/react/dist/hooks/use-server-handoff-complete.esm.js");
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
-/* harmony import */ var _internal_portal_force_root_esm_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../internal/portal-force-root.esm.js */ "./node_modules/@headlessui/react/dist/internal/portal-force-root.esm.js");
-
-
-
-
-
-
-
-
-function usePortalTarget() {
-  var forceInRoot = (0,_internal_portal_force_root_esm_js__WEBPACK_IMPORTED_MODULE_2__.usePortalRoot)();
-  var groupTarget = (0,react__WEBPACK_IMPORTED_MODULE_0__.useContext)(PortalGroupContext);
-
-  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(function () {
-    // Group context is used, but still null
-    if (!forceInRoot && groupTarget !== null) return null; // No group context is used, let's create a default portal root
-
-    if (typeof window === 'undefined') return null;
-    var existingRoot = document.getElementById('headlessui-portal-root');
-    if (existingRoot) return existingRoot;
-    var root = document.createElement('div');
-    root.setAttribute('id', 'headlessui-portal-root');
-    return document.body.appendChild(root);
-  }),
-      target = _useState[0],
-      setTarget = _useState[1];
-
-  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
-    if (forceInRoot) return;
-    if (groupTarget === null) return;
-    setTarget(groupTarget.current);
-  }, [groupTarget, setTarget, forceInRoot]);
-  return target;
-} // ---
-
-
-var DEFAULT_PORTAL_TAG = react__WEBPACK_IMPORTED_MODULE_0__.Fragment;
-function Portal(props) {
-  var passthroughProps = props;
-  var target = usePortalTarget();
-
-  var _useState2 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(function () {
-    return typeof window === 'undefined' ? null : document.createElement('div');
-  }),
-      element = _useState2[0];
-
-  var ready = (0,_hooks_use_server_handoff_complete_esm_js__WEBPACK_IMPORTED_MODULE_3__.useServerHandoffComplete)();
-  (0,_hooks_use_iso_morphic_effect_esm_js__WEBPACK_IMPORTED_MODULE_4__.useIsoMorphicEffect)(function () {
-    if (!target) return;
-    if (!element) return;
-    target.appendChild(element);
-    return function () {
-      if (!target) return;
-      if (!element) return;
-      target.removeChild(element);
-
-      if (target.childNodes.length <= 0) {
-        var _target$parentElement;
-
-        (_target$parentElement = target.parentElement) == null ? void 0 : _target$parentElement.removeChild(target);
-      }
-    };
-  }, [target, element]);
-  if (!ready) return null;
-  return !target || !element ? null : (0,react_dom__WEBPACK_IMPORTED_MODULE_1__.createPortal)((0,_utils_render_esm_js__WEBPACK_IMPORTED_MODULE_5__.render)({
-    props: passthroughProps,
-    defaultTag: DEFAULT_PORTAL_TAG,
-    name: 'Portal'
-  }), element);
-} // ---
-
-var DEFAULT_GROUP_TAG = react__WEBPACK_IMPORTED_MODULE_0__.Fragment;
-var PortalGroupContext = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.createContext)(null);
-
-function Group(props) {
-  var target = props.target,
-      passthroughProps = (0,_virtual_rollupPluginBabelHelpers_js__WEBPACK_IMPORTED_MODULE_6__.objectWithoutPropertiesLoose)(props, ["target"]);
-
-  return react__WEBPACK_IMPORTED_MODULE_0__.createElement(PortalGroupContext.Provider, {
-    value: target
-  }, (0,_utils_render_esm_js__WEBPACK_IMPORTED_MODULE_5__.render)({
-    props: passthroughProps,
-    defaultTag: DEFAULT_GROUP_TAG,
-    name: 'Popover.Group'
-  }));
-} // ---
-
-
-Portal.Group = Group;
-
-
-//# sourceMappingURL=portal.esm.js.map
-
-
-/***/ }),
-
 /***/ "./node_modules/@headlessui/react/dist/components/transitions/transition.esm.js":
 /*!**************************************************************************************!*\
   !*** ./node_modules/@headlessui/react/dist/components/transitions/transition.esm.js ***!
@@ -2255,161 +1664,6 @@ function useDisposables() {
 
 /***/ }),
 
-/***/ "./node_modules/@headlessui/react/dist/hooks/use-focus-trap.esm.js":
-/*!*************************************************************************!*\
-  !*** ./node_modules/@headlessui/react/dist/hooks/use-focus-trap.esm.js ***!
-  \*************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Features": () => (/* binding */ Features),
-/* harmony export */   "useFocusTrap": () => (/* binding */ useFocusTrap)
-/* harmony export */ });
-/* harmony import */ var _virtual_rollupPluginBabelHelpers_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../_virtual/_rollupPluginBabelHelpers.js */ "./node_modules/@headlessui/react/dist/_virtual/_rollupPluginBabelHelpers.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var _components_keyboard_esm_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../components/keyboard.esm.js */ "./node_modules/@headlessui/react/dist/components/keyboard.esm.js");
-/* harmony import */ var _utils_focus_management_esm_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/focus-management.esm.js */ "./node_modules/@headlessui/react/dist/utils/focus-management.esm.js");
-/* harmony import */ var _use_window_event_esm_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./use-window-event.esm.js */ "./node_modules/@headlessui/react/dist/hooks/use-window-event.esm.js");
-/* harmony import */ var _use_is_mounted_esm_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./use-is-mounted.esm.js */ "./node_modules/@headlessui/react/dist/hooks/use-is-mounted.esm.js");
-
-
-
-
-
-
-
-var Features;
-
-(function (Features) {
-  /** No features enabled for the `useFocusTrap` hook. */
-  Features[Features["None"] = 1] = "None";
-  /** Ensure that we move focus initially into the container. */
-
-  Features[Features["InitialFocus"] = 2] = "InitialFocus";
-  /** Ensure that pressing `Tab` and `Shift+Tab` is trapped within the container. */
-
-  Features[Features["TabLock"] = 4] = "TabLock";
-  /** Ensure that programmatically moving focus outside of the container is disallowed. */
-
-  Features[Features["FocusLock"] = 8] = "FocusLock";
-  /** Ensure that we restore the focus when unmounting the component that uses this `useFocusTrap` hook. */
-
-  Features[Features["RestoreFocus"] = 16] = "RestoreFocus";
-  /** Enable all features. */
-
-  Features[Features["All"] = 30] = "All";
-})(Features || (Features = {}));
-
-function useFocusTrap(container, features, _temp) {
-  if (features === void 0) {
-    features = Features.All;
-  }
-
-  var _ref = _temp === void 0 ? {} : _temp,
-      initialFocus = _ref.initialFocus,
-      containers = _ref.containers;
-
-  var restoreElement = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(typeof window !== 'undefined' ? document.activeElement : null);
-  var previousActiveElement = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(null);
-  var mounted = (0,_use_is_mounted_esm_js__WEBPACK_IMPORTED_MODULE_1__.useIsMounted)();
-  var featuresRestoreFocus = Boolean(features & Features.RestoreFocus);
-  var featuresInitialFocus = Boolean(features & Features.InitialFocus); // Capture the currently focused element, before we enable the focus trap.
-
-  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
-    if (!featuresRestoreFocus) return;
-    restoreElement.current = document.activeElement;
-  }, [featuresRestoreFocus]); // Restore the focus when we unmount the component.
-
-  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
-    if (!featuresRestoreFocus) return;
-    return function () {
-      (0,_utils_focus_management_esm_js__WEBPACK_IMPORTED_MODULE_2__.focusElement)(restoreElement.current);
-      restoreElement.current = null;
-    };
-  }, [featuresRestoreFocus]); // Handle initial focus
-
-  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
-    if (!featuresInitialFocus) return;
-    if (!container.current) return;
-    var activeElement = document.activeElement;
-
-    if (initialFocus == null ? void 0 : initialFocus.current) {
-      if ((initialFocus == null ? void 0 : initialFocus.current) === activeElement) {
-        previousActiveElement.current = activeElement;
-        return; // Initial focus ref is already the active element
-      }
-    } else if (container.current.contains(activeElement)) {
-      previousActiveElement.current = activeElement;
-      return; // Already focused within Dialog
-    } // Try to focus the initialFocus ref
-
-
-    if (initialFocus == null ? void 0 : initialFocus.current) {
-      (0,_utils_focus_management_esm_js__WEBPACK_IMPORTED_MODULE_2__.focusElement)(initialFocus.current);
-    } else {
-      if ((0,_utils_focus_management_esm_js__WEBPACK_IMPORTED_MODULE_2__.focusIn)(container.current, _utils_focus_management_esm_js__WEBPACK_IMPORTED_MODULE_2__.Focus.First) === _utils_focus_management_esm_js__WEBPACK_IMPORTED_MODULE_2__.FocusResult.Error) {
-        throw new Error('There are no focusable elements inside the <FocusTrap />');
-      }
-    }
-
-    previousActiveElement.current = document.activeElement;
-  }, [container, initialFocus, featuresInitialFocus]); // Handle `Tab` & `Shift+Tab` keyboard events
-
-  (0,_use_window_event_esm_js__WEBPACK_IMPORTED_MODULE_3__.useWindowEvent)('keydown', function (event) {
-    if (!(features & Features.TabLock)) return;
-    if (!container.current) return;
-    if (event.key !== _components_keyboard_esm_js__WEBPACK_IMPORTED_MODULE_4__.Keys.Tab) return;
-    event.preventDefault();
-
-    if ((0,_utils_focus_management_esm_js__WEBPACK_IMPORTED_MODULE_2__.focusIn)(container.current, (event.shiftKey ? _utils_focus_management_esm_js__WEBPACK_IMPORTED_MODULE_2__.Focus.Previous : _utils_focus_management_esm_js__WEBPACK_IMPORTED_MODULE_2__.Focus.Next) | _utils_focus_management_esm_js__WEBPACK_IMPORTED_MODULE_2__.Focus.WrapAround) === _utils_focus_management_esm_js__WEBPACK_IMPORTED_MODULE_2__.FocusResult.Success) {
-      previousActiveElement.current = document.activeElement;
-    }
-  }); // Prevent programmatically escaping the container
-
-  (0,_use_window_event_esm_js__WEBPACK_IMPORTED_MODULE_3__.useWindowEvent)('focus', function (event) {
-    if (!(features & Features.FocusLock)) return;
-    var allContainers = new Set(containers == null ? void 0 : containers.current);
-    allContainers.add(container);
-    if (!allContainers.size) return;
-    var previous = previousActiveElement.current;
-    if (!previous) return;
-    if (!mounted.current) return;
-    var toElement = event.target;
-
-    if (toElement && toElement instanceof HTMLElement) {
-      if (!contains(allContainers, toElement)) {
-        event.preventDefault();
-        event.stopPropagation();
-        (0,_utils_focus_management_esm_js__WEBPACK_IMPORTED_MODULE_2__.focusElement)(previous);
-      } else {
-        previousActiveElement.current = toElement;
-        (0,_utils_focus_management_esm_js__WEBPACK_IMPORTED_MODULE_2__.focusElement)(toElement);
-      }
-    } else {
-      (0,_utils_focus_management_esm_js__WEBPACK_IMPORTED_MODULE_2__.focusElement)(previousActiveElement.current);
-    }
-  }, true);
-}
-
-function contains(containers, element) {
-  for (var _iterator = (0,_virtual_rollupPluginBabelHelpers_js__WEBPACK_IMPORTED_MODULE_5__.createForOfIteratorHelperLoose)(containers), _step; !(_step = _iterator()).done;) {
-    var _container$current;
-
-    var container = _step.value;
-    if ((_container$current = container.current) == null ? void 0 : _container$current.contains(element)) return true;
-  }
-
-  return false;
-}
-
-
-//# sourceMappingURL=use-focus-trap.esm.js.map
-
-
-/***/ }),
-
 /***/ "./node_modules/@headlessui/react/dist/hooks/use-id.esm.js":
 /*!*****************************************************************!*\
   !*** ./node_modules/@headlessui/react/dist/hooks/use-id.esm.js ***!
@@ -2454,126 +1708,6 @@ function useId() {
 
 
 //# sourceMappingURL=use-id.esm.js.map
-
-
-/***/ }),
-
-/***/ "./node_modules/@headlessui/react/dist/hooks/use-inert-others.esm.js":
-/*!***************************************************************************!*\
-  !*** ./node_modules/@headlessui/react/dist/hooks/use-inert-others.esm.js ***!
-  \***************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "useInertOthers": () => (/* binding */ useInertOthers)
-/* harmony export */ });
-/* harmony import */ var _virtual_rollupPluginBabelHelpers_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../_virtual/_rollupPluginBabelHelpers.js */ "./node_modules/@headlessui/react/dist/_virtual/_rollupPluginBabelHelpers.js");
-/* harmony import */ var _use_iso_morphic_effect_esm_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./use-iso-morphic-effect.esm.js */ "./node_modules/@headlessui/react/dist/hooks/use-iso-morphic-effect.esm.js");
-
-
-
-var interactables = /*#__PURE__*/new Set();
-var originals = /*#__PURE__*/new Map();
-
-function inert(element) {
-  element.setAttribute('aria-hidden', 'true'); // @ts-expect-error `inert` does not exist on HTMLElement (yet!)
-
-  element.inert = true;
-}
-
-function restore(element) {
-  var original = originals.get(element);
-  if (!original) return;
-  if (original['aria-hidden'] === null) element.removeAttribute('aria-hidden');else element.setAttribute('aria-hidden', original['aria-hidden']); // @ts-expect-error `inert` does not exist on HTMLElement (yet!)
-
-  element.inert = original.inert;
-}
-
-function useInertOthers(container, enabled) {
-  if (enabled === void 0) {
-    enabled = true;
-  }
-
-  (0,_use_iso_morphic_effect_esm_js__WEBPACK_IMPORTED_MODULE_0__.useIsoMorphicEffect)(function () {
-    if (!enabled) return;
-    if (!container.current) return;
-    var element = container.current; // Mark myself as an interactable element
-
-    interactables.add(element); // Restore elements that now contain an interactable child
-
-    for (var _iterator = (0,_virtual_rollupPluginBabelHelpers_js__WEBPACK_IMPORTED_MODULE_1__.createForOfIteratorHelperLoose)(originals.keys()), _step; !(_step = _iterator()).done;) {
-      var original = _step.value;
-
-      if (original.contains(element)) {
-        restore(original);
-        originals["delete"](original);
-      }
-    } // Collect direct children of the body
-
-
-    document.querySelectorAll('body > *').forEach(function (child) {
-      if (!(child instanceof HTMLElement)) return; // Skip non-HTMLElements
-      // Skip the interactables, and the parents of the interactables
-
-      for (var _iterator2 = (0,_virtual_rollupPluginBabelHelpers_js__WEBPACK_IMPORTED_MODULE_1__.createForOfIteratorHelperLoose)(interactables), _step2; !(_step2 = _iterator2()).done;) {
-        var interactable = _step2.value;
-        if (child.contains(interactable)) return;
-      } // Keep track of the elements
-
-
-      if (interactables.size === 1) {
-        originals.set(child, {
-          'aria-hidden': child.getAttribute('aria-hidden'),
-          // @ts-expect-error `inert` does not exist on HTMLElement (yet!)
-          inert: child.inert
-        }); // Mutate the element
-
-        inert(child);
-      }
-    });
-    return function () {
-      // Inert is disabled on the current element
-      interactables["delete"](element); // We still have interactable elements, therefore this one and its parent
-      // will become inert as well.
-
-      if (interactables.size > 0) {
-        // Collect direct children of the body
-        document.querySelectorAll('body > *').forEach(function (child) {
-          if (!(child instanceof HTMLElement)) return; // Skip non-HTMLElements
-          // Skip already inert parents
-
-          if (originals.has(child)) return; // Skip the interactables, and the parents of the interactables
-
-          for (var _iterator3 = (0,_virtual_rollupPluginBabelHelpers_js__WEBPACK_IMPORTED_MODULE_1__.createForOfIteratorHelperLoose)(interactables), _step3; !(_step3 = _iterator3()).done;) {
-            var interactable = _step3.value;
-            if (child.contains(interactable)) return;
-          }
-
-          originals.set(child, {
-            'aria-hidden': child.getAttribute('aria-hidden'),
-            // @ts-expect-error `inert` does not exist on HTMLElement (yet!)
-            inert: child.inert
-          }); // Mutate the element
-
-          inert(child);
-        });
-      } else {
-        for (var _iterator4 = (0,_virtual_rollupPluginBabelHelpers_js__WEBPACK_IMPORTED_MODULE_1__.createForOfIteratorHelperLoose)(originals.keys()), _step4; !(_step4 = _iterator4()).done;) {
-          var _element = _step4.value;
-          // Restore
-          restore(_element); // Cleanup
-
-          originals["delete"](_element);
-        }
-      }
-    };
-  }, [enabled]);
-}
-
-
-//# sourceMappingURL=use-inert-others.esm.js.map
 
 
 /***/ }),
@@ -2862,100 +1996,6 @@ function OpenClosedProvider(_ref) {
 
 
 //# sourceMappingURL=open-closed.esm.js.map
-
-
-/***/ }),
-
-/***/ "./node_modules/@headlessui/react/dist/internal/portal-force-root.esm.js":
-/*!*******************************************************************************!*\
-  !*** ./node_modules/@headlessui/react/dist/internal/portal-force-root.esm.js ***!
-  \*******************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "ForcePortalRoot": () => (/* binding */ ForcePortalRoot),
-/* harmony export */   "usePortalRoot": () => (/* binding */ usePortalRoot)
-/* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-
-
-var ForcePortalRootContext = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.createContext)(false);
-function usePortalRoot() {
-  return (0,react__WEBPACK_IMPORTED_MODULE_0__.useContext)(ForcePortalRootContext);
-}
-function ForcePortalRoot(props) {
-  return react__WEBPACK_IMPORTED_MODULE_0__.createElement(ForcePortalRootContext.Provider, {
-    value: props.force
-  }, props.children);
-}
-
-
-//# sourceMappingURL=portal-force-root.esm.js.map
-
-
-/***/ }),
-
-/***/ "./node_modules/@headlessui/react/dist/internal/stack-context.esm.js":
-/*!***************************************************************************!*\
-  !*** ./node_modules/@headlessui/react/dist/internal/stack-context.esm.js ***!
-  \***************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "StackMessage": () => (/* binding */ StackMessage),
-/* harmony export */   "StackProvider": () => (/* binding */ StackProvider),
-/* harmony export */   "useStackContext": () => (/* binding */ useStackContext)
-/* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var _hooks_use_iso_morphic_effect_esm_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../hooks/use-iso-morphic-effect.esm.js */ "./node_modules/@headlessui/react/dist/hooks/use-iso-morphic-effect.esm.js");
-
-
-
-var StackContext = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.createContext)(function () {});
-StackContext.displayName = 'StackContext';
-var StackMessage;
-
-(function (StackMessage) {
-  StackMessage[StackMessage["Add"] = 0] = "Add";
-  StackMessage[StackMessage["Remove"] = 1] = "Remove";
-})(StackMessage || (StackMessage = {}));
-
-function useStackContext() {
-  return (0,react__WEBPACK_IMPORTED_MODULE_0__.useContext)(StackContext);
-}
-function StackProvider(_ref) {
-  var children = _ref.children,
-      onUpdate = _ref.onUpdate,
-      type = _ref.type,
-      element = _ref.element;
-  var parentUpdate = useStackContext();
-  var notify = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(function () {
-    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
-    // Notify our layer
-    onUpdate == null ? void 0 : onUpdate.apply(void 0, args); // Notify the parent
-
-    parentUpdate.apply(void 0, args);
-  }, [parentUpdate, onUpdate]);
-  (0,_hooks_use_iso_morphic_effect_esm_js__WEBPACK_IMPORTED_MODULE_1__.useIsoMorphicEffect)(function () {
-    notify(StackMessage.Add, type, element);
-    return function () {
-      return notify(StackMessage.Remove, type, element);
-    };
-  }, [notify, type, element]);
-  return react__WEBPACK_IMPORTED_MODULE_0__.createElement(StackContext.Provider, {
-    value: notify
-  }, children);
-}
-
-
-//# sourceMappingURL=stack-context.esm.js.map
 
 
 /***/ }),
@@ -3648,10 +2688,10 @@ function omit(object, keysToOmit) {
 
 /***/ }),
 
-/***/ "./resources/js/Pages/Flights/FlightSearch.js":
-/*!****************************************************!*\
-  !*** ./resources/js/Pages/Flights/FlightSearch.js ***!
-  \****************************************************/
+/***/ "./resources/js/Pages/Flights/Dispatch.js":
+/*!************************************************!*\
+  !*** ./resources/js/Pages/Flights/Dispatch.js ***!
+  \************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -3662,23 +2702,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var _Shared_Layout__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../Shared/Layout */ "./resources/js/Shared/Layout.js");
 /* harmony import */ var _Shared_Navigation_PageTitle__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../Shared/Navigation/PageTitle */ "./resources/js/Shared/Navigation/PageTitle.js");
-/* harmony import */ var _Shared_Elements_NoContent__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../Shared/Elements/NoContent */ "./resources/js/Shared/Elements/NoContent.js");
-/* harmony import */ var _Shared_Elements_Tooltip__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../Shared/Elements/Tooltip */ "./resources/js/Shared/Elements/Tooltip.js");
-/* harmony import */ var _Shared_Components_Flights_FlightModal__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../Shared/Components/Flights/FlightModal */ "./resources/js/Shared/Components/Flights/FlightModal.js");
-/* harmony import */ var _Shared_Components_Flights_SearchInput__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../Shared/Components/Flights/SearchInput */ "./resources/js/Shared/Components/Flights/SearchInput.js");
-/* harmony import */ var _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @inertiajs/inertia */ "./node_modules/@inertiajs/inertia/dist/index.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
-
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+/* harmony import */ var _inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @inertiajs/inertia-react */ "./node_modules/@inertiajs/inertia-react/dist/index.js");
+/* harmony import */ var _Shared_Components_Flights_FlightMap__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../Shared/Components/Flights/FlightMap */ "./resources/js/Shared/Components/Flights/FlightMap.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 
 
 
@@ -3687,155 +2713,102 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
-
-
-
-
-
-var EmptyData = function EmptyData() {
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.Fragment, {
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("i", {
-      className: "material-icons md-48",
-      children: "airplane_ticket"
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("div", {
-      children: "There are no flights"
-    })]
-  });
-};
-
-var FlightSearch = function FlightSearch(_ref) {
-  var flights = _ref.flights,
-      bookings = _ref.bookings;
-
-  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
-      _useState2 = _slicedToArray(_useState, 2),
-      showDetailModal = _useState2[0],
-      setShowDetailModal = _useState2[1];
-
-  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({}),
-      _useState4 = _slicedToArray(_useState3, 2),
-      selectedFlight = _useState4[0],
-      setSelectedFlight = _useState4[1];
-
-  function toggleDetailModal() {
-    setShowDetailModal(!showDetailModal);
-  }
-
-  function updateSelectedFlight(flight) {
-    setSelectedFlight(flight);
-    toggleDetailModal();
-  }
-
-  function bookFlight(flight) {
-    _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_7__.Inertia.post("/bookings/create/".concat(flight.id));
-  }
-
-  function cancelBooking(flight) {
-    _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_7__.Inertia.delete("/bookings/cancel/".concat(flight.id));
-  }
-
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_Shared_Navigation_PageTitle__WEBPACK_IMPORTED_MODULE_2__.default, {
-      title: "Flight Search"
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_Shared_Components_Flights_SearchInput__WEBPACK_IMPORTED_MODULE_6__.default, {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("p", {
-      className: "text-sm mb-1",
-      children: [flights.length > 0 && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("span", {
-        children: ["Total results: ", flights.length, " "]
-      }), " "]
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("div", {
-      className: "bg-white rounded shadow overflow-x-auto",
-      children: flights.length === 0 ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_Shared_Elements_NoContent__WEBPACK_IMPORTED_MODULE_3__.default, {
-        content: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(EmptyData, {})
-      }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("div", {
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("table", {
-          className: "table table-auto",
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("thead", {
-            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("tr", {
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("th", {
-                children: "Flight"
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("th", {
-                children: "Departure"
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("th", {
-                children: "Arrival"
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("th", {
-                children: "Distance"
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("th", {
-                children: "Actions"
-              })]
-            })
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("tbody", {
-            children: flights.map(function (flight) {
-              return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("tr", {
-                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("td", {
-                  className: "hover:underline hover:text-orange-500",
-                  onClick: function onClick() {
-                    return updateSelectedFlight(flight);
-                  },
-                  children: ["BDV", flight.flight_number]
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("td", {
-                  children: [flight.dep_airport_id, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("br", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("span", {
-                    className: "text-xs",
-                    children: flight.dep_airport.name
-                  })]
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("td", {
-                  children: [flight.arr_airport_id, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("br", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("span", {
-                    className: "text-xs",
-                    children: flight.arr_airport.name
-                  })]
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("td", {
-                  children: flight.distance
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("td", {
-                  children: bookings.find(function (f) {
-                    return f.flight_id === flight.id;
-                  }) === undefined ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_Shared_Elements_Tooltip__WEBPACK_IMPORTED_MODULE_4__.default, {
-                    content: "Book flight",
-                    direction: "top",
-                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("button", {
-                      onClick: function onClick() {
-                        return bookFlight(flight);
-                      },
-                      className: "btn btn-secondary flex items-center",
-                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("i", {
-                        className: "material-icons",
-                        children: "airplane_ticket"
-                      })
-                    })
-                  }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_Shared_Elements_Tooltip__WEBPACK_IMPORTED_MODULE_4__.default, {
-                    content: "Cancel flight booking",
-                    direction: "top",
-                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("button", {
-                      onClick: function onClick() {
-                        return cancelBooking(flight);
-                      },
-                      className: "btn btn-light flex items-center",
-                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("i", {
-                        className: "material-icons",
-                        children: "close"
-                      })
-                    })
-                  })
-                })]
-              }, flight.id);
+var Dispatch = function Dispatch(_ref) {
+  var pirep = _ref.pirep;
+  var auth = (0,_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_3__.usePage)().props.auth;
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_Shared_Navigation_PageTitle__WEBPACK_IMPORTED_MODULE_2__.default, {
+      title: "Dispatch - Pilot Briefing"
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+      className: "flex justify-between mb-2",
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+        className: "rounded shadow p-2 w-1/5 flex",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("i", {
+          className: "material-icons md-48",
+          children: "event_note"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+          className: "ml-2",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("span", {
+            className: "text-2xl",
+            children: ["BDV", pirep.flight.flight_number]
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+            className: "text-sm mt-2",
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("span", {
+              children: ["PIC: ", auth.user.name]
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("br", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("span", {
+              children: ["OFP: KG | ", pirep.aircraft.fleet.type]
+            })]
+          })]
+        })]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+        className: "rounded shadow p-2 w-1/5 flex",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("i", {
+          className: "material-icons md-48",
+          children: "flight_takeoff"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+          className: "ml-2",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("span", {
+            className: "text-2xl",
+            children: pirep.flight.dep_airport_id
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
+            className: "text-sm mt-2",
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("span", {
+              children: pirep.flight.dep_airport.name
             })
           })]
-        })
-      })
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_Shared_Components_Flights_FlightModal__WEBPACK_IMPORTED_MODULE_5__.default, {
-      show: showDetailModal,
-      flight: selectedFlight,
-      onClose: toggleDetailModal
+        })]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+        className: "rounded shadow p-2 w-1/5 flex",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("i", {
+          className: "material-icons md-48",
+          children: "flight_land"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+          className: "ml-2",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("span", {
+            className: "text-2xl",
+            children: pirep.flight.arr_airport_id
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
+            className: "text-sm mt-2",
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("span", {
+              children: pirep.flight.arr_airport.name
+            })
+          })]
+        })]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+        className: "rounded shadow p-2 w-1/5 flex",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("i", {
+          className: "material-icons md-48",
+          children: "flight"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+          className: "ml-2",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("span", {
+            className: "text-2xl",
+            children: pirep.aircraft.registration
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+            className: "text-sm mt-2",
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("span", {
+              children: pirep.aircraft.fleet.type
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("br", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("span", {
+              children: [pirep.aircraft.fleet.manufacturer, " ", pirep.aircraft.fleet.name]
+            })]
+          })]
+        })]
+      })]
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_Shared_Components_Flights_FlightMap__WEBPACK_IMPORTED_MODULE_4__.default, {
+      flight: pirep.flight,
+      size: "large"
     })]
   });
 };
 
-FlightSearch.layout = function (page) {
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_Shared_Layout__WEBPACK_IMPORTED_MODULE_1__.default, {
+Dispatch.layout = function (page) {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_Shared_Layout__WEBPACK_IMPORTED_MODULE_1__.default, {
     children: page,
-    title: "Flight Search"
+    title: "Dispatch"
   });
 };
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (FlightSearch);
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Dispatch);
 
 /***/ }),
 
@@ -3951,374 +2924,6 @@ var FlightMap = function FlightMap(props) {
 };
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (FlightMap);
-
-/***/ }),
-
-/***/ "./resources/js/Shared/Components/Flights/FlightModal.js":
-/*!***************************************************************!*\
-  !*** ./resources/js/Shared/Components/Flights/FlightModal.js ***!
-  \***************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var _headlessui_react__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @headlessui/react */ "./node_modules/@headlessui/react/dist/components/transitions/transition.esm.js");
-/* harmony import */ var _headlessui_react__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @headlessui/react */ "./node_modules/@headlessui/react/dist/components/dialog/dialog.esm.js");
-/* harmony import */ var _FlightMap__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./FlightMap */ "./resources/js/Shared/Components/Flights/FlightMap.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
-
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
-
-
-
-
-
-
-
-var FlightModal = function FlightModal(props) {
-  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
-      _useState2 = _slicedToArray(_useState, 2),
-      show = _useState2[0],
-      setShow = _useState2[1];
-
-  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
-    setShow(props.show);
-  }, [props.show]);
-
-  function onCloseModal() {
-    props.onClose();
-  }
-
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.Fragment, {
-    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(_headlessui_react__WEBPACK_IMPORTED_MODULE_3__.Transition, {
-      appear: true,
-      show: show,
-      as: react__WEBPACK_IMPORTED_MODULE_0__.Fragment,
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(_headlessui_react__WEBPACK_IMPORTED_MODULE_4__.Dialog, {
-        as: "div",
-        className: "fixed inset-0 z-10 overflow-y-auto",
-        onClose: function onClose() {
-          return null;
-        },
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
-          className: "min-h-screen px-4 text-center",
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(_headlessui_react__WEBPACK_IMPORTED_MODULE_3__.Transition.Child, {
-            as: react__WEBPACK_IMPORTED_MODULE_0__.Fragment,
-            enter: "ease-out duration-300",
-            enterFrom: "opacity-0",
-            enterTo: "opacity-100",
-            leave: "ease-in duration-200",
-            leaveFrom: "opacity-100",
-            leaveTo: "opacity-0",
-            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(_headlessui_react__WEBPACK_IMPORTED_MODULE_4__.Dialog.Overlay, {
-              className: "fixed inset-0"
-            })
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("span", {
-            className: "inline-block h-screen align-middle",
-            "aria-hidden": "true",
-            children: "\u200B"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(_headlessui_react__WEBPACK_IMPORTED_MODULE_3__.Transition.Child, {
-            as: react__WEBPACK_IMPORTED_MODULE_0__.Fragment,
-            enter: "ease-out duration-300",
-            enterFrom: "opacity-0 scale-95",
-            enterTo: "opacity-100 scale-100",
-            leave: "ease-in duration-200",
-            leaveFrom: "opacity-100 scale-100",
-            leaveTo: "opacity-0 scale-95",
-            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
-              className: "inline-block w-full max-w-md p-6 my-6 overflow-hidden text-left align-middle transition-all transform bg-white shadow-lg rounded",
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
-                className: "flex items-center justify-between",
-                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)(_headlessui_react__WEBPACK_IMPORTED_MODULE_4__.Dialog.Title, {
-                  as: "h3",
-                  className: "text-2xl font-medium leading-6 text-gray-900",
-                  children: ["Flight - BDV", props.flight.flight_number]
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("button", {
-                  type: "button",
-                  className: "p-1 rounded-full text-gray-700 hover:bg-gray-50 focus:outline-none block",
-                  onClick: onCloseModal,
-                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("span", {
-                    className: "sr-only",
-                    children: "View notifications"
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
-                    className: "h-6 w-6",
-                    "aria-hidden": "true",
-                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("i", {
-                      className: "material-icons",
-                      children: "close"
-                    })
-                  })]
-                })]
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
-                className: "mt-2",
-                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
-                  className: "flex justify-between items-center",
-                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
-                    children: ["Departure:", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("p", {
-                      className: "text-2xl mt-1",
-                      children: props.flight.dep_airport_id
-                    })]
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
-                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("span", {
-                      children: [props.flight.distance, "nm"]
-                    })
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
-                    children: ["Arrival:", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("p", {
-                      className: "text-2xl mt-1",
-                      children: props.flight.arr_airport_id
-                    })]
-                  })]
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
-                  className: "mt-2",
-                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(_FlightMap__WEBPACK_IMPORTED_MODULE_1__.default, {
-                    flight: props.flight,
-                    size: "small"
-                  })
-                })]
-              })]
-            })
-          })]
-        })
-      })
-    })
-  });
-};
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (FlightModal);
-
-/***/ }),
-
-/***/ "./resources/js/Shared/Components/Flights/SearchInput.js":
-/*!***************************************************************!*\
-  !*** ./resources/js/Shared/Components/Flights/SearchInput.js ***!
-  \***************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var _inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @inertiajs/inertia-react */ "./node_modules/@inertiajs/inertia-react/dist/index.js");
-/* harmony import */ var _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @inertiajs/inertia */ "./node_modules/@inertiajs/inertia/dist/index.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
-
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
-
-
-
-
-
-
-var SearchInput = function SearchInput() {
-  var errors = (0,_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.usePage)().props.errors;
-  var urlParams = new URLSearchParams(window.location.search);
-  var departure = urlParams.get('dep') === null ? '' : urlParams.get('dep');
-  var arrival = urlParams.get('arr') === null ? '' : urlParams.get('arr');
-
-  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({
-    dep: departure,
-    arr: arrival
-  }),
-      _useState2 = _slicedToArray(_useState, 2),
-      values = _useState2[0],
-      setValues = _useState2[1];
-
-  function handleChange(e) {
-    var key = e.target.id;
-    var value = e.target.value;
-    _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_2__.Inertia.remember(value, key);
-    setValues(function (values) {
-      return _objectSpread(_objectSpread({}, values), {}, _defineProperty({}, key, value));
-    });
-  }
-
-  function handleSubmit(e) {
-    e.preventDefault();
-    _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_2__.Inertia.get("/flights/search/?dep=".concat(values.dep, "&arr=").concat(values.arr));
-  }
-
-  function handleReset() {
-    setValues({
-      dep: '',
-      arr: ''
-    });
-    _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_2__.Inertia.get('/flights');
-  }
-
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
-    className: "shadow rounded bg-white p-2 mb-4",
-    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("form", {
-      className: "md:flex md:items-center",
-      onSubmit: handleSubmit,
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-        className: "my-2 md:w-1/3 md:flex",
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
-          htmlFor: "dep",
-          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("span", {
-            className: "text-gray-700",
-            children: "Departure ICAO"
-          })
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
-          id: "dep",
-          type: "text",
-          className: "form-input form",
-          value: values.dep,
-          onChange: handleChange
-        }), errors.dep && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
-          className: "text-sm text-red-500",
-          children: errors.dep
-        })]
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-        className: "my-2 md:ml-2 md:w-1/3 md:flex",
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
-          htmlFor: "dep",
-          className: "inline",
-          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("span", {
-            className: "text-gray-700",
-            children: "Arrival ICAO"
-          })
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
-          id: "arr",
-          type: "text",
-          className: "form-input form",
-          value: values.arr,
-          onChange: handleChange
-        }), errors.arr && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
-          className: "text-sm text-red-500",
-          children: errors.arr
-        })]
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
-        type: "submit",
-        className: "btn btn-primary md:flex md:ml-2",
-        children: "Search"
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
-        type: "reset",
-        onClick: handleReset,
-        className: "btn btn-primary md:flex md:ml-2",
-        children: "Clear Results"
-      })]
-    })
-  });
-};
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (SearchInput);
-
-/***/ }),
-
-/***/ "./resources/js/Shared/Elements/NoContent.js":
-/*!***************************************************!*\
-  !*** ./resources/js/Shared/Elements/NoContent.js ***!
-  \***************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ NoContent)
-/* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
-
-
-function NoContent(_ref) {
-  var content = _ref.content;
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
-    className: "p-3 flex items-center content-center flex-col text-gray-700",
-    children: content
-  });
-}
-
-/***/ }),
-
-/***/ "./resources/js/Shared/Elements/Tooltip.js":
-/*!*************************************************!*\
-  !*** ./resources/js/Shared/Elements/Tooltip.js ***!
-  \*************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ Tooltip)
-/* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
-
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
-
-
-
-function Tooltip(props) {
-  var timeout;
-
-  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
-      _useState2 = _slicedToArray(_useState, 2),
-      active = _useState2[0],
-      setActive = _useState2[1];
-
-  var showTip = function showTip() {
-    timeout = setTimeout(function () {
-      setActive(true);
-    }, 400);
-  };
-
-  var hideTip = function hideTip() {
-    clearInterval(timeout);
-    setActive(false);
-  };
-
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
-    className: "inline-block relative",
-    onMouseEnter: showTip,
-    onMouseLeave: hideTip,
-    children: [props.children, active && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
-      className: "tooltip ".concat(props.direction || 'top'),
-      children: props.content
-    })]
-  });
-}
 
 /***/ }),
 

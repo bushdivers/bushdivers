@@ -2,7 +2,9 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Booking;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
@@ -39,9 +41,8 @@ class HandleInertiaRequests extends Middleware
         return array_merge(parent::share($request), [
             'flash.success' => fn () => $request->session()->get('success'),
             'flash.error' => fn () => $request->session()->get('error'),
-
             'auth.user' => fn () => $request->user()
-                ? $request->user()->only('id', 'name', 'email', 'private_name', 'pilot_id')
+                ? $request->user()->only('id', 'name', 'email', 'private_name', 'pilot_id', 'current_bookings')
                 : null
         ]);
     }

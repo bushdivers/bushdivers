@@ -5,7 +5,6 @@ import LayoutAuth from '../../Shared/LayoutAuth'
 
 const Register = () => {
   const { errors } = usePage().props
-  console.log(errors)
   const [values, setValues] = useState({
     name: '',
     email: '',

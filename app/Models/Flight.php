@@ -10,6 +10,7 @@ class Flight extends Model
     use HasFactory;
 
     public $incrementing = false;
+    protected $keyType = 'string';
 
     public function depAirport()
     {

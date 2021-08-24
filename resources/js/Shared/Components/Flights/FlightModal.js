@@ -82,7 +82,7 @@ const FlightModal = (props) => {
                     </div>
                   </div>
                   <div className="mt-2">
-                    <FlightMap flight={props.flight} />
+                    <FlightMap flight={props.flight} size="small" />
                   </div>
                 </div>
               </div>

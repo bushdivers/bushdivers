@@ -33,6 +33,9 @@ Route::middleware('auth')->group(function () {
     // Flights
     Route::get('/flights', [\App\Http\Controllers\FlightController::class, 'index'])->name('flights');
     Route::get('/flights/search', [\App\Http\Controllers\FlightController::class, 'search'])->name('flights.search');
+    Route::get('/bookings', [\App\Http\Controllers\BookingController::class, 'index'])->name('bookings');
     Route::post('/bookings/create/{flight}', [\App\Http\Controllers\BookingController::class, 'create'])->name('bookings.create');
     Route::delete('/bookings/cancel/{flight}', [\App\Http\Controllers\BookingController::class, 'delete'])->name('bookings.delete');
+    Route::get('/dispatch/{id}', [\App\Http\Controllers\PirepController::class, 'getDispatch'])->name('dispatch');
+    Route::post('/bookings/dispatch/create', [\App\Http\Controllers\PirepController::class, 'createDispatch'])->name('dispatch.create');
 });
