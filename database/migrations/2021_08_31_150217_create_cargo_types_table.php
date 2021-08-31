@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddAltToAirportTable extends Migration
+class CreateCargoTypesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,10 @@ class AddAltToAirportTable extends Migration
      */
     public function up()
     {
-        Schema::table('airports', function (Blueprint $table) {
-            $table->integer('altitude')->nullable();
+        Schema::create('cargo_types', function (Blueprint $table) {
+            $table->id();
+            $table->integer('type');
+            $table->string('text');
         });
     }
 
@@ -25,8 +27,6 @@ class AddAltToAirportTable extends Migration
      */
     public function down()
     {
-        Schema::table('airports', function (Blueprint $table) {
-            $table->dropColumn('altitude');
-        });
+        Schema::dropIfExists('cargo_types');
     }
 }

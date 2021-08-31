@@ -5,6 +5,33 @@ import { usePage } from '@inertiajs/inertia-react'
 import FlightMap from '../../Shared/Components/Flights/FlightMap'
 
 const Dispatch = ({ pirep, depMetar, arrMetar }) => {
+  console.log(pirep.cargo)
+  const Pax = () => {
+    return (
+      <div>
+        <span className="mr-2">PAX:</span>
+        {pirep.pax > 0
+          ? (
+            <span>{pirep.cargo} kg {pirep.pax_name}</span>
+            )
+          : <span>0</span>}
+      </div>
+    )
+  }
+
+  const Cargo = () => {
+    return (
+      <div>
+        <span className="mr-2">Cargo:</span>
+        {pirep.cargo > 0
+          ? (
+            <span>{pirep.cargo} kg {pirep.cargo_name}</span>
+            )
+          : <span>None</span>}
+      </div>
+    )
+  }
+
   const { auth } = usePage().props
   return (
     <div>
@@ -25,7 +52,8 @@ const Dispatch = ({ pirep, depMetar, arrMetar }) => {
           <div className="ml-2">
             <span className="text-2xl">{pirep.flight.dep_airport_id}</span>
             <div className="text-sm mt-2">
-              <span>{pirep.flight.dep_airport.name}</span>
+              <div>{pirep.flight.dep_airport.name}</div>
+              <div className="text-xs">{pirep.flight.dep_airport.altitude} ft</div>
             </div>
           </div>
         </div>
@@ -34,7 +62,8 @@ const Dispatch = ({ pirep, depMetar, arrMetar }) => {
           <div className="ml-2">
             <span className="text-2xl">{pirep.flight.arr_airport_id}</span>
             <div className="text-sm mt-2">
-              <span>{pirep.flight.arr_airport.name}</span>
+              <div>{pirep.flight.arr_airport.name}</div>
+              <div className="text-xs">{pirep.flight.dep_airport.altitude} ft</div>
             </div>
           </div>
         </div>
@@ -72,7 +101,9 @@ const Dispatch = ({ pirep, depMetar, arrMetar }) => {
         </div>
       </div>
       <div className="rounded shadow p-2 bg-white mb-4">
-        Cargo
+        <span className="text-xl">Payload</span>
+        <Cargo />
+        <Pax />
       </div>
       <div className="rounded shadow p-2 bg-white mb-4">
         <span className="text-xl">Weather</span>
