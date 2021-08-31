@@ -4,7 +4,7 @@ import PageTitle from '../../Shared/Navigation/PageTitle'
 import { usePage } from '@inertiajs/inertia-react'
 import FlightMap from '../../Shared/Components/Flights/FlightMap'
 
-const Dispatch = ({ pirep }) => {
+const Dispatch = ({ pirep, depMetar, arrMetar }) => {
   const { auth } = usePage().props
   return (
     <div>
@@ -75,7 +75,9 @@ const Dispatch = ({ pirep }) => {
         Cargo
       </div>
       <div className="rounded shadow p-2 bg-white mb-4">
-        METAR
+        <span className="text-xl">Weather</span>
+        <div>{depMetar}</div><br/>
+        <div>{arrMetar}</div>
       </div>
       <FlightMap flight={pirep.flight} size="large" />
     </div>

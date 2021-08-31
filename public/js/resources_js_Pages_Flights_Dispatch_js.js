@@ -2714,7 +2714,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var Dispatch = function Dispatch(_ref) {
-  var pirep = _ref.pirep;
+  var pirep = _ref.pirep,
+      depMetar = _ref.depMetar,
+      arrMetar = _ref.arrMetar;
   var auth = (0,_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_3__.usePage)().props.auth;
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_Shared_Navigation_PageTitle__WEBPACK_IMPORTED_MODULE_2__.default, {
@@ -2845,9 +2847,16 @@ var Dispatch = function Dispatch(_ref) {
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
       className: "rounded shadow p-2 bg-white mb-4",
       children: "Cargo"
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
       className: "rounded shadow p-2 bg-white mb-4",
-      children: "METAR"
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("span", {
+        className: "text-xl",
+        children: "Weather"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
+        children: depMetar
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("br", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
+        children: arrMetar
+      })]
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_Shared_Components_Flights_FlightMap__WEBPACK_IMPORTED_MODULE_4__.default, {
       flight: pirep.flight,
       size: "large"

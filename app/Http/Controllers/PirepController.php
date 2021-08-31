@@ -8,6 +8,7 @@ use App\Models\Booking;
 use App\Models\Enums\AircraftState;
 use App\Models\Enums\FlightType;
 use App\Models\Pirep;
+use App\Services\WeatherService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -15,10 +16,19 @@ use Ramsey\Uuid\Uuid;
 
 class PirepController extends Controller
 {
+    protected $weatherService;
+
+    public function __construct(WeatherService $weatherService)
+    {
+        $this->weatherService = $weatherService;
+    }
+
     public function getDispatch($id)
     {
         $pirep = Pirep::with('flight','flight.depAirport', 'flight.arrAirport', 'aircraft', 'aircraft.fleet')->where('id', $id)->first();
-        return Inertia::render('Flights/Dispatch', ['pirep' => $pirep]);
+        $depMetar = $this->weatherService->getMetar($pirep->flight->dep_airport_id);
+        $arrMetar = $this->weatherService->getMetar($pirep->flight->arr_airport_id);
+        return Inertia::render('Flights/Dispatch', ['pirep' => $pirep, 'depMatar' => $depMetar, 'arrMetar' => $arrMetar]);
     }
 
     public function createDispatch(CreateDispatchRequest $request)
