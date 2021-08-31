@@ -76,8 +76,8 @@ const Dispatch = ({ pirep, depMetar, arrMetar }) => {
       </div>
       <div className="rounded shadow p-2 bg-white mb-4">
         <span className="text-xl">Weather</span>
-        <div>{depMetar}</div><br/>
-        <div>{arrMetar}</div>
+        <div>Departure: {depMetar}</div>
+        <div>Arrival: {arrMetar}</div>
       </div>
       <FlightMap flight={pirep.flight} size="large" />
     </div>

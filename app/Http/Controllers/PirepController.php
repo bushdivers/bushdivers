@@ -28,7 +28,7 @@ class PirepController extends Controller
         $pirep = Pirep::with('flight','flight.depAirport', 'flight.arrAirport', 'aircraft', 'aircraft.fleet')->where('id', $id)->first();
         $depMetar = $this->weatherService->getMetar($pirep->flight->dep_airport_id);
         $arrMetar = $this->weatherService->getMetar($pirep->flight->arr_airport_id);
-        return Inertia::render('Flights/Dispatch', ['pirep' => $pirep, 'depMatar' => $depMetar, 'arrMetar' => $arrMetar]);
+        return Inertia::render('Flights/Dispatch', ['pirep' => $pirep, 'depMetar' => $depMetar, 'arrMetar' => $arrMetar]);
     }
 
     public function createDispatch(CreateDispatchRequest $request)
