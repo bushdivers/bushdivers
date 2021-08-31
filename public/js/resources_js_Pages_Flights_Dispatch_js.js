@@ -2720,9 +2720,9 @@ var Dispatch = function Dispatch(_ref) {
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_Shared_Navigation_PageTitle__WEBPACK_IMPORTED_MODULE_2__.default, {
       title: "Dispatch - Pilot Briefing"
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
-      className: "flex justify-between mb-2",
+      className: "flex justify-between mb-4",
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
-        className: "rounded shadow p-2 w-1/5 flex",
+        className: "rounded shadow p-2 w-1/5 flex bg-white",
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("i", {
           className: "material-icons md-48",
           children: "event_note"
@@ -2741,7 +2741,7 @@ var Dispatch = function Dispatch(_ref) {
           })]
         })]
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
-        className: "rounded shadow p-2 w-1/5 flex",
+        className: "rounded shadow p-2 w-1/5 flex bg-white",
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("i", {
           className: "material-icons md-48",
           children: "flight_takeoff"
@@ -2758,7 +2758,7 @@ var Dispatch = function Dispatch(_ref) {
           })]
         })]
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
-        className: "rounded shadow p-2 w-1/5 flex",
+        className: "rounded shadow p-2 w-1/5 flex bg-white",
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("i", {
           className: "material-icons md-48",
           children: "flight_land"
@@ -2775,7 +2775,7 @@ var Dispatch = function Dispatch(_ref) {
           })]
         })]
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
-        className: "rounded shadow p-2 w-1/5 flex",
+        className: "rounded shadow p-2 w-1/5 flex bg-white",
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("i", {
           className: "material-icons md-48",
           children: "flight"
@@ -2794,6 +2794,60 @@ var Dispatch = function Dispatch(_ref) {
           })]
         })]
       })]
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+      className: "rounded bg-white shadow w-full mb-4 p-6 flex justify-between content-center",
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+        className: "w1/5 p-4 flex flex-col items-center",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("span", {
+          className: "text-xl mb-2",
+          children: [pirep.flight.distance, " nm"]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("span", {
+          className: "text-sm",
+          children: "Distance"
+        })]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+        className: "w1/5 p-4 flex flex-col items-center",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("span", {
+          className: "text-xl mb-2",
+          children: [pirep.planned_cruise_altitude, " ft"]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("span", {
+          className: "text-sm",
+          children: "Planned Cruise Alt"
+        })]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+        className: "w1/5 p-4 flex flex-col items-center",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("span", {
+          className: "text-xl mb-2",
+          children: "26 gal"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("span", {
+          className: "text-sm",
+          children: "Suggested Fuel"
+        })]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+        className: "w1/5 p-4 flex flex-col items-center",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("span", {
+          className: "text-xl mb-2",
+          children: "1,200 kg"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("span", {
+          className: "text-sm",
+          children: "Zero Fuel Weight"
+        })]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+        className: "w1/5 p-4 flex flex-col items-center",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("span", {
+          className: "text-xl mb-2",
+          children: "2,300 kg"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("span", {
+          className: "text-sm",
+          children: "Takeoff Weight"
+        })]
+      })]
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
+      className: "rounded shadow p-2 bg-white mb-4",
+      children: "Cargo"
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
+      className: "rounded shadow p-2 bg-white mb-4",
+      children: "METAR"
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_Shared_Components_Flights_FlightMap__WEBPACK_IMPORTED_MODULE_4__.default, {
       flight: pirep.flight,
       size: "large"
