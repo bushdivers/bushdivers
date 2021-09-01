@@ -2725,7 +2725,7 @@ var Dispatch = function Dispatch(_ref) {
         className: "mr-2",
         children: "PAX:"
       }), pirep.pax > 0 ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("span", {
-        children: [pirep.cargo, " kg ", pirep.pax_name]
+        children: [pirep.pax, " ", pirep.pax_name]
       }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("span", {
         children: "0"
       })]

@@ -7,10 +7,12 @@ use App\Models\Aircraft;
 use App\Models\Booking;
 use App\Models\Enums\AircraftState;
 use App\Models\Enums\FlightType;
+use App\Models\Fleet;
 use App\Models\Pirep;
 use App\Services\WeatherService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Ramsey\Uuid\Uuid;
 
@@ -33,7 +35,25 @@ class PirepController extends Controller
 
     public function createDispatch(CreateDispatchRequest $request)
     {
+        $pax = 0;
+        $cargo = 0;
+        $cargoType = '';
+        $paxType = '';
+
         $aircraft = $this->findAircraft($request->aircraft);
+        $fleet = Fleet::find($aircraft->fleet_id);
+        if ($request->cargo == 'cargo') {
+            $generatedCargo = $this->generateCargo($fleet->cargo_capacity);
+            $cargo = $generatedCargo['cargo_qty'];
+            $cargoType = $generatedCargo['cargo_type'];
+        } else {
+            $generatedPax = $this->generatePax($fleet->pax_capacity);
+            $pax = $generatedPax['pax_qty'];
+            $paxType = $generatedPax['pax_type'];
+            $cargoType = 'Baggage';
+            $cargo = $generatedPax['baggage'];
+        }
+
         $pirep = new Pirep();
         $pirep->id = Uuid::uuid4();
         $pirep->user_id = Auth::user()->id;
@@ -41,10 +61,10 @@ class PirepController extends Controller
         $pirep->booking_id = $request->booking;
         $pirep->aircraft_id = $aircraft->id;
         $pirep->flight_type = FlightType::SCHEDULED;
-        $pirep->cargo = $request->cargo === 'cargo' ? 5 : 0;
-        $pirep->cargo_name = $request->cargo === 'cargo' ? 'Sugar' : '';
-        $pirep->pax = $request->cargo === 'pax' ? 2 : 0;
-        $pirep->pax_name = $request->cargo === 'pax' ? 'Doctors' : '';
+        $pirep->cargo = $cargo;
+        $pirep->cargo_name = $cargoType;
+        $pirep->pax = $pax;
+        $pirep->pax_name = $paxType;
         $pirep->planned_cruise_altitude = $request->cruise;
         $pirep->submitted_at = null;
         $pirep->block_off_time = null;
@@ -61,9 +81,32 @@ class PirepController extends Controller
         return redirect()->back()->with(['success' => 'Dispatch created']);
     }
 
-    protected function generateCargo($cargoType)
+    protected function generateCargo(int $maxQty): array
     {
+        $types = DB::table('cargo_types')->where('type', 1)->get();
+        // select random type
+        $type = $types->random();
+        // generate number based on aircraft capacity
+        $num = $this->generateRandomCargoAmount($maxQty);
 
+        return ['cargo_type' => $type->text, 'cargo_qty' => $num];
+    }
+
+    protected function generatePax(int $maxQty): array
+    {
+        $types = DB::table('cargo_types')->where('type', 2)->get();
+        // select random type
+        $type = $types->random();
+        $paxNum = $this->generateRandomCargoAmount($maxQty);
+        $baggage = ($paxNum * 0.9) * 20;
+
+        return ['pax_type' => $type->text, 'pax_qty' => $paxNum, 'baggage' => $baggage];
+    }
+
+    protected function generateRandomCargoAmount(int $maxQty): int
+    {
+        $min = round($maxQty * ((100-60) / 100));
+        return mt_rand($min, $maxQty);
     }
 
     protected function findAircraft($name)

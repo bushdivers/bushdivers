@@ -12,7 +12,7 @@ const Dispatch = ({ pirep, depMetar, arrMetar }) => {
         <span className="mr-2">PAX:</span>
         {pirep.pax > 0
           ? (
-            <span>{pirep.cargo} kg {pirep.pax_name}</span>
+            <span>{pirep.pax} {pirep.pax_name}</span>
             )
           : <span>0</span>}
       </div>
