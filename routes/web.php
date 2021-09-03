@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Route;
 
 // Public pages
 Route::get('/', [\App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/ranks', [\App\Http\Controllers\PageController::class, 'ranks'])->name('ranks');
 
 // Auth
 Route::get('/register', [\App\Http\Controllers\Auth\RegisterController::class, 'index'])->name('register.index');

@@ -39,6 +39,9 @@ export default function NavBar () {
                   {({ active }) => <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Pilot Roster</a>}
                 </Menu.Item>
                 <Menu.Item>
+                  {({ active }) => <Link href="/ranks" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Ranks and Awards</Link>}
+                </Menu.Item>
+                <Menu.Item>
                   {({ active }) => <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Pilot Handbook</a>}
                 </Menu.Item>
                 <Menu.Item>
