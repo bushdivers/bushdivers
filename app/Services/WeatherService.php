@@ -28,17 +28,17 @@ class WeatherService
             $response = Http::withHeaders([
                 'X-API-KEY' => $this->apiKey
             ])->get($this->baseMetarUrl.$icao.'/nearest');
-            return $this->returnMetarAsString($response, $icao);
+            return $this->returnMetarAsString($response->json(['data']), $icao);
         }
 
-        return $this->returnMetarAsString($response, $icao);
+        return $this->returnMetarAsString($response->json(['data']), $icao);
 
 
     }
 
     protected function returnMetarAsString($data, string $icao): string
     {
-        $metar = implode($data->json(['data']));
+        $metar = implode($data);
         Cache::put($icao.'-metar', $metar, now()->addHours(2));
         return $metar;
     }

@@ -31,6 +31,11 @@ class RegisterController extends Controller
         $user->opt_in = $request->optin;
         $user->save();
 
+        // generate api key
+        $token = $user->createToken('bush-tracker');
+        $user->api_token = $token->plainTextToken;
+        $user->save();
+
         // send email
 
         $credentials = $request->only('email', 'password');

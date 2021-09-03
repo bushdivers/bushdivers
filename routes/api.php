@@ -16,6 +16,15 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('aircraft/{icao}', [\App\Http\Controllers\FleetController::class, 'getAvailableAircraft'])->name('fleet.available.aircraft');
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/bookings', [\App\Http\Controllers\Api\TrackerController::class, 'getDispatchedBookings']);
+    Route::post('/log', [\App\Http\Controllers\Api\TrackerController::class, 'postFlightLog']);
+    Route::put('/pirep/submit', [\App\Http\Controllers\Api\TrackerController::class, 'submitPirep']);
+    Route::put('/pirep/status', [\App\Http\Controllers\Api\TrackerController::class, 'updatePirepStatus']);
 });
+
+
+//Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//    return $request->user();
+//});

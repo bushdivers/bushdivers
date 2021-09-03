@@ -9,7 +9,10 @@ use App\Models\Enums\AircraftState;
 use App\Models\Enums\FlightType;
 use App\Models\Fleet;
 use App\Models\Pirep;
+use App\Services\AircraftService;
+use App\Services\CargoService;
 use App\Services\WeatherService;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -18,11 +21,15 @@ use Ramsey\Uuid\Uuid;
 
 class PirepController extends Controller
 {
-    protected $weatherService;
+    protected WeatherService $weatherService;
+    protected CargoService $cargoService;
+    protected AircraftService $aircraftService;
 
-    public function __construct(WeatherService $weatherService)
+    public function __construct(WeatherService $weatherService, CargoService $cargoService, AircraftService $aircraftService)
     {
         $this->weatherService = $weatherService;
+        $this->cargoService = $cargoService;
+        $this->aircraftService = $aircraftService;
     }
 
     public function getDispatch($id)
@@ -33,21 +40,24 @@ class PirepController extends Controller
         return Inertia::render('Flights/Dispatch', ['pirep' => $pirep, 'depMetar' => $depMetar, 'arrMetar' => $arrMetar]);
     }
 
-    public function createDispatch(CreateDispatchRequest $request)
+    public function createDispatch(CreateDispatchRequest $request): RedirectResponse
     {
         $pax = 0;
         $cargo = 0;
         $cargoType = '';
         $paxType = '';
 
-        $aircraft = $this->findAircraft($request->aircraft);
+        $aircraft = $this->aircraftService->findAircraftFromString($request->aircraft);
+        if (is_null($aircraft)) {
+            return redirect()->back()->with(['error' => 'There is a problem selecting the aircraft']);
+        }
         $fleet = Fleet::find($aircraft->fleet_id);
         if ($request->cargo == 'cargo') {
-            $generatedCargo = $this->generateCargo($fleet->cargo_capacity);
+            $generatedCargo = $this->cargoService->generateCargo($fleet->cargo_capacity);
             $cargo = $generatedCargo['cargo_qty'];
             $cargoType = $generatedCargo['cargo_type'];
         } else {
-            $generatedPax = $this->generatePax($fleet->pax_capacity);
+            $generatedPax = $this->cargoService->generatePax($fleet->pax_capacity);
             $pax = $generatedPax['pax_qty'];
             $paxType = $generatedPax['pax_type'];
             $cargoType = 'Baggage';
@@ -81,40 +91,40 @@ class PirepController extends Controller
         return redirect()->back()->with(['success' => 'Dispatch created']);
     }
 
-    protected function generateCargo(int $maxQty): array
-    {
-        $types = DB::table('cargo_types')->where('type', 1)->get();
-        // select random type
-        $type = $types->random();
-        // generate number based on aircraft capacity
-        $num = $this->generateRandomCargoAmount($maxQty);
-
-        return ['cargo_type' => $type->text, 'cargo_qty' => $num];
-    }
-
-    protected function generatePax(int $maxQty): array
-    {
-        $types = DB::table('cargo_types')->where('type', 2)->get();
-        // select random type
-        $type = $types->random();
-        $paxNum = $this->generateRandomCargoAmount($maxQty);
-        $baggage = ($paxNum * 0.9) * 20;
-
-        return ['pax_type' => $type->text, 'pax_qty' => $paxNum, 'baggage' => $baggage];
-    }
-
-    protected function generateRandomCargoAmount(int $maxQty): int
-    {
-        $min = round($maxQty * ((100-60) / 100));
-        return mt_rand($min, $maxQty);
-    }
-
-    protected function findAircraft($name)
-    {
-        $array = explode(' ', $name);
-        $reg = $array[count($array)-1];
-        $aircraft = Aircraft::where('registration', $reg)->first();
-
-        return $aircraft;
-    }
+//    protected function generateCargo(int $maxQty): array
+//    {
+//        $types = DB::table('cargo_types')->where('type', 1)->get();
+//        // select random type
+//        $type = $types->random();
+//        // generate number based on aircraft capacity
+//        $num = $this->generateRandomCargoAmount($maxQty);
+//
+//        return ['cargo_type' => $type->text, 'cargo_qty' => $num];
+//    }
+//
+//    protected function generatePax(int $maxQty): array
+//    {
+//        $types = DB::table('cargo_types')->where('type', 2)->get();
+//        // select random type
+//        $type = $types->random();
+//        $paxNum = $this->generateRandomCargoAmount($maxQty);
+//        $baggage = ($paxNum * 0.8) * 20;
+//
+//        return ['pax_type' => $type->text, 'pax_qty' => $paxNum, 'baggage' => $baggage];
+//    }
+//
+//    protected function generateRandomCargoAmount(int $maxQty): int
+//    {
+//        $min = round($maxQty * ((100-60) / 100));
+//        return mt_rand($min, $maxQty);
+//    }
+//
+//    protected function findAircraft($name)
+//    {
+//        $array = explode(' ', $name);
+//        $reg = $array[count($array)-1];
+//        $aircraft = Aircraft::where('registration', $reg)->first();
+//
+//        return $aircraft;
+//    }
 }

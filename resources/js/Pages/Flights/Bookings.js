@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import Layout from '../../Shared/Layout'
 import PageTitle from '../../Shared/Navigation/PageTitle'
 import NoContent from '../../Shared/Elements/NoContent'
@@ -56,7 +56,7 @@ const Bookings = ({ bookings }) => {
               <tbody>
               {bookings.map((booking) => (
                 <tr key={booking.id}>
-                  <td>BDV{booking.flight.flight_number}</td>
+                  <td>{booking.flight.full_flight_number}</td>
                   <td>
                     {booking.flight.dep_airport_id}<br/>
                     <span className="text-xs">{booking.flight.dep_airport.name}</span>

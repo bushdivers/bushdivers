@@ -12,6 +12,15 @@ class Flight extends Model
     public $incrementing = false;
     protected $keyType = 'string';
 
+    protected $appends = [
+        'full_flight_number'
+    ];
+
+    public function getFullFlightNumberAttribute()
+    {
+        return 'BDV'.$this->flight_number;
+    }
+
     public function depAirport()
     {
         return $this->belongsTo(Airport::class, 'dep_airport_id', 'identifier');
