@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 // Public pages
 Route::get('/', [\App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/ranks', [\App\Http\Controllers\PageController::class, 'ranks'])->name('ranks');
+Route::get('/hubs', [\App\Http\Controllers\AirportController::class, 'hubs'])->name('hubs');
 
 // Auth
 Route::get('/register', [\App\Http\Controllers\Auth\RegisterController::class, 'index'])->name('register.index');
@@ -27,6 +28,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/logout', [\App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');
     // Crew
     Route::get('/dashboard', [\App\Http\Controllers\CrewController::class, 'index'])->name('dashboard');
+
+    // Airports
+    Route::get('/airport/{icao}', [\App\Http\Controllers\AirportController::class, 'index'])->name('airport');
 
     // Fleet
     Route::get('/fleet', [\App\Http\Controllers\FleetController::class, 'index'])->name('fleet');

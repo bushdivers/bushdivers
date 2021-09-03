@@ -37786,6 +37786,22 @@ module.exports = function getSideChannel() {
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 var map = {
+	"./Airports/AirportDetail": [
+		"./resources/js/Pages/Airports/AirportDetail.js",
+		"resources_js_Pages_Airports_AirportDetail_js"
+	],
+	"./Airports/AirportDetail.js": [
+		"./resources/js/Pages/Airports/AirportDetail.js",
+		"resources_js_Pages_Airports_AirportDetail_js"
+	],
+	"./Airports/Hubs": [
+		"./resources/js/Pages/Airports/Hubs.js",
+		"resources_js_Pages_Airports_Hubs_js"
+	],
+	"./Airports/Hubs.js": [
+		"./resources/js/Pages/Airports/Hubs.js",
+		"resources_js_Pages_Airports_Hubs_js"
+	],
 	"./Auth/Login": [
 		"./resources/js/Pages/Auth/Login.js",
 		"resources_js_Pages_Auth_Login_js"
@@ -37996,7 +38012,7 @@ module.exports = webpackAsyncContext;
 /******/ 		// This function allow to reference async chunks
 /******/ 		__webpack_require__.u = (chunkId) => {
 /******/ 			// return url for filenames not based on template
-/******/ 			if ({"resources_js_Pages_Auth_Login_js":1,"resources_js_Pages_Auth_Register_js":1,"resources_js_Pages_Crew_Dashboard_js":1,"resources_js_Pages_Fleet_FleetList_js":1,"resources_js_Pages_Flights_Bookings_js":1,"resources_js_Pages_Flights_Dispatch_js":1,"resources_js_Pages_Flights_FlightSearch_js":1,"resources_js_Pages_General_Ranks_js":1,"resources_js_Pages_Home_js":1}[chunkId]) return "js/" + chunkId + ".js";
+/******/ 			if ({"resources_js_Pages_Airports_AirportDetail_js":1,"resources_js_Pages_Airports_Hubs_js":1,"resources_js_Pages_Auth_Login_js":1,"resources_js_Pages_Auth_Register_js":1,"resources_js_Pages_Crew_Dashboard_js":1,"resources_js_Pages_Fleet_FleetList_js":1,"resources_js_Pages_Flights_Bookings_js":1,"resources_js_Pages_Flights_Dispatch_js":1,"resources_js_Pages_Flights_FlightSearch_js":1,"resources_js_Pages_General_Ranks_js":1,"resources_js_Pages_Home_js":1}[chunkId]) return "js/" + chunkId + ".js";
 /******/ 			// return url for filenames based on template
 /******/ 			return undefined;
 /******/ 		};
