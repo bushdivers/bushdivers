@@ -36,7 +36,7 @@ export default function NavBar () {
                   {({ active }) => <Link href="/fleet" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Fleet</Link>}
                 </Menu.Item>
                 <Menu.Item>
-                  {({ active }) => <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Pilot Roster</a>}
+                  {({ active }) => <Link href="/roster" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Pilot Roster</Link>}
                 </Menu.Item>
                 <Menu.Item>
                   {({ active }) => <Link href="/ranks" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Ranks and Awards</Link>}
@@ -132,7 +132,7 @@ export default function NavBar () {
           <a href="" className="nav-link">How we work</a>
           <a href="" className="nav-link">Bush Divers Team</a>
           <a href="" className="nav-link">Live Map</a>
-          <a href="" className="nav-link">Hubs</a>
+          <Link href="/hubs" className="nav-link">Hubs</Link>
           <Link href="/fleet" className="nav-link">Fleet</Link>
         </div>
       </>

@@ -76,11 +76,16 @@ class User extends Authenticatable
 
     public function rank()
     {
-        return $this->hasOne(Rank::class);
+        return $this->belongsTo(Rank::class);
     }
 
     public function awards()
     {
         return $this->belongsToMany(Award::class);
+    }
+
+    public function location()
+    {
+        return $this->belongsTo(Airport::class, 'current_airport_id', 'identifier');
     }
 }
