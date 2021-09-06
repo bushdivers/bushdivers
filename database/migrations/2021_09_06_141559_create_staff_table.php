@@ -17,6 +17,7 @@ class CreateStaffTable extends Migration
             $table->id();
             $table->foreignId('user_id');
             $table->string('role');
+            $table->integer('sort');
         });
     }
 

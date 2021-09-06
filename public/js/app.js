@@ -37788,142 +37788,114 @@ module.exports = function getSideChannel() {
 var map = {
 	"./Airports/AirportDetail": [
 		"./resources/js/Pages/Airports/AirportDetail.js",
-		9,
 		"resources_js_Pages_Airports_AirportDetail_js"
 	],
 	"./Airports/AirportDetail.js": [
 		"./resources/js/Pages/Airports/AirportDetail.js",
-		9,
 		"resources_js_Pages_Airports_AirportDetail_js"
 	],
 	"./Airports/Hubs": [
 		"./resources/js/Pages/Airports/Hubs.js",
-		9,
 		"resources_js_Pages_Airports_Hubs_js"
 	],
 	"./Airports/Hubs.js": [
 		"./resources/js/Pages/Airports/Hubs.js",
-		9,
 		"resources_js_Pages_Airports_Hubs_js"
 	],
 	"./Auth/Login": [
 		"./resources/js/Pages/Auth/Login.js",
-		9,
 		"resources_js_Pages_Auth_Login_js"
 	],
 	"./Auth/Login.js": [
 		"./resources/js/Pages/Auth/Login.js",
-		9,
 		"resources_js_Pages_Auth_Login_js"
 	],
 	"./Auth/Register": [
 		"./resources/js/Pages/Auth/Register.js",
-		9,
 		"resources_js_Pages_Auth_Register_js"
 	],
 	"./Auth/Register.js": [
 		"./resources/js/Pages/Auth/Register.js",
-		9,
 		"resources_js_Pages_Auth_Register_js"
 	],
 	"./Crew/Dashboard": [
 		"./resources/js/Pages/Crew/Dashboard.js",
-		9,
 		"resources_js_Pages_Crew_Dashboard_js"
 	],
 	"./Crew/Dashboard.js": [
 		"./resources/js/Pages/Crew/Dashboard.js",
-		9,
 		"resources_js_Pages_Crew_Dashboard_js"
 	],
 	"./Crew/Profile": [
 		"./resources/js/Pages/Crew/Profile.js",
-		9,
 		"resources_js_Pages_Crew_Profile_js"
 	],
 	"./Crew/Profile.js": [
 		"./resources/js/Pages/Crew/Profile.js",
-		9,
 		"resources_js_Pages_Crew_Profile_js"
 	],
 	"./Crew/Roster": [
 		"./resources/js/Pages/Crew/Roster.js",
-		9,
 		"resources_js_Pages_Crew_Roster_js"
 	],
 	"./Crew/Roster.js": [
 		"./resources/js/Pages/Crew/Roster.js",
-		9,
 		"resources_js_Pages_Crew_Roster_js"
 	],
 	"./Fleet/FleetList": [
 		"./resources/js/Pages/Fleet/FleetList.js",
-		9,
 		"resources_js_Pages_Fleet_FleetList_js"
 	],
 	"./Fleet/FleetList.js": [
 		"./resources/js/Pages/Fleet/FleetList.js",
-		9,
 		"resources_js_Pages_Fleet_FleetList_js"
 	],
 	"./Flights/Bookings": [
 		"./resources/js/Pages/Flights/Bookings.js",
-		9,
 		"resources_js_Pages_Flights_Bookings_js"
 	],
 	"./Flights/Bookings.js": [
 		"./resources/js/Pages/Flights/Bookings.js",
-		9,
 		"resources_js_Pages_Flights_Bookings_js"
 	],
 	"./Flights/Dispatch": [
 		"./resources/js/Pages/Flights/Dispatch.js",
-		9,
 		"resources_js_Pages_Flights_Dispatch_js"
 	],
 	"./Flights/Dispatch.js": [
 		"./resources/js/Pages/Flights/Dispatch.js",
-		9,
 		"resources_js_Pages_Flights_Dispatch_js"
 	],
 	"./Flights/FlightSearch": [
 		"./resources/js/Pages/Flights/FlightSearch.js",
-		9,
 		"resources_js_Pages_Flights_FlightSearch_js"
 	],
 	"./Flights/FlightSearch.js": [
 		"./resources/js/Pages/Flights/FlightSearch.js",
-		9,
 		"resources_js_Pages_Flights_FlightSearch_js"
 	],
 	"./General/Ranks": [
 		"./resources/js/Pages/General/Ranks.js",
-		9,
 		"resources_js_Pages_General_Ranks_js"
 	],
 	"./General/Ranks.js": [
 		"./resources/js/Pages/General/Ranks.js",
-		9,
 		"resources_js_Pages_General_Ranks_js"
 	],
 	"./General/Staff": [
 		"./resources/js/Pages/General/Staff.js",
-		7,
 		"resources_js_Pages_General_Staff_js"
 	],
 	"./General/Staff.js": [
 		"./resources/js/Pages/General/Staff.js",
-		7,
 		"resources_js_Pages_General_Staff_js"
 	],
 	"./Home": [
 		"./resources/js/Pages/Home.js",
-		9,
 		"resources_js_Pages_Home_js"
 	],
 	"./Home.js": [
 		"./resources/js/Pages/Home.js",
-		9,
 		"resources_js_Pages_Home_js"
 	]
 };
@@ -37937,8 +37909,8 @@ function webpackAsyncContext(req) {
 	}
 
 	var ids = map[req], id = ids[0];
-	return __webpack_require__.e(ids[2]).then(() => {
-		return __webpack_require__.t(id, ids[1] | 16)
+	return __webpack_require__.e(ids[1]).then(() => {
+		return __webpack_require__(id);
 	});
 }
 webpackAsyncContext.keys = () => (Object.keys(map));
@@ -38031,36 +38003,6 @@ module.exports = webpackAsyncContext;
 /******/ 				() => (module);
 /******/ 			__webpack_require__.d(getter, { a: getter });
 /******/ 			return getter;
-/******/ 		};
-/******/ 	})();
-/******/ 	
-/******/ 	/* webpack/runtime/create fake namespace object */
-/******/ 	(() => {
-/******/ 		var getProto = Object.getPrototypeOf ? (obj) => (Object.getPrototypeOf(obj)) : (obj) => (obj.__proto__);
-/******/ 		var leafPrototypes;
-/******/ 		// create a fake namespace object
-/******/ 		// mode & 1: value is a module id, require it
-/******/ 		// mode & 2: merge all properties of value into the ns
-/******/ 		// mode & 4: return value when already ns object
-/******/ 		// mode & 16: return value when it's Promise-like
-/******/ 		// mode & 8|1: behave like require
-/******/ 		__webpack_require__.t = function(value, mode) {
-/******/ 			if(mode & 1) value = this(value);
-/******/ 			if(mode & 8) return value;
-/******/ 			if(typeof value === 'object' && value) {
-/******/ 				if((mode & 4) && value.__esModule) return value;
-/******/ 				if((mode & 16) && typeof value.then === 'function') return value;
-/******/ 			}
-/******/ 			var ns = Object.create(null);
-/******/ 			__webpack_require__.r(ns);
-/******/ 			var def = {};
-/******/ 			leafPrototypes = leafPrototypes || [null, getProto({}), getProto([]), getProto(getProto)];
-/******/ 			for(var current = mode & 2 && value; typeof current == 'object' && !~leafPrototypes.indexOf(current); current = getProto(current)) {
-/******/ 				Object.getOwnPropertyNames(current).forEach((key) => (def[key] = () => (value[key])));
-/******/ 			}
-/******/ 			def['default'] = () => (value);
-/******/ 			__webpack_require__.d(ns, def);
-/******/ 			return ns;
 /******/ 		};
 /******/ 	})();
 /******/ 	

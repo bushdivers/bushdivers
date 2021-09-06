@@ -127,7 +127,7 @@ export default function NavBar () {
       <>
         <div className="flex space-x-4">
           <a href="" className="nav-link">How we work</a>
-          <a href="" className="nav-link">Bush Divers Team</a>
+          <Link href="/staff" className="nav-link">Bush Divers Team</Link>
           <a href="" className="nav-link">Live Map</a>
           <Link href="/hubs" className="nav-link">Hubs</Link>
           <Link href="/fleet" className="nav-link">Fleet</Link>

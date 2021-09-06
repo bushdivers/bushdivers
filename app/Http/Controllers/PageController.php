@@ -20,7 +20,7 @@ class PageController extends Controller
 
     public function staff(): Response
     {
-        $staff = Staff::with('user')->get();
+        $staff = Staff::with('user')->orderBy('sort', 'asc')->get();
         return Inertia::render('General/Staff', ['staff' => $staff]);
     }
 }
