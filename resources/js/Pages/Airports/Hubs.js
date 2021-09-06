@@ -8,10 +8,9 @@ const Hubs = ({ hubs }) => {
       <PageTitle title="Hubs" />
       <div className="mt-4">
         {hubs && hubs.map((hub) => (
-          <div key={hub.id} className="rounded shadow bg-white p-4 my-2">
+          <div key={hub.id} className="rounded shadow bg-white p-4 my-2" style={{ backgroundImage: `url(img/hubs/${hub.identifier}.png)` }}>
             <div className="flex flex-col md:flex-row items-start justify-between">
               <div className="flex flex-col md:flex-row">
-                <img className="rounded w-full md:w-auto" src="https://via.placeholder.com/300x150" />
                 <div>Change to use background image</div>
               </div>
             </div>

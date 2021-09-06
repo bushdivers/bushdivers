@@ -30,7 +30,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [\App\Http\Controllers\CrewController::class, 'index'])->name('dashboard');
 
     // Airports
-    Route::get('/airport/{icao}', [\App\Http\Controllers\AirportController::class, 'index'])->name('airport');
+    Route::get('/airports/{icao}', [\App\Http\Controllers\AirportController::class, 'index'])->name('airport');
 
     // Fleet
     Route::get('/fleet', [\App\Http\Controllers\FleetController::class, 'index'])->name('fleet');

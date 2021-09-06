@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+a {
+    @apply text-orange-500;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
 .material-icons {
     font-family: 'Material Icons';
     font-weight: normal;

@@ -28160,6 +28160,15 @@ video {
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+a {
+  --tw-text-opacity: 1;
+  color: rgba(249, 115, 22, var(--tw-text-opacity));
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
 .material-icons {
   font-family: 'Material Icons';
   font-weight: normal;

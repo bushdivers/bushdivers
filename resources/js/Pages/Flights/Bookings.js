@@ -58,11 +58,11 @@ const Bookings = ({ bookings }) => {
                 <tr key={booking.id}>
                   <td>{booking.flight.full_flight_number}</td>
                   <td>
-                    {booking.flight.dep_airport_id}<br/>
+                    <Link href={`/airports/${booking.flight.dep_airport_id}`}>{booking.flight.dep_airport_id}</Link><br/>
                     <span className="text-xs">{booking.flight.dep_airport.name}</span>
                   </td>
                   <td>
-                    {booking.flight.arr_airport_id}<br/>
+                    <Link href={`/airports/${booking.flight.arr_airport_id}`}>{booking.flight.arr_airport_id}</Link><br/>
                     <span className="text-xs">{booking.flight.arr_airport.name}</span>
                   </td>
                   <td>{booking.flight.distance}</td>

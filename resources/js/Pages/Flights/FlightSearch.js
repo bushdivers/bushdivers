@@ -6,6 +6,7 @@ import Tooltip from '../../Shared/Elements/Tooltip'
 import FlightModal from '../../Shared/Components/Flights/FlightModal'
 import SearchInput from '../../Shared/Components/Flights/SearchInput'
 import { Inertia } from '@inertiajs/inertia'
+import { Link } from '@inertiajs/inertia-react'
 
 const EmptyData = () => {
   return (
@@ -62,11 +63,11 @@ const FlightSearch = ({ flights, bookings }) => {
                   <tr key={flight.id}>
                     <td className="hover:underline hover:text-orange-500" onClick={() => updateSelectedFlight(flight)}>BDV{flight.flight_number}</td>
                     <td>
-                      {flight.dep_airport_id}<br/>
+                      <Link href={`/airports/${flight.dep_airport_id}`}>{flight.dep_airport_id}</Link><br/>
                       <span className="text-xs">{flight.dep_airport.name}</span>
                     </td>
                     <td>
-                      {flight.arr_airport_id}<br/>
+                      <Link href={`/airports/${flight.dep_airport_id}`}>{flight.arr_airport_id}</Link><br/>
                       <span className="text-xs">{flight.arr_airport.name}</span>
                     </td>
                     <td>{flight.distance}</td>

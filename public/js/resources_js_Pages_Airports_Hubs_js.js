@@ -2697,16 +2697,16 @@ var Hubs = function Hubs(_ref) {
       children: hubs && hubs.map(function (hub) {
         return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
           className: "rounded shadow bg-white p-4 my-2",
+          style: {
+            backgroundImage: "url(img/hubs/".concat(hub.identifier, ".png)")
+          },
           children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
             className: "flex flex-col md:flex-row items-start justify-between",
-            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
               className: "flex flex-col md:flex-row",
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("img", {
-                className: "rounded w-full md:w-auto",
-                src: "https://via.placeholder.com/300x150"
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
                 children: "Change to use background image"
-              })]
+              })
             })
           })
         }, hub.id);

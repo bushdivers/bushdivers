@@ -1,7 +1,7 @@
 import React from 'react'
 import Layout from '../../Shared/Layout'
 import PageTitle from '../../Shared/Navigation/PageTitle'
-import { usePage } from '@inertiajs/inertia-react'
+import { Link, usePage } from '@inertiajs/inertia-react'
 import FlightMap from '../../Shared/Components/Flights/FlightMap'
 
 const Dispatch = ({ pirep, depMetar, arrMetar }) => {
@@ -50,7 +50,7 @@ const Dispatch = ({ pirep, depMetar, arrMetar }) => {
         <div className="rounded shadow p-2 w-1/5 flex bg-white">
           <i className="material-icons md-48">flight_takeoff</i>
           <div className="ml-2">
-            <span className="text-2xl">{pirep.flight.dep_airport_id}</span>
+            <span className="text-2xl"><Link href={`/airports/${pirep.flight.dep_airport_id}`}>{pirep.flight.dep_airport_id}</Link></span>
             <div className="text-sm mt-2">
               <div>{pirep.flight.dep_airport.name}</div>
               <div className="text-xs">{pirep.flight.dep_airport.altitude} ft</div>
@@ -60,7 +60,7 @@ const Dispatch = ({ pirep, depMetar, arrMetar }) => {
         <div className="rounded shadow p-2 w-1/5 flex bg-white">
           <i className="material-icons md-48">flight_land</i>
           <div className="ml-2">
-            <span className="text-2xl">{pirep.flight.arr_airport_id}</span>
+            <span className="text-2xl"><Link href={`/airports/${pirep.flight.arr_airport_id}`}>{pirep.flight.arr_airport_id}</Link></span>
             <div className="text-sm mt-2">
               <div>{pirep.flight.arr_airport.name}</div>
               <div className="text-xs">{pirep.flight.dep_airport.altitude} ft</div>
