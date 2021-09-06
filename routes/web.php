@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [\App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/ranks', [\App\Http\Controllers\PageController::class, 'ranks'])->name('ranks');
 Route::get('/hubs', [\App\Http\Controllers\AirportController::class, 'hubs'])->name('hubs');
+Route::get('/staff', [\App\Http\Controllers\PageController::class, 'staff'])->name('staff');
 
 // Auth
 Route::get('/register', [\App\Http\Controllers\Auth\RegisterController::class, 'index'])->name('register.index');
@@ -29,6 +30,9 @@ Route::middleware('auth')->group(function () {
     // Crew
     Route::get('/dashboard', [\App\Http\Controllers\CrewController::class, 'index'])->name('dashboard');
     Route::get('/roster', [\App\Http\Controllers\CrewController::class, 'roster'])->name('roster');
+    Route::get('/profile', [\App\Http\Controllers\CrewController::class, 'profile'])->name('profile.index');
+    Route::put('/profile', [\App\Http\Controllers\CrewController::class, 'updateProfile'])->name('profile.update');
+    Route::put('/profile/transfer', [\App\Http\Controllers\CrewController::class, 'transferHub'])->name('profile.transfer');
 
     // Airports
     Route::get('/airports/{icao}', [\App\Http\Controllers\AirportController::class, 'index'])->name('airport');
