@@ -18,6 +18,7 @@ Route::get('/', [\App\Http\Controllers\HomeController::class, 'index'])->name('h
 Route::get('/ranks', [\App\Http\Controllers\PageController::class, 'ranks'])->name('ranks');
 Route::get('/hubs', [\App\Http\Controllers\AirportController::class, 'hubs'])->name('hubs');
 Route::get('/staff', [\App\Http\Controllers\PageController::class, 'staff'])->name('staff');
+Route::get('/supporters', [\App\Http\Controllers\PageController::class, 'supporters'])->name('supporters');
 
 // Auth
 Route::get('/register', [\App\Http\Controllers\Auth\RegisterController::class, 'index'])->name('register.index');
