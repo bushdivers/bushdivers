@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Events\PirepFiled;
 use App\Http\Controllers\Controller;
 use App\Models\Enums\PirepState;
 use App\Models\Enums\PirepStatus;
@@ -76,6 +77,8 @@ class TrackerController extends Controller
         $pirep->save();
 
         // dispatch completed event (removes booking, resets aircraft, checks rank and awards
+        PirepFiled::dispatch($pirep);
+
         return response()->json(['message' => 'Pirep successfully filed']);
     }
 
