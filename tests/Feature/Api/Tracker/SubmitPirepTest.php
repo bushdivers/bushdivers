@@ -126,4 +126,31 @@ class SubmitPirepTest extends TestCase
             'account_balance' => $pay
         ]);
     }
+
+    public function test_pilot_location_and_flights_updated()
+    {
+        Artisan::call('db:seed --class=RankSeeder');
+        Sanctum::actingAs(
+            $this->user,
+            ['*']
+        );
+        $data = [
+            'pirep_id' => $this->pirep->id,
+            'fuel_used' => 25,
+            'distance' => 76,
+            'flight_time' => 45,
+            'landing_rate' => -149.12,
+            'block_off_time'=> Carbon::now()->addHours(-1),
+            'block_on_time' => Carbon::now()->addMinutes(-5)
+        ];
+
+        $this->putJson('/api/pirep/submit', $data);
+        $pay = 25.00 * (45 / 60);
+
+        $this->assertDatabaseHas('users', [
+            'current_airport_id' => $this->flight->arr_airport_id,
+            'flights_time' => $this->user->flights_time + 45,
+            'flights' => $this->user->flights + 1
+        ]);
+    }
 }

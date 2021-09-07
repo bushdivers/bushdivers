@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Events\PirepFiled;
 use App\Listeners\CalculatePay;
 use App\Listeners\CalculatePoints;
+use App\Listeners\UpdatePilotFlights;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -23,7 +24,8 @@ class EventServiceProvider extends ServiceProvider
         ],
         PirepFiled::class => [
             CalculatePay::class,
-            CalculatePoints::class
+            CalculatePoints::class,
+            UpdatePilotFlights::class
         ]
     ];
 
