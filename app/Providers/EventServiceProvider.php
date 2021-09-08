@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Events\PirepFiled;
 use App\Listeners\CalculatePay;
 use App\Listeners\CalculatePoints;
+use App\Listeners\CheckPilotAwards;
 use App\Listeners\CheckPilotRank;
 use App\Listeners\UpdateAircraft;
 use App\Listeners\UpdatePilotFlights;
@@ -29,7 +30,8 @@ class EventServiceProvider extends ServiceProvider
             CalculatePoints::class,
             UpdatePilotFlights::class,
             UpdateAircraft::class,
-            CheckPilotRank::class
+            CheckPilotRank::class,
+            CheckPilotAwards::class
         ]
     ];
 

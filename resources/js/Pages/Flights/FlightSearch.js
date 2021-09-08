@@ -61,7 +61,7 @@ const FlightSearch = ({ flights, bookings }) => {
                 <tbody>
                 {flights.map((flight) => (
                   <tr key={flight.id}>
-                    <td className="hover:underline hover:text-orange-500" onClick={() => updateSelectedFlight(flight)}>BDV{flight.flight_number}</td>
+                    <td className="hover:underline hover:text-orange-500" onClick={() => updateSelectedFlight(flight)}>{flight.full_flight_number}</td>
                     <td>
                       <Link href={`/airports/${flight.dep_airport_id}`}>{flight.dep_airport_id}</Link><br/>
                       <span className="text-xs">{flight.dep_airport.name}</span>

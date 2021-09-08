@@ -58,11 +58,11 @@ module.exports = __webpack_require__(/*! ./lib/axios */ "./node_modules/axios/li
 
 var utils = __webpack_require__(/*! ./../utils */ "./node_modules/axios/lib/utils.js");
 var settle = __webpack_require__(/*! ./../core/settle */ "./node_modules/axios/lib/core/settle.js");
-var cookies = __webpack_require__(/*! ./../Helpers/cookies */ "./node_modules/axios/lib/helpers/cookies.js");
-var buildURL = __webpack_require__(/*! ./../Helpers/buildURL */ "./node_modules/axios/lib/helpers/buildURL.js");
+var cookies = __webpack_require__(/*! ./../helpers/cookies */ "./node_modules/axios/lib/helpers/cookies.js");
+var buildURL = __webpack_require__(/*! ./../helpers/buildURL */ "./node_modules/axios/lib/helpers/buildURL.js");
 var buildFullPath = __webpack_require__(/*! ../core/buildFullPath */ "./node_modules/axios/lib/core/buildFullPath.js");
-var parseHeaders = __webpack_require__(/*! ./../Helpers/parseHeaders */ "./node_modules/axios/lib/helpers/parseHeaders.js");
-var isURLSameOrigin = __webpack_require__(/*! ./../Helpers/isURLSameOrigin */ "./node_modules/axios/lib/helpers/isURLSameOrigin.js");
+var parseHeaders = __webpack_require__(/*! ./../helpers/parseHeaders */ "./node_modules/axios/lib/helpers/parseHeaders.js");
+var isURLSameOrigin = __webpack_require__(/*! ./../helpers/isURLSameOrigin */ "./node_modules/axios/lib/helpers/isURLSameOrigin.js");
 var createError = __webpack_require__(/*! ../core/createError */ "./node_modules/axios/lib/core/createError.js");
 
 module.exports = function xhrAdapter(config) {
@@ -247,7 +247,7 @@ module.exports = function xhrAdapter(config) {
 
 
 var utils = __webpack_require__(/*! ./utils */ "./node_modules/axios/lib/utils.js");
-var bind = __webpack_require__(/*! ./Helpers/bind */ "./node_modules/axios/lib/helpers/bind.js");
+var bind = __webpack_require__(/*! ./helpers/bind */ "./node_modules/axios/lib/helpers/bind.js");
 var Axios = __webpack_require__(/*! ./core/Axios */ "./node_modules/axios/lib/core/Axios.js");
 var mergeConfig = __webpack_require__(/*! ./core/mergeConfig */ "./node_modules/axios/lib/core/mergeConfig.js");
 var defaults = __webpack_require__(/*! ./defaults */ "./node_modules/axios/lib/defaults.js");
@@ -291,10 +291,10 @@ axios.isCancel = __webpack_require__(/*! ./cancel/isCancel */ "./node_modules/ax
 axios.all = function all(promises) {
   return Promise.all(promises);
 };
-axios.spread = __webpack_require__(/*! ./Helpers/spread */ "./node_modules/axios/lib/helpers/spread.js");
+axios.spread = __webpack_require__(/*! ./helpers/spread */ "./node_modules/axios/lib/helpers/spread.js");
 
 // Expose isAxiosError
-axios.isAxiosError = __webpack_require__(/*! ./Helpers/isAxiosError */ "./node_modules/axios/lib/helpers/isAxiosError.js");
+axios.isAxiosError = __webpack_require__(/*! ./helpers/isAxiosError */ "./node_modules/axios/lib/helpers/isAxiosError.js");
 
 module.exports = axios;
 
@@ -428,7 +428,7 @@ module.exports = function isCancel(value) {
 
 
 var utils = __webpack_require__(/*! ./../utils */ "./node_modules/axios/lib/utils.js");
-var buildURL = __webpack_require__(/*! ../Helpers/buildURL */ "./node_modules/axios/lib/helpers/buildURL.js");
+var buildURL = __webpack_require__(/*! ../helpers/buildURL */ "./node_modules/axios/lib/helpers/buildURL.js");
 var InterceptorManager = __webpack_require__(/*! ./InterceptorManager */ "./node_modules/axios/lib/core/InterceptorManager.js");
 var dispatchRequest = __webpack_require__(/*! ./dispatchRequest */ "./node_modules/axios/lib/core/dispatchRequest.js");
 var mergeConfig = __webpack_require__(/*! ./mergeConfig */ "./node_modules/axios/lib/core/mergeConfig.js");
@@ -596,8 +596,8 @@ module.exports = InterceptorManager;
 "use strict";
 
 
-var isAbsoluteURL = __webpack_require__(/*! ../Helpers/isAbsoluteURL */ "./node_modules/axios/lib/helpers/isAbsoluteURL.js");
-var combineURLs = __webpack_require__(/*! ../Helpers/combineURLs */ "./node_modules/axios/lib/helpers/combineURLs.js");
+var isAbsoluteURL = __webpack_require__(/*! ../helpers/isAbsoluteURL */ "./node_modules/axios/lib/helpers/isAbsoluteURL.js");
+var combineURLs = __webpack_require__(/*! ../helpers/combineURLs */ "./node_modules/axios/lib/helpers/combineURLs.js");
 
 /**
  * Creates a new URL by combining the baseURL with the requestedURL,
@@ -966,7 +966,7 @@ module.exports = function transformData(data, headers, fns) {
 
 
 var utils = __webpack_require__(/*! ./utils */ "./node_modules/axios/lib/utils.js");
-var normalizeHeaderName = __webpack_require__(/*! ./Helpers/normalizeHeaderName */ "./node_modules/axios/lib/helpers/normalizeHeaderName.js");
+var normalizeHeaderName = __webpack_require__(/*! ./helpers/normalizeHeaderName */ "./node_modules/axios/lib/helpers/normalizeHeaderName.js");
 
 var DEFAULT_CONTENT_TYPE = {
   'Content-Type': 'application/x-www-form-urlencoded'
@@ -1067,7 +1067,7 @@ module.exports = defaults;
 
 /***/ "./node_modules/axios/lib/helpers/bind.js":
 /*!************************************************!*\
-  !*** ./node_modules/axios/lib/Helpers/bind.js ***!
+  !*** ./node_modules/axios/lib/helpers/bind.js ***!
   \************************************************/
 /***/ ((module) => {
 
@@ -1089,7 +1089,7 @@ module.exports = function bind(fn, thisArg) {
 
 /***/ "./node_modules/axios/lib/helpers/buildURL.js":
 /*!****************************************************!*\
-  !*** ./node_modules/axios/lib/Helpers/buildURL.js ***!
+  !*** ./node_modules/axios/lib/helpers/buildURL.js ***!
   \****************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
@@ -1170,7 +1170,7 @@ module.exports = function buildURL(url, params, paramsSerializer) {
 
 /***/ "./node_modules/axios/lib/helpers/combineURLs.js":
 /*!*******************************************************!*\
-  !*** ./node_modules/axios/lib/Helpers/combineURLs.js ***!
+  !*** ./node_modules/axios/lib/helpers/combineURLs.js ***!
   \*******************************************************/
 /***/ ((module) => {
 
@@ -1195,7 +1195,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
 
 /***/ "./node_modules/axios/lib/helpers/cookies.js":
 /*!***************************************************!*\
-  !*** ./node_modules/axios/lib/Helpers/cookies.js ***!
+  !*** ./node_modules/axios/lib/helpers/cookies.js ***!
   \***************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
@@ -1259,7 +1259,7 @@ module.exports = (
 
 /***/ "./node_modules/axios/lib/helpers/isAbsoluteURL.js":
 /*!*********************************************************!*\
-  !*** ./node_modules/axios/lib/Helpers/isAbsoluteURL.js ***!
+  !*** ./node_modules/axios/lib/helpers/isAbsoluteURL.js ***!
   \*********************************************************/
 /***/ ((module) => {
 
@@ -1284,7 +1284,7 @@ module.exports = function isAbsoluteURL(url) {
 
 /***/ "./node_modules/axios/lib/helpers/isAxiosError.js":
 /*!********************************************************!*\
-  !*** ./node_modules/axios/lib/Helpers/isAxiosError.js ***!
+  !*** ./node_modules/axios/lib/helpers/isAxiosError.js ***!
   \********************************************************/
 /***/ ((module) => {
 
@@ -1306,7 +1306,7 @@ module.exports = function isAxiosError(payload) {
 
 /***/ "./node_modules/axios/lib/helpers/isURLSameOrigin.js":
 /*!***********************************************************!*\
-  !*** ./node_modules/axios/lib/Helpers/isURLSameOrigin.js ***!
+  !*** ./node_modules/axios/lib/helpers/isURLSameOrigin.js ***!
   \***********************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
@@ -1385,7 +1385,7 @@ module.exports = (
 
 /***/ "./node_modules/axios/lib/helpers/normalizeHeaderName.js":
 /*!***************************************************************!*\
-  !*** ./node_modules/axios/lib/Helpers/normalizeHeaderName.js ***!
+  !*** ./node_modules/axios/lib/helpers/normalizeHeaderName.js ***!
   \***************************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
@@ -1408,7 +1408,7 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
 
 /***/ "./node_modules/axios/lib/helpers/parseHeaders.js":
 /*!********************************************************!*\
-  !*** ./node_modules/axios/lib/Helpers/parseHeaders.js ***!
+  !*** ./node_modules/axios/lib/helpers/parseHeaders.js ***!
   \********************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
@@ -1472,7 +1472,7 @@ module.exports = function parseHeaders(headers) {
 
 /***/ "./node_modules/axios/lib/helpers/spread.js":
 /*!**************************************************!*\
-  !*** ./node_modules/axios/lib/Helpers/spread.js ***!
+  !*** ./node_modules/axios/lib/helpers/spread.js ***!
   \**************************************************/
 /***/ ((module) => {
 
@@ -1517,7 +1517,7 @@ module.exports = function spread(callback) {
 "use strict";
 
 
-var bind = __webpack_require__(/*! ./Helpers/bind */ "./node_modules/axios/lib/helpers/bind.js");
+var bind = __webpack_require__(/*! ./helpers/bind */ "./node_modules/axios/lib/helpers/bind.js");
 
 /*global toString:true*/
 
@@ -2765,7 +2765,7 @@ var moduleExports = freeModule && freeModule.exports === freeExports;
 /** Detect free variable `process` from Node.js. */
 var freeProcess = moduleExports && freeGlobal.process;
 
-/** Used to access faster Node.js Helpers. */
+/** Used to access faster Node.js helpers. */
 var nodeUtil = (function() {
   try {
     return freeProcess && freeProcess.binding && freeProcess.binding('util');
@@ -4616,16 +4616,16 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/* NProgress, 
 
       if (n === 1) {
         // Fade out
-        css(progress, {
-          transition: 'none',
-          opacity: 1
+        css(progress, { 
+          transition: 'none', 
+          opacity: 1 
         });
         progress.offsetWidth; /* Repaint */
 
         setTimeout(function() {
-          css(progress, {
-            transition: 'all ' + speed + 'ms linear',
-            opacity: 0
+          css(progress, { 
+            transition: 'all ' + speed + 'ms linear', 
+            opacity: 0 
           });
           setTimeout(function() {
             NProgress.remove();
@@ -4753,7 +4753,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/* NProgress, 
     if (NProgress.isRendered()) return document.getElementById('nprogress');
 
     addClass(document.documentElement, 'nprogress-busy');
-
+    
     var progress = document.createElement('div');
     progress.id = 'nprogress';
     progress.innerHTML = Settings.template;
@@ -4762,7 +4762,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/* NProgress, 
         perc     = fromStart ? '-100' : toBarPerc(NProgress.status || 0),
         parent   = document.querySelector(Settings.parent),
         spinner;
-
+    
     css(bar, {
       transition: 'all 0 linear',
       transform: 'translate3d(' + perc + '%,0,0)'
@@ -4873,7 +4873,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/* NProgress, 
 
   var queue = (function() {
     var pending = [];
-
+    
     function next() {
       var fn = pending.shift();
       if (fn) {
@@ -4888,10 +4888,10 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/* NProgress, 
   })();
 
   /**
-   * (Internal) Applies css properties to an element, similar to the jQuery
+   * (Internal) Applies css properties to an element, similar to the jQuery 
    * css method.
    *
-   * While this helper does assist with vendor prefixed property names, it
+   * While this helper does assist with vendor prefixed property names, it 
    * does not perform any manipulation of values prior to setting styles.
    */
 
@@ -4932,7 +4932,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/* NProgress, 
 
     return function(element, properties) {
       var args = arguments,
-          prop,
+          prop, 
           value;
 
       if (args.length == 2) {
@@ -4963,7 +4963,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/* NProgress, 
     var oldList = classList(element),
         newList = oldList + name;
 
-    if (hasClass(oldList, name)) return;
+    if (hasClass(oldList, name)) return; 
 
     // Trim the opening space.
     element.className = newList.substring(1);
@@ -4987,8 +4987,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/* NProgress, 
   }
 
   /**
-   * (Internal) Gets a space separated list of the class names on the element.
-   * The list is wrapped with a single space on each end to facilitate finding
+   * (Internal) Gets a space separated list of the class names on the element. 
+   * The list is wrapped with a single space on each end to facilitate finding 
    * matches within the list.
    */
 
@@ -32504,7 +32504,7 @@ function injectIntoDevTools(devToolsConfig) {
     scheduleRoot:  scheduleRoot ,
     setRefreshHandler:  setRefreshHandler ,
     // Enables DevTools to append owner stacks to error messages in DEV mode.
-    getCurrentFiber:  getCurrentFiberForDevTools
+    getCurrentFiber:  getCurrentFiberForDevTools 
   });
 }
 
@@ -34544,7 +34544,7 @@ var emptyObject = {};
   Object.freeze(emptyObject);
 }
 /**
- * Base class Helpers for the updating state of a component.
+ * Base class helpers for the updating state of a component.
  */
 
 
@@ -37826,6 +37826,14 @@ var map = {
 		"./resources/js/Pages/Crew/Dashboard.js",
 		"resources_js_Pages_Crew_Dashboard_js"
 	],
+	"./Crew/Logbook": [
+		"./resources/js/Pages/Crew/Logbook.js",
+		"resources_js_Pages_Crew_Logbook_js"
+	],
+	"./Crew/Logbook.js": [
+		"./resources/js/Pages/Crew/Logbook.js",
+		"resources_js_Pages_Crew_Logbook_js"
+	],
 	"./Crew/Profile": [
 		"./resources/js/Pages/Crew/Profile.js",
 		"resources_js_Pages_Crew_Profile_js"
@@ -37941,7 +37949,7 @@ module.exports = webpackAsyncContext;
 /************************************************************************/
 /******/ 	// The module cache
 /******/ 	var __webpack_module_cache__ = {};
-/******/
+/******/ 	
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
 /******/ 		// Check if module is in cache
@@ -37955,20 +37963,20 @@ module.exports = webpackAsyncContext;
 /******/ 			loaded: false,
 /******/ 			exports: {}
 /******/ 		};
-/******/
+/******/ 	
 /******/ 		// Execute the module function
 /******/ 		__webpack_modules__[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-/******/
+/******/ 	
 /******/ 		// Flag the module as loaded
 /******/ 		module.loaded = true;
-/******/
+/******/ 	
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
 /******/ 	}
-/******/
+/******/ 	
 /******/ 	// expose the modules object (__webpack_modules__)
 /******/ 	__webpack_require__.m = __webpack_modules__;
-/******/
+/******/ 	
 /************************************************************************/
 /******/ 	/* webpack/runtime/chunk loaded */
 /******/ 	(() => {
@@ -38001,7 +38009,7 @@ module.exports = webpackAsyncContext;
 /******/ 			return result;
 /******/ 		};
 /******/ 	})();
-/******/
+/******/ 	
 /******/ 	/* webpack/runtime/compat get default export */
 /******/ 	(() => {
 /******/ 		// getDefaultExport function for compatibility with non-harmony modules
@@ -38013,7 +38021,7 @@ module.exports = webpackAsyncContext;
 /******/ 			return getter;
 /******/ 		};
 /******/ 	})();
-/******/
+/******/ 	
 /******/ 	/* webpack/runtime/define property getters */
 /******/ 	(() => {
 /******/ 		// define getter functions for harmony exports
@@ -38025,7 +38033,7 @@ module.exports = webpackAsyncContext;
 /******/ 			}
 /******/ 		};
 /******/ 	})();
-/******/
+/******/ 	
 /******/ 	/* webpack/runtime/ensure chunk */
 /******/ 	(() => {
 /******/ 		__webpack_require__.f = {};
@@ -38038,18 +38046,18 @@ module.exports = webpackAsyncContext;
 /******/ 			}, []));
 /******/ 		};
 /******/ 	})();
-/******/
+/******/ 	
 /******/ 	/* webpack/runtime/get javascript chunk filename */
 /******/ 	(() => {
 /******/ 		// This function allow to reference async chunks
 /******/ 		__webpack_require__.u = (chunkId) => {
 /******/ 			// return url for filenames not based on template
-/******/ 			if ({"resources_js_Pages_Airports_AirportDetail_js":1,"resources_js_Pages_Airports_Hubs_js":1,"resources_js_Pages_Auth_Login_js":1,"resources_js_Pages_Auth_Register_js":1,"resources_js_Pages_Crew_Dashboard_js":1,"resources_js_Pages_Crew_Profile_js":1,"resources_js_Pages_Crew_Roster_js":1,"resources_js_Pages_Fleet_FleetList_js":1,"resources_js_Pages_Flights_Bookings_js":1,"resources_js_Pages_Flights_Dispatch_js":1,"resources_js_Pages_Flights_FlightSearch_js":1,"resources_js_Pages_General_Ranks_js":1,"resources_js_Pages_General_Staff_js":1,"resources_js_Pages_General_Supporters_js":1,"resources_js_Pages_Home_js":1}[chunkId]) return "js/" + chunkId + ".js";
+/******/ 			if ({"resources_js_Pages_Airports_AirportDetail_js":1,"resources_js_Pages_Airports_Hubs_js":1,"resources_js_Pages_Auth_Login_js":1,"resources_js_Pages_Auth_Register_js":1,"resources_js_Pages_Crew_Dashboard_js":1,"resources_js_Pages_Crew_Logbook_js":1,"resources_js_Pages_Crew_Profile_js":1,"resources_js_Pages_Crew_Roster_js":1,"resources_js_Pages_Fleet_FleetList_js":1,"resources_js_Pages_Flights_Bookings_js":1,"resources_js_Pages_Flights_Dispatch_js":1,"resources_js_Pages_Flights_FlightSearch_js":1,"resources_js_Pages_General_Ranks_js":1,"resources_js_Pages_General_Staff_js":1,"resources_js_Pages_General_Supporters_js":1,"resources_js_Pages_Home_js":1}[chunkId]) return "js/" + chunkId + ".js";
 /******/ 			// return url for filenames based on template
 /******/ 			return undefined;
 /******/ 		};
 /******/ 	})();
-/******/
+/******/ 	
 /******/ 	/* webpack/runtime/get mini-css chunk filename */
 /******/ 	(() => {
 /******/ 		// This function allow to reference all chunks
@@ -38058,7 +38066,7 @@ module.exports = webpackAsyncContext;
 /******/ 			return "" + chunkId + ".css";
 /******/ 		};
 /******/ 	})();
-/******/
+/******/ 	
 /******/ 	/* webpack/runtime/global */
 /******/ 	(() => {
 /******/ 		__webpack_require__.g = (function() {
@@ -38070,12 +38078,12 @@ module.exports = webpackAsyncContext;
 /******/ 			}
 /******/ 		})();
 /******/ 	})();
-/******/
+/******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
 /******/ 	(() => {
 /******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
 /******/ 	})();
-/******/
+/******/ 	
 /******/ 	/* webpack/runtime/load script */
 /******/ 	(() => {
 /******/ 		var inProgress = {};
@@ -38094,13 +38102,13 @@ module.exports = webpackAsyncContext;
 /******/ 			if(!script) {
 /******/ 				needAttach = true;
 /******/ 				script = document.createElement('script');
-/******/
+/******/ 		
 /******/ 				script.charset = 'utf-8';
 /******/ 				script.timeout = 120;
 /******/ 				if (__webpack_require__.nc) {
 /******/ 					script.setAttribute("nonce", __webpack_require__.nc);
 /******/ 				}
-/******/
+/******/ 		
 /******/ 				script.src = url;
 /******/ 			}
 /******/ 			inProgress[url] = [done];
@@ -38121,7 +38129,7 @@ module.exports = webpackAsyncContext;
 /******/ 			needAttach && document.head.appendChild(script);
 /******/ 		};
 /******/ 	})();
-/******/
+/******/ 	
 /******/ 	/* webpack/runtime/make namespace object */
 /******/ 	(() => {
 /******/ 		// define __esModule on exports
@@ -38132,7 +38140,7 @@ module.exports = webpackAsyncContext;
 /******/ 			Object.defineProperty(exports, '__esModule', { value: true });
 /******/ 		};
 /******/ 	})();
-/******/
+/******/ 	
 /******/ 	/* webpack/runtime/node module decorator */
 /******/ 	(() => {
 /******/ 		__webpack_require__.nmd = (module) => {
@@ -38141,16 +38149,16 @@ module.exports = webpackAsyncContext;
 /******/ 			return module;
 /******/ 		};
 /******/ 	})();
-/******/
+/******/ 	
 /******/ 	/* webpack/runtime/publicPath */
 /******/ 	(() => {
 /******/ 		__webpack_require__.p = "/";
 /******/ 	})();
-/******/
+/******/ 	
 /******/ 	/* webpack/runtime/jsonp chunk loading */
 /******/ 	(() => {
 /******/ 		// no baseURI
-/******/
+/******/ 		
 /******/ 		// object to store loaded and loading chunks
 /******/ 		// undefined = chunk not loaded, null = chunk preloaded/prefetched
 /******/ 		// [resolve, reject, Promise] = chunk loading, 0 = chunk loaded
@@ -38158,12 +38166,12 @@ module.exports = webpackAsyncContext;
 /******/ 			"/js/app": 0,
 /******/ 			"css/app": 0
 /******/ 		};
-/******/
+/******/ 		
 /******/ 		__webpack_require__.f.j = (chunkId, promises) => {
 /******/ 				// JSONP chunk loading for javascript
 /******/ 				var installedChunkData = __webpack_require__.o(installedChunks, chunkId) ? installedChunks[chunkId] : undefined;
 /******/ 				if(installedChunkData !== 0) { // 0 means "already installed".
-/******/
+/******/ 		
 /******/ 					// a Promise means "currently loading".
 /******/ 					if(installedChunkData) {
 /******/ 						promises.push(installedChunkData[2]);
@@ -38172,7 +38180,7 @@ module.exports = webpackAsyncContext;
 /******/ 							// setup Promise in chunk cache
 /******/ 							var promise = new Promise((resolve, reject) => (installedChunkData = installedChunks[chunkId] = [resolve, reject]));
 /******/ 							promises.push(installedChunkData[2] = promise);
-/******/
+/******/ 		
 /******/ 							// start chunk loading
 /******/ 							var url = __webpack_require__.p + __webpack_require__.u(chunkId);
 /******/ 							// create error before stack unwound to get useful stacktrace later
@@ -38197,17 +38205,17 @@ module.exports = webpackAsyncContext;
 /******/ 					}
 /******/ 				}
 /******/ 		};
-/******/
+/******/ 		
 /******/ 		// no prefetching
-/******/
+/******/ 		
 /******/ 		// no preloaded
-/******/
+/******/ 		
 /******/ 		// no HMR
-/******/
+/******/ 		
 /******/ 		// no HMR manifest
-/******/
+/******/ 		
 /******/ 		__webpack_require__.O.j = (chunkId) => (installedChunks[chunkId] === 0);
-/******/
+/******/ 		
 /******/ 		// install a JSONP callback for chunk loading
 /******/ 		var webpackJsonpCallback = (parentChunkLoadingFunction, data) => {
 /******/ 			var [chunkIds, moreModules, runtime] = data;
@@ -38230,20 +38238,20 @@ module.exports = webpackAsyncContext;
 /******/ 			}
 /******/ 			return __webpack_require__.O(result);
 /******/ 		}
-/******/
+/******/ 		
 /******/ 		var chunkLoadingGlobal = self["webpackChunk"] = self["webpackChunk"] || [];
 /******/ 		chunkLoadingGlobal.forEach(webpackJsonpCallback.bind(null, 0));
 /******/ 		chunkLoadingGlobal.push = webpackJsonpCallback.bind(null, chunkLoadingGlobal.push.bind(chunkLoadingGlobal));
 /******/ 	})();
-/******/
+/******/ 	
 /************************************************************************/
-/******/
+/******/ 	
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module depends on other loaded chunks and execution need to be delayed
 /******/ 	__webpack_require__.O(undefined, ["css/app"], () => (__webpack_require__("./resources/js/app.js")))
 /******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["css/app"], () => (__webpack_require__("./resources/css/app.css")))
 /******/ 	__webpack_exports__ = __webpack_require__.O(__webpack_exports__);
-/******/
+/******/ 	
 /******/ })()
 ;

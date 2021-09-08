@@ -3768,12 +3768,12 @@ var FlightSearch = function FlightSearch(_ref) {
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("tbody", {
             children: flights.map(function (flight) {
               return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)("tr", {
-                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)("td", {
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("td", {
                   className: "hover:underline hover:text-orange-500",
                   onClick: function onClick() {
                     return updateSelectedFlight(flight);
                   },
-                  children: ["BDV", flight.flight_number]
+                  children: flight.full_flight_number
                 }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)("td", {
                   children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_8__.Link, {
                     href: "/airports/".concat(flight.dep_airport_id),
@@ -4688,8 +4688,8 @@ function NavBar() {
               }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(_headlessui_react__WEBPACK_IMPORTED_MODULE_3__.Menu.Item, {
                 children: function children(_ref14) {
                   var active = _ref14.active;
-                  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("a", {
-                    href: "#",
+                  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Link, {
+                    href: "/logbook",
                     className: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50",
                     children: "Logbook"
                   });

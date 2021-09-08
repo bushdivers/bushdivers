@@ -109,7 +109,7 @@ export default function NavBar () {
                   {({ active }) => <Link href="/profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Profile</Link>}
                 </Menu.Item>
                 <Menu.Item>
-                  {({ active }) => <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Logbook</a>}
+                  {({ active }) => <Link href="/logbook" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Logbook</Link>}
                 </Menu.Item>
                 <Menu.Item>
                   {({ active }) => <Link href="/logout" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 border-t">Sign out</Link>}

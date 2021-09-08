@@ -36,7 +36,8 @@ class SubmitPirepTest extends TestCase
         $this->user = User::factory()->create([
             'rank_id' => 1,
             'flights_time' => 299,
-            'points' => 49
+            'points' => 49,
+            'created_at' => Carbon::now()->addYears(-2)
         ]);
         $this->fleet = Fleet::factory()->create();
         $this->aircraft = Aircraft::factory()->create([
@@ -242,6 +243,33 @@ class SubmitPirepTest extends TestCase
         $this->assertDatabaseHas('users', [
             'id' => $this->user->id,
             'rank_id' => 2
+        ]);
+    }
+
+    public function test_pilot_gets_award_added()
+    {
+        Artisan::call('db:seed --class=RankSeeder');
+        Artisan::call('db:seed --class=AwardSeeder');
+        Sanctum::actingAs(
+            $this->user,
+            ['*']
+        );
+        $data = [
+            'pirep_id' => $this->pirep->id,
+            'fuel_used' => 25,
+            'distance' => 76,
+            'flight_time' => 45,
+            'landing_rate' => -149.12,
+            'block_off_time'=> Carbon::now()->addHours(-1),
+            'block_on_time' => Carbon::now()->addMinutes(-5),
+            'submitted_at' => Carbon::now()
+        ];
+
+        $this->putJson('/api/pirep/submit', $data);
+
+        $this->assertDatabaseHas('award_user', [
+            'user_id' => $this->user->id,
+            'award_id' => 1
         ]);
     }
 }

@@ -7,6 +7,7 @@ use App\Models\Aircraft;
 use App\Models\Booking;
 use App\Models\Enums\AircraftState;
 use App\Models\Enums\FlightType;
+use App\Models\Enums\PirepState;
 use App\Models\Fleet;
 use App\Models\Pirep;
 use App\Services\AircraftService;
@@ -17,6 +18,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
+use Inertia\Response;
 use Ramsey\Uuid\Uuid;
 
 class PirepController extends Controller
@@ -25,8 +27,11 @@ class PirepController extends Controller
     protected CargoService $cargoService;
     protected AircraftService $aircraftService;
 
-    public function __construct(WeatherService $weatherService, CargoService $cargoService, AircraftService $aircraftService)
-    {
+    public function __construct(
+        WeatherService $weatherService,
+        CargoService $cargoService,
+        AircraftService $aircraftService
+    ) {
         $this->weatherService = $weatherService;
         $this->cargoService = $cargoService;
         $this->aircraftService = $aircraftService;
@@ -34,10 +39,12 @@ class PirepController extends Controller
 
     public function getDispatch($id)
     {
-        $pirep = Pirep::with('flight','flight.depAirport', 'flight.arrAirport', 'aircraft', 'aircraft.fleet')->where('id', $id)->first();
+        $pirep = Pirep::with('flight', 'flight.depAirport', 'flight.arrAirport', 'aircraft',
+            'aircraft.fleet')->where('id', $id)->first();
         $depMetar = $this->weatherService->getMetar($pirep->flight->dep_airport_id);
         $arrMetar = $this->weatherService->getMetar($pirep->flight->arr_airport_id);
-        return Inertia::render('Flights/Dispatch', ['pirep' => $pirep, 'depMetar' => $depMetar, 'arrMetar' => $arrMetar]);
+        return Inertia::render('Flights/Dispatch',
+            ['pirep' => $pirep, 'depMetar' => $depMetar, 'arrMetar' => $arrMetar]);
     }
 
     public function createDispatch(CreateDispatchRequest $request): RedirectResponse
@@ -91,40 +98,13 @@ class PirepController extends Controller
         return redirect()->back()->with(['success' => 'Dispatch created']);
     }
 
-//    protected function generateCargo(int $maxQty): array
-//    {
-//        $types = DB::table('cargo_types')->where('type', 1)->get();
-//        // select random type
-//        $type = $types->random();
-//        // generate number based on aircraft capacity
-//        $num = $this->generateRandomCargoAmount($maxQty);
-//
-//        return ['cargo_type' => $type->text, 'cargo_qty' => $num];
-//    }
-//
-//    protected function generatePax(int $maxQty): array
-//    {
-//        $types = DB::table('cargo_types')->where('type', 2)->get();
-//        // select random type
-//        $type = $types->random();
-//        $paxNum = $this->generateRandomCargoAmount($maxQty);
-//        $baggage = ($paxNum * 0.8) * 20;
-//
-//        return ['pax_type' => $type->text, 'pax_qty' => $paxNum, 'baggage' => $baggage];
-//    }
-//
-//    protected function generateRandomCargoAmount(int $maxQty): int
-//    {
-//        $min = round($maxQty * ((100-60) / 100));
-//        return mt_rand($min, $maxQty);
-//    }
-//
-//    protected function findAircraft($name)
-//    {
-//        $array = explode(' ', $name);
-//        $reg = $array[count($array)-1];
-//        $aircraft = Aircraft::where('registration', $reg)->first();
-//
-//        return $aircraft;
-//    }
+    public function logbook(): Response
+    {
+        $logbook = Pirep::with('flight', 'flight.depAirport', 'flight.arrAirport', 'aircraft', 'aircraft.fleet')
+            ->where('user_id', Auth::user()->id)
+            ->where('state', PirepState::ACCEPTED)
+            ->orderBy('submitted_at', 'desc')
+            ->get();
+        return Inertia::render('Crew/Logbook', ['logbook' => $logbook]);
+    }
 }

@@ -3,6 +3,7 @@
 namespace App\Listeners;
 
 use App\Events\PirepFiled;
+use App\Services\AwardService;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
@@ -26,6 +27,7 @@ class CheckPilotAwards
      */
     public function handle(PirepFiled $event)
     {
-        //
+        $awardService = new AwardService();
+        $awardService->checkAwards($event->pirep->user_id);
     }
 }
