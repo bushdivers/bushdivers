@@ -45,7 +45,7 @@ const Logbook = ({ logbook }) => {
                 {logbook.map((entry) => (
                   <tr key={entry.id}>
                     <td className="hover:underline hover:text-orange-500">
-                      {entry.flight.full_flight_number}
+                      <Link href={`/logbook/${entry.id}`}>{entry.flight.full_flight_number}</Link>
                     </td>
                     <td>
                       <Link href={`/airports/${entry.flight.dep_airport_id}`}>{entry.flight.dep_airport_id}</Link><br/>

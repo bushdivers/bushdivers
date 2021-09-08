@@ -35,6 +35,7 @@ Route::middleware('auth')->group(function () {
     Route::put('/profile', [\App\Http\Controllers\CrewController::class, 'updateProfile'])->name('profile.update');
     Route::put('/profile/transfer', [\App\Http\Controllers\CrewController::class, 'transferHub'])->name('profile.transfer');
     Route::get('/logbook', [\App\Http\Controllers\PirepController::class, 'logbook'])->name('logbook');
+    Route::get('/logbook/{pirep}', [\App\Http\Controllers\PirepController::class, 'logbookDetail'])->name('logbook.detail');
 
     // Airports
     Route::get('/airports/{icao}', [\App\Http\Controllers\AirportController::class, 'index'])->name('airport');

@@ -9,7 +9,9 @@ use App\Models\Enums\AircraftState;
 use App\Models\Enums\FlightType;
 use App\Models\Enums\PirepState;
 use App\Models\Fleet;
+use App\Models\FlightLog;
 use App\Models\Pirep;
+use App\Models\Point;
 use App\Services\AircraftService;
 use App\Services\CargoService;
 use App\Services\WeatherService;
@@ -39,8 +41,11 @@ class PirepController extends Controller
 
     public function getDispatch($id)
     {
-        $pirep = Pirep::with('flight', 'flight.depAirport', 'flight.arrAirport', 'aircraft',
-            'aircraft.fleet')->where('id', $id)->first();
+        $pirep = Pirep::with('flight', 'flight.depAirport', 'flight.arrAirport', 'aircraft', 'aircraft.fleet')
+            ->where('id', $id)
+            ->where('user_id', Auth::user()->id)
+            ->first();
+
         $depMetar = $this->weatherService->getMetar($pirep->flight->dep_airport_id);
         $arrMetar = $this->weatherService->getMetar($pirep->flight->arr_airport_id);
         return Inertia::render('Flights/Dispatch',
@@ -106,5 +111,17 @@ class PirepController extends Controller
             ->orderBy('submitted_at', 'desc')
             ->get();
         return Inertia::render('Crew/Logbook', ['logbook' => $logbook]);
+    }
+
+    public function logbookDetail($pirep): Response
+    {
+        $p = Pirep::with('flight', 'flight.depAirport', 'flight.arrAirport', 'aircraft', 'aircraft.fleet')
+            ->where('id', $pirep)
+            ->where('user_id', Auth::user()->id)
+            ->first();
+        $points = Point::where('pirep_id', $pirep)->get();
+        $logs = FlightLog::where('pirep_id', $pirep)->orderBy('created_at')->get();
+        $coords = DB::table('flight_logs')->where('pirep_id', $pirep)->select('lat', 'lon')->orderBy('created_at')->get();
+        return Inertia::render('Crew/LogbookDetail', ['pirep' => $p, 'points' => $points, 'logs' => $logs, 'coords' => $logs->pluck('lat', 'lon')]);
     }
 }
