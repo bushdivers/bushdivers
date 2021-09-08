@@ -141,16 +141,30 @@ class SubmitPirepTest extends TestCase
     public function test_pilot_location_and_flights_updated()
     {
         Artisan::call('db:seed --class=RankSeeder');
+
+        $user = User::factory()->create([
+            'rank_id' => 1,
+            'flights_time' => 299,
+            'points' => 8
+        ]);
+
+        $pirep = Pirep::factory()->create([
+            'user_id' => $user->id,
+            'flight_id' => $this->flight->id,
+            'booking_id' => $this->booking->id,
+            'aircraft_id' => $this->aircraft
+        ]);
+
         Sanctum::actingAs(
-            $this->user,
+            $user,
             ['*']
         );
         $data = [
-            'pirep_id' => $this->pirep->id,
+            'pirep_id' => $pirep->id,
             'fuel_used' => 25,
-            'distance' => 76,
-            'flight_time' => 45,
-            'landing_rate' => -149.12,
+            'distance' => 50,
+            'flight_time' => 60,
+            'landing_rate' => 150,
             'block_off_time'=> Carbon::now()->addHours(-1),
             'block_on_time' => Carbon::now()->addMinutes(-5)
         ];
@@ -161,10 +175,11 @@ class SubmitPirepTest extends TestCase
         $pirep = Pirep::find($this->pirep->id);
 
         $this->assertDatabaseHas('users', [
+            'id' => $user->id,
             'current_airport_id' => $this->flight->arr_airport_id,
-            'flights_time' => $this->user->flights_time + 45,
-            'flights' => $this->user->flights + 1,
-            'points' => $pirep->score
+            'flights_time' => $this->user->flights_time + 60,
+            'flights' => $user->flights + 1,
+            'points' => 120
         ]);
     }
 

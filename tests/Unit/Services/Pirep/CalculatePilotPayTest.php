@@ -68,4 +68,34 @@ class CalculatePilotPayTest extends TestCase
         $pirepService->calculatePilotPay($this->pirep);
         $this->assertDatabaseHas('users', ['account_balance' => $pay]);
     }
+
+    public function test_pay_added_to_pirep()
+    {
+        $pirepService = new PirepService();
+
+        $rank = Rank::where('name', 'Trainee')->first();
+        $duration = 45 / 60;
+        $pay = $duration * $rank->pilot_pay;
+        $pirepService->calculatePilotPay($this->pirep);
+        $this->assertDatabaseHas('pireps', [
+            'id' => $this->pirep->id,
+            'pilot_pay' => $pay
+        ]);
+    }
+
+    public function test_pay_added_to_user_account_ledger()
+    {
+        $pirepService = new PirepService();
+
+        $rank = Rank::where('name', 'Trainee')->first();
+        $duration = 45 / 60;
+        $pay = $duration * $rank->pilot_pay;
+        $pirepService->calculatePilotPay($this->pirep);
+        $this->assertDatabaseHas('user_accounts', [
+            'user_id' => $this->pirep->user_id,
+            'total' => $pay,
+            'flight_id' => $this->pirep->flight_id
+        ]);
+    }
+
 }

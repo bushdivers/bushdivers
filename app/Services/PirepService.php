@@ -3,11 +3,13 @@
 namespace App\Services;
 
 use App\Models\Enums\PointsType;
+use App\Models\Enums\TransactionTypes;
 use App\Models\Flight;
 use App\Models\Pirep;
 use App\Models\Point;
 use App\Models\Rank;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 class PirepService
 {
@@ -55,8 +57,22 @@ class PirepService
         $duration = $pirep->flight_time / 60;
         $pay = $rank->pilot_pay * $duration;
 
+        // update users balance
         $user->account_balance = $user->account_balance + $pay;
         $user->save();
+
+        // add pay to pirep
+        $p = Pirep::find($pirep->id);
+        $p->pilot_pay = $pay;
+        $p->save();
+
+        // add line to user account
+        DB::table('user_accounts')->insert([
+            'user_id' => $user->id,
+            'type' => TransactionTypes::FlightPay,
+            'total' => $pay,
+            'flight_id' => $pirep->flight_id
+        ]);
     }
 
     public function calculateLandingRatePoints($landingRate): array
