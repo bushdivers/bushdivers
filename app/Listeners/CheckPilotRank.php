@@ -3,6 +3,7 @@
 namespace App\Listeners;
 
 use App\Events\PirepFiled;
+use App\Services\RankService;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
@@ -26,6 +27,7 @@ class CheckPilotRank
      */
     public function handle(PirepFiled $event)
     {
-        //
+        $rankService = new RankService();
+        $rankService->checkRank($event->pirep->user_id);
     }
 }

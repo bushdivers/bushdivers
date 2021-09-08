@@ -111,6 +111,10 @@ class PirepService
         $p = Pirep::find($pirep->id);
         $p->score = $points;
         $p->save();
+
+        $user = User::find($pirep->user_id);
+        $user->points += $points;
+        $user->save();
     }
 
     protected function addPointsEntry(string $pirep_id, string $type, int $points)

@@ -9,8 +9,8 @@ class UserService
     public function updatePilotHours($flightHours, $userId)
     {
         $user = User::find($userId);
-        $user->flights_time = $user->flights_time + $flightHours;
-        $user->flights = $user->flights + 1;
+        $user->flights_time += $flightHours;
+        $user->flights += 1;
         $user->save();
     }
 
