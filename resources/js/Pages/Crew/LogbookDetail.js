@@ -5,6 +5,7 @@ import PirepMap from '../../Shared/Pireps/PirepMap'
 import Points from '../../Shared/Pireps/Points'
 import LogbookPrimary from '../../Shared/Pireps/LogbookPrimary'
 import LogbookSecondary from '../../Shared/Pireps/LogbookSecondary'
+import PirepChart from '../../Shared/Pireps/PirepChart'
 
 const LogbookDetail = ({ pirep, points, logs, coords }) => {
   return (
@@ -14,12 +15,15 @@ const LogbookDetail = ({ pirep, points, logs, coords }) => {
         <div className="w-1/2">
           <LogbookPrimary pirep={pirep} />
           <LogbookSecondary pirep={pirep} />
-          <Points points={points} />
+          <div className="rounded shadow p-4 mt-2 bg-white mx-2">
+            <PirepChart data={logs} />
+          </div>
         </div>
         <div className="w-1/2">
           <div className="rounded shadow p-4 mt-2 bg-white mx-2">
-            <PirepMap pirep={pirep} coords={coords} size="large" />
+            <PirepMap pirep={pirep} coords={logs} size="large" />
           </div>
+          <Points points={points} />
         </div>
       </div>
     </div>

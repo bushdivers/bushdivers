@@ -60,16 +60,24 @@ const PirepMap = (props) => {
           }
         })
 
-        const plot = Object.keys(props.coords).map((key) => [Number(key), props.coords[key]])
-        console.log(plot)
-        map.current.addSource('log', {
+        const coords = []
+        props.coords.map((log) => (
+          coords.push(new maplibre.LngLat(log.lon, log.lat).toArray())
+        ))
+
+        // coords = JSON.stringify(coords)
+        // const newc = JSON.parse(coords)
+
+        console.log(coords)
+
+        map.current.addSource('coords', {
           type: 'geojson',
           data: {
             type: 'Feature',
             geometry: {
-              type: 'LineString',
+              type: 'MultiLineString',
               coordinates: [
-                [plot]
+                coords
               ]
             }
           }
@@ -80,18 +88,24 @@ const PirepMap = (props) => {
           type: 'line',
           source: 'route',
           paint: {
-            'line-color': '#F97316',
-            'line-width': 2
+            'line-color': '#fff',
+            'line-width': 4,
+            'line-opacity': 0.6
           }
         })
 
         map.current.addLayer({
-          id: 'log',
+          id: 'coords',
           type: 'line',
-          source: 'log',
+          source: 'coords',
+          layout: {
+            'line-join': 'round',
+            'line-cap': 'round'
+          },
           paint: {
-            'line-color': '#fff',
-            'line-width': 1
+            'line-color': '#F97316',
+            'line-width': 4,
+            'line-opacity': 0.6
           }
         })
       })
