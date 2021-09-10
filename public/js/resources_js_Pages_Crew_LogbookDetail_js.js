@@ -2719,6 +2719,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var date_fns__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! date-fns */ "./node_modules/date-fns/esm/format/index.js");
 /* harmony import */ var _Shared_Navigation_PageTitle__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../Shared/Navigation/PageTitle */ "./resources/js/Shared/Navigation/PageTitle.js");
 /* harmony import */ var _Shared_Layout__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../Shared/Layout */ "./resources/js/Shared/Layout.js");
 /* harmony import */ var _Shared_Pireps_PirepMap__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../Shared/Pireps/PirepMap */ "./resources/js/Shared/Pireps/PirepMap.js");
@@ -2738,15 +2739,16 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
 var LogbookDetail = function LogbookDetail(_ref) {
   var pirep = _ref.pirep,
       points = _ref.points,
-      logs = _ref.logs,
-      coords = _ref.coords;
+      logs = _ref.logs;
+  var submittedDate = (0,date_fns__WEBPACK_IMPORTED_MODULE_9__.default)(new Date(pirep.submitted_at), 'do MMMM yyyy');
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_Shared_Navigation_PageTitle__WEBPACK_IMPORTED_MODULE_1__.default, {
       title: "Pilot Report - ".concat(pirep.flight.full_flight_number)
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
+    }), submittedDate, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
       className: "flex justify-between",
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
         className: "w-1/2",
@@ -3061,8 +3063,8 @@ function NavBar() {
               }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(_headlessui_react__WEBPACK_IMPORTED_MODULE_3__.Menu.Item, {
                 children: function children(_ref11) {
                   var active = _ref11.active;
-                  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("a", {
-                    href: "#",
+                  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Link, {
+                    href: "/jumpseat",
                     className: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50",
                     children: "Jumpseat"
                   });
@@ -3731,15 +3733,15 @@ var PirepChart = function PirepChart(props) {
       label: 'Altitude',
       data: altitude,
       fill: true,
-      backgroundColor: 'rgba(255, 99, 132, 0.4)',
-      borderColor: 'rgba(255, 99, 132, 0.2)',
+      backgroundColor: 'rgba(249, 115, 22, 0.7)',
+      borderColor: 'rgba(249, 115, 22, 0.4)',
       yAxisID: 'y-axis-1'
     }, {
       label: 'Ground speed',
       data: gs,
       fill: true,
-      backgroundColor: 'rgba(54, 162, 235, 0.4)',
-      borderColor: 'rgba(54, 162, 235, 0.2)',
+      backgroundColor: 'rgba(22,163,74, 0.6)',
+      borderColor: 'rgba(22,163,74.4)',
       yAxisID: 'y-axis-2'
     }]
   }; // useEffect(() => {
@@ -3831,7 +3833,7 @@ var PirepMap = function PirepMap(props) {
       var arrLngLat = [props.pirep.flight.arr_airport.lon, props.pirep.flight.arr_airport.lat];
       map.current.on('load', function () {
         var dep = new (maplibre_gl__WEBPACK_IMPORTED_MODULE_1___default().Marker)({
-          color: '#059669'
+          color: '#22C55E'
         }).setLngLat(depLngLat).setPopup(depPopup).addTo(map.current);
         var arr = new (maplibre_gl__WEBPACK_IMPORTED_MODULE_1___default().Marker)({
           color: '#F97316'

@@ -1,4 +1,5 @@
 import React from 'react'
+import { format } from 'date-fns'
 import PageTitle from '../../Shared/Navigation/PageTitle'
 import Layout from '../../Shared/Layout'
 import PirepMap from '../../Shared/Pireps/PirepMap'
@@ -7,10 +8,12 @@ import LogbookPrimary from '../../Shared/Pireps/LogbookPrimary'
 import LogbookSecondary from '../../Shared/Pireps/LogbookSecondary'
 import PirepChart from '../../Shared/Pireps/PirepChart'
 
-const LogbookDetail = ({ pirep, points, logs, coords }) => {
+const LogbookDetail = ({ pirep, points, logs }) => {
+  const submittedDate = format(new Date(pirep.submitted_at), 'do MMMM yyyy')
   return (
     <div>
       <PageTitle title={`Pilot Report - ${pirep.flight.full_flight_number}`} />
+      {submittedDate}
       <div className="flex justify-between">
         <div className="w-1/2">
           <LogbookPrimary pirep={pirep} />

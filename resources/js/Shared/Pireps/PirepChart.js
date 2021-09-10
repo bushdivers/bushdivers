@@ -25,16 +25,16 @@ const PirepChart = (props) => {
         label: 'Altitude',
         data: altitude,
         fill: true,
-        backgroundColor: 'rgba(255, 99, 132, 0.4)',
-        borderColor: 'rgba(255, 99, 132, 0.2)',
+        backgroundColor: 'rgba(249, 115, 22, 0.7)',
+        borderColor: 'rgba(249, 115, 22, 0.4)',
         yAxisID: 'y-axis-1'
       },
       {
         label: 'Ground speed',
         data: gs,
         fill: true,
-        backgroundColor: 'rgba(54, 162, 235, 0.4)',
-        borderColor: 'rgba(54, 162, 235, 0.2)',
+        backgroundColor: 'rgba(22,163,74, 0.6)',
+        borderColor: 'rgba(22,163,74.4)',
         yAxisID: 'y-axis-2'
       }
     ]

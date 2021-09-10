@@ -36,7 +36,7 @@ const PirepMap = (props) => {
 
       map.current.on('load', function () {
         const dep = new maplibre.Marker({
-          color: '#059669'
+          color: '#22C55E'
         })
           .setLngLat(depLngLat)
           .setPopup(depPopup)

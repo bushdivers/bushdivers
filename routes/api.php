@@ -14,8 +14,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('aircraft/{icao}', [\App\Http\Controllers\FleetController::class, 'getAvailableAircraft'])->name('fleet.available.aircraft');
-
+Route::get('/aircraft/{icao}', [\App\Http\Controllers\FleetController::class, 'getAvailableAircraft'])->name('fleet.available.aircraft');
+Route::get('/airport/search/{search}', [\App\Http\Controllers\Api\AirportController::class, 'getAirportFromSearch'])->name('airport.searcg');
+Route::get('/jumpseat/cost/{from}/{to}', [\App\Http\Controllers\Api\AirportController::class, 'getCostOfJumpseat'])->name('jumpseat.cost');
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/bookings', [\App\Http\Controllers\Api\TrackerController::class, 'getDispatchedBookings']);

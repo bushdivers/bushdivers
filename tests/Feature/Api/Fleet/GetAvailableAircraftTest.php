@@ -34,10 +34,6 @@ class GetAvailableAircraftTest extends TestCase
      */
     public function test_aircraft_returned_ok()
     {
-        Sanctum::actingAs(
-            User::factory()->create(),
-            ['*']
-        );
         $response = $this->getJson('/api/aircraft/'.'AYMR');
 
         $response->assertStatus(200);
@@ -45,10 +41,6 @@ class GetAvailableAircraftTest extends TestCase
 
     public function test_aircraft_details_returned()
     {
-        Sanctum::actingAs(
-            User::factory()->create(),
-            ['*']
-        );
         $response = $this->getJson('/api/aircraft/'.'AYMR');
 
         $response->assertJsonFragment(['id' => $this->aircraft->id]);
@@ -56,10 +48,6 @@ class GetAvailableAircraftTest extends TestCase
 
     public function test_aircraft_details_not_available_for_icao_with_no_aircraft()
     {
-        Sanctum::actingAs(
-            User::factory()->create(),
-            ['*']
-        );
         $response = $this->getJson('/api/aircraft/'.'EGLL');
 
         $response->assertJsonCount(0, 'aircraft' );

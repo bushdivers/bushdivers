@@ -4,16 +4,29 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileRequest;
 use App\Models\Airport;
+use App\Models\Enums\TransactionTypes;
 use App\Models\User;
+use App\Services\AirportService;
+use App\Services\UserService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class CrewController extends Controller
 {
+    protected UserService $userService;
+    protected AirportService $airportService;
+
+    public function __construct(UserService $userService, AirportService $airportService)
+    {
+        $this->userService = $userService;
+        $this->airportService = $airportService;
+    }
+
     public function index(): Response
     {
         return Inertia::render('Crew/Dashboard');
@@ -73,5 +86,26 @@ class CrewController extends Controller
         $user->save();
 
         return redirect()->back()->with(['success' => 'Transferred to '.$request->hub]);
+    }
+
+    public function jumpseat(): Response
+    {
+        $user = User::with('location')->find(Auth::user()->id);
+        $spent = DB::table('user_accounts')
+            ->where('user_id', Auth::user()->id)
+            ->where('type', TransactionTypes::Jumpseat)
+            ->sum('total');
+        return Inertia::render('Crew/Jumpseat', ['user' => $user, 'spent' => abs($spent)]);
+    }
+
+    public function processJumpseat(Request $request): RedirectResponse
+    {
+        $transactionValue = $request->cost;
+
+        $this->userService->updatePilotLocation($request->icao, Auth::user()->id);
+        $this->userService->updateUserAccountBalance(Auth::user()->id, -$transactionValue);
+        $this->userService->addUserAccountEntry(Auth::user()->id, TransactionTypes::Jumpseat, -$transactionValue);
+
+        return redirect()->back()->with(['success' => 'Relocated successfully to '.$request->icao.' at a cost of $'.$request->cost]);
     }
 }

@@ -69,7 +69,7 @@ export default function NavBar () {
                   {({ active }) => <a href="/bookings" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">My Bookings ({auth.user.current_bookings})</a>}
                 </Menu.Item>
                 <Menu.Item>
-                  {({ active }) => <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Jumpseat</a>}
+                  {({ active }) => <Link href="/jumpseat" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Jumpseat</Link>}
                 </Menu.Item>
               </Menu.Items>
             </Transition>
