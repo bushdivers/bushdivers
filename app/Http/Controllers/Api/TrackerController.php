@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\DB;
 
 class TrackerController extends Controller
 {
-    public function getDispatchedBookings(Request $request)
+    public function getDispatchedBookings(Request $request): JsonResponse
     {
         $bookings = DB::table('pireps')
             ->join('flights', 'pireps.flight_id', '=', 'flights.id')
@@ -24,6 +24,7 @@ class TrackerController extends Controller
             ->join('fleets', 'aircraft.fleet_id', '=', 'fleets.id')
             ->select('pireps.*', 'flights.flight_number', 'flights.dep_airport_id', 'flights.arr_airport_id', 'fleets.name', 'aircraft.registration')
             ->where('pireps.user_id', Auth::user()->id)
+            ->where('flights.dep_airport_id', Auth::user()->current_airport_id)
             ->get();
 
         return response()->json($bookings);
