@@ -39,21 +39,7 @@ const PirepChart = (props) => {
       }
     ]
   }
-
-  // useEffect(() => {
-  //   // if (chart.current) return
-  //   chart.current = new Chart(chartContainer.current, {
-  //     type: 'bar',
-  //     data: {
-  //       labels: labels,
-  //       datasets: [{
-  //         label: 'My First Dataset',
-  //         data: [65, 59, 80, 81, 56, 55, 40],
-  //         backgroundColor: 'rgb(75, 192, 192)',
-  //       }]
-  //     }
-  //   })
-  // })
+  
 
   return (
 
