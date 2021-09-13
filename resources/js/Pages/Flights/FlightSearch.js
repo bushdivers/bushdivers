@@ -67,7 +67,7 @@ const FlightSearch = ({ flights, bookings }) => {
                       <span className="text-xs">{flight.dep_airport.name}</span>
                     </td>
                     <td>
-                      <Link href={`/airports/${flight.dep_airport_id}`}>{flight.arr_airport_id}</Link><br/>
+                      <Link href={`/airports/${flight.arr_airport_id}`}>{flight.arr_airport_id}</Link><br/>
                       <span className="text-xs">{flight.arr_airport.name}</span>
                     </td>
                     <td>{flight.distance}</td>

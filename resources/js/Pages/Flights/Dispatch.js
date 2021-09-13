@@ -54,6 +54,9 @@ const Dispatch = ({ pirep, depMetar, arrMetar }) => {
             <div className="text-sm mt-2">
               <div>{pirep.flight.dep_airport.name}</div>
               <div className="text-xs">{pirep.flight.dep_airport.altitude} ft</div>
+              {pirep.flight.dep_airport.longest_runway_length && (
+                <div className="text-xs">{pirep.flight.dep_airport.longest_runway_surface} {pirep.flight.dep_airport.longest_runway_length} x {pirep.flight.dep_airport.longest_runway_width}</div>
+              )}
             </div>
           </div>
         </div>
@@ -64,6 +67,9 @@ const Dispatch = ({ pirep, depMetar, arrMetar }) => {
             <div className="text-sm mt-2">
               <div>{pirep.flight.arr_airport.name}</div>
               <div className="text-xs">{pirep.flight.dep_airport.altitude} ft</div>
+              {pirep.flight.arr_airport.longest_runway_length && (
+                <div className="text-xs">{pirep.flight.arr_airport.longest_runway_surface} {pirep.flight.arr_airport.longest_runway_length} x {pirep.flight.arr_airport.longest_runway_width}</div>
+              )}
             </div>
           </div>
         </div>

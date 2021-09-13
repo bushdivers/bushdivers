@@ -2790,6 +2790,9 @@ var Dispatch = function Dispatch(_ref) {
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
               className: "text-xs",
               children: [pirep.flight.dep_airport.altitude, " ft"]
+            }), pirep.flight.dep_airport.longest_runway_length && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+              className: "text-xs",
+              children: [pirep.flight.dep_airport.longest_runway_surface, " ", pirep.flight.dep_airport.longest_runway_length, " x ", pirep.flight.dep_airport.longest_runway_width]
             })]
           })]
         })]
@@ -2813,6 +2816,9 @@ var Dispatch = function Dispatch(_ref) {
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
               className: "text-xs",
               children: [pirep.flight.dep_airport.altitude, " ft"]
+            }), pirep.flight.arr_airport.longest_runway_length && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+              className: "text-xs",
+              children: [pirep.flight.arr_airport.longest_runway_surface, " ", pirep.flight.arr_airport.longest_runway_length, " x ", pirep.flight.arr_airport.longest_runway_width]
             })]
           })]
         })]
