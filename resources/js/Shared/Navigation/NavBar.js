@@ -63,7 +63,7 @@ export default function NavBar () {
                   {({ active }) => <Link href="/flights" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Flight Search</Link>}
                 </Menu.Item>
                 <Menu.Item>
-                  {({ active }) => <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Live Flights Map</a>}
+                  {({ active }) => <Link href="/liveflights" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Live Flights Map</Link>}
                 </Menu.Item>
                 <Menu.Item>
                   {({ active }) => <a href="/bookings" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">My Bookings ({auth.user.current_bookings})</a>}
@@ -74,7 +74,6 @@ export default function NavBar () {
               </Menu.Items>
             </Transition>
           </Menu>
-          <a href="" className="nav-link">Live Flights</a>
         </div>
       </>
     )
@@ -128,7 +127,7 @@ export default function NavBar () {
         <div className="flex space-x-4">
           <a href="" className="nav-link">How we work</a>
           <Link href="/staff" className="nav-link">Bush Divers Team</Link>
-          <a href="" className="nav-link">Live Map</a>
+          <Link href="/liveflights" className="nav-link">Live Map</Link>
           <Link href="/hubs" className="nav-link">Hubs</Link>
           <Link href="/fleet" className="nav-link">Fleet</Link>
         </div>

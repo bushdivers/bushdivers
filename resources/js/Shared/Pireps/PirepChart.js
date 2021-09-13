@@ -39,7 +39,7 @@ const PirepChart = (props) => {
       }
     ]
   }
-  
+
 
   return (
 

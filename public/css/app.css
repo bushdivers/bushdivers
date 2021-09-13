@@ -28494,6 +28494,10 @@ a:hover {
   height: 600px;
 }
 
+.map-container-xl {
+  height: calc(100vh - 200px);
+}
+
 @media (min-width: 640px) {
   .sm\:container {
     width: 100%;

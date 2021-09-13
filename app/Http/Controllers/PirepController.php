@@ -8,6 +8,7 @@ use App\Models\Booking;
 use App\Models\Enums\AircraftState;
 use App\Models\Enums\FlightType;
 use App\Models\Enums\PirepState;
+use App\Models\Enums\PirepStatus;
 use App\Models\Fleet;
 use App\Models\FlightLog;
 use App\Models\Pirep;
@@ -15,6 +16,7 @@ use App\Models\Point;
 use App\Services\AircraftService;
 use App\Services\CargoService;
 use App\Services\WeatherService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -123,5 +125,22 @@ class PirepController extends Controller
         $logs = FlightLog::where('pirep_id', $pirep)->orderBy('created_at')->get();
         $coords = DB::table('flight_logs')->where('pirep_id', $pirep)->select('lat', 'lon')->orderBy('created_at')->get();
         return Inertia::render('Crew/LogbookDetail', ['pirep' => $p, 'points' => $points, 'logs' => $logs, 'coords' => $logs->pluck('lat', 'lon')]);
+    }
+
+    public function flightMap(): Response
+    {
+        $liveFlights = Pirep::with('flight', 'flight.depAirport', 'flight.arrAirport', 'aircraft', 'aircraft.fleet', 'pilot')
+            ->where('state', PirepState::IN_PROGRESS)
+            ->get();
+        return Inertia::render('Flights/LiveFlights', ['flights' => $liveFlights]);
+    }
+
+    public function liveFlights(): JsonResponse
+    {
+        $liveFlights = Pirep::with('flight', 'flight.depAirport', 'flight.arrAirport', 'aircraft', 'aircraft.fleet', 'pilot')
+            ->where('state', PirepState::IN_PROGRESS)
+            ->get();
+
+        return \response()->json(['flights' => $liveFlights]);
     }
 }

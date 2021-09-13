@@ -19,6 +19,7 @@ Route::get('/ranks', [\App\Http\Controllers\PageController::class, 'ranks'])->na
 Route::get('/hubs', [\App\Http\Controllers\AirportController::class, 'hubs'])->name('hubs');
 Route::get('/staff', [\App\Http\Controllers\PageController::class, 'staff'])->name('staff');
 Route::get('/supporters', [\App\Http\Controllers\PageController::class, 'supporters'])->name('supporters');
+Route::get('/liveflights', [\App\Http\Controllers\PirepController::class, 'flightMap'])->name('flights.map');
 
 // Auth
 Route::get('/register', [\App\Http\Controllers\Auth\RegisterController::class, 'index'])->name('register.index');

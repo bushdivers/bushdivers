@@ -205,3 +205,7 @@ a:hover {
 .map-container-large {
     height: 600px;
 }
+
+.map-container-xl {
+    height: calc(100vh - 200px);
+}
