@@ -3233,19 +3233,14 @@ function NavBar() {
           })]
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)(_headlessui_react__WEBPACK_IMPORTED_MODULE_3__.Menu, {
           as: "div",
-          className: "ml-3 relative",
+          className: "mx-3 relative",
           children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
             children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)(_headlessui_react__WEBPACK_IMPORTED_MODULE_3__.Menu.Button, {
-              className: "flex items-center text-sm hover:bg-gray-50 rounded-xl",
+              className: "flex items-center text-sm hover:bg-gray-50 rounded-xl py-2 px-1",
               children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("span", {
                 className: "sr-only",
                 children: "Open user menu"
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("img", {
-                className: "h-8 w-8 rounded-full",
-                src: "https://res.cloudinary.com/dji0yvkef/image/upload/v1628691598/BDLogo.png",
-                alt: "Bushd Divers logo"
               }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("span", {
-                className: "mx-2",
                 children: auth.user && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(UserName, {})
               })]
             })
