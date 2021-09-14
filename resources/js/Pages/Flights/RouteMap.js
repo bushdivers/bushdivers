@@ -37,8 +37,8 @@ const RouteMap = ({ flights }) => {
             flight.arr_airport_id
           )
 
-          const depMarkerColor = flight.dep_airport.is_hub ? '#22C55E' : '#F97316'
-          const arrMarkerColor = flight.arr_airport.is_hub ? '#22C55E' : '#F97316'
+          const depMarkerColor = flight.dep_airport.is_hub ? '#F97316' : '#ffffff'
+          const arrMarkerColor = flight.arr_airport.is_hub ? '#F97316' : '#ffffff'
 
           const dep = new maplibre.Marker({
             color: depMarkerColor,

@@ -2741,8 +2741,8 @@ var RouteMap = function RouteMap(_ref) {
           var arrPopup = new (maplibre_gl__WEBPACK_IMPORTED_MODULE_3___default().Popup)({
             offset: 25
           }).setText(flight.arr_airport_id);
-          var depMarkerColor = flight.dep_airport.is_hub ? '#22C55E' : '#F97316';
-          var arrMarkerColor = flight.arr_airport.is_hub ? '#22C55E' : '#F97316';
+          var depMarkerColor = flight.dep_airport.is_hub ? '#F97316' : '#ffffff';
+          var arrMarkerColor = flight.arr_airport.is_hub ? '#F97316' : '#ffffff';
           var dep = new (maplibre_gl__WEBPACK_IMPORTED_MODULE_3___default().Marker)({
             color: depMarkerColor,
             scale: 0.5
