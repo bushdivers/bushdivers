@@ -30,7 +30,7 @@ export default function NavBar () {
                   {({ active }) => <Link href="/hubs" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Hubs</Link>}
                 </Menu.Item>
                 <Menu.Item>
-                  {({ active }) => <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Route Map</a>}
+                  {({ active }) => <Link href="/routes" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Route Map</Link>}
                 </Menu.Item>
                 <Menu.Item>
                   {({ active }) => <Link href="/fleet" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Fleet</Link>}

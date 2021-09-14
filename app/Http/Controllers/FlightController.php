@@ -43,4 +43,10 @@ class FlightController extends Controller
             'bookings' => $bookings
         ]);
     }
+
+    public function routes()
+    {
+        $flights = Flight::with('depAirport', 'arrAirport')->where('is_active', true)->get();
+        return Inertia::render('Flights/RouteMap', ['flights' => $flights]);
+    }
 }

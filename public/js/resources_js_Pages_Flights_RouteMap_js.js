@@ -1,4 +1,4 @@
-(self["webpackChunk"] = self["webpackChunk"] || []).push([["resources_js_Pages_Airports_AirportDetail_js"],{
+(self["webpackChunk"] = self["webpackChunk"] || []).push([["resources_js_Pages_Flights_RouteMap_js"],{
 
 /***/ "./node_modules/@headlessui/react/dist/_virtual/_rollupPluginBabelHelpers.js":
 /*!***********************************************************************************!*\
@@ -2688,10 +2688,10 @@ function omit(object, keysToOmit) {
 
 /***/ }),
 
-/***/ "./resources/js/Pages/Airports/AirportDetail.js":
-/*!******************************************************!*\
-  !*** ./resources/js/Pages/Airports/AirportDetail.js ***!
-  \******************************************************/
+/***/ "./resources/js/Pages/Flights/RouteMap.js":
+/*!************************************************!*\
+  !*** ./resources/js/Pages/Flights/RouteMap.js ***!
+  \************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -2700,9 +2700,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var _Shared_Layout__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../Shared/Layout */ "./resources/js/Shared/Layout.js");
-/* harmony import */ var _Shared_Navigation_PageTitle__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../Shared/Navigation/PageTitle */ "./resources/js/Shared/Navigation/PageTitle.js");
-/* harmony import */ var _Shared_Components_Airport_AirportMap__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../Shared/Components/Airport/AirportMap */ "./resources/js/Shared/Components/Airport/AirportMap.js");
+/* harmony import */ var _Shared_Navigation_PageTitle__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../Shared/Navigation/PageTitle */ "./resources/js/Shared/Navigation/PageTitle.js");
+/* harmony import */ var _Shared_Layout__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../Shared/Layout */ "./resources/js/Shared/Layout.js");
+/* harmony import */ var maplibre_gl__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! maplibre-gl */ "./node_modules/maplibre-gl/dist/maplibre-gl.js");
+/* harmony import */ var maplibre_gl__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(maplibre_gl__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 
 
@@ -2710,211 +2711,92 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-
-var AirportDetail = function AirportDetail(_ref) {
-  var airport = _ref.airport,
-      metar = _ref.metar;
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.Fragment, {
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_Shared_Navigation_PageTitle__WEBPACK_IMPORTED_MODULE_2__.default, {
-      title: "".concat(airport.name, " - ").concat(airport.identifier)
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
-      className: "flex justify-between",
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
-        className: "w-1/2",
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
-          className: "rounded shadow p-4 mt-2 bg-white mx-2",
-          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
-            className: "flex justify-between",
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
-              className: "flex flex-col items-center my-2 mx-4",
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
-                className: "text-sm",
-                children: "ICAO"
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
-                className: "text-xl",
-                children: airport.identifier
-              })]
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
-              className: "flex flex-col items-center my-2 mx-4",
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
-                className: "text-sm",
-                children: "Country"
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
-                className: "text-xl",
-                children: airport.country
-              })]
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
-              className: "flex flex-col items-center my-2 mx-4",
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
-                className: "text-sm",
-                children: "Latitude"
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
-                className: "text-xl",
-                children: airport.lat
-              })]
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
-              className: "flex flex-col items-center my-2 mx-4",
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
-                className: "text-sm",
-                children: "Longitude"
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
-                className: "text-xl",
-                children: airport.lon
-              })]
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
-              className: "flex flex-col items-center my-2 mx-4",
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
-                className: "text-sm",
-                children: "Altitude"
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
-                className: "text-xl",
-                children: [airport.altitude, "ft"]
-              })]
-            })]
-          })
-        }), airport.longest_runway_length && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
-          className: "rounded shadow p-4 mt-2 bg-white mx-2",
-          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
-            className: "flex items-center",
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("i", {
-              className: "material-icons mr-2",
-              children: "add_road"
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("span", {
-              children: [airport.longest_runway_surface, " ", airport.longest_runway_length, " x ", airport.longest_runway_width]
-            })]
-          })
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
-          className: "rounded shadow p-4 mt-2 bg-white mx-2",
-          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
-            className: "flex items-center",
-            children: metar ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.Fragment, {
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("i", {
-                className: "material-icons mr-2",
-                children: "light_mode"
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("span", {
-                children: metar
-              })]
-            }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
-              children: "No METAR available"
-            })
-          })
-        })]
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
-        className: "w-1/2 rounded shadow p-4 mt-2 bg-white mx-2",
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_Shared_Components_Airport_AirportMap__WEBPACK_IMPORTED_MODULE_3__.default, {
-          airport: airport,
-          size: "large"
-        })
-      })]
-    })]
-  });
-};
-
-AirportDetail.layout = function (page) {
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_Shared_Layout__WEBPACK_IMPORTED_MODULE_1__.default, {
-    children: page,
-    title: "Airport Details"
-  });
-};
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (AirportDetail);
-
-/***/ }),
-
-/***/ "./resources/js/Shared/Components/Airport/AirportMap.js":
-/*!**************************************************************!*\
-  !*** ./resources/js/Shared/Components/Airport/AirportMap.js ***!
-  \**************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var maplibre_gl__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! maplibre-gl */ "./node_modules/maplibre-gl/dist/maplibre-gl.js");
-/* harmony import */ var maplibre_gl__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(maplibre_gl__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
-
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
-
-
-
-
 var accessToken = 'pk.eyJ1IjoicnVzc2VsbHd3ZXN0IiwiYSI6ImNrc29vZm5paDEweGIzMnA3MXAzYTFuMDQifQ.7veU-ARmzYClHDFsVQvT5g';
 
-var AirportMap = function AirportMap(props) {
+var RouteMap = function RouteMap(_ref) {
+  var flights = _ref.flights;
   var mapContainer = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(null);
   var map = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(null);
-
-  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({}),
-      _useState2 = _slicedToArray(_useState, 2),
-      airport = _useState2[0],
-      setAirport = _useState2[1];
-
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     if (map.current) return;
-    map.current = new (maplibre_gl__WEBPACK_IMPORTED_MODULE_1___default().Map)({
+    map.current = new (maplibre_gl__WEBPACK_IMPORTED_MODULE_3___default().Map)({
       container: mapContainer.current,
       style: 'mapbox://styles/mapbox/dark-v10',
-      center: [props.airport.lon, props.airport.lat],
-      zoom: 14,
+      center: [143.23070, -6.36188],
+      zoom: 6,
       accessToken: accessToken
     });
   });
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
-    if (props.airport) {
-      setAirport(props.airport);
-      var airportLngLat = [props.airport.lon, props.airport.lat];
+    if (flights) {
       map.current.on('load', function () {
-        var ap = new (maplibre_gl__WEBPACK_IMPORTED_MODULE_1___default().Marker)({
-          color: '#F97316'
-        }).setLngLat(airportLngLat).addTo(map.current); // map.current.addSource('route', {
-        //   type: 'geojson',
-        //   data: {
-        //     type: 'Feature',
-        //     geometry: {
-        //       type: 'LineString',
-        //       coordinates: [depLngLat, arrLngLat]
-        //     }
-        //   }
-        // })
-        // map.current.addLayer({
-        //   id: 'route',
-        //   type: 'line',
-        //   source: 'route',
-        //   paint: {
-        //     'line-color': '#F97316',
-        //     'line-width': 2
-        //   }
-        // })
-      }); // const bounds = [depLngLat, arrLngLat]
-      // map.current.fitBounds(bounds, {
-      //   padding: { top: 25, bottom: 25, left: 25, right: 25 }
-      // })
+        var coords = [];
+        flights.forEach(function (flight) {
+          var depLngLat = [flight.dep_airport.lon, flight.dep_airport.lat];
+          var arrLngLat = [flight.arr_airport.lon, flight.arr_airport.lat];
+          coords.push([depLngLat, arrLngLat]);
+          var depPopup = new (maplibre_gl__WEBPACK_IMPORTED_MODULE_3___default().Popup)({
+            offset: 25
+          }).setText(flight.dep_airport_id);
+          var arrPopup = new (maplibre_gl__WEBPACK_IMPORTED_MODULE_3___default().Popup)({
+            offset: 25
+          }).setText(flight.arr_airport_id);
+          var depMarkerColor = flight.dep_airport.is_hub ? '#22C55E' : '#F97316';
+          var arrMarkerColor = flight.arr_airport.is_hub ? '#22C55E' : '#F97316';
+          var dep = new (maplibre_gl__WEBPACK_IMPORTED_MODULE_3___default().Marker)({
+            color: depMarkerColor,
+            scale: 0.5
+          }).setLngLat(depLngLat).setPopup(depPopup).addTo(map.current);
+          var arr = new (maplibre_gl__WEBPACK_IMPORTED_MODULE_3___default().Marker)({
+            color: arrMarkerColor,
+            scale: 0.5
+          }).setLngLat(arrLngLat).setPopup(arrPopup).addTo(map.current);
+        }); // const depLngLat = [flights[0].dep_airport.lon, flights[0].dep_airport.lat]
+        // const arrLngLat = [flights[0].arr_airport.lon, flights[0].arr_airport.lat]
+
+        map.current.addSource('routes', {
+          type: 'geojson',
+          data: {
+            type: 'Feature',
+            geometry: {
+              type: 'MultiLineString',
+              coordinates: coords
+            }
+          }
+        }); // coords = JSON.stringify(coords)
+        // const newc = JSON.parse(coords)
+
+        map.current.addLayer({
+          id: 'routes',
+          type: 'line',
+          source: 'routes',
+          paint: {
+            'line-color': '#F97316',
+            'line-width': 2,
+            'line-opacity': 0.6
+          }
+        });
+      });
     }
-  }, [props.airport]);
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.Fragment, {
-    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+  }, [flights]);
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_Shared_Navigation_PageTitle__WEBPACK_IMPORTED_MODULE_1__.default, {
+      title: "Route Map"
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
       ref: mapContainer,
-      className: 'map-container-' + props.size
-    })
+      className: "map-container-xl"
+    })]
   });
 };
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (AirportMap);
+RouteMap.layout = function (page) {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_Shared_Layout__WEBPACK_IMPORTED_MODULE_2__.default, {
+    children: page,
+    title: "Route Map"
+  });
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (RouteMap);
 
 /***/ }),
 

@@ -20,6 +20,7 @@ Route::get('/privacy', function () {
 });
 Route::get('/ranks', [\App\Http\Controllers\PageController::class, 'ranks'])->name('ranks');
 Route::get('/hubs', [\App\Http\Controllers\AirportController::class, 'hubs'])->name('hubs');
+Route::get('/routes', [\App\Http\Controllers\FlightController::class, 'routes'])->name('routes');
 Route::get('/staff', [\App\Http\Controllers\PageController::class, 'staff'])->name('staff');
 Route::get('/supporters', [\App\Http\Controllers\PageController::class, 'supporters'])->name('supporters');
 Route::get('/liveflights', [\App\Http\Controllers\PirepController::class, 'flightMap'])->name('flights.map');
