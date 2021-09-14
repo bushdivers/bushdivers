@@ -6,7 +6,7 @@ import Footer from './Navigation/Footer'
 export default function Layout ({ children, title }) {
   const { flash } = usePage().props
   return (
-        <main className="flex flex-col h-screen">
+        <main className="flex flex-col h-screen z-0">
             <Head title={title} />
             <NavBar />
             {flash.error && <p className="text-red-500">{flash.error}</p>}
