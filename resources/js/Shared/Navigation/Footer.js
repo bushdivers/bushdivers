@@ -11,7 +11,7 @@ const Footer = () => {
           &copy; Bush Divers {date}
         </div>
         <div>
-          <a className="mr-4" href="#">Privacy Policy</a>
+          <Link className="mr-4" href="/privacy">Privacy Policy</Link>
           <Link href="/supporters">Supporters</Link>
         </div>
       </div>

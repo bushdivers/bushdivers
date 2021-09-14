@@ -15,6 +15,9 @@ use Illuminate\Support\Facades\Route;
 
 // Public pages
 Route::get('/', [\App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/privacy', function () {
+   return \Inertia\Inertia::render('General/Privacy');
+});
 Route::get('/ranks', [\App\Http\Controllers\PageController::class, 'ranks'])->name('ranks');
 Route::get('/hubs', [\App\Http\Controllers\AirportController::class, 'hubs'])->name('hubs');
 Route::get('/staff', [\App\Http\Controllers\PageController::class, 'staff'])->name('staff');
