@@ -86,7 +86,7 @@ const Jumpseat = ({ user, spent }) => {
             </div>
             )}
           </div>
-          <div className="flex justify-center mt-12">
+          <div className="flex justify-end mt-12">
             <button className="btn btn-primary" onClick={() => processJumpseat()}>Purchase Ticket</button>
           </div>
         </div>

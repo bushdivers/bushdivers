@@ -63,6 +63,9 @@ export default function NavBar () {
                   {({ active }) => <Link href="/flights" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Flight Search</Link>}
                 </Menu.Item>
                 <Menu.Item>
+                  {({ active }) => <Link href="/charter" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Charter Flight</Link>}
+                </Menu.Item>
+                <Menu.Item>
                   {({ active }) => <Link href="/liveflights" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Live Flights Map</Link>}
                 </Menu.Item>
                 <Menu.Item>

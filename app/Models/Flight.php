@@ -18,6 +18,9 @@ class Flight extends Model
 
     public function getFullFlightNumberAttribute()
     {
+        if ($this->is_custom_flight) {
+            return 'BDX'.$this->flight_number;
+        }
         return 'BDV'.$this->flight_number;
     }
 

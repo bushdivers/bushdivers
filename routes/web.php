@@ -53,6 +53,8 @@ Route::middleware('auth')->group(function () {
     // Flights
     Route::get('/flights', [\App\Http\Controllers\FlightController::class, 'index'])->name('flights');
     Route::get('/flights/search', [\App\Http\Controllers\FlightController::class, 'search'])->name('flights.search');
+    Route::get('/charter', [\App\Http\Controllers\FlightController::class, 'charter'])->name('charter');
+    Route::post('/charter', [\App\Http\Controllers\FlightController::class, 'createCharter'])->name('charter.create');
     Route::get('/bookings', [\App\Http\Controllers\BookingController::class, 'index'])->name('bookings');
     Route::post('/bookings/create/{flight}', [\App\Http\Controllers\BookingController::class, 'create'])->name('bookings.create');
     Route::delete('/bookings/cancel/{flight}', [\App\Http\Controllers\BookingController::class, 'delete'])->name('bookings.delete');

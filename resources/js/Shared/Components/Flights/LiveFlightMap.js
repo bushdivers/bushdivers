@@ -17,7 +17,6 @@ const LiveFlightMap = (props) => {
 
   const loadMarkers = async () => {
     let flights = []
-    console.log(markers.current.length)
     if (markers.current.length > 0) {
       await markers.current.forEach((marker) => marker.remove())
       markers.current = []
@@ -72,7 +71,6 @@ const LiveFlightMap = (props) => {
     })
 
     await map.current.on('load', function () {
-      console.log('loaded!')
       loadMarkers()
     })
   }, [])
