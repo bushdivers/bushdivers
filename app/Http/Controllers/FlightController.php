@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Airport;
 use App\Models\Booking;
 use App\Models\Flight;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -46,7 +48,17 @@ class FlightController extends Controller
 
     public function routes()
     {
+        $airports = DB::table('airports')
+            ->join('flights', 'airports.identifier', '=', 'flights.arr_airport_id')
+            ->select('airports.identifier', 'airports.name', 'airports.lon', 'airports.lat', 'airports.is_hub')
+            ->where('airports.is_hub', false)
+            ->distinct()
+            ->get();
+
+        $hubs = Airport::where('is_hub', true)->get();
+
         $flights = Flight::with('depAirport', 'arrAirport')->where('is_active', true)->get();
-        return Inertia::render('Flights/RouteMap', ['flights' => $flights]);
+
+        return Inertia::render('Flights/RouteMap', ['flights' => $flights, 'airports' => $airports, 'hubs' => $hubs]);
     }
 }

@@ -2714,7 +2714,9 @@ __webpack_require__.r(__webpack_exports__);
 var accessToken = 'pk.eyJ1IjoicnVzc2VsbHd3ZXN0IiwiYSI6ImNrc29vZm5paDEweGIzMnA3MXAzYTFuMDQifQ.7veU-ARmzYClHDFsVQvT5g';
 
 var RouteMap = function RouteMap(_ref) {
-  var flights = _ref.flights;
+  var flights = _ref.flights,
+      airports = _ref.airports,
+      hubs = _ref.hubs;
   var mapContainer = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(null);
   var map = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(null);
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
@@ -2728,32 +2730,40 @@ var RouteMap = function RouteMap(_ref) {
     });
   });
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
-    if (flights) {
-      map.current.on('load', function () {
+    map.current.on('load', function () {
+      if (hubs) {
+        hubs.forEach(function (hub) {
+          var hubLngLat = [hub.lon, hub.lat];
+          var hubPopup = new (maplibre_gl__WEBPACK_IMPORTED_MODULE_3___default().Popup)({
+            offset: 25
+          }).setText("".concat(hub.identifier, " - ").concat(hub.name));
+          var hubMarker = new (maplibre_gl__WEBPACK_IMPORTED_MODULE_3___default().Marker)({
+            color: '#F97316',
+            scale: 0.5
+          }).setLngLat(hubLngLat).setPopup(hubPopup).addTo(map.current);
+        });
+      }
+
+      if (airports) {
+        airports.forEach(function (airport) {
+          var markerLngLat = [airport.lon, airport.lat];
+          var markerPopup = new (maplibre_gl__WEBPACK_IMPORTED_MODULE_3___default().Popup)({
+            offset: 25
+          }).setText("".concat(airport.identifier, " - ").concat(airport.name));
+          var marker = new (maplibre_gl__WEBPACK_IMPORTED_MODULE_3___default().Marker)({
+            color: '#ffffff',
+            scale: 0.5
+          }).setLngLat(markerLngLat).setPopup(markerPopup).addTo(map.current);
+        });
+      }
+
+      if (flights) {
         var coords = [];
         flights.forEach(function (flight) {
           var depLngLat = [flight.dep_airport.lon, flight.dep_airport.lat];
           var arrLngLat = [flight.arr_airport.lon, flight.arr_airport.lat];
           coords.push([depLngLat, arrLngLat]);
-          var depPopup = new (maplibre_gl__WEBPACK_IMPORTED_MODULE_3___default().Popup)({
-            offset: 25
-          }).setText(flight.dep_airport_id);
-          var arrPopup = new (maplibre_gl__WEBPACK_IMPORTED_MODULE_3___default().Popup)({
-            offset: 25
-          }).setText(flight.arr_airport_id);
-          var depMarkerColor = flight.dep_airport.is_hub ? '#F97316' : '#ffffff';
-          var arrMarkerColor = flight.arr_airport.is_hub ? '#F97316' : '#ffffff';
-          var dep = new (maplibre_gl__WEBPACK_IMPORTED_MODULE_3___default().Marker)({
-            color: depMarkerColor,
-            scale: 0.5
-          }).setLngLat(depLngLat).setPopup(depPopup).addTo(map.current);
-          var arr = new (maplibre_gl__WEBPACK_IMPORTED_MODULE_3___default().Marker)({
-            color: arrMarkerColor,
-            scale: 0.5
-          }).setLngLat(arrLngLat).setPopup(arrPopup).addTo(map.current);
-        }); // const depLngLat = [flights[0].dep_airport.lon, flights[0].dep_airport.lat]
-        // const arrLngLat = [flights[0].arr_airport.lon, flights[0].arr_airport.lat]
-
+        });
         map.current.addSource('routes', {
           type: 'geojson',
           data: {
@@ -2763,9 +2773,7 @@ var RouteMap = function RouteMap(_ref) {
               coordinates: coords
             }
           }
-        }); // coords = JSON.stringify(coords)
-        // const newc = JSON.parse(coords)
-
+        });
         map.current.addLayer({
           id: 'routes',
           type: 'line',
@@ -2776,9 +2784,9 @@ var RouteMap = function RouteMap(_ref) {
             'line-opacity': 0.6
           }
         });
-      });
-    }
-  }, [flights]);
+      }
+    });
+  }, []);
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_Shared_Navigation_PageTitle__WEBPACK_IMPORTED_MODULE_1__.default, {
       title: "Route Map"
