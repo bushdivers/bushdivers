@@ -64,6 +64,10 @@ const CharterFlight = ({ user }) => {
 
   async function handleSubmit (e) {
     e.preventDefault()
+    if (!icao) {
+      setError('Please specify an destination')
+      return
+    }
     const data = {
       aircraft: values.aircraft,
       cargo: cargoType,

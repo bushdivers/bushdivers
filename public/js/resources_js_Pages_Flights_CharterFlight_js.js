@@ -3547,6 +3547,16 @@ var CharterFlight = function CharterFlight(_ref) {
           switch (_context3.prev = _context3.next) {
             case 0:
               e.preventDefault();
+
+              if (icao) {
+                _context3.next = 4;
+                break;
+              }
+
+              setError('Please specify an destination');
+              return _context3.abrupt("return");
+
+            case 4:
               data = {
                 aircraft: values.aircraft,
                 cargo: cargoType,
@@ -3555,10 +3565,10 @@ var CharterFlight = function CharterFlight(_ref) {
                 arr: destination,
                 distance: distance
               };
-              _context3.next = 4;
+              _context3.next = 7;
               return _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_6__.Inertia.post('/charter', data);
 
-            case 4:
+            case 7:
             case "end":
               return _context3.stop();
           }
