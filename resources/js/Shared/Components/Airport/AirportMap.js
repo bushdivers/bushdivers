@@ -31,32 +31,7 @@ const AirportMap = (props) => {
         })
           .setLngLat(airportLngLat)
           .addTo(map.current)
-
-        // map.current.addSource('route', {
-        //   type: 'geojson',
-        //   data: {
-        //     type: 'Feature',
-        //     geometry: {
-        //       type: 'LineString',
-        //       coordinates: [depLngLat, arrLngLat]
-        //     }
-        //   }
-        // })
-        // map.current.addLayer({
-        //   id: 'route',
-        //   type: 'line',
-        //   source: 'route',
-        //   paint: {
-        //     'line-color': '#F97316',
-        //     'line-width': 2
-        //   }
-        // })
       })
-
-      // const bounds = [depLngLat, arrLngLat]
-      // map.current.fitBounds(bounds, {
-      //   padding: { top: 25, bottom: 25, left: 25, right: 25 }
-      // })
     }
   }, [props.airport])
 

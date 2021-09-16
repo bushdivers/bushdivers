@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileRequest;
 use App\Models\Airport;
+use App\Models\Enums\PirepState;
 use App\Models\Enums\TransactionTypes;
+use App\Models\Pirep;
+use App\Models\Rank;
 use App\Models\User;
 use App\Services\AirportService;
 use App\Services\UserService;
@@ -29,7 +32,32 @@ class CrewController extends Controller
 
     public function index(): Response
     {
-        return Inertia::render('Crew/Dashboard');
+        $user = User::find(Auth::user()->id);
+        $lastFlight = Pirep::with('flight', 'aircraft', 'aircraft.fleet', 'flight.depAirport', 'flight.arrAirport')
+            ->where('user_id', $user->id)
+            ->where('state', PirepState::ACCEPTED)
+            ->orderBy('submitted_at', 'desc')
+            ->first();
+
+        $rank = Rank::find($user->rank_id);
+        $nextRank = Rank::find($user->rank_id + 1);
+
+        $locations = DB::table('airports')
+            ->join('flights', 'airports.identifier', '=', 'flights.arr_airport_id')
+            ->join('pireps', 'flights.id', '=', 'pireps.flight_id')
+            ->select('airports.identifier', 'airports.name', 'airports.lon', 'airports.lat')
+            ->where('pireps.user_id', Auth::user()->id)
+            ->distinct()
+            ->get();
+
+        return Inertia::render('Crew/Dashboard', [
+            'user' => $user,
+            'lastFlight' => $lastFlight,
+            'rank' => $rank,
+            'nextRank' => $nextRank,
+            'awards' => $user->awards,
+            'locations' => $locations
+        ]);
     }
 
     public function roster(): Response

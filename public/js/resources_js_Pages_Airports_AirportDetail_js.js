@@ -2881,29 +2881,8 @@ var AirportMap = function AirportMap(props) {
       map.current.on('load', function () {
         var ap = new (maplibre_gl__WEBPACK_IMPORTED_MODULE_1___default().Marker)({
           color: '#F97316'
-        }).setLngLat(airportLngLat).addTo(map.current); // map.current.addSource('route', {
-        //   type: 'geojson',
-        //   data: {
-        //     type: 'Feature',
-        //     geometry: {
-        //       type: 'LineString',
-        //       coordinates: [depLngLat, arrLngLat]
-        //     }
-        //   }
-        // })
-        // map.current.addLayer({
-        //   id: 'route',
-        //   type: 'line',
-        //   source: 'route',
-        //   paint: {
-        //     'line-color': '#F97316',
-        //     'line-width': 2
-        //   }
-        // })
-      }); // const bounds = [depLngLat, arrLngLat]
-      // map.current.fitBounds(bounds, {
-      //   padding: { top: 25, bottom: 25, left: 25, right: 25 }
-      // })
+        }).setLngLat(airportLngLat).addTo(map.current);
+      });
     }
   }, [props.airport]);
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.Fragment, {

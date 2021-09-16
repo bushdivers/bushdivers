@@ -81,7 +81,7 @@ class User extends Authenticatable
 
     public function awards()
     {
-        return $this->belongsToMany(Award::class);
+        return $this->belongsToMany(Award::class, 'award_user');
     }
 
     public function location()
