@@ -2,6 +2,11 @@
 
 namespace App\Services;
 
+use App\Models\Aircraft;
+use App\Models\Enums\AircraftState;
+use App\Models\Enums\AircraftStatus;
+use App\Models\Enums\PirepState;
+use App\Models\Enums\PirepStatus;
 use App\Models\Enums\PointsType;
 use App\Models\Enums\TransactionTypes;
 use App\Models\Flight;
@@ -9,6 +14,7 @@ use App\Models\Pirep;
 use App\Models\Point;
 use App\Models\Rank;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class PirepService
@@ -140,5 +146,36 @@ class PirepService
         $entry->type_name = $type;
         $entry->points = $points;
         $entry->save();
+    }
+
+    public function findInactivePireps()
+    {
+        $dateToCompare = Carbon::now()->subHours(48);
+
+        $pireps = Pirep::where('status', PirepState::DISPATCH)
+            ->where('created_at', '<', $dateToCompare)
+            ->get();
+
+        return $pireps;
+    }
+
+    public function removeMultiplePireps($pireps)
+    {
+        $aircraftService = new AircraftService();
+        if ($pireps->count() > 1) {
+            foreach ($pireps as $pirep) {
+                $aircraftService->updateAircraftState($pirep->aircraft_id, AircraftState::AVAILABLE);
+                $this->removePirep($pirep->id);
+            }
+        } elseif ($pireps->count() == 1) {
+            $aircraftService->updateAircraftState($pireps->aircraft_id, AircraftState::AVAILABLE);
+            $this->removePirep($pireps->id);
+        }
+
+    }
+
+    public function removePirep($pirepId)
+    {
+        Pirep::destroy($pirepId);
     }
 }
