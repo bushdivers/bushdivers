@@ -9,7 +9,7 @@ const PilotStats = (props) => {
         <StatCard title="Flights" stat={props.flights} />
       </div>
       <div className="w-1/6">
-        <StatCard title="Hours" stat={convertMinuteDecimalToHoursAndMinutes(props.hours)} />
+        <StatCard title="Hours" stat={props.hours > 0 ? convertMinuteDecimalToHoursAndMinutes(props.hours) : 0} />
       </div>
       <div className="w-1/6">
         <StatCard title="Points" stat={props.points} />

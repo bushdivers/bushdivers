@@ -27,7 +27,7 @@ const Dashboard = ({ lastFlight, rank, nextRank, awards, user, locations }) => {
             hours={user.flights_time}
             location={user.current_airport_id}
             balance={user.account_balance}
-            awards={awards.length}
+            awards={awards && awards.length > 0 ? awards.length : 0}
             points={user.points}
           />
           <div className="flex">
@@ -36,7 +36,7 @@ const Dashboard = ({ lastFlight, rank, nextRank, awards, user, locations }) => {
                 <div className="flex items-center">
                   <i className="material-icons mr-2 md-36">flight_land</i> Last Flight
                 </div>
-                <span className="ml-2"><Link href={`/logbook/${lastFlight.id}`}>{lastFlight.flight.full_flight_number}</Link></span>
+                {lastFlight && <span className="ml-2"><Link href={`/logbook/${lastFlight.id}`}>{lastFlight.flight.full_flight_number}</Link></span>}
               </div>
               {lastFlight && (
                 <>
@@ -88,7 +88,7 @@ const Dashboard = ({ lastFlight, rank, nextRank, awards, user, locations }) => {
           </div>
         </div>
         <div className="ml-2 w-1/2">
-          <CrewMap size="large" locations={locations} />
+          <CrewMap size="large" locations={locations && locations.length > 0 ? locations : []} />
         </div>
       </div>
     </div>

@@ -2785,7 +2785,7 @@ var Dashboard = function Dashboard(_ref) {
           hours: user.flights_time,
           location: user.current_airport_id,
           balance: user.account_balance,
-          awards: awards.length,
+          awards: awards && awards.length > 0 ? awards.length : 0,
           points: user.points
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
           className: "flex",
@@ -2799,7 +2799,7 @@ var Dashboard = function Dashboard(_ref) {
                   className: "material-icons mr-2 md-36",
                   children: "flight_land"
                 }), " Last Flight"]
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("span", {
+              }), lastFlight && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("span", {
                 className: "ml-2",
                 children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_5__.Link, {
                   href: "/logbook/".concat(lastFlight.id),
@@ -2898,7 +2898,7 @@ var Dashboard = function Dashboard(_ref) {
         className: "ml-2 w-1/2",
         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_Shared_Components_Crew_CrewMap__WEBPACK_IMPORTED_MODULE_6__.default, {
           size: "large",
-          locations: locations
+          locations: locations && locations.length > 0 ? locations : []
         })
       })]
     })]
@@ -3013,7 +3013,7 @@ var PilotStats = function PilotStats(props) {
       className: "w-1/6",
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_Elements_StatCard__WEBPACK_IMPORTED_MODULE_1__.default, {
         title: "Hours",
-        stat: (0,_Helpers_date_helpers__WEBPACK_IMPORTED_MODULE_2__.convertMinuteDecimalToHoursAndMinutes)(props.hours)
+        stat: props.hours > 0 ? (0,_Helpers_date_helpers__WEBPACK_IMPORTED_MODULE_2__.convertMinuteDecimalToHoursAndMinutes)(props.hours) : 0
       })
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
       className: "w-1/6",
