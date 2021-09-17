@@ -1,10 +1,10 @@
 "use strict";
-(self["webpackChunk"] = self["webpackChunk"] || []).push([["resources_js_Pages_Auth_Login_js"],{
+(self["webpackChunk"] = self["webpackChunk"] || []).push([["resources_js_Pages_Auth_PasswordReset_js"],{
 
-/***/ "./resources/js/Pages/Auth/Login.js":
-/*!******************************************!*\
-  !*** ./resources/js/Pages/Auth/Login.js ***!
-  \******************************************/
+/***/ "./resources/js/Pages/Auth/PasswordReset.js":
+/*!**************************************************!*\
+  !*** ./resources/js/Pages/Auth/PasswordReset.js ***!
+  \**************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -141,12 +141,6 @@ var Login = function Login() {
           className: "btn btn-primary w-full",
           children: "Login"
         })]
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
-        className: "mt-2",
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_2__.Link, {
-          href: "/password",
-          children: "Forgotten password?"
-        })
       })]
     })]
   });

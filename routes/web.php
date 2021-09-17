@@ -30,6 +30,10 @@ Route::get('/register', [\App\Http\Controllers\Auth\RegisterController::class, '
 Route::post('/register', [\App\Http\Controllers\Auth\RegisterController::class, 'register'])->name('register');
 Route::get('/login', [\App\Http\Controllers\Auth\LoginController::class, 'index'])->name('login.index');
 Route::post('/login', [\App\Http\Controllers\Auth\LoginController::class, 'authenticate'])->name('login');
+Route::get('/password', [\App\Http\Controllers\Auth\PasswordRequestController::class, 'index'])->name('password.request.index');
+Route::post('/password', [\App\Http\Controllers\Auth\PasswordRequestController::class, 'request'])->name('password.request');
+Route::get('/password/reset/{token}', [\App\Http\Controllers\Auth\PasswordResetController::class, 'index'])->name('password.reset.index');
+Route::post('/password/reset', [\App\Http\Controllers\Auth\PasswordResetController::class, 'reset'])->name('password.reset');
 
 Route::middleware('auth')->group(function () {
     Route::get('/logout', [\App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');

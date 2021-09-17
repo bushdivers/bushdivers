@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Inertia } from '@inertiajs/inertia'
-import { usePage } from '@inertiajs/inertia-react'
+import { Link, usePage } from '@inertiajs/inertia-react'
 import LayoutAuth from '../../Shared/LayoutAuth'
 
 const Login = () => {
@@ -50,6 +50,9 @@ const Login = () => {
           </div>
           <button className="btn btn-primary w-full">Login</button>
         </form>
+        <div className="mt-2">
+          <Link href="/password">Forgotten password?</Link>
+        </div>
       </div>
     </div>
   )

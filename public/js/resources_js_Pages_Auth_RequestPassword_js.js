@@ -1,10 +1,10 @@
 "use strict";
-(self["webpackChunk"] = self["webpackChunk"] || []).push([["resources_js_Pages_Auth_Login_js"],{
+(self["webpackChunk"] = self["webpackChunk"] || []).push([["resources_js_Pages_Auth_RequestPassword_js"],{
 
-/***/ "./resources/js/Pages/Auth/Login.js":
-/*!******************************************!*\
-  !*** ./resources/js/Pages/Auth/Login.js ***!
-  \******************************************/
+/***/ "./resources/js/Pages/Auth/RequestPassword.js":
+/*!****************************************************!*\
+  !*** ./resources/js/Pages/Auth/RequestPassword.js ***!
+  \****************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -41,14 +41,12 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
-var Login = function Login() {
+var RequestPassword = function RequestPassword() {
   var errors = (0,_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_2__.usePage)().props.errors;
   console.log(errors);
 
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({
-    email: '',
-    password: '',
-    remember: false
+    email: ''
   }),
       _useState2 = _slicedToArray(_useState, 2),
       values = _useState2[0],
@@ -56,7 +54,7 @@ var Login = function Login() {
 
   function handleChange(e) {
     var key = e.target.id;
-    var value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
+    var value = e.target.value;
     setValues(function (values) {
       return _objectSpread(_objectSpread({}, values), {}, _defineProperty({}, key, value));
     });
@@ -64,7 +62,7 @@ var Login = function Login() {
 
   function handleSubmit(e) {
     e.preventDefault();
-    _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_1__.Inertia.post('/login', values);
+    _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_1__.Inertia.post('/password', values);
   }
 
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
@@ -80,7 +78,7 @@ var Login = function Login() {
       className: "rounded-md shadow-sm bg-white p-4 w-96 m-2",
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("p", {
         className: "text-center text-2xl mb-2",
-        children: "Login"
+        children: "Request new password"
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("form", {
         onSubmit: handleSubmit,
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
@@ -102,64 +100,23 @@ var Login = function Login() {
             className: "text-sm text-red-500",
             children: errors.email
           })]
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
-          className: "my-2",
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("label", {
-            htmlFor: "password",
-            className: "block",
-            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("span", {
-              className: "text-gray-700",
-              children: "Password"
-            })
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
-            id: "password",
-            value: values.password,
-            onChange: handleChange,
-            type: "password",
-            className: "form-input form"
-          }), errors.password && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
-            className: "text-sm text-red-500",
-            children: errors.password
-          })]
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
-          className: "my-2",
-          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("label", {
-            htmlFor: "remember",
-            className: "inline-flex items-center",
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
-              id: "remember",
-              checked: values.remember,
-              onChange: handleChange,
-              type: "checkbox",
-              className: "form-checkbox rounded border-gray-300 text-orange-500 shadow-sm focus:border-orange-300 focus:ring focus:ring-offset-0 focus:ring-orange-200 focus:ring-opacity-50"
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("span", {
-              className: "text-gray-700 ml-2",
-              children: "Remember me"
-            })]
-          })
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
           className: "btn btn-primary w-full",
-          children: "Login"
+          children: "Request password"
         })]
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
-        className: "mt-2",
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_2__.Link, {
-          href: "/password",
-          children: "Forgotten password?"
-        })
       })]
     })]
   });
 };
 
-Login.layout = function (page) {
+RequestPassword.layout = function (page) {
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_Shared_LayoutAuth__WEBPACK_IMPORTED_MODULE_3__.default, {
     children: page,
-    title: "Login"
+    title: "Request Password"
   });
 };
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Login);
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (RequestPassword);
 
 /***/ }),
 

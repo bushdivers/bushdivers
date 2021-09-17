@@ -38,7 +38,7 @@ class MailTypes
         return $body;
     }
 
-    public static function resetPassword($user, $link)
+    public static function passwordRequest($user, $link)
     {
         $data = [
             'name' => $user->name,
@@ -72,7 +72,7 @@ class MailTypes
         return $body;
     }
 
-    public function passwordReset($user)
+    public static function passwordReset($user)
     {
         $data = [
             'name' => $user->name
@@ -87,8 +87,8 @@ class MailTypes
                     ],
                     'To' => [
                         [
-                            'Email' => "passenger1@example.com",
-                            'Name' => "passenger 1"
+                            'Email' => $user->email,
+                            'Name' => $user->name
                         ]
                     ],
                     'TemplateID' => 3180260,
