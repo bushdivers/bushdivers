@@ -4,8 +4,10 @@ namespace Tests\Feature\Api\Tracker;
 
 use App\Models\Aircraft;
 use App\Models\Booking;
+use App\Models\Enums\PirepState;
 use App\Models\Fleet;
 use App\Models\Flight;
+use App\Models\FlightLog;
 use App\Models\Pirep;
 use App\Models\User;
 use Carbon\Carbon;
@@ -15,7 +17,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
-class UpdatePirepStatusTest extends TestCase
+class CancelPirepTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -55,19 +57,42 @@ class UpdatePirepStatusTest extends TestCase
      *
      * @return void
      */
-    public function test_pirep_submitted_successfully()
+    public function test_pirep_is_cancelled()
     {
         Sanctum::actingAs(
             $this->user,
             ['*']
         );
-        $data = [
-            'pirep_id' => $this->pirep->id,
-            'status' => 2
-        ];
 
-        $response = $this->postJson('/api/pirep/status', $data);
-
+        $response = $this->post('/api/pirep/reset', ['pirep_id' => $this->pirep->id]);
         $response->assertStatus(200);
+        $this->assertDatabaseHas('pireps', ['id' => $this->pirep->id, 'state' => PirepState::DISPATCH]);
+    }
+
+    public function test_pirep_has_no_logs()
+    {
+
+        $log = new FlightLog();
+        $log->pirep_id = $this->pirep->id;
+        $log->lat = -6.36098;
+        $log->lon = 143.23202;
+        $log->distance = 2;
+        $log->heading = 90;
+        $log->altitude = 1000;
+        $log->indicated_speed = 100;
+        $log->ground_speed = 105;
+        $log->fuel_flow = 23;
+        $log->vs = 580;
+        $log->sim_time = Carbon::now();
+        $log->zulu_time = Carbon::createFromTimestampUTC(Carbon::now());
+        $log->save();
+
+        Sanctum::actingAs(
+            $this->user,
+            ['*']
+        );
+
+        $response = $this->postJson('/api/pirep/reset', ['pirep_id' => $this->pirep->id]);
+        $this->assertDatabaseMissing('flight_logs', ['pirep_id' => $this->pirep->id]);
     }
 }

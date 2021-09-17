@@ -86,7 +86,7 @@ class SubmitPirepTest extends TestCase
             'block_on_time' => Carbon::now()->addMinutes(-5)
         ];
 
-        $response = $this->putJson('/api/pirep/submit', $data);
+        $response = $this->postJson('/api/pirep/submit', $data);
 
         $response->assertStatus(200);
     }
@@ -109,7 +109,7 @@ class SubmitPirepTest extends TestCase
             'block_on_time' => Carbon::now()->addMinutes(-5)
         ];
 
-        $response = $this->putJson('/api/pirep/submit', $data);
+        $response = $this->postJson('/api/pirep/submit', $data);
 
         Event::assertDispatched(PirepFiled::class);
     }
@@ -131,7 +131,7 @@ class SubmitPirepTest extends TestCase
             'block_on_time' => Carbon::now()->addMinutes(-5)
         ];
 
-        $this->putJson('/api/pirep/submit', $data);
+        $this->postJson('/api/pirep/submit', $data);
         $pay = 25.00 * (45 / 60);
 
         $this->assertDatabaseHas('users', [
@@ -170,7 +170,7 @@ class SubmitPirepTest extends TestCase
             'block_on_time' => Carbon::now()->addMinutes(-5)
         ];
 
-        $this->putJson('/api/pirep/submit', $data);
+        $this->postJson('/api/pirep/submit', $data);
         $pay = 25.00 * (45 / 60);
 
         $pirep = Pirep::find($this->pirep->id);
@@ -206,7 +206,7 @@ class SubmitPirepTest extends TestCase
         $hours = $this->aircraft->flight_time_mins += 45;
         $fuel = $this->aircraft->fuel_onboard -= 25;
 
-        $this->putJson('/api/pirep/submit', $data);
+        $this->postJson('/api/pirep/submit', $data);
 
         $pirep = Pirep::where('aircraft_id', $this->aircraft->id)->first();
 
@@ -238,7 +238,7 @@ class SubmitPirepTest extends TestCase
             'submitted_at' => Carbon::now()
         ];
 
-        $this->putJson('/api/pirep/submit', $data);
+        $this->postJson('/api/pirep/submit', $data);
 
         $this->assertDatabaseHas('users', [
             'id' => $this->user->id,
@@ -265,7 +265,7 @@ class SubmitPirepTest extends TestCase
             'submitted_at' => Carbon::now()
         ];
 
-        $this->putJson('/api/pirep/submit', $data);
+        $this->postJson('/api/pirep/submit', $data);
 
         $this->assertDatabaseHas('award_user', [
             'user_id' => $this->user->id,

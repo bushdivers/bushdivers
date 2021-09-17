@@ -23,7 +23,8 @@ Route::get('/liveflights', [\App\Http\Controllers\PirepController::class, 'liveF
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/bookings', [\App\Http\Controllers\Api\TrackerController::class, 'getDispatchedBookings']);
     Route::post('/log', [\App\Http\Controllers\Api\TrackerController::class, 'postFlightLog']);
-    Route::put('/pirep/submit', [\App\Http\Controllers\Api\TrackerController::class, 'submitPirep']);
-    Route::put('/pirep/status', [\App\Http\Controllers\Api\TrackerController::class, 'updatePirepStatus']);
+    Route::post('/pirep/submit', [\App\Http\Controllers\Api\TrackerController::class, 'submitPirep']);
+    Route::post('/pirep/status', [\App\Http\Controllers\Api\TrackerController::class, 'updatePirepStatus']);
+    Route::post('/pirep/reset', [\App\Http\Controllers\Api\TrackerController::class, 'cancelPirep']);
 });
 

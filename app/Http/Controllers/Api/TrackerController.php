@@ -87,8 +87,20 @@ class TrackerController extends Controller
     {
         $pirep = Pirep::find($request->pirep_id);
         $pirep->status = $request->status;
+        $pirep->state = PirepState::IN_PROGRESS;
         $pirep->save();
 
         return response()->json(['message' => 'Updated status']);
+    }
+
+    public function cancelPirep(Request $request): JsonResponse
+    {
+        $pirep = Pirep::find($request->pirep_id);
+        $pirep->state = PirepState::DISPATCH;
+        $pirep->save();
+
+        FlightLog::where('pirep_id', $request->pirep_id)->delete();
+
+        return response()->json(['message' => 'Pirep Cancelled']);
     }
 }
