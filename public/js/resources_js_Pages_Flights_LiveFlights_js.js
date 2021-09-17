@@ -2772,9 +2772,12 @@ var LiveFlights = function LiveFlights(_ref) {
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_Shared_Navigation_PageTitle__WEBPACK_IMPORTED_MODULE_1__.default, {
       title: "Live Flights"
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_Shared_Components_Flights_LiveFlightMap__WEBPACK_IMPORTED_MODULE_3__.default, {
-      flights: flights,
-      size: "xl"
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+      className: "rounded shadow p-4 mt-2 bg-white mx-2",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_Shared_Components_Flights_LiveFlightMap__WEBPACK_IMPORTED_MODULE_3__.default, {
+        flights: flights,
+        size: "xl"
+      })
     })]
   });
 };

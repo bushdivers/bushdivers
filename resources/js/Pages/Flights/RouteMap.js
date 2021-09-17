@@ -94,7 +94,9 @@ const RouteMap = ({ flights, airports, hubs }) => {
   return (
     <div>
       <PageTitle title="Route Map" />
-      <div ref={mapContainer} className="map-container-xl" />
+      <div className="rounded shadow p-4 mt-2 bg-white mx-2">
+        <div ref={mapContainer} className="map-container-xl" />
+      </div>
     </div>
   )
 }

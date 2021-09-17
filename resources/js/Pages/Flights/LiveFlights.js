@@ -19,7 +19,9 @@ const LiveFlights = ({ flights }) => {
   return (
     <div>
       <PageTitle title="Live Flights" />
-      <LiveFlightMap flights={flights} size="xl" />
+      <div className="rounded shadow p-4 mt-2 bg-white mx-2">
+        <LiveFlightMap flights={flights} size="xl" />
+      </div>
     </div>
   )
 }

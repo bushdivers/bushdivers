@@ -2791,8 +2791,11 @@ var RouteMap = function RouteMap(_ref) {
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_Shared_Navigation_PageTitle__WEBPACK_IMPORTED_MODULE_1__.default, {
       title: "Route Map"
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
-      ref: mapContainer,
-      className: "map-container-xl"
+      className: "rounded shadow p-4 mt-2 bg-white mx-2",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+        ref: mapContainer,
+        className: "map-container-xl"
+      })
     })]
   });
 };

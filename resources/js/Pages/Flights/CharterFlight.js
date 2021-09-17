@@ -197,7 +197,7 @@ const CharterFlight = ({ user }) => {
           </div>
           )}
         </div>
-        <div className="w-1/2 mx-2 mt-4">
+        <div className="w-1/2 mt-4 rounded shadow p-4 bg-white mx-2">
           <CharterMap departure={user.location} destination={destinationDetail} size="large" />
         </div>
       </div>

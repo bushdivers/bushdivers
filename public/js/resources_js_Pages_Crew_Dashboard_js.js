@@ -2895,7 +2895,7 @@ var Dashboard = function Dashboard(_ref) {
           })]
         })]
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
-        className: "ml-2 w-1/2",
+        className: "w-1/2 rounded shadow p-4 mt-2 bg-white mx-2",
         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_Shared_Components_Crew_CrewMap__WEBPACK_IMPORTED_MODULE_6__.default, {
           size: "large",
           locations: locations && locations.length > 0 ? locations : []

@@ -87,7 +87,7 @@ const Dashboard = ({ lastFlight, rank, nextRank, awards, user, locations }) => {
             </div>
           </div>
         </div>
-        <div className="ml-2 w-1/2">
+        <div className="w-1/2 rounded shadow p-4 mt-2 bg-white mx-2">
           <CrewMap size="large" locations={locations && locations.length > 0 ? locations : []} />
         </div>
       </div>

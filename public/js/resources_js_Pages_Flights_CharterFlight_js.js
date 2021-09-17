@@ -3734,7 +3734,7 @@ var CharterFlight = function CharterFlight(_ref) {
           })
         })]
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("div", {
-        className: "w-1/2 mx-2 mt-4",
+        className: "w-1/2 mt-4 rounded shadow p-4 bg-white mx-2",
         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_Shared_Components_Flights_CharterMap__WEBPACK_IMPORTED_MODULE_7__.default, {
           departure: user.location,
           destination: destinationDetail,
