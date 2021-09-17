@@ -37,7 +37,7 @@ const AirportDetail = ({ airport, metar }) => {
             <div className="rounded shadow p-4 mt-2 bg-white mx-2">
               <div className="flex items-center">
                 <i className="material-icons mr-2">add_road</i>
-                <span>{airport.longest_runway_surface} {airport.longest_runway_length} x {airport.longest_runway_width}</span>
+                <span>{airport.longest_runway_surface} {airport.longest_runway_length}ft x {airport.longest_runway_width}ft</span>
               </div>
             </div>
           )}

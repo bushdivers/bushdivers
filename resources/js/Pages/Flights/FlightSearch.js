@@ -17,6 +17,15 @@ const EmptyData = () => {
   )
 }
 
+const AirportToolTip = (props) => {
+  return (
+    <>
+      <div>Altitude: {props.airport.altitude}ft</div>
+      <div>Longest Runway: {props.airport.longest_runway_surface} - {props.airport.longest_runway_length}ft x {props.airport.longest_runway_width}ft</div>
+    </>
+  )
+}
+
 const FlightSearch = ({ flights, bookings }) => {
   const [showDetailModal, setShowDetailModal] = useState(false)
   const [selectedFlight, setSelectedFlight] = useState({})
@@ -63,12 +72,16 @@ const FlightSearch = ({ flights, bookings }) => {
                   <tr key={flight.id}>
                     <td className="hover:underline hover:text-orange-500" onClick={() => updateSelectedFlight(flight)}>{flight.full_flight_number}</td>
                     <td>
-                      <Link href={`/airports/${flight.dep_airport_id}`}>{flight.dep_airport_id}</Link><br/>
-                      <span className="text-xs">{flight.dep_airport.name}</span>
+                      <Tooltip content={<AirportToolTip airport={flight.dep_airport} />} direction="top">
+                        <Link href={`/airports/${flight.dep_airport_id}`}>{flight.dep_airport_id}</Link><br/>
+                        <span className="text-xs">{flight.dep_airport.name}</span>
+                      </Tooltip>
                     </td>
                     <td>
-                      <Link href={`/airports/${flight.arr_airport_id}`}>{flight.arr_airport_id}</Link><br/>
-                      <span className="text-xs">{flight.arr_airport.name}</span>
+                      <Tooltip content={<AirportToolTip airport={flight.arr_airport} />} direction="top">
+                        <Link href={`/airports/${flight.arr_airport_id}`}>{flight.arr_airport_id}</Link><br/>
+                        <span className="text-xs">{flight.arr_airport.name}</span>
+                      </Tooltip>
                     </td>
                     <td>{flight.distance}</td>
                     <td>
