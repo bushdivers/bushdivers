@@ -65,4 +65,5 @@ Route::middleware('auth')->group(function () {
     Route::get('/dispatch/{id}', [\App\Http\Controllers\PirepController::class, 'getDispatch'])->name('dispatch');
     Route::post('/bookings/dispatch/create', [\App\Http\Controllers\PirepController::class, 'createDispatch'])->name('dispatch.create');
     Route::get('/contracts', [\App\Http\Controllers\ContractsController::class, 'index'])->name('contracts');
+    Route::post('/contracts', [\App\Http\Controllers\ContractsController::class, 'getContracts'])->name('contracts.search');
 });

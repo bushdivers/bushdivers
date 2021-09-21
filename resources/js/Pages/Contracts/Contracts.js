@@ -7,6 +7,7 @@ import Tooltip from '../../Shared/Elements/Tooltip'
 import { Link } from '@inertiajs/inertia-react'
 import dayjs from '../../Helpers/date.helpers'
 import ContractMap from '../../Shared/Components/Contracts/ContractMap'
+import { Inertia } from '@inertiajs/inertia'
 
 const EmptyData = (props) => {
   return (
@@ -26,19 +27,28 @@ const AirportToolTip = (props) => {
   )
 }
 
-const Contracts = () => {
-  const [airport, setAirport] = useState('')
+const Contracts = ({ contracts, airport }) => {
+  const [selectedAirport, setSelectedAirport] = useState('')
   const [title, setTitle] = useState('Contracts')
-  const [icao, setIcao] = useState('')
+  // const [icao, setIcao] = useState('')
   const [values, setValues] = useState({
     icao: '',
-    distance: 1,
+    distance: 'Up to 50nm',
     cargo: 1000,
     pax: 12
   })
-  const [contracts, setContracts] = useState([])
+  // const [contracts, setContracts] = useState([])
   const [selectedContract, setSelectedContract] = useState({})
   const [error, setError] = useState(null)
+
+  useEffect(() => {
+    if (contracts && airport) {
+      setTitle(`Contracts - ${airport.name} (${airport.identifier})`)
+      setSelectedAirport(airport)
+    } else {
+      setTitle('Contracts')
+    }
+  }, [contracts])
 
   function handleChange (e) {
     const key = e.target.id
@@ -51,27 +61,28 @@ const Contracts = () => {
 
   const handleSearch = async () => {
     setError(null)
-    setAirport(null)
-    setContracts([])
+    // setSelectedAirport(null)
+    // setContracts([])
     setSelectedContract({})
     if (values.icao.length > 0) {
       // Call api to find contracts
-      const response = await axios.get(`/api/contracts/search/${values.icao}/${values.distance}/${values.cargo}/${values.pax}`)
-      if (!response.data.airport) {
-        setError('No airport found')
-        setTitle('Contracts')
-        return
-      }
-      if (response.data.airport) {
-        setAirport(response.data.airport)
-        setTitle(`Contracts - ${response.data.airport.name} (${response.data.airport.identifier})`)
-      }
-      if (response.data.contracts.length > 0) {
-        setContracts(response.data.contracts)
-        setError(null)
-      } else {
-        setError('No contracts found')
-      }
+      Inertia.post('/contracts', values)
+      // const response = await axios.get(`/api/contracts/search/${values.icao}/${values.distance}/${values.cargo}/${values.pax}`)
+      // if (!response.data.airport) {
+      //   setError('No airport found')
+      //   setTitle('Contracts')
+      //   return
+      // }
+      // if (response.data.airport) {
+      //   setAirport(response.data.airport)
+      //   setTitle(`Contracts - ${response.data.airport.name} (${response.data.airport.identifier})`)
+      // }
+      // if (response.data.contracts.length > 0) {
+      //   setContracts(response.data.contracts)
+      //   setError(null)
+      // } else {
+      //   setError('No contracts found')
+      // }
     }
   }
 
@@ -93,9 +104,9 @@ const Contracts = () => {
               <div className="inline-block mx-2">
                 <label htmlFor="distance" className="block"><span className="text-gray-700">Distance range</span></label>
                 <select id="distance" value={values.distance} onChange={handleChange} className="form-select form">
-                  <option key="1">Up to 50nm</option>
-                  <option key="2">50nm-150nm</option>
-                  <option key="3">150nm+</option>
+                  <option key="Up to 50nm">Up to 50nm</option>
+                  <option key="50nm-150nm">50nm-150nm</option>
+                  <option key="150nm+">150nm+</option>
                 </select>
               </div>
               <div className="inline-block mx-2">
@@ -111,8 +122,8 @@ const Contracts = () => {
               </div>
           </div>
           <div className="rounded shadow bg-white overflow-x-auto mt-4">
-            {contracts.length === 0
-              ? <NoContent content={<EmptyData airport={airport} />} />
+            {!contracts
+              ? airport ? <NoContent content={<EmptyData airport={airport} />} /> : <NoContent content={<EmptyData airport="" />} />
               : (
                 <div>
                   <table className="table-condensed table-auto">
@@ -175,7 +186,7 @@ const Contracts = () => {
         </div>
         <div className="w-1/3 ml-2">
           { airport && <div className="rounded shadow bg-white p-4">
-            <ContractMap departure={airport} destination={selectedContract.arr_airport} size="large" />
+            <ContractMap departure={selectedAirport} destination={selectedContract.arr_airport} size="large" />
           </div>}
         </div>
       </div>

@@ -7,6 +7,7 @@ const ContractMap = (props) => {
   const mapContainer = useRef(null)
   const map = useRef(null)
   const marker = useRef(null)
+  const depMarker = useRef(null)
   const [sourceSet, setSourceSet] = useState(false)
 
   useEffect(() => {
@@ -21,24 +22,42 @@ const ContractMap = (props) => {
   })
 
   useEffect(() => {
-    console.log(props.departure)
-    if (props.departure !== null) {
-      const depPopup = new maplibre.Popup({ offset: 25 }).setText(
-        `${props.departure.identifier} - ${props.departure.name}`
-      )
-
+    if (props.departure) {
+      if (sourceSet) {
+        map.current.removeLayer('route')
+        map.current.removeSource('route')
+        setSourceSet(false)
+      }
+      if (marker.current !== null) {
+        marker.current.remove()
+      }
       const depLngLat = [props.departure.lon, props.departure.lat]
+      loadDeparture(depLngLat)
 
-      map.current.on('load', function () {
-        const dep = new maplibre.Marker({
-          color: '#059669'
-        })
-          .setLngLat(depLngLat)
-          .setPopup(depPopup)
-          .addTo(map.current)
-      })
+      // const depMarker
+      // const bounds = depMarker.current.getBounds()
+      // map.current.fitBounds(bounds, {
+      //   padding: 50
+      // })
+      // const depPopup = new maplibre.Popup({ offset: 25 }).setText(
+      //   `${props.departure.identifier} - ${props.departure.name}`
+      // )
+      //
+      //
+      // console.log(`${props.departure.lon} - ${props.departure.lat}`)
+      // const depLngLat = [props.departure.lon, props.departure.lat]
+      // const dep = new maplibre.Marker({
+      //   color: '#059669'
+      // })
+      //   .setLngLat(depLngLat)
+      //   .setPopup(depPopup)
+      //   .addTo(map.current)
+
+      // map.current.on('load', function () {
+      //
+      // })
     }
-  }, [])
+  }, [props.departure])
 
   useEffect(() => {
     if (props.destination) {
@@ -103,6 +122,25 @@ const ContractMap = (props) => {
       .addTo(map.current)
 
     marker.current = des
+  }
+
+  const loadDeparture = (depLngLat) => {
+    if (depMarker.current !== null) {
+      depMarker.current.remove()
+    }
+
+    const depPopup = new maplibre.Popup({ offset: 25 }).setText(
+      `${props.departure.identifier} - ${props.departure.name}`
+    )
+
+    const dep = new maplibre.Marker({
+      color: '#059669'
+    }).setLngLat(depLngLat)
+      .setPopup(depPopup)
+      .addTo(map.current)
+
+    depMarker.current = dep
+    map.current.setCenter(depLngLat)
   }
 
   return (
