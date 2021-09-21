@@ -64,4 +64,5 @@ Route::middleware('auth')->group(function () {
     Route::delete('/bookings/cancel/{flight}', [\App\Http\Controllers\BookingController::class, 'delete'])->name('bookings.delete');
     Route::get('/dispatch/{id}', [\App\Http\Controllers\PirepController::class, 'getDispatch'])->name('dispatch');
     Route::post('/bookings/dispatch/create', [\App\Http\Controllers\PirepController::class, 'createDispatch'])->name('dispatch.create');
+    Route::get('/contracts', [\App\Http\Controllers\ContractsController::class, 'index'])->name('contracts');
 });

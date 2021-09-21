@@ -24,6 +24,7 @@ class AirportFactory extends Factory
         return [
             'identifier' => 'AYMR',
             'name' => 'Moro',
+            'country' => 'PG',
             'is_hub' => true,
             'lat' => -6.36188,
             'lon' => 143.23070,
