@@ -122,9 +122,10 @@ const Contracts = ({ contracts, airport }) => {
               </div>
           </div>
           <div className="rounded shadow bg-white overflow-x-auto mt-4">
-            {!contracts
-              ? airport ? <NoContent content={<EmptyData airport={airport} />} /> : <NoContent content={<EmptyData airport="" />} />
-              : (
+            {!airport && !contracts && <NoContent content={<EmptyData airport="" />} />}
+            {airport && contracts && contracts.length === 0 && <NoContent content={<EmptyData airport={airport} />} />}
+            {contracts && contracts.length > 0 &&
+            // (
                 <div>
                   <table className="table-condensed table-auto">
                     <thead>
@@ -145,7 +146,7 @@ const Contracts = ({ contracts, airport }) => {
                     </tr>
                     </thead>
                     <tbody>
-                    {contracts.map((contract) => (
+                    {contracts && contracts.map((contract) => (
                       <tr key={contract.id} onClick={() => updateSelectedContract(contract)} className={contract.id === selectedContract.id ? 'bg-orange-200 hover:bg-orange-100' : ''}>
                         <td className="hover:underline hover:text-orange-500">{contract.id}</td>
                         <td>
@@ -180,7 +181,7 @@ const Contracts = ({ contracts, airport }) => {
                     </tbody>
                   </table>
                 </div>
-                )
+              // )
             }
           </div>
         </div>

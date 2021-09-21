@@ -3001,17 +3001,20 @@ var Contracts = function Contracts(_ref) {
               children: "Find"
             })
           })]
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("div", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("div", {
           className: "rounded shadow bg-white overflow-x-auto mt-4",
-          children: !contracts ? airport ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(_Shared_Elements_NoContent__WEBPACK_IMPORTED_MODULE_5__.default, {
-            content: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(EmptyData, {
-              airport: airport
-            })
-          }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(_Shared_Elements_NoContent__WEBPACK_IMPORTED_MODULE_5__.default, {
+          children: [!airport && !contracts && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(_Shared_Elements_NoContent__WEBPACK_IMPORTED_MODULE_5__.default, {
             content: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(EmptyData, {
               airport: ""
             })
-          }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("div", {
+          }), airport && contracts && contracts.length === 0 && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(_Shared_Elements_NoContent__WEBPACK_IMPORTED_MODULE_5__.default, {
+            content: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(EmptyData, {
+              airport: airport
+            })
+          }), contracts && contracts.length > 0 &&
+          /*#__PURE__*/
+          // (
+          (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("div", {
             children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("table", {
               className: "table-condensed table-auto",
               children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("thead", {
@@ -3046,7 +3049,7 @@ var Contracts = function Contracts(_ref) {
                   })]
                 })
               }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("tbody", {
-                children: contracts.map(function (contract) {
+                children: contracts && contracts.map(function (contract) {
                   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("tr", {
                     onClick: function onClick() {
                       return updateSelectedContract(contract);
@@ -3120,7 +3123,8 @@ var Contracts = function Contracts(_ref) {
                 })
               })]
             })
-          })
+          }) // )
+          ]
         })]
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("div", {
         className: "w-1/3 ml-2",
