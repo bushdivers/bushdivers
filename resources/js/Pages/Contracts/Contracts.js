@@ -86,8 +86,19 @@ const Contracts = ({ contracts, airport }) => {
     }
   }
 
-  const updateSelectedContract = (c) => {
-    setSelectedContract(c)
+  const updateSelectedContract = (contract) => {
+    setSelectedContract(contract)
+  }
+
+  const bidForContract = (contract) => {
+    const data = {
+      id: contract.id,
+      icao: values.icao,
+      distance: values.distance,
+      cargo: values.cargo,
+      pax: values.pax
+    }
+    Inertia.post('/contracts/bid', data)
   }
 
   return (
@@ -138,11 +149,9 @@ const Contracts = ({ contracts, airport }) => {
                       <th>Heading</th>
                       <th>Type</th>
                       <th>Cargo</th>
-                      <th>Qty</th>
-                      <th>Pax</th>
-                      <th>Qty</th>
                       <th>Pay</th>
                       <th>Expires</th>
+                      <td>Bid</td>
                     </tr>
                     </thead>
                     <tbody>
@@ -170,12 +179,19 @@ const Contracts = ({ contracts, airport }) => {
                         <td>{contract.distance}</td>
                         <td>{contract.heading}</td>
                         <td>{contract.contract_type_id === 1 ? 'Cargo' : 'Passenger'}</td>
-                        <td>{contract.cargo}</td>
-                        <td>{contract.cargo_qty}</td>
-                        <td>{contract.pax}</td>
-                        <td>{contract.pax_qty}</td>
+                        <td>
+                          {contract.contract_type_id === 1
+                            ? <div><span>{contract.cargo_qty} kg</span><br /><span className="text-xs">{contract.cargo}</span></div>
+                            : <div><span>{contract.pax_qty}</span><br /><span className="text-xs">{contract.pax}</span></div>
+                          }
+                        </td>
                         <td>${contract.contract_value.toLocaleString()}</td>
-                        <td>{dayjs(contract.expires_at).format('DD/MM/YYYY HH:mm a')}</td>
+                        <td>
+                          <Tooltip content={dayjs(contract.expires_at).format('HH:mm a')} direction="top">
+                          {dayjs(contract.expires_at).format('DD/MM/YYYY')}
+                          </Tooltip>
+                        </td>
+                        <td><button onClick={() => bidForContract(contract)} className="btn btn-secondary btn-small">Bid</button></td>
                       </tr>
                     ))}
                     </tbody>

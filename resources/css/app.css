@@ -94,6 +94,10 @@ a:hover {
     @apply bg-gray-200;
 }
 
+.btn-small {
+    @apply text-xs;
+}
+
 .table {
     @apply min-w-full divide-y divide-gray-200;
 }

@@ -28328,6 +28328,11 @@ a:hover {
   background-color: rgba(229, 231, 235, var(--tw-bg-opacity));
 }
 
+.btn-small {
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+
 .table {
   min-width: 100%;
 }

@@ -2908,8 +2908,19 @@ var Contracts = function Contracts(_ref) {
     };
   }();
 
-  var updateSelectedContract = function updateSelectedContract(c) {
-    setSelectedContract(c);
+  var updateSelectedContract = function updateSelectedContract(contract) {
+    setSelectedContract(contract);
+  };
+
+  var bidForContract = function bidForContract(contract) {
+    var data = {
+      id: contract.id,
+      icao: values.icao,
+      distance: values.distance,
+      cargo: values.cargo,
+      pax: values.pax
+    };
+    _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_10__.Inertia.post('/contracts/bid', data);
   };
 
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("div", {
@@ -3037,15 +3048,11 @@ var Contracts = function Contracts(_ref) {
                   }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("th", {
                     children: "Cargo"
                   }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("th", {
-                    children: "Qty"
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("th", {
-                    children: "Pax"
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("th", {
-                    children: "Qty"
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("th", {
                     children: "Pay"
                   }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("th", {
                     children: "Expires"
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("td", {
+                    children: "Bid"
                   })]
                 })
               }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("tbody", {
@@ -3107,17 +3114,37 @@ var Contracts = function Contracts(_ref) {
                     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("td", {
                       children: contract.contract_type_id === 1 ? 'Cargo' : 'Passenger'
                     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("td", {
-                      children: contract.cargo
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("td", {
-                      children: contract.cargo_qty
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("td", {
-                      children: contract.pax
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("td", {
-                      children: contract.pax_qty
+                      children: contract.contract_type_id === 1 ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("div", {
+                        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("span", {
+                          children: [contract.cargo_qty, " kg"]
+                        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("br", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("span", {
+                          className: "text-xs",
+                          children: contract.cargo
+                        })]
+                      }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("div", {
+                        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("span", {
+                          children: contract.pax_qty
+                        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("br", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("span", {
+                          className: "text-xs",
+                          children: contract.pax
+                        })]
+                      })
                     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("td", {
                       children: ["$", contract.contract_value.toLocaleString()]
                     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("td", {
-                      children: (0,_Helpers_date_helpers__WEBPACK_IMPORTED_MODULE_8__.default)(contract.expires_at).format('DD/MM/YYYY HH:mm a')
+                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(_Shared_Elements_Tooltip__WEBPACK_IMPORTED_MODULE_6__.default, {
+                        content: (0,_Helpers_date_helpers__WEBPACK_IMPORTED_MODULE_8__.default)(contract.expires_at).format('HH:mm a'),
+                        direction: "top",
+                        children: (0,_Helpers_date_helpers__WEBPACK_IMPORTED_MODULE_8__.default)(contract.expires_at).format('DD/MM/YYYY')
+                      })
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("td", {
+                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("button", {
+                        onClick: function onClick() {
+                          return bidForContract(contract);
+                        },
+                        className: "btn btn-secondary btn-small",
+                        children: "Bid"
+                      })
                     })]
                   }, contract.id);
                 })
