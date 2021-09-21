@@ -9,8 +9,8 @@ class Booking extends Model
 {
     use HasFactory;
 
-    public function flight()
+    public function contract()
     {
-        return $this->belongsTo(Flight::class);
+        return $this->belongsTo(Contract::class);
     }
 }
