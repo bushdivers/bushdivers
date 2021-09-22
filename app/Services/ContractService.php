@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Airport;
 use App\Models\Contract;
+use App\Models\ContractCargo;
 use App\Models\Enums\ContractType;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -21,7 +22,7 @@ class ContractService
 
     public function findAirportsInNeedOfContracts()
     {
-        // find all airports
+        // find all airports in PNG area
         $airports = Airport::where('lat', '<', 0)
             ->whereIn('country', ['ID', 'PG'])
             ->get();
@@ -78,19 +79,19 @@ class ContractService
         // pick (n) random airports in each category
         if ($airports50->count() <= $qtyPerRange && $airports50->count() > 0) {
             $this->generateContractDetails($airport, $airports50);
-        } else {
+        } elseif ($airports50->count() > 0) {
             $this->generateContractDetails($airport, $airports50->random($qtyPerRange));
         }
 
         if ($airports150->count() <= $qtyPerRange && $airports150->count() > 0) {
             $this->generateContractDetails($airport, $airports150);
-        } else {
+        } elseif ($airports150->count() > 0) {
             $this->generateContractDetails($airport, $airports150->random($qtyPerRange));
         }
 
         if ($airportsMax->count() <= $qtyPerRange && $airportsMax->count() > 0) {
             $this->generateContractDetails($airport, $airportsMax);
-        } else {
+        } elseif ($airportsMax->count() > 0) {
             $this->generateContractDetails($airport, $airportsMax->random($qtyPerRange));
         }
     }
@@ -129,21 +130,25 @@ class ContractService
         $contract = new Contract();
         $contract->dep_airport_id = $start;
         $contract->arr_airport_id = $dest;
-        $contract->current_airport_id = $start;
-        if ($cargo['type'] == 1) {
-            $contract->contract_type_id = ContractType::Cargo;
-            $contract->cargo = $cargo['name'];
-            $contract->cargo_qty = $cargo['qty'];
-        } else {
-            $contract->contract_type_id = ContractType::Passenger;
-            $contract->pax = $cargo['name'];
-            $contract->pax_qty = $cargo['qty'];
-        }
         $contract->distance = $distance;
         $contract->heading = $heading;
         $contract->contract_value = $value;
         $contract->expires_at = Carbon::now()->addDays(rand(1,8));
         $contract->save();
+
+        $contractCargo = new ContractCargo();
+        $contractCargo->contract_id = $contract->id;
+        $contractCargo->current_airport_id = $start;
+        if ($cargo['type'] == 1) {
+            $contractCargo->contract_type_id = ContractType::Cargo;
+        } else {
+            $contractCargo->contract_type_id = ContractType::Passenger;
+        }
+        $contractCargo->cargo = $cargo['name'];
+        $contractCargo->cargo_qty = $cargo['qty'];
+        $contractCargo->save();
+
+
     }
 
     public function calculateContractValue($type, $cargo, $distance): float

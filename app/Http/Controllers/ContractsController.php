@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Airport;
 use App\Models\Booking;
 use App\Models\Contract;
+use App\Models\ContractCargo;
 use App\Models\Enums\ContractType;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
@@ -32,13 +33,12 @@ class ContractsController extends Controller
             'pax' => $request->pax
         ];
 
-        $contracts = $this->getContractsFromCriteria($criteria);
-
-
         $airport = Airport::where('identifier', $criteria['icao'])->first();
         if (!$airport) {
             return Inertia::render('Contracts/Contracts')->with(['error' => 'Airport not found']);
         }
+
+        $contracts = $this->getContractsFromCriteria($criteria);
 
         return Inertia::render('Contracts/Contracts', ['contracts' => $contracts, 'airport' => $airport]);
     }
@@ -46,15 +46,10 @@ class ContractsController extends Controller
     public function bidForContract(Request $request): Response
     {
         $contract = Contract::find($request->id);
-        // add booking
-        $booking = new Booking();
-        $booking->user_id = Auth::user()->id;
-        $booking->contract_id = $contract->id;
-        $booking->bid_qty = $contract->contract_type_id == ContractType::Cargo ? $contract->cargo_qty : $contract->pax_qty;
-        $booking->save();
 
         // set contract to not available
         $contract->is_available = false;
+        $contract->user_id = Auth::user()->id;
         $contract->save();
 
         $criteria = [
@@ -70,7 +65,29 @@ class ContractsController extends Controller
         return Inertia::render('Contracts/Contracts', ['contracts' => $contracts, 'airport' => $airport])->with(['success' => 'Contract bid successfully']);
     }
 
-    protected function getContractsFromCriteria($criteria): Collection
+    public function cancelContract(Request $request): RedirectResponse
+    {
+        $contract = Contract::find($request->id);
+
+        // set contract to not available
+        $contract->is_available = true;
+        $contract->user_id = null;
+        $contract->save();
+
+        return redirect()->back()->with(['success' => 'Contract bid cancelled successfully']);
+    }
+
+    public function myContracts(): Response
+    {
+        $contracts = Contract::with('depAirport', 'arrAirport', 'cargo', 'cargo.currentAirport')
+            ->where('is_completed', false)
+            ->where('user_id', Auth::user()->id)
+            ->get();
+
+        return Inertia::render('Contracts/MyContracts', ['contracts' => $contracts]);
+    }
+
+    protected function getContractsFromCriteria($criteria): array
     {
         $icao = $criteria['icao'];
         $distance = $criteria['distance'];
@@ -82,19 +99,30 @@ class ContractsController extends Controller
             "50nm-150nm" => [51, 150],
             "150nm+" => [151, 5000]
         };
-        return Contract::with('depAirport', 'arrAirport', 'currentAirport')
+
+        $paxContracts =  Contract::with('depAirport', 'arrAirport', 'cargo', 'cargo.currentAirport')
             ->where('dep_airport_id', $icao)
             ->where('is_available', true)
             ->where('expires_at', '>', Carbon::now())
             ->whereBetween('distance', $range)
-            ->where(function ($query) use ($cargo) {
-                $query->where('cargo_qty', '<=', $cargo)
-                    ->orWhereNull('cargo_qty');
-            })
-            ->where(function ($query) use ($pax) {
-                $query->where('pax_qty', '<=', $pax)
-                    ->orWhereNull('pax_qty');
-            })
-            ->get();
+            ->whereHas('cargo', function ($q) use($pax) {
+                $q->where('contract_type_id', ContractType::Passenger)
+                    ->where('cargo_qty', '<=', $pax);
+            })->get();
+
+        $cargoContracts =  Contract::with('depAirport', 'arrAirport', 'cargo', 'cargo.currentAirport')
+            ->where('dep_airport_id', $icao)
+            ->where('is_available', true)
+            ->where('expires_at', '>', Carbon::now())
+            ->whereBetween('distance', $range)
+            ->whereHas('cargo', function ($q) use($cargo) {
+                $q->where('contract_type_id', ContractType::Cargo)
+                    ->where('cargo_qty', '<=', $cargo);
+            })->get();
+
+        $contracts = $paxContracts->merge($cargoContracts);
+
+        return $contracts->all();
+
     }
 }

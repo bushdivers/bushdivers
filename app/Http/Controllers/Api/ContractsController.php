@@ -5,12 +5,20 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Airport;
 use App\Models\Contract;
+use App\Services\ContractService;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class ContractsController extends Controller
 {
+    public function test()
+    {
+        $contractService = new ContractService();
+        //$contractService->findAirportsInNeedOfContracts();
+        $contractService->findHubsInNeedOfContracts();
+    }
+
     public function getContracts($icao, $distance, $cargo, $pax): JsonResponse
     {
         $airport = Airport::where('identifier', $icao)->first();

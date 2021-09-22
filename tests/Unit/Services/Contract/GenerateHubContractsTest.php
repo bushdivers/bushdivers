@@ -49,4 +49,12 @@ class GenerateHubContractsTest extends TestCase
             'arr_airport_id' => $this->airport2->identifier
         ]);
     }
+
+    public function test_contract_to_hub_cargo_is_generated()
+    {
+        $this->contractService->generateHubContracts($this->airport1, 2);
+        $this->assertDatabaseHas('contract_cargos', [
+            'current_airport_id' => $this->airport1->identifier
+        ]);
+    }
 }

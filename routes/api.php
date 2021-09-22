@@ -20,6 +20,8 @@ Route::get('/jumpseat/cost/{from}/{to}', [\App\Http\Controllers\Api\AirportContr
 Route::get('/flights/distance/{from}/{to}', [\App\Http\Controllers\Api\FlightController::class, 'getDistance'])->name('flights.distance');
 Route::get('/liveflights', [\App\Http\Controllers\PirepController::class, 'liveFlights'])->name('flights.live');
 
+Route::get('/test', [\App\Http\Controllers\Api\ContractsController::class, 'test']);
+
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/bookings', [\App\Http\Controllers\Api\TrackerController::class, 'getDispatchedBookings']);
     Route::post('/log', [\App\Http\Controllers\Api\TrackerController::class, 'postFlightLog']);

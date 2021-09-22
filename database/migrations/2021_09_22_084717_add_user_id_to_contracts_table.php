@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AmendHasBookingTypeInBookingsTable extends Migration
+class AddUserIdToContractsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AmendHasBookingTypeInBookingsTable extends Migration
      */
     public function up()
     {
-        Schema::table('bookings', function (Blueprint $table) {
-            $table->uuid('has_dispatch')->default('')->change();
+        Schema::table('contracts', function (Blueprint $table) {
+            $table->foreignId('user_id')->nullable();
         });
     }
 
@@ -25,8 +25,8 @@ class AmendHasBookingTypeInBookingsTable extends Migration
      */
     public function down()
     {
-        Schema::table('bookings', function (Blueprint $table) {
-            //
+        Schema::table('contracts', function (Blueprint $table) {
+            $table->dropColumn('user_id');
         });
     }
 }

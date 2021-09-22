@@ -46,4 +46,13 @@ class GenerateContractDetailsTest extends TestCase
             'arr_airport_id' => $this->airport1->identifier
         ]);
     }
+
+    public function test_contract_cargo_generates_successfully()
+    {
+        $airports = collect([$this->airport1, $this->airport2]);
+        $this->contractService->generateContractDetails($this->origin, $airports);
+        $this->assertDatabaseHas('contract_cargos', [
+            'current_airport_id' => $this->origin->identifier
+        ]);
+    }
 }

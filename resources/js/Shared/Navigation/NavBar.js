@@ -62,15 +62,15 @@ export default function NavBar () {
                 <Menu.Item>
                   {({ active }) => <Link href="/contracts" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Find a Contract</Link>}
                 </Menu.Item>
-                {/* <Menu.Item> */}
-                {/*  {({ active }) => <Link href="/charter" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Charter Flight</Link>} */}
-                {/* </Menu.Item> */}
                 <Menu.Item>
                   {({ active }) => <Link href="/liveflights" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Live Flights Map</Link>}
                 </Menu.Item>
                 <Menu.Item>
-                  {({ active }) => <a href="/bookings" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">My Contracts ({auth.user.current_bookings})</a>}
+                  {({ active }) => <a href="/bids" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">My Contracts {auth.user.current_bids > 0 ? <span>({auth.user.current_bids})</span> : <span>(0)</span> }</a>}
                 </Menu.Item>
+                 <Menu.Item>
+                  {({ active }) => <Link href="/dispatch" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Flight Dispatch</Link>}
+                 </Menu.Item>
                 <Menu.Item>
                   {({ active }) => <Link href="/jumpseat" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Jumpseat</Link>}
                 </Menu.Item>

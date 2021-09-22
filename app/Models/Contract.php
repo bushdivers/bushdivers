@@ -9,9 +9,9 @@ class Contract extends Model
 {
     use HasFactory;
 
-    public function type()
+    public function cargo()
     {
-        return $this->belongsTo(ContractType::class);
+        return $this->hasMany(ContractCargo::class);
     }
 
     public function depAirport()
@@ -22,10 +22,5 @@ class Contract extends Model
     public function arrAirport()
     {
         return $this->belongsTo(Airport::class, 'arr_airport_id', 'identifier');
-    }
-
-    public function currentAirport()
-    {
-        return $this->belongsTo(Airport::class, 'current_airport_id', 'identifier');
     }
 }

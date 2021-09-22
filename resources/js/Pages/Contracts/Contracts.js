@@ -8,6 +8,7 @@ import { Link } from '@inertiajs/inertia-react'
 import dayjs from '../../Helpers/date.helpers'
 import ContractMap from '../../Shared/Components/Contracts/ContractMap'
 import { Inertia } from '@inertiajs/inertia'
+import CargoDetails from '../../Shared/Components/Contracts/CargoDetails'
 
 const EmptyData = (props) => {
   return (
@@ -40,6 +41,7 @@ const Contracts = ({ contracts, airport }) => {
   // const [contracts, setContracts] = useState([])
   const [selectedContract, setSelectedContract] = useState({})
   const [error, setError] = useState(null)
+  const [showDetail, setShowDetail] = useState(false)
 
   useEffect(() => {
     if (contracts && airport) {
@@ -63,7 +65,7 @@ const Contracts = ({ contracts, airport }) => {
     setError(null)
     // setSelectedAirport(null)
     // setContracts([])
-    setSelectedContract({})
+    setSelectedContract('')
     if (values.icao.length > 0) {
       // Call api to find contracts
       Inertia.post('/contracts', values)
@@ -99,6 +101,10 @@ const Contracts = ({ contracts, airport }) => {
       pax: values.pax
     }
     Inertia.post('/contracts/bid', data)
+  }
+
+  const toggleDetail = () => {
+    setShowDetail(!showDetail)
   }
 
   return (
@@ -138,17 +144,20 @@ const Contracts = ({ contracts, airport }) => {
             {contracts && contracts.length > 0 &&
             // (
                 <div>
+                  <div>
+                    <button onClick={toggleDetail} className="btn btn-secondary m-2">Toggle Cargo Details</button>
+                  </div>
                   <table className="table-condensed table-auto">
                     <thead>
                     <tr className="">
-                      <th>Id</th>
                       <th>Departure</th>
-                      <th>Current</th>
+                      {/*<th>Current</th>*/}
                       <th>Arrival</th>
                       <th>Distance</th>
                       <th>Heading</th>
-                      <th>Type</th>
-                      <th>Cargo</th>
+                      <th>Total Cargo</th>
+                      {/*<th>Type</th>*/}
+                      {/*<th>Cargo</th>*/}
                       <th>Pay</th>
                       <th>Expires</th>
                       <td>Bid</td>
@@ -156,20 +165,20 @@ const Contracts = ({ contracts, airport }) => {
                     </thead>
                     <tbody>
                     {contracts && contracts.map((contract) => (
+                      <>
                       <tr key={contract.id} onClick={() => updateSelectedContract(contract)} className={contract.id === selectedContract.id ? 'bg-orange-200 hover:bg-orange-100' : ''}>
-                        <td className="hover:underline hover:text-orange-500">{contract.id}</td>
                         <td>
                            <Tooltip content={<AirportToolTip airport={contract.dep_airport} />} direction="top">
                             <Link href={`/airports/${contract.dep_airport_id}`}>{contract.dep_airport_id}</Link><br/>
                             <span className="text-xs">{contract.dep_airport.name}</span>
                            </Tooltip>
                         </td>
-                        <td>
-                           <Tooltip content={<AirportToolTip airport={contract.current_airport} />} direction="top">
-                            <Link href={`/airports/${contract.current_airport_id}`}>{contract.current_airport_id}</Link><br/>
-                            <span className="text-xs">{contract.current_airport.name}</span>
-                           </Tooltip>
-                        </td>
+                        {/* <td> */}
+                        {/*   <Tooltip content={<AirportToolTip airport={contract.current_airport} />} direction="top"> */}
+                        {/*    <Link href={`/airports/${contract.current_airport_id}`}>{contract.current_airport_id}</Link><br/> */}
+                        {/*    <span className="text-xs">{contract.current_airport.name}</span> */}
+                        {/*   </Tooltip> */}
+                        {/* </td> */}
                         <td>
                            <Tooltip content={<AirportToolTip airport={contract.arr_airport} />} direction="top">
                             <Link href={`/airports/${contract.arr_airport_id}`}>{contract.arr_airport_id}</Link><br/>
@@ -178,13 +187,22 @@ const Contracts = ({ contracts, airport }) => {
                         </td>
                         <td>{contract.distance}</td>
                         <td>{contract.heading}</td>
-                        <td>{contract.contract_type_id === 1 ? 'Cargo' : 'Passenger'}</td>
                         <td>
-                          {contract.contract_type_id === 1
-                            ? <div><span>{contract.cargo_qty} kg</span><br /><span className="text-xs">{contract.cargo}</span></div>
-                            : <div><span>{contract.pax_qty}</span><br /><span className="text-xs">{contract.pax}</span></div>
-                          }
+                          {contract.cargo.map((detail) => (
+                            <>
+                              <span className="mr-1">{detail.contract_type_id === 1 ? 'Cargo' : 'Pax'}</span>
+                              <span>{detail.cargo_qty} {detail.contract_type_id === 1 ? 'kg' : ''} {detail.cargo}</span>
+                              <br/>
+                            </>
+                          ))}
                         </td>
+                        {/*<td>{contract.contract_type_id === 1 ? 'Cargo' : 'Passenger'}</td>*/}
+                        {/*<td>*/}
+                        {/*  {contract.contract_type_id === 1*/}
+                        {/*    ? <div><span>{contract.cargo_qty} kg</span><br /><span className="text-xs">{contract.cargo}</span></div>*/}
+                        {/*    : <div><span>{contract.pax_qty}</span><br /><span className="text-xs">{contract.pax}</span></div>*/}
+                        {/*  }*/}
+                        {/*</td>*/}
                         <td>${contract.contract_value.toLocaleString()}</td>
                         <td>
                           <Tooltip content={dayjs(contract.expires_at).format('HH:mm a')} direction="top">
@@ -193,6 +211,8 @@ const Contracts = ({ contracts, airport }) => {
                         </td>
                         <td><button onClick={() => bidForContract(contract)} className="btn btn-secondary btn-small">Bid</button></td>
                       </tr>
+                      { showDetail && <CargoDetails contract={contract} />}
+                      </>
                     ))}
                     </tbody>
                   </table>

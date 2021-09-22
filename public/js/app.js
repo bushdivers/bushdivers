@@ -37842,6 +37842,14 @@ var map = {
 		"./resources/js/Pages/Contracts/Contracts.js",
 		"resources_js_Pages_Contracts_Contracts_js"
 	],
+	"./Contracts/MyContracts": [
+		"./resources/js/Pages/Contracts/MyContracts.js",
+		"resources_js_Pages_Contracts_MyContracts_js"
+	],
+	"./Contracts/MyContracts.js": [
+		"./resources/js/Pages/Contracts/MyContracts.js",
+		"resources_js_Pages_Contracts_MyContracts_js"
+	],
 	"./Crew/Dashboard": [
 		"./resources/js/Pages/Crew/Dashboard.js",
 		"resources_js_Pages_Crew_Dashboard_js"
@@ -37889,6 +37897,14 @@ var map = {
 	"./Crew/Roster.js": [
 		"./resources/js/Pages/Crew/Roster.js",
 		"resources_js_Pages_Crew_Roster_js"
+	],
+	"./Dispatch/Dispatch": [
+		"./resources/js/Pages/Dispatch/Dispatch.js",
+		"resources_js_Pages_Dispatch_Dispatch_js"
+	],
+	"./Dispatch/Dispatch.js": [
+		"./resources/js/Pages/Dispatch/Dispatch.js",
+		"resources_js_Pages_Dispatch_Dispatch_js"
 	],
 	"./Fleet/FleetList": [
 		"./resources/js/Pages/Fleet/FleetList.js",
@@ -38124,7 +38140,7 @@ module.exports = webpackAsyncContext;
 /******/ 		// This function allow to reference async chunks
 /******/ 		__webpack_require__.u = (chunkId) => {
 /******/ 			// return url for filenames not based on template
-/******/ 			if ({"resources_js_Pages_Airports_AirportDetail_js":1,"resources_js_Pages_Airports_Hubs_js":1,"resources_js_Pages_Auth_Login_js":1,"resources_js_Pages_Auth_Register_js":1,"resources_js_Pages_Auth_RequestPassword_js":1,"resources_js_Pages_Auth_ResetPassword_js":1,"resources_js_Pages_Contracts_Contracts_js":1,"resources_js_Pages_Crew_Dashboard_js":1,"resources_js_Pages_Crew_Jumpseat_js":1,"resources_js_Pages_Crew_Logbook_js":1,"resources_js_Pages_Crew_LogbookDetail_js":1,"resources_js_Pages_Crew_Profile_js":1,"resources_js_Pages_Crew_Roster_js":1,"resources_js_Pages_Fleet_FleetList_js":1,"resources_js_Pages_Flights_Bookings_js":1,"resources_js_Pages_Flights_CharterFlight_js":1,"resources_js_Pages_Flights_Dispatch_js":1,"resources_js_Pages_Flights_FlightSearch_js":1,"resources_js_Pages_Flights_LiveFlights_js":1,"resources_js_Pages_Flights_RouteMap_js":1,"resources_js_Pages_General_Privacy_js":1,"resources_js_Pages_General_Ranks_js":1,"resources_js_Pages_General_Staff_js":1,"resources_js_Pages_General_Supporters_js":1,"resources_js_Pages_Home_js":1}[chunkId]) return "js/" + chunkId + ".js";
+/******/ 			if ({"resources_js_Pages_Airports_AirportDetail_js":1,"resources_js_Pages_Airports_Hubs_js":1,"resources_js_Pages_Auth_Login_js":1,"resources_js_Pages_Auth_Register_js":1,"resources_js_Pages_Auth_RequestPassword_js":1,"resources_js_Pages_Auth_ResetPassword_js":1,"resources_js_Pages_Contracts_Contracts_js":1,"resources_js_Pages_Contracts_MyContracts_js":1,"resources_js_Pages_Crew_Dashboard_js":1,"resources_js_Pages_Crew_Jumpseat_js":1,"resources_js_Pages_Crew_Logbook_js":1,"resources_js_Pages_Crew_LogbookDetail_js":1,"resources_js_Pages_Crew_Profile_js":1,"resources_js_Pages_Crew_Roster_js":1,"resources_js_Pages_Dispatch_Dispatch_js":1,"resources_js_Pages_Fleet_FleetList_js":1,"resources_js_Pages_Flights_Bookings_js":1,"resources_js_Pages_Flights_CharterFlight_js":1,"resources_js_Pages_Flights_Dispatch_js":1,"resources_js_Pages_Flights_FlightSearch_js":1,"resources_js_Pages_Flights_LiveFlights_js":1,"resources_js_Pages_Flights_RouteMap_js":1,"resources_js_Pages_General_Privacy_js":1,"resources_js_Pages_General_Ranks_js":1,"resources_js_Pages_General_Staff_js":1,"resources_js_Pages_General_Supporters_js":1,"resources_js_Pages_Home_js":1}[chunkId]) return "js/" + chunkId + ".js";
 /******/ 			// return url for filenames based on template
 /******/ 			return undefined;
 /******/ 		};
