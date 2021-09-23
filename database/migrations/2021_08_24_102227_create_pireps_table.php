@@ -16,16 +16,9 @@ class CreatePirepsTable extends Migration
         Schema::create('pireps', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->foreignId('user_id');
-            $table->string('flight_id')->index();
-            $table->foreignId('booking_id');
             $table->foreignId('aircraft_id');
-            $table->integer('flight_type');
-            $table->integer('cargo');
-            $table->string('cargo_name')->nullable();
-            $table->integer('pax');
-            $table->string('pax_name')->nullable();
-            $table->integer('planned_cruise_altitude');
-            $table->decimal('planned_fuel')->nullable();
+            $table->string('destination_airport_id');
+            $table->decimal('planned_fuel');
             $table->decimal('block_fuel')->nullable();
             $table->decimal('fuel_used')->nullable();
             $table->integer('distance')->nullable();

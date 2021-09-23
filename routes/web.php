@@ -61,8 +61,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/charter', [\App\Http\Controllers\FlightController::class, 'createCharter'])->name('charter.create');
     Route::get('/bids', [\App\Http\Controllers\ContractsController::class, 'myContracts'])->name('bids');
     Route::get('/dispatch', [\App\Http\Controllers\DispatchController::class, 'index'])->name('dispatch');
+    Route::post('/dispatch', [\App\Http\Controllers\DispatchController::class, 'create'])->name('dispatch.create');
 //    Route::delete('/bookings/cancel/{id}', [\App\Http\Controllers\BookingController::class, 'delete'])->name('bookings.delete');
-    Route::get('/dispatch/{id}', [\App\Http\Controllers\PirepController::class, 'getDispatch'])->name('dispatch');
+//    Route::get('/dispatch/{id}', [\App\Http\Controllers\PirepController::class, 'getDispatch'])->name('dispatch');
 //    Route::post('/bookings/dispatch/create', [\App\Http\Controllers\PirepController::class, 'createDispatch'])->name('dispatch.create');
     Route::get('/contracts', [\App\Http\Controllers\ContractsController::class, 'index'])->name('contracts');
     Route::post('/contracts', [\App\Http\Controllers\ContractsController::class, 'getContracts'])->name('contracts.search');
