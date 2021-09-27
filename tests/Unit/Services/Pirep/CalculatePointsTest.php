@@ -98,9 +98,6 @@ class CalculatePointsTest extends TestCase
 
     public function test_hub_points_for_flight_inc_hub()
     {
-        $flight = Flight::factory()->create([
-            'dep_airport_id' => $this->user->hub_id
-        ]);
         $pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,
             'aircraft_id' => $this->aircraft->id

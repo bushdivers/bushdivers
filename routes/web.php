@@ -20,7 +20,6 @@ Route::get('/privacy', function () {
 });
 Route::get('/ranks', [\App\Http\Controllers\PageController::class, 'ranks'])->name('ranks');
 Route::get('/hubs', [\App\Http\Controllers\AirportController::class, 'hubs'])->name('hubs');
-Route::get('/routes', [\App\Http\Controllers\FlightController::class, 'routes'])->name('routes');
 Route::get('/staff', [\App\Http\Controllers\PageController::class, 'staff'])->name('staff');
 Route::get('/supporters', [\App\Http\Controllers\PageController::class, 'supporters'])->name('supporters');
 Route::get('/liveflights', [\App\Http\Controllers\PirepController::class, 'flightMap'])->name('flights.map');
@@ -55,10 +54,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/fleet', [\App\Http\Controllers\FleetController::class, 'index'])->name('fleet');
 
     // Flights
-    Route::get('/flights', [\App\Http\Controllers\FlightController::class, 'index'])->name('flights');
-    Route::get('/flights/search', [\App\Http\Controllers\FlightController::class, 'search'])->name('flights.search');
-    Route::get('/charter', [\App\Http\Controllers\FlightController::class, 'charter'])->name('charter');
-    Route::post('/charter', [\App\Http\Controllers\FlightController::class, 'createCharter'])->name('charter.create');
     Route::get('/bids', [\App\Http\Controllers\ContractsController::class, 'myContracts'])->name('bids');
     Route::get('/dispatch', [\App\Http\Controllers\DispatchController::class, 'index'])->name('dispatch');
     Route::post('/dispatch', [\App\Http\Controllers\DispatchController::class, 'create'])->name('dispatch.create');
