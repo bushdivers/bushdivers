@@ -20,8 +20,8 @@ class CreateAirportsTable extends Migration
             $table->string('location')->nullable();
             $table->string('country')->nullable();
             $table->boolean('is_hub');
-            $table->decimal('lat', 11, 5);
-            $table->decimal('lon', 11, 5);
+            $table->decimal('lat', 11, 5)->index();
+            $table->decimal('lon', 11, 5)->index();
             $table->timestamps();
         });
     }

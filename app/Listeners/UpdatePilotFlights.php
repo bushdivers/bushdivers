@@ -30,7 +30,6 @@ class UpdatePilotFlights
     {
         $userService = new UserService();
         $userService->updatePilotHours($event->pirep->flight_time, $event->pirep->user_id);
-        $flight = Flight::find($event->pirep->flight_id);
-        $userService->updatePilotLocation($flight->arr_airport_id, $event->pirep->user_id);
+        $userService->updatePilotLocation($event->pirep->destination_airport_id, $event->pirep->user_id);
     }
 }

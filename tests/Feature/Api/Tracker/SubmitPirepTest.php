@@ -4,17 +4,24 @@ namespace Tests\Feature\Api\Tracker;
 
 use App\Events\PirepFiled;
 use App\Models\Aircraft;
+use App\Models\Airport;
 use App\Models\Booking;
+use App\Models\Contract;
+use App\Models\ContractCargo;
 use App\Models\Enums\AircraftState;
 use App\Models\Fleet;
 use App\Models\Flight;
+use App\Models\FlightLog;
 use App\Models\Pirep;
+use App\Models\PirepCargo;
 use App\Models\User;
+use App\Services\ContractService;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
@@ -25,7 +32,9 @@ class SubmitPirepTest extends TestCase
 
     protected Model $user;
     protected Model $pirep;
-    protected Model $flight;
+    protected Model $pirepCargo;
+    protected Model $contract;
+    protected Model $contractCargo;
     protected Model $fleet;
     protected Model $aircraft;
     protected Model $booking;
@@ -43,25 +52,55 @@ class SubmitPirepTest extends TestCase
         $this->aircraft = Aircraft::factory()->create([
             'fleet_id' => $this->fleet->id,
             'fuel_onboard' => 50,
-            'current_airport_id' => 'AYMR'
-        ]);
-        $this->flight = Flight::factory()->create([
-            'dep_airport_id' => 'AYMR',
-            'arr_airport_id' => 'AYMH'
-        ]);
-        $this->booking = Booking::factory()->create([
-            'flight_id' => $this->flight->id,
+            'current_airport_id' => 'AYMR',
             'user_id' => $this->user->id
+        ]);
+        DB::table('cargo_types')->insert([
+            ['type' => 1, 'text' => 'Solar Panels'],
+            ['type' => 1, 'text' => 'Building materials'],
+            ['type' => 2, 'text' => 'Medics'],
+            ['type' => 2, 'text' => 'Locals'],
+        ]);
+
+        $this->contract = Contract::factory()->create([
+            'contract_value' => 250.00,
+            'dep_airport_id' => 'AYMR',
+            'arr_airport_id' => 'AYMN'
+        ]);
+        $this->contractCargo = ContractCargo::factory()->create([
+            'contract_id' => $this->contract->id,
+            'current_airport_id' => $this->contract->dep_airport_id
         ]);
         $this->pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,
-            'flight_id' => $this->flight->id,
-            'booking_id' => $this->booking->id,
+            'destination_airport_id' => $this->contract->arr_airport_id,
+            'departure_airport_id' => $this->contract->dep_airport_id,
             'aircraft_id' => $this->aircraft
         ]);
 
-        $this->booking->has_dispatch = $this->pirep->id;
-        $this->booking->save();
+        $this->pirepCargo = PirepCargo::factory()->create([
+            'pirep_id' => $this->pirep->id,
+            'contract_cargo_id' => $this->contractCargo->id
+        ]);
+
+        Airport::factory()->create([
+            'identifier' => 'AYMR'
+        ]);
+        Airport::factory()->create([
+            'identifier' => 'AYMN'
+        ]);
+
+        FlightLog::factory()->create([
+            'pirep_id' => $this->pirep->id,
+            'lat' => -6.36263,
+            'lon' => 143.23056
+        ]);
+
+        FlightLog::factory()->create([
+            'pirep_id' => $this->pirep->id,
+            'lat' => -6.14477,
+            'lon' => 143.65752
+        ]);
 
     }
     /**
@@ -116,7 +155,6 @@ class SubmitPirepTest extends TestCase
 
     public function test_pilot_pay_calc_when_pirep_submitted()
     {
-        Artisan::call('db:seed --class=RankSeeder');
         Sanctum::actingAs(
             $this->user,
             ['*']
@@ -124,7 +162,6 @@ class SubmitPirepTest extends TestCase
         $data = [
             'pirep_id' => $this->pirep->id,
             'fuel_used' => 25,
-            'distance' => 76,
             'flight_time' => 45,
             'landing_rate' => -149.12,
             'block_off_time'=> Carbon::now()->addHours(-1),
@@ -132,36 +169,25 @@ class SubmitPirepTest extends TestCase
         ];
 
         $this->postJson('/api/pirep/submit', $data);
-        $pay = 25.00 * (45 / 60);
 
+        $this->assertDatabaseHas('user_accounts', [
+            'flight_id' => $this->pirep->id,
+            'total' => $this->contract->contract_value
+        ]);
         $this->assertDatabaseHas('users', [
-            'account_balance' => $pay
+            'id' => $this->user->id,
+            'account_balance' => $this->contract->contract_value
         ]);
     }
 
     public function test_pilot_location_and_flights_updated()
     {
-        Artisan::call('db:seed --class=RankSeeder');
-
-        $user = User::factory()->create([
-            'rank_id' => 1,
-            'flights_time' => 299,
-            'points' => 8
-        ]);
-
-        $pirep = Pirep::factory()->create([
-            'user_id' => $user->id,
-            'flight_id' => $this->flight->id,
-            'booking_id' => $this->booking->id,
-            'aircraft_id' => $this->aircraft
-        ]);
-
         Sanctum::actingAs(
-            $user,
+            $this->user,
             ['*']
         );
         $data = [
-            'pirep_id' => $pirep->id,
+            'pirep_id' => $this->pirep->id,
             'fuel_used' => 25,
             'distance' => 50,
             'flight_time' => 60,
@@ -171,16 +197,12 @@ class SubmitPirepTest extends TestCase
         ];
 
         $this->postJson('/api/pirep/submit', $data);
-        $pay = 25.00 * (45 / 60);
-
-        $pirep = Pirep::find($this->pirep->id);
 
         $this->assertDatabaseHas('users', [
-            'id' => $user->id,
-            'current_airport_id' => $this->flight->arr_airport_id,
+            'id' => $this->user->id,
+            'current_airport_id' => $this->contract->arr_airport_id,
             'flights_time' => $this->user->flights_time + 60,
-            'flights' => $user->flights + 1,
-            'points' => 120
+            'flights' => $this->user->flights + 1,
         ]);
     }
 
@@ -202,7 +224,7 @@ class SubmitPirepTest extends TestCase
             'submitted_at' => Carbon::now()
         ];
 
-        $location = $this->flight->arr_airport_id;
+        $location = $this->contract->arr_airport_id;
         $hours = $this->aircraft->flight_time_mins += 45;
         $fuel = $this->aircraft->fuel_onboard -= 25;
 

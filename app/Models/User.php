@@ -63,15 +63,10 @@ class User extends Authenticatable
         return 'BDV'.$number;
     }
 
-    public function getCurrentBookingsAttribute()
+    public function getCurrentBidsAttribute()
     {
-        $bookings = Booking::where('user_id', $this->id)->get();
+        $bookings = Contract::where('user_id', $this->id)->where('is_completed', false)->get();
         return $bookings->count();
-    }
-
-    public function bookings()
-    {
-        return $this->hasMany(Booking::class);
     }
 
     public function rank()

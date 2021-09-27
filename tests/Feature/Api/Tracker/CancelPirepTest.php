@@ -3,17 +3,22 @@
 namespace Tests\Feature\Api\Tracker;
 
 use App\Models\Aircraft;
+use App\Models\Airport;
 use App\Models\Booking;
+use App\Models\Contract;
+use App\Models\ContractCargo;
 use App\Models\Enums\PirepState;
 use App\Models\Fleet;
 use App\Models\Flight;
 use App\Models\FlightLog;
 use App\Models\Pirep;
+use App\Models\PirepCargo;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\DB;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
@@ -34,22 +39,57 @@ class CancelPirepTest extends TestCase
         $this->user = User::factory()->create();
         $this->fleet = Fleet::factory()->create();
         $this->aircraft = Aircraft::factory()->create([
-            'fleet_id' => $this->fleet->id
-        ]);
-        $this->flight = Flight::factory()->create();
-        $this->booking = Booking::factory()->create([
-            'flight_id' => $this->flight->id,
+            'fleet_id' => $this->fleet->id,
+            'fuel_onboard' => 50,
+            'current_airport_id' => 'AYMR',
             'user_id' => $this->user->id
+        ]);
+        DB::table('cargo_types')->insert([
+            ['type' => 1, 'text' => 'Solar Panels'],
+            ['type' => 1, 'text' => 'Building materials'],
+            ['type' => 2, 'text' => 'Medics'],
+            ['type' => 2, 'text' => 'Locals'],
+        ]);
+
+        $this->contract = Contract::factory()->create([
+            'contract_value' => 250.00,
+            'dep_airport_id' => 'AYMR',
+            'arr_airport_id' => 'AYMN'
+        ]);
+        $this->contractCargo = ContractCargo::factory()->create([
+            'contract_id' => $this->contract->id,
+            'current_airport_id' => $this->contract->dep_airport_id
         ]);
         $this->pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,
-            'flight_id' => $this->flight->id,
-            'booking_id' => $this->booking->id,
+            'destination_airport_id' => $this->contract->arr_airport_id,
+            'departure_airport_id' => $this->contract->dep_airport_id,
             'aircraft_id' => $this->aircraft
         ]);
 
-        $this->booking->has_dispatch = $this->pirep->id;
-        $this->booking->save();
+        $this->pirepCargo = PirepCargo::factory()->create([
+            'pirep_id' => $this->pirep->id,
+            'contract_cargo_id' => $this->contractCargo->id
+        ]);
+
+        Airport::factory()->create([
+            'identifier' => 'AYMR'
+        ]);
+        Airport::factory()->create([
+            'identifier' => 'AYMN'
+        ]);
+
+        FlightLog::factory()->create([
+            'pirep_id' => $this->pirep->id,
+            'lat' => -6.36263,
+            'lon' => 143.23056
+        ]);
+
+        FlightLog::factory()->create([
+            'pirep_id' => $this->pirep->id,
+            'lat' => -6.14477,
+            'lon' => 143.65752
+        ]);
 
     }
     /**

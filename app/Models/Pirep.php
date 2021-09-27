@@ -12,11 +12,6 @@ class Pirep extends Model
     public $incrementing = false;
     protected $keyType = 'string';
 
-    public function flight()
-    {
-        return $this->belongsTo(Flight::class);
-    }
-
     public function pilot()
     {
         return $this->belongsTo(User::class, 'user_id', 'id');

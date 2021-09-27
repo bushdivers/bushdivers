@@ -3,6 +3,9 @@
 namespace App\Services;
 
 use App\Models\Aircraft;
+use App\Models\Airport;
+use App\Models\Contract;
+use App\Models\ContractCargo;
 use App\Models\Enums\AircraftState;
 use App\Models\Enums\AircraftStatus;
 use App\Models\Enums\PirepState;
@@ -10,7 +13,9 @@ use App\Models\Enums\PirepStatus;
 use App\Models\Enums\PointsType;
 use App\Models\Enums\TransactionTypes;
 use App\Models\Flight;
+use App\Models\FlightLog;
 use App\Models\Pirep;
+use App\Models\PirepCargo;
 use App\Models\Point;
 use App\Models\Rank;
 use App\Models\User;
@@ -25,9 +30,8 @@ class PirepService
         $this->addPointsEntry($pirep->id, PointsType::COMPLETED_FLIGHT_LABEL, PointsType::COMPLETED_FLIGHT);
 
         // hub
-        $flight = Flight::find($pirep->flight_id);
         $user = User::find($pirep->user_id);
-        if ($flight->dep_airport_id == $user->hub_id || $flight->arr_airport_id == $user->hub_id) {
+        if ($pirep->departure_airport_id == $user->hub_id || $pirep->destination_airport_id == $user->hub_id) {
             $this->addPointsEntry($pirep->id, PointsType::HOME_HUB_LABEL, PointsType::HOME_HUB);
         }
 
@@ -57,28 +61,28 @@ class PirepService
     public function calculatePilotPay($pirep)
     {
         $user = User::find($pirep->user_id);
-        $rank = Rank::find($user->rank_id);
+        $pay = 0.00;
 
-        // duration in hours decimal
-        $duration = $pirep->flight_time / 60;
-        $pay = $rank->pilot_pay * $duration;
+        $pirepCargo = PirepCargo::where('pirep_id', $pirep->id)->get();
+        foreach ($pirepCargo as $pc) {
+            $cargo = ContractCargo::find($pc->contract_cargo_id);
+            $contract = Contract::find($cargo->contract_id);
+            if ($contract->is_completed) {
+                $pay += $contract->contract_value;
 
-        // update users balance
-        $user->account_balance = $user->account_balance + $pay;
-        $user->save();
+                // update users balance
+                $user->account_balance += $pay;
+                $user->save();
 
-        // add pay to pirep
-        $p = Pirep::find($pirep->id);
-        $p->pilot_pay = $pay;
-        $p->save();
-
-        // add line to user account
-        DB::table('user_accounts')->insert([
-            'user_id' => $user->id,
-            'type' => TransactionTypes::FlightPay,
-            'total' => $pay,
-            'flight_id' => $pirep->flight_id
-        ]);
+                // add line to user account
+                DB::table('user_accounts')->insert([
+                    'user_id' => $user->id,
+                    'type' => TransactionTypes::FlightPay,
+                    'total' => $pay,
+                    'flight_id' => $pirep->id
+                ]);
+            }
+        }
     }
 
     public function calculateLandingRatePoints($landingRate): array
@@ -177,5 +181,43 @@ class PirepService
     public function removePirep($pirepId)
     {
         Pirep::destroy($pirepId);
+    }
+
+    public function calculateTotalFlightDistance($pirep): float
+    {
+        $airportService = new AirportService();
+        $distance = 0;
+        $first = true;
+
+        // find lat/lon for departure
+        $dep = Airport::where('identifier', $pirep->departure_airport_id)->first();
+        $startLat = $dep->lat;
+        $startLon = $dep->lon;
+        //get initial leg
+
+
+        $lastLat = 0.00;
+        $lastLon = 0.00;
+
+        // find flight logs for pirep
+        $logs = FlightLog::where('pirep_id', $pirep->id)->get();
+        $i = 1;
+        foreach ($logs as $log) {
+            // loop through logs and tally up distance between each point
+            if ($first) {
+                $distance += $airportService->calculateDistanceBetweenPoints($startLat, $startLon, $log->lat, $log->lon);
+                $first = false;
+            } else {
+                $distance += $airportService->calculateDistanceBetweenPoints($lastLat, $lastLon, $log->lat, $log->lon);
+            }
+
+            if ($i < $logs->count()) {
+                $lastLat = $log->lat;
+                $lastLon = $log->lon;
+            }
+            $i++;
+        }
+
+        return $distance;
     }
 }

@@ -18,6 +18,7 @@ class AircraftService
     {
         $aircraft = Aircraft::find($aircraft);
         $aircraft->state = $state;
+        $aircraft->user_id = null;
         $aircraft->save();
     }
 

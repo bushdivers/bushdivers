@@ -15,13 +15,16 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/aircraft/{icao}', [\App\Http\Controllers\FleetController::class, 'getAvailableAircraft'])->name('fleet.available.aircraft');
-Route::get('/airport/search/{search}', [\App\Http\Controllers\Api\AirportController::class, 'getAirportFromSearch'])->name('airport.searcg');
+Route::get('/airport/search/{search}', [\App\Http\Controllers\Api\AirportController::class, 'getAirportFromSearch'])->name('airport.search');
 Route::get('/jumpseat/cost/{from}/{to}', [\App\Http\Controllers\Api\AirportController::class, 'getCostOfJumpseat'])->name('jumpseat.cost');
 Route::get('/flights/distance/{from}/{to}', [\App\Http\Controllers\Api\FlightController::class, 'getDistance'])->name('flights.distance');
 Route::get('/liveflights', [\App\Http\Controllers\PirepController::class, 'liveFlights'])->name('flights.live');
 
+Route::get('/test', [\App\Http\Controllers\Api\ContractsController::class, 'test']);
+
 Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/bookings', [\App\Http\Controllers\Api\TrackerController::class, 'getDispatchedBookings']);
+    Route::get('/dispatch', [\App\Http\Controllers\Api\TrackerController::class, 'getDispatch']);
+    Route::get('/dispatch/cargo', [\App\Http\Controllers\Api\TrackerController::class, 'getDispatchCargo']);
     Route::post('/log', [\App\Http\Controllers\Api\TrackerController::class, 'postFlightLog']);
     Route::post('/pirep/submit', [\App\Http\Controllers\Api\TrackerController::class, 'submitPirep']);
     Route::post('/pirep/status', [\App\Http\Controllers\Api\TrackerController::class, 'updatePirepStatus']);

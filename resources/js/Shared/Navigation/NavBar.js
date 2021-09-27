@@ -30,9 +30,6 @@ export default function NavBar () {
                   {({ active }) => <Link href="/hubs" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Hubs</Link>}
                 </Menu.Item>
                 <Menu.Item>
-                  {({ active }) => <Link href="/routes" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Route Map</Link>}
-                </Menu.Item>
-                <Menu.Item>
                   {({ active }) => <Link href="/fleet" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Fleet</Link>}
                 </Menu.Item>
                 <Menu.Item>
@@ -60,17 +57,17 @@ export default function NavBar () {
             <Transition as={Fragment} enter="transition ease-out duration-100" enterFrom="transform opacity-0 scale-95" enterTo="transform opacity-100 scale-100" leave="transition ease-in duration-75" leaveFrom="transform opacity-100 scale-100" leaveTo="transform opacity-0 scale-95">
               <Menu.Items className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white focus:outline-none">
                 <Menu.Item>
-                  {({ active }) => <Link href="/flights" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Flight Search</Link>}
-                </Menu.Item>
-                <Menu.Item>
-                  {({ active }) => <Link href="/charter" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Charter Flight</Link>}
+                  {({ active }) => <Link href="/contracts" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Find a Contract</Link>}
                 </Menu.Item>
                 <Menu.Item>
                   {({ active }) => <Link href="/liveflights" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Live Flights Map</Link>}
                 </Menu.Item>
                 <Menu.Item>
-                  {({ active }) => <a href="/bookings" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">My Bookings ({auth.user.current_bookings})</a>}
+                  {({ active }) => <a href="/bids" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">My Contracts {auth.user.current_bids > 0 ? <span>({auth.user.current_bids})</span> : <span>(0)</span> }</a>}
                 </Menu.Item>
+                 <Menu.Item>
+                  {({ active }) => <Link href="/dispatch" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Flight Dispatch</Link>}
+                 </Menu.Item>
                 <Menu.Item>
                   {({ active }) => <Link href="/jumpseat" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Jumpseat</Link>}
                 </Menu.Item>

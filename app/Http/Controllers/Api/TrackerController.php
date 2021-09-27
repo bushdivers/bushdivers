@@ -4,10 +4,16 @@ namespace App\Http\Controllers\Api;
 
 use App\Events\PirepFiled;
 use App\Http\Controllers\Controller;
+use App\Models\ContractCargo;
 use App\Models\Enums\PirepState;
 use App\Models\Enums\PirepStatus;
 use App\Models\FlightLog;
 use App\Models\Pirep;
+use App\Models\PirepCargo;
+use App\Services\CargoService;
+use App\Services\ContractService;
+use App\Services\DispatchService;
+use App\Services\PirepService;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -16,18 +22,55 @@ use Illuminate\Support\Facades\DB;
 
 class TrackerController extends Controller
 {
-    public function getDispatchedBookings(Request $request): JsonResponse
+    public function getDispatch(Request $request): JsonResponse
     {
-        $bookings = DB::table('pireps')
-            ->join('flights', 'pireps.flight_id', '=', 'flights.id')
-            ->join('aircraft', 'pireps.aircraft_id', '=', 'aircraft.id')
-            ->join('fleets', 'aircraft.fleet_id', '=', 'fleets.id')
-            ->select('pireps.*', 'flights.flight_number', 'flights.dep_airport_id', 'flights.arr_airport_id', 'fleets.name', 'aircraft.registration')
-            ->where('pireps.user_id', Auth::user()->id)
-            ->where('flights.dep_airport_id', Auth::user()->current_airport_id)
+        $dispatchService = new DispatchService();
+
+        $dispatch = Pirep::with('aircraft', 'aircraft.fleet')
+            ->where('user_id', Auth::user()->id)
+            ->where('state', PirepState::DISPATCH)
+            ->first();
+
+        if (!$dispatch) {
+            return response()->json(['message' => 'No dispatch available'], 204);
+        }
+
+        $cargo = DB::table('pirep_cargos')
+            ->join('contract_cargos', 'pirep_cargos.contract_cargo_id', '=', 'contract_cargos.id')
+            ->where('pirep_cargos.pirep_id', $dispatch->id)
+            ->select('contract_cargos.id', 'contract_type_id', 'cargo_qty')
             ->get();
 
-        return response()->json($bookings);
+        $cargoWeight = $dispatchService->calculateCargoWeight($cargo, false);
+        $passengerCount = $dispatchService->calculatePassengerCount($cargo);
+
+        $data = [
+            'id' => $dispatch->id,
+            'departure_airport_id' => $dispatch->departure_airport_id,
+            'destination_airport_id' => $dispatch->destination_airport_id,
+            'name' => $dispatch->aircraft->fleet->manufacturer . ' ' . $dispatch->aircraft->fleet->name,
+            'registration' => $dispatch->aircraft->registration,
+            'planned_fuel' => $dispatch->planned_fuel,
+            'cargo_weight' => $cargoWeight,
+            'passenger_count' => $passengerCount
+        ];
+
+        return response()->json($data);
+    }
+
+    public function getDispatchCargo(Request $request): JsonResponse
+    {
+        $dispatch = Pirep::where('user_id', Auth::user()->id)
+            ->where('state', PirepState::DISPATCH)
+            ->first();
+
+        $cargo = DB::table('pirep_cargos')
+            ->join('contract_cargos', 'pirep_cargos.contract_cargo_id', '=', 'contract_cargos.id')
+            ->where('pirep_cargos.pirep_id', $dispatch->id)
+            ->select('contract_cargos.id', 'contract_type_id', 'cargo_qty', 'cargo', 'current_airport_id')
+            ->get();
+
+        return response()->json($cargo);
     }
 
     public function postFlightLog(Request $request): JsonResponse
@@ -64,10 +107,15 @@ class TrackerController extends Controller
 
     public function submitPirep(Request $request): JsonResponse
     {
-        // set pirep status to completed
         $pirep = Pirep::find($request->pirep_id);
+
+         $pirepService = new PirepService();
+        // calculate coordinate points in flight logs
+         $distance = $pirepService->calculateTotalFlightDistance($pirep);
+
+        // set pirep status to completed
         $pirep->fuel_used = $request->fuel_used;
-        $pirep->distance = $request->distance;
+        $pirep->distance = $distance;
         $pirep->flight_time = $request->flight_time;
         $pirep->landing_rate = $request->landing_rate;
         $pirep->state = PirepState::ACCEPTED;
@@ -77,7 +125,15 @@ class TrackerController extends Controller
         $pirep->block_on_time = $request->block_on_time;
         $pirep->save();
 
-        // dispatch completed event (removes booking, resets aircraft, checks rank and awards
+        // update cargo and contract
+        $contractService = new ContractService();
+        $cargo = PirepCargo::where('pirep_id', $pirep->id)->get();
+        foreach ($cargo as $cargoItem) {
+            $contractService->updateCargo($cargoItem->id, $pirep->destination_airport_id);
+        }
+        $pirepService->calculatePilotPay($pirep);
+
+        // dispatch completed event (updates cargo/contract, resets aircraft, checks rank and awards)
         PirepFiled::dispatch($pirep);
 
         return response()->json(['message' => 'Pirep successfully filed']);

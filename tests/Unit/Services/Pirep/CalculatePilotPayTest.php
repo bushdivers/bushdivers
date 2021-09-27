@@ -4,12 +4,16 @@ namespace Tests\Unit\Services\Pirep;
 
 use App\Models\Aircraft;
 use App\Models\Booking;
+use App\Models\Contract;
+use App\Models\ContractCargo;
 use App\Models\Fleet;
 use App\Models\Flight;
 use App\Models\Pirep;
+use App\Models\PirepCargo;
 use App\Models\Rank;
 use App\Models\User;
 use App\Services\PirepService;
+use Carbon\Carbon;
 use Database\Seeders\RankSeeder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -26,6 +30,8 @@ class CalculatePilotPayTest extends TestCase
     protected Model $booking;
     protected Model $fleet;
     protected Model $aircraft;
+    protected Model $contract;
+    protected Model $contractCargo;
 
     protected function setUp(): void
     {
@@ -37,19 +43,31 @@ class CalculatePilotPayTest extends TestCase
         ]);
         $this->fleet = Fleet::factory()->create();
         $this->aircraft = Aircraft::factory()->create([
-            'fleet_id' => $this->fleet->id
+            'fleet_id' => $this->fleet->id,
+            'user_id' => $this->user->id
         ]);
-        $this->flight = Flight::factory()->create();
-        $this->booking = Booking::factory()->create([
-            'user_id' => $this->user->id,
-            'flight_id' => $this->flight->id,
+
+        $this->contract = Contract::factory()->create([
+            'is_completed' => true,
+            'completed_at' => Carbon::now()
         ]);
+        $this->contractCargo = ContractCargo::factory()->create([
+            'contract_id' => $this->contract->id,
+            'current_airport_id' => $this->contract->arr_airport_id,
+            'is_completed' => true,
+            'completed_at' => Carbon::now()
+        ]);
+
         $this->pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,
-            'flight_id' => $this->flight->id,
-            'aircraft_id' => $this->aircraft->id,
-            'booking_id' => $this->booking->id,
-            'flight_time' => 45
+            'destination_airport_id' => $this->contract->arr_airport_id,
+            'departure_airport_id' => $this->contract->dep_airport_id,
+            'aircraft_id' => $this->aircraft
+        ]);
+
+        $this->pirepCargo = PirepCargo::factory()->create([
+            'pirep_id' => $this->pirep->id,
+            'contract_cargo_id' => $this->contractCargo->id
         ]);
     }
 
@@ -58,29 +76,12 @@ class CalculatePilotPayTest extends TestCase
      *
      * @return void
      */
-    public function test_pay_calculated_for_trainee_45m()
+    public function test_pay_calculated()
     {
         $pirepService = new PirepService();
-
-        $rank = Rank::where('name', 'Trainee')->first();
-        $duration = 45 / 60;
-        $pay = $duration * $rank->pilot_pay;
+        $pay = $this->contract->contract_value;
         $pirepService->calculatePilotPay($this->pirep);
         $this->assertDatabaseHas('users', ['account_balance' => $pay]);
-    }
-
-    public function test_pay_added_to_pirep()
-    {
-        $pirepService = new PirepService();
-
-        $rank = Rank::where('name', 'Trainee')->first();
-        $duration = 45 / 60;
-        $pay = $duration * $rank->pilot_pay;
-        $pirepService->calculatePilotPay($this->pirep);
-        $this->assertDatabaseHas('pireps', [
-            'id' => $this->pirep->id,
-            'pilot_pay' => $pay
-        ]);
     }
 
     public function test_pay_added_to_user_account_ledger()
@@ -88,13 +89,12 @@ class CalculatePilotPayTest extends TestCase
         $pirepService = new PirepService();
 
         $rank = Rank::where('name', 'Trainee')->first();
-        $duration = 45 / 60;
-        $pay = $duration * $rank->pilot_pay;
+        $pay = $this->contract->contract_value;
         $pirepService->calculatePilotPay($this->pirep);
         $this->assertDatabaseHas('user_accounts', [
             'user_id' => $this->pirep->user_id,
             'total' => $pay,
-            'flight_id' => $this->pirep->flight_id
+            'flight_id' => $this->pirep->id
         ]);
     }
 

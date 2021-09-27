@@ -3123,23 +3123,14 @@ function NavBar() {
                 children: function children(_ref8) {
                   var active = _ref8.active;
                   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Link, {
-                    href: "/flights",
+                    href: "/contracts",
                     className: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50",
-                    children: "Flight Search"
+                    children: "Find a Contract"
                   });
                 }
               }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(_headlessui_react__WEBPACK_IMPORTED_MODULE_3__.Menu.Item, {
                 children: function children(_ref9) {
                   var active = _ref9.active;
-                  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Link, {
-                    href: "/charter",
-                    className: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50",
-                    children: "Charter Flight"
-                  });
-                }
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(_headlessui_react__WEBPACK_IMPORTED_MODULE_3__.Menu.Item, {
-                children: function children(_ref10) {
-                  var active = _ref10.active;
                   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Link, {
                     href: "/liveflights",
                     className: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50",
@@ -3147,12 +3138,25 @@ function NavBar() {
                   });
                 }
               }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(_headlessui_react__WEBPACK_IMPORTED_MODULE_3__.Menu.Item, {
+                children: function children(_ref10) {
+                  var active = _ref10.active;
+                  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("a", {
+                    href: "/bids",
+                    className: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50",
+                    children: ["My Contracts ", auth.user.current_bids > 0 ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("span", {
+                      children: ["(", auth.user.current_bids, ")"]
+                    }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("span", {
+                      children: "(0)"
+                    })]
+                  });
+                }
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(_headlessui_react__WEBPACK_IMPORTED_MODULE_3__.Menu.Item, {
                 children: function children(_ref11) {
                   var active = _ref11.active;
-                  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("a", {
-                    href: "/bookings",
+                  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Link, {
+                    href: "/dispatch",
                     className: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50",
-                    children: ["My Bookings (", auth.user.current_bookings, ")"]
+                    children: "Flight Dispatch"
                   });
                 }
               }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(_headlessui_react__WEBPACK_IMPORTED_MODULE_3__.Menu.Item, {
