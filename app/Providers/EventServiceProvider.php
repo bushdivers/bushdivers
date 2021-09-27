@@ -26,7 +26,6 @@ class EventServiceProvider extends ServiceProvider
             SendEmailVerificationNotification::class,
         ],
         PirepFiled::class => [
-            CalculatePay::class,
             CalculatePoints::class,
             UpdatePilotFlights::class,
             UpdateAircraft::class,

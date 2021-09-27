@@ -22,7 +22,7 @@ class PirepCargoFactory extends Factory
     public function definition()
     {
         return [
-            //
+
         ];
     }
 }

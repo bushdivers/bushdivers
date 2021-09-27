@@ -166,4 +166,34 @@ class ContractService
             return round($cargoValue + $distanceValue);
         }
     }
+
+    public function updateCargo($cargo, $icao)
+    {
+        $contractCargo = ContractCargo::find($cargo);
+        $contract = Contract::find($contractCargo->contract_id);
+        $contractCargo->current_airport_id = $icao;
+        $contractCargo->save();
+
+            // check if cargo item is completed
+
+        if ($icao == $contract->arr_airport_id) {
+            $contractCargo->is_completed = true;
+            $contractCargo->completed_at = Carbon::now();
+            $contractCargo->save();
+
+            $this->setContractCompleted($contract);
+        }
+    }
+
+    public function setContractCompleted($contract)
+    {
+        $cargo = ContractCargo::where('contract_id', $contract->id)->get();
+        $cargoCompleted = ContractCargo::where('is_completed', true);
+
+        if ($cargo->count() == $cargoCompleted->count()) {
+            $contract->is_completed = true;
+            $contract->completed_at = Carbon::now();
+            $contract->save();
+        }
+    }
 }

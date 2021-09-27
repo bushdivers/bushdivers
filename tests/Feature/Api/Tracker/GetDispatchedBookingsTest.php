@@ -3,14 +3,20 @@
 namespace Tests\Feature\Api\Tracker;
 
 use App\Models\Aircraft;
+use App\Models\Airport;
 use App\Models\Booking;
+use App\Models\Contract;
+use App\Models\ContractCargo;
 use App\Models\Fleet;
 use App\Models\Flight;
+use App\Models\FlightLog;
 use App\Models\Pirep;
+use App\Models\PirepCargo;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\DB;
 use Laravel\Sanctum\Sanctum;
 use PhpParser\Node\Expr\AssignOp\Mod;
 use Tests\TestCase;
@@ -21,9 +27,11 @@ class GetDispatchedBookingsTest extends TestCase
 
     protected Model $user;
     protected Model $aircraft;
-    protected Model $flight;
+    protected Model $contract;
+    protected Model $contractCargo;
     protected Model $booking;
     protected Model $pirep;
+    protected Model $pirepCargo;
     protected Model $fleet;
 
     public function setUp(): void
@@ -34,24 +42,46 @@ class GetDispatchedBookingsTest extends TestCase
         ]);
         $this->fleet = Fleet::factory()->create();
         $this->aircraft = Aircraft::factory()->create([
-            'fleet_id' => $this->fleet->id
-        ]);
-        $this->flight = Flight::factory()->create([
-            'dep_airport_id' => 'AYMR'
-        ]);
-        $this->booking = Booking::factory()->create([
-            'flight_id' => $this->flight->id,
+            'fleet_id' => $this->fleet->id,
+            'fuel_onboard' => 50,
+            'current_airport_id' => 'AYMR',
             'user_id' => $this->user->id
+        ]);
+        DB::table('cargo_types')->insert([
+            ['type' => 1, 'text' => 'Solar Panels'],
+            ['type' => 1, 'text' => 'Building materials'],
+            ['type' => 2, 'text' => 'Medics'],
+            ['type' => 2, 'text' => 'Locals'],
+        ]);
+
+        $this->contract = Contract::factory()->create([
+            'contract_value' => 250.00,
+            'dep_airport_id' => 'AYMR',
+            'arr_airport_id' => 'AYMN'
+        ]);
+        $this->contractCargo = ContractCargo::factory()->create([
+            'contract_id' => $this->contract->id,
+            'current_airport_id' => $this->contract->dep_airport_id
         ]);
         $this->pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,
-            'flight_id' => $this->flight->id,
-            'booking_id' => $this->booking->id,
+            'destination_airport_id' => $this->contract->arr_airport_id,
+            'departure_airport_id' => $this->contract->dep_airport_id,
             'aircraft_id' => $this->aircraft
         ]);
 
-        $this->booking->has_dispatch = $this->pirep->id;
-        $this->booking->save();
+        $this->pirepCargo = PirepCargo::factory()->create([
+            'pirep_id' => $this->pirep->id,
+            'contract_cargo_id' => $this->contractCargo->id
+        ]);
+
+        Airport::factory()->create([
+            'identifier' => 'AYMR'
+        ]);
+        Airport::factory()->create([
+            'identifier' => 'AYMN'
+        ]);
+
 
     }
 
@@ -60,106 +90,49 @@ class GetDispatchedBookingsTest extends TestCase
      *
      * @return void
      */
-    public function test_returns_one_booking()
+
+    public function test_returns_bookings_only_from_current_location()
     {
         Sanctum::actingAs(
             $this->user,
             ['*']
         );
 
-        $response = $this->getJson('/api/bookings');
-         $response->assertStatus(200);
-        $response->assertJsonCount(1);
+        $response = $this->getJson('/api/dispatch');
+        $response->assertStatus(200);
+        $response->assertJsonFragment(['departure_airport_id' => $this->pirep->departure_airport_id]);
     }
 
-    public function test_returns_bookings_only_from_current_location()
+    public function test_returns_cargo_for_booking()
     {
-        $user = User::factory()->create([
-            'current_airport_id' => 'WAJJ'
-        ]);
-
-        $flight = Flight::factory()->create([
-            'dep_airport_id' => 'WAJJ'
-        ]);
-        $booking = Booking::factory()->create([
-            'flight_id' => $flight->id,
-            'user_id' => $user->id
-        ]);
-        $pirep = Pirep::factory()->create([
-            'user_id' => $user->id,
-            'flight_id' => $flight->id,
-            'booking_id' => $booking->id,
-            'aircraft_id' => $this->aircraft
-        ]);
-
-
         Sanctum::actingAs(
-            $user,
+            $this->user,
             ['*']
         );
 
-        $response = $this->getJson('/api/bookings');
+        $response = $this->getJson('/api/dispatch/cargo');
         $response->assertStatus(200);
         $response->assertJsonCount(1);
-    }
-
-    public function test_returns_no_bookings_if_at_different_location()
-    {
-        $user = User::factory()->create([
-            'current_airport_id' => 'EGLL'
-        ]);
-
-        $flight = Flight::factory()->create([
-            'dep_airport_id' => 'WAJJ'
-        ]);
-        $booking = Booking::factory()->create([
-            'flight_id' => $flight->id,
-            'user_id' => $user->id
-        ]);
-        $pirep = Pirep::factory()->create([
-            'user_id' => $user->id,
-            'flight_id' => $flight->id,
-            'booking_id' => $booking->id,
-            'aircraft_id' => $this->aircraft
-        ]);
-
-
-        Sanctum::actingAs(
-            $user,
-            ['*']
-        );
-
-        $response = $this->getJson('/api/bookings');
-        $response->assertStatus(200);
-        $response->assertJsonCount(0);
     }
 
     public function test_returns_multiple_bookings()
     {
-        $aircraft = Aircraft::factory()->create([
-            'fleet_id' => $this->fleet->id
-        ]);
-        $flight = Flight::factory()->create();
-        $booking = Booking::factory()->create([
-            'flight_id' => $flight->id,
-            'user_id' => $this->user->id
-        ]);
-        $pirep = Pirep::factory()->create([
-            'user_id' => $this->user->id,
-            'flight_id' => $flight->id,
-            'booking_id' => $booking->id,
-            'aircraft_id' => $aircraft
+        $contractCargo = ContractCargo::factory()->create([
+            'contract_id' => $this->contract->id,
+            'current_airport_id' => $this->contract->dep_airport_id
         ]);
 
-        $booking->has_dispatch = $pirep->id;
-        $booking->save();
+        $this->pirepCargo = PirepCargo::factory()->create([
+            'pirep_id' => $this->pirep->id,
+            'contract_cargo_id' => $contractCargo->id
+        ]);
 
         Sanctum::actingAs(
             $this->user,
             ['*']
         );
 
-        $response = $this->getJson('/api/bookings');
+        $response = $this->getJson('/api/dispatch/cargo');
         $response->assertStatus(200);
         $response->assertJsonCount(2);
     }
@@ -171,8 +144,7 @@ class GetDispatchedBookingsTest extends TestCase
             ['*']
         );
 
-        $response = $this->getJson('/api/bookings');
-        $response->assertStatus(200);
-        $response->assertJsonCount(0);
+        $response = $this->getJson('/api/dispatch');
+        $response->assertStatus(204);
     }
 }

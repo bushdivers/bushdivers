@@ -25,7 +25,6 @@ class ContractFactory extends Factory
         return [
             'dep_airport_id' => 'AYMR',
             'arr_airport_id' => 'AYMN',
-            'current_airport_id' => 'AYMR',
             'distance' => 54,
             'heading' => 45,
             'contract_value' => 250,

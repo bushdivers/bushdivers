@@ -25,11 +25,11 @@ class PirepFactory extends Factory
     {
         return [
             'id' => Uuid::uuid4(),
-            'flight_type' => FlightType::SCHEDULED,
-            'cargo' => 100,
-            'cargo_name' => 'test',
-            'pax' => 0,
-            'planned_cruise_altitude' => 5000
+            'planned_fuel' => 50,
+            'aircraft_id' => 1,
+            'user_id' => 1,
+            'destination_airport_id' => 'AYMN',
+            'departure_airport_id' => 'AYMR'
         ];
     }
 }

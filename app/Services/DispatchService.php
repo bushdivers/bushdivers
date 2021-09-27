@@ -13,15 +13,22 @@ class DispatchService
         return $fuelType == 1 ? $fuel * $this->avgasWeight : $fuel * $this->jetFuelWeight;
     }
 
-    public function calculateCargoWeight($cargo)
+    public function calculateCargoWeight($cargo, $calcPax = true)
     {
         $total = 0;
         foreach ($cargo as $c) {
-            if ($c->contract_type_id == 1) {
-                $total += $c->cargo_qty;
+            if (!$calcPax) {
+                if ($c->contract_type_id == 1) {
+                    $total += $c->cargo_qty;
+                }
             } else {
-                $total += ($c->cargo_qty * $this->personWeight);
+                if ($c->contract_type_id == 1) {
+                    $total += $c->cargo_qty;
+                } else {
+                    $total += ($c->cargo_qty * $this->personWeight);
+                }
             }
+
         }
         return $total;
     }
