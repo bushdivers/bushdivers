@@ -10,6 +10,7 @@ use App\Models\Enums\PirepStatus;
 use App\Models\FlightLog;
 use App\Models\Pirep;
 use App\Models\PirepCargo;
+use App\Services\AirportService;
 use App\Services\CargoService;
 use App\Services\ContractService;
 use App\Services\DispatchService;
@@ -22,11 +23,18 @@ use Illuminate\Support\Facades\DB;
 
 class TrackerController extends Controller
 {
+    protected AirportService $airportService;
+
+    public function __construct(AirportService $airportService)
+    {
+        $this->airportService = $airportService;
+    }
+
     public function getDispatch(Request $request): JsonResponse
     {
         $dispatchService = new DispatchService();
 
-        $dispatch = Pirep::with('aircraft', 'aircraft.fleet')
+        $dispatch = Pirep::with('aircraft', 'aircraft.fleet', 'depAirport', 'arrAirport')
             ->where('user_id', Auth::user()->id)
             ->where('state', PirepState::DISPATCH)
             ->first();
@@ -47,8 +55,13 @@ class TrackerController extends Controller
         $data = [
             'id' => $dispatch->id,
             'departure_airport_id' => $dispatch->departure_airport_id,
+            'departure_airport_lat' => $dispatch->depAirport->lat,
+            'departure_airport_lon' => $dispatch->depAirport->lon,
+            'destination_airport_lat' => $dispatch->arrAirport->lat,
+            'destination_airport_lon' => $dispatch->arrAirport->lon,
             'destination_airport_id' => $dispatch->destination_airport_id,
             'name' => $dispatch->aircraft->fleet->manufacturer . ' ' . $dispatch->aircraft->fleet->name,
+            'aircraft_type' => $dispatch->aircraft->fleet->type,
             'registration' => $dispatch->aircraft->registration,
             'planned_fuel' => $dispatch->planned_fuel,
             'cargo_weight' => $cargoWeight,
@@ -75,13 +88,19 @@ class TrackerController extends Controller
 
     public function postFlightLog(Request $request): JsonResponse
     {
+        $pirep = Pirep::find($request->pirep_id);
         $logs = FlightLog::where('pirep_id', $request->pirep_id)->get();
         if ($logs->count() < 1) {
-            $pirep = Pirep::find($request->pirep_id);
             $pirep->state = PirepState::IN_PROGRESS;
             $pirep->status = PirepStatus::BOARDING;
-            $pirep->save();
         }
+
+        $pirep->current_lat = $request->lat;
+        $pirep->current_lon = $request->lon;
+        $pirep->current_heading = $request->heading;
+        $pirep->current_altitude = $request->altitude;
+        $pirep->current_indicated_speed = $request->indicated_speed;
+        $pirep->save();
 
         try {
             $flightLog = new FlightLog();
@@ -95,8 +114,8 @@ class TrackerController extends Controller
             $flightLog->ground_speed = $request->ground_speed;
             $flightLog->fuel_flow = $request->fuel_flow;
             $flightLog->vs = $request->vs;
-            $flightLog->sim_time = $request->sim_time;
-            $flightLog->zulu_time = $request->zulu_time;
+            $flightLog->sim_time = Carbon::parse($request->sim_time);
+            $flightLog->zulu_time = Carbon::parse($request->zulu_time);
             $flightLog->save();
 
             return response()->json([],201);
@@ -158,5 +177,18 @@ class TrackerController extends Controller
         FlightLog::where('pirep_id', $request->pirep_id)->delete();
 
         return response()->json(['message' => 'Pirep Cancelled']);
+    }
+
+    public function checkDistance(Request $request)
+    {
+        $distance = $this->airportService->calculateDistanceBetweenPoints(
+            $request->StartLat,
+            $request->StartLon,
+            $request->EndLat,
+            $request->EndLon,
+            true
+        );
+
+        return response()->json($distance);
     }
 }

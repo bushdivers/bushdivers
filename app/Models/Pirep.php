@@ -26,4 +26,14 @@ class Pirep extends Model
     {
         return $this->hasMany(FlightLog::class);
     }
+
+    public function depAirport()
+    {
+        return $this->belongsTo(Airport::class, 'departure_airport_id', 'identifier');
+    }
+
+    public function arrAirport()
+    {
+        return $this->belongsTo(Airport::class, 'destination_airport_id', 'identifier');
+    }
 }

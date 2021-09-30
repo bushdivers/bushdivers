@@ -21,21 +21,27 @@ class AirportService
         return ['cost' => $cost, 'distance' => $distance];
     }
 
-    public function calculateDistanceBetweenPoints($latFrom, $lonFrom, $latTo, $lonTo): float
+    public function calculateDistanceBetweenPoints($latFrom, $lonFrom, $latTo, $lonTo, bool $startRad = false, bool $endRad = false): float
     {
-        // calc distance
-        $latFrom = deg2rad($latFrom);
-        $lonFrom = deg2rad($lonFrom);
-        $latTo = deg2rad($latTo);
-        $lonTo = deg2rad($lonTo);
 
-        $latDelta = $latTo - $latFrom;
-        $lonDelta = $lonTo - $lonFrom;
+        if (!$startRad) {
+            $latFrom = deg2rad($latFrom);
+            $lonFrom = deg2rad($lonFrom);
+        }
 
-        $angle = 2 * asin(sqrt(pow(sin($latDelta / 2), 2) +
-                cos($latFrom) * cos($latTo) * pow(sin($lonDelta / 2), 2)));
+        if (!$endRad) {
+            $latTo = deg2rad($latTo);
+            $lonTo = deg2rad($lonTo);
+        }
 
-        return round($angle * $this->earthRadius, 1);
+        $thetaLat = $latTo - $latFrom;
+        $thetaLon = $lonTo - $lonFrom;
+
+        $a = sin($thetaLat / 2) * sin($thetaLat / 2) + cos($latFrom) * cos($latTo) * sin($thetaLon / 2) * sin($thetaLon / 2);
+        $c = 2 * atan2(sqrt($a), sqrt(1-$a));
+        $d = $this->earthRadius * $c;
+
+        return $d;
     }
 
     public function calculateBearingBetweenPoints($latFrom, $lonFrom, $latTo, $lonTo, $destVariance): int
