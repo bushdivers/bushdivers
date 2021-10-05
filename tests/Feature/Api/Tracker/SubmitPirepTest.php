@@ -139,19 +139,48 @@ class SubmitPirepTest extends TestCase
             $this->user,
             ['*']
         );
+        $startTime = "05/10/2021 01:00:00";
+        $endTime = "05/10/2021 01:45:00";
+
         $data = [
             'pirep_id' => $this->pirep->id,
             'fuel_used' => 25,
             'distance' => 76,
-            'flight_time' => 45,
             'landing_rate' => -149.12,
-            'block_off_time'=> Carbon::now()->addHours(-1),
-            'block_on_time' => Carbon::now()->addMinutes(-5)
+            'block_off_time'=> $startTime,
+            'block_on_time' => $endTime
         ];
 
         $response = $this->postJson('/api/pirep/submit', $data);
 
         $response->assertStatus(200);
+    }
+
+    public function test_pirep_submitted_with_flight_time()
+    {
+        Artisan::call('db:seed --class=RankSeeder');
+        Sanctum::actingAs(
+            $this->user,
+            ['*']
+        );
+        $startTime = "05/10/2021 01:00:00";
+        $endTime = "05/10/2021 01:45:00";
+
+        $data = [
+            'pirep_id' => $this->pirep->id,
+            'fuel_used' => 25,
+            'distance' => 76,
+            'landing_rate' => -149.12,
+            'block_off_time'=> $startTime,
+            'block_on_time' => $endTime
+        ];
+
+        $response = $this->postJson('/api/pirep/submit', $data);
+
+        $this->assertDatabaseHas('pireps', [
+            'id' => $this->pirep->id,
+            'flight_time' => 45
+        ]);
     }
 
     public function test_pilot_calcs_peformed_when_pirep_submitted()
@@ -162,14 +191,16 @@ class SubmitPirepTest extends TestCase
             $this->user,
             ['*']
         );
+        $startTime = "05/10/2021 01:00:00";
+        $endTime = "05/10/2021 01:45:00";
+
         $data = [
             'pirep_id' => $this->pirep->id,
             'fuel_used' => 25,
             'distance' => 76,
-            'flight_time' => 45,
             'landing_rate' => -149.12,
-            'block_off_time'=> Carbon::now()->addHours(-1),
-            'block_on_time' => Carbon::now()->addMinutes(-5)
+            'block_off_time'=> $startTime,
+            'block_on_time' => $endTime
         ];
 
         $response = $this->postJson('/api/pirep/submit', $data);
@@ -183,13 +214,16 @@ class SubmitPirepTest extends TestCase
             $this->user,
             ['*']
         );
+        $startTime = "05/10/2021 01:00:00";
+        $endTime = "05/10/2021 01:45:00";
+
         $data = [
             'pirep_id' => $this->pirep->id,
             'fuel_used' => 25,
-            'flight_time' => 45,
+            'distance' => 76,
             'landing_rate' => -149.12,
-            'block_off_time'=> Carbon::now()->addHours(-1),
-            'block_on_time' => Carbon::now()->addMinutes(-5)
+            'block_off_time'=> $startTime,
+            'block_on_time' => $endTime
         ];
 
         $this->postJson('/api/pirep/submit', $data);
@@ -212,26 +246,26 @@ class SubmitPirepTest extends TestCase
             $this->user,
             ['*']
         );
-        $block_off = Carbon::now()->addHours(-1);
-        $block_on = Carbon::now()->addMinutes(-5);
+
+        $startTime = "05/10/2021 01:00:00";
+        $endTime = "05/10/2021 01:45:00";
 
         $data = [
             'pirep_id' => $this->pirep->id,
             'fuel_used' => 25,
-            'distance' => 50,
-            'landing_rate' => 150,
-            'block_off_time'=> $block_off,
-            'block_on_time' => $block_on
+            'distance' => 76,
+            'landing_rate' => -149.12,
+            'block_off_time'=> $startTime,
+            'block_on_time' => $endTime
         ];
 
-        $flightTime =  $block_off->diffInMinutes($block_on);
 
         $this->postJson('/api/pirep/submit', $data);
 
         $this->assertDatabaseHas('users', [
             'id' => $this->user->id,
             'current_airport_id' => $this->contract->arr_airport_id,
-            'flights_time' => $this->user->flights_time + $flightTime,
+            'flights_time' => $this->user->flights_time + 45,
             'flights' => $this->user->flights + 1,
         ]);
     }
@@ -244,21 +278,20 @@ class SubmitPirepTest extends TestCase
             ['*']
         );
 
-        $block_off = Carbon::now()->addHours(-1);
-        $block_on = Carbon::now()->addMinutes(-5);
-        $flightTime =  $block_off->diffInMinutes($block_on);
+        $startTime = "05/10/2021 01:00:00";
+        $endTime = "05/10/2021 01:45:00";
+
         $data = [
             'pirep_id' => $this->pirep->id,
             'fuel_used' => 25,
             'distance' => 76,
             'landing_rate' => -149.12,
-            'block_off_time'=> Carbon::now()->addHours(-1),
-            'block_on_time' => Carbon::now()->addMinutes(-5),
-            'submitted_at' => Carbon::now()
+            'block_off_time'=> $startTime,
+            'block_on_time' => $endTime
         ];
 
         $location = $this->contract->arr_airport_id;
-        $hours = $this->aircraft->flight_time_mins += $flightTime;
+        $hours = $this->aircraft->flight_time_mins += 45;
         $fuel = $this->aircraft->fuel_onboard -= 25;
 
         $this->postJson('/api/pirep/submit', $data);
@@ -283,15 +316,16 @@ class SubmitPirepTest extends TestCase
             $this->user,
             ['*']
         );
+        $startTime = "05/10/2021 01:00:00";
+        $endTime = "05/10/2021 01:45:00";
+
         $data = [
             'pirep_id' => $this->pirep->id,
             'fuel_used' => 25,
             'distance' => 76,
-            'flight_time' => 45,
             'landing_rate' => -149.12,
-            'block_off_time'=> Carbon::now()->addHours(-1),
-            'block_on_time' => Carbon::now()->addMinutes(-5),
-            'submitted_at' => Carbon::now()
+            'block_off_time'=> $startTime,
+            'block_on_time' => $endTime
         ];
 
         $this->postJson('/api/pirep/submit', $data);
@@ -310,15 +344,16 @@ class SubmitPirepTest extends TestCase
             $this->user,
             ['*']
         );
+        $startTime = "05/10/2021 01:00:00";
+        $endTime = "05/10/2021 01:45:00";
+
         $data = [
             'pirep_id' => $this->pirep->id,
             'fuel_used' => 25,
             'distance' => 76,
-            'flight_time' => 45,
             'landing_rate' => -149.12,
-            'block_off_time'=> Carbon::now()->addHours(-1),
-            'block_on_time' => Carbon::now()->addMinutes(-5),
-            'submitted_at' => Carbon::now()
+            'block_off_time'=> $startTime,
+            'block_on_time' => $endTime
         ];
 
         $this->postJson('/api/pirep/submit', $data);
@@ -335,13 +370,16 @@ class SubmitPirepTest extends TestCase
             $this->user,
             ['*']
         );
+        $startTime = "05/10/2021 01:00:00";
+        $endTime = "05/10/2021 01:45:00";
+
         $data = [
             'pirep_id' => $this->pirep->id,
             'fuel_used' => 25,
-            'flight_time' => 45,
+            'distance' => 76,
             'landing_rate' => -149.12,
-            'block_off_time'=> Carbon::now()->addHours(-1),
-            'block_on_time' => Carbon::now()->addMinutes(-5)
+            'block_off_time'=> $startTime,
+            'block_on_time' => $endTime
         ];
 
         $this->postJson('/api/pirep/submit', $data);
@@ -372,13 +410,16 @@ class SubmitPirepTest extends TestCase
             $this->user,
             ['*']
         );
+        $startTime = "05/10/2021 01:00:00";
+        $endTime = "05/10/2021 01:45:00";
+
         $data = [
             'pirep_id' => $pirep->id,
             'fuel_used' => 25,
-            'flight_time' => 45,
+            'distance' => 76,
             'landing_rate' => -149.12,
-            'block_off_time'=> Carbon::now()->addHours(-1),
-            'block_on_time' => Carbon::now()->addMinutes(-5)
+            'block_off_time'=> $startTime,
+            'block_on_time' => $endTime
         ];
 
         $this->postJson('/api/pirep/submit', $data);
@@ -396,13 +437,16 @@ class SubmitPirepTest extends TestCase
             $this->user,
             ['*']
         );
+        $startTime = "05/10/2021 01:00:00";
+        $endTime = "05/10/2021 01:45:00";
+
         $data = [
             'pirep_id' => $this->pirep->id,
             'fuel_used' => 25,
-            'flight_time' => 45,
+            'distance' => 76,
             'landing_rate' => -149.12,
-            'block_off_time'=> Carbon::now()->addHours(-1),
-            'block_on_time' => Carbon::now()->addMinutes(-5)
+            'block_off_time'=> $startTime,
+            'block_on_time' => $endTime
         ];
 
         $this->postJson('/api/pirep/submit', $data);
@@ -411,6 +455,336 @@ class SubmitPirepTest extends TestCase
             'id' => $this->contract->id,
             'is_completed' => true,
             'is_paid' => true
+        ]);
+    }
+
+    public function test_multiple_items_for_same_contract_completed()
+    {
+        $contract = Contract::factory()->create([
+            'contract_value' => 250.00,
+            'dep_airport_id' => 'AYMR',
+            'arr_airport_id' => 'AYMN'
+        ]);
+
+        $c1 = ContractCargo::factory()->create([
+            'contract_id' => $contract->id,
+            'current_airport_id' => $contract->dep_airport_id
+        ]);
+
+        $c2 = ContractCargo::factory()->create([
+            'contract_id' => $contract->id,
+            'current_airport_id' => $contract->dep_airport_id
+        ]);
+
+        $pirep = Pirep::factory()->create([
+            'user_id' => $this->user->id,
+            'destination_airport_id' => $contract->arr_airport_id,
+            'departure_airport_id' => $contract->dep_airport_id,
+            'aircraft_id' => $this->aircraft
+        ]);
+
+        PirepCargo::factory()->create([
+            'pirep_id' => $pirep->id,
+            'contract_cargo_id' => $c1->id
+        ]);
+
+        PirepCargo::factory()->create([
+            'pirep_id' => $pirep->id,
+            'contract_cargo_id' => $c2->id
+        ]);
+
+        Sanctum::actingAs(
+            $this->user,
+            ['*']
+        );
+        $startTime = "05/10/2021 01:00:00";
+        $endTime = "05/10/2021 01:45:00";
+
+        $data = [
+            'pirep_id' => $pirep->id,
+            'fuel_used' => 25,
+            'distance' => 76,
+            'landing_rate' => -149.12,
+            'block_off_time'=> $startTime,
+            'block_on_time' => $endTime
+        ];
+
+        $this->postJson('/api/pirep/submit', $data);
+
+        $this->assertDatabaseHas('contracts', [
+            'id' => $contract->id,
+            'is_completed' => true
+        ]);
+    }
+
+    public function test_multiple_items_for_same_contract_not_completed()
+    {
+        $contract = Contract::factory()->create([
+            'contract_value' => 250.00,
+            'dep_airport_id' => 'AYMR',
+            'arr_airport_id' => 'AYMN'
+        ]);
+
+        $c1 = ContractCargo::factory()->create([
+            'contract_id' => $contract->id,
+            'current_airport_id' => $contract->dep_airport_id
+        ]);
+
+        $c2 = ContractCargo::factory()->create([
+            'contract_id' => $contract->id,
+            'current_airport_id' => $contract->dep_airport_id
+        ]);
+
+        $pirep = Pirep::factory()->create([
+            'user_id' => $this->user->id,
+            'destination_airport_id' => 'WAVG',
+            'departure_airport_id' => $contract->dep_airport_id,
+            'aircraft_id' => $this->aircraft
+        ]);
+
+        PirepCargo::factory()->create([
+            'pirep_id' => $pirep->id,
+            'contract_cargo_id' => $c1->id
+        ]);
+
+        PirepCargo::factory()->create([
+            'pirep_id' => $pirep->id,
+            'contract_cargo_id' => $c2->id
+        ]);
+
+        Sanctum::actingAs(
+            $this->user,
+            ['*']
+        );
+        $startTime = "05/10/2021 01:00:00";
+        $endTime = "05/10/2021 01:45:00";
+
+        $data = [
+            'pirep_id' => $pirep->id,
+            'fuel_used' => 25,
+            'distance' => 76,
+            'landing_rate' => -149.12,
+            'block_off_time'=> $startTime,
+            'block_on_time' => $endTime
+        ];
+
+        $this->postJson('/api/pirep/submit', $data);
+
+        $this->assertDatabaseHas('contracts', [
+            'id' => $contract->id,
+            'is_completed' => false
+        ]);
+    }
+
+    public function test_multiple_items_for_different_contract_completed()
+    {
+        $contract1 = Contract::factory()->create([
+            'contract_value' => 250.00,
+            'dep_airport_id' => 'AYMR',
+            'arr_airport_id' => 'AYMN',
+            'user_id' => $this->user->id
+        ]);
+
+        $contract2 = Contract::factory()->create([
+            'contract_value' => 400.00,
+            'dep_airport_id' => 'AYMR',
+            'arr_airport_id' => 'AYMN',
+            'user_id' => $this->user->id
+        ]);
+
+        $contractCargo1 = ContractCargo::factory()->create([
+            'contract_id' => $contract1->id,
+            'current_airport_id' => 'AYMR'
+        ]);
+
+        $contractCargo2 = ContractCargo::factory()->create([
+            'contract_id' => $contract2->id,
+            'current_airport_id' => 'AYMR'
+        ]);
+
+        $p = Pirep::factory()->create([
+            'user_id' => $this->user->id,
+            'destination_airport_id' => 'AYMN',
+            'departure_airport_id' => 'AYMR',
+            'aircraft_id' => $this->aircraft
+        ]);
+
+        PirepCargo::factory()->create([
+            'pirep_id' => $p->id,
+            'contract_cargo_id' => $contractCargo1->id
+        ]);
+
+        PirepCargo::factory()->create([
+            'pirep_id' => $p->id,
+            'contract_cargo_id' => $contractCargo2->id
+        ]);
+
+        Sanctum::actingAs(
+            $this->user,
+            ['*']
+        );
+        $startTime = "05/10/2021 01:00:00";
+        $endTime = "05/10/2021 01:45:00";
+
+        $data = [
+            'pirep_id' => $p->id,
+            'fuel_used' => 25,
+            'distance' => 76,
+            'landing_rate' => -149.12,
+            'block_off_time'=> $startTime,
+            'block_on_time' => $endTime
+        ];
+
+        $this->postJson('/api/pirep/submit', $data);
+
+        $this->assertDatabaseHas('contracts', [
+            'id' => $contract1->id,
+            'is_completed' => true
+        ]);
+
+        $this->assertDatabaseHas('contracts', [
+            'id' => $contract2->id,
+            'is_completed' => true
+        ]);
+    }
+
+    public function test_multiple_items_for_different_contract_not_completed()
+    {
+        $contract1 = Contract::factory()->create([
+            'contract_value' => 250.00,
+            'dep_airport_id' => 'AYMR',
+            'arr_airport_id' => 'AYMN'
+        ]);
+
+        $contract2 = Contract::factory()->create([
+            'contract_value' => 400.00,
+            'dep_airport_id' => 'AYMR',
+            'arr_airport_id' => 'AYMN'
+        ]);
+
+        $c1 = ContractCargo::factory()->create([
+            'contract_id' => $contract1->id,
+            'current_airport_id' => $contract1->dep_airport_id
+        ]);
+
+        $c2 = ContractCargo::factory()->create([
+            'contract_id' => $contract2->id,
+            'current_airport_id' => $contract2->dep_airport_id
+        ]);
+
+        $pirep = Pirep::factory()->create([
+            'user_id' => $this->user->id,
+            'destination_airport_id' => 'WAVG',
+            'departure_airport_id' => $contract1->dep_airport_id,
+            'aircraft_id' => $this->aircraft
+        ]);
+
+        PirepCargo::factory()->create([
+            'pirep_id' => $pirep->id,
+            'contract_cargo_id' => $c1->id
+        ]);
+
+        PirepCargo::factory()->create([
+            'pirep_id' => $pirep->id,
+            'contract_cargo_id' => $c2->id
+        ]);
+
+        Sanctum::actingAs(
+            $this->user,
+            ['*']
+        );
+        $startTime = "05/10/2021 01:00:00";
+        $endTime = "05/10/2021 01:45:00";
+
+        $data = [
+            'pirep_id' => $pirep->id,
+            'fuel_used' => 25,
+            'distance' => 76,
+            'landing_rate' => -149.12,
+            'block_off_time'=> $startTime,
+            'block_on_time' => $endTime
+        ];
+
+        $this->postJson('/api/pirep/submit', $data);
+
+        $this->assertDatabaseHas('contracts', [
+            'id' => $contract1->id,
+            'is_completed' => false
+        ]);
+
+        $this->assertDatabaseHas('contracts', [
+            'id' => $contract2->id,
+            'is_completed' => false
+        ]);
+    }
+
+    public function test_multiple_items_for_different_contract_one_completed_one_not_completed()
+    {
+        $contract1 = Contract::factory()->create([
+            'contract_value' => 250.00,
+            'dep_airport_id' => 'AYMR',
+            'arr_airport_id' => 'AYMN'
+        ]);
+
+        $contract2 = Contract::factory()->create([
+            'contract_value' => 400.00,
+            'dep_airport_id' => 'AYMR',
+            'arr_airport_id' => 'WAVG'
+        ]);
+
+        $c1 = ContractCargo::factory()->create([
+            'contract_id' => $contract1->id,
+            'current_airport_id' => $contract1->dep_airport_id
+        ]);
+
+        $c2 = ContractCargo::factory()->create([
+            'contract_id' => $contract2->id,
+            'current_airport_id' => $contract2->dep_airport_id
+        ]);
+
+        $pirep = Pirep::factory()->create([
+            'user_id' => $this->user->id,
+            'destination_airport_id' => $contract1->arr_airport_id,
+            'departure_airport_id' => $contract1->dep_airport_id,
+            'aircraft_id' => $this->aircraft
+        ]);
+
+        PirepCargo::factory()->create([
+            'pirep_id' => $pirep->id,
+            'contract_cargo_id' => $c1->id
+        ]);
+
+        PirepCargo::factory()->create([
+            'pirep_id' => $pirep->id,
+            'contract_cargo_id' => $c2->id
+        ]);
+
+        Sanctum::actingAs(
+            $this->user,
+            ['*']
+        );
+        $startTime = "05/10/2021 01:00:00";
+        $endTime = "05/10/2021 01:45:00";
+
+        $data = [
+            'pirep_id' => $pirep->id,
+            'fuel_used' => 25,
+            'distance' => 76,
+            'landing_rate' => -149.12,
+            'block_off_time'=> $startTime,
+            'block_on_time' => $endTime
+        ];
+
+        $this->postJson('/api/pirep/submit', $data);
+
+        $this->assertDatabaseHas('contracts', [
+            'id' => $contract1->id,
+            'is_completed' => true
+        ]);
+
+        $this->assertDatabaseHas('contracts', [
+            'id' => $contract2->id,
+            'is_completed' => false
         ]);
     }
 }

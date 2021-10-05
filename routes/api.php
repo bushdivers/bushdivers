@@ -30,5 +30,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/pirep/status', [\App\Http\Controllers\Api\TrackerController::class, 'updatePirepStatus']);
     Route::post('/pirep/reset', [\App\Http\Controllers\Api\TrackerController::class, 'cancelPirep']);
     Route::post('/tracker/distance', [\App\Http\Controllers\Api\TrackerController::class, 'checkDistance']);
+    Route::post('/pirep/destination', [\App\Http\Controllers\Api\TrackerController::class, 'updateDestination']);
 });
 

@@ -140,17 +140,17 @@ class TrackerController extends Controller
          $pirepService = new PirepService();
         // calculate coordinate points in flight logs
          $distance = $pirepService->calculateTotalFlightDistance($pirep);
-         $startTime = Carbon::parse($request->block_off_time);
-         $endTime = Carbon::parse($request->block_on_time);
+         $startTime = Carbon::createFromFormat('d/m/Y H:i:s',  $request->block_off_time);
+         $endTime = Carbon::createFromFormat('d/m/Y H:i:s',  $request->block_on_time);
          $duration = $startTime->diffInMinutes($endTime);
 
-         $debug = [
-             'start' => $startTime,
-             'end' => $endTime,
-             'duration' => $duration,
-             'request' => $request->all()
-         ];
-        Log::debug($request->block_off_time);
+//         $debug = [
+//             'start' => $startTime,
+//             'end' => $endTime,
+//             'duration' => $duration,
+//             'request' => $request->all()
+//         ];
+//        Log::debug($request->block_off_time);
         // set pirep status to completed
         $pirep->fuel_used = $request->fuel_used;
         $pirep->distance = $distance;
@@ -165,8 +165,8 @@ class TrackerController extends Controller
 
         // update cargo and contract
         $contractService = new ContractService();
-        $cargo = PirepCargo::where('pirep_id', $pirep->id)->get();
-        foreach ($cargo as $c) {
+        $pc = PirepCargo::where('pirep_id', $pirep->id)->get();
+        foreach ($pc as $c) {
             $contractCargo = ContractCargo::find($c->contract_cargo_id);
             $contractService->updateCargo($contractCargo->id, $pirep->destination_airport_id);
         }
@@ -212,5 +212,18 @@ class TrackerController extends Controller
         );
 
         return response()->json($distance);
+    }
+
+    public function updateDestination(Request $request)
+    {
+        // find nearest airport
+        $airport = $this->airportService->findAirportsByLatLon($request->lat, $request->lon, 2);
+        // update piirep destination to new icao
+        $pirep = Pirep::find($request->pirep_id);
+        $pirep->destination_airport_id = $airport->identifier;
+        $pirep->save();
+
+        // return icao
+        return response()->json(['icao' => $airport->identifier]);
     }
 }

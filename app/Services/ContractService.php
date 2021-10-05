@@ -6,6 +6,7 @@ use App\Models\Airport;
 use App\Models\Contract;
 use App\Models\ContractCargo;
 use App\Models\Enums\ContractType;
+use App\Models\PirepCargo;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -180,21 +181,22 @@ class ContractService
             $contractCargo->is_completed = true;
             $contractCargo->completed_at = Carbon::now();
             $contractCargo->save();
-
-            $this->setContractCompleted($contract);
         }
+
+        $this->setContractCompleted($contract);
     }
 
     public function setContractCompleted($contract)
     {
-        $cargo = ContractCargo::where('contract_id', $contract->id)->get();
-        $cargoCompleted = ContractCargo::where('is_completed', true);
 
-        if ($cargo->count() == $cargoCompleted->count()) {
-            $contract->is_completed = true;
-            $contract->completed_at = Carbon::now();
-            $contract->save();
+        $cargo = ContractCargo::where('contract_id', $contract->id)->count();
+        $cargoCompleted = ContractCargo::where('is_completed', true)->where('contract_id', $contract->id)->count();
+        $con = Contract::find($contract->id);
 
+        if ($cargo == $cargoCompleted) {
+            $con->is_completed = true;
+            $con->completed_at = Carbon::now();
+            $con->save();
         }
     }
 }
