@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Airport;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class UserService
@@ -30,12 +31,15 @@ class UserService
         $user->save();
     }
 
-    public function addUserAccountEntry($userId, $type, $value)
+    public function addUserAccountEntry($userId, $type, $value, $flightId = null)
     {
         DB::table('user_accounts')->insert([
             'user_id' => $userId,
             'type' => $type,
-            'total' => $value
+            'total' => $value,
+            'flight_id' => $flightId,
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
         ]);
     }
 }

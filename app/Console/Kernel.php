@@ -4,6 +4,7 @@ namespace App\Console;
 
 use App\Services\AircraftService;
 use App\Services\ContractService;
+use App\Services\FinancialsService;
 use App\Services\PirepService;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -38,6 +39,10 @@ class Kernel extends ConsoleKernel
             $contractService->findAirportsInNeedOfContracts();
             $contractService->findHubsInNeedOfContracts();
         })->daily();
+        $schedule->call(function () {
+            $financeService = new FinancialsService();
+            $financeService->calcMonthlyFees();
+        })->monthly();
     }
 
     /**

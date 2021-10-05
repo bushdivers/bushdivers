@@ -41,7 +41,7 @@ class AirportService
         $c = 2 * atan2(sqrt($a), sqrt(1-$a));
         $d = $this->earthRadius * $c;
 
-        return $d;
+        return round($d,1);
     }
 
     public function calculateBearingBetweenPoints($latFrom, $lonFrom, $latTo, $lonTo, $destVariance): int

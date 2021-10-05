@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Api;
 
 use App\Events\PirepFiled;
 use App\Http\Controllers\Controller;
+use App\Models\Contract;
 use App\Models\ContractCargo;
 use App\Models\Enums\PirepState;
 use App\Models\Enums\PirepStatus;
+use App\Models\Enums\TransactionTypes;
 use App\Models\FlightLog;
 use App\Models\Pirep;
 use App\Models\PirepCargo;
@@ -14,20 +16,27 @@ use App\Services\AirportService;
 use App\Services\CargoService;
 use App\Services\ContractService;
 use App\Services\DispatchService;
+use App\Services\FinancialsService;
 use App\Services\PirepService;
+use App\Services\UserService;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class TrackerController extends Controller
 {
     protected AirportService $airportService;
+    protected FinancialsService $financialsService;
+    protected UserService $userService;
 
-    public function __construct(AirportService $airportService)
+    public function __construct(AirportService $airportService, FinancialsService $financialsService, UserService $userService)
     {
         $this->airportService = $airportService;
+        $this->financialsService = $financialsService;
+        $this->userService = $userService;
     }
 
     public function getDispatch(Request $request): JsonResponse
@@ -113,7 +122,7 @@ class TrackerController extends Controller
             $flightLog->indicated_speed = $request->indicated_speed;
             $flightLog->ground_speed = $request->ground_speed;
             $flightLog->fuel_flow = $request->fuel_flow;
-            $flightLog->vs = $request->vs;
+            $flightLog->vs = $request->vs * 60;
             $flightLog->sim_time = Carbon::parse($request->sim_time);
             $flightLog->zulu_time = Carbon::parse($request->zulu_time);
             $flightLog->save();
@@ -131,26 +140,39 @@ class TrackerController extends Controller
          $pirepService = new PirepService();
         // calculate coordinate points in flight logs
          $distance = $pirepService->calculateTotalFlightDistance($pirep);
+         $startTime = Carbon::parse($request->block_off_time);
+         $endTime = Carbon::parse($request->block_on_time);
+         $duration = $startTime->diffInMinutes($endTime);
 
+         $debug = [
+             'start' => $startTime,
+             'end' => $endTime,
+             'duration' => $duration,
+             'request' => $request->all()
+         ];
+        Log::debug($request->block_off_time);
         // set pirep status to completed
         $pirep->fuel_used = $request->fuel_used;
         $pirep->distance = $distance;
-        $pirep->flight_time = $request->flight_time;
+        $pirep->flight_time = $duration;
         $pirep->landing_rate = $request->landing_rate;
         $pirep->state = PirepState::ACCEPTED;
         $pirep->status = PirepStatus::ARRIVED;
         $pirep->submitted_at = Carbon::now();
-        $pirep->block_off_time = $request->block_off_time;
-        $pirep->block_on_time = $request->block_on_time;
+        $pirep->block_off_time = $startTime;
+        $pirep->block_on_time = $endTime;
         $pirep->save();
 
         // update cargo and contract
         $contractService = new ContractService();
         $cargo = PirepCargo::where('pirep_id', $pirep->id)->get();
-        foreach ($cargo as $cargoItem) {
-            $contractService->updateCargo($cargoItem->id, $pirep->destination_airport_id);
+        foreach ($cargo as $c) {
+            $contractCargo = ContractCargo::find($c->contract_cargo_id);
+            $contractService->updateCargo($contractCargo->id, $pirep->destination_airport_id);
         }
-        $pirepService->calculatePilotPay($pirep);
+
+        // process financials
+        $this->financialsService->processPirepFinancials($pirep);
 
         // dispatch completed event (updates cargo/contract, resets aircraft, checks rank and awards)
         PirepFiled::dispatch($pirep);

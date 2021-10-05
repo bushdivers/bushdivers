@@ -129,7 +129,7 @@ class PirepController extends Controller
 
     public function flightMap(): Response
     {
-        $liveFlights = Pirep::with('flight', 'flight.depAirport', 'flight.arrAirport', 'aircraft', 'aircraft.fleet', 'pilot')
+        $liveFlights = Pirep::with('depAirport', 'arrAirport', 'aircraft', 'aircraft.fleet', 'pilot')
             ->where('state', PirepState::IN_PROGRESS)
             ->get();
         return Inertia::render('Flights/LiveFlights', ['flights' => $liveFlights]);
@@ -137,7 +137,7 @@ class PirepController extends Controller
 
     public function liveFlights(): JsonResponse
     {
-        $liveFlights = Pirep::with('flight', 'flight.depAirport', 'flight.arrAirport', 'aircraft', 'aircraft.fleet', 'pilot')
+        $liveFlights = Pirep::with('depAirport', 'arrAirport', 'aircraft', 'aircraft.fleet', 'pilot')
             ->where('state', PirepState::IN_PROGRESS)
             ->get();
 

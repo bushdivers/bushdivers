@@ -194,6 +194,7 @@ class ContractService
             $contract->is_completed = true;
             $contract->completed_at = Carbon::now();
             $contract->save();
+
         }
     }
 }
