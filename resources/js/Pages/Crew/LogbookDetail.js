@@ -7,17 +7,19 @@ import Points from '../../Shared/Pireps/Points'
 import LogbookPrimary from '../../Shared/Pireps/LogbookPrimary'
 import LogbookSecondary from '../../Shared/Pireps/LogbookSecondary'
 import PirepChart from '../../Shared/Pireps/PirepChart'
+import PirepCargo from '../../Shared/Pireps/PirepCargo'
 
-const LogbookDetail = ({ pirep, points, logs }) => {
+const LogbookDetail = ({ pirep, points, logs, cargo }) => {
   const submittedDate = format(new Date(pirep.submitted_at), 'do MMMM yyyy')
   return (
     <div>
-      <PageTitle title={`Pilot Report - ${pirep.flight.full_flight_number}`} />
+      <PageTitle title={`Pilot Report - ${pirep.id}`} />
       {submittedDate}
       <div className="flex justify-between">
         <div className="w-1/2">
           <LogbookPrimary pirep={pirep} />
           <LogbookSecondary pirep={pirep} />
+          <PirepCargo cargo={cargo} />
           <div className="rounded shadow p-4 mt-2 bg-white mx-2">
             <PirepChart data={logs} />
           </div>

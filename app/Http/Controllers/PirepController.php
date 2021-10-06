@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateDispatchRequest;
 use App\Models\Aircraft;
 use App\Models\Booking;
+use App\Models\ContractCargo;
 use App\Models\Enums\AircraftState;
 use App\Models\Enums\FlightType;
 use App\Models\Enums\PirepState;
@@ -12,6 +13,7 @@ use App\Models\Enums\PirepStatus;
 use App\Models\Fleet;
 use App\Models\FlightLog;
 use App\Models\Pirep;
+use App\Models\PirepCargo;
 use App\Models\Point;
 use App\Services\AircraftService;
 use App\Services\CargoService;
@@ -107,24 +109,38 @@ class PirepController extends Controller
 
     public function logbook(): Response
     {
-        $logbook = Pirep::with('flight', 'flight.depAirport', 'flight.arrAirport', 'aircraft', 'aircraft.fleet')
+        $logbook = Pirep::with('depAirport', 'arrAirport', 'aircraft', 'aircraft.fleet')
             ->where('user_id', Auth::user()->id)
             ->where('state', PirepState::ACCEPTED)
             ->orderBy('submitted_at', 'desc')
             ->get();
+
         return Inertia::render('Crew/Logbook', ['logbook' => $logbook]);
     }
 
     public function logbookDetail($pirep): Response
     {
-        $p = Pirep::with('flight', 'flight.depAirport', 'flight.arrAirport', 'aircraft', 'aircraft.fleet')
+        $p = Pirep::with('depAirport', 'arrAirport', 'aircraft', 'aircraft.fleet')
             ->where('id', $pirep)
             ->where('user_id', Auth::user()->id)
             ->first();
-        $points = Point::where('pirep_id', $pirep)->get();
+
+        $pc = PirepCargo::where('pirep_id', $pirep)->pluck('contract_cargo_id');
+
+        $cargo = ContractCargo::with('contract')
+            ->whereIn('id', $pc)
+            ->get();
+        $points = Point::where('pirep_id', $pirep)->where('points', '>', 0)->get();
+
         $logs = FlightLog::where('pirep_id', $pirep)->orderBy('created_at')->get();
-        $coords = DB::table('flight_logs')->where('pirep_id', $pirep)->select('lat', 'lon')->orderBy('created_at')->get();
-        return Inertia::render('Crew/LogbookDetail', ['pirep' => $p, 'points' => $points, 'logs' => $logs, 'coords' => $logs->pluck('lat', 'lon')]);
+        //$coords = DB::table('flight_logs')->where('pirep_id', $pirep)->select('lat', 'lon')->orderBy('created_at')->get();
+        return Inertia::render('Crew/LogbookDetail', [
+            'pirep' => $p,
+            'points' => $points,
+            'logs' => $logs,
+            'coords' => $logs->pluck('lat', 'lon'),
+            'cargo' => $cargo
+        ]);
     }
 
     public function flightMap(): Response

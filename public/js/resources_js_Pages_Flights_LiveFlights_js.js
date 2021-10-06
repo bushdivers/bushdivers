@@ -2885,7 +2885,7 @@ var LiveFlightMap = function LiveFlightMap(props) {
                 var flightLngLat = [f.current_lon, f.current_lat];
                 var flightPopup = new (maplibre_gl__WEBPACK_IMPORTED_MODULE_2___default().Popup)({
                   offset: 25
-                }).setHTML("\n            <b>Pilot:</b> ".concat(f.pilot.pilot_id, " ").concat(f.pilot.private_name, "<br/>\n            <b>Route:</b> ").concat(f.flight.dep_airport_id, " - ").concat(f.flight.arr_airport_id, "<br/>\n            <b>Aircraft:</b><br/>\n            ").concat(f.aircraft.fleet.manufacturer, " ").concat(f.aircraft.fleet.name, "<br/>\n            ").concat(f.aircraft.registration, "<br/>\n            <b>Altitude:</b> ").concat(f.current_altitude, " ft<br/>\n            <b>Ground Speed:</b> ").concat(f.current_ground_speed, " kts<br/>\n            <b>Vertical Speed:</b> ").concat(f.current_vs, " fpm<br/>\n         ")); // .setText(
+                }).setHTML("\n            <b>Pilot:</b> ".concat(f.pilot.pilot_id, " ").concat(f.pilot.private_name, "<br/>\n            <b>Route:</b> ").concat(f.departure_airport_id, " - ").concat(f.destination_airport_id, "<br/>\n            <b>Aircraft:</b><br/>\n            ").concat(f.aircraft.fleet.manufacturer, " ").concat(f.aircraft.fleet.name, "<br/>\n            ").concat(f.aircraft.registration, "<br/>\n            <b>Altitude:</b> ").concat(f.current_altitude, " ft<br/>\n            <b>Ground Speed:</b> ").concat(f.current_indicated_speed, " kts<br/>\n            <b>Heading:</b> ").concat(f.current_heading, "&#176;<br/>\n         ")); // .setText(
                 //   `${f.pilot.pilot_id} ${f.pilot.private_name} - ${f.flight.dep_airport_id} ${f.flight.arr_airport_id}`
                 // )
 

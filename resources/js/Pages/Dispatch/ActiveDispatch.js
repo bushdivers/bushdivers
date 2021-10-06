@@ -14,6 +14,7 @@ const ActiveDispatch = ({ cargo, aircraft, cargoWeight, fuelWeight, passengerCou
   return (
     <div>
       <PageTitle title="Current Dispatch" />
+      {pirep.state === 2 && <div><span className="text-orange-500">Current flight in progress</span></div>}
       <div className="flex justify-between">
         <div className="mr-2 w-1/2">
           <div className="bg-white rounded shadow mt-4 p-4">
@@ -61,7 +62,7 @@ const ActiveDispatch = ({ cargo, aircraft, cargoWeight, fuelWeight, passengerCou
               fuelWeight={fuelWeight}
               passengerCount={passengerCount}
             />
-            <div className="text-right"><button onClick={handleCancel} className="btn btn-primary">Cancel Dispatch</button></div>
+            {pirep.state === 1 && <div className="text-right"><button onClick={handleCancel} className="btn btn-primary">Cancel Dispatch</button></div>}
           </div>
         </div>
       </div>

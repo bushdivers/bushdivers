@@ -20,19 +20,19 @@ const PirepMap = (props) => {
   })
 
   useEffect(() => {
-    if (props.pirep.flight) {
-      setFlight(props.pirep.flight)
+    if (props.pirep) {
+      // setFlight(props.pirep.flight)
 
       const depPopup = new maplibre.Popup({ offset: 25 }).setText(
-        props.pirep.flight.dep_airport_id
+        props.pirep.departure_airport_id
       )
 
       const arrPopup = new maplibre.Popup({ offset: 25 }).setText(
-        props.pirep.flight.arr_airport_id
+        props.pirep.destination_airport_id
       )
 
-      const depLngLat = [props.pirep.flight.dep_airport.lon, props.pirep.flight.dep_airport.lat]
-      const arrLngLat = [props.pirep.flight.arr_airport.lon, props.pirep.flight.arr_airport.lat]
+      const depLngLat = [props.pirep.dep_airport.lon, props.pirep.dep_airport.lat]
+      const arrLngLat = [props.pirep.arr_airport.lon, props.pirep.arr_airport.lat]
 
       map.current.on('load', function () {
         const dep = new maplibre.Marker({
@@ -115,7 +115,7 @@ const PirepMap = (props) => {
         padding: 100
       })
     }
-  }, [props.flight])
+  }, [props.pirep])
 
   return (
     <>

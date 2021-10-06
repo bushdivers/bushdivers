@@ -3,9 +3,10 @@ import PageTitle from '../../Shared/Navigation/PageTitle'
 import Layout from '../../Shared/Layout'
 import NoContent from '../../Shared/Elements/NoContent'
 import { Link } from '@inertiajs/inertia-react'
-import Tooltip from '../../Shared/Elements/Tooltip'
+// import Tooltip from '../../Shared/Elements/Tooltip'
 import { convertMinuteDecimalToHoursAndMinutes } from '../../Helpers/date.helpers'
 import { format } from 'date-fns'
+import { Inertia } from '@inertiajs/inertia'
 
 const EmptyData = () => {
   return (
@@ -17,6 +18,11 @@ const EmptyData = () => {
 }
 
 const Logbook = ({ logbook }) => {
+
+  function loadPirep (pirep) {
+    Inertia.get(`/logbook/${pirep.id}`)
+  }
+
   return (
     <div>
       <PageTitle title="Logbook" />
@@ -29,45 +35,32 @@ const Logbook = ({ logbook }) => {
               <table className="table table-auto">
                 <thead>
                 <tr>
-                  <th>Flight</th>
                   <th>Departure</th>
                   <th>Arrival</th>
                   <th>Aircraft</th>
-                  <th>Cargo</th>
                   <th>Time</th>
                   <th>Distance</th>
-                  <th>Landing Rate</th>
                   <th>Points</th>
                   <th>Date</th>
                 </tr>
                 </thead>
                 <tbody>
                 {logbook.map((entry) => (
-                  <tr key={entry.id}>
-                    <td className="hover:underline hover:text-orange-500">
-                      <Link href={`/logbook/${entry.id}`}>{entry.flight.full_flight_number}</Link>
+                  <tr key={entry.id} onClick={() => loadPirep(entry)}>
+                    <td>
+                      {entry.departure_airport_id}<br/>
+                      <span className="text-xs">{entry.dep_airport.name}</span>
                     </td>
                     <td>
-                      <Link href={`/airports/${entry.flight.dep_airport_id}`}>{entry.flight.dep_airport_id}</Link><br/>
-                      <span className="text-xs">{entry.flight.dep_airport.name}</span>
-                    </td>
-                    <td>
-                      <Link href={`/airports/${entry.flight.dep_airport_id}`}>{entry.flight.arr_airport_id}</Link><br/>
-                      <span className="text-xs">{entry.flight.arr_airport.name}</span>
+                     {entry.destination_airport_id}<br/>
+                      <span className="text-xs">{entry.arr_airport.name}</span>
                     </td>
                     <td>
                       <span>{entry.aircraft.registration} ({entry.aircraft.fleet.type})</span><br/>
                       <span className="text-xs">{entry.aircraft.fleet.manufacturer} {entry.aircraft.fleet.name}</span>
                     </td>
-                    <td>
-                      {entry.pax > 0 &&
-                        <><span className="flex items-center text-sm"><i className="material-icons md-18 mr-2">group</i> {entry.pax} {entry.pax_name}</span></>
-                      }
-                      <span className="flex items-center text-sm"><i className="material-icons md-18 mr-2">inventory</i> {entry.cargo}kg {entry.cargo_name}</span>
-                    </td>
                     <td>{convertMinuteDecimalToHoursAndMinutes(entry.flight_time)}</td>
-                    <td>{entry.distance}</td>
-                    <td>{entry.landing_rate}</td>
+                    <td>{entry.distance}nm</td>
                     <td>{entry.score}</td>
                     <td>{format(new Date(entry.submitted_at), 'dd LLL yyyy')}</td>
                   </tr>
@@ -75,7 +68,7 @@ const Logbook = ({ logbook }) => {
                 </tbody>
               </table>
             </div>
-          )
+            )
         }
       </div>
     </div>

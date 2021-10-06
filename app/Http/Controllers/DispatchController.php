@@ -34,14 +34,16 @@ class DispatchController extends Controller
     {
         // check for existing Pirep
         $pirep = Pirep::where('user_id', Auth::user()->id)
-            ->where('state', PirepState::DISPATCH)
+            ->where('state', '<>', PirepState::ACCEPTED)
             ->first();
 
         if ($pirep) {
             $pc = PirepCargo::where('pirep_id', $pirep->id)->pluck('contract_cargo_id');
+
             $cargo = ContractCargo::with('contract')
-                ->whereIn('id', [$pc])
+                ->whereIn('id', $pc)
                 ->get();
+
 //            $cargo = $this->getCargoForActiveDispatch($pc);
             $aircraft = $this->getAircraftForActiveDispatch($pirep->aircraft_id);
 

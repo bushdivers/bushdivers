@@ -8,9 +8,9 @@ const PirepChart = (props) => {
     altitude.push(parseFloat(log.altitude))
   ))
 
-  const gs = []
+  const speed = []
   props.data.map((log) => (
-    gs.push(parseFloat(log.ground_speed))
+    speed.push(parseFloat(log.indicated_speed))
   ))
 
   const labels = []
@@ -30,8 +30,8 @@ const PirepChart = (props) => {
         yAxisID: 'y-axis-1'
       },
       {
-        label: 'Ground speed',
-        data: gs,
+        label: 'Indicated speed',
+        data: speed,
         fill: true,
         backgroundColor: 'rgba(22,163,74, 0.6)',
         borderColor: 'rgba(22,163,74.4)',
