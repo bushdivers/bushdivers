@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Airport;
 use App\Models\Contract;
+use App\Models\ContractCargo;
 use App\Services\ContractService;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
@@ -48,5 +49,25 @@ class ContractsController extends Controller
             ->get();
 
         return response()->json(['contracts' => $contracts, 'airport' => $airport]);
+    }
+
+    public function splitCargo(Request $request)
+    {
+        // get current contract cargo
+        $cargo = ContractCargo::find($request->id);
+        $updatedQty = $cargo->cargo_qty - $request->qty;
+        // create new row with new figures and update existing row
+        $newCargo = new ContractCargo();
+        $newCargo->contract_id = $cargo->contract_id;
+        $newCargo->contract_type_id = $cargo->contract_type_id;
+        $newCargo->current_airport_id = $cargo->current_airport_id;
+        $newCargo->cargo = $cargo->cargo;
+        $newCargo->cargo_qty = $request->qty;
+        $newCargo->save();
+
+        $cargo->cargo_qty = $updatedQty;
+        $cargo->save();
+
+        return response()->json(['message' => 'Split cargo'], 201);
     }
 }

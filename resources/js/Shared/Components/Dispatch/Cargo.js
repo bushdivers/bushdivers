@@ -11,6 +11,7 @@ const EmptyData = (props) => {
 }
 
 const Cargo = (props) => {
+
   return (
     <div className="shadow rounded p-4 mt-2 mr-2 bg-white">
       {props.cargo.length === 0
@@ -31,6 +32,7 @@ const Cargo = (props) => {
                 <th>Type</th>
                 <th>Cargo</th>
                 <th>Pay</th>
+                <th>Split</th>
               </tr>
               </thead>
               <tbody>
@@ -51,6 +53,7 @@ const Cargo = (props) => {
                     }
                   </td>
                   <td>${detail.contract.contract_value.toLocaleString()}</td>
+                  <td><button className="btn btn-secondary btn-small" onClick={() => props.splitCargo(detail)}>Split</button></td>
                 </tr>
               ))}
               </tbody>

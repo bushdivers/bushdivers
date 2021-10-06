@@ -51,6 +51,30 @@ const Dispatch = ({ cargo, aircraft }) => {
     }
   }
 
+  async function splitCargo (cargo) {
+    const amount = window.prompt('Enter quantity to split (this will create a new cargo entry with that amount)')
+    if (amount) {
+      if (amount < cargo.cargo_qty) {
+        // make api call
+        const data = {
+          id: cargo.id,
+          qty: amount
+        }
+        const res = await axios.post('/api/cargo/split', data)
+        // reload
+        if (res.status === 201) {
+          Inertia.reload({ only: ['cargo'] })
+        } else {
+          window.alert('Issue splitting cargo')
+        }
+      } else {
+        window.alert(`New cargo amount must be less than total cargo: ${cargo.cargo_qty}`)
+      }
+    } else {
+      window.alert('Cargo split has been cancelled')
+    }
+  }
+
   function calculateFuelWeight (ac, f) {
     const fw = ac.fleet.fuel_type === 1 ? f * avgasWeight : f * jetFuelWeight
     setFuelWeight(fw)
@@ -127,7 +151,7 @@ const Dispatch = ({ cargo, aircraft }) => {
       <div className="flex justify-between mt-4">
         <div className="w-1/2">
           <Aircraft aircraft={aircraft} selectedAircraft={selectedAircraft} handleAircraftSelect={handleAircraftSelect} />
-          <Cargo cargo={cargo} selectedCargo={selectedCargo} handleCargoSelect={handleCargoSelect} />
+          <Cargo cargo={cargo} selectedCargo={selectedCargo} handleCargoSelect={handleCargoSelect} splitCargo={splitCargo} />
           <Destination currentAirport={auth.user.current_airport_id} updateDestinationValue={setDestination} />
           <Fuel selectedAircraft={selectedAircraft} fuel={fuel} handleUpdateFuel={handleUpdateFuel} error={error} />
         </div>

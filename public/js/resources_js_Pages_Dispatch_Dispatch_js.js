@@ -2879,6 +2879,72 @@ var Dispatch = function Dispatch(_ref) {
     return _handleCargoSelect.apply(this, arguments);
   }
 
+  function splitCargo(_x2) {
+    return _splitCargo.apply(this, arguments);
+  }
+
+  function _splitCargo() {
+    _splitCargo = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2(cargo) {
+      var amount, data, res;
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
+        while (1) {
+          switch (_context2.prev = _context2.next) {
+            case 0:
+              amount = window.prompt('Enter quantity to split (this will create a new cargo entry with that amount)');
+
+              if (!amount) {
+                _context2.next = 13;
+                break;
+              }
+
+              if (!(amount < cargo.cargo_qty)) {
+                _context2.next = 10;
+                break;
+              }
+
+              // make api call
+              data = {
+                id: cargo.id,
+                qty: amount
+              };
+              _context2.next = 6;
+              return axios__WEBPACK_IMPORTED_MODULE_5___default().post('/api/cargo/split', data);
+
+            case 6:
+              res = _context2.sent;
+
+              // reload
+              if (res.status === 201) {
+                _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_12__.Inertia.reload({
+                  only: ['cargo']
+                });
+              } else {
+                window.alert('Issue splitting cargo');
+              }
+
+              _context2.next = 11;
+              break;
+
+            case 10:
+              window.alert("New cargo amount must be less than total cargo: ".concat(cargo.cargo_qty));
+
+            case 11:
+              _context2.next = 14;
+              break;
+
+            case 13:
+              window.alert('Cargo split has been cancelled');
+
+            case 14:
+            case "end":
+              return _context2.stop();
+          }
+        }
+      }, _callee2);
+    }));
+    return _splitCargo.apply(this, arguments);
+  }
+
   function calculateFuelWeight(ac, f) {
     var fw = ac.fleet.fuel_type === 1 ? f * avgasWeight : f * jetFuelWeight;
     setFuelWeight(fw);
@@ -2971,7 +3037,8 @@ var Dispatch = function Dispatch(_ref) {
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(_Shared_Components_Dispatch_Cargo__WEBPACK_IMPORTED_MODULE_10__.default, {
           cargo: cargo,
           selectedCargo: selectedCargo,
-          handleCargoSelect: handleCargoSelect
+          handleCargoSelect: handleCargoSelect,
+          splitCargo: splitCargo
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(_Shared_Components_Dispatch_Destination__WEBPACK_IMPORTED_MODULE_8__.default, {
           currentAirport: auth.user.current_airport_id,
           updateDestinationValue: setDestination
@@ -3164,6 +3231,8 @@ var Cargo = function Cargo(props) {
               children: "Cargo"
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("th", {
               children: "Pay"
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("th", {
+              children: "Split"
             })]
           })
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("tbody", {
@@ -3214,6 +3283,14 @@ var Cargo = function Cargo(props) {
                 })
               }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("td", {
                 children: ["$", detail.contract.contract_value.toLocaleString()]
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("td", {
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
+                  className: "btn btn-secondary btn-small",
+                  onClick: function onClick() {
+                    return props.splitCargo(detail);
+                  },
+                  children: "Split"
+                })
               })]
             }, detail.id);
           })
