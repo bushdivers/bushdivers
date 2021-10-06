@@ -54,7 +54,8 @@ class DispatchController extends Controller
                 'aircraft' => $aircraft,
                 'cargoWeight' => $cargoWeight,
                 'passengerCount' => $passengerCount,
-                'fuelWeight' => $fuelWeight
+                'fuelWeight' => $fuelWeight,
+                'pirep' => $pirep
             ]);
         }
 
@@ -99,6 +100,25 @@ class DispatchController extends Controller
 //        return Inertia::render('Dispatch/ActiveDispatch', ['cargo' => $dispatchedCargo, 'aircraft' => $aircraft]);
 
         return redirect()->back()->with(['success' => 'Dispatch created successfully']);
+    }
+
+    public function cancel(Request $request): RedirectResponse
+    {
+        $pirep = Pirep::find($request->pirep);
+
+        // clear up aircraft assignment
+        $aircraft = Aircraft::find($pirep->aircraft_id);
+        $aircraft->state = AircraftState::AVAILABLE;
+        $aircraft->user_id = null;
+        $aircraft->save();
+
+        // remove pirep cargo entries
+        PirepCargo::where('pirep_id', $pirep->id)->delete();
+
+        // remove draft pirep
+        $pirep->delete();
+
+        return redirect()->back()->with(['success' => 'Dispatch cancelled successfully']);
     }
 
     protected function getCargoForDispatch($currentLocation, $userId): Collection

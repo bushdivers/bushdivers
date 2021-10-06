@@ -115,6 +115,18 @@ class GetDispatchedBookingsTest extends TestCase
         $response->assertJsonCount(1);
     }
 
+    public function test_returns_cargo_type_for_booking()
+    {
+        Sanctum::actingAs(
+            $this->user,
+            ['*']
+        );
+
+        $response = $this->getJson('/api/dispatch/cargo');
+        $response->assertStatus(200);
+        $response->assertJsonFragment(['contract_type' => 'Cargo']);
+    }
+
     public function test_returns_multiple_bookings()
     {
         $contractCargo = ContractCargo::factory()->create([

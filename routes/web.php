@@ -57,6 +57,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/bids', [\App\Http\Controllers\ContractsController::class, 'myContracts'])->name('bids');
     Route::get('/dispatch', [\App\Http\Controllers\DispatchController::class, 'index'])->name('dispatch');
     Route::post('/dispatch', [\App\Http\Controllers\DispatchController::class, 'create'])->name('dispatch.create');
+    Route::post('/dispatch/cancel', [\App\Http\Controllers\DispatchController::class, 'cancel'])->name('dispatch.cancel');
 //    Route::delete('/bookings/cancel/{id}', [\App\Http\Controllers\BookingController::class, 'delete'])->name('bookings.delete');
 //    Route::get('/dispatch/{id}', [\App\Http\Controllers\PirepController::class, 'getDispatch'])->name('dispatch');
 //    Route::post('/bookings/dispatch/create', [\App\Http\Controllers\PirepController::class, 'createDispatch'])->name('dispatch.create');

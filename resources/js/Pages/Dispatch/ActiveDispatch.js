@@ -2,9 +2,15 @@ import React from 'react'
 import Layout from '../../Shared/Layout'
 import PageTitle from '../../Shared/Navigation/PageTitle'
 import DispatchSummary from '../../Shared/Components/Dispatch/DispatchSummary'
+import { Inertia } from '@inertiajs/inertia'
 
-const ActiveDispatch = ({ cargo, aircraft, cargoWeight, fuelWeight, passengerCount }) => {
+const ActiveDispatch = ({ cargo, aircraft, cargoWeight, fuelWeight, passengerCount, pirep }) => {
   const personWeight = 80.00
+
+  function handleCancel () {
+    Inertia.post('/dispatch/cancel', { pirep: pirep.id })
+  }
+
   return (
     <div>
       <PageTitle title="Current Dispatch" />
@@ -55,7 +61,7 @@ const ActiveDispatch = ({ cargo, aircraft, cargoWeight, fuelWeight, passengerCou
               fuelWeight={fuelWeight}
               passengerCount={passengerCount}
             />
-            <div className="text-right"><button className="btn btn-primary">Cancel Dispatch</button></div>
+            <div className="text-right"><button onClick={handleCancel} className="btn btn-primary">Cancel Dispatch</button></div>
           </div>
         </div>
       </div>
