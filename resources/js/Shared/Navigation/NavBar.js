@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { usePage, Link } from '@inertiajs/inertia-react'
+import DropdownTitle from '../Elements/DropdownTitle'
 
 export default function NavBar () {
   const { auth } = usePage().props
@@ -21,7 +22,7 @@ export default function NavBar () {
             <div>
               <Menu.Button className="nav-link">
                 <span className="sr-only">Open Bush Divers HQ menu</span>
-                Bush Divers HQ
+                <DropdownTitle title="Bush Divers HQ" />
               </Menu.Button>
             </div>
             <Transition as={Fragment} enter="transition ease-out duration-100" enterFrom="transform opacity-0 scale-95" enterTo="transform opacity-100 scale-100" leave="transition ease-in duration-75" leaveFrom="transform opacity-100 scale-100" leaveTo="transform opacity-0 scale-95">
@@ -39,10 +40,13 @@ export default function NavBar () {
                   {({ active }) => <Link href="/ranks" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Ranks and Awards</Link>}
                 </Menu.Item>
                 <Menu.Item>
+                  {({ active }) => <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Company Financials</a>}
+                </Menu.Item>
+                <Menu.Item>
                   {({ active }) => <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Pilot Handbook</a>}
                 </Menu.Item>
                 <Menu.Item>
-                  {({ active }) => <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Downloads</a>}
+                  {({ active }) => <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Bush Tracker</a>}
                 </Menu.Item>
               </Menu.Items>
             </Transition>
@@ -50,8 +54,8 @@ export default function NavBar () {
           <Menu as="div" className="ml-3 relative">
             <div>
               <Menu.Button className="nav-link">
-                <span className="sr-only">Open Flight Operations menu</span>
-                Flight Operations
+                <span className="sr-only">Open Contracts</span>
+                <DropdownTitle title="Contracts" />
               </Menu.Button>
             </div>
             <Transition as={Fragment} enter="transition ease-out duration-100" enterFrom="transform opacity-0 scale-95" enterTo="transform opacity-100 scale-100" leave="transition ease-in duration-75" leaveFrom="transform opacity-100 scale-100" leaveTo="transform opacity-0 scale-95">
@@ -60,20 +64,18 @@ export default function NavBar () {
                   {({ active }) => <Link href="/contracts" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Find a Contract</Link>}
                 </Menu.Item>
                 <Menu.Item>
-                  {({ active }) => <Link href="/liveflights" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Live Flights Map</Link>}
+                  {({ active }) => <Link href="/bids" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">My Contracts {auth.user.current_bids > 0 ? <span>({auth.user.current_bids})</span> : <span>(0)</span> }</Link>}
                 </Menu.Item>
                 <Menu.Item>
-                  {({ active }) => <a href="/bids" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">My Contracts {auth.user.current_bids > 0 ? <span>({auth.user.current_bids})</span> : <span>(0)</span> }</a>}
+                  {({ active }) => <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Completed Contracts</a>}
                 </Menu.Item>
                  <Menu.Item>
                   {({ active }) => <Link href="/dispatch" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Flight Dispatch</Link>}
                  </Menu.Item>
-                <Menu.Item>
-                  {({ active }) => <Link href="/jumpseat" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Jumpseat</Link>}
-                </Menu.Item>
               </Menu.Items>
             </Transition>
           </Menu>
+          <Link href="/liveflights" className="nav-link">Live Flights Map</Link>
         </div>
       </>
     )
@@ -95,7 +97,7 @@ export default function NavBar () {
             <div>
               <Menu.Button className="flex items-center text-sm hover:bg-gray-50 rounded-xl py-2 px-1">
                 <span className="sr-only">Open user menu</span>
-                <span>{auth.user && <UserName />}</span>
+                <span>{auth.user && <UserName />} <i className="material-icons md-18">expand_more</i></span>
               </Menu.Button>
             </div>
             <Transition as={Fragment} enter="transition ease-out duration-100" enterFrom="transform opacity-0 scale-95" enterTo="transform opacity-100 scale-100" leave="transition ease-in duration-75" leaveFrom="transform opacity-100 scale-100" leaveTo="transform opacity-0 scale-95">
@@ -110,7 +112,13 @@ export default function NavBar () {
                   {({ active }) => <Link href="/logbook" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Logbook</Link>}
                 </Menu.Item>
                 <Menu.Item>
-                  {({ active }) => <Link href="/logout" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 border-t">Sign out</Link>}
+                  {({ active }) => <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Bank Account</a>}
+                </Menu.Item>
+                <Menu.Item>
+                  {({ active }) => <Link href="/jumpseat" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Jumpseat</Link>}
+                </Menu.Item>
+                <Menu.Item>
+                  {({ active }) => <Link href="/logout" className="block px-4 py-2 pt-4 border-t text-sm text-gray-700 hover:bg-gray-50 border-t">Sign out</Link>}
                 </Menu.Item>
               </Menu.Items>
             </Transition>
