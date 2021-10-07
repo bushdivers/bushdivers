@@ -99,7 +99,7 @@ class ContractsController extends Controller
         $userService = new UserService();
         $userService->addUserAccountEntry(Auth::user()->id, TransactionTypes::ContractPenalty, -$charge);
         $userService->updateUserAccountBalance(Auth::user()->id, -$charge);
-        
+
         return redirect()->back()->with(['success' => 'Contract bid cancelled successfully']);
     }
 
