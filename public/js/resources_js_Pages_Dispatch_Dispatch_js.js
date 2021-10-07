@@ -3479,6 +3479,11 @@ var DispatchSummary = function DispatchSummary(props) {
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
       className: "text-xl",
       children: "Dispatch Summary"
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("p", {
+      className: "mt-2",
+      children: ["Planned Destination: ", props.pirep && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("span", {
+        children: props.pirep.destination_airport_id
+      })]
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
       className: "mt-2",
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
@@ -3512,6 +3517,11 @@ var DispatchSummary = function DispatchSummary(props) {
           className: props.selectedAircraft && props.passengerCount > props.selectedAircraft.fleet.pax_capacity ? 'text-red-500' : '',
           children: [props.passengerCount, " / ", props.selectedAircraft.fleet.pax_capacity]
         })]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+        className: "mt-1",
+        children: ["Fuel: ", props.pirep && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("span", {
+          children: props.pirep.planned_fuel
+        }), " gal"]
       })]
     })]
   });
