@@ -7,6 +7,13 @@ use App\Models\Booking;
 use App\Models\Contract;
 use App\Models\ContractCargo;
 use App\Models\Enums\ContractType;
+use App\Models\Enums\FinancialConsts;
+use App\Models\Enums\PirepState;
+use App\Models\Enums\TransactionTypes;
+use App\Models\Pirep;
+use App\Models\PirepCargo;
+use App\Services\PirepService;
+use App\Services\UserService;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -67,13 +74,32 @@ class ContractsController extends Controller
 
     public function cancelContract(Request $request): RedirectResponse
     {
+
         $contract = Contract::find($request->id);
+
+        // check if contract has cargo in a non-completed pirep
+        $cargo = ContractCargo::where('contract_id', $contract->id)->pluck('id');
+        $pc = PirepCargo::whereIn('contract_cargo_id', $cargo)->pluck('pirep_id');
+        $pirepsCount = Pirep::where('user_id', Auth::user()->id)
+            ->where('state', '<>', PirepState::ACCEPTED)
+            ->whereIn('id', $pc)
+            ->count();
+
+        if ($pirepsCount > 0) {
+            return redirect()->back()->with(['error' => 'Contract is part of an active dispatch and cannot be cancelled']);
+        }
 
         // set contract to not available
         $contract->is_available = true;
         $contract->user_id = null;
         $contract->save();
 
+        // penalty charge to user
+        $charge = (FinancialConsts::CancelPenalty / 100) * $contract->contract_value;
+        $userService = new UserService();
+        $userService->addUserAccountEntry(Auth::user()->id, TransactionTypes::ContractPenalty, -$charge);
+        $userService->updateUserAccountBalance(Auth::user()->id, -$charge);
+        
         return redirect()->back()->with(['success' => 'Contract bid cancelled successfully']);
     }
 
