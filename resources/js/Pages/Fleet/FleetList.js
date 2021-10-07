@@ -2,6 +2,7 @@ import React from 'react'
 import Layout from '../../Shared/Layout'
 import PageTitle from '../../Shared/Navigation/PageTitle'
 import Card from '../../Shared/Elements/Card'
+import FleetMap from '../../Shared/Components/Fleet/FleetMap'
 
 const FleetCardContent = ({ fleet }) => {
   return (
@@ -87,6 +88,7 @@ const FleetList = ({ fleet }) => {
   return (
     <div>
       <PageTitle title="Fleet" />
+      {/* <FleetMap aircraft={aircraft} size="large" /> */}
       {fleetItems}
     </div>
   )

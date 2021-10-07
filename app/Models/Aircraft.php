@@ -13,4 +13,9 @@ class Aircraft extends Model
     {
         return $this->belongsTo(Fleet::class);
     }
+
+    public function location()
+    {
+        return $this->belongsTo(Airport::class, 'current_airport_id', 'identifier');
+    }
 }
