@@ -3374,7 +3374,7 @@ function NavBar() {
                 children: function children(_ref9) {
                   var active = _ref9.active;
                   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Link, {
-                    href: "/bids",
+                    href: "/my-contracts",
                     className: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50",
                     children: ["My Contracts ", auth.user.current_bids > 0 ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("span", {
                       children: ["(", auth.user.current_bids, ")"]
@@ -3386,8 +3386,8 @@ function NavBar() {
               }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_headlessui_react__WEBPACK_IMPORTED_MODULE_4__.Menu.Item, {
                 children: function children(_ref10) {
                   var active = _ref10.active;
-                  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("a", {
-                    href: "#",
+                  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Link, {
+                    href: "/completed-contracts",
                     className: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50",
                     children: "Completed Contracts"
                   });
@@ -3405,7 +3405,7 @@ function NavBar() {
             })
           })]
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Link, {
-          href: "/liveflights",
+          href: "/live-flights",
           className: "nav-link",
           children: "Live Flights Map"
         })]
@@ -3491,7 +3491,7 @@ function NavBar() {
                   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("a", {
                     href: "#",
                     className: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50",
-                    children: "Bank Account"
+                    children: "My Finances"
                   });
                 }
               }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_headlessui_react__WEBPACK_IMPORTED_MODULE_4__.Menu.Item, {
@@ -3533,7 +3533,7 @@ function NavBar() {
           className: "nav-link",
           children: "Bush Divers Team"
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Link, {
-          href: "/liveflights",
+          href: "/live-flights",
           className: "nav-link",
           children: "Live Map"
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Link, {

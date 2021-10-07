@@ -22,7 +22,7 @@ Route::get('/ranks', [\App\Http\Controllers\PageController::class, 'ranks'])->na
 Route::get('/hubs', [\App\Http\Controllers\AirportController::class, 'hubs'])->name('hubs');
 Route::get('/staff', [\App\Http\Controllers\PageController::class, 'staff'])->name('staff');
 Route::get('/supporters', [\App\Http\Controllers\PageController::class, 'supporters'])->name('supporters');
-Route::get('/liveflights', [\App\Http\Controllers\PirepController::class, 'flightMap'])->name('flights.map');
+Route::get('/live-flights', [\App\Http\Controllers\PirepController::class, 'flightMap'])->name('flights.map');
 
 // Auth
 Route::get('/register', [\App\Http\Controllers\Auth\RegisterController::class, 'index'])->name('register.index');
@@ -54,7 +54,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/fleet', [\App\Http\Controllers\FleetController::class, 'index'])->name('fleet');
 
     // Flights
-    Route::get('/bids', [\App\Http\Controllers\ContractsController::class, 'myContracts'])->name('bids');
+    Route::get('/my-contracts', [\App\Http\Controllers\ContractsController::class, 'myContracts'])->name('bids');
+    Route::get('/completed-contracts', [\App\Http\Controllers\ContractsController::class, 'completedContracts'])->name('contracts.completed');
     Route::get('/dispatch', [\App\Http\Controllers\DispatchController::class, 'index'])->name('dispatch');
     Route::post('/dispatch', [\App\Http\Controllers\DispatchController::class, 'create'])->name('dispatch.create');
     Route::post('/dispatch/cancel', [\App\Http\Controllers\DispatchController::class, 'cancel'])->name('dispatch.cancel');

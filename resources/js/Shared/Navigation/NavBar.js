@@ -64,10 +64,10 @@ export default function NavBar () {
                   {({ active }) => <Link href="/contracts" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Find a Contract</Link>}
                 </Menu.Item>
                 <Menu.Item>
-                  {({ active }) => <Link href="/bids" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">My Contracts {auth.user.current_bids > 0 ? <span>({auth.user.current_bids})</span> : <span>(0)</span> }</Link>}
+                  {({ active }) => <Link href="/my-contracts" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">My Contracts {auth.user.current_bids > 0 ? <span>({auth.user.current_bids})</span> : <span>(0)</span> }</Link>}
                 </Menu.Item>
                 <Menu.Item>
-                  {({ active }) => <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Completed Contracts</a>}
+                  {({ active }) => <Link href="/completed-contracts" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Completed Contracts</Link>}
                 </Menu.Item>
                  <Menu.Item>
                   {({ active }) => <Link href="/dispatch" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Flight Dispatch</Link>}
@@ -75,7 +75,7 @@ export default function NavBar () {
               </Menu.Items>
             </Transition>
           </Menu>
-          <Link href="/liveflights" className="nav-link">Live Flights Map</Link>
+          <Link href="/live-flights" className="nav-link">Live Flights Map</Link>
         </div>
       </>
     )
@@ -112,7 +112,7 @@ export default function NavBar () {
                   {({ active }) => <Link href="/logbook" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Logbook</Link>}
                 </Menu.Item>
                 <Menu.Item>
-                  {({ active }) => <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Bank Account</a>}
+                  {({ active }) => <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">My Finances</a>}
                 </Menu.Item>
                 <Menu.Item>
                   {({ active }) => <Link href="/jumpseat" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Jumpseat</Link>}
@@ -134,7 +134,7 @@ export default function NavBar () {
         <div className="flex space-x-4">
           <a href="" className="nav-link">How we work</a>
           <Link href="/staff" className="nav-link">Bush Divers Team</Link>
-          <Link href="/liveflights" className="nav-link">Live Map</Link>
+          <Link href="/live-flights" className="nav-link">Live Map</Link>
           <Link href="/hubs" className="nav-link">Hubs</Link>
           <Link href="/fleet" className="nav-link">Fleet</Link>
         </div>

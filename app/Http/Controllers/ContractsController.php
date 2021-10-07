@@ -87,6 +87,16 @@ class ContractsController extends Controller
         return Inertia::render('Contracts/MyContracts', ['contracts' => $contracts]);
     }
 
+    public function completedContracts(): Response
+    {
+        $contracts = Contract::with('depAirport', 'arrAirport', 'cargo')
+            ->where('is_completed', true)
+            ->where('user_id', Auth::user()->id)
+            ->get();
+
+        return Inertia::render('Contracts/CompletedContracts', ['contracts' => $contracts]);
+    }
+
     protected function getContractsFromCriteria($criteria): array
     {
         $icao = $criteria['icao'];
