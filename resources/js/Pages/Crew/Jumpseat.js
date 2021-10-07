@@ -4,7 +4,7 @@ import Layout from '../../Shared/Layout'
 import { Inertia } from '@inertiajs/inertia'
 import axios from 'axios'
 
-const Jumpseat = ({ user, spent }) => {
+const Jumpseat = ({ user, spent, balance }) => {
   const [airport, setAirport] = useState('')
   const [icao, setIcao] = useState('')
   const [transfer, setTransfer] = useState('')
@@ -93,7 +93,7 @@ const Jumpseat = ({ user, spent }) => {
         <div className="w-1/4 rounded shadow p-4 mx-2 mt-4 bg-white flex justify-center items-center">
           <div className="flex flex-col text-center">
             <div>Current Balance</div>
-            <div className="text-xl mt-2">${user.account_balance}</div>
+            <div className="text-xl mt-2">${balance}</div>
           </div>
         </div>
         <div className="w-1/4 rounded shadow p-4 mx-2 mt-4 bg-white flex justify-center items-center">

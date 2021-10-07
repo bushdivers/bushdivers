@@ -33,7 +33,7 @@ class CrewController extends Controller
     public function index(): Response
     {
         $user = User::find(Auth::user()->id);
-        $lastFlight = Pirep::with('flight', 'aircraft', 'aircraft.fleet', 'flight.depAirport', 'flight.arrAirport')
+        $lastFlight = Pirep::with('aircraft', 'aircraft.fleet', 'depAirport', 'arrAirport')
             ->where('user_id', $user->id)
             ->where('state', PirepState::ACCEPTED)
             ->orderBy('submitted_at', 'desc')
@@ -43,12 +43,15 @@ class CrewController extends Controller
         $nextRank = Rank::find($user->rank_id + 1);
 
         $locations = DB::table('airports')
-            ->join('flights', 'airports.identifier', '=', 'flights.arr_airport_id')
-            ->join('pireps', 'flights.id', '=', 'pireps.flight_id')
+            ->join('pireps', 'airports.identifier', '=', 'pireps.destination_airport_id')
             ->select('airports.identifier', 'airports.name', 'airports.lon', 'airports.lat')
             ->where('pireps.user_id', Auth::user()->id)
             ->distinct()
             ->get();
+
+        $balance = DB::table('user_accounts')
+            ->where('user_id', Auth::user()->id)
+            ->sum('total');
 
         return Inertia::render('Crew/Dashboard', [
             'user' => $user,
@@ -56,7 +59,8 @@ class CrewController extends Controller
             'rank' => $rank,
             'nextRank' => $nextRank,
             'awards' => $user->awards,
-            'locations' => $locations
+            'locations' => $locations,
+            'balance' => $balance
         ]);
     }
 
@@ -123,7 +127,12 @@ class CrewController extends Controller
             ->where('user_id', Auth::user()->id)
             ->where('type', TransactionTypes::Jumpseat)
             ->sum('total');
-        return Inertia::render('Crew/Jumpseat', ['user' => $user, 'spent' => abs($spent)]);
+
+        $balance = DB::table('user_accounts')
+            ->where('user_id', Auth::user()->id)
+            ->sum('total');
+
+        return Inertia::render('Crew/Jumpseat', ['user' => $user, 'spent' => abs($spent), 'balance' => $balance]);
     }
 
     public function processJumpseat(Request $request): RedirectResponse

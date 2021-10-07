@@ -2752,7 +2752,8 @@ var Dashboard = function Dashboard(_ref) {
       nextRank = _ref.nextRank,
       awards = _ref.awards,
       user = _ref.user,
-      locations = _ref.locations;
+      locations = _ref.locations,
+      balance = _ref.balance;
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_Shared_Navigation_PageTitle__WEBPACK_IMPORTED_MODULE_2__.default, {
       title: "Crew Page"
@@ -2784,7 +2785,7 @@ var Dashboard = function Dashboard(_ref) {
           flights: user.flights,
           hours: user.flights_time,
           location: user.current_airport_id,
-          balance: user.account_balance,
+          balance: balance,
           awards: awards && awards.length > 0 ? awards.length : 0,
           points: user.points
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
@@ -2803,12 +2804,12 @@ var Dashboard = function Dashboard(_ref) {
                 className: "ml-2",
                 children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_5__.Link, {
                   href: "/logbook/".concat(lastFlight.id),
-                  children: lastFlight.flight.full_flight_number
+                  children: (0,_Helpers_date_helpers__WEBPACK_IMPORTED_MODULE_3__.default)(lastFlight.submitted_at).format('ddd DD MMM YYYY')
                 })
               })]
             }), lastFlight && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.Fragment, {
               children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
-                children: [lastFlight.flight.dep_airport.name, " ", lastFlight.flight.dep_airport_id, " - ", lastFlight.flight.arr_airport.name, " ", lastFlight.flight.arr_airport_id]
+                children: [lastFlight.dep_airport.name, " ", lastFlight.departure_airport_id, " - ", lastFlight.arr_airport.name, " ", lastFlight.destination_airport_id]
               }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
                 className: "text-sm",
                 children: [(0,_Helpers_date_helpers__WEBPACK_IMPORTED_MODULE_3__.default)(lastFlight.submitted_at).fromNow(), " - ", (0,_Helpers_date_helpers__WEBPACK_IMPORTED_MODULE_3__.default)(lastFlight.submitted_at).format('ddd DD MMM YYYY')]

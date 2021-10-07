@@ -6,7 +6,7 @@ import PilotStats from '../../Shared/Components/Crew/PilotStats'
 import { Link } from '@inertiajs/inertia-react'
 import CrewMap from '../../Shared/Components/Crew/CrewMap'
 
-const Dashboard = ({ lastFlight, rank, nextRank, awards, user, locations }) => {
+const Dashboard = ({ lastFlight, rank, nextRank, awards, user, locations, balance }) => {
   return (
     <div>
       <PageTitle title="Crew Page" />
@@ -26,7 +26,7 @@ const Dashboard = ({ lastFlight, rank, nextRank, awards, user, locations }) => {
             flights={user.flights}
             hours={user.flights_time}
             location={user.current_airport_id}
-            balance={user.account_balance}
+            balance={balance}
             awards={awards && awards.length > 0 ? awards.length : 0}
             points={user.points}
           />
@@ -36,11 +36,11 @@ const Dashboard = ({ lastFlight, rank, nextRank, awards, user, locations }) => {
                 <div className="flex items-center">
                   <i className="material-icons mr-2 md-36">flight_land</i> Last Flight
                 </div>
-                {lastFlight && <span className="ml-2"><Link href={`/logbook/${lastFlight.id}`}>{lastFlight.flight.full_flight_number}</Link></span>}
+                {lastFlight && <span className="ml-2"><Link href={`/logbook/${lastFlight.id}`}>{dayjs(lastFlight.submitted_at).format('ddd DD MMM YYYY')}</Link></span>}
               </div>
               {lastFlight && (
                 <>
-                  <div>{lastFlight.flight.dep_airport.name} {lastFlight.flight.dep_airport_id} - {lastFlight.flight.arr_airport.name} {lastFlight.flight.arr_airport_id}</div>
+                  <div>{lastFlight.dep_airport.name} {lastFlight.departure_airport_id} - {lastFlight.arr_airport.name} {lastFlight.destination_airport_id}</div>
                   <div className="text-sm">
                     {dayjs(lastFlight.submitted_at).fromNow()} - {dayjs(lastFlight.submitted_at).format('ddd DD MMM YYYY')}
                   </div>

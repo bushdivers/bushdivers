@@ -2747,7 +2747,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 var Jumpseat = function Jumpseat(_ref) {
   var user = _ref.user,
-      spent = _ref.spent;
+      spent = _ref.spent,
+      balance = _ref.balance;
 
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(''),
       _useState2 = _slicedToArray(_useState, 2),
@@ -2937,7 +2938,7 @@ var Jumpseat = function Jumpseat(_ref) {
             children: "Current Balance"
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
             className: "text-xl mt-2",
-            children: ["$", user.account_balance]
+            children: ["$", balance]
           })]
         })
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
