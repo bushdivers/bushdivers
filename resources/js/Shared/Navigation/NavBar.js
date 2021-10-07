@@ -97,7 +97,7 @@ export default function NavBar () {
             <div>
               <Menu.Button className="flex items-center text-sm hover:bg-gray-50 rounded-xl py-2 px-1">
                 <span className="sr-only">Open user menu</span>
-                <span>{auth.user && <UserName />} <i className="material-icons md-18">expand_more</i></span>
+                <div className="flex items-center">{auth.user && <UserName />} <i className="material-icons md-18">expand_more</i></div>
               </Menu.Button>
             </div>
             <Transition as={Fragment} enter="transition ease-out duration-100" enterFrom="transform opacity-0 scale-95" enterTo="transform opacity-100 scale-100" leave="transition ease-in duration-75" leaveFrom="transform opacity-100 scale-100" leaveTo="transform opacity-0 scale-95">
