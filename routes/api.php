@@ -21,7 +21,7 @@ Route::get('/flights/distance/{from}/{to}', [\App\Http\Controllers\Api\FlightCon
 Route::get('/liveflights', [\App\Http\Controllers\PirepController::class, 'liveFlights'])->name('flights.live');
 Route::post('/cargo/split', [\App\Http\Controllers\Api\ContractsController::class, 'splitCargo'])->name('cargo.split');
 
-Route::get('/test', [\App\Http\Controllers\Api\ContractsController::class, 'test']);
+
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/dispatch', [\App\Http\Controllers\Api\TrackerController::class, 'getDispatch']);
@@ -32,5 +32,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/pirep/reset', [\App\Http\Controllers\Api\TrackerController::class, 'cancelPirep']);
     Route::post('/tracker/distance', [\App\Http\Controllers\Api\TrackerController::class, 'checkDistance']);
     Route::post('/pirep/destination', [\App\Http\Controllers\Api\TrackerController::class, 'updateDestination']);
+    Route::get('/test', [\App\Http\Controllers\Api\ContractsController::class, 'test']);
 });
 

@@ -16,7 +16,7 @@ class ContractsController extends Controller
     public function test()
     {
         $contractService = new ContractService();
-        //$contractService->findAirportsInNeedOfContracts();
+        $contractService->findAirportsInNeedOfContracts();
         $contractService->findHubsInNeedOfContracts();
     }
 
