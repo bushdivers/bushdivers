@@ -2,6 +2,10 @@
 
 namespace App\Console;
 
+use App\Services\AircraftService;
+use App\Services\ContractService;
+use App\Services\FinancialsService;
+use App\Services\PirepService;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -25,6 +29,20 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('inspire')->hourly();
+        $schedule->call(function () {
+            $pirepService = new PirepService();
+            $inactivePireps = $pirepService->findInactivePireps();
+            $pirepService->removeMultiplePireps($inactivePireps);
+        })->daily();
+        $schedule->call(function () {
+            $contractService = new ContractService();
+            $contractService->findAirportsInNeedOfContracts();
+            $contractService->findHubsInNeedOfContracts();
+        })->daily();
+        $schedule->call(function () {
+            $financeService = new FinancialsService();
+            $financeService->calcMonthlyFees();
+        })->monthly();
     }
 
     /**

@@ -1,13 +1,13 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Unit\Services\Pirep;
 
 use PHPUnit\Framework\TestCase;
 
-class ExampleTest extends TestCase
+class FindInactivePirepsTest extends TestCase
 {
     /**
-     * A basic test example.
+     * A basic unit test example.
      *
      * @return void
      */

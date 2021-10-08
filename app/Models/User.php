@@ -6,10 +6,11 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -58,7 +59,33 @@ class User extends Authenticatable
 
     public function getPilotIdAttribute()
     {
-        $number = $this->id + 100;
+        $number = str_pad($this->id, 4, "0", STR_PAD_LEFT);
         return 'BDV'.$number;
+    }
+
+    public function getCurrentBidsAttribute()
+    {
+        $bookings = Contract::where('user_id', $this->id)->where('is_completed', false)->get();
+        return $bookings->count();
+    }
+
+    public function rank()
+    {
+        return $this->belongsTo(Rank::class);
+    }
+
+    public function awards()
+    {
+        return $this->belongsToMany(Award::class, 'award_user');
+    }
+
+    public function location()
+    {
+        return $this->belongsTo(Airport::class, 'current_airport_id', 'identifier');
+    }
+
+    public function hub()
+    {
+        return $this->belongsTo(Airport::class, 'hub_id', 'identifier');
     }
 }

@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\General\MailTypes;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RegisterRequest;
 use App\Models\User;
+use App\Services\EmailService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,6 +16,13 @@ use Inertia\Response;
 
 class RegisterController extends Controller
 {
+    protected EmailService $emailService;
+
+    public function __construct()
+    {
+        $this->emailService = new EmailService();
+    }
+
     public function index(): Response
     {
         return Inertia::render('Auth/Register');
@@ -29,9 +38,17 @@ class RegisterController extends Controller
         $user->current_airport_id = $request->hub;
         $user->toc_accepted = true;
         $user->opt_in = $request->optin;
+        $user->rank_id = 1;
+        $user->save();
+
+        // generate api key
+        $token = $user->createToken('bush-tracker');
+        $user->api_token = $token->plainTextToken;
         $user->save();
 
         // send email
+        $body = MailTypes::register($user);
+        $this->emailService->sendEmail($body);
 
         $credentials = $request->only('email', 'password');
         if (Auth::attempt($credentials)) {

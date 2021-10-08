@@ -43,7 +43,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 var Register = function Register() {
   var errors = (0,_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_2__.usePage)().props.errors;
-  console.log(errors);
 
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({
     name: '',

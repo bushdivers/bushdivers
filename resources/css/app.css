@@ -2,6 +2,62 @@
 @tailwind components;
 @tailwind utilities;
 
+a {
+    @apply text-orange-500;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.material-icons {
+    font-family: 'Material Icons';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;  /* Preferred icon size */
+    display: inline-block;
+    line-height: 1;
+    text-transform: none;
+    letter-spacing: normal;
+    word-wrap: normal;
+    white-space: nowrap;
+    direction: ltr;
+
+    /* Support for all WebKit browsers. */
+    -webkit-font-smoothing: antialiased;
+    /* Support for Safari and Chrome. */
+    text-rendering: optimizeLegibility;
+
+    /* Support for Firefox. */
+    -moz-osx-font-smoothing: grayscale;
+
+    /* Support for IE. */
+    font-feature-settings: 'liga';
+}
+/* Rules for sizing the icon. */
+.material-icons.md-18 { font-size: 18px; }
+.material-icons.md-24 { font-size: 24px; }
+.material-icons.md-36 { font-size: 36px; }
+.material-icons.md-48 { font-size: 48px; }
+
+/* Rules for using icons as black on a light background. */
+.material-icons.md-dark { color: rgba(0, 0, 0, 0.54); }
+.material-icons.md-dark.md-inactive { color: rgba(0, 0, 0, 0.26); }
+
+/* Rules for using icons as white on a dark background. */
+.material-icons.md-light { color: rgba(255, 255, 255, 1); }
+.material-icons.md-light.md-inactive { color: rgba(255, 255, 255, 0.3); }
+
+.nav-link {
+    @apply text-gray-700 px-3 py-2 rounded-md text-sm font-medium;
+}
+.nav-link.mobile {
+    @apply text-gray-700 block px-3 py-2 rounded-md text-base font-medium
+}
+.nav-link:hover {
+    @apply bg-gray-50 text-gray-700;
+}
+
 .form {
     @apply mt-1 block w-full shadow-sm border-gray-300 rounded-md
 }
@@ -29,4 +85,150 @@
 }
 .btn-secondary:focus {
     @apply bg-orange-500;
+}
+
+.btn-light {
+    @apply bg-gray-100 text-gray-900;
+}
+.btn-light:hover {
+    @apply bg-gray-200;
+}
+
+.btn-small {
+    @apply text-xs;
+}
+
+.table {
+    @apply min-w-full divide-y divide-gray-200;
+}
+.table-condensed {
+    @apply min-w-full divide-y divide-gray-200 text-sm;
+}
+.table thead {
+    @apply bg-gray-50;
+}
+.table-condensed thead {
+    @apply bg-gray-50;
+}
+.table th {
+    @apply px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider;
+}
+.table-condensed th {
+    @apply px-2 py-1 text-left text-xs font-medium text-gray-500 uppercase tracking-wider;
+}
+.table tbody {
+    @apply bg-white divide-y divide-gray-200;
+}
+.table-condensed tbody {
+    @apply bg-white divide-y divide-gray-200;
+}
+.table td {
+    @apply px-6 py-4;
+}
+.table-condensed td {
+    @apply px-2 py-1;
+}
+
+.table tbody>tr:hover {
+    @apply bg-gray-50 cursor-pointer;
+}
+.table-condensed tbody>tr:hover {
+    @apply bg-gray-50 cursor-pointer;
+}
+:root {
+    --tooltip-text-color: white;
+    --tooltip-background-color: black;
+    --tooltip-margin: 30px;
+    --tooltip-arrow-size: 6px;
+}
+
+/* Absolute positioning */
+.tooltip {
+    position: absolute;
+    border-radius: 4px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 6px;
+    color: var(--tooltip-text-color);
+    background: var(--tooltip-background-color);
+    font-size: 14px;
+    font-family: sans-serif;
+    line-height: 1;
+    z-index: 100;
+    white-space: nowrap;
+}
+
+/* CSS border triangles */
+.tooltip::before {
+    content: " ";
+    left: 50%;
+    border: solid transparent;
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+    border-width: var(--tooltip-arrow-size);
+    margin-left: calc(var(--tooltip-arrow-size) * -1);
+}
+
+/* Absolute positioning */
+.tooltip.top {
+    top: calc(var(--tooltip-margin) * -1);
+}
+/* CSS border triangles */
+.tooltip.top::before {
+    top: 100%;
+    border-top-color: var(--tooltip-background-color);
+}
+
+/* Absolute positioning */
+.tooltip.right {
+    left: calc(100% + var(--tooltip-margin));
+    top: 50%;
+    transform: translateX(0) translateY(-50%);
+}
+/* CSS border triangles */
+.tooltip.right::before {
+    left: calc(var(--tooltip-arrow-size) * -1);
+    top: 50%;
+    transform: translateX(0) translateY(-50%);
+    border-right-color: var(--tooltip-background-color);
+}
+
+/* Absolute positioning */
+.tooltip.bottom {
+    bottom: calc(var(--tooltip-margin) * -1);
+}
+/* CSS border triangles */
+.tooltip.bottom::before {
+    bottom: 100%;
+    border-bottom-color: var(--tooltip-background-color);
+}
+
+/* Absolute positioning */
+.tooltip.left {
+    left: auto;
+    right: calc(100% + var(--tooltip-margin));
+    top: 50%;
+    transform: translateX(0) translateY(-50%);
+}
+/* CSS border triangles */
+.tooltip.left::before {
+    left: auto;
+    right: calc(var(--tooltip-arrow-size) * -2);
+    top: 50%;
+    transform: translateX(0) translateY(-50%);
+    border-left-color: var(--tooltip-background-color);
+}
+
+.map-container-small {
+    height: 400px;
+}
+
+.map-container-large {
+    height: 600px;
+}
+
+.map-container-xl {
+    height: calc(100vh - 200px);
 }
