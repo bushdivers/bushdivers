@@ -123,4 +123,23 @@ class UpdatePirepDestinationTest extends TestCase
             'destination_airport_id' => 'AYMR'
         ]);
     }
+
+    public function test_airport_not_found_fails_gracefully()
+    {
+        $lat = -14.264383;
+        $lon = -7.145881;
+
+        Sanctum::actingAs(
+            $this->user,
+            ['*']
+        );
+        $data = [
+            'pirep_id' => $this->pirep->id,
+            'lat' => $lat,
+            'lon' => $lon
+        ];
+
+        $response = $this->postJson('/api/pirep/destination', $data);
+        $response->assertStatus(200);
+    }
 }

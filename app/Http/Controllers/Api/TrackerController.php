@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Events\PirepFiled;
 use App\Http\Controllers\Controller;
+use App\Models\AccountLedger;
 use App\Models\Contract;
 use App\Models\ContractCargo;
 use App\Models\Enums\PirepState;
@@ -136,43 +137,55 @@ class TrackerController extends Controller
     public function submitPirep(Request $request): JsonResponse
     {
         $pirep = Pirep::find($request->pirep_id);
+        $pirepService = new PirepService();
 
-         $pirepService = new PirepService();
-        // calculate coordinate points in flight logs
-         $distance = $pirepService->calculateTotalFlightDistance($pirep);
-         $startTime = Carbon::createFromFormat('d/m/Y H:i:s',  $request->block_off_time);
-         $endTime = Carbon::createFromFormat('d/m/Y H:i:s',  $request->block_on_time);
-         $duration = $startTime->diffInMinutes($endTime);
-
-//         $debug = [
-//             'start' => $startTime,
-//             'end' => $endTime,
-//             'duration' => $duration,
-//             'request' => $request->all()
-//         ];
-//        Log::debug($request->block_off_time);
-        // set pirep status to completed
-        $pirep->fuel_used = $request->fuel_used;
-        $pirep->distance = $distance;
-        $pirep->flight_time = $duration;
-        $pirep->landing_rate = $request->landing_rate;
-        $pirep->state = PirepState::ACCEPTED;
-        $pirep->status = PirepStatus::ARRIVED;
-        $pirep->submitted_at = Carbon::now();
-        $pirep->block_off_time = $startTime;
-        $pirep->block_on_time = $endTime;
-        $pirep->save();
-
-        // update cargo and contract
-        $contractService = new ContractService();
-        $pc = PirepCargo::where('pirep_id', $pirep->id)->get();
-        foreach ($pc as $c) {
-            $contractCargo = ContractCargo::find($c->contract_cargo_id);
-            $contractService->updateCargo($contractCargo->id, $pirep->destination_airport_id);
+        try {
+            // calculate coordinate points in flight logs
+            $distance = $pirepService->calculateTotalFlightDistance($pirep);
+            $startTime = Carbon::parse($request->block_off_time);
+            $endTime = Carbon::parse($request->block_on_time);
+            $duration = $startTime->diffInMinutes($endTime);
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 400);
         }
 
-        // process financials
-        $this->financialsService->processPirepFinancials($pirep);
+        try {
+            // set pirep status to completed
+            $pirep->fuel_used = $request->fuel_used;
+            $pirep->distance = $distance;
+            $pirep->flight_time = $duration;
+            $pirep->landing_rate = $request->landing_rate;
+            $pirep->state = PirepState::ACCEPTED;
+            $pirep->status = PirepStatus::ARRIVED;
+            $pirep->submitted_at = Carbon::now();
+            $pirep->block_off_time = $startTime;
+            $pirep->block_on_time = $endTime;
+            $pirep->save();
+        } catch (\Exception $e) {
+            $this->rollbackSubmission(1, $request);
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
+
+        try {
+            // update cargo and contract
+            $contractService = new ContractService();
+            $pc = PirepCargo::where('pirep_id', $pirep->id)->get();
+            foreach ($pc as $c) {
+                $contractCargo = ContractCargo::find($c->contract_cargo_id);
+                $contractService->updateCargo($contractCargo->id, $pirep->destination_airport_id);
+            }
+        } catch (\Exception $e) {
+            $this->rollbackSubmission(2, $request);
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
+
+        try {
+            // process financials
+            $this->financialsService->processPirepFinancials($pirep);
+        } catch (\Exception $e) {
+            $this->rollbackSubmission(3, $request);
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
 
         // dispatch completed event (updates cargo/contract, resets aircraft, checks rank and awards)
         PirepFiled::dispatch($pirep);
@@ -217,13 +230,52 @@ class TrackerController extends Controller
     public function updateDestination(Request $request)
     {
         // find nearest airport
-        $airport = $this->airportService->findAirportsByLatLon($request->lat, $request->lon, 2);
-        // update piirep destination to new icao
-        $pirep = Pirep::find($request->pirep_id);
-        $pirep->destination_airport_id = $airport->identifier;
-        $pirep->save();
+        try {
+            $airport = $this->airportService->findAirportsByLatLon($request->lat, $request->lon, 2);
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 404);
+        }
+        if ($airport != null) {
+            // update piirep destination to new icao
+            $pirep = Pirep::find($request->pirep_id);
+            $pirep->destination_airport_id = $airport->identifier;
+            $pirep->save();
 
-        // return icao
-        return response()->json(['icao' => $airport->identifier]);
+            // return icao
+            return response()->json(['icao' => $airport->identifier]);
+        }
+
+        return response()->json(404);
+    }
+
+    protected function rollbackSubmission(int $stage, $pirep)
+    {
+        // pirep reset
+        $p = Pirep::find($pirep->id);
+        $p->fuel_used = null;
+        $p->distance = null;
+        $p->flight_time = null;
+        $p->landing_rate = null;
+        $p->state = PirepState::IN_PROGRESS;
+        $p->status = PirepStatus::BOARDING;
+        $p->submitted_at = null;
+        $p->block_off_time = null;
+        $p->block_on_time = null;
+        $p->save();
+
+        // uncomplete contracts
+        $pc = PirepCargo::where('pirep_id', $pirep->id)->get();
+        foreach ($pc as $c) {
+            $contractCargo = ContractCargo::find($c->contract_cargo_id);
+            $contractCargo->is_completed = false;
+            $contractCargo->completed_at = null;
+            $contractCargo->save();
+            $contract = Contract::find($contractCargo->contract_id);
+            $contract->is_completed = false;
+            $contract->completed_at = null;
+            $contract->save();
+        }
+        // remove financials
+        AccountLedger::where('pirep_id', $pirep->id)->destroy();
     }
 }

@@ -787,4 +787,52 @@ class SubmitPirepTest extends TestCase
             'is_completed' => false
         ]);
     }
+
+    public function test_pirep_fails_gracefully_with_invalid_date()
+    {
+        Artisan::call('db:seed --class=RankSeeder');
+        Sanctum::actingAs(
+            $this->user,
+            ['*']
+        );
+        $startTime = "05/10/2021 01:00:00";
+        $endTime = "test";
+
+        $data = [
+            'pirep_id' => $this->pirep->id,
+            'fuel_used' => 25,
+            'distance' => 76,
+            'landing_rate' => -149.12,
+            'block_off_time'=> $startTime,
+            'block_on_time' => $endTime
+        ];
+
+        $response = $this->postJson('/api/pirep/submit', $data);
+
+        $response->assertStatus(400);
+    }
+
+    public function test_pirep_fails_and_rolls_back()
+    {
+        Artisan::call('db:seed --class=RankSeeder');
+        Sanctum::actingAs(
+            $this->user,
+            ['*']
+        );
+        $startTime = "05/10/2021 01:00:00";
+        $endTime = "test";
+
+        $data = [
+            'pirep_id' => $this->pirep->id,
+            'fuel_used' => 25,
+            'distance' => 76,
+            'landing_rate' => -149.12,
+            'block_off_time'=> $startTime,
+            'block_on_time' => $endTime
+        ];
+
+        $response = $this->postJson('/api/pirep/submit', $data);
+
+        $response->assertStatus(400);
+    }
 }
