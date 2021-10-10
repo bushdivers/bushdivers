@@ -164,6 +164,8 @@ const Dispatch = ({ cargo, aircraft }) => {
               cargoWeight={cargoWeight}
               fuelWeight={fuelWeight}
               passengerCount={passengerCount}
+              destination={destination}
+              fuel={fuel}
             />
             <div className="mt-2 text-right">
               <button onClick={() => handleSubmitDispatch()} className="btn btn-secondary">Load Dispatch</button><br />
