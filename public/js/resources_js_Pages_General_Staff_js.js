@@ -2692,10 +2692,10 @@ var Staff = function Staff(_ref) {
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_Shared_Navigation_PageTitle__WEBPACK_IMPORTED_MODULE_1__.default, {
       title: "Meet the team"
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
-      className: "mt-4 flex justify-start",
+      className: "mt-4 flex flex-col md:flex-row md:justify-start",
       children: staff.map(function (member) {
         return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-          className: "rounded shadow bg-white p-4 mx-2",
+          className: "rounded shadow bg-white my-1 p-4 mx-2",
           children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
             className: "text-xl",
             children: member.user.name

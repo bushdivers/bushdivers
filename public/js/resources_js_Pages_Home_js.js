@@ -2750,20 +2750,20 @@ var Home = function Home(_ref) {
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_Shared_Navigation_NavBar__WEBPACK_IMPORTED_MODULE_1__.default, {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
       className: "w-full m-0 bg-white py-12 px-4",
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
-        className: "flex justify-center items-end",
+        className: "flex md:justify-center items-center flex-col",
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("img", {
           className: "block h-32 w-auto w-0",
           src: "https://res.cloudinary.com/dji0yvkef/image/upload/v1628691598/BDLogo.png",
           alt: "Workflow"
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
-          className: "text-3xl pb-4 ml-12",
+          className: "text-3xl pb-4",
           children: ["Welcome to Bush Divers VA", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("br", {}), "Bush flying in and around Papua New Guinea"]
         })]
       })
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
-      className: "p-4 mt-4 flex justify-between",
+      className: "p-4 mt-4 flex flex-col md:flex-row md:justify-between",
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
-        className: "bg-white rounded shadow p-4 w-1/4 mx-2",
+        className: "bg-white rounded shadow p-4 md:w-1/4 my-1 mx-2",
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
           className: "text-gray-600 text-xl",
           children: "Total Flights"
@@ -2772,7 +2772,7 @@ var Home = function Home(_ref) {
           children: stats.flights
         })]
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
-        className: "bg-white rounded shadow p-4 w-1/4 mx-2",
+        className: "bg-white rounded shadow p-4 md:w-1/4 my-1 mx-2",
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
           className: "text-gray-600 text-xl",
           children: "Total Hours"
@@ -2781,7 +2781,7 @@ var Home = function Home(_ref) {
           children: (0,_Helpers_date_helpers__WEBPACK_IMPORTED_MODULE_4__.convertMinuteDecimalToHoursAndMinutes)(stats.hours)
         })]
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
-        className: "bg-white rounded shadow p-4 w-1/4 mx-2",
+        className: "bg-white rounded shadow p-4 md:w-1/4 my-1 mx-2",
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
           className: "text-gray-600 text-xl",
           children: "Total Pilots"
@@ -2790,7 +2790,7 @@ var Home = function Home(_ref) {
           children: stats.pilots
         })]
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
-        className: "bg-white rounded shadow p-4 w-1/4 mx-2s",
+        className: "bg-white rounded shadow p-4 md:w-1/4 my-1 mx-2s",
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
           className: "text-gray-600 text-xl",
           children: "Hubs"
