@@ -4,7 +4,7 @@ import Layout from '../../Shared/Layout'
 import axios from 'axios'
 import NoContent from '../../Shared/Elements/NoContent'
 import Tooltip from '../../Shared/Elements/Tooltip'
-import { Link } from '@inertiajs/inertia-react'
+import { Link, usePage } from '@inertiajs/inertia-react'
 import dayjs from '../../Helpers/date.helpers'
 import ContractMap from '../../Shared/Components/Contracts/ContractMap'
 import { Inertia } from '@inertiajs/inertia'
@@ -29,11 +29,12 @@ const AirportToolTip = (props) => {
 }
 
 const Contracts = ({ contracts, airport }) => {
+  const { auth } = usePage().props
   const [selectedAirport, setSelectedAirport] = useState('')
   const [title, setTitle] = useState('Contracts')
   // const [icao, setIcao] = useState('')
   const [values, setValues] = useState({
-    icao: '',
+    icao: auth.user.current_airport_id,
     distance: 'Up to 50nm',
     cargo: 1000,
     pax: 12
@@ -42,7 +43,7 @@ const Contracts = ({ contracts, airport }) => {
   const [selectedContract, setSelectedContract] = useState({})
   const [error, setError] = useState(null)
   const [showDetail, setShowDetail] = useState(false)
-
+  
   useEffect(() => {
     if (contracts && airport) {
       setTitle(`Contracts - ${airport.name} (${airport.identifier})`)

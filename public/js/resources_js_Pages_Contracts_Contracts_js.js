@@ -2816,6 +2816,7 @@ var AirportToolTip = function AirportToolTip(props) {
 var Contracts = function Contracts(_ref) {
   var contracts = _ref.contracts,
       airport = _ref.airport;
+  var auth = (0,_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_7__.usePage)().props.auth;
 
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(''),
       _useState2 = _slicedToArray(_useState, 2),
@@ -2829,7 +2830,7 @@ var Contracts = function Contracts(_ref) {
 
 
   var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)({
-    icao: '',
+    icao: auth.user.current_airport_id,
     distance: 'Up to 50nm',
     cargo: 1000,
     pax: 12
