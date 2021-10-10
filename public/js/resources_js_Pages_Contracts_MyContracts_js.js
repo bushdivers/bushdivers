@@ -3948,7 +3948,7 @@ function NavBar() {
 
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_headlessui_react__WEBPACK_IMPORTED_MODULE_6__.Disclosure, {
     as: "nav",
-    className: "bg-white border-b-2 shadow-sm z-10",
+    className: "bg-white border-b-2 border-orange-500 shadow-sm z-10",
     children: function children(_ref18) {
       var open = _ref18.open;
       return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.Fragment, {

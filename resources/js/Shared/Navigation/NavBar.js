@@ -154,7 +154,7 @@ export default function NavBar () {
   }
 
   return (
-    <Disclosure as="nav" className="bg-white border-b-2 shadow-sm z-10">
+    <Disclosure as="nav" className="bg-white border-b-2 border-orange-500 shadow-sm z-10">
       {({ open }) => (
         <>
           <div className="px-2 sm:px-6 lg:px-8">
