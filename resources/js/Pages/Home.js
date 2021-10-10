@@ -10,32 +10,32 @@ const Home = ({ stats }) => {
       <Head title="Bush Divers Virtual Airline" />
       <NavBar />
       <div className="w-full m-0 bg-white py-12 px-4">
-        <div className="flex justify-center items-end">
+        <div className="flex md:justify-center items-center flex-col">
           <img
             className="block h-32 w-auto w-0"
             src="https://res.cloudinary.com/dji0yvkef/image/upload/v1628691598/BDLogo.png"
             alt="Workflow"
           />
-          <div className="text-3xl pb-4 ml-12">
+          <div className="text-3xl pb-4">
             Welcome to Bush Divers VA<br/>
             Bush flying in and around Papua New Guinea
           </div>
         </div>
       </div>
-      <div className="p-4 mt-4 flex justify-between">
-        <div className="bg-white rounded shadow p-4 w-1/4 mx-2">
+      <div className="p-4 mt-4 flex flex-col md:flex-row md:justify-between">
+        <div className="bg-white rounded shadow p-4 md:w-1/4 my-1 mx-2">
           <div className="text-gray-600 text-xl">Total Flights</div>
           <div className="text-4xl">{stats.flights}</div>
         </div>
-        <div className="bg-white rounded shadow p-4 w-1/4 mx-2">
+        <div className="bg-white rounded shadow p-4 md:w-1/4 my-1 mx-2">
           <div className="text-gray-600 text-xl">Total Hours</div>
           <div className="text-4xl">{convertMinuteDecimalToHoursAndMinutes(stats.hours)}</div>
         </div>
-        <div className="bg-white rounded shadow p-4 w-1/4 mx-2">
+        <div className="bg-white rounded shadow p-4 md:w-1/4 my-1 mx-2">
           <div className="text-gray-600 text-xl">Total Pilots</div>
           <div className="text-4xl">{stats.pilots}</div>
         </div>
-        <div className="bg-white rounded shadow p-4 w-1/4 mx-2s">
+        <div className="bg-white rounded shadow p-4 md:w-1/4 my-1 mx-2s">
           <div className="text-gray-600 text-xl">Hubs</div>
           <div className="text-4xl">{stats.hubs}</div>
         </div>

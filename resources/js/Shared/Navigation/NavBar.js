@@ -154,7 +154,7 @@ export default function NavBar () {
   }
 
   return (
-    <Disclosure as="nav" className="bg-white border-b-2 shadow-sm z-10">
+    <Disclosure as="nav" className="bg-white border-b-2 border-orange-500 shadow-sm z-10">
       {({ open }) => (
         <>
           <div className="px-2 sm:px-6 lg:px-8">
@@ -202,9 +202,9 @@ export default function NavBar () {
               <Disclosure.Panel className="sm:hidden">
                 <div className="px-2 pt-2 pb-3 space-y-1">
                   <a href="" className="nav-link mobile">How we work</a>
-                  <a href="" className="nav-link mobile">Bush Divers Team</a>
-                  <a href="" className="nav-link mobile">Live Map</a>
-                  <a href="" className="nav-link mobile">Hubs</a>
+                  <Link href="/staff" className="nav-link mobile">Bush Divers Team</Link>
+                  <Link href="/liveflights" className="nav-link mobile">Live Map</Link>
+                  <Link href="/hubs" className="nav-link mobile">Hubs</Link>
                   <Link href="/fleet" className="nav-link mobile">Fleet</Link>
                 </div>
               </Disclosure.Panel>
@@ -223,16 +223,16 @@ export default function NavBar () {
                     <Transition as={Fragment} enter="transition ease-out duration-100" enterFrom="transform opacity-0 scale-95" enterTo="transform opacity-100 scale-100" leave="transition ease-in duration-75" leaveFrom="transform opacity-100 scale-100" leaveTo="transform opacity-0 scale-95">
                       <Menu.Items className="z-10 origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white focus:outline-none">
                         <Menu.Item>
-                          {({ active }) => <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Hubs</a>}
-                        </Menu.Item>
-                        <Menu.Item>
-                          {({ active }) => <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Route Map</a>}
+                          {({ active }) => <Link href="/hubs" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Hubs</Link>}
                         </Menu.Item>
                         <Menu.Item>
                           {({ active }) => <Link href="/fleet" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Fleet</Link>}
                         </Menu.Item>
                         <Menu.Item>
-                          {({ active }) => <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Pilot Roster</a>}
+                          {({ active }) => <Link href="/roster" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Pilot Roster</Link>}
+                        </Menu.Item>
+                        <Menu.Item>
+                          {({ active }) => <Link href="/ranks" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Ranks & Awards</Link>}
                         </Menu.Item>
                         <Menu.Item>
                           {({ active }) => <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Pilot Handbook</a>}
@@ -246,28 +246,28 @@ export default function NavBar () {
                   <Menu as="div" className="relative">
                     <div>
                       <Menu.Button className="nav-link mobile">
-                        <span className="sr-only">Open Flight Operations menu</span>
-                        Flight Operations
+                        <span className="sr-only">Open Contracts menu</span>
+                        Contracts
                       </Menu.Button>
                     </div>
                     <Transition as={Fragment} enter="transition ease-out duration-100" enterFrom="transform opacity-0 scale-95" enterTo="transform opacity-100 scale-100" leave="transition ease-in duration-75" leaveFrom="transform opacity-100 scale-100" leaveTo="transform opacity-0 scale-95">
                       <Menu.Items className="z-10 origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white focus:outline-none">
                         <Menu.Item>
-                          {({ active }) => <Link href="/flights" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Flight Search</Link>}
+                          {({ active }) => <Link href="/contracts" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Find a Contract</Link>}
                         </Menu.Item>
                         <Menu.Item>
-                          {({ active }) => <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Live Flights Map</a>}
+                          {({ active }) => <Link href="/my-contracts" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">My Contracts</Link>}
                         </Menu.Item>
                         <Menu.Item>
-                          {({ active }) => <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">My Bookings</a>}
+                          {({ active }) => <Link href="/completed-contracts" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Completed Contracts</Link>}
                         </Menu.Item>
                         <Menu.Item>
-                          {({ active }) => <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Jumpseat</a>}
+                          {({ active }) => <Link href="/dispatch" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Flight Dispatch</Link>}
                         </Menu.Item>
                       </Menu.Items>
                     </Transition>
                   </Menu>
-                  <a href="" className="nav-link mobile">Live Flights</a>
+                  <Link href="/live-flights" className="nav-link mobile">Live Flights</Link>
                 </div>
               </Disclosure.Panel>
               )

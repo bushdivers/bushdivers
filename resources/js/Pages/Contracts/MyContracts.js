@@ -71,7 +71,7 @@ const MyContracts = ({ contracts }) => {
                       <th>Total Cargo</th>
                       <th>Pay</th>
                       <th>Expires</th>
-                      <td>Bid</td>
+                      <td>Cancel</td>
                     </tr>
                     </thead>
                     <tbody>

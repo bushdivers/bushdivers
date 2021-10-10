@@ -17,12 +17,13 @@ const Cargo = (props) => {
       {props.cargo.length === 0
         ? <NoContent content={<EmptyData content="Cargo" />} />
         : (
-          <div>
+          <div className="overflow-x-auto">
             <div className="mb-2 text-xl">Select Cargo</div>
             <table className="table table-auto table-condensed">
               <thead>
               <tr>
                 <td></td>
+                <th>Split</th>
                 {/* <td></td> */}
                 <th>Contract</th>
                 <th>Current</th>
@@ -31,8 +32,6 @@ const Cargo = (props) => {
                 <th>Heading</th>
                 <th>Type</th>
                 <th>Cargo</th>
-                <th>Pay</th>
-                <th>Split</th>
               </tr>
               </thead>
               <tbody>
@@ -40,6 +39,7 @@ const Cargo = (props) => {
                 <tr key={detail.id} className={props.selectedCargo.some(s => s.id === detail.id) ? 'bg-orange-200 hover:bg-orange-100' : ''}>
                   <td><input id="remember" checked={props.selectedCargo.some(s => s.id === detail.id)} onChange={() => props.handleCargoSelect(detail)} type="checkbox" className="form-checkbox rounded border-gray-300 text-orange-500 shadow-sm focus:border-orange-300 focus:ring focus:ring-offset-0 focus:ring-orange-200 focus:ring-opacity-50" /></td>
                   {/* <td><button onClick={() => toggleShowSplit} className="btn btn-secondary btn-small">Split</button></td> */}
+                  <td><button className="btn btn-secondary btn-small" onClick={() => props.splitCargo(detail)}>Split</button></td>
                   <td>{detail.id}</td>
                   <td>{detail.current_airport_id}</td>
                   <td>{detail.contract.arr_airport_id}</td>
@@ -52,8 +52,6 @@ const Cargo = (props) => {
                       : <div><span>{detail.cargo_qty}</span> <span className="text-xs">{detail.cargo}</span></div>
                     }
                   </td>
-                  <td>${detail.contract.contract_value.toLocaleString()}</td>
-                  <td><button className="btn btn-secondary btn-small" onClick={() => props.splitCargo(detail)}>Split</button></td>
                 </tr>
               ))}
               </tbody>

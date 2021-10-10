@@ -3492,7 +3492,7 @@ function NavBar() {
 
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_headlessui_react__WEBPACK_IMPORTED_MODULE_6__.Disclosure, {
     as: "nav",
-    className: "bg-white border-b-2 shadow-sm z-10",
+    className: "bg-white border-b-2 border-orange-500 shadow-sm z-10",
     children: function children(_ref18) {
       var open = _ref18.open;
       return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.Fragment, {
@@ -3559,16 +3559,16 @@ function NavBar() {
               href: "",
               className: "nav-link mobile",
               children: "How we work"
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("a", {
-              href: "",
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Link, {
+              href: "/staff",
               className: "nav-link mobile",
               children: "Bush Divers Team"
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("a", {
-              href: "",
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Link, {
+              href: "/liveflights",
               className: "nav-link mobile",
               children: "Live Map"
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("a", {
-              href: "",
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Link, {
+              href: "/hubs",
               className: "nav-link mobile",
               children: "Hubs"
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Link, {
@@ -3609,8 +3609,8 @@ function NavBar() {
                   children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_headlessui_react__WEBPACK_IMPORTED_MODULE_4__.Menu.Item, {
                     children: function children(_ref19) {
                       var active = _ref19.active;
-                      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("a", {
-                        href: "#",
+                      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Link, {
+                        href: "/hubs",
                         className: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50",
                         children: "Hubs"
                       });
@@ -3618,15 +3618,6 @@ function NavBar() {
                   }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_headlessui_react__WEBPACK_IMPORTED_MODULE_4__.Menu.Item, {
                     children: function children(_ref20) {
                       var active = _ref20.active;
-                      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("a", {
-                        href: "#",
-                        className: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50",
-                        children: "Route Map"
-                      });
-                    }
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_headlessui_react__WEBPACK_IMPORTED_MODULE_4__.Menu.Item, {
-                    children: function children(_ref21) {
-                      var active = _ref21.active;
                       return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Link, {
                         href: "/fleet",
                         className: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50",
@@ -3634,12 +3625,21 @@ function NavBar() {
                       });
                     }
                   }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_headlessui_react__WEBPACK_IMPORTED_MODULE_4__.Menu.Item, {
-                    children: function children(_ref22) {
-                      var active = _ref22.active;
-                      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("a", {
-                        href: "#",
+                    children: function children(_ref21) {
+                      var active = _ref21.active;
+                      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Link, {
+                        href: "/roster",
                         className: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50",
                         children: "Pilot Roster"
+                      });
+                    }
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_headlessui_react__WEBPACK_IMPORTED_MODULE_4__.Menu.Item, {
+                    children: function children(_ref22) {
+                      var active = _ref22.active;
+                      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Link, {
+                        href: "/ranks",
+                        className: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50",
+                        children: "Ranks & Awards"
                       });
                     }
                   }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_headlessui_react__WEBPACK_IMPORTED_MODULE_4__.Menu.Item, {
@@ -3671,8 +3671,8 @@ function NavBar() {
                   className: "nav-link mobile",
                   children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("span", {
                     className: "sr-only",
-                    children: "Open Flight Operations menu"
-                  }), "Flight Operations"]
+                    children: "Open Contracts menu"
+                  }), "Contracts"]
                 })
               }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_headlessui_react__WEBPACK_IMPORTED_MODULE_5__.Transition, {
                 as: react__WEBPACK_IMPORTED_MODULE_0__.Fragment,
@@ -3688,43 +3688,43 @@ function NavBar() {
                     children: function children(_ref25) {
                       var active = _ref25.active;
                       return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Link, {
-                        href: "/flights",
+                        href: "/contracts",
                         className: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50",
-                        children: "Flight Search"
+                        children: "Find a Contract"
                       });
                     }
                   }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_headlessui_react__WEBPACK_IMPORTED_MODULE_4__.Menu.Item, {
                     children: function children(_ref26) {
                       var active = _ref26.active;
-                      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("a", {
-                        href: "#",
+                      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Link, {
+                        href: "/my-contracts",
                         className: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50",
-                        children: "Live Flights Map"
+                        children: "My Contracts"
                       });
                     }
                   }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_headlessui_react__WEBPACK_IMPORTED_MODULE_4__.Menu.Item, {
                     children: function children(_ref27) {
                       var active = _ref27.active;
-                      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("a", {
-                        href: "#",
+                      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Link, {
+                        href: "/completed-contracts",
                         className: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50",
-                        children: "My Bookings"
+                        children: "Completed Contracts"
                       });
                     }
                   }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_headlessui_react__WEBPACK_IMPORTED_MODULE_4__.Menu.Item, {
                     children: function children(_ref28) {
                       var active = _ref28.active;
-                      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("a", {
-                        href: "#",
+                      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Link, {
+                        href: "/dispatch",
                         className: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50",
-                        children: "Jumpseat"
+                        children: "Flight Dispatch"
                       });
                     }
                   })]
                 })
               })]
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("a", {
-              href: "",
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Link, {
+              href: "/live-flights",
               className: "nav-link mobile",
               children: "Live Flights"
             })]
