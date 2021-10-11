@@ -9,6 +9,7 @@ use App\Models\Enums\AircraftState;
 use App\Models\Enums\AircraftStatus;
 use App\Models\Enums\PirepState;
 use App\Models\Enums\PirepStatus;
+use App\Models\FlightLog;
 use App\Models\Pirep;
 use App\Models\PirepCargo;
 use App\Services\DispatchService;
@@ -116,6 +117,8 @@ class DispatchController extends Controller
 
         // remove pirep cargo entries
         PirepCargo::where('pirep_id', $pirep->id)->delete();
+
+        FlightLog::where('pirep_id', $pirep->id)->delete();
 
         // remove draft pirep
         $pirep->delete();

@@ -63,7 +63,7 @@ const ActiveDispatch = ({ cargo, aircraft, cargoWeight, fuelWeight, passengerCou
               passengerCount={passengerCount}
               pirep={pirep}
             />
-            {pirep.state === 1 && <div className="text-right"><button onClick={handleCancel} className="btn btn-primary">Cancel Dispatch</button></div>}
+            {pirep && <div className="text-right"><button onClick={handleCancel} className="btn btn-primary">Cancel Dispatch</button></div>}
           </div>
         </div>
       </div>

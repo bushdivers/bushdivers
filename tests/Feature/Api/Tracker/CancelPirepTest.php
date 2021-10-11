@@ -104,7 +104,7 @@ class CancelPirepTest extends TestCase
             ['*']
         );
 
-        $response = $this->post('/api/pirep/reset', ['pirep_id' => $this->pirep->id]);
+        $response = $this->get('/api/pirep/reset');
         $response->assertStatus(200);
         $this->assertDatabaseHas('pireps', ['id' => $this->pirep->id, 'state' => PirepState::DISPATCH]);
     }
@@ -132,7 +132,7 @@ class CancelPirepTest extends TestCase
             ['*']
         );
 
-        $response = $this->postJson('/api/pirep/reset', ['pirep_id' => $this->pirep->id]);
+        $response = $this->get('/api/pirep/reset');
         $this->assertDatabaseMissing('flight_logs', ['pirep_id' => $this->pirep->id]);
     }
 }
