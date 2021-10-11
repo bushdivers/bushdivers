@@ -35,6 +35,7 @@ const Logbook = ({ logbook }) => {
               <table className="table table-auto">
                 <thead>
                 <tr>
+                  <th></th>
                   <th>Departure</th>
                   <th>Arrival</th>
                   <th>Aircraft</th>
@@ -46,7 +47,8 @@ const Logbook = ({ logbook }) => {
                 </thead>
                 <tbody>
                 {logbook.map((entry) => (
-                  <tr key={entry.id} onClick={() => loadPirep(entry)}>
+                  <tr key={entry.id}>
+                    <td className="text-orange-500 hover:underline" onClick={() => loadPirep(entry)}>View Pirep</td>
                     <td>
                       {entry.departure_airport_id}<br/>
                       <span className="text-xs">{entry.dep_airport.name}</span>

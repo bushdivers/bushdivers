@@ -2791,7 +2791,7 @@ var ActiveDispatch = function ActiveDispatch(_ref) {
             fuelWeight: fuelWeight,
             passengerCount: passengerCount,
             pirep: pirep
-          }), pirep.state === 1 && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
             className: "text-right",
             children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("button", {
               onClick: handleCancel,
