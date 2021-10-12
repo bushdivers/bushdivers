@@ -128,10 +128,13 @@ class UpdateAircraftDataTest extends TestCase
     public function test_aircraft_location_updated()
     {
         $icao = 'EGLL';
-        $this->aircraftService->updateAircraftLocation($this->aircraft->id, $icao);
+        $lat = -6.14617;
+        $lon = 143.65733;
+        $this->aircraftService->updateAircraftLocation($this->aircraft->id, $icao, $lat, $lon);
         $this->assertDatabaseHas('aircraft', [
             'id' => $this->aircraft->id,
-            'current_airport_id' => $icao
+            'current_airport_id' => $icao,
+            'last_lat' => -6.14617
         ]);
     }
 
