@@ -155,6 +155,10 @@ class TrackerController extends Controller
             $pirep->distance = $distance;
             $pirep->flight_time = $duration;
             $pirep->landing_rate = $request->landing_rate;
+            $pirep->landing_pitch = $request->landing_pitch;
+            $pirep->landing_bank = $request->landing_bank;
+            $pirep->landing_lat = $request->landing_lat;
+            $pirep->landing_lon = $request->landing_lon;
             $pirep->state = PirepState::ACCEPTED;
             $pirep->status = PirepStatus::ARRIVED;
             $pirep->submitted_at = Carbon::now();

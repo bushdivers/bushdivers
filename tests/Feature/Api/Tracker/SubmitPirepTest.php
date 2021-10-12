@@ -183,6 +183,37 @@ class SubmitPirepTest extends TestCase
         ]);
     }
 
+    public function test_pirep_submitted_with_landing_data()
+    {
+        Artisan::call('db:seed --class=RankSeeder');
+        Sanctum::actingAs(
+            $this->user,
+            ['*']
+        );
+        $startTime = "05/10/2021 01:00:00";
+        $endTime = "05/10/2021 01:45:00";
+
+        $data = [
+            'pirep_id' => $this->pirep->id,
+            'fuel_used' => 25,
+            'distance' => 76,
+            'landing_rate' => 22.12,
+            'landing_bank' => 2.12,
+            'landing_pitch' => 5.12,
+            'landing_lat' => -6.50818,
+            'landing_lon' => 143.07856,
+            'block_off_time'=> $startTime,
+            'block_on_time' => $endTime
+        ];
+
+        $response = $this->postJson('/api/pirep/submit', $data);
+
+        $this->assertDatabaseHas('pireps', [
+            'id' => $this->pirep->id,
+            'landing_lat' => -6.50818
+        ]);
+    }
+
     public function test_pilot_calcs_peformed_when_pirep_submitted()
     {
         Event::fake();
