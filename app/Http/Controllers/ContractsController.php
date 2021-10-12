@@ -101,8 +101,8 @@ class ContractsController extends Controller
 //        $userService->updateUserAccountBalance(Auth::user()->id, -$charge);
 
         $user = User::find(Auth::user()->id);
-        if ($user->points >= 2) {
-            $user->points -= 2;
+        if ($user->points >= 1) {
+            $user->points -= 1;
             $user->save();
         }
 
