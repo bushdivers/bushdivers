@@ -9,6 +9,8 @@ class Contract extends Model
 {
     use HasFactory;
 
+    protected $casts = ['expires_at', 'completed_at'];
+
     public function cargo()
     {
         return $this->hasMany(ContractCargo::class);
