@@ -38,10 +38,13 @@ const MyContracts = ({ contracts }) => {
   }
 
   const cancelBid = (contract) => {
-    const data = {
-      id: contract.id
+    const res = window.confirm('Are you sure you want to cancel this contract? You will lose XP.')
+    if (res) {
+      const data = {
+        id: contract.id
+      }
+      Inertia.post('/contracts/cancel', data)
     }
-    Inertia.post('/contracts/cancel', data)
   }
 
   const toggleDetail = () => {
@@ -51,8 +54,8 @@ const MyContracts = ({ contracts }) => {
   return (
     <div>
       <PageTitle title="My Contracts" />
-      <div className="flex justify-between mt-4">
-        <div className="w-2/3 mr-2">
+      <div className="flex flex-col lg:flex-row justify-between mt-4">
+        <div className="lg:w-2/3 lg:mr-2">
           <div className="rounded shadow bg-white overflow-x-auto mt-4">
             {!contracts && <NoContent content={<EmptyData />} />}
             {contracts && contracts.length > 0 &&
@@ -123,7 +126,7 @@ const MyContracts = ({ contracts }) => {
             }
           </div>
         </div>
-        <div className="w-1/3 ml-2">
+        <div className="lg:w-1/3 lg:ml-2 mt-2 lg:mt-0">
           { contracts && contracts.length > 0 && <div className="rounded shadow bg-white p-4">
             <MyContractMap data={selectedContract} size="large" />
           </div>}

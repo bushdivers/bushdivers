@@ -148,15 +148,15 @@ const Dispatch = ({ cargo, aircraft }) => {
   return (
     <div>
       <PageTitle title={`Dispatch - ${auth.user.current_airport_id}`} />
-      <div className="flex justify-between mt-4">
-        <div className="w-1/2">
+      <div className="flex flex-col md:flex-row justify-between mt-4">
+        <div className="md:w-1/2">
           <Aircraft aircraft={aircraft} selectedAircraft={selectedAircraft} handleAircraftSelect={handleAircraftSelect} />
           <Cargo cargo={cargo} selectedCargo={selectedCargo} handleCargoSelect={handleCargoSelect} splitCargo={splitCargo} />
           <Destination currentAirport={auth.user.current_airport_id} updateDestinationValue={setDestination} />
           <Fuel selectedAircraft={selectedAircraft} fuel={fuel} handleUpdateFuel={handleUpdateFuel} error={error} />
         </div>
-        <div className="w-1/2 mt-2">
-          <div className="shadow rounded p-4 ml-2 bg-white">
+        <div className="md:w-1/2 mt-2">
+          <div className="shadow rounded p-4 md:ml-2 bg-white">
             <DispatchSummary
               selectedAircraft={selectedAircraft}
               selectedCargo={selectedCargo}
@@ -168,7 +168,7 @@ const Dispatch = ({ cargo, aircraft }) => {
               fuel={fuel}
             />
             <div className="mt-2 text-right">
-              <button onClick={() => handleSubmitDispatch()} className="btn btn-secondary">Load Dispatch</button><br />
+              <button onClick={() => handleSubmitDispatch()} className="btn btn-secondary">File Dispatch</button><br />
               {submitError && <div className="text-red-500 text-xs">{submitError}</div>}
             </div>
           </div>

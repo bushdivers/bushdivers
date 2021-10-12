@@ -2,7 +2,7 @@ import React from 'react'
 
 const PirepCargo = (props) => {
   return (
-    <div className="rounded shadow mt-2 bg-white mx-2">
+    <div className="rounded shadow mt-2 bg-white mx-2 overflow-x-auto">
       <table className="table table-auto table-condensed">
         <thead>
         <tr>

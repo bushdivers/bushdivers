@@ -33,7 +33,7 @@ class UpdateAircraft
         $aircraftService->updateAircraftFuel($event->pirep->aircraft_id, $event->pirep->fuel_used);
         $aircraftService->updateAircraftState($event->pirep->aircraft_id, AircraftState::AVAILABLE);
         $aircraftService->updateAircraftHours($event->pirep->aircraft_id, $event->pirep->flight_time);
-        $aircraftService->updateAircraftLocation($event->pirep->aircraft_id, $event->pirep->destination_airport_id);
+        $aircraftService->updateAircraftLocation($event->pirep->aircraft_id, $event->pirep->destination_airport_id, $event->pirep->current_lat, $event->pirep->current_lon);
         $aircraftService->updateAircraftLastFlightDate($event->pirep->aircraft_id, $event->pirep->submitted_at);
     }
 }

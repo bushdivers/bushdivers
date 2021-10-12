@@ -11,7 +11,7 @@ const CompletedContracts = ({ contracts }) => {
       <div className="mt-4">{contracts ? <span>{contracts.length} completed contracts</span> : <span>No completed contracts</span>}</div>
       <div className="mt-1">
         {contracts && contracts.map((contract) => (
-          <div key={contract.id} className="mt-1 shadow rounded bg-white py-4 px-8">
+          <div key={contract.id} className="mt-1 shadow rounded bg-white py-4 px-8 overflow-x-auto">
             <div className="flex justify-between items-center">
               <div className="flex flex-col items-center content-center">
                 <i className="material-icons md-36">flight_takeoff</i>

@@ -6,11 +6,11 @@ import DropdownTitle from '../../Elements/DropdownTitle'
 const PrivateLeftNav = (props) => {
   return (
     <>
-      <div className="flex space-x-4">
-        <Link href="/dashboard" className="nav-link">My Crew Page</Link>
-        <Menu as="div" className="ml-3 relative">
+      <div className={props.mobile ? 'px-2 pt-2 pb-3 space-y-1' : 'flex space-x-4'}>
+        <Link href="/dashboard" className={props.mobile ? 'nav-link mobile' : 'nav-link'}>My Crew Page</Link>
+        <Menu as="div" className={props.mobile ? 'relative' : 'ml-3 relative'}>
           <div>
-            <Menu.Button className="nav-link">
+            <Menu.Button className={props.mobile ? 'nav-link mobile' : 'nav-link'}>
               <span className="sr-only">Open Bush Divers HQ menu</span>
               <DropdownTitle title="Bush Divers HQ" />
             </Menu.Button>
@@ -41,9 +41,9 @@ const PrivateLeftNav = (props) => {
             </Menu.Items>
           </Transition>
         </Menu>
-        <Menu as="div" className="ml-3 relative">
+        <Menu as="div" className={props.mobile ? 'relative' : 'ml-3 relative'}>
           <div>
-            <Menu.Button className="nav-link">
+            <Menu.Button className={props.mobile ? 'nav-link mobile' : 'nav-link'}>
               <span className="sr-only">Open Contracts</span>
               <DropdownTitle title="Contracts" />
             </Menu.Button>
@@ -65,7 +65,7 @@ const PrivateLeftNav = (props) => {
             </Menu.Items>
           </Transition>
         </Menu>
-        <Link href="/live-flights" className="nav-link">Live Flights Map</Link>
+        <Link href="/live-flights" className={props.mobile ? 'nav-link mobile' : 'nav-link'}>Live Flights Map</Link>
       </div>
     </>
   )

@@ -82,7 +82,9 @@ class SubmitPirepTest extends TestCase
             'user_id' => $this->user->id,
             'destination_airport_id' => $this->contract->arr_airport_id,
             'departure_airport_id' => $this->contract->dep_airport_id,
-            'aircraft_id' => $this->aircraft
+            'aircraft_id' => $this->aircraft,
+            'current_lat' => -6.14617,
+            'current_lon' => 143.65733
         ]);
 
         $this->pirepCargo = PirepCargo::factory()->create([
@@ -336,7 +338,9 @@ class SubmitPirepTest extends TestCase
             'state' => AircraftState::AVAILABLE,
             'current_airport_id' => $location,
             'last_flight' => $pirep->submitted_at,
-            'user_id' => null
+            'user_id' => null,
+            'last_lat' => $this->pirep->current_lat,
+            'last_lon' => $this->pirep->current_lon
         ]);
     }
 

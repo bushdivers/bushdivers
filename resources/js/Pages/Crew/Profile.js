@@ -35,8 +35,8 @@ const Profile = ({ profile, hubs }) => {
   return (
     <div>
       <PageTitle title="Profile" />
-      <div className="flex justify-between items-start">
-        <div className="bg-white rounded shadow mt-4 p-4 w-1/2">
+      <div className="flex flex-col md:flex-row justify-between md:items-start">
+        <div className="bg-white rounded shadow mt-4 p-4 md:w-1/2">
           <form onSubmit={handleSubmit}>
             <div className="my-2">
               <label htmlFor="email" className="block"><span className="text-gray-700">Email</span></label>
@@ -74,7 +74,7 @@ const Profile = ({ profile, hubs }) => {
             <button className="btn btn-primary">Update profile</button>
           </form>
         </div>
-        <div className="w-1/2 ml-4 mt-4">
+        <div className="md:w-1/2 md:ml-4 mt-4">
           <div className="bg-white rounded shadow p-4">
             <ApiKey apiKey={profile.api_token} />
           </div>

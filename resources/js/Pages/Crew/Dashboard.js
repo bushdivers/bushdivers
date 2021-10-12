@@ -20,18 +20,18 @@ const Dashboard = ({ lastFlight, rank, nextRank, awards, user, locations, balanc
           <span>Last flight {lastFlight ? dayjs(lastFlight.submitted_at).fromNow() : 'No flight recorded'}</span>
           </div>
       </div>
-      <div className="flex justify-between mt-4">
-        <div className="w-1/2">
-          <PilotStats
-            flights={user.flights}
-            hours={user.flights_time}
-            location={user.current_airport_id}
-            balance={balance}
-            awards={awards && awards.length > 0 ? awards.length : 0}
-            points={user.points}
-          />
-          <div className="flex">
-            <div className="rounded shadow p-4 mt-4 mr-2 bg-white w-1/2">
+      <PilotStats
+        flights={user.flights}
+        hours={user.flights_time}
+        location={user.current_airport_id}
+        balance={balance}
+        awards={awards && awards.length > 0 ? awards.length : 0}
+        points={user.points}
+      />
+      <div className="flex flex-col md:flex-row md:justify-between mt-4">
+        <div className="md:w-1/2">
+          <div className="flex flex-col md:flex-row">
+            <div className="rounded shadow p-4 mt-4 mr-2 bg-white md:w-1/2">
               <div className="text-lg flex items-center justify-between mb-2">
                 <div className="flex items-center">
                   <i className="material-icons mr-2 md-36">flight_land</i> Last Flight
@@ -51,7 +51,7 @@ const Dashboard = ({ lastFlight, rank, nextRank, awards, user, locations, balanc
                 </>
               )}
             </div>
-            <div className="rounded shadow p-4 mt-4 ml-2 bg-white w-1/2">
+            <div className="rounded shadow p-4 mt-4 ml-2 bg-white md:w-1/2">
               <div className="text-lg flex items-center justify-between">
                 <div className="flex items-center">
                   <i className="material-icons mr-2 md-36">military_tech</i> Rank
@@ -77,9 +77,9 @@ const Dashboard = ({ lastFlight, rank, nextRank, awards, user, locations, balanc
             <div className="text-lg flex items-center">
               <i className="material-icons mr-2 md-36">emoji_events</i> Awards
             </div>
-            <div className="mt-4 flex justify-start">
+            <div className="mt-4 flex flex-col md:flex-row justify-start">
               {awards && awards.map((award) => (
-                <div className="mx-2" key={award.id}>
+                <div className="mx-2 flex flex-col justify-center content-center items-center my-1" key={award.id}>
                   <img height="100" width="100" src={award.image} />
                   <div className="mt-1 text-sm text-center">{award.name}</div>
                 </div>
@@ -87,7 +87,7 @@ const Dashboard = ({ lastFlight, rank, nextRank, awards, user, locations, balanc
             </div>
           </div>
         </div>
-        <div className="w-1/2 rounded shadow p-4 mt-2 bg-white mx-2">
+        <div className="md:w-1/2 rounded shadow p-4 mt-2 bg-white mx-2">
           <CrewMap size="large" locations={locations && locations.length > 0 ? locations : []} />
         </div>
       </div>

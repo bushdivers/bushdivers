@@ -43,7 +43,7 @@ const Contracts = ({ contracts, airport }) => {
   const [selectedContract, setSelectedContract] = useState({})
   const [error, setError] = useState(null)
   const [showDetail, setShowDetail] = useState(false)
-  
+
   useEffect(() => {
     if (contracts && airport) {
       setTitle(`Contracts - ${airport.name} (${airport.identifier})`)
@@ -111,8 +111,8 @@ const Contracts = ({ contracts, airport }) => {
   return (
     <div>
       <PageTitle title={title} />
-      <div className="flex justify-between mt-4">
-        <div className="w-2/3 mr-2">
+      <div className="flex flex-col lg:flex-row justify-between mt-4">
+        <div className="lg:w-2/3 lg:mr-2">
           <div className="rounded shadow bg-white p-4">
             {error && <div className="text-sm text-red-500 mt-1">{error}</div>}
               <div className="inline-block mx-2">
@@ -222,7 +222,7 @@ const Contracts = ({ contracts, airport }) => {
             }
           </div>
         </div>
-        <div className="w-1/3 ml-2">
+        <div className="lg:w-1/3 lg:ml-2 mt-2 lg:mt-0">
           { airport && <div className="rounded shadow bg-white p-4">
             <ContractMap departure={selectedAirport} destination={selectedContract.arr_airport} size="large" />
           </div>}
