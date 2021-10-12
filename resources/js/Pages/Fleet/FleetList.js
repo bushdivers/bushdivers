@@ -2,26 +2,26 @@ import React from 'react'
 import Layout from '../../Shared/Layout'
 import PageTitle from '../../Shared/Navigation/PageTitle'
 import Card from '../../Shared/Elements/Card'
-import FleetMap from '../../Shared/Components/Fleet/FleetMap'
+// import FleetMap from '../../Shared/Components/Fleet/FleetMap'
 
 const FleetCardContent = ({ fleet }) => {
   return (
     <>
       <div className="flex flex-col md:flex-row items-start justify-between">
-        <div className="flex flex-col md:flex-row">
-          <img className="rounded w-full md:w-auto" src="https://via.placeholder.com/300x150" />
+        <div className="flex flex-col">
           <div className="md:ml-3">
             <div className="text-2xl">{fleet.type} - {fleet.manufacturer} {fleet.name}</div>
             <p>{fleet.aircraft.length} aircraft in fleet</p>
           </div>
+          <img className="rounded w-full md:w-auto" src="https://via.placeholder.com/300x150" />
         </div>
-        <div>
+        <div className="ml-2">
           <div className="flex flex-col md:flex-row mt-2 md:mt-0">
-            <div className="mr-8">
+            <div className="">
               <span className="text-md font-bold text-gray-600">Powerplants: </span><br/>
               <span>{fleet.number_of_engines}x {fleet.powerplants}</span>
             </div>
-            <div className="mr-8">
+            <div className="">
               <span className="text-md font-bold text-gray-600">Fuel Type: </span><br/>
               <span>100ll</span>
             </div>

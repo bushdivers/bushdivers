@@ -2757,7 +2757,7 @@ var CompletedContracts = function CompletedContracts(_ref) {
       className: "mt-1",
       children: contracts && contracts.map(function (contract) {
         return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
-          className: "mt-1 shadow rounded bg-white py-4 px-8",
+          className: "mt-1 shadow rounded bg-white py-4 px-8 overflow-x-auto",
           children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
             className: "flex justify-between items-center",
             children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {

@@ -3027,9 +3027,9 @@ var Dispatch = function Dispatch(_ref) {
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(_Shared_Navigation_PageTitle__WEBPACK_IMPORTED_MODULE_3__.default, {
       title: "Dispatch - ".concat(auth.user.current_airport_id)
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
-      className: "flex justify-between mt-4",
+      className: "flex flex-col md:flex-row justify-between mt-4",
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
-        className: "w-1/2",
+        className: "md:w-1/2",
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(_Shared_Components_Dispatch_Aircraft__WEBPACK_IMPORTED_MODULE_11__.default, {
           aircraft: aircraft,
           selectedAircraft: selectedAircraft,
@@ -3049,9 +3049,9 @@ var Dispatch = function Dispatch(_ref) {
           error: error
         })]
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("div", {
-        className: "w-1/2 mt-2",
+        className: "md:w-1/2 mt-2",
         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
-          className: "shadow rounded p-4 ml-2 bg-white",
+          className: "shadow rounded p-4 md:ml-2 bg-white",
           children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(_Shared_Components_Dispatch_DispatchSummary__WEBPACK_IMPORTED_MODULE_7__.default, {
             selectedAircraft: selectedAircraft,
             selectedCargo: selectedCargo,
@@ -3068,7 +3068,7 @@ var Dispatch = function Dispatch(_ref) {
                 return handleSubmitDispatch();
               },
               className: "btn btn-secondary",
-              children: "Load Dispatch"
+              children: "File Dispatch"
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("br", {}), submitError && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("div", {
               className: "text-red-500 text-xs",
               children: submitError

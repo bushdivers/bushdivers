@@ -15,8 +15,8 @@ const LogbookDetail = ({ pirep, points, logs, cargo }) => {
     <div>
       <PageTitle title={`Pilot Report - ${pirep.id}`} />
       {submittedDate}
-      <div className="flex justify-between">
-        <div className="w-1/2">
+      <div className="flex flex-col md:flex-row justify-between">
+        <div className="md:w-1/2">
           <LogbookPrimary pirep={pirep} />
           <LogbookSecondary pirep={pirep} />
           <PirepCargo cargo={cargo} />
@@ -24,7 +24,7 @@ const LogbookDetail = ({ pirep, points, logs, cargo }) => {
             <PirepChart data={logs} />
           </div>
         </div>
-        <div className="w-1/2">
+        <div className="md:w-1/2">
           <div className="rounded shadow p-4 mt-2 bg-white mx-2">
             <PirepMap pirep={pirep} coords={logs} size="large" />
           </div>

@@ -8,7 +8,7 @@ const Roster = ({ roster }) => {
   return (
     <div>
       <PageTitle title="Roster" />
-      <div className="rounded shadow bg-white mt-4">
+      <div className="rounded shadow bg-white mt-4 overflow-x-auto">
         <div>
           <table className="table table-auto">
             <thead>

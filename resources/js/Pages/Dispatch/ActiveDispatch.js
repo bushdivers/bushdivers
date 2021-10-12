@@ -15,10 +15,11 @@ const ActiveDispatch = ({ cargo, aircraft, cargoWeight, fuelWeight, passengerCou
     <div>
       <PageTitle title="Current Dispatch" />
       {pirep.state === 2 && <div><span className="text-orange-500">Current flight in progress</span></div>}
-      <div className="flex justify-between">
-        <div className="mr-2 w-1/2">
+      <div className="flex flex-col md:flex-row justify-between">
+        <div className="md:mr-2 md:w-1/2">
           <div className="bg-white rounded shadow mt-4 p-4">
             <div className="mb-2 text-xl">Selected Cargo</div>
+            <div className="overflow-x-auto">
             <table className="table table-auto table-condensed">
               <thead>
               <tr>
@@ -50,9 +51,10 @@ const ActiveDispatch = ({ cargo, aircraft, cargoWeight, fuelWeight, passengerCou
               ))}
               </tbody>
             </table>
+            </div>
           </div>
         </div>
-        <div className="ml-2 w-1/2">
+        <div className="md:ml-2 md:w-1/2">
           <div className="bg-white rounded shadow mt-4 p-4">
             <DispatchSummary
               selectedAircraft={aircraft}

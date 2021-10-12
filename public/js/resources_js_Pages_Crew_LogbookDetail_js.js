@@ -2761,9 +2761,9 @@ var LogbookDetail = function LogbookDetail(_ref) {
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_Shared_Navigation_PageTitle__WEBPACK_IMPORTED_MODULE_1__.default, {
       title: "Pilot Report - ".concat(pirep.id)
     }), submittedDate, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)("div", {
-      className: "flex justify-between",
+      className: "flex flex-col md:flex-row justify-between",
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)("div", {
-        className: "w-1/2",
+        className: "md:w-1/2",
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_Shared_Pireps_LogbookPrimary__WEBPACK_IMPORTED_MODULE_5__.default, {
           pirep: pirep
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_Shared_Pireps_LogbookSecondary__WEBPACK_IMPORTED_MODULE_6__.default, {
@@ -2777,7 +2777,7 @@ var LogbookDetail = function LogbookDetail(_ref) {
           })
         })]
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)("div", {
-        className: "w-1/2",
+        className: "md:w-1/2",
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("div", {
           className: "rounded shadow p-4 mt-2 bg-white mx-2",
           children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_Shared_Pireps_PirepMap__WEBPACK_IMPORTED_MODULE_3__.default, {
@@ -3923,7 +3923,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var PirepCargo = function PirepCargo(props) {
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
-    className: "rounded shadow mt-2 bg-white mx-2",
+    className: "rounded shadow mt-2 bg-white mx-2 overflow-x-auto",
     children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("table", {
       className: "table table-auto table-condensed",
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("thead", {

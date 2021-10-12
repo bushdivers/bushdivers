@@ -2822,9 +2822,9 @@ var MyContracts = function MyContracts(_ref) {
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_Shared_Navigation_PageTitle__WEBPACK_IMPORTED_MODULE_1__.default, {
       title: "My Contracts"
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
-      className: "flex justify-between mt-4",
+      className: "flex flex-col lg:flex-row justify-between mt-4",
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
-        className: "w-2/3 mr-2",
+        className: "lg:w-2/3 lg:mr-2",
         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
           className: "rounded shadow bg-white overflow-x-auto mt-4",
           children: [!contracts && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_Shared_Elements_NoContent__WEBPACK_IMPORTED_MODULE_4__.default, {
@@ -2944,7 +2944,7 @@ var MyContracts = function MyContracts(_ref) {
           ]
         })
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
-        className: "w-1/3 ml-2",
+        className: "lg:w-1/3 lg:ml-2 mt-2 lg:mt-0",
         children: contracts && contracts.length > 0 && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
           className: "rounded shadow bg-white p-4",
           children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_Shared_Components_Contracts_MyContractMap__WEBPACK_IMPORTED_MODULE_11__.default, {

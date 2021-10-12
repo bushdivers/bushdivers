@@ -2777,21 +2777,21 @@ var Dashboard = function Dashboard(_ref) {
           children: ["Last flight ", lastFlight ? (0,_Helpers_date_helpers__WEBPACK_IMPORTED_MODULE_3__.default)(lastFlight.submitted_at).fromNow() : 'No flight recorded']
         })]
       })]
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_Shared_Components_Crew_PilotStats__WEBPACK_IMPORTED_MODULE_4__.default, {
+      flights: user.flights,
+      hours: user.flights_time,
+      location: user.current_airport_id,
+      balance: balance,
+      awards: awards && awards.length > 0 ? awards.length : 0,
+      points: user.points
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
-      className: "flex justify-between mt-4",
+      className: "flex flex-col md:flex-row md:justify-between mt-4",
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
-        className: "w-1/2",
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_Shared_Components_Crew_PilotStats__WEBPACK_IMPORTED_MODULE_4__.default, {
-          flights: user.flights,
-          hours: user.flights_time,
-          location: user.current_airport_id,
-          balance: balance,
-          awards: awards && awards.length > 0 ? awards.length : 0,
-          points: user.points
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
-          className: "flex",
+        className: "md:w-1/2",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
+          className: "flex flex-col md:flex-row",
           children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
-            className: "rounded shadow p-4 mt-4 mr-2 bg-white w-1/2",
+            className: "rounded shadow p-4 mt-4 mr-2 bg-white md:w-1/2",
             children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
               className: "text-lg flex items-center justify-between mb-2",
               children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
@@ -2822,7 +2822,7 @@ var Dashboard = function Dashboard(_ref) {
               })]
             })]
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
-            className: "rounded shadow p-4 mt-4 ml-2 bg-white w-1/2",
+            className: "rounded shadow p-4 mt-4 ml-2 bg-white md:w-1/2",
             children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
               className: "text-lg flex items-center justify-between",
               children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
@@ -2879,10 +2879,10 @@ var Dashboard = function Dashboard(_ref) {
               children: "emoji_events"
             }), " Awards"]
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
-            className: "mt-4 flex justify-start",
+            className: "mt-4 flex flex-col md:flex-row justify-start",
             children: awards && awards.map(function (award) {
               return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
-                className: "mx-2",
+                className: "mx-2 flex flex-col justify-center content-center items-center my-1",
                 children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("img", {
                   height: "100",
                   width: "100",
@@ -2896,7 +2896,7 @@ var Dashboard = function Dashboard(_ref) {
           })]
         })]
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
-        className: "w-1/2 rounded shadow p-4 mt-2 bg-white mx-2",
+        className: "md:w-1/2 rounded shadow p-4 mt-2 bg-white mx-2",
         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_Shared_Components_Crew_CrewMap__WEBPACK_IMPORTED_MODULE_6__.default, {
           size: "large",
           locations: locations && locations.length > 0 ? locations : []
@@ -3003,39 +3003,39 @@ __webpack_require__.r(__webpack_exports__);
 
 var PilotStats = function PilotStats(props) {
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-    className: "flex justify-start",
+    className: "flex flex-col md:flex-row justify-start mt-2",
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
-      className: "w-1/6",
+      className: "md:w-1/6 my-1",
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_Elements_StatCard__WEBPACK_IMPORTED_MODULE_1__.default, {
         title: "Flights",
         stat: props.flights
       })
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
-      className: "w-1/6",
+      className: "md:w-1/6 my-1",
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_Elements_StatCard__WEBPACK_IMPORTED_MODULE_1__.default, {
         title: "Hours",
         stat: props.hours > 0 ? (0,_Helpers_date_helpers__WEBPACK_IMPORTED_MODULE_2__.convertMinuteDecimalToHoursAndMinutes)(props.hours) : 0
       })
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
-      className: "w-1/6",
+      className: "md:w-1/6 my-1",
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_Elements_StatCard__WEBPACK_IMPORTED_MODULE_1__.default, {
         title: "Points",
         stat: props.points
       })
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
-      className: "w-1/6",
+      className: "md:w-1/6 my-1",
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_Elements_StatCard__WEBPACK_IMPORTED_MODULE_1__.default, {
         title: "Awards",
         stat: props.awards
       })
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
-      className: "w-1/6",
+      className: "md:w-1/6 my-1",
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_Elements_StatCard__WEBPACK_IMPORTED_MODULE_1__.default, {
         title: "Location",
         stat: props.location
       })
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
-      className: "w-1/6",
+      className: "md:w-1/6 my-1",
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_Elements_StatCard__WEBPACK_IMPORTED_MODULE_1__.default, {
         title: "Cash",
         stat: '$' + props.balance

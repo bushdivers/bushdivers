@@ -6,8 +6,7 @@ const Ranks = ({ ranks, awards }) => {
   return (
     <div>
       <PageTitle title="Ranks and Awards" />
-      <div className="rounded shadow bg-white p-4 flex justify-between">
-        <div className="w-1/2">
+      <div className="rounded shadow bg-white p-4 mt-4">
           <h2 className="text-xl mb-2">Ranks</h2>
           {ranks && (
             ranks.map((rank) => (
@@ -22,10 +21,19 @@ const Ranks = ({ ranks, awards }) => {
               </div>
             ))
           )}
-        </div>
-        <div className="w-1/2">
-          <h2 className="text-xl mb-2">Points</h2>
-        </div>
+      </div>
+      <div className="rounded shadow bg-white p-4 mt-4">
+        <h2 className="text-xl mb-4">Points</h2>
+        {awards && (
+          awards.map((award) => (
+            <div key={award.id} className="flex justify-start items-center mb-4">
+              <img src={award.image} width="100"/>
+              <div className="ml-4">
+                <div className="text-lg font-bold">{award.name}</div>
+              </div>
+            </div>
+          ))
+        )}
       </div>
       <div className="rounded shadow bg-white p-4 mt-4">
         <h2 className="text-xl mb-4">Awards</h2>
