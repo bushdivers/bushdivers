@@ -2808,10 +2808,14 @@ var MyContracts = function MyContracts(_ref) {
   };
 
   var cancelBid = function cancelBid(contract) {
-    var data = {
-      id: contract.id
-    };
-    _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_9__.Inertia.post('/contracts/cancel', data);
+    var res = window.confirm('Are you sure you want to cancel this contract? You will lose XP.');
+
+    if (res) {
+      var data = {
+        id: contract.id
+      };
+      _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_9__.Inertia.post('/contracts/cancel', data);
+    }
   };
 
   var toggleDetail = function toggleDetail() {

@@ -38,10 +38,13 @@ const MyContracts = ({ contracts }) => {
   }
 
   const cancelBid = (contract) => {
-    const data = {
-      id: contract.id
+    const res = window.confirm('Are you sure you want to cancel this contract? You will lose XP.')
+    if (res) {
+      const data = {
+        id: contract.id
+      }
+      Inertia.post('/contracts/cancel', data)
     }
-    Inertia.post('/contracts/cancel', data)
   }
 
   const toggleDetail = () => {

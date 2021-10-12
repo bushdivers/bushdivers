@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Airport;
-use App\Models\Booking;
 use App\Models\Contract;
 use App\Models\ContractCargo;
 use App\Models\Enums\ContractType;
@@ -15,6 +14,7 @@ use App\Models\PirepCargo;
 use App\Services\PirepService;
 use App\Services\UserService;
 use Carbon\Carbon;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
@@ -95,10 +95,16 @@ class ContractsController extends Controller
         $contract->save();
 
         // penalty charge to user
-        $charge = (FinancialConsts::CancelPenalty / 100) * $contract->contract_value;
-        $userService = new UserService();
-        $userService->addUserAccountEntry(Auth::user()->id, TransactionTypes::ContractPenalty, -$charge);
-        $userService->updateUserAccountBalance(Auth::user()->id, -$charge);
+//        $charge = (FinancialConsts::CancelPenalty / 100) * $contract->contract_value;
+//        $userService = new UserService();
+//        $userService->addUserAccountEntry(Auth::user()->id, TransactionTypes::ContractPenalty, -$charge);
+//        $userService->updateUserAccountBalance(Auth::user()->id, -$charge);
+
+        $user = User::find(Auth::user()->id);
+        if ($user->points >= 2) {
+            $user->points -= 2;
+            $user->save();
+        }
 
         return redirect()->back()->with(['success' => 'Contract bid cancelled successfully']);
     }
