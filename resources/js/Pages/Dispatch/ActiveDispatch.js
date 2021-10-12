@@ -8,7 +8,10 @@ const ActiveDispatch = ({ cargo, aircraft, cargoWeight, fuelWeight, passengerCou
   const personWeight = 80.00
 
   function handleCancel () {
-    Inertia.post('/dispatch/cancel', { pirep: pirep.id })
+    const res = window.confirm('You have an active flight, if you cancel now you will lose all progress')
+    if (res) {
+      Inertia.post('/dispatch/cancel', { pirep: pirep.id })
+    }
   }
 
   return (

@@ -2700,9 +2700,13 @@ var ActiveDispatch = function ActiveDispatch(_ref) {
   var personWeight = 80.00;
 
   function handleCancel() {
-    _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_4__.Inertia.post('/dispatch/cancel', {
-      pirep: pirep.id
-    });
+    var res = window.confirm('You have an active flight, if you cancel now you will lose all progress');
+
+    if (res) {
+      _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_4__.Inertia.post('/dispatch/cancel', {
+        pirep: pirep.id
+      });
+    }
   }
 
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
