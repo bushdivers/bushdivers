@@ -7,10 +7,10 @@ const AirportDetail = ({ airport, metar }) => {
   return (
     <>
       <PageTitle title={`${airport.name} - ${airport.identifier}`} />
-      <div className="flex justify-between">
-        <div className="w-1/2">
-          <div className="rounded shadow p-4 mt-2 bg-white mx-2">
-            <div className="flex justify-between">
+      <div className="flex flex-col lg:flex-row justify-between">
+        <div className="lg:w-1/2">
+          <div className="rounded shadow p-1 lg:p-4 mt-2 bg-white mx-2">
+            <div className="flex justify-between overflow-x-auto">
               <div className="flex flex-col items-center my-2 mx-4">
                 <div className="text-sm">ICAO</div>
                 <div className="text-xl">{airport.identifier}</div>
@@ -56,7 +56,7 @@ const AirportDetail = ({ airport, metar }) => {
             </div>
           </div>
         </div>
-        <div className="w-1/2 rounded shadow p-4 mt-2 bg-white mx-2">
+        <div className="lg:w-1/2 rounded shadow p-4 mt-2 bg-white mx-2">
           <AirportMap airport={airport} size="large" />
         </div>
       </div>

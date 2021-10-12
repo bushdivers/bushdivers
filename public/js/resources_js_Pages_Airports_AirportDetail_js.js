@@ -2719,13 +2719,13 @@ var AirportDetail = function AirportDetail(_ref) {
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_Shared_Navigation_PageTitle__WEBPACK_IMPORTED_MODULE_2__.default, {
       title: "".concat(airport.name, " - ").concat(airport.identifier)
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
-      className: "flex justify-between",
+      className: "flex flex-col lg:flex-row justify-between",
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
-        className: "w-1/2",
+        className: "lg:w-1/2",
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
-          className: "rounded shadow p-4 mt-2 bg-white mx-2",
+          className: "rounded shadow p-1 lg:p-4 mt-2 bg-white mx-2",
           children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
-            className: "flex justify-between",
+            className: "flex justify-between overflow-x-auto",
             children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
               className: "flex flex-col items-center my-2 mx-4",
               children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
@@ -2801,7 +2801,7 @@ var AirportDetail = function AirportDetail(_ref) {
           })
         })]
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
-        className: "w-1/2 rounded shadow p-4 mt-2 bg-white mx-2",
+        className: "lg:w-1/2 rounded shadow p-4 mt-2 bg-white mx-2",
         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_Shared_Components_Airport_AirportMap__WEBPACK_IMPORTED_MODULE_3__.default, {
           airport: airport,
           size: "large"
