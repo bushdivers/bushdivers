@@ -21,6 +21,7 @@ use App\Services\FinancialsService;
 use App\Services\PirepService;
 use App\Services\UserService;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -141,7 +142,7 @@ class TrackerController extends Controller
 
         try {
             // calculate coordinate points in flight logs
-            $distance = $pirepService->calculateTotalFlightDistance($pirep);
+//            $distance = $pirepService->calculateTotalFlightDistance($pirep);
             $startTime = Carbon::parse($request->block_off_time);
             $endTime = Carbon::parse($request->block_on_time);
             $duration = $startTime->diffInMinutes($endTime);
@@ -152,7 +153,7 @@ class TrackerController extends Controller
         try {
             // set pirep status to completed
             $pirep->fuel_used = $request->fuel_used;
-            $pirep->distance = $distance;
+            $pirep->distance = $request->distance;
             $pirep->flight_time = $duration;
             $pirep->landing_rate = $request->landing_rate;
             $pirep->landing_pitch = $request->landing_pitch;
@@ -209,16 +210,21 @@ class TrackerController extends Controller
 
     public function cancelPirep(): JsonResponse
     {
-        $pirep = Pirep::where('user_id', Auth::user()->id)
-            ->where('state', '<>', PirepState::ACCEPTED)
-            ->first();
+        try {
+            $pirep = Pirep::where('user_id', Auth::user()->id)
+                ->where('state', '<>', PirepState::ACCEPTED)
+                ->first();
 
-        $pirep->state = PirepState::DISPATCH;
-        $pirep->save();
+            $pirep->state = PirepState::DISPATCH;
+            $pirep->save();
 
-        FlightLog::where('pirep_id', $pirep->id)->delete();
+            FlightLog::where('pirep_id', $pirep->id)->delete();
 
-        return response()->json(['message' => 'Pirep Cancelled']);
+            return response()->json(['message' => 'Pirep Cancelled']);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['message' => 'Pirep could not be found']);
+        }
+
     }
 
     public function checkDistance(Request $request)

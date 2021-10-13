@@ -88,8 +88,17 @@ class FinancialsService
         $fuelCost = AirlineFees::where('fee_name', $fuelType)->first();
 
         $fuelUsedCost = $fuelCost->fee_amount * $pirep->fuel_used;
+        // TODO: if negative, 0 fuel fee for company, and charge pilot for fuel
+        if ($fuelUsedCost < 0) {
+            $this->addTransaction(AirlineTransactionTypes::FuelFees, +$fuelUsedCost, 'Fuel Cost', $pirep->id);
+            $this->addTransaction(AirlineTransactionTypes::FuelFees, +$fuelUsedCost, 'Fuel Cost Paid by Pilot', $pirep->id, 'credit');
 
-        $this->addTransaction(AirlineTransactionTypes::FuelFees, $fuelUsedCost, 'Fuel Cost', $pirep->id);
+            // add line to pilot transactions
+            $userService = new UserService();
+            $userService->addUserAccountEntry($pirep->user_id, TransactionTypes::FuelPenalty, $fuelUsedCost, $pirep->id);
+        } else {
+            $this->addTransaction(AirlineTransactionTypes::FuelFees, $fuelUsedCost, 'Fuel Cost', $pirep->id);
+        }
     }
 
     public function calcLandingFee($pirep)

@@ -12,6 +12,7 @@ use App\Models\ContractCargo;
 use App\Models\Enums\AircraftState;
 use App\Models\Enums\AirlineTransactionTypes;
 use App\Models\Enums\FinancialConsts;
+use App\Models\Enums\TransactionTypes;
 use App\Models\Fleet;
 use App\Models\Flight;
 use App\Models\FlightLog;
@@ -216,6 +217,37 @@ class SubmitPirepTest extends TestCase
         ]);
     }
 
+    public function test_pirep_submitted_with_distance()
+    {
+        Artisan::call('db:seed --class=RankSeeder');
+        Sanctum::actingAs(
+            $this->user,
+            ['*']
+        );
+        $startTime = "05/10/2021 01:00:00";
+        $endTime = "05/10/2021 01:45:00";
+
+        $data = [
+            'pirep_id' => $this->pirep->id,
+            'fuel_used' => 25,
+            'distance' => 12,
+            'landing_rate' => 22.12,
+            'landing_bank' => 2.12,
+            'landing_pitch' => 5.12,
+            'landing_lat' => -6.50818,
+            'landing_lon' => 143.07856,
+            'block_off_time'=> $startTime,
+            'block_on_time' => $endTime
+        ];
+
+        $response = $this->postJson('/api/pirep/submit', $data);
+
+        $this->assertDatabaseHas('pireps', [
+            'id' => $this->pirep->id,
+            'distance' => 12
+        ]);
+    }
+
     public function test_pilot_calcs_peformed_when_pirep_submitted()
     {
         Event::fake();
@@ -270,6 +302,95 @@ class SubmitPirepTest extends TestCase
         $this->assertDatabaseHas('users', [
             'id' => $this->user->id,
             'account_balance' => $pp
+        ]);
+    }
+
+    public function test_normal_fuel_costs_charged_when_pirep_submitted()
+    {
+        Sanctum::actingAs(
+            $this->user,
+            ['*']
+        );
+        $startTime = "05/10/2021 01:00:00";
+        $endTime = "05/10/2021 01:45:00";
+        $fuelCost = 25 * 2.15;
+
+        $data = [
+            'pirep_id' => $this->pirep->id,
+            'fuel_used' => 25,
+            'distance' => 76,
+            'landing_rate' => -149.12,
+            'block_off_time'=> $startTime,
+            'block_on_time' => $endTime
+        ];
+
+        $this->postJson('/api/pirep/submit', $data);
+
+        $this->assertDatabaseHas('account_ledgers', [
+            'pirep_id' => $this->pirep->id,
+            'total' => -$fuelCost,
+            'transaction_type' => AirlineTransactionTypes::FuelFees
+        ]);
+    }
+
+    public function test_addtional_fuel_costs_charged_to_pilot_when_pirep_submitted()
+    {
+        Sanctum::actingAs(
+            $this->user,
+            ['*']
+        );
+        $startTime = "05/10/2021 01:00:00";
+        $endTime = "05/10/2021 01:45:00";
+        $fuelCost = -25 * 2.15;
+
+        $data = [
+            'pirep_id' => $this->pirep->id,
+            'fuel_used' => -25,
+            'distance' => 76,
+            'landing_rate' => -149.12,
+            'block_off_time'=> $startTime,
+            'block_on_time' => $endTime
+        ];
+
+        $this->postJson('/api/pirep/submit', $data);
+
+        $this->assertDatabaseHas('user_accounts', [
+            'flight_id' => $this->pirep->id,
+            'total' => $fuelCost,
+            'type' => TransactionTypes::FuelPenalty
+        ]);
+    }
+
+    public function test_addtional_fuel_costs_in_and_out_when_pirep_submitted()
+    {
+        Sanctum::actingAs(
+            $this->user,
+            ['*']
+        );
+        $startTime = "05/10/2021 01:00:00";
+        $endTime = "05/10/2021 01:45:00";
+        $fuelCost = -25 * 2.15;
+
+        $data = [
+            'pirep_id' => $this->pirep->id,
+            'fuel_used' => -25,
+            'distance' => 76,
+            'landing_rate' => -149.12,
+            'block_off_time'=> $startTime,
+            'block_on_time' => $endTime
+        ];
+
+        $this->postJson('/api/pirep/submit', $data);
+
+        $this->assertDatabaseHas('account_ledgers', [
+            'pirep_id' => $this->pirep->id,
+            'total' => -$fuelCost,
+            'transaction_type' => AirlineTransactionTypes::FuelFees
+        ]);
+        $this->assertDatabaseHas('account_ledgers', [
+            'pirep_id' => $this->pirep->id,
+            'total' => $fuelCost,
+            'transaction_type' => AirlineTransactionTypes::FuelFees
         ]);
     }
 
