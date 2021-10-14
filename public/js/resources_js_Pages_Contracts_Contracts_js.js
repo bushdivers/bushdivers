@@ -2832,7 +2832,7 @@ var Contracts = function Contracts(_ref) {
   var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)({
     icao: auth.user.current_airport_id,
     distance: 'Up to 50nm',
-    cargo: 1000,
+    cargo: 2000,
     pax: 12
   }),
       _useState6 = _slicedToArray(_useState5, 2),
@@ -2990,7 +2990,7 @@ var Contracts = function Contracts(_ref) {
               htmlFor: "cargo",
               children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("span", {
                 className: "text-gray-700",
-                children: "Max cargo (kg)"
+                children: "Max cargo (lbs)"
               })
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("input", {
               id: "cargo",
@@ -3114,7 +3114,7 @@ var Contracts = function Contracts(_ref) {
                               className: "mr-1",
                               children: detail.contract_type_id === 1 ? 'Cargo' : 'Pax'
                             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("span", {
-                              children: [detail.cargo_qty, " ", detail.contract_type_id === 1 ? 'kg' : '', " ", detail.cargo]
+                              children: [detail.cargo_qty, " ", detail.contract_type_id === 1 ? 'lbs' : '', " ", detail.cargo]
                             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("br", {})]
                           });
                         })
@@ -3201,7 +3201,7 @@ var CargoDetails = function CargoDetails(props) {
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("td", {
           children: ["Cargo Type: ", detail.contract_type_id === 1 ? 'Cargo' : 'Passenger']
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("td", {
-          children: ["Cargo: ", detail.cargo_qty, " ", detail.contract_type_id === 1 ? 'kg' : '', " ", detail.cargo]
+          children: ["Cargo: ", detail.cargo_qty, " ", detail.contract_type_id === 1 ? 'lbs' : '', " ", detail.cargo]
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("td", {
           children: detail.is_completed ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("i", {
             className: "material-icons md-18",

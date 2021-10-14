@@ -117,11 +117,11 @@ class ContractService
         $types = DB::table('cargo_types')->get();
         $cargo = $types->random();
         if ($cargo->type == 1) {
-            // random qty cargo = 250 - 10,000 kg
-            $qty = rand(250, 1000);
+            // random qty cargo = 500 - 22000 lbs
+            $qty = rand(250, 22000);
         } else {
-            // random qty pax = 1-15
-            $qty = rand(1, 15);
+            // random qty pax = 1-20
+            $qty = rand(1, 20);
         }
         return ['name' => $cargo->text, 'type' => $cargo->type, 'qty' => $qty];
     }

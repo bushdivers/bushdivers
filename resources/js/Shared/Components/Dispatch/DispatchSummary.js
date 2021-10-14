@@ -13,8 +13,8 @@ const DispatchSummary = (props) => {
       <div className="mt-2">
         <div className="text-lg mb-1">Payload:</div>
         {props.deadHead && <span className="italic">Deadhead flight - no cargo</span>}
-        <div>Pilot & payload weight (inc. fuel): {props.selectedAircraft && <span className={props.selectedAircraft && (props.personWeight + props.fuelWeight + props.cargoWeight) > (props.selectedAircraft.fleet.mtow - props.selectedAircraft.fleet.zfw) ? 'text-red-500' : ''}>{(props.personWeight + props.fuelWeight + props.cargoWeight).toFixed(2)} kg / {(props.selectedAircraft.fleet.mtow - props.selectedAircraft.fleet.zfw)} kg</span>}</div>
-        <div>Cargo payload: {props.selectedAircraft && <span className={props.selectedAircraft && props.cargoWeight > props.selectedAircraft.fleet.cargo_capacity ? 'text-red-500' : ''}>{props.cargoWeight} kg / {props.selectedAircraft.fleet.cargo_capacity} kg</span>}</div>
+        <div>Pilot & payload weight (inc. fuel): {props.selectedAircraft && <span className={props.selectedAircraft && (props.personWeight + props.fuelWeight + props.cargoWeight) > (props.selectedAircraft.fleet.mtow - props.selectedAircraft.fleet.zfw) ? 'text-red-500' : ''}>{(props.personWeight + props.fuelWeight + props.cargoWeight).toFixed(2)} lbs / {(props.selectedAircraft.fleet.mtow - props.selectedAircraft.fleet.zfw)} lbs</span>}</div>
+        <div>Cargo payload: {props.selectedAircraft && <span className={props.selectedAircraft && props.cargoWeight > props.selectedAircraft.fleet.cargo_capacity ? 'text-red-500' : ''}>{props.cargoWeight} lbs / {props.selectedAircraft.fleet.cargo_capacity} lbs</span>}</div>
         <div>Passenger count: {props.selectedAircraft && <span className={props.selectedAircraft && props.passengerCount > props.selectedAircraft.fleet.pax_capacity ? 'text-red-500' : ''}>{props.passengerCount} / {props.selectedAircraft.fleet.pax_capacity}</span>}</div>
         <div className="mt-1">Fuel: {props.pirep ? <span>{props.pirep.planned_fuel}</span> : <span>{props.fuel}</span>} gal</div>
       </div>

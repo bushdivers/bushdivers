@@ -54,7 +54,7 @@ const Cargo = (props) => {
                     <td>{detail.contract_type_id === 1 ? 'Cargo' : 'Passenger'}</td>
                     <td>
                       {detail.contract_type_id === 1
-                        ? <div><span>{detail.cargo_qty} kg</span> <span className="text-xs">{detail.cargo}</span></div>
+                        ? <div><span>{detail.cargo_qty} lbs</span> <span className="text-xs">{detail.cargo}</span></div>
                         : <div><span>{detail.cargo_qty}</span> <span className="text-xs">{detail.cargo}</span></div>
                       }
                     </td>

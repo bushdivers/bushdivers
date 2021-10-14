@@ -36,7 +36,7 @@ const Contracts = ({ contracts, airport }) => {
   const [values, setValues] = useState({
     icao: auth.user.current_airport_id,
     distance: 'Up to 50nm',
-    cargo: 1000,
+    cargo: 2000,
     pax: 12
   })
   // const [contracts, setContracts] = useState([])
@@ -128,7 +128,7 @@ const Contracts = ({ contracts, airport }) => {
                 </select>
               </div>
               <div className="inline-block mx-2">
-                <label htmlFor="cargo"><span className="text-gray-700">Max cargo (kg)</span></label>
+                <label htmlFor="cargo"><span className="text-gray-700">Max cargo (lbs)</span></label>
                 <input id="cargo" type="text" className="form-input form" value={values.cargo} onChange={handleChange} />
               </div>
               <div className="inline-block mx-2">
@@ -152,13 +152,13 @@ const Contracts = ({ contracts, airport }) => {
                     <thead>
                     <tr className="">
                       <th>Departure</th>
-                      {/*<th>Current</th>*/}
+                      {/* <th>Current</th> */}
                       <th>Arrival</th>
                       <th>Distance</th>
                       <th>Heading</th>
                       <th>Total Cargo</th>
-                      {/*<th>Type</th>*/}
-                      {/*<th>Cargo</th>*/}
+                      {/* <th>Type</th> */}
+                      {/* <th>Cargo</th> */}
                       <th>Pay</th>
                       <th>Expires</th>
                       <td>Bid</td>
@@ -192,18 +192,18 @@ const Contracts = ({ contracts, airport }) => {
                           {contract.cargo.map((detail) => (
                             <>
                               <span className="mr-1">{detail.contract_type_id === 1 ? 'Cargo' : 'Pax'}</span>
-                              <span>{detail.cargo_qty} {detail.contract_type_id === 1 ? 'kg' : ''} {detail.cargo}</span>
+                              <span>{detail.cargo_qty} {detail.contract_type_id === 1 ? 'lbs' : ''} {detail.cargo}</span>
                               <br/>
                             </>
                           ))}
                         </td>
-                        {/*<td>{contract.contract_type_id === 1 ? 'Cargo' : 'Passenger'}</td>*/}
-                        {/*<td>*/}
-                        {/*  {contract.contract_type_id === 1*/}
-                        {/*    ? <div><span>{contract.cargo_qty} kg</span><br /><span className="text-xs">{contract.cargo}</span></div>*/}
-                        {/*    : <div><span>{contract.pax_qty}</span><br /><span className="text-xs">{contract.pax}</span></div>*/}
-                        {/*  }*/}
-                        {/*</td>*/}
+                        {/* <td>{contract.contract_type_id === 1 ? 'Cargo' : 'Passenger'}</td> */}
+                        {/* <td> */}
+                        {/*  {contract.contract_type_id === 1 */}
+                        {/*    ? <div><span>{contract.cargo_qty} kg</span><br /><span className="text-xs">{contract.cargo}</span></div> */}
+                        {/*    : <div><span>{contract.pax_qty}</span><br /><span className="text-xs">{contract.pax}</span></div> */}
+                        {/*  } */}
+                        {/* </td> */}
                         <td>${contract.contract_value.toLocaleString()}</td>
                         <td>
                           <Tooltip content={dayjs(contract.expires_at).format('HH:mm a')} direction="top">

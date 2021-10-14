@@ -2763,9 +2763,9 @@ var Dispatch = function Dispatch(_ref) {
   var cargo = _ref.cargo,
       aircraft = _ref.aircraft;
   var auth = (0,_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_6__.usePage)().props.auth;
-  var personWeight = 80.00;
-  var avgasWeight = 2.72;
-  var jetFuelWeight = 3.08;
+  var personWeight = 176.00;
+  var avgasWeight = 5.99;
+  var jetFuelWeight = 6.79;
 
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(''),
       _useState2 = _slicedToArray(_useState, 2),
@@ -3319,7 +3319,7 @@ var Cargo = function Cargo(props) {
               }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("td", {
                 children: detail.contract_type_id === 1 ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
                   children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("span", {
-                    children: [detail.cargo_qty, " kg"]
+                    children: [detail.cargo_qty, " lbs"]
                   }), " ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("span", {
                     className: "text-xs",
                     children: detail.cargo
@@ -3551,12 +3551,12 @@ var DispatchSummary = function DispatchSummary(props) {
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
         children: ["Pilot & payload weight (inc. fuel): ", props.selectedAircraft && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("span", {
           className: props.selectedAircraft && props.personWeight + props.fuelWeight + props.cargoWeight > props.selectedAircraft.fleet.mtow - props.selectedAircraft.fleet.zfw ? 'text-red-500' : '',
-          children: [(props.personWeight + props.fuelWeight + props.cargoWeight).toFixed(2), " kg / ", props.selectedAircraft.fleet.mtow - props.selectedAircraft.fleet.zfw, " kg"]
+          children: [(props.personWeight + props.fuelWeight + props.cargoWeight).toFixed(2), " lbs / ", props.selectedAircraft.fleet.mtow - props.selectedAircraft.fleet.zfw, " lbs"]
         })]
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
         children: ["Cargo payload: ", props.selectedAircraft && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("span", {
           className: props.selectedAircraft && props.cargoWeight > props.selectedAircraft.fleet.cargo_capacity ? 'text-red-500' : '',
-          children: [props.cargoWeight, " kg / ", props.selectedAircraft.fleet.cargo_capacity, " kg"]
+          children: [props.cargoWeight, " lbs / ", props.selectedAircraft.fleet.cargo_capacity, " lbs"]
         })]
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
         children: ["Passenger count: ", props.selectedAircraft && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("span", {
