@@ -170,10 +170,10 @@ class FinancialsService
         $userService = new UserService();
 
         $this->calcLandingFee($pirep);
-        $this->calcCargoHandling($pirep);
         $this->calcFuelUsedFee($pirep);
 
         if (!$pirep->is_empty) {
+            $this->calcCargoHandling($pirep);
             $cargo = PirepCargo::where('pirep_id', $pirep->id)->get();
             foreach ($cargo as $c) {
                 $contractCargo = ContractCargo::find($c->contract_cargo_id);
