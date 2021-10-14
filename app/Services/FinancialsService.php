@@ -173,21 +173,24 @@ class FinancialsService
         $this->calcCargoHandling($pirep);
         $this->calcFuelUsedFee($pirep);
 
-        $cargo = PirepCargo::where('pirep_id', $pirep->id)->get();
-        foreach ($cargo as $c) {
-            $contractCargo = ContractCargo::find($c->contract_cargo_id);
-            $contract = Contract::where('id', $contractCargo->contract_id)
-                ->where('is_paid', false)
-                ->where('is_completed', true)
-                ->first();
+        if (!$pirep->is_empty) {
+            $cargo = PirepCargo::where('pirep_id', $pirep->id)->get();
+            foreach ($cargo as $c) {
+                $contractCargo = ContractCargo::find($c->contract_cargo_id);
+                $contract = Contract::where('id', $contractCargo->contract_id)
+                    ->where('is_paid', false)
+                    ->where('is_completed', true)
+                    ->first();
 
-            if (isset($contract)) {
-                $pp = $this->calcContractPay($contract->id);
-                $userService->addUserAccountEntry($pirep->user_id, TransactionTypes::FlightPay, $pp, $pirep->id);
-                $userService->updateUserAccountBalance($pirep->user_id, $pp);
-                $contract->is_paid = true;
-                $contract->save();
+                if (isset($contract)) {
+                    $pp = $this->calcContractPay($contract->id);
+                    $userService->addUserAccountEntry($pirep->user_id, TransactionTypes::FlightPay, $pp, $pirep->id);
+                    $userService->updateUserAccountBalance($pirep->user_id, $pp);
+                    $contract->is_paid = true;
+                    $contract->save();
+                }
             }
         }
+
     }
 }

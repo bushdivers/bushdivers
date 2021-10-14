@@ -67,6 +67,7 @@ const ActiveDispatch = ({ cargo, aircraft, cargoWeight, fuelWeight, passengerCou
               fuelWeight={fuelWeight}
               passengerCount={passengerCount}
               pirep={pirep}
+              deadHead={pirep.is_empty}
             />
             <div className="text-right"><button onClick={handleCancel} className="btn btn-primary">Cancel Dispatch</button></div>
           </div>

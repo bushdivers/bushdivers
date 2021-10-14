@@ -159,6 +159,45 @@ class SubmitPirepTest extends TestCase
         $response->assertStatus(200);
     }
 
+    public function test_deadhead_pirep_submitted_successfully()
+    {
+        Artisan::call('db:seed --class=RankSeeder');
+        Sanctum::actingAs(
+            $this->user,
+            ['*']
+        );
+
+        $pirep = Pirep::factory()->create([
+            'user_id' => $this->user->id,
+            'destination_airport_id' => $this->contract->arr_airport_id,
+            'departure_airport_id' => $this->contract->dep_airport_id,
+            'aircraft_id' => $this->aircraft,
+            'current_lat' => -6.14617,
+            'current_lon' => 143.65733,
+            'is_empty' => 1
+        ]);
+
+        $startTime = "05/10/2021 01:00:00";
+        $endTime = "05/10/2021 01:45:00";
+
+        $data = [
+            'pirep_id' => $pirep->id,
+            'fuel_used' => 25,
+            'distance' => 76,
+            'landing_rate' => -149.12,
+            'block_off_time'=> $startTime,
+            'block_on_time' => $endTime
+        ];
+
+        $response = $this->postJson('/api/pirep/submit', $data);
+
+        $response->assertStatus(200);
+
+        $this->assertDatabaseMissing('user_accounts', [
+            'flight_id' => $this->pirep->id
+        ]);
+    }
+
     public function test_pirep_submitted_with_flight_time()
     {
         Artisan::call('db:seed --class=RankSeeder');

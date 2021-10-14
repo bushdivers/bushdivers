@@ -2812,6 +2812,15 @@ var Dispatch = function Dispatch(_ref) {
       submitError = _useState18[0],
       setSubmitError = _useState18[1];
 
+  var _useState19 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
+      _useState20 = _slicedToArray(_useState19, 2),
+      deadHead = _useState20[0],
+      setDeadHead = _useState20[1];
+
+  function handleDeadHead() {
+    setDeadHead(!deadHead);
+  }
+
   function handleAircraftSelect(ac) {
     setSubmitError(null);
     setSelectedAircraft(aircraft.find(function (a) {
@@ -2997,27 +3006,41 @@ var Dispatch = function Dispatch(_ref) {
     calculateFuelWeight(selectedAircraft, qty);
   }
 
+  function sendDispatch() {
+    // create dispatch
+    var cargo = [];
+
+    if (!deadHead) {
+      selectedCargo.forEach(function (c) {
+        cargo.push(c.id);
+      });
+    }
+
+    var data = {
+      aircraft: selectedAircraft.id,
+      destination: destination,
+      fuel: fuel,
+      cargo: cargo,
+      is_empty: deadHead
+    };
+    _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_12__.Inertia.post('/dispatch', data);
+  }
+
   function handleSubmitDispatch() {
     setSubmitError(null);
+
+    if (deadHead && selectedAircraft && fuel > 0 && destination) {
+      sendDispatch();
+      return;
+    }
 
     if (selectedCargo.length > 0 && selectedAircraft && fuel > 0 && destination) {
       if (passengerCount > selectedAircraft.fleet.pax_capacity || cargoWeight > selectedAircraft.fleet.cargo_capacity || personWeight + fuelWeight + cargoWeight > selectedAircraft.fleet.mtow - selectedAircraft.fleet.zfw) {
         setSubmitError('You are overweight!');
         return;
-      } // create dispatch
+      }
 
-
-      var _cargo = [];
-      selectedCargo.forEach(function (c) {
-        _cargo.push(c.id);
-      });
-      var data = {
-        aircraft: selectedAircraft.id,
-        destination: destination,
-        fuel: fuel,
-        cargo: _cargo
-      };
-      _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_12__.Inertia.post('/dispatch', data);
+      sendDispatch();
     } else {
       setSubmitError('Please make sure you have selected an aircraft, cargo, and fuel');
     }
@@ -3038,7 +3061,9 @@ var Dispatch = function Dispatch(_ref) {
           cargo: cargo,
           selectedCargo: selectedCargo,
           handleCargoSelect: handleCargoSelect,
-          splitCargo: splitCargo
+          splitCargo: splitCargo,
+          deadHead: deadHead,
+          handleDeadHead: handleDeadHead
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(_Shared_Components_Dispatch_Destination__WEBPACK_IMPORTED_MODULE_8__.default, {
           currentAirport: auth.user.current_airport_id,
           updateDestinationValue: setDestination
@@ -3060,7 +3085,8 @@ var Dispatch = function Dispatch(_ref) {
             fuelWeight: fuelWeight,
             passengerCount: passengerCount,
             destination: destination,
-            fuel: fuel
+            fuel: fuel,
+            deadHead: deadHead
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
             className: "mt-2 text-right",
             children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("button", {
@@ -3203,18 +3229,34 @@ var EmptyData = function EmptyData(props) {
 };
 
 var Cargo = function Cargo(props) {
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
     className: "shadow rounded p-4 mt-2 mr-2 bg-white",
-    children: props.cargo.length === 0 ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(_Elements_NoContent__WEBPACK_IMPORTED_MODULE_1__.default, {
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+      className: "mb-2 text-xl",
+      children: "Select Cargo"
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+      className: "my-2",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("label", {
+        htmlFor: "deadHead",
+        className: "inline-flex items-center",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("input", {
+          id: "deadHead",
+          checked: props.deadHead,
+          onChange: props.handleDeadHead,
+          type: "checkbox",
+          className: "form-checkbox rounded border-gray-300 text-orange-500 shadow-sm focus:border-orange-300 focus:ring focus:ring-offset-0 focus:ring-orange-200 focus:ring-opacity-50"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("span", {
+          className: "text-gray-700 ml-2",
+          children: "Deadhead - Run empty"
+        })]
+      })
+    }), props.cargo.length === 0 ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(_Elements_NoContent__WEBPACK_IMPORTED_MODULE_1__.default, {
       content: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(EmptyData, {
         content: "Cargo"
       })
-    }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+    }) : !props.deadHead && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
       className: "overflow-x-auto",
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
-        className: "mb-2 text-xl",
-        children: "Select Cargo"
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("table", {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("table", {
         className: "table table-auto table-condensed",
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("thead", {
           children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("tr", {
@@ -3244,7 +3286,7 @@ var Cargo = function Cargo(props) {
               }) ? 'bg-orange-200 hover:bg-orange-100' : '',
               children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("td", {
                 children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("input", {
-                  id: "remember",
+                  id: "sel",
                   checked: props.selectedCargo.some(function (s) {
                     return s.id === detail.id;
                   }),
@@ -3294,8 +3336,8 @@ var Cargo = function Cargo(props) {
             }, detail.id);
           })
         })]
-      })]
-    })
+      })
+    })]
   });
 };
 
@@ -3503,6 +3545,9 @@ var DispatchSummary = function DispatchSummary(props) {
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
         className: "text-lg mb-1",
         children: "Payload:"
+      }), props.deadHead && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("span", {
+        className: "italic",
+        children: "Deadhead flight - no cargo"
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
         children: ["Pilot & payload weight (inc. fuel): ", props.selectedAircraft && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("span", {
           className: props.selectedAircraft && props.personWeight + props.fuelWeight + props.cargoWeight > props.selectedAircraft.fleet.mtow - props.selectedAircraft.fleet.zfw ? 'text-red-500' : '',

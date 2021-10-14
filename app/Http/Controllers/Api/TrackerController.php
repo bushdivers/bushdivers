@@ -54,14 +54,18 @@ class TrackerController extends Controller
             return response()->json(['message' => 'No dispatch available'], 204);
         }
 
-        $cargo = DB::table('pirep_cargos')
-            ->join('contract_cargos', 'pirep_cargos.contract_cargo_id', '=', 'contract_cargos.id')
-            ->where('pirep_cargos.pirep_id', $dispatch->id)
-            ->select('contract_cargos.id', 'contract_type_id', 'cargo_qty')
-            ->get();
+        $cargoWeight = 0;
+        $passengerCount = 0;
+        if (!$dispatch->is_empty) {
+            $cargo = DB::table('pirep_cargos')
+                ->join('contract_cargos', 'pirep_cargos.contract_cargo_id', '=', 'contract_cargos.id')
+                ->where('pirep_cargos.pirep_id', $dispatch->id)
+                ->select('contract_cargos.id', 'contract_type_id', 'cargo_qty')
+                ->get();
 
-        $cargoWeight = $dispatchService->calculateCargoWeight($cargo, false);
-        $passengerCount = $dispatchService->calculatePassengerCount($cargo);
+            $cargoWeight = $dispatchService->calculateCargoWeight($cargo, false);
+            $passengerCount = $dispatchService->calculatePassengerCount($cargo);
+        }
 
         $data = [
             'id' => $dispatch->id,
@@ -76,7 +80,8 @@ class TrackerController extends Controller
             'registration' => $dispatch->aircraft->registration,
             'planned_fuel' => $dispatch->planned_fuel,
             'cargo_weight' => $cargoWeight,
-            'passenger_count' => $passengerCount
+            'passenger_count' => $passengerCount,
+            'is_empty' => $dispatch->is_empty
         ];
 
         return response()->json($data);
@@ -171,17 +176,19 @@ class TrackerController extends Controller
             return response()->json(['message' => $e->getMessage()], 500);
         }
 
-        try {
-            // update cargo and contract
-            $contractService = new ContractService();
-            $pc = PirepCargo::where('pirep_id', $pirep->id)->get();
-            foreach ($pc as $c) {
-                $contractCargo = ContractCargo::find($c->contract_cargo_id);
-                $contractService->updateCargo($contractCargo->id, $pirep->destination_airport_id);
+        if (!$pirep->is_empty) {
+            try {
+                // update cargo and contract
+                $contractService = new ContractService();
+                $pc = PirepCargo::where('pirep_id', $pirep->id)->get();
+                foreach ($pc as $c) {
+                    $contractCargo = ContractCargo::find($c->contract_cargo_id);
+                    $contractService->updateCargo($contractCargo->id, $pirep->destination_airport_id);
+                }
+            } catch (\Exception $e) {
+                $this->rollbackSubmission(2, $request);
+                return response()->json(['message' => $e->getMessage()], 500);
             }
-        } catch (\Exception $e) {
-            $this->rollbackSubmission(2, $request);
-            return response()->json(['message' => $e->getMessage()], 500);
         }
 
         try {
