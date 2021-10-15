@@ -112,6 +112,10 @@ class DispatchController extends Controller
     {
         $pirep = Pirep::find($request->pirep);
 
+        if ($pirep->state == PirepState::ACCEPTED || $pirep->state == PirepState::REJECTED) {
+            return redirect()->back()->with(['error' => 'Flight already completed']);
+        }
+
         // clear up aircraft assignment
         $aircraft = Aircraft::find($pirep->aircraft_id);
         $aircraft->state = AircraftState::AVAILABLE;
