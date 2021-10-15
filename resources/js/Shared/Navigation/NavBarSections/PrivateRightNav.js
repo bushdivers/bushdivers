@@ -7,13 +7,13 @@ const PrivateRightNav = (props) => {
   return (
     <>
       <div className={props.mobile ? 'px-2 pt-2 pb-3 space-y-1' : 'absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0'}>
-        <button
-          type="button"
-          className="p-1 rounded-full text-gray-700 hover:bg-gray-50 focus:outline-none hidden lg:block"
-        >
-          <span className="sr-only">View notifications</span>
-          <div className="h-6 w-6" aria-hidden="true"><i className="material-icons">notifications</i></div>
-        </button>
+        {/* <button */}
+        {/*  type="button" */}
+        {/*  className="p-1 rounded-full text-gray-700 hover:bg-gray-50 focus:outline-none hidden lg:block" */}
+        {/* > */}
+        {/*  <span className="sr-only">View notifications</span> */}
+        {/*  <div className="h-6 w-6" aria-hidden="true"><i className="material-icons">notifications</i></div> */}
+        {/* </button> */}
 
         <Menu as="div" className={props.mobile ? 'relative' : 'mx-3 relative'}>
           <div>
