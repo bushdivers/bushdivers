@@ -106,6 +106,14 @@ class CrewController extends Controller
         return redirect()->back()->with(['success' => 'Profile updated']);
     }
 
+    public function finances(): Response
+    {
+        $accounts = DB::table('user_accounts')->where('user_id', Auth::user()->id)->orderBy('created_at', 'desc')->get();
+        $balance = $accounts->sum('total');
+
+        return Inertia::render('Crew/MyFinances', ['accounts' => $accounts, 'balance' => $balance]);
+    }
+
     public function jumpseat(): Response
     {
         $user = User::with('location')->find(Auth::user()->id);

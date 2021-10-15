@@ -1,4 +1,4 @@
-(self["webpackChunk"] = self["webpackChunk"] || []).push([["resources_js_Pages_General_Staff_js"],{
+(self["webpackChunk"] = self["webpackChunk"] || []).push([["resources_js_Pages_Crew_MyFinances_js"],{
 
 /***/ "./node_modules/@headlessui/react/dist/_virtual/_rollupPluginBabelHelpers.js":
 /*!***********************************************************************************!*\
@@ -2720,10 +2720,10 @@ var convertMinuteDecimalToHoursAndMinutes = function convertMinuteDecimalToHours
 
 /***/ }),
 
-/***/ "./resources/js/Pages/General/Staff.js":
-/*!*********************************************!*\
-  !*** ./resources/js/Pages/General/Staff.js ***!
-  \*********************************************/
+/***/ "./resources/js/Pages/Crew/MyFinances.js":
+/*!***********************************************!*\
+  !*** ./resources/js/Pages/Crew/MyFinances.js ***!
+  \***********************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -2741,39 +2741,68 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var Staff = function Staff(_ref) {
-  var staff = _ref.staff;
+var MyFinances = function MyFinances(_ref) {
+  var accounts = _ref.accounts,
+      balance = _ref.balance;
+
+  var renderTransactionType = function renderTransactionType(transactionType) {
+    switch (transactionType) {
+      case 1:
+        return 'Contract Pay';
+
+      case 2:
+        return 'Jumpseat';
+
+      case 3:
+        return 'Contract Cancellation';
+
+      case 4:
+        return 'Refuel Penalty';
+
+      case 5:
+        return 'Bonus Pay (i.e returning aircraft to hub)';
+    }
+  };
+
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_Shared_Navigation_PageTitle__WEBPACK_IMPORTED_MODULE_1__.default, {
-      title: "Meet the team"
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
-      className: "mt-4 flex flex-col md:flex-row md:justify-start",
-      children: staff.map(function (member) {
+      title: "My Finances"
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+      className: "md:w-1/2",
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+        className: "bg-white shadow rounded p-4 mt-2",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+          className: "text-lg",
+          children: "Current Balance"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+          className: "text-xl",
+          children: ["$", balance]
+        })]
+      }), accounts && accounts.map(function (entry) {
         return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-          className: "rounded shadow bg-white my-1 p-4 mx-2",
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
-            className: "text-xl",
-            children: member.user.name
+          className: "bg-white shadow rounded p-4 mt-2 flex justify-between",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+            children: ["$", entry.total, " ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("br", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("span", {
+              className: "text-sm",
+              children: renderTransactionType(entry.type)
+            })]
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
-            children: member.user.pilot_id
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
-            className: "text-lg mt-2",
-            children: member.role
+            children: entry.created_at
           })]
-        }, member.id);
-      })
+        }, entry.id);
+      })]
     })]
   });
 };
 
-Staff.layout = function (page) {
+MyFinances.layout = function (page) {
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_Shared_Layout__WEBPACK_IMPORTED_MODULE_2__.default, {
     children: page,
-    title: "Meet the team"
+    title: "My Finances"
   });
 };
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Staff);
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (MyFinances);
 
 /***/ }),
 

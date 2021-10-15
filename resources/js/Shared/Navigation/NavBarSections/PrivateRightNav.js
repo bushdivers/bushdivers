@@ -34,7 +34,7 @@ const PrivateRightNav = (props) => {
                 {({ active }) => <Link href="/logbook" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Logbook</Link>}
               </Menu.Item>
               <Menu.Item>
-                {({ active }) => <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">My Finances</a>}
+                {({ active }) => <Link href="/my-finances" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">My Finances</Link>}
               </Menu.Item>
               <Menu.Item>
                 {({ active }) => <Link href="/jumpseat" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Jumpseat</Link>}

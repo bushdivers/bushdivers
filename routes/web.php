@@ -45,6 +45,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/logbook/{pirep}', [\App\Http\Controllers\PirepController::class, 'logbookDetail'])->name('logbook.detail');
     Route::get('/jumpseat', [\App\Http\Controllers\CrewController::class, 'jumpseat'])->name('jumpseat');
     Route::post('/jumpseat', [\App\Http\Controllers\CrewController::class, 'processJumpseat'])->name('jumpseat.process');
+    Route::get('/my-finances', [\App\Http\Controllers\CrewController::class, 'finances'])->name('crew.finances');
 
     // Airports
     Route::get('/airports/{icao}', [\App\Http\Controllers\AirportController::class, 'index'])->name('airport');
