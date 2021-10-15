@@ -117,7 +117,7 @@ class PostFlightLogTest extends TestCase
         $response->assertStatus(201);
     }
 
-    public function test_add_new_log_missing_data_fails_gracefully()
+    public function test_add_new_log_stores_data()
     {
         Sanctum::actingAs(
             $this->user,
@@ -129,6 +129,35 @@ class PostFlightLogTest extends TestCase
             'lon' => 144.29953,
             'distance' => 3,
             'heading' => 257,
+            'altitude' => 2342,
+            'indicated_speed' => 165,
+            'ground_speed' => 171,
+            'fuel_flow' => 12.1,
+            'vs' => 345.02,
+            'sim_time' => Carbon::now(),
+            'zulu_time' => Carbon::createFromTimestampUTC(Carbon::now()),
+        ];
+
+        $response = $this->postJson('/api/log', $data);
+        $this->assertDatabaseHas('flight_logs', [
+            'distance' => 3,
+            'heading' => 257,
+            'altitude' => 2342
+        ]);
+    }
+
+    public function test_add_new_log_missing_data_fails_gracefully()
+    {
+        Sanctum::actingAs(
+            $this->user,
+            ['*']
+        );
+        $data = [
+            'pirep_id'=> $this->pirep->id,
+            'lat' => -5.82781,
+            'lon' => 144.29953,
+            'heading' => 257,
+            'distance' => 3,
             'altitude' => 2342,
             'ground_speed' => 171,
             'fuel_flow' => 12.1,

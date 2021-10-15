@@ -88,8 +88,17 @@ class FinancialsService
         $fuelCost = AirlineFees::where('fee_name', $fuelType)->first();
 
         $fuelUsedCost = $fuelCost->fee_amount * $pirep->fuel_used;
+        // TODO: if negative, 0 fuel fee for company, and charge pilot for fuel
+        if ($fuelUsedCost < 0) {
+            $this->addTransaction(AirlineTransactionTypes::FuelFees, +$fuelUsedCost, 'Fuel Cost', $pirep->id);
+            $this->addTransaction(AirlineTransactionTypes::FuelFees, +$fuelUsedCost, 'Fuel Cost Paid by Pilot', $pirep->id, 'credit');
 
-        $this->addTransaction(AirlineTransactionTypes::FuelFees, $fuelUsedCost, 'Fuel Cost', $pirep->id);
+            // add line to pilot transactions
+            $userService = new UserService();
+            $userService->addUserAccountEntry($pirep->user_id, TransactionTypes::FuelPenalty, $fuelUsedCost, $pirep->id);
+        } else {
+            $this->addTransaction(AirlineTransactionTypes::FuelFees, $fuelUsedCost, 'Fuel Cost', $pirep->id);
+        }
     }
 
     public function calcLandingFee($pirep)
@@ -161,24 +170,27 @@ class FinancialsService
         $userService = new UserService();
 
         $this->calcLandingFee($pirep);
-        $this->calcCargoHandling($pirep);
         $this->calcFuelUsedFee($pirep);
 
-        $cargo = PirepCargo::where('pirep_id', $pirep->id)->get();
-        foreach ($cargo as $c) {
-            $contractCargo = ContractCargo::find($c->contract_cargo_id);
-            $contract = Contract::where('id', $contractCargo->contract_id)
-                ->where('is_paid', false)
-                ->where('is_completed', true)
-                ->first();
+        if (!$pirep->is_empty) {
+            $this->calcCargoHandling($pirep);
+            $cargo = PirepCargo::where('pirep_id', $pirep->id)->get();
+            foreach ($cargo as $c) {
+                $contractCargo = ContractCargo::find($c->contract_cargo_id);
+                $contract = Contract::where('id', $contractCargo->contract_id)
+                    ->where('is_paid', false)
+                    ->where('is_completed', true)
+                    ->first();
 
-            if (isset($contract)) {
-                $pp = $this->calcContractPay($contract->id);
-                $userService->addUserAccountEntry($pirep->user_id, TransactionTypes::FlightPay, $pp, $pirep->id);
-                $userService->updateUserAccountBalance($pirep->user_id, $pp);
-                $contract->is_paid = true;
-                $contract->save();
+                if (isset($contract)) {
+                    $pp = $this->calcContractPay($contract->id);
+                    $userService->addUserAccountEntry($pirep->user_id, TransactionTypes::FlightPay, $pp, $pirep->id);
+                    $userService->updateUserAccountBalance($pirep->user_id, $pp);
+                    $contract->is_paid = true;
+                    $contract->save();
+                }
             }
         }
+
     }
 }

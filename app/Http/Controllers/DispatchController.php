@@ -79,14 +79,17 @@ class DispatchController extends Controller
         $pirep->destination_airport_id = $request->destination;
         $pirep->planned_fuel = $request->fuel;
         $pirep->state = PirepState::DISPATCH;
+        $pirep->is_empty = $request->is_empty;
         $pirep->save();
 
-        // add contract cargo to pirep_cargos
-        foreach ($request->cargo as $cargo) {
-            $pirepCargo = new PirepCargo();
-            $pirepCargo->contract_cargo_id = $cargo;
-            $pirepCargo->pirep_id = $pirep->id;
-            $pirepCargo->save();
+        if (!$request->is_empty) {
+            // add contract cargo to pirep_cargos
+            foreach ($request->cargo as $cargo) {
+                $pirepCargo = new PirepCargo();
+                $pirepCargo->contract_cargo_id = $cargo;
+                $pirepCargo->pirep_id = $pirep->id;
+                $pirepCargo->save();
+            }
         }
 
         // update aircraft for user and fuel

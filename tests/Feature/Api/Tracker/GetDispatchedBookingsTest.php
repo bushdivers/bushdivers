@@ -63,17 +63,7 @@ class GetDispatchedBookingsTest extends TestCase
             'contract_id' => $this->contract->id,
             'current_airport_id' => $this->contract->dep_airport_id
         ]);
-        $this->pirep = Pirep::factory()->create([
-            'user_id' => $this->user->id,
-            'destination_airport_id' => $this->contract->arr_airport_id,
-            'departure_airport_id' => $this->contract->dep_airport_id,
-            'aircraft_id' => $this->aircraft
-        ]);
 
-        $this->pirepCargo = PirepCargo::factory()->create([
-            'pirep_id' => $this->pirep->id,
-            'contract_cargo_id' => $this->contractCargo->id
-        ]);
 
         Airport::factory()->create([
             'identifier' => 'AYMR'
@@ -93,6 +83,18 @@ class GetDispatchedBookingsTest extends TestCase
 
     public function test_returns_bookings_only_from_current_location()
     {
+        $this->pirep = Pirep::factory()->create([
+            'user_id' => $this->user->id,
+            'destination_airport_id' => $this->contract->arr_airport_id,
+            'departure_airport_id' => $this->contract->dep_airport_id,
+            'aircraft_id' => $this->aircraft
+        ]);
+
+        $this->pirepCargo = PirepCargo::factory()->create([
+            'pirep_id' => $this->pirep->id,
+            'contract_cargo_id' => $this->contractCargo->id
+        ]);
+
         Sanctum::actingAs(
             $this->user,
             ['*']
@@ -103,8 +105,40 @@ class GetDispatchedBookingsTest extends TestCase
         $response->assertJsonFragment(['departure_airport_id' => $this->pirep->departure_airport_id]);
     }
 
+    public function test_returns_bookings_when_dead_heading()
+    {
+        $this->pirep = Pirep::factory()->create([
+            'user_id' => $this->user->id,
+            'destination_airport_id' => $this->contract->arr_airport_id,
+            'departure_airport_id' => $this->contract->dep_airport_id,
+            'aircraft_id' => $this->aircraft,
+            'is_empty' => 1
+        ]);
+
+        Sanctum::actingAs(
+            $this->user,
+            ['*']
+        );
+
+        $response = $this->getJson('/api/dispatch');
+        $response->assertStatus(200);
+        $response->assertJsonFragment(['is_empty' => '1']);
+    }
+
     public function test_returns_cargo_for_booking()
     {
+        $this->pirep = Pirep::factory()->create([
+            'user_id' => $this->user->id,
+            'destination_airport_id' => $this->contract->arr_airport_id,
+            'departure_airport_id' => $this->contract->dep_airport_id,
+            'aircraft_id' => $this->aircraft
+        ]);
+
+        $this->pirepCargo = PirepCargo::factory()->create([
+            'pirep_id' => $this->pirep->id,
+            'contract_cargo_id' => $this->contractCargo->id
+        ]);
+
         Sanctum::actingAs(
             $this->user,
             ['*']
@@ -117,6 +151,18 @@ class GetDispatchedBookingsTest extends TestCase
 
     public function test_returns_cargo_type_for_booking()
     {
+        $this->pirep = Pirep::factory()->create([
+            'user_id' => $this->user->id,
+            'destination_airport_id' => $this->contract->arr_airport_id,
+            'departure_airport_id' => $this->contract->dep_airport_id,
+            'aircraft_id' => $this->aircraft
+        ]);
+
+        $this->pirepCargo = PirepCargo::factory()->create([
+            'pirep_id' => $this->pirep->id,
+            'contract_cargo_id' => $this->contractCargo->id
+        ]);
+
         Sanctum::actingAs(
             $this->user,
             ['*']
@@ -129,6 +175,18 @@ class GetDispatchedBookingsTest extends TestCase
 
     public function test_returns_multiple_bookings()
     {
+        $this->pirep = Pirep::factory()->create([
+            'user_id' => $this->user->id,
+            'destination_airport_id' => $this->contract->arr_airport_id,
+            'departure_airport_id' => $this->contract->dep_airport_id,
+            'aircraft_id' => $this->aircraft
+        ]);
+
+        $this->pirepCargo = PirepCargo::factory()->create([
+            'pirep_id' => $this->pirep->id,
+            'contract_cargo_id' => $this->contractCargo->id
+        ]);
+
         $contractCargo = ContractCargo::factory()->create([
             'contract_id' => $this->contract->id,
             'current_airport_id' => $this->contract->dep_airport_id

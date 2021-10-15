@@ -99,7 +99,7 @@ const MyContracts = ({ contracts }) => {
                           {contract.cargo.map((detail) => (
                             <>
                               <span className="mr-1">{detail.contract_type_id === 1 ? 'Cargo' : 'Pax'}</span>
-                              <span>{detail.cargo_qty} {detail.contract_type_id === 1 ? 'kg' : ''} {detail.cargo}</span>
+                              <span>{detail.cargo_qty} {detail.contract_type_id === 1 ? 'lbs' : ''} {detail.cargo}</span>
                               <br/>
                             </>
                           ))}

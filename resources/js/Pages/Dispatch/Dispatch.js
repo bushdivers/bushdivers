@@ -13,9 +13,9 @@ import { Inertia } from '@inertiajs/inertia'
 
 const Dispatch = ({ cargo, aircraft }) => {
   const { auth } = usePage().props
-  const personWeight = 80.00
-  const avgasWeight = 2.72
-  const jetFuelWeight = 3.08
+  const personWeight = 176.00
+  const avgasWeight = 5.99
+  const jetFuelWeight = 6.79
   const [selectedAircraft, setSelectedAircraft] = useState('')
   const [selectedCargo, setSelectedCargo] = useState([])
   const [fuel, setFuel] = useState(0)
@@ -25,6 +25,11 @@ const Dispatch = ({ cargo, aircraft }) => {
   const [passengerCount, setPassengerCount] = useState(0)
   const [error, setError] = useState(null)
   const [submitError, setSubmitError] = useState(null)
+  const [deadHead, setDeadHead] = useState(false)
+
+  function handleDeadHead () {
+    setDeadHead(!deadHead)
+  }
 
   function handleAircraftSelect (ac) {
     setSubmitError(null)
@@ -121,25 +126,37 @@ const Dispatch = ({ cargo, aircraft }) => {
     calculateFuelWeight(selectedAircraft, qty)
   }
 
+  function sendDispatch () {
+    // create dispatch
+    const cargo = []
+    if (!deadHead) {
+      selectedCargo.forEach((c) => {
+        cargo.push(c.id)
+      })
+    }
+
+    const data = {
+      aircraft: selectedAircraft.id,
+      destination,
+      fuel,
+      cargo,
+      is_empty: deadHead
+    }
+    Inertia.post('/dispatch', data)
+  }
+
   function handleSubmitDispatch () {
     setSubmitError(null)
+    if (deadHead && selectedAircraft && fuel > 0 && destination) {
+      sendDispatch()
+      return
+    }
     if (selectedCargo.length > 0 && selectedAircraft && fuel > 0 && destination) {
       if (passengerCount > selectedAircraft.fleet.pax_capacity || cargoWeight > selectedAircraft.fleet.cargo_capacity || (personWeight + fuelWeight + cargoWeight) > (selectedAircraft.fleet.mtow - selectedAircraft.fleet.zfw)) {
         setSubmitError('You are overweight!')
         return
       }
-      // create dispatch
-      const cargo = []
-      selectedCargo.forEach((c) => {
-        cargo.push(c.id)
-      })
-      const data = {
-        aircraft: selectedAircraft.id,
-        destination,
-        fuel,
-        cargo
-      }
-      Inertia.post('/dispatch', data)
+      sendDispatch()
     } else {
       setSubmitError('Please make sure you have selected an aircraft, cargo, and fuel')
     }
@@ -151,7 +168,7 @@ const Dispatch = ({ cargo, aircraft }) => {
       <div className="flex flex-col md:flex-row justify-between mt-4">
         <div className="md:w-1/2">
           <Aircraft aircraft={aircraft} selectedAircraft={selectedAircraft} handleAircraftSelect={handleAircraftSelect} />
-          <Cargo cargo={cargo} selectedCargo={selectedCargo} handleCargoSelect={handleCargoSelect} splitCargo={splitCargo} />
+          <Cargo cargo={cargo} selectedCargo={selectedCargo} handleCargoSelect={handleCargoSelect} splitCargo={splitCargo} deadHead={deadHead} handleDeadHead={handleDeadHead} />
           <Destination currentAirport={auth.user.current_airport_id} updateDestinationValue={setDestination} />
           <Fuel selectedAircraft={selectedAircraft} fuel={fuel} handleUpdateFuel={handleUpdateFuel} error={error} />
         </div>
@@ -166,6 +183,7 @@ const Dispatch = ({ cargo, aircraft }) => {
               passengerCount={passengerCount}
               destination={destination}
               fuel={fuel}
+              deadHead={deadHead}
             />
             <div className="mt-2 text-right">
               <button onClick={() => handleSubmitDispatch()} className="btn btn-secondary">File Dispatch</button><br />
