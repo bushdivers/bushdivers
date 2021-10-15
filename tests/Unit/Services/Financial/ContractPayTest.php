@@ -87,7 +87,7 @@ class ContractPayTest extends TestCase
      */
     public function test_company_pay_is_added_to_ledger()
     {
-        $expectedPay = (FinancialConsts::CompanyPay / 100) * $this->contract->contract_value;
+        $expectedPay = $this->contract->contract_value;
 
         $p = $this->financialsService->calcContractPay($this->contract->id);
         $this->assertDatabaseHas('account_ledgers', [
@@ -108,12 +108,23 @@ class ContractPayTest extends TestCase
 
     public function test_contract_company_pay_is_made_as_part_of_pirep_process()
     {
-        $companyPay = (FinancialConsts::CompanyPay / 100) * $this->contract->contract_value;
+        $companyPay = $this->contract->contract_value;
 
         $this->financialsService->processPirepFinancials($this->pirep);
         $this->assertDatabaseHas('account_ledgers', [
             'transaction_type' => AirlineTransactionTypes::ContractIncome,
             'total' => $companyPay
+        ]);
+    }
+
+    public function test_contract_company_pilot_pay_is_made_as_part_of_pirep_process()
+    {
+        $pilotPay = (FinancialConsts::PilotPay / 100) * $this->contract->contract_value;
+
+        $this->financialsService->processPirepFinancials($this->pirep);
+        $this->assertDatabaseHas('account_ledgers', [
+            'transaction_type' => AirlineTransactionTypes::ContractExpenditure,
+            'total' => -$pilotPay
         ]);
     }
 

@@ -12,4 +12,5 @@ class AirlineTransactionTypes
     public const LandingFees = 6;
     public const FuelFees = 7;
     public const ContractIncome = 8;
+    public const ContractExpenditure = 9;
 }
