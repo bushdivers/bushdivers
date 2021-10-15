@@ -13,8 +13,8 @@ const PirepMap = (props) => {
     map.current = new maplibre.Map({
       container: mapContainer.current,
       style: 'mapbox://styles/mapbox/dark-v10',
-      center: [143.23070, -6.36188],
-      zoom: 9,
+      center: [props.pirep.arr_airport.lon, props.pirep.arr_airport.lat],
+      zoom: 5,
       accessToken
     })
   })
@@ -112,7 +112,7 @@ const PirepMap = (props) => {
 
       const bounds = [depLngLat, arrLngLat]
       map.current.fitBounds(bounds, {
-        padding: 100
+        padding: 80
       })
     }
   }, [props.pirep])

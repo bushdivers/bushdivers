@@ -2732,7 +2732,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var date_fns__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! date-fns */ "./node_modules/date-fns/esm/format/index.js");
+/* harmony import */ var date_fns__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! date-fns */ "./node_modules/date-fns/esm/format/index.js");
 /* harmony import */ var _Shared_Navigation_PageTitle__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../Shared/Navigation/PageTitle */ "./resources/js/Shared/Navigation/PageTitle.js");
 /* harmony import */ var _Shared_Layout__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../Shared/Layout */ "./resources/js/Shared/Layout.js");
 /* harmony import */ var _Shared_Pireps_PirepMap__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../Shared/Pireps/PirepMap */ "./resources/js/Shared/Pireps/PirepMap.js");
@@ -2741,7 +2741,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Shared_Pireps_LogbookSecondary__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../Shared/Pireps/LogbookSecondary */ "./resources/js/Shared/Pireps/LogbookSecondary.js");
 /* harmony import */ var _Shared_Pireps_PirepChart__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../Shared/Pireps/PirepChart */ "./resources/js/Shared/Pireps/PirepChart.js");
 /* harmony import */ var _Shared_Pireps_PirepCargo__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../Shared/Pireps/PirepCargo */ "./resources/js/Shared/Pireps/PirepCargo.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _Shared_Pireps_LandingSummary__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../Shared/Pireps/LandingSummary */ "./resources/js/Shared/Pireps/LandingSummary.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+
 
 
 
@@ -2760,37 +2762,39 @@ var LogbookDetail = function LogbookDetail(_ref) {
       points = _ref.points,
       logs = _ref.logs,
       cargo = _ref.cargo;
-  var submittedDate = (0,date_fns__WEBPACK_IMPORTED_MODULE_10__.default)(new Date(pirep.submitted_at), 'do MMMM yyyy');
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)("div", {
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_Shared_Navigation_PageTitle__WEBPACK_IMPORTED_MODULE_1__.default, {
+  var submittedDate = (0,date_fns__WEBPACK_IMPORTED_MODULE_11__.default)(new Date(pirep.submitted_at), 'do MMMM yyyy');
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)("div", {
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_Shared_Navigation_PageTitle__WEBPACK_IMPORTED_MODULE_1__.default, {
       title: "Pilot Report - ".concat(pirep.id)
-    }), submittedDate, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)("div", {
+    }), submittedDate, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)("div", {
       className: "flex flex-col md:flex-row justify-between",
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)("div", {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)("div", {
         className: "md:w-1/2",
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_Shared_Pireps_LogbookPrimary__WEBPACK_IMPORTED_MODULE_5__.default, {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_Shared_Pireps_LogbookPrimary__WEBPACK_IMPORTED_MODULE_5__.default, {
           pirep: pirep
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_Shared_Pireps_LogbookSecondary__WEBPACK_IMPORTED_MODULE_6__.default, {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_Shared_Pireps_LogbookSecondary__WEBPACK_IMPORTED_MODULE_6__.default, {
           pirep: pirep
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_Shared_Pireps_PirepCargo__WEBPACK_IMPORTED_MODULE_8__.default, {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_Shared_Pireps_Points__WEBPACK_IMPORTED_MODULE_4__.default, {
+          points: points
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_Shared_Pireps_PirepCargo__WEBPACK_IMPORTED_MODULE_8__.default, {
           cargo: cargo
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("div", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("div", {
           className: "rounded shadow p-4 mt-2 bg-white mx-2",
-          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_Shared_Pireps_PirepChart__WEBPACK_IMPORTED_MODULE_7__.default, {
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_Shared_Pireps_PirepChart__WEBPACK_IMPORTED_MODULE_7__.default, {
             data: logs
           })
         })]
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)("div", {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)("div", {
         className: "md:w-1/2",
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("div", {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("div", {
           className: "rounded shadow p-4 mt-2 bg-white mx-2",
-          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_Shared_Pireps_PirepMap__WEBPACK_IMPORTED_MODULE_3__.default, {
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_Shared_Pireps_PirepMap__WEBPACK_IMPORTED_MODULE_3__.default, {
             pirep: pirep,
             coords: logs,
-            size: "large"
+            size: "small"
           })
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_Shared_Pireps_Points__WEBPACK_IMPORTED_MODULE_4__.default, {
-          points: points
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_Shared_Pireps_LandingSummary__WEBPACK_IMPORTED_MODULE_9__.default, {
+          pirep: pirep
         })]
       })]
     })]
@@ -2798,7 +2802,7 @@ var LogbookDetail = function LogbookDetail(_ref) {
 };
 
 LogbookDetail.layout = function (page) {
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_Shared_Layout__WEBPACK_IMPORTED_MODULE_2__.default, {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_Shared_Layout__WEBPACK_IMPORTED_MODULE_2__.default, {
     children: page,
     title: "Pirep Details"
   });
@@ -3615,6 +3619,130 @@ function PageTitle(_ref) {
 
 /***/ }),
 
+/***/ "./resources/js/Shared/Pireps/LandingMap.js":
+/*!**************************************************!*\
+  !*** ./resources/js/Shared/Pireps/LandingMap.js ***!
+  \**************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var maplibre_gl__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! maplibre-gl */ "./node_modules/maplibre-gl/dist/maplibre-gl.js");
+/* harmony import */ var maplibre_gl__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(maplibre_gl__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+
+
+
+
+var accessToken = 'pk.eyJ1IjoicnVzc2VsbHd3ZXN0IiwiYSI6ImNrc29vZm5paDEweGIzMnA3MXAzYTFuMDQifQ.7veU-ARmzYClHDFsVQvT5g';
+
+var LandingMap = function LandingMap(props) {
+  var mapContainer = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(null);
+  var map = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(null);
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+    if (map.current) return;
+    map.current = new (maplibre_gl__WEBPACK_IMPORTED_MODULE_1___default().Map)({
+      container: mapContainer.current,
+      style: 'mapbox://styles/mapbox/dark-v10',
+      center: [props.pirep.landing_lon, props.pirep.landing_lat],
+      zoom: 16,
+      accessToken: accessToken
+    });
+  });
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+    if (props.pirep) {
+      // setFlight(props.pirep.flight)
+      var landingLngLat = [props.pirep.landing_lon, props.pirep.landing_lat];
+      map.current.on('load', function () {
+        var landing = new (maplibre_gl__WEBPACK_IMPORTED_MODULE_1___default().Marker)({
+          color: '#22C55E'
+        }).setLngLat(landingLngLat).addTo(map.current);
+      });
+    }
+  }, [props.pirep]);
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.Fragment, {
+    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+      ref: mapContainer,
+      className: 'map-container-' + props.size
+    })
+  });
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (LandingMap);
+
+/***/ }),
+
+/***/ "./resources/js/Shared/Pireps/LandingSummary.js":
+/*!******************************************************!*\
+  !*** ./resources/js/Shared/Pireps/LandingSummary.js ***!
+  \******************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _LandingMap__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./LandingMap */ "./resources/js/Shared/Pireps/LandingMap.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+
+
+
+
+
+var LandingSummary = function LandingSummary(_ref) {
+  var pirep = _ref.pirep;
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+    className: "rounded shadow p-4 mt-2 bg-white mx-2",
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+      className: "text-lg",
+      children: "Landing Summary"
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+      className: "flex justify-between items-center mb-2",
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+        className: "flex flex-col items-center my-2 mx-4",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+          className: "text-sm",
+          children: "Landing Rate"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+          className: "text-xl",
+          children: [pirep.landing_rate, " fpm"]
+        })]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+        className: "flex flex-col items-center my-2 mx-4",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+          className: "text-sm",
+          children: "Landing Pitch"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+          className: "text-xl",
+          children: pirep.landing_pitch
+        })]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+        className: "flex flex-col items-center my-2 mx-4",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+          className: "text-sm",
+          children: "Landing Bank"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+          className: "text-xl",
+          children: [pirep.landing_bank, "nm"]
+        })]
+      })]
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(_LandingMap__WEBPACK_IMPORTED_MODULE_1__.default, {
+      pirep: pirep,
+      size: "small"
+    })]
+  });
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (LandingSummary);
+
+/***/ }),
+
 /***/ "./resources/js/Shared/Pireps/LogbookPrimary.js":
 /*!******************************************************!*\
   !*** ./resources/js/Shared/Pireps/LogbookPrimary.js ***!
@@ -3964,8 +4092,8 @@ var PirepMap = function PirepMap(props) {
     map.current = new (maplibre_gl__WEBPACK_IMPORTED_MODULE_1___default().Map)({
       container: mapContainer.current,
       style: 'mapbox://styles/mapbox/dark-v10',
-      center: [143.23070, -6.36188],
-      zoom: 9,
+      center: [props.pirep.arr_airport.lon, props.pirep.arr_airport.lat],
+      zoom: 5,
       accessToken: accessToken
     });
   });
@@ -4041,7 +4169,7 @@ var PirepMap = function PirepMap(props) {
       });
       var bounds = [depLngLat, arrLngLat];
       map.current.fitBounds(bounds, {
-        padding: 100
+        padding: 80
       });
     }
   }, [props.pirep]);
