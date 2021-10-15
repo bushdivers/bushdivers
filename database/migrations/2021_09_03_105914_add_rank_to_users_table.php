@@ -14,7 +14,7 @@ class AddRankToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->foreignId('rank_id');
+            $table->foreignId('rank_id')->nullable();
         });
     }
 
