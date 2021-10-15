@@ -338,10 +338,6 @@ class SubmitPirepTest extends TestCase
             'flight_id' => $this->pirep->id,
             'total' => $pp
         ]);
-        $this->assertDatabaseHas('users', [
-            'id' => $this->user->id,
-            'account_balance' => $pp
-        ]);
     }
 
     public function test_normal_fuel_costs_charged_when_pirep_submitted()

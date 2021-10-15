@@ -127,10 +127,6 @@ class ContractPayTest extends TestCase
             'type' => TransactionTypes::FlightPay,
             'total' => $pilotPay
         ]);
-
-        $this->assertDatabaseHas('users', [
-            'account_balance' => $pilotPay
-        ]);
     }
 
 

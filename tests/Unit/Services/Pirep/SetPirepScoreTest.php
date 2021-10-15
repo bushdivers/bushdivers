@@ -40,7 +40,6 @@ class SetPirepScoreTest extends TestCase
 
         $this->user = User::factory()->create([
             'rank_id' => 1,
-            'hub_id' => 'AYMR',
             'flights_time' => 299,
             'points' => 49,
             'created_at' => Carbon::now()->addYears(-2)
@@ -93,7 +92,7 @@ class SetPirepScoreTest extends TestCase
 
         $this->assertDatabaseHas('pireps', [
             'id' => $this->pirep->id,
-            'score' => 13
+            'score' => 5
         ]);
     }
 }
