@@ -36,6 +36,7 @@ Route::post('/password/reset', [\App\Http\Controllers\Auth\PasswordResetControll
 
 Route::middleware('auth')->group(function () {
     Route::get('/logout', [\App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');
+    Route::get('/finances', [\App\Http\Controllers\HomeController::class, 'finances'])->name('company.finances');
     // Crew
     Route::get('/dashboard', [\App\Http\Controllers\CrewController::class, 'index'])->name('dashboard');
     Route::get('/roster', [\App\Http\Controllers\CrewController::class, 'roster'])->name('roster');
