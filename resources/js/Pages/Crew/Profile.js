@@ -4,7 +4,6 @@ import Layout from '../../Shared/Layout'
 import { Inertia } from '@inertiajs/inertia'
 import { usePage } from '@inertiajs/inertia-react'
 import ApiKey from '../../Shared/Components/Crew/ApiKey'
-import TransferHub from '../../Shared/Components/Crew/TransferHub'
 
 const Profile = ({ profile, hubs }) => {
   const { errors } = usePage().props
@@ -77,9 +76,6 @@ const Profile = ({ profile, hubs }) => {
         <div className="md:w-1/2 md:ml-4 mt-4">
           <div className="bg-white rounded shadow p-4">
             <ApiKey apiKey={profile.api_token} />
-          </div>
-          <div className="bg-white rounded shadow p-4 mt-4">
-            <TransferHub currentHub={profile.hub} hubs={hubs} />
           </div>
         </div>
       </div>

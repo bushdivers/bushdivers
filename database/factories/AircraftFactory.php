@@ -26,7 +26,8 @@ class AircraftFactory extends Factory
             'registration' => 'P2-BDA',
             'fuel_onboard' => 26.8,
             'state' => 1,
-            'status' => 1
+            'status' => 1,
+            'hub_id' => 'AYMR'
         ];
     }
 }

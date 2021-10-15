@@ -8,4 +8,5 @@ class TransactionTypes
     public const Jumpseat = 2;
     public const ContractPenalty = 3;
     public const FuelPenalty = 4;
+    public const Bonus = 5;
 }

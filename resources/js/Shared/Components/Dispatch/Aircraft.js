@@ -1,5 +1,6 @@
 import React from 'react'
 import NoContent from '../../Elements/NoContent'
+import { Link } from '@inertiajs/inertia-react'
 
 const EmptyData = (props) => {
   return (
@@ -22,6 +23,7 @@ const Aircraft = (props) => {
               <thead>
               <tr>
                 <th>Registration</th>
+                <th>Hub</th>
                 <th>Aircraft</th>
                 <th>Current Fuel</th>
               </tr>
@@ -30,6 +32,7 @@ const Aircraft = (props) => {
               {props.aircraft.map((ac) => (
                 <tr key={ac.id} onClick={() => props.handleAircraftSelect(ac)} className={props.selectedAircraft.id === ac.id ? 'bg-orange-200 hover:bg-orange-100' : ''}>
                   <td>{ac.registration}</td>
+                  <td><Link href={`/airports/${ac.hub_id}`}>{ac.hub_id}</Link></td>
                   <td>{ac.fleet.manufacturer} {ac.fleet.name} ({ac.fleet.type})</td>
                   <td>{ac.fuel_onboard}</td>
                 </tr>

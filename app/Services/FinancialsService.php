@@ -185,7 +185,7 @@ class FinancialsService
                 if (isset($contract)) {
                     $pp = $this->calcContractPay($contract->id);
                     $userService->addUserAccountEntry($pirep->user_id, TransactionTypes::FlightPay, $pp, $pirep->id);
-                    $userService->updateUserAccountBalance($pirep->user_id, $pp);
+//                    $userService->updateUserAccountBalance($pirep->user_id, $pp);
                     $contract->is_paid = true;
                     $contract->save();
                 }

@@ -34,8 +34,7 @@ class RegisterController extends Controller
         $user->name = $request->name;
         $user->email = $request->email;
         $user->password = Hash::make($request->password);
-        $user->hub_id = $request->hub;
-        $user->current_airport_id = $request->hub;
+        $user->current_airport_id = 'AYMR';
         $user->toc_accepted = true;
         $user->opt_in = $request->optin;
         $user->rank_id = 1;
