@@ -2850,7 +2850,7 @@ var Dashboard = function Dashboard(_ref) {
               children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
                 children: "Next Rank:"
               }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
-                className: "flex justify-between",
+                className: "flex justify-between items-center",
                 children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
                   className: "flex items-center justify-between",
                   children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("img", {
@@ -2860,15 +2860,34 @@ var Dashboard = function Dashboard(_ref) {
                     className: "ml-2 text-sm",
                     children: nextRank.name
                   })]
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
+                  className: "text-sm flex items-center",
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+                    className: "mr-2",
+                    children: "Hours: "
+                  }), " ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+                    children: user.flights_time > nextRank.hours * 60 ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("i", {
+                      className: "material-icons text-green-500",
+                      children: "check_circle"
+                    }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("span", {
+                      children: (0,_Helpers_date_helpers__WEBPACK_IMPORTED_MODULE_3__.convertMinuteDecimalToHoursAndMinutes)(nextRank.hours * 60 - user.flights_time)
+                    })
+                  })]
                 }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
-                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("span", {
-                    className: "text-sm",
-                    children: ["Hours: ", (0,_Helpers_date_helpers__WEBPACK_IMPORTED_MODULE_3__.convertMinuteDecimalToHoursAndMinutes)(nextRank.hours * 60 - user.flights_time)]
-                  })
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
-                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("span", {
-                    className: "text-sm",
-                    children: ["Points: ", nextRank.points - user.points]
+                  className: "",
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
+                    className: "text-sm flex items-center",
+                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+                      className: "mr-2",
+                      children: "Points: "
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+                      children: user.points > nextRank.points ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("i", {
+                        className: "material-icons text-green-500",
+                        children: "check_circle"
+                      }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("span", {
+                        children: nextRank.points - user.points
+                      })
+                    })]
                   })
                 })]
               })]
