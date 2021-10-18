@@ -3800,7 +3800,7 @@ var AdminMenu = function AdminMenu(props) {
             children: function children(_ref2) {
               var active = _ref2.active;
               return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_2__.Link, {
-                href: "/fleet",
+                href: "/admin/users",
                 className: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50",
                 children: "Users"
               });

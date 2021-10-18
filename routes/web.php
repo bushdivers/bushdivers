@@ -70,6 +70,9 @@ Route::middleware('auth')->group(function () {
 
     Route::middleware('admin')->group(function () {
         Route::get('/admin/pireps', [App\Http\Controllers\Admin\PirepController::class, 'index'])->name('admin.pireps');
+        Route::get('/admin/users', [App\Http\Controllers\Admin\UserController::class, 'index'])->name('admin.users');
+        Route::get('/admin/users/admin/{userId}', [App\Http\Controllers\Admin\UserController::class, 'setAdmin'])->name('admin.users.admin');
+        Route::get('/admin/users/active/{userId}', [App\Http\Controllers\Admin\UserController::class, 'setStatus'])->name('admin.users.active');
     });
 
 });
