@@ -22,7 +22,7 @@ const AdminMenu = (props) => {
               {({ active }) => <Link href="/admin/users" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Users</Link>}
             </Menu.Item>
             <Menu.Item>
-              {({ active }) => <Link href="/fleet" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Fleet</Link>}
+              {({ active }) => <Link href="/admin/fleet" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Fleet</Link>}
             </Menu.Item>
           </Menu.Items>
         </Transition>

@@ -73,6 +73,15 @@ Route::middleware('auth')->group(function () {
         Route::get('/admin/users', [App\Http\Controllers\Admin\UserController::class, 'index'])->name('admin.users');
         Route::get('/admin/users/admin/{userId}', [App\Http\Controllers\Admin\UserController::class, 'setAdmin'])->name('admin.users.admin');
         Route::get('/admin/users/active/{userId}', [App\Http\Controllers\Admin\UserController::class, 'setStatus'])->name('admin.users.active');
+        Route::get('/admin/fleet', [App\Http\Controllers\Admin\FleetController::class, 'index'])->name('admin.fleet');
+        Route::get('/admin/fleet/create', [App\Http\Controllers\Admin\FleetController::class, 'create'])->name('admin.fleet.create');
+        Route::post('/admin/fleet/create', [App\Http\Controllers\Admin\FleetController::class, 'store'])->name('admin.flee.store');
+        Route::get('/admin/fleet/edit/{id}', [App\Http\Controllers\Admin\FleetController::class, 'edit'])->name('admin.fleet.edit');
+        Route::post('/admin/fleet/edit/{id}', [App\Http\Controllers\Admin\FleetController::class, 'update'])->name('admin.fleet.update');
+        Route::get('/admin/fleet/delete/{id}', [App\Http\Controllers\Admin\FleetController::class, 'delete'])->name('admin.fleet.delete');
+        Route::get('/admin/aircraft/create', [App\Http\Controllers\Admin\FleetController::class, 'addAircraft'])->name('admin.aircraft.add');
+        Route::post('/admin/aircraft/create', [App\Http\Controllers\Admin\FleetController::class, 'storeAircraft'])->name('admin.aircraft.store');
+        Route::get('/admin/aircraft/delete/{id}', [App\Http\Controllers\Admin\FleetController::class, 'deleteAircraft'])->name('admin.aircraft.delete');
     });
 
 });
