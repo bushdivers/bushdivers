@@ -113,7 +113,8 @@ class PirepController extends Controller
             ->where('user_id', Auth::user()->id)
             ->where('state', PirepState::ACCEPTED)
             ->orderBy('submitted_at', 'desc')
-            ->get();
+            ->paginate(10);
+
 
         return Inertia::render('Crew/Logbook', ['logbook' => $logbook]);
     }

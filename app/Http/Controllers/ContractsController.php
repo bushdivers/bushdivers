@@ -126,7 +126,7 @@ class ContractsController extends Controller
             ->where('is_completed', true)
             ->where('user_id', Auth::user()->id)
             ->orderBy('completed_at', 'desc')
-            ->get();
+            ->paginate(10);
 
         return Inertia::render('Contracts/CompletedContracts', ['contracts' => $contracts]);
     }
