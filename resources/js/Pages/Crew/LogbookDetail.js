@@ -9,13 +9,15 @@ import LogbookSecondary from '../../Shared/Pireps/LogbookSecondary'
 import PirepChart from '../../Shared/Pireps/PirepChart'
 import PirepCargo from '../../Shared/Pireps/PirepCargo'
 import LandingSummary from '../../Shared/Pireps/LandingSummary'
+import { usePage } from '@inertiajs/inertia-react'
 
 const LogbookDetail = ({ pirep, points, logs, cargo }) => {
+  const { auth } = usePage().props
   const submittedDate = format(new Date(pirep.submitted_at), 'do MMMM yyyy')
   return (
     <div>
       <PageTitle title={`Pilot Report - ${pirep.id}`} />
-      {submittedDate}
+      {submittedDate} {auth.user.is_admin && <span>{pirep.pilot.pilot_id} - {pirep.pilot.private_name}</span>}
       <div className="flex flex-col md:flex-row justify-between">
         <div className="md:w-1/2">
           <LogbookPrimary pirep={pirep} />
