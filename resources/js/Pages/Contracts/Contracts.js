@@ -186,7 +186,7 @@ const Contracts = ({ contracts, airport }) => {
                             <span className="text-xs">{contract.arr_airport.name}</span>
                            </Tooltip>
                         </td>
-                        <td>{contract.distance}</td>
+                        <td>{contract.distance} nm</td>
                         <td>
                           <div className="flex items-center">
                             <div className="w-1/2">

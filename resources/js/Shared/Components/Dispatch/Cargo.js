@@ -49,8 +49,17 @@ const Cargo = (props) => {
                     <td>{detail.id}</td>
                     <td>{detail.current_airport_id}</td>
                     <td>{detail.contract.arr_airport_id}</td>
-                    <td>{detail.contract.distance}</td>
-                    <td>{detail.contract.heading}</td>
+                    <td>{detail.contract.distance} nm</td>
+                    <td>
+                      <div className="flex items-center">
+                        <div className="w-1/2">
+                          <span className="mr-2">{detail.contract.heading}</span>
+                        </div>
+                        <div className="w-1/2 flex">
+                          <span style={{ transform: `rotate(${detail.contract.heading}deg)` }}><i className="material-icons md-18 text-gray-800">north</i></span>
+                        </div>
+                      </div>
+                    </td>
                     <td>{detail.contract_type_id === 1 ? 'Cargo' : 'Passenger'}</td>
                     <td>
                       {detail.contract_type_id === 1
