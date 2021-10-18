@@ -3009,7 +3009,7 @@ var CargoDetails = function CargoDetails(props) {
           children: ["Cargo: ", detail.cargo_qty, " ", detail.contract_type_id === 1 ? 'lbs' : '', " ", detail.cargo]
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("td", {
           children: detail.is_completed ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("i", {
-            className: "material-icons md-18",
+            className: "material-icons md-18 text-green-500",
             children: "check_circle"
           }) : ''
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("td", {})]
