@@ -42,7 +42,7 @@ class HandleInertiaRequests extends Middleware
             'flash.success' => fn () => $request->session()->get('success'),
             'flash.error' => fn () => $request->session()->get('error'),
             'auth.user' => fn () => $request->user()
-                ? $request->user()->only('id', 'name', 'email', 'private_name', 'pilot_id', 'current_bids', 'current_airport_id')
+                ? $request->user()->only('id', 'name', 'email', 'private_name', 'pilot_id', 'current_bids', 'current_airport_id', 'is_admin')
                 : null
         ]);
     }

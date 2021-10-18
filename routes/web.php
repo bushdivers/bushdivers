@@ -67,4 +67,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/contracts', [\App\Http\Controllers\ContractsController::class, 'getContracts'])->name('contracts.search');
     Route::post('/contracts/bid', [\App\Http\Controllers\ContractsController::class, 'bidForContract'])->name('contracts.bid');
     Route::post('/contracts/cancel', [\App\Http\Controllers\ContractsController::class, 'cancelContract'])->name('contracts.cancel');
+
+    Route::middleware('admin')->group(function () {
+        Route::get('/admin/pireps', [App\Http\Controllers\Admin\PirepController::class, 'index'])->name('admin.pireps');
+    });
+
 });
+
