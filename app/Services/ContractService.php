@@ -199,4 +199,12 @@ class ContractService
             $con->save();
         }
     }
+
+    public function removeStaleContracts()
+    {
+        Contract::where('user_id', null)
+            ->where('is_completed', false)
+            ->where('expires_at', '<', Carbon::now())
+            ->delete();
+    }
 }
