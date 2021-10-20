@@ -36,16 +36,17 @@ Route::post('/password/reset', [\App\Http\Controllers\Auth\PasswordResetControll
 
 Route::middleware('auth')->group(function () {
     Route::get('/logout', [\App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');
+    Route::get('/finances', [\App\Http\Controllers\HomeController::class, 'finances'])->name('company.finances');
     // Crew
     Route::get('/dashboard', [\App\Http\Controllers\CrewController::class, 'index'])->name('dashboard');
     Route::get('/roster', [\App\Http\Controllers\CrewController::class, 'roster'])->name('roster');
     Route::get('/profile', [\App\Http\Controllers\CrewController::class, 'profile'])->name('profile.index');
     Route::put('/profile', [\App\Http\Controllers\CrewController::class, 'updateProfile'])->name('profile.update');
-    Route::put('/profile/transfer', [\App\Http\Controllers\CrewController::class, 'transferHub'])->name('profile.transfer');
     Route::get('/logbook', [\App\Http\Controllers\PirepController::class, 'logbook'])->name('logbook');
     Route::get('/logbook/{pirep}', [\App\Http\Controllers\PirepController::class, 'logbookDetail'])->name('logbook.detail');
     Route::get('/jumpseat', [\App\Http\Controllers\CrewController::class, 'jumpseat'])->name('jumpseat');
     Route::post('/jumpseat', [\App\Http\Controllers\CrewController::class, 'processJumpseat'])->name('jumpseat.process');
+    Route::get('/my-finances', [\App\Http\Controllers\CrewController::class, 'finances'])->name('crew.finances');
 
     // Airports
     Route::get('/airports/{icao}', [\App\Http\Controllers\AirportController::class, 'index'])->name('airport');
@@ -66,4 +67,22 @@ Route::middleware('auth')->group(function () {
     Route::post('/contracts', [\App\Http\Controllers\ContractsController::class, 'getContracts'])->name('contracts.search');
     Route::post('/contracts/bid', [\App\Http\Controllers\ContractsController::class, 'bidForContract'])->name('contracts.bid');
     Route::post('/contracts/cancel', [\App\Http\Controllers\ContractsController::class, 'cancelContract'])->name('contracts.cancel');
+
+    Route::middleware('admin')->group(function () {
+        Route::get('/admin/pireps', [App\Http\Controllers\Admin\PirepController::class, 'index'])->name('admin.pireps');
+        Route::get('/admin/users', [App\Http\Controllers\Admin\UserController::class, 'index'])->name('admin.users');
+        Route::get('/admin/users/admin/{userId}', [App\Http\Controllers\Admin\UserController::class, 'setAdmin'])->name('admin.users.admin');
+        Route::get('/admin/users/active/{userId}', [App\Http\Controllers\Admin\UserController::class, 'setStatus'])->name('admin.users.active');
+        Route::get('/admin/fleet', [App\Http\Controllers\Admin\FleetController::class, 'index'])->name('admin.fleet');
+        Route::get('/admin/fleet/create', [App\Http\Controllers\Admin\FleetController::class, 'create'])->name('admin.fleet.create');
+        Route::post('/admin/fleet/create', [App\Http\Controllers\Admin\FleetController::class, 'store'])->name('admin.flee.store');
+        Route::get('/admin/fleet/edit/{id}', [App\Http\Controllers\Admin\FleetController::class, 'edit'])->name('admin.fleet.edit');
+        Route::post('/admin/fleet/edit/{id}', [App\Http\Controllers\Admin\FleetController::class, 'update'])->name('admin.fleet.update');
+        Route::get('/admin/fleet/delete/{id}', [App\Http\Controllers\Admin\FleetController::class, 'delete'])->name('admin.fleet.delete');
+        Route::get('/admin/aircraft/create', [App\Http\Controllers\Admin\FleetController::class, 'addAircraft'])->name('admin.aircraft.add');
+        Route::post('/admin/aircraft/create', [App\Http\Controllers\Admin\FleetController::class, 'storeAircraft'])->name('admin.aircraft.store');
+        Route::get('/admin/aircraft/delete/{id}', [App\Http\Controllers\Admin\FleetController::class, 'deleteAircraft'])->name('admin.aircraft.delete');
+    });
+
 });
+

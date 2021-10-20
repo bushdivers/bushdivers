@@ -114,6 +114,7 @@ class ContractsController extends Controller
         $contracts = Contract::with('depAirport', 'arrAirport', 'cargo', 'cargo.currentAirport')
             ->where('is_completed', false)
             ->where('user_id', Auth::user()->id)
+            ->orderBy('expires_at', 'asc')
             ->get();
 
         return Inertia::render('Contracts/MyContracts', ['contracts' => $contracts]);
@@ -124,7 +125,8 @@ class ContractsController extends Controller
         $contracts = Contract::with('depAirport', 'arrAirport', 'cargo')
             ->where('is_completed', true)
             ->where('user_id', Auth::user()->id)
-            ->get();
+            ->orderBy('completed_at', 'desc')
+            ->paginate(10);
 
         return Inertia::render('Contracts/CompletedContracts', ['contracts' => $contracts]);
     }

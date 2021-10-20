@@ -8,17 +8,21 @@ import LogbookPrimary from '../../Shared/Pireps/LogbookPrimary'
 import LogbookSecondary from '../../Shared/Pireps/LogbookSecondary'
 import PirepChart from '../../Shared/Pireps/PirepChart'
 import PirepCargo from '../../Shared/Pireps/PirepCargo'
+import LandingSummary from '../../Shared/Pireps/LandingSummary'
+import { usePage } from '@inertiajs/inertia-react'
 
 const LogbookDetail = ({ pirep, points, logs, cargo }) => {
+  const { auth } = usePage().props
   const submittedDate = format(new Date(pirep.submitted_at), 'do MMMM yyyy')
   return (
     <div>
       <PageTitle title={`Pilot Report - ${pirep.id}`} />
-      {submittedDate}
+      {submittedDate} {auth.user.is_admin && <span>{pirep.pilot.pilot_id} - {pirep.pilot.private_name}</span>}
       <div className="flex flex-col md:flex-row justify-between">
         <div className="md:w-1/2">
           <LogbookPrimary pirep={pirep} />
           <LogbookSecondary pirep={pirep} />
+          <Points points={points} />
           <PirepCargo cargo={cargo} />
           <div className="rounded shadow p-4 mt-2 bg-white mx-2">
             <PirepChart data={logs} />
@@ -26,9 +30,9 @@ const LogbookDetail = ({ pirep, points, logs, cargo }) => {
         </div>
         <div className="md:w-1/2">
           <div className="rounded shadow p-4 mt-2 bg-white mx-2">
-            <PirepMap pirep={pirep} coords={logs} size="large" />
+            <PirepMap pirep={pirep} coords={logs} size="small" />
           </div>
-          <Points points={points} />
+          <LandingSummary pirep={pirep} />
         </div>
       </div>
     </div>

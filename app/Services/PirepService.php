@@ -30,14 +30,17 @@ class PirepService
         $this->addPointsEntry($pirep->id, PointsType::COMPLETED_FLIGHT_LABEL, PointsType::COMPLETED_FLIGHT);
 
         // hub
-        $user = User::find($pirep->user_id);
-        if ($pirep->departure_airport_id == $user->hub_id || $pirep->destination_airport_id == $user->hub_id) {
+        $aircraft = Aircraft::find($pirep->aircraft_id);
+        if ($pirep->destination_airport_id == $aircraft->hub_id) {
             $this->addPointsEntry($pirep->id, PointsType::HOME_HUB_LABEL, PointsType::HOME_HUB);
         }
 
+        $userService = new UserService();
+        $userService->addUserAccountEntry($pirep->user_id, TransactionTypes::Bonus, 300, $pirep->id);
+
         // time
-        $hours = floor($pirep->flight_time / 60);
-        $this->addPointsEntry($pirep->id, PointsType::ONE_HOUR_LABEL, PointsType::ONE_HOUR * $hours);
+//        $hours = floor($pirep->flight_time / 60);
+//        $this->addPointsEntry($pirep->id, PointsType::ONE_HOUR_LABEL, PointsType::ONE_HOUR * $hours);
 
         // distance
         $distance = floor($pirep->distance / 50);
@@ -90,41 +93,37 @@ class PirepService
         $points = 0;
         $type = '';
         switch (true) {
-            case in_array($landingRate, range(-500,-600)):
-                $points = PointsType::LANDING_RATE_M600_M500;
-                $type = PointsType::LANDING_RATE_M600_M500_LABEL;
+            case $landingRate < 0:
+                $points = PointsType::LANDING_RATE_BELOW_ZERO;
+                $type = PointsType::LANDING_RATE_BELOW_ZERO_LABEL;
                 break;
-            case in_array($landingRate, range(-300,-499)):
-                $points = PointsType::LANDING_RATE_M499_M300;
-                $type = PointsType::LANDING_RATE_M499_M300_LABEL;
+            case in_array($landingRate, range(0,2)):
+                $points = PointsType::LANDING_RATE_0_2;
+                $type = PointsType::LANDING_RATE_0_2_LABEL;
                 break;
-            case in_array($landingRate, range(-200,-299)):
-                $points = PointsType::LANDING_RATE_M299_M200;
-                $type = PointsType::LANDING_RATE_M299_M200_LABEL;
+            case in_array($landingRate, range(3,39)):
+                $points = PointsType::LANDING_RATE_3_39;
+                $type = PointsType::LANDING_RATE_3_39_LABEL;
                 break;
-            case in_array($landingRate, range(-151,-199)):
-                $points = PointsType::LANDING_RATE_M199_M151;
-                $type = PointsType::LANDING_RATE_M199_M151_LABEL;
+            case in_array($landingRate, range(40,59)):
+                $points = PointsType::LANDING_RATE_40_59;
+                $type = PointsType::LANDING_RATE_40_59_LABEL;
                 break;
-            case $landingRate == 150:
-                $points = PointsType::LANDING_RATE_PERFECT;
-                $type = PointsType::LANDING_RATE_PERFECT_LABEL;
+            case $landingRate == 60:
+                $points = PointsType::LANDING_RATE_PERFECT_60;
+                $type = PointsType::LANDING_RATE_PERFECT_60_LABEL;
                 break;
-            case in_array($landingRate, range(-100,-149)):
-                $points = PointsType::LANDING_RATE_M149_M100;
-                $type = PointsType::LANDING_RATE_M149_M100_LABEL;
+            case in_array($landingRate, range(61,180)):
+                $points = PointsType::LANDING_RATE_61_180;
+                $type = PointsType::LANDING_RATE_61_180_LABEL;
                 break;
-            case in_array($landingRate, range(-99,300)):
-                $points = PointsType::LANDING_RATE_M99_300;
-                $type = PointsType::LANDING_RATE_M99_300_LABEL;
+            case in_array($landingRate, range(181,400)):
+                $points = PointsType::LANDING_RATE_181_400;
+                $type = PointsType::LANDING_RATE_181_400_LABEL;
                 break;
-            case in_array($landingRate, range(301,500)):
-                $points = PointsType::LANDING_RATE_301_500;
-                $type = PointsType::LANDING_RATE_301_500_LABEL;
-                break;
-            case in_array($landingRate, range(501,800)):
-                $points = PointsType::LANDING_RATE_501_800;
-                $type = PointsType::LANDING_RATE_501_800_LABEL;
+            case $landingRate > 400:
+                $points = PointsType::LANDING_RATE_OVER_400;
+                $type = PointsType::LANDING_RATE_OVER_400_LABEL;
                 break;
         }
 

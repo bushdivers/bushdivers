@@ -3,6 +3,7 @@ import Layout from '../../Shared/Layout'
 import PageTitle from '../../Shared/Navigation/PageTitle'
 import dayjs from '../../Helpers/date.helpers'
 import { Link } from '@inertiajs/inertia-react'
+import Pagination from '../../Shared/Elements/Pagination'
 
 const CompletedContracts = ({ contracts }) => {
   return (
@@ -10,7 +11,7 @@ const CompletedContracts = ({ contracts }) => {
       <PageTitle title="My Completed Contracts" />
       <div className="mt-4">{contracts ? <span>{contracts.length} completed contracts</span> : <span>No completed contracts</span>}</div>
       <div className="mt-1">
-        {contracts && contracts.map((contract) => (
+        {contracts && contracts.data.map((contract) => (
           <div key={contract.id} className="mt-1 shadow rounded bg-white py-4 px-8 overflow-x-auto">
             <div className="flex justify-between items-center">
               <div className="flex flex-col items-center content-center">
@@ -60,6 +61,9 @@ const CompletedContracts = ({ contracts }) => {
             </table>
           </div>
         ))}
+      </div>
+      <div className="mt-2 shadow rounded">
+        <Pagination pages={contracts} />
       </div>
     </div>
   )

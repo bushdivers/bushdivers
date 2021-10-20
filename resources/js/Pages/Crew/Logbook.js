@@ -7,6 +7,7 @@ import { Link } from '@inertiajs/inertia-react'
 import { convertMinuteDecimalToHoursAndMinutes } from '../../Helpers/date.helpers'
 import { format } from 'date-fns'
 import { Inertia } from '@inertiajs/inertia'
+import Pagination from '../../Shared/Elements/Pagination'
 
 const EmptyData = () => {
   return (
@@ -18,7 +19,6 @@ const EmptyData = () => {
 }
 
 const Logbook = ({ logbook }) => {
-
   function loadPirep (pirep) {
     Inertia.get(`/logbook/${pirep.id}`)
   }
@@ -46,7 +46,7 @@ const Logbook = ({ logbook }) => {
                 </tr>
                 </thead>
                 <tbody>
-                {logbook.map((entry) => (
+                {logbook.data.map((entry) => (
                   <tr key={entry.id}>
                     <td className="text-orange-500 hover:underline" onClick={() => loadPirep(entry)}>View Pirep</td>
                     <td>
@@ -69,6 +69,7 @@ const Logbook = ({ logbook }) => {
                 ))}
                 </tbody>
               </table>
+              <Pagination pages={logbook} />
             </div>
             )
         }

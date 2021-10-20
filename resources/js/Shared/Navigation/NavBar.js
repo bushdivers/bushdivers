@@ -6,10 +6,10 @@ import PrivateLeftNav from './NavBarSections/PrivateLeftNav'
 import PublicRightNav from './NavBarSections/PublicRightNav'
 import PrivateRightNav from './NavBarSections/PrivateRightNav'
 import UserName from './NavBarSections/UserName'
+import AdminMenu from './NavBarSections/AdminMenu'
 
 export default function NavBar () {
   const { auth } = usePage().props
-
   return (
     <Disclosure as="nav" className="bg-white border-b-2 border-orange-500 shadow-sm z-10">
       {({ open }) => (
@@ -67,6 +67,7 @@ export default function NavBar () {
               <Disclosure.Panel className="sm:hidden">
                 <PrivateLeftNav mobile={true} auth={auth} />
                 <PrivateRightNav mobile={true} auth={auth} />
+                {auth.user.is_admin && <AdminMenu mobile={true} />}
               </Disclosure.Panel>
               )
           }

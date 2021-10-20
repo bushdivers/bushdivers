@@ -2,6 +2,7 @@ import React from 'react'
 import Layout from '../../Shared/Layout'
 import PageTitle from '../../Shared/Navigation/PageTitle'
 import Card from '../../Shared/Elements/Card'
+import { Link } from '@inertiajs/inertia-react'
 // import FleetMap from '../../Shared/Components/Fleet/FleetMap'
 
 const FleetCardContent = ({ fleet }) => {
@@ -17,11 +18,11 @@ const FleetCardContent = ({ fleet }) => {
         </div>
         <div className="ml-2">
           <div className="flex flex-col md:flex-row mt-2 md:mt-0">
-            <div className="">
+            <div className="md:mr-8">
               <span className="text-md font-bold text-gray-600">Powerplants: </span><br/>
               <span>{fleet.number_of_engines}x {fleet.powerplants}</span>
             </div>
-            <div className="">
+            <div className="md:mr-8">
               <span className="text-md font-bold text-gray-600">Fuel Type: </span><br/>
               <span>100ll</span>
             </div>
@@ -37,7 +38,7 @@ const FleetCardContent = ({ fleet }) => {
             </div>
             <div className="mr-8">
               <span className="text-md font-bold text-gray-600">Max Range: </span><br/>
-              <span>{fleet.range}</span>
+              <span>{fleet.range} nm</span>
             </div>
             <div className="mr-8">
               <span className="text-md font-bold text-gray-600">Max Cruise Speed: </span><br/>
@@ -45,11 +46,11 @@ const FleetCardContent = ({ fleet }) => {
             </div>
             <div className="mr-8">
               <span className="text-md font-bold text-gray-600">PAX Capacity: </span><br/>
-              <span>{fleet.pax_capacity} kg</span>
+              <span>{fleet.pax_capacity}</span>
             </div>
             <div className="mr-8">
               <span className="text-md font-bold text-gray-600">Cargo Capacity: </span><br/>
-              <span>{fleet.cargo_capacity} kg</span>
+              <span>{fleet.cargo_capacity} lbs</span>
             </div>
           </div>
         </div>
@@ -60,6 +61,7 @@ const FleetCardContent = ({ fleet }) => {
           <thead>
           <tr>
             <th scope="col">Registration</th>
+            <th scope="col">Hub</th>
             <th scope="col">Current Location</th>
             <th scope="col">Flight Time (minutes)</th>
             <th scope="col">Status</th>
@@ -69,7 +71,8 @@ const FleetCardContent = ({ fleet }) => {
             {fleet.aircraft.map((aircraft) => (
               <tr key={aircraft.id}>
                 <td>{aircraft.registration}</td>
-                <td>{aircraft.current_airport_id}</td>
+                <td><Link href={`/airports/${aircraft.hub_id}`}>{aircraft.hub_id}</Link></td>
+                <td><Link href={`/airports/${aircraft.current_airport_id}`}>{aircraft.current_airport_id}</Link></td>
                 <td>{aircraft.flight_time_mins}</td>
                 <td>{aircraft.status}</td>
               </tr>

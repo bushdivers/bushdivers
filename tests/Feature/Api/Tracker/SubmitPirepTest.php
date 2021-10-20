@@ -338,9 +338,32 @@ class SubmitPirepTest extends TestCase
             'flight_id' => $this->pirep->id,
             'total' => $pp
         ]);
+    }
+
+    public function test_pilot_points_when_pirep_submitted()
+    {
+        Artisan::call('db:seed --class=RankSeeder');
+        Sanctum::actingAs(
+            $this->user,
+            ['*']
+        );
+        $startTime = "05/10/2021 01:00:00";
+        $endTime = "05/10/2021 01:45:00";
+
+        $data = [
+            'pirep_id' => $this->pirep->id,
+            'fuel_used' => 25,
+            'distance' => 100,
+            'landing_rate' => 30,
+            'block_off_time'=> $startTime,
+            'block_on_time' => $endTime
+        ];
+
+        $response = $this->postJson('/api/pirep/submit', $data);
+
         $this->assertDatabaseHas('users', [
-            'id' => $this->user->id,
-            'account_balance' => $pp
+            'id' => $this->pirep->user_id,
+            'points' => 59
         ]);
     }
 

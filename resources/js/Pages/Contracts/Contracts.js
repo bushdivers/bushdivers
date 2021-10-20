@@ -186,8 +186,17 @@ const Contracts = ({ contracts, airport }) => {
                             <span className="text-xs">{contract.arr_airport.name}</span>
                            </Tooltip>
                         </td>
-                        <td>{contract.distance}</td>
-                        <td>{contract.heading}</td>
+                        <td>{contract.distance} nm</td>
+                        <td>
+                          <div className="flex items-center">
+                            <div className="w-1/2">
+                              <span className="mr-2">{contract.heading}</span>
+                            </div>
+                            <div className="w-1/2 flex">
+                              <span style={{ transform: `rotate(${contract.heading}deg)` }}><i className="material-icons md-18 text-gray-800">north</i></span>
+                            </div>
+                          </div>
+                        </td>
                         <td>
                           {contract.cargo.map((detail) => (
                             <>

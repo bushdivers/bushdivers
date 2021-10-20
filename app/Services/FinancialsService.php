@@ -142,10 +142,12 @@ class FinancialsService
     {
         $contract = Contract::find($contractId);
         // company pay
-        $companyPay = (FinancialConsts::CompanyPay / 100) * $contract->contract_value;
+        $companyPay = $contract->contract_value;
         $this->addTransaction(AirlineTransactionTypes::ContractIncome, $companyPay, 'Contract Pay: '. $contractId, null, 'credit');
         // pilot pay
-        return (FinancialConsts::PilotPay / 100) * $contract->contract_value;
+        $pilotPay = (FinancialConsts::PilotPay / 100) * $contract->contract_value;
+        $this->addTransaction(AirlineTransactionTypes::ContractExpenditure, $pilotPay, 'Pilot Pay: '. $contractId);
+        return $pilotPay;
     }
 
     protected function addTransaction(int $type, float $total, string $memo = null, $pirepId = null, $method = 'debit')
@@ -185,7 +187,7 @@ class FinancialsService
                 if (isset($contract)) {
                     $pp = $this->calcContractPay($contract->id);
                     $userService->addUserAccountEntry($pirep->user_id, TransactionTypes::FlightPay, $pp, $pirep->id);
-                    $userService->updateUserAccountBalance($pirep->user_id, $pp);
+//                    $userService->updateUserAccountBalance($pirep->user_id, $pp);
                     $contract->is_paid = true;
                     $contract->save();
                 }

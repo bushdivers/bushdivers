@@ -113,17 +113,24 @@ class PirepController extends Controller
             ->where('user_id', Auth::user()->id)
             ->where('state', PirepState::ACCEPTED)
             ->orderBy('submitted_at', 'desc')
-            ->get();
+            ->paginate(10);
+
 
         return Inertia::render('Crew/Logbook', ['logbook' => $logbook]);
     }
 
     public function logbookDetail($pirep): Response
     {
-        $p = Pirep::with('depAirport', 'arrAirport', 'aircraft', 'aircraft.fleet')
-            ->where('id', $pirep)
-            ->where('user_id', Auth::user()->id)
-            ->first();
+        if (Auth::user()->is_admin) {
+            $p = Pirep::with('depAirport', 'arrAirport', 'aircraft', 'aircraft.fleet', 'pilot')
+                ->where('id', $pirep)
+                ->first();
+        } else {
+            $p = Pirep::with('depAirport', 'arrAirport', 'aircraft', 'aircraft.fleet')
+                ->where('id', $pirep)
+                ->where('user_id', Auth::user()->id)
+                ->first();
+        }
 
         $pc = PirepCargo::where('pirep_id', $pirep)->pluck('contract_cargo_id');
 

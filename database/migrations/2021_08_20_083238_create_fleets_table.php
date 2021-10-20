@@ -15,7 +15,7 @@ class CreateFleetsTable extends Migration
     {
         Schema::create('fleets', function (Blueprint $table) {
             $table->id();
-            $table->string('type')->index();
+            $table->string('type')->unique();
             $table->string('name');
             $table->string('manufacturer');
             $table->string('powerplants');

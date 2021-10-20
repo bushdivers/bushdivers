@@ -9,7 +9,6 @@ const Register = () => {
     name: '',
     email: '',
     password: '',
-    hub: 'AYMR',
     agree: false,
     optin: false
   })
@@ -48,14 +47,6 @@ const Register = () => {
             <label htmlFor="password" className="block"><span className="text-gray-700">Password</span></label>
             <input id="password" value={values.password} onChange={handleChange} type="password" className="form-input form" />
             {errors.password && <div className="text-sm text-red-500">{errors.password}</div>}
-          </div>
-          <div className="my-2">
-            <label htmlFor="hub" className="block"><span className="text-gray-700">Home Hub</span></label>
-            <select id="hub" value={values.hub} onChange={handleChange} className="form-select form">
-              <option value="AYMR">AYMR</option>
-              <option value="AYMH">AYMH</option>
-            </select>
-            {errors.hub && <div className="text-sm text-red-500">{errors.hub}</div>}
           </div>
           <div className="my-2">
             <label htmlFor="agree" className="inline-flex items-center">

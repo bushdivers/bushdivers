@@ -1,9 +1,24 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useState } from 'react'
 import { Link } from '@inertiajs/inertia-react'
 import { Menu, Transition } from '@headlessui/react'
 import DropdownTitle from '../../Elements/DropdownTitle'
+import dayjs from '../../../Helpers/date.helpers'
+import AdminMenu from './AdminMenu'
 
 const PrivateLeftNav = (props) => {
+  const [displayDate, setDisplayDate] = useState(dayjs().utc().format('HH:mm'))
+  const [timeFormat, setTimeFormat] = useState('UTC')
+
+  const showLocalTime = () => {
+    setDisplayDate(dayjs().format('HH:mm'))
+    setTimeFormat('local')
+  }
+
+  const showUTCTime = () => {
+    setDisplayDate(dayjs().utc().format('HH:mm'))
+    setTimeFormat('UTC')
+  }
+
   return (
     <>
       <div className={props.mobile ? 'px-2 pt-2 pb-3 space-y-1' : 'flex space-x-4'}>
@@ -30,7 +45,7 @@ const PrivateLeftNav = (props) => {
                 {({ active }) => <Link href="/ranks" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Ranks and Awards</Link>}
               </Menu.Item>
               <Menu.Item>
-                {({ active }) => <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Company Financials</a>}
+                {({ active }) => <Link href="/finances" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Company Financials</Link>}
               </Menu.Item>
               <Menu.Item>
                 {({ active }) => <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Pilot Handbook</a>}
@@ -66,6 +81,8 @@ const PrivateLeftNav = (props) => {
           </Transition>
         </Menu>
         <Link href="/live-flights" className={props.mobile ? 'nav-link mobile' : 'nav-link'}>Live Flights Map</Link>
+        <span className="nav-link cursor-pointer" onMouseOver={showLocalTime} onMouseLeave={showUTCTime}>{displayDate} {timeFormat}</span>
+        {props.auth.user.is_admin ? <AdminMenu /> : null}
       </div>
     </>
   )

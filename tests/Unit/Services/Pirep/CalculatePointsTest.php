@@ -7,6 +7,7 @@ use App\Models\Booking;
 use App\Models\Contract;
 use App\Models\ContractCargo;
 use App\Models\Enums\PointsType;
+use App\Models\Enums\TransactionTypes;
 use App\Models\Fleet;
 use App\Models\Flight;
 use App\Models\Pirep;
@@ -50,8 +51,9 @@ class CalculatePointsTest extends TestCase
         $this->aircraft = Aircraft::factory()->create([
             'fleet_id' => $this->fleet->id,
             'fuel_onboard' => 50,
-            'current_airport_id' => 'AYMR',
-            'user_id' => $this->user->id
+            'current_airport_id' => 'AYMN',
+            'user_id' => $this->user->id,
+            'hub_id' => 'AYMR'
         ]);
         DB::table('cargo_types')->insert([
             ['type' => 1, 'text' => 'Solar Panels'],
@@ -62,8 +64,8 @@ class CalculatePointsTest extends TestCase
 
         $this->contract = Contract::factory()->create([
             'contract_value' => 250.00,
-            'dep_airport_id' => 'AYMR',
-            'arr_airport_id' => 'AYMN'
+            'dep_airport_id' => 'AYMN',
+            'arr_airport_id' => 'AYMR'
         ]);
         $this->contractCargo = ContractCargo::factory()->create([
             'contract_id' => $this->contract->id,
@@ -71,8 +73,8 @@ class CalculatePointsTest extends TestCase
         ]);
         $this->pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,
-            'destination_airport_id' => $this->contract->arr_airport_id,
-            'departure_airport_id' => $this->contract->dep_airport_id,
+            'destination_airport_id' => 'AYMR',
+            'departure_airport_id' => 'AYMN',
             'aircraft_id' => $this->aircraft
         ]);
 
@@ -98,15 +100,29 @@ class CalculatePointsTest extends TestCase
 
     public function test_hub_points_for_flight_inc_hub()
     {
-        $pirep = Pirep::factory()->create([
-            'user_id' => $this->user->id,
-            'aircraft_id' => $this->aircraft->id
-        ]);
-        $this->pirepService->calculatePoints($pirep);
+//        $pirep = Pirep::factory()->create([
+//            'user_id' => $this->user->id,
+//            'aircraft_id' => $this->aircraft->id
+//        ]);
+        $this->pirepService->calculatePoints($this->pirep);
         $this->assertDatabaseHas('points', [
-            'pirep_id' => $pirep->id,
+            'pirep_id' => $this->pirep->id,
             'type_name' => PointsType::HOME_HUB_LABEL,
             'points' => PointsType::HOME_HUB
+        ]);
+    }
+
+    public function test_hub_bonus_for_flight_inc_hub()
+    {
+//        $pirep = Pirep::factory()->create([
+//            'user_id' => $this->user->id,
+//            'aircraft_id' => $this->aircraft->id
+//        ]);
+        $this->pirepService->calculatePoints($this->pirep);
+        $this->assertDatabaseHas('user_accounts', [
+            'user_id' => $this->pirep->user_id,
+            'flight_id' => $this->pirep->id,
+            'type' => TransactionTypes::Bonus
         ]);
     }
 
@@ -142,58 +158,6 @@ class CalculatePointsTest extends TestCase
         ]);
     }
 
-    public function test_time_points_one_hour()
-    {
-        $pirep = Pirep::factory()->create([
-            'user_id' => $this->user->id,
-            'aircraft_id' => $this->aircraft->id,
-            'flight_time' => 60
-        ]);
-
-        $time = floor(60 / 60);
-        $expected = PointsType::ONE_HOUR * $time;
-        $this->pirepService->calculatePoints($pirep);
-        $this->assertDatabaseHas('points', [
-            'pirep_id' => $pirep->id,
-            'type_name' => PointsType::ONE_HOUR_LABEL,
-            'points' => $expected
-        ]);
-    }
-
-    public function test_time_points_one_hour_thirty_mins()
-    {
-        $pirep = Pirep::factory()->create([
-            'user_id' => $this->user->id,
-            'aircraft_id' => $this->aircraft->id,
-            'flight_time' => 90
-        ]);
-
-        $expected = 1;
-        $this->pirepService->calculatePoints($pirep);
-        $this->assertDatabaseHas('points', [
-            'pirep_id' => $pirep->id,
-            'type_name' => PointsType::ONE_HOUR_LABEL,
-            'points' => $expected
-        ]);
-    }
-
-    public function test_time_points_under_one_hour()
-    {
-        $pirep = Pirep::factory()->create([
-            'user_id' => $this->user->id,
-            'aircraft_id' => $this->aircraft->id,
-            'flight_time' => 45
-        ]);
-
-        $expected = 0;
-        $this->pirepService->calculatePoints($pirep);
-        $this->assertDatabaseHas('points', [
-            'pirep_id' => $pirep->id,
-            'type_name' => PointsType::ONE_HOUR_LABEL,
-            'points' => $expected
-        ]);
-    }
-
     public function test_distance_points_under_50()
     {
         $pirep = Pirep::factory()->create([
@@ -219,7 +183,7 @@ class CalculatePointsTest extends TestCase
             'distance' => 100
         ]);
 
-        $expected = 2;
+        $expected = 4;
         $this->pirepService->calculatePoints($pirep);
         $this->assertDatabaseHas('points', [
             'pirep_id' => $pirep->id,
@@ -236,7 +200,7 @@ class CalculatePointsTest extends TestCase
             'distance' => 200
         ]);
 
-        $expected = 4;
+        $expected = 8;
         $this->pirepService->calculatePoints($pirep);
         $this->assertDatabaseHas('points', [
             'pirep_id' => $pirep->id,

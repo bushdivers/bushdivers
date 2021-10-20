@@ -14,7 +14,7 @@ class AddDepartureToPirepsTable extends Migration
     public function up()
     {
         Schema::table('pireps', function (Blueprint $table) {
-            $table->string('departure_airport_id');
+            $table->string('departure_airport_id')->nullable();
         });
     }
 

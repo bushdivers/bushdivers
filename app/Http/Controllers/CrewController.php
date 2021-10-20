@@ -75,14 +75,9 @@ class CrewController extends Controller
 
     public function profile(): Response
     {
-        $user = User::with('hub')->find(Auth::user()->id);
-        $hubs = Airport::where('is_hub', true)->orderBy('identifier')->get();
+        $user = User::find(Auth::user()->id);
 
-        $hubs = $hubs->filter(function ($value, $key) use ($user) {
-            return $value != $user->hub_id;
-        });
-
-        return Inertia::render('Crew/Profile', ['profile' => $user, 'hubs' => $hubs]);
+        return Inertia::render('Crew/Profile', ['profile' => $user]);
     }
 
     public function updateProfile(ProfileRequest $request): RedirectResponse
@@ -111,13 +106,12 @@ class CrewController extends Controller
         return redirect()->back()->with(['success' => 'Profile updated']);
     }
 
-    public function transferHub(Request $request): RedirectResponse
+    public function finances(): Response
     {
-        $user = User::find(Auth::user()->id);
-        $user->hub_id = $request->hub;
-        $user->save();
+        $accounts = DB::table('user_accounts')->where('user_id', Auth::user()->id)->orderBy('created_at', 'desc')->get();
+        $balance = $accounts->sum('total');
 
-        return redirect()->back()->with(['success' => 'Transferred to '.$request->hub]);
+        return Inertia::render('Crew/MyFinances', ['accounts' => $accounts, 'balance' => $balance]);
     }
 
     public function jumpseat(): Response
@@ -140,7 +134,7 @@ class CrewController extends Controller
         $transactionValue = $request->cost;
 
         $this->userService->updatePilotLocation($request->icao, Auth::user()->id);
-        $this->userService->updateUserAccountBalance(Auth::user()->id, -$transactionValue);
+//        $this->userService->updateUserAccountBalance(Auth::user()->id, -$transactionValue);
         $this->userService->addUserAccountEntry(Auth::user()->id, TransactionTypes::Jumpseat, -$transactionValue);
 
         return redirect()->back()->with(['success' => 'Relocated successfully to '.$request->icao.' at a cost of $'.$request->cost]);

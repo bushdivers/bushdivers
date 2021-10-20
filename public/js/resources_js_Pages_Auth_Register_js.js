@@ -48,7 +48,6 @@ var Register = function Register() {
     name: '',
     email: '',
     password: '',
-    hub: 'AYMR',
     agree: false,
     optin: false
   }),
@@ -141,31 +140,6 @@ var Register = function Register() {
           }), errors.password && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
             className: "text-sm text-red-500",
             children: errors.password
-          })]
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
-          className: "my-2",
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("label", {
-            htmlFor: "hub",
-            className: "block",
-            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("span", {
-              className: "text-gray-700",
-              children: "Home Hub"
-            })
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("select", {
-            id: "hub",
-            value: values.hub,
-            onChange: handleChange,
-            className: "form-select form",
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("option", {
-              value: "AYMR",
-              children: "AYMR"
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("option", {
-              value: "AYMH",
-              children: "AYMH"
-            })]
-          }), errors.hub && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
-            className: "text-sm text-red-500",
-            children: errors.hub
           })]
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
           className: "my-2",
