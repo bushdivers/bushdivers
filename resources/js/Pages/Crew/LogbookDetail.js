@@ -13,7 +13,7 @@ import { usePage } from '@inertiajs/inertia-react'
 
 const LogbookDetail = ({ pirep, points, logs, cargo }) => {
   const { auth } = usePage().props
-  const submittedDate = format(new Date(pirep.submitted_at), 'do MMMM yyyy')
+  const submittedDate = format(new Date(pirep.submitted_at), 'do MMMM yyyy hh:mm', { timeZone: 'UTC' })
   return (
     <div>
       <PageTitle title={`Pilot Report - ${pirep.id}`} />

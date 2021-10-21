@@ -167,7 +167,7 @@ class TrackerController extends Controller
             $pirep->landing_lon = $request->landing_lon;
             $pirep->state = PirepState::ACCEPTED;
             $pirep->status = PirepStatus::ARRIVED;
-            $pirep->submitted_at = Carbon::now();
+            $pirep->submitted_at = Carbon::now('UTC');
             $pirep->block_off_time = $startTime;
             $pirep->block_on_time = $endTime;
             $pirep->save();
