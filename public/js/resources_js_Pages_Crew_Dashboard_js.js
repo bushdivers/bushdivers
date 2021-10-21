@@ -2832,7 +2832,7 @@ var Dashboard = function Dashboard(_ref) {
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
             className: "rounded shadow p-4 mt-4 ml-2 bg-white md:w-1/2",
             children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
-              className: "text-lg flex items-center justify-between",
+              className: "text-lg flex flex-col lg:flex-row lg:items-center lg:justify-between",
               children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
                 className: "flex items-center",
                 children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("i", {
@@ -2854,9 +2854,9 @@ var Dashboard = function Dashboard(_ref) {
               children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
                 children: "Next Rank:"
               }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
-                className: "flex justify-between items-center",
+                className: "flex flex-col lg:flex-row lg:items-center lg:justify-between",
                 children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
-                  className: "flex items-center justify-between",
+                  className: "flex items-center",
                   children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("img", {
                     width: "60",
                     src: nextRank.image
@@ -2865,7 +2865,7 @@ var Dashboard = function Dashboard(_ref) {
                     children: nextRank.name
                   })]
                 }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
-                  className: "text-sm flex items-center",
+                  className: "text-sm flex",
                   children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
                     className: "mr-2",
                     children: "Hours: "

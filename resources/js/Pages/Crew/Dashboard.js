@@ -52,7 +52,7 @@ const Dashboard = ({ lastFlight, rank, nextRank, awards, user, locations, balanc
               )}
             </div>
             <div className="rounded shadow p-4 mt-4 ml-2 bg-white md:w-1/2">
-              <div className="text-lg flex items-center justify-between">
+              <div className="text-lg flex flex-col lg:flex-row lg:items-center lg:justify-between">
                 <div className="flex items-center">
                   <i className="material-icons mr-2 md-36">military_tech</i> Rank
                 </div>
@@ -61,9 +61,9 @@ const Dashboard = ({ lastFlight, rank, nextRank, awards, user, locations, balanc
               </div>
               <div className="mt-4">
                 <div>Next Rank:</div>
-                <div className="flex justify-between items-center">
-                  <div className="flex items-center justify-between"><img width="60" src={nextRank.image} /> <span className="ml-2 text-sm">{nextRank.name}</span></div>
-                  <div className="text-sm flex items-center">
+                <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
+                  <div className="flex items-center"><img width="60" src={nextRank.image} /> <span className="ml-2 text-sm">{nextRank.name}</span></div>
+                  <div className="text-sm flex">
                     <div className="mr-2">Hours: </div> <div>{user.flights_time > (nextRank.hours * 60) ? <i className="material-icons text-green-500">check_circle</i> : <span>{convertMinuteDecimalToHoursAndMinutes((nextRank.hours * 60) - user.flights_time)}</span>}</div>
                   </div>
                   <div className="">
