@@ -2804,7 +2804,7 @@ var FleetList = function FleetList(_ref) {
           className: "rounded shadow bg-white overflow-x-auto mt-4",
           children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)("div", {
             className: "flex justify-between",
-            children: [fleet && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("button", {
+            children: [fleet && fleet.length > 0 && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("button", {
               onClick: toggleDetail,
               className: "btn btn-secondary m-2",
               children: "Toggle fleet aircraft details"
@@ -3816,7 +3816,8 @@ var PrivateRightNav = function PrivateRightNav(props) {
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_headlessui_react__WEBPACK_IMPORTED_MODULE_4__.Menu.Item, {
               children: function children(_ref6) {
                 var active = _ref6.active;
-                return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Link, {
+                return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("a", {
+                  target: "_blank",
                   href: "/https://productific.com/@BushDivers#voting",
                   className: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50",
                   children: "Vote on Features"

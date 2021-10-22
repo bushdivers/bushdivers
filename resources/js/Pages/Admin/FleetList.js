@@ -31,7 +31,7 @@ const FleetList = ({ fleet }) => {
         <div className="w-full">
           <div className="rounded shadow bg-white overflow-x-auto mt-4">
             <div className="flex justify-between">
-              {fleet && <button onClick={toggleDetail} className="btn btn-secondary m-2">Toggle fleet aircraft details</button>}
+              {fleet && fleet.length > 0 && <button onClick={toggleDetail} className="btn btn-secondary m-2">Toggle fleet aircraft details</button>}
               <div className="inline m-2">
                 <Link href="/admin/fleet/create" className="btn btn-secondary mr-2">Add new fleet</Link>
                 <Link href="/admin/aircraft/create" className="btn btn-secondary">Add new aircraft</Link>
