@@ -40,6 +40,9 @@ const PrivateRightNav = (props) => {
                 {({ active }) => <Link href="/jumpseat" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Jumpseat</Link>}
               </Menu.Item>
               <Menu.Item>
+                {({ active }) => <Link href="/https://productific.com/@BushDivers#voting" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Vote on Features</Link>}
+              </Menu.Item>
+              <Menu.Item>
                 {({ active }) => <Link href="/logout" className="block px-4 py-2 pt-4 border-t text-sm text-gray-700 hover:bg-gray-50 border-t">Sign out</Link>}
               </Menu.Item>
             </Menu.Items>
