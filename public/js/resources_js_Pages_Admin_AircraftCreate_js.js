@@ -3620,7 +3620,7 @@ var PrivateRightNav = function PrivateRightNav(props) {
                 var active = _ref6.active;
                 return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("a", {
                   target: "_blank",
-                  href: "/https://productific.com/@BushDivers#voting",
+                  href: "https://productific.com/@BushDivers#voting",
                   className: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50",
                   children: "Vote on Features"
                 });
