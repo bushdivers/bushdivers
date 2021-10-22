@@ -2840,7 +2840,7 @@ var Contracts = function Contracts(_ref) {
   var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)({
     icao: auth.user.current_airport_id,
     distance: 'Up to 50nm',
-    cargo: 2000,
+    cargo: 10000,
     pax: 12
   }),
       _useState6 = _slicedToArray(_useState5, 2),
@@ -4236,6 +4236,15 @@ var PrivateRightNav = function PrivateRightNav(props) {
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_headlessui_react__WEBPACK_IMPORTED_MODULE_4__.Menu.Item, {
               children: function children(_ref6) {
                 var active = _ref6.active;
+                return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Link, {
+                  href: "/https://productific.com/@BushDivers#voting",
+                  className: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50",
+                  children: "Vote on Features"
+                });
+              }
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_headlessui_react__WEBPACK_IMPORTED_MODULE_4__.Menu.Item, {
+              children: function children(_ref7) {
+                var active = _ref7.active;
                 return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Link, {
                   href: "/logout",
                   className: "block px-4 py-2 pt-4 border-t text-sm text-gray-700 hover:bg-gray-50 border-t",
