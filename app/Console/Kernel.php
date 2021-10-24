@@ -40,6 +40,11 @@ class Kernel extends ConsoleKernel
         $schedule->call(function () {
             $contractService = new ContractService();
             $contractService->findAirportsInNeedOfContracts();
+        })->daily();
+
+        // contract generation - hubs
+        $schedule->call(function () {
+            $contractService = new ContractService();
             $contractService->findHubsInNeedOfContracts();
         })->daily();
 

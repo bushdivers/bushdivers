@@ -221,7 +221,7 @@ class ContractService
 
     public function calculateContractValue($type, $cargo, $distance): float
     {
-        $weightMultiplier = 2.3;
+        $weightMultiplier = 1.1;
         $paxMultiplier = 180;
         $distanceMultiplier = 200;
         if ($type == 1) {
