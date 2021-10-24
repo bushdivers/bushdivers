@@ -2753,6 +2753,20 @@ __webpack_require__.r(__webpack_exports__);
 
 var FleetCardContent = function FleetCardContent(_ref) {
   var fleet = _ref.fleet;
+
+  var renderAircraftStatus = function renderAircraftStatus(status) {
+    switch (status) {
+      case 1:
+        return 'Available';
+
+      case 2:
+        return 'Reserved';
+
+      case 3:
+        return 'In Use';
+    }
+  };
+
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.Fragment, {
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
       className: "flex flex-col md:flex-row items-start justify-between",
@@ -2885,7 +2899,7 @@ var FleetCardContent = function FleetCardContent(_ref) {
               }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("td", {
                 children: aircraft.flight_time_mins
               }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("td", {
-                children: aircraft.status
+                children: renderAircraftStatus(aircraft.state)
               })]
             }, aircraft.id);
           })

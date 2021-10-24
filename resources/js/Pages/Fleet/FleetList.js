@@ -6,6 +6,16 @@ import { Link } from '@inertiajs/inertia-react'
 // import FleetMap from '../../Shared/Components/Fleet/FleetMap'
 
 const FleetCardContent = ({ fleet }) => {
+  const renderAircraftStatus = (status) => {
+    switch (status) {
+      case 1:
+        return 'Available'
+      case 2:
+        return 'Reserved'
+      case 3:
+        return 'In Use'
+    }
+  }
   return (
     <>
       <div className="flex flex-col md:flex-row items-start justify-between">
@@ -74,7 +84,7 @@ const FleetCardContent = ({ fleet }) => {
                 <td><Link href={`/airports/${aircraft.hub_id}`}>{aircraft.hub_id}</Link></td>
                 <td><Link href={`/airports/${aircraft.current_airport_id}`}>{aircraft.current_airport_id}</Link></td>
                 <td>{aircraft.flight_time_mins}</td>
-                <td>{aircraft.status}</td>
+                <td>{renderAircraftStatus(aircraft.state)}</td>
               </tr>
             ))}
           </tbody>
