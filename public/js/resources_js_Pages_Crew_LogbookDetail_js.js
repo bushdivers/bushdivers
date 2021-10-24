@@ -2736,7 +2736,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var date_fns__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! date-fns */ "./node_modules/date-fns/esm/format/index.js");
+/* harmony import */ var date_fns__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! date-fns */ "./node_modules/date-fns/esm/format/index.js");
 /* harmony import */ var _Shared_Navigation_PageTitle__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../Shared/Navigation/PageTitle */ "./resources/js/Shared/Navigation/PageTitle.js");
 /* harmony import */ var _Shared_Layout__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../Shared/Layout */ "./resources/js/Shared/Layout.js");
 /* harmony import */ var _Shared_Pireps_PirepMap__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../Shared/Pireps/PirepMap */ "./resources/js/Shared/Pireps/PirepMap.js");
@@ -2747,7 +2747,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Shared_Pireps_PirepCargo__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../Shared/Pireps/PirepCargo */ "./resources/js/Shared/Pireps/PirepCargo.js");
 /* harmony import */ var _Shared_Pireps_LandingSummary__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../Shared/Pireps/LandingSummary */ "./resources/js/Shared/Pireps/LandingSummary.js");
 /* harmony import */ var _inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @inertiajs/inertia-react */ "./node_modules/@inertiajs/inertia-react/dist/index.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _Shared_Pireps_PirepFinancials__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../Shared/Pireps/PirepFinancials */ "./resources/js/Shared/Pireps/PirepFinancials.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+
 
 
 
@@ -2767,44 +2769,51 @@ var LogbookDetail = function LogbookDetail(_ref) {
   var pirep = _ref.pirep,
       points = _ref.points,
       logs = _ref.logs,
-      cargo = _ref.cargo;
+      cargo = _ref.cargo,
+      pilotFinancials = _ref.pilotFinancials,
+      companyFinancials = _ref.companyFinancials,
+      flightTotal = _ref.flightTotal;
   var auth = (0,_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_10__.usePage)().props.auth;
-  var submittedDate = (0,date_fns__WEBPACK_IMPORTED_MODULE_12__.default)(new Date(pirep.submitted_at), 'do MMMM yyyy hh:mm', {
+  var submittedDate = (0,date_fns__WEBPACK_IMPORTED_MODULE_13__.default)(new Date(pirep.submitted_at), 'do MMMM yyyy hh:mm', {
     timeZone: 'UTC'
   });
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("div", {
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(_Shared_Navigation_PageTitle__WEBPACK_IMPORTED_MODULE_1__.default, {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_Shared_Navigation_PageTitle__WEBPACK_IMPORTED_MODULE_1__.default, {
       title: "Pilot Report - ".concat(pirep.id)
-    }), submittedDate, " ", auth.user.is_admin && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("span", {
+    }), submittedDate, " ", auth.user.is_admin && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("span", {
       children: [pirep.pilot.pilot_id, " - ", pirep.pilot.private_name]
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("div", {
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
       className: "flex flex-col md:flex-row justify-between",
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("div", {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
         className: "md:w-1/2",
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(_Shared_Pireps_LogbookPrimary__WEBPACK_IMPORTED_MODULE_5__.default, {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_Shared_Pireps_LogbookPrimary__WEBPACK_IMPORTED_MODULE_5__.default, {
           pirep: pirep
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(_Shared_Pireps_LogbookSecondary__WEBPACK_IMPORTED_MODULE_6__.default, {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_Shared_Pireps_LogbookSecondary__WEBPACK_IMPORTED_MODULE_6__.default, {
           pirep: pirep
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(_Shared_Pireps_Points__WEBPACK_IMPORTED_MODULE_4__.default, {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_Shared_Pireps_Points__WEBPACK_IMPORTED_MODULE_4__.default, {
           points: points
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(_Shared_Pireps_PirepCargo__WEBPACK_IMPORTED_MODULE_8__.default, {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_Shared_Pireps_PirepCargo__WEBPACK_IMPORTED_MODULE_8__.default, {
           cargo: cargo
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("div", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
           className: "rounded shadow p-4 mt-2 bg-white mx-2",
-          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(_Shared_Pireps_PirepChart__WEBPACK_IMPORTED_MODULE_7__.default, {
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_Shared_Pireps_PirepChart__WEBPACK_IMPORTED_MODULE_7__.default, {
             data: logs
           })
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_Shared_Pireps_PirepFinancials__WEBPACK_IMPORTED_MODULE_11__.default, {
+          company: companyFinancials,
+          pilot: pilotFinancials,
+          total: flightTotal
         })]
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("div", {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
         className: "md:w-1/2",
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("div", {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
           className: "rounded shadow p-4 mt-2 bg-white mx-2",
-          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(_Shared_Pireps_PirepMap__WEBPACK_IMPORTED_MODULE_3__.default, {
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_Shared_Pireps_PirepMap__WEBPACK_IMPORTED_MODULE_3__.default, {
             pirep: pirep,
             coords: logs,
             size: "small"
           })
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(_Shared_Pireps_LandingSummary__WEBPACK_IMPORTED_MODULE_9__.default, {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_Shared_Pireps_LandingSummary__WEBPACK_IMPORTED_MODULE_9__.default, {
           pirep: pirep
         })]
       })]
@@ -2813,7 +2822,7 @@ var LogbookDetail = function LogbookDetail(_ref) {
 };
 
 LogbookDetail.layout = function (page) {
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(_Shared_Layout__WEBPACK_IMPORTED_MODULE_2__.default, {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_Shared_Layout__WEBPACK_IMPORTED_MODULE_2__.default, {
     children: page,
     title: "Pirep Details"
   });
@@ -4156,6 +4165,86 @@ var PirepChart = function PirepChart(props) {
 };
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (PirepChart);
+
+/***/ }),
+
+/***/ "./resources/js/Shared/Pireps/PirepFinancials.js":
+/*!*******************************************************!*\
+  !*** ./resources/js/Shared/Pireps/PirepFinancials.js ***!
+  \*******************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+
+
+
+
+var PirepFinancials = function PirepFinancials(props) {
+  var renderCompanyTransactionType = function renderCompanyTransactionType(transaction) {
+    switch (transaction) {
+      case 5:
+        return 'Ground Handling';
+
+      case 6:
+        return 'Landing Fee';
+
+      case 7:
+        return 'Fuel Cost';
+
+      case 8:
+        return 'Contract Income';
+
+      case 9:
+        return 'Pilot Pay';
+    }
+  };
+
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+    className: "bg-white rounded shadow p-4 my-2 mx-2 overflow-x-auto",
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+      className: "text-lg",
+      children: "Financials"
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("table", {
+      className: "table table-condensed table-auto",
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("thead", {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("tr", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("th", {
+            children: "Transaction"
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("th", {
+            children: "Total"
+          })]
+        })
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("tbody", {
+        children: props.company.map(function (company) {
+          return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("tr", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("td", {
+              children: [renderCompanyTransactionType(company.transaction_type), " - ", company.memo]
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("td", {
+              className: company.total < 0 && 'text-red-500',
+              children: ["$", company.total]
+            })]
+          }, company.id);
+        })
+      })]
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+      className: "text-right",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+        children: ["Total: ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("span", {
+          className: props.total < 0 && 'text-red-500',
+          children: ["$", props.total]
+        })]
+      })
+    })]
+  });
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (PirepFinancials);
 
 /***/ }),
 
