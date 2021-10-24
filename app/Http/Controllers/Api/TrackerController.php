@@ -13,6 +13,7 @@ use App\Models\Enums\TransactionTypes;
 use App\Models\FlightLog;
 use App\Models\Pirep;
 use App\Models\PirepCargo;
+use App\Models\Point;
 use App\Services\AirportService;
 use App\Services\CargoService;
 use App\Services\ContractService;
@@ -21,6 +22,7 @@ use App\Services\FinancialsService;
 use App\Services\PirepService;
 use App\Services\UserService;
 use Carbon\Carbon;
+use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -192,8 +194,11 @@ class TrackerController extends Controller
         }
 
         try {
-            // process financials
+            // process points and financials
             $this->financialsService->processPirepFinancials($pirep);
+            $pirepService->calculatePoints($pirep);
+            // add total to pirep
+            $pirepService->updatePirepTotalScore($pirep);
         } catch (\Exception $e) {
             $this->rollbackSubmission(3, $request);
             return response()->json(['message' => $e->getMessage()], 500);
@@ -272,6 +277,7 @@ class TrackerController extends Controller
     {
         // pirep reset
         $p = Pirep::find($pirep->id);
+        $score = $p->score;
         $p->fuel_used = null;
         $p->distance = null;
         $p->flight_time = null;
@@ -281,6 +287,7 @@ class TrackerController extends Controller
         $p->submitted_at = null;
         $p->block_off_time = null;
         $p->block_on_time = null;
+        $p->score = null;
         $p->save();
 
         // uncomplete contracts
@@ -297,5 +304,13 @@ class TrackerController extends Controller
         }
         // remove financials
         AccountLedger::where('pirep_id', $pirep->id)->destroy();
+
+        // remove points
+        Point::where('pirep_id', $pirep->id)->destroy();
+
+        $user = User::find($pirep->user_id);
+        $user->points = $user->points - $score;
+        $user->save();
+
     }
 }
