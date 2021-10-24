@@ -6,6 +6,7 @@ use App\Models\Airport;
 use App\Models\Contract;
 use App\Models\ContractCargo;
 use App\Models\Enums\ContractType;
+use App\Models\Enums\ContractValueTypes;
 use App\Models\PirepCargo;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -221,9 +222,9 @@ class ContractService
 
     public function calculateContractValue($type, $cargo, $distance): float
     {
-        $weightMultiplier = 1.1;
-        $paxMultiplier = 180;
-        $distanceMultiplier = 200;
+        $weightMultiplier = ContractValueTypes::CARGO_VALUE;
+        $paxMultiplier = ContractValueTypes::PAX_VALUE;
+        $distanceMultiplier = ContractValueTypes::DISTANCE_VALUE;
         if ($type == 1) {
             $cargoValue = $cargo * $weightMultiplier;
             $distanceValue = ($distance / 50) * $distanceMultiplier;
