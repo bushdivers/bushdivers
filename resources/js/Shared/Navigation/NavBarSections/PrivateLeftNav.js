@@ -48,10 +48,10 @@ const PrivateLeftNav = (props) => {
                 {({ active }) => <Link href="/finances" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Company Financials</Link>}
               </Menu.Item>
               <Menu.Item>
-                {({ active }) => <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Pilot Handbook</a>}
+                {({ active }) => <a href="https://storage.googleapis.com/bush-divers.appspot.com/Bush%20Divers%20-%20Handbook.pdf" target="_blank" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Pilot Handbook</a>}
               </Menu.Item>
               <Menu.Item>
-                {({ active }) => <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Bush Tracker</a>}
+                {({ active }) => <a href="https://storage.googleapis.com/bush-divers.appspot.com/BushTracker.zip" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Bush Tracker</a>}
               </Menu.Item>
             </Menu.Items>
           </Transition>

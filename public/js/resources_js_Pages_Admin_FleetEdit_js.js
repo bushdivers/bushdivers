@@ -3648,7 +3648,8 @@ var PrivateLeftNav = function PrivateLeftNav(props) {
               children: function children(_ref6) {
                 var active = _ref6.active;
                 return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("a", {
-                  href: "#",
+                  href: "https://storage.googleapis.com/bush-divers.appspot.com/Bush%20Divers%20-%20Handbook.pdf",
+                  target: "_blank",
                   className: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50",
                   children: "Pilot Handbook"
                 });
@@ -3657,7 +3658,7 @@ var PrivateLeftNav = function PrivateLeftNav(props) {
               children: function children(_ref7) {
                 var active = _ref7.active;
                 return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("a", {
-                  href: "#",
+                  href: "https://storage.googleapis.com/bush-divers.appspot.com/BushTracker.zip",
                   className: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50",
                   children: "Bush Tracker"
                 });
