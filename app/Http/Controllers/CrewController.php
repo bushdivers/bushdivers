@@ -30,6 +30,11 @@ class CrewController extends Controller
         $this->airportService = $airportService;
     }
 
+    public function intro(): Response
+    {
+        return Inertia::render('Crew/Intro');
+    }
+
     public function index(): Response
     {
         $user = User::find(Auth::user()->id);
