@@ -82,6 +82,12 @@ class CrewController extends Controller
     {
         $user = User::find(Auth::user()->id);
 
+        if ($user->api_token == null) {
+            $token = $user->createToken('bush-tracker');
+            $user->api_token = $token->plainTextToken;
+            $user->save();
+        }
+
         return Inertia::render('Crew/Profile', ['profile' => $user]);
     }
 
