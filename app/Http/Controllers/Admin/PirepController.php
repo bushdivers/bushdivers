@@ -15,7 +15,7 @@ class PirepController extends Controller
     public function index(): Response
     {
         $pireps = Pirep::with('depAirport', 'arrAirport', 'aircraft', 'aircraft.fleet', 'pilot')
-            ->orderBy('state', 'desc')
+            ->orderBy('submitted_at', 'desc')
             ->paginate(10);
 
         return Inertia::render('Admin/Pireps', ['pireps' => $pireps]);
