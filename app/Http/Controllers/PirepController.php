@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateDispatchRequest;
+use App\Models\AccountLedger;
 use App\Models\Aircraft;
 use App\Models\Booking;
 use App\Models\ContractCargo;
@@ -10,6 +11,7 @@ use App\Models\Enums\AircraftState;
 use App\Models\Enums\FlightType;
 use App\Models\Enums\PirepState;
 use App\Models\Enums\PirepStatus;
+use App\Models\Enums\TransactionTypes;
 use App\Models\Fleet;
 use App\Models\FlightLog;
 use App\Models\Pirep;
@@ -141,12 +143,19 @@ class PirepController extends Controller
 
         $logs = FlightLog::where('pirep_id', $pirep)->orderBy('created_at')->get();
         //$coords = DB::table('flight_logs')->where('pirep_id', $pirep)->select('lat', 'lon')->orderBy('created_at')->get();
+
+        $companyFinancials = AccountLedger::where('pirep_id', $pirep)->get();
+
+        $total = round($companyFinancials->sum('total'),2);
+
         return Inertia::render('Crew/LogbookDetail', [
             'pirep' => $p,
             'points' => $points,
             'logs' => $logs,
             'coords' => $logs->pluck('lat', 'lon'),
-            'cargo' => $cargo
+            'cargo' => $cargo,
+            'companyFinancials' => $companyFinancials,
+            'flightTotal' => $total
         ]);
     }
 

@@ -64,7 +64,7 @@ const Logbook = ({ logbook }) => {
                     <td>{convertMinuteDecimalToHoursAndMinutes(entry.flight_time)}</td>
                     <td>{entry.distance}nm</td>
                     <td>{entry.score}</td>
-                    <td>{format(new Date(entry.submitted_at), 'dd LLL yyyy')}</td>
+                    <td>{format(new Date(entry.submitted_at), 'dd LLL yyyy hh:mm', { timeZone: 'UTC' })}</td>
                   </tr>
                 ))}
                 </tbody>

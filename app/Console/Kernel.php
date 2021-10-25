@@ -29,20 +29,36 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('inspire')->hourly();
+        // removed inactive pireps to clear up booked planes
         $schedule->call(function () {
             $pirepService = new PirepService();
             $inactivePireps = $pirepService->findInactivePireps();
             $pirepService->removeMultiplePireps($inactivePireps);
         })->daily();
+
+        // contract generation
         $schedule->call(function () {
             $contractService = new ContractService();
             $contractService->findAirportsInNeedOfContracts();
+        })->daily();
+
+        // contract generation - hubs
+        $schedule->call(function () {
+            $contractService = new ContractService();
             $contractService->findHubsInNeedOfContracts();
         })->daily();
+
+        // financial calculations
         $schedule->call(function () {
             $financeService = new FinancialsService();
             $financeService->calcMonthlyFees();
         })->monthly();
+
+        // remove stale contracts
+        $schedule->call(function () {
+            $contractService = new ContractService();
+            $contractService->removeStaleContracts();
+        })->weekly();
     }
 
     /**

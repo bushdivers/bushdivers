@@ -16,8 +16,14 @@ class ContractsController extends Controller
     public function test()
     {
         $contractService = new ContractService();
-        $contractService->findAirportsInNeedOfContracts();
-        $contractService->findHubsInNeedOfContracts();
+        try {
+            $contractService->findAirportsInNeedOfContracts();
+            $contractService->findHubsInNeedOfContracts();
+        } catch (\Exception $exception) {
+            return response()->json(['status' => 'error', 'message' => $exception->getMessage()]);
+        }
+
+        return response()->json(['status' => 'success']);
     }
 
     public function getContracts($icao, $distance, $cargo, $pax): JsonResponse

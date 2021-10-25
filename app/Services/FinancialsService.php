@@ -138,15 +138,15 @@ class FinancialsService
         $this->addTransaction(AirlineTransactionTypes::GroundHandlingFees, $total, 'Cargo Handling', $pirep->id);
     }
 
-    public function calcContractPay($contractId): float
+    public function calcContractPay($contractId, $pirep = null): float
     {
         $contract = Contract::find($contractId);
         // company pay
         $companyPay = $contract->contract_value;
-        $this->addTransaction(AirlineTransactionTypes::ContractIncome, $companyPay, 'Contract Pay: '. $contractId, null, 'credit');
+        $this->addTransaction(AirlineTransactionTypes::ContractIncome, $companyPay, 'Contract Pay: '. $contractId, $pirep, 'credit');
         // pilot pay
         $pilotPay = (FinancialConsts::PilotPay / 100) * $contract->contract_value;
-        $this->addTransaction(AirlineTransactionTypes::ContractExpenditure, $pilotPay, 'Pilot Pay: '. $contractId);
+        $this->addTransaction(AirlineTransactionTypes::ContractExpenditure, $pilotPay, 'Pilot Pay: '. $contractId, $pirep);
         return $pilotPay;
     }
 
@@ -185,7 +185,7 @@ class FinancialsService
                     ->first();
 
                 if (isset($contract)) {
-                    $pp = $this->calcContractPay($contract->id);
+                    $pp = $this->calcContractPay($contract->id, $pirep->id);
                     $userService->addUserAccountEntry($pirep->user_id, TransactionTypes::FlightPay, $pp, $pirep->id);
 //                    $userService->updateUserAccountBalance($pirep->user_id, $pp);
                     $contract->is_paid = true;

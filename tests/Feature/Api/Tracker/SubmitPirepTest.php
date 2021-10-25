@@ -12,6 +12,7 @@ use App\Models\ContractCargo;
 use App\Models\Enums\AircraftState;
 use App\Models\Enums\AirlineTransactionTypes;
 use App\Models\Enums\FinancialConsts;
+use App\Models\Enums\PointsType;
 use App\Models\Enums\TransactionTypes;
 use App\Models\Fleet;
 use App\Models\Flight;
@@ -364,6 +365,14 @@ class SubmitPirepTest extends TestCase
         $this->assertDatabaseHas('users', [
             'id' => $this->pirep->user_id,
             'points' => 59
+        ]);
+        $this->assertDatabaseHas('pireps', [
+            'score' => 10
+        ]);
+        $this->assertDatabaseHas('points', [
+            'pirep_id' => $this->pirep->id,
+            'points' => PointsType::LANDING_RATE_3_39,
+            'type_name' => PointsType::LANDING_RATE_3_39_LABEL
         ]);
     }
 

@@ -2,10 +2,22 @@ import React from 'react'
 import Layout from '../../Shared/Layout'
 import PageTitle from '../../Shared/Navigation/PageTitle'
 import Card from '../../Shared/Elements/Card'
-import { Link } from '@inertiajs/inertia-react'
+import { Link, usePage } from '@inertiajs/inertia-react'
 // import FleetMap from '../../Shared/Components/Fleet/FleetMap'
 
 const FleetCardContent = ({ fleet }) => {
+  const { auth } = usePage().props
+
+  const renderAircraftStatus = (status) => {
+    switch (status) {
+      case 1:
+        return 'Available'
+      case 2:
+        return 'Reserved'
+      case 3:
+        return 'In Use'
+    }
+  }
   return (
     <>
       <div className="flex flex-col md:flex-row items-start justify-between">
@@ -55,6 +67,7 @@ const FleetCardContent = ({ fleet }) => {
           </div>
         </div>
       </div>
+      { auth.user && (
       <div className="mt-3 overflow-x-auto">
         {fleet.aircraft.length > 0 &&
         <table className="table table-auto">
@@ -74,13 +87,14 @@ const FleetCardContent = ({ fleet }) => {
                 <td><Link href={`/airports/${aircraft.hub_id}`}>{aircraft.hub_id}</Link></td>
                 <td><Link href={`/airports/${aircraft.current_airport_id}`}>{aircraft.current_airport_id}</Link></td>
                 <td>{aircraft.flight_time_mins}</td>
-                <td>{aircraft.status}</td>
+                <td>{renderAircraftStatus(aircraft.state)}</td>
               </tr>
             ))}
           </tbody>
           </table>
         }
       </div>
+      )}
     </>
   )
 }

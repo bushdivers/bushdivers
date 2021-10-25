@@ -10,10 +10,11 @@ import PirepChart from '../../Shared/Pireps/PirepChart'
 import PirepCargo from '../../Shared/Pireps/PirepCargo'
 import LandingSummary from '../../Shared/Pireps/LandingSummary'
 import { usePage } from '@inertiajs/inertia-react'
+import PirepFinancials from '../../Shared/Pireps/PirepFinancials'
 
-const LogbookDetail = ({ pirep, points, logs, cargo }) => {
+const LogbookDetail = ({ pirep, points, logs, cargo, pilotFinancials, companyFinancials, flightTotal }) => {
   const { auth } = usePage().props
-  const submittedDate = format(new Date(pirep.submitted_at), 'do MMMM yyyy')
+  const submittedDate = format(new Date(pirep.submitted_at), 'do MMMM yyyy hh:mm', { timeZone: 'UTC' })
   return (
     <div>
       <PageTitle title={`Pilot Report - ${pirep.id}`} />
@@ -27,6 +28,7 @@ const LogbookDetail = ({ pirep, points, logs, cargo }) => {
           <div className="rounded shadow p-4 mt-2 bg-white mx-2">
             <PirepChart data={logs} />
           </div>
+          <PirepFinancials company={companyFinancials} pilot={pilotFinancials} total={flightTotal} />
         </div>
         <div className="md:w-1/2">
           <div className="rounded shadow p-4 mt-2 bg-white mx-2">

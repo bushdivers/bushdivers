@@ -152,7 +152,9 @@ class ContractsController extends Controller
             ->whereHas('cargo', function ($q) use($pax) {
                 $q->where('contract_type_id', ContractType::Passenger)
                     ->where('cargo_qty', '<=', $pax);
-            })->get();
+            })
+            ->orderBy('heading')
+            ->get();
 
         $cargoContracts =  Contract::with('depAirport', 'arrAirport', 'cargo', 'cargo.currentAirport')
             ->where('dep_airport_id', $icao)
@@ -162,7 +164,9 @@ class ContractsController extends Controller
             ->whereHas('cargo', function ($q) use($cargo) {
                 $q->where('contract_type_id', ContractType::Cargo)
                     ->where('cargo_qty', '<=', $cargo);
-            })->get();
+            })
+            ->orderBy('heading')
+            ->get();
 
         $contracts = $paxContracts->merge($cargoContracts);
 

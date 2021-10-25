@@ -23,6 +23,8 @@ Route::get('/hubs', [\App\Http\Controllers\AirportController::class, 'hubs'])->n
 Route::get('/staff', [\App\Http\Controllers\PageController::class, 'staff'])->name('staff');
 Route::get('/supporters', [\App\Http\Controllers\PageController::class, 'supporters'])->name('supporters');
 Route::get('/live-flights', [\App\Http\Controllers\PirepController::class, 'flightMap'])->name('flights.map');
+// Fleet
+Route::get('/fleet', [\App\Http\Controllers\FleetController::class, 'index'])->name('fleet');
 
 // Auth
 Route::get('/register', [\App\Http\Controllers\Auth\RegisterController::class, 'index'])->name('register.index');
@@ -39,6 +41,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/finances', [\App\Http\Controllers\HomeController::class, 'finances'])->name('company.finances');
     // Crew
     Route::get('/dashboard', [\App\Http\Controllers\CrewController::class, 'index'])->name('dashboard');
+    Route::get('/intro', [\App\Http\Controllers\CrewController::class, 'intro'])->name('intro');
     Route::get('/roster', [\App\Http\Controllers\CrewController::class, 'roster'])->name('roster');
     Route::get('/profile', [\App\Http\Controllers\CrewController::class, 'profile'])->name('profile.index');
     Route::put('/profile', [\App\Http\Controllers\CrewController::class, 'updateProfile'])->name('profile.update');
@@ -51,8 +54,7 @@ Route::middleware('auth')->group(function () {
     // Airports
     Route::get('/airports/{icao}', [\App\Http\Controllers\AirportController::class, 'index'])->name('airport');
 
-    // Fleet
-    Route::get('/fleet', [\App\Http\Controllers\FleetController::class, 'index'])->name('fleet');
+
 
     // Flights
     Route::get('/my-contracts', [\App\Http\Controllers\ContractsController::class, 'myContracts'])->name('bids');

@@ -16,7 +16,6 @@ const Ranks = ({ ranks, awards }) => {
                   <div className="text-lg font-bold">{rank.name}</div>
                   <span className="text-sm">Hours: {rank.hours}</span><br/>
                   <span className="text-sm">Points: {rank.points}</span><br/>
-                  <span className="text-sm">Pay Rate: ${rank.pilot_pay}</span>
                 </div>
               </div>
             ))
@@ -24,16 +23,29 @@ const Ranks = ({ ranks, awards }) => {
       </div>
       <div className="rounded shadow bg-white p-4 mt-4">
         <h2 className="text-xl mb-4">Points</h2>
-        {awards && (
-          awards.map((award) => (
-            <div key={award.id} className="flex justify-start items-center mb-4">
-              <img src={award.image} width="100"/>
-              <div className="ml-4">
-                <div className="text-lg font-bold">{award.name}</div>
-              </div>
-            </div>
-          ))
-        )}
+        <div className="mb-4">
+          <div className="font-bold">Completed flight:</div>
+          <div className="text-sm">5 Points</div>
+        </div>
+        <div className="mb-4">
+          <div className="font-bold">Per 50nm flown:</div>
+          <div className="text-sm">2 Points</div>
+        </div>
+        <div className="mb-4">
+          <div className="font-bold">Return aircraft to home:</div>
+          <div className="text-sm">5 Points</div>
+        </div>
+        <div className="mb-4">
+          <div className="font-bold">Landing rate:</div>
+          <div className="text-sm">Below 0fpm: -2 Points</div>
+          <div className="text-sm">0fpm to 2fpm: -1 Point</div>
+          <div className="text-sm">3fpm to 39fpm: 1 Point</div>
+          <div className="text-sm">40fpm to 59fpm: 3 Points</div>
+          <div className="text-sm">60fpm: 50 Points</div>
+          <div className="text-sm">61fpm to 180fpm: 5 Points</div>
+          <div className="text-sm">181fpm to 400fpm: 1 Point</div>
+          <div className="text-sm">Over 400fpm: -2 Points</div>
+        </div>
       </div>
       <div className="rounded shadow bg-white p-4 mt-4">
         <h2 className="text-xl mb-4">Awards</h2>

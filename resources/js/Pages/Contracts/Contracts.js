@@ -36,7 +36,7 @@ const Contracts = ({ contracts, airport }) => {
   const [values, setValues] = useState({
     icao: auth.user.current_airport_id,
     distance: 'Up to 50nm',
-    cargo: 2000,
+    cargo: 10000,
     pax: 12
   })
   // const [contracts, setContracts] = useState([])

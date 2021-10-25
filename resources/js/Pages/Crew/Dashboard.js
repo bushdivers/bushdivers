@@ -17,7 +17,7 @@ const Dashboard = ({ lastFlight, rank, nextRank, awards, user, locations, balanc
         </div>
         <div className="flex justify-end items-center">
           <span className="mr-4">Joined {dayjs(user.created_at).fromNow()}</span>
-          <span>Last flight {lastFlight ? dayjs(lastFlight.submitted_at).fromNow() : 'No flight recorded'}</span>
+          <span>Last flight {lastFlight ? dayjs.utc(lastFlight.submitted_at).fromNow() : 'No flight recorded'}</span>
           </div>
       </div>
       <PilotStats
@@ -42,7 +42,7 @@ const Dashboard = ({ lastFlight, rank, nextRank, awards, user, locations, balanc
                 <>
                   <div>{lastFlight.dep_airport.name} {lastFlight.departure_airport_id} - {lastFlight.arr_airport.name} {lastFlight.destination_airport_id}</div>
                   <div className="text-sm">
-                    {dayjs(lastFlight.submitted_at).fromNow()} - {dayjs(lastFlight.submitted_at).format('ddd DD MMM YYYY')}
+                    {dayjs.utc(lastFlight.submitted_at).fromNow()} - {dayjs(lastFlight.submitted_at).format('ddd DD MMM YYYY')}
                   </div>
                   <div className="mt-2 text-sm flex items-center">
                     <i className="material-icons md-18">local_airport</i>
@@ -52,7 +52,7 @@ const Dashboard = ({ lastFlight, rank, nextRank, awards, user, locations, balanc
               )}
             </div>
             <div className="rounded shadow p-4 mt-4 ml-2 bg-white md:w-1/2">
-              <div className="text-lg flex items-center justify-between">
+              <div className="text-lg flex flex-col lg:flex-row lg:items-center lg:justify-between">
                 <div className="flex items-center">
                   <i className="material-icons mr-2 md-36">military_tech</i> Rank
                 </div>
@@ -61,9 +61,9 @@ const Dashboard = ({ lastFlight, rank, nextRank, awards, user, locations, balanc
               </div>
               <div className="mt-4">
                 <div>Next Rank:</div>
-                <div className="flex justify-between items-center">
-                  <div className="flex items-center justify-between"><img width="60" src={nextRank.image} /> <span className="ml-2 text-sm">{nextRank.name}</span></div>
-                  <div className="text-sm flex items-center">
+                <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
+                  <div className="flex items-center"><img width="60" src={nextRank.image} /> <span className="ml-2 text-sm">{nextRank.name}</span></div>
+                  <div className="text-sm flex">
                     <div className="mr-2">Hours: </div> <div>{user.flights_time > (nextRank.hours * 60) ? <i className="material-icons text-green-500">check_circle</i> : <span>{convertMinuteDecimalToHoursAndMinutes((nextRank.hours * 60) - user.flights_time)}</span>}</div>
                   </div>
                   <div className="">

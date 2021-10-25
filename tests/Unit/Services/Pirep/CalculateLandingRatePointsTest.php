@@ -59,7 +59,7 @@ class CalculateLandingRatePointsTest extends TestCase
     public function test_landing_rate_20()
     {
         $expected = PointsType::LANDING_RATE_3_39;
-        $actual = $this->pirepService->calculateLandingRatePoints(20);
+        $actual = $this->pirepService->calculateLandingRatePoints(6);
         $this->assertEquals($expected, $actual['points']);
     }
 

@@ -27,8 +27,24 @@ class GenerateContractDetailsTest extends TestCase
             ['type' => 2, 'text' => 'Medics'],
             ['type' => 2, 'text' => 'Locals'],
         ]);
-        $this->airport1 = Airport::factory()->create();
-        $this->airport2 = Airport::factory()->create();
+        $this->airport1 = Airport::factory()->create([
+            'identifier' => 'AYMN',
+            'name' => 'Mendi',
+            'country' => 'PG',
+            'is_hub' => false,
+            'lat' => -6.14617,
+            'lon' => 143.65733,
+            'altitude' => 100
+        ]);
+        $this->airport2 = Airport::factory()->create([
+            'identifier' => 'AYFO',
+            'name' => 'Fogomaiu Airstrip',
+            'country' => 'PG',
+            'is_hub' => false,
+            'lat' => -6.50917,
+            'lon' => 143.07904,
+            'altitude' => 100
+        ]);
         $this->origin = Airport::factory()->create();
         $this->contractService = new ContractService();
     }
