@@ -3,6 +3,7 @@ import PageTitle from '../../Shared/Navigation/PageTitle'
 import Layout from '../../Shared/Layout'
 import { Link } from '@inertiajs/inertia-react'
 import Tooltip from '../../Shared/Elements/Tooltip'
+import { convertMinuteDecimalToHoursAndMinutes } from '../../Helpers/date.helpers'
 
 const Roster = ({ roster }) => {
   return (
@@ -41,7 +42,7 @@ const Roster = ({ roster }) => {
                 </td>
                 <td>{user.flights}</td>
                 <td>
-                  {user.flights_time}
+                  {convertMinuteDecimalToHoursAndMinutes(user.flights_time)}
                 </td>
                 <td>
                   {user.discord_username}
