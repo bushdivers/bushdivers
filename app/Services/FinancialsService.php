@@ -150,7 +150,7 @@ class FinancialsService
         return $pilotPay;
     }
 
-    protected function addTransaction(int $type, float $total, string $memo = null, $pirepId = null, $method = 'debit')
+    public function addTransaction(int $type, float $total, string $memo = null, $pirepId = null, $method = 'debit')
     {
         $transactionTotal = 0;
         if ($method == 'debit') {

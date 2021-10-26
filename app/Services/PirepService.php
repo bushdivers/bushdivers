@@ -8,6 +8,7 @@ use App\Models\Contract;
 use App\Models\ContractCargo;
 use App\Models\Enums\AircraftState;
 use App\Models\Enums\AircraftStatus;
+use App\Models\Enums\AirlineTransactionTypes;
 use App\Models\Enums\PirepState;
 use App\Models\Enums\PirepStatus;
 use App\Models\Enums\PointsType;
@@ -36,7 +37,9 @@ class PirepService
         }
 
         $userService = new UserService();
-        $userService->addUserAccountEntry($pirep->user_id, TransactionTypes::Bonus, 300, $pirep->id);
+        $financialService = new FinancialsService();
+        $userService->addUserAccountEntry($pirep->user_id, TransactionTypes::Bonus, 200, $pirep->id);
+        $financialService->addTransaction(AirlineTransactionTypes::ContractExpenditure, 200, 'Returned aircraft home', $pirep->id);
 
         // time
 //        $hours = floor($pirep->flight_time / 60);
