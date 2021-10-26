@@ -72,7 +72,8 @@ class SetPirepScoreTest extends TestCase
             'destination_airport_id' => $this->contract->arr_airport_id,
             'departure_airport_id' => $this->contract->dep_airport_id,
             'aircraft_id' => $this->aircraft,
-            'flight_time' => 60
+            'flight_time' => 60,
+            'landing_rate' => 54.5
         ]);
 
         $this->pirepCargo = PirepCargo::factory()->create([
@@ -92,7 +93,7 @@ class SetPirepScoreTest extends TestCase
 
         $this->assertDatabaseHas('pireps', [
             'id' => $this->pirep->id,
-            'score' => 5
+            'score' => 8
         ]);
     }
 }

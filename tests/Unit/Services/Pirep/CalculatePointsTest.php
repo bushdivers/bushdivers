@@ -76,6 +76,7 @@ class CalculatePointsTest extends TestCase
             'user_id' => $this->user->id,
             'destination_airport_id' => 'AYMR',
             'departure_airport_id' => 'AYMN',
+            'landing_rate' => 54.5,
             'aircraft_id' => $this->aircraft
         ]);
 
@@ -149,7 +150,8 @@ class CalculatePointsTest extends TestCase
             'user_id' => $this->user->id,
             'aircraft_id' => $this->aircraft->id,
             'departure_airport_id' => $contract->dep_airport_id,
-            'destination_airport_id' => $contract->arr_airport_id
+            'destination_airport_id' => $contract->arr_airport_id,
+            'landing_rate' => 54.5
         ]);
 
         $pirepCargo = PirepCargo::factory()->create([
@@ -170,7 +172,8 @@ class CalculatePointsTest extends TestCase
         $pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,
             'aircraft_id' => $this->aircraft->id,
-            'distance' => 45
+            'distance' => 45,
+            'landing_rate' => 54.5,
         ]);
 
         $expected = 0;
@@ -187,7 +190,8 @@ class CalculatePointsTest extends TestCase
         $pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,
             'aircraft_id' => $this->aircraft->id,
-            'distance' => 100
+            'distance' => 100,
+            'landing_rate' => 54.5,
         ]);
 
         $expected = 4;
@@ -204,7 +208,8 @@ class CalculatePointsTest extends TestCase
         $pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,
             'aircraft_id' => $this->aircraft->id,
-            'distance' => 200
+            'distance' => 200,
+            'landing_rate' => 54.5,
         ]);
 
         $expected = 8;
