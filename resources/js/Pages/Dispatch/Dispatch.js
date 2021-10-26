@@ -57,6 +57,10 @@ const Dispatch = ({ cargo, aircraft }) => {
   }
 
   async function splitCargo (cargo) {
+    if (selectedCargo.length > 0) {
+      window.alert('please un-select any cargo before splitting!')
+      return
+    }
     const amount = window.prompt('Enter quantity to split (this will create a new cargo entry with that amount)')
     if (amount) {
       if (amount < cargo.cargo_qty) {
