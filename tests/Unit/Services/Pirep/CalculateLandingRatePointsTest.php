@@ -24,56 +24,56 @@ class CalculateLandingRatePointsTest extends TestCase
     public function test_landing_rate_over_400()
     {
         $expected = PointsType::LANDING_RATE_OVER_400;
-        $actual = $this->pirepService->calculateLandingRatePoints(500);
+        $actual = $this->pirepService->calculateLandingRatePoints(500.24);
         $this->assertEquals($expected, $actual['points']);
     }
 
     public function test_landing_rate_300()
     {
         $expected = PointsType::LANDING_RATE_181_400;
-        $actual = $this->pirepService->calculateLandingRatePoints(300);
+        $actual = $this->pirepService->calculateLandingRatePoints(300.56);
         $this->assertEquals($expected, $actual['points']);
     }
 
     public function test_landing_rate_100()
     {
         $expected = PointsType::LANDING_RATE_61_180;
-        $actual = $this->pirepService->calculateLandingRatePoints(100);
+        $actual = $this->pirepService->calculateLandingRatePoints(100.21);
         $this->assertEquals($expected, $actual['points']);
     }
 
     public function test_landing_rate_60()
     {
         $expected = PointsType::LANDING_RATE_PERFECT_60;
-        $actual = $this->pirepService->calculateLandingRatePoints(60);
+        $actual = $this->pirepService->calculateLandingRatePoints(60.00);
         $this->assertEquals($expected, $actual['points']);
     }
 
     public function test_landing_rate_45()
     {
         $expected = PointsType::LANDING_RATE_40_59;
-        $actual = $this->pirepService->calculateLandingRatePoints(45);
+        $actual = $this->pirepService->calculateLandingRatePoints(45.01);
         $this->assertEquals($expected, $actual['points']);
     }
 
-    public function test_landing_rate_20()
+    public function test_landing_rate_6()
     {
         $expected = PointsType::LANDING_RATE_3_39;
-        $actual = $this->pirepService->calculateLandingRatePoints(6);
+        $actual = $this->pirepService->calculateLandingRatePoints(6.45);
         $this->assertEquals($expected, $actual['points']);
     }
 
     public function test_landing_rate_1()
     {
         $expected = PointsType::LANDING_RATE_0_2;
-        $actual = $this->pirepService->calculateLandingRatePoints(1);
+        $actual = $this->pirepService->calculateLandingRatePoints(1.89);
         $this->assertEquals($expected, $actual['points']);
     }
 
     public function test_landing_rate_minus()
     {
         $expected = PointsType::LANDING_RATE_BELOW_ZERO;
-        $actual = $this->pirepService->calculateLandingRatePoints(-20);
+        $actual = $this->pirepService->calculateLandingRatePoints(-5.32);
         $this->assertEquals($expected, $actual['points']);
     }
 }

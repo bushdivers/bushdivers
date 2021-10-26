@@ -91,24 +91,24 @@ class PirepService
         }
     }
 
-    public function calculateLandingRatePoints($landingRate): array
+    public function calculateLandingRatePoints(float $landingRate): array
     {
-        $points = 0;
+        $points = 0.00;
         $type = '';
         switch (true) {
             case $landingRate < 0:
                 $points = PointsType::LANDING_RATE_BELOW_ZERO;
                 $type = PointsType::LANDING_RATE_BELOW_ZERO_LABEL;
                 break;
-            case in_array($landingRate, range(0,2)):
+            case ($landingRate >= 0 && $landingRate <= 2):
                 $points = PointsType::LANDING_RATE_0_2;
                 $type = PointsType::LANDING_RATE_0_2_LABEL;
                 break;
-            case in_array($landingRate, range(3,39)):
+            case ($landingRate >= 3 && $landingRate <= 39):
                 $points = PointsType::LANDING_RATE_3_39;
                 $type = PointsType::LANDING_RATE_3_39_LABEL;
                 break;
-            case in_array($landingRate, range(40,59)):
+            case ($landingRate >= 40 && $landingRate <= 59):
                 $points = PointsType::LANDING_RATE_40_59;
                 $type = PointsType::LANDING_RATE_40_59_LABEL;
                 break;
@@ -116,11 +116,11 @@ class PirepService
                 $points = PointsType::LANDING_RATE_PERFECT_60;
                 $type = PointsType::LANDING_RATE_PERFECT_60_LABEL;
                 break;
-            case in_array($landingRate, range(61,180)):
+            case ($landingRate >= 61 && $landingRate <= 180):
                 $points = PointsType::LANDING_RATE_61_180;
                 $type = PointsType::LANDING_RATE_61_180_LABEL;
                 break;
-            case in_array($landingRate, range(181,400)):
+            case ($landingRate >= 181 && $landingRate <= 400):
                 $points = PointsType::LANDING_RATE_181_400;
                 $type = PointsType::LANDING_RATE_181_400_LABEL;
                 break;
