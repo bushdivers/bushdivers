@@ -34,12 +34,13 @@ class PirepService
         $aircraft = Aircraft::find($pirep->aircraft_id);
         if ($pirep->destination_airport_id == $aircraft->hub_id) {
             $this->addPointsEntry($pirep->id, PointsType::HOME_HUB_LABEL, PointsType::HOME_HUB);
+            $userService = new UserService();
+            $financialService = new FinancialsService();
+            $userService->addUserAccountEntry($pirep->user_id, TransactionTypes::Bonus, 200, $pirep->id);
+            $financialService->addTransaction(AirlineTransactionTypes::ContractExpenditure, 200, 'Returned aircraft home', $pirep->id);
         }
 
-        $userService = new UserService();
-        $financialService = new FinancialsService();
-        $userService->addUserAccountEntry($pirep->user_id, TransactionTypes::Bonus, 200, $pirep->id);
-        $financialService->addTransaction(AirlineTransactionTypes::ContractExpenditure, 200, 'Returned aircraft home', $pirep->id);
+
 
         // time
 //        $hours = floor($pirep->flight_time / 60);
