@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Aircraft;
 use App\Models\Airport;
 use App\Services\WeatherService;
 use Illuminate\Http\Request;
@@ -21,7 +22,10 @@ class AirportController extends Controller
     {
         $airport = Airport::where('identifier', $icao)->first();
         $metar = $this->wxService->getMetar($icao);
-        return Inertia::render('Airports/AirportDetail', ['airport' => $airport, 'metar' => $metar]);
+        $aircraft = Aircraft::with('fleet')
+            ->where('current_airport_id', $icao)
+            ->get();
+        return Inertia::render('Airports/AirportDetail', ['airport' => $airport, 'metar' => $metar, 'aircraft' => $aircraft]);
     }
 
     public function hubs()
