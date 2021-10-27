@@ -3288,6 +3288,10 @@ var PrivateLeftNav = function PrivateLeftNav(props) {
         href: "/dashboard",
         className: props.mobile ? 'nav-link mobile' : 'nav-link',
         children: "My Crew Page"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Link, {
+        href: "/airports",
+        className: props.mobile ? 'nav-link mobile' : 'nav-link',
+        children: "Airport Search"
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)(_headlessui_react__WEBPACK_IMPORTED_MODULE_6__.Menu, {
         as: "div",
         className: props.mobile ? 'relative' : 'ml-3 relative',

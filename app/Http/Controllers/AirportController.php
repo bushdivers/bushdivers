@@ -18,9 +18,16 @@ class AirportController extends Controller
         $this->wxService = $weatherService;
     }
 
-    public function index($icao): Response
+    public function index($icao = null): Response|\Illuminate\Http\RedirectResponse
     {
+        if (!$icao) return Inertia::render('Airports/AirportDetail');
+
         $airport = Airport::where('identifier', $icao)->first();
+
+        if (!$airport) {
+            return redirect()->back()->with(['error' => 'Airport not found']);
+        }
+
         $metar = $this->wxService->getMetar($icao);
         $aircraft = Aircraft::with('fleet')
             ->where('current_airport_id', $icao)

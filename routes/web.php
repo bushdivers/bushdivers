@@ -52,7 +52,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/my-finances', [\App\Http\Controllers\CrewController::class, 'finances'])->name('crew.finances');
 
     // Airports
-    Route::get('/airports/{icao}', [\App\Http\Controllers\AirportController::class, 'index'])->name('airport');
+    Route::get('/airports/{icao?}', [\App\Http\Controllers\AirportController::class, 'index'])->name('airport');
 
 
 
