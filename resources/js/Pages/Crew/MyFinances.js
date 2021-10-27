@@ -1,6 +1,7 @@
 import React from 'react'
 import PageTitle from '../../Shared/Navigation/PageTitle'
 import Layout from '../../Shared/Layout'
+import Pagination from '../../Shared/Elements/Pagination'
 
 const MyFinances = ({ accounts, balance }) => {
   const renderTransactionType = (transactionType) => {
@@ -26,7 +27,7 @@ const MyFinances = ({ accounts, balance }) => {
           <div className="text-lg">Current Balance</div>
           <div className="text-xl">${balance.toFixed(2)}</div>
         </div>
-        {accounts && accounts.map((entry) => (
+        {accounts && accounts.data.map((entry) => (
           <div key={entry.id} className="bg-white shadow rounded p-4 mt-2 flex justify-between">
             <div>
               ${entry.total} <br />
@@ -37,6 +38,9 @@ const MyFinances = ({ accounts, balance }) => {
             <div>{entry.created_at}</div>
           </div>
         ))}
+        <div className="mt-2">
+          <Pagination pages={accounts} />
+        </div>
       </div>
     </div>
   )
