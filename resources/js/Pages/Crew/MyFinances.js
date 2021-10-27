@@ -24,7 +24,7 @@ const MyFinances = ({ accounts, balance }) => {
       <div className="md:w-1/2">
         <div className="bg-white shadow rounded p-4 mt-2">
           <div className="text-lg">Current Balance</div>
-          <div className="text-xl">${balance}</div>
+          <div className="text-xl">${balance.toFixed(2)}</div>
         </div>
         {accounts && accounts.map((entry) => (
           <div key={entry.id} className="bg-white shadow rounded p-4 mt-2 flex justify-between">

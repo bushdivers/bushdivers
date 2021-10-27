@@ -2797,7 +2797,7 @@ var CompanyFinances = function CompanyFinances(_ref) {
             children: "Account Balance"
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
             className: "text-2xl",
-            children: ["$", balance]
+            children: ["$", balance.toFixed(2)]
           })]
         }), accounts && accounts.map(function (entry) {
           return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {

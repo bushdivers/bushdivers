@@ -33,7 +33,7 @@ const CompanyFinances = ({ accounts, balance, aircraftStorage, aircraftOps, hubs
         <div className="md:w-1/2 md:mx-2">
           <div className="bg-white shadow rounded p-4 mt-2">
             <div className="text-xl">Account Balance</div>
-            <div className="text-2xl">${balance}</div>
+            <div className="text-2xl">${balance.toFixed(2)}</div>
           </div>
           {accounts && accounts.map((entry) => (
             <div key={entry.id} className="bg-white shadow rounded p-4 mt-2 flex justify-between">
