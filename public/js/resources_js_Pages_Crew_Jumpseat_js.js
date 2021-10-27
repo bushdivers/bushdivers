@@ -2884,7 +2884,7 @@ var Jumpseat = function Jumpseat(_ref) {
       return;
     }
 
-    if (user.account_balance < price) {
+    if (balance < price) {
       setError('You do not have sufficient funds to transfer here');
       return;
     }

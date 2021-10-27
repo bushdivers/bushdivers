@@ -40,7 +40,7 @@ const Jumpseat = ({ user, spent, balance }) => {
       setError('Please specify an airport to transfer to')
       return
     }
-    if (user.account_balance < price) {
+    if (balance < price) {
       setError('You do not have sufficient funds to transfer here')
       return
     }
