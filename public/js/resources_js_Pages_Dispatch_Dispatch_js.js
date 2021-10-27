@@ -3639,11 +3639,11 @@ var DispatchSummary = function DispatchSummary(props) {
         })]
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
         className: "mt-1",
-        children: ["Fuel: ", props.pirep ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("span", {
-          children: props.pirep.planned_fuel
-        }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("span", {
-          children: props.fuel
-        }), " gal"]
+        children: ["Fuel: ", props.pirep ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("span", {
+          children: [props.pirep.planned_fuel, " gal | ", props.fuelWeight, " lbs"]
+        }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("span", {
+          children: [props.fuel, " gal | ", props.fuelWeight, " lbs"]
+        })]
       })]
     })]
   });
