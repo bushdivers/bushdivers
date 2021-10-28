@@ -85,7 +85,7 @@ const AirportDetail = ({ airport, metar, aircraft }) => {
               <tbody>
               {aircraft && aircraft.map((ac) => (
                 <tr key={ac.id}>
-                  <td>{ac.registration}</td>
+                  <td><Link href={`/aircraft/${ac.id}`}>{ac.registration}</Link></td>
                   <td>{ac.fleet.manufacturer} {ac.fleet.name} ({ac.fleet.type})</td>
                   <td>{ac.hub_id}</td>
                   <td>{ac.fuel_onboard}</td>
