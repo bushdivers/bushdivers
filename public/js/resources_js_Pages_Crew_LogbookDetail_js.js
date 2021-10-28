@@ -3943,9 +3943,12 @@ var LogbookPrimary = function LogbookPrimary(_ref) {
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
           className: "text-sm",
           children: [pirep.aircraft.fleet.manufacturer, " ", pirep.aircraft.fleet.name]
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
           className: "text-xl",
-          children: [pirep.aircraft.registration, " (", pirep.aircraft.fleet.type, ")"]
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_2__.Link, {
+            href: "/aircraft/".concat(pirep.aircraft.id),
+            children: [pirep.aircraft.registration, " (", pirep.aircraft.fleet.type, ")"]
+          })
         })]
       })]
     })

@@ -2830,8 +2830,11 @@ var Logbook = function Logbook(_ref) {
                     children: entry.arr_airport.name
                   })]
                 }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("td", {
-                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("span", {
-                    children: [entry.aircraft.registration, " (", entry.aircraft.fleet.type, ")"]
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("span", {
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_4__.Link, {
+                      href: "/aircraft/".concat(entry.aircraft.id),
+                      children: [entry.aircraft.registration, " (", entry.aircraft.fleet.type, ")"]
+                    })
                   }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("br", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("span", {
                     className: "text-xs",
                     children: [entry.aircraft.fleet.manufacturer, " ", entry.aircraft.fleet.name]

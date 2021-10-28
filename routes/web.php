@@ -54,7 +54,8 @@ Route::middleware('auth')->group(function () {
     // Airports
     Route::get('/airports/{icao?}', [\App\Http\Controllers\AirportController::class, 'index'])->name('airport');
 
-
+    // Aircraft/Fleet
+    Route::get('/aircraft/{id}', [\App\Http\Controllers\FleetController::class, 'aircraftDetail'])->name('aircraft');
 
     // Flights
     Route::get('/my-contracts', [\App\Http\Controllers\ContractsController::class, 'myContracts'])->name('bids');
