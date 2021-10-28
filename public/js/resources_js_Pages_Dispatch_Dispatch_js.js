@@ -2799,7 +2799,7 @@ var Dispatch = function Dispatch(_ref) {
   var cargo = _ref.cargo,
       aircraft = _ref.aircraft;
   var auth = (0,_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_6__.usePage)().props.auth;
-  var personWeight = 176.00;
+  var personWeight = 170.00;
   var avgasWeight = 5.99;
   var jetFuelWeight = 6.79;
 

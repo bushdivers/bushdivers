@@ -13,7 +13,7 @@ import { Inertia } from '@inertiajs/inertia'
 
 const Dispatch = ({ cargo, aircraft }) => {
   const { auth } = usePage().props
-  const personWeight = 176.00
+  const personWeight = 170.00
   const avgasWeight = 5.99
   const jetFuelWeight = 6.79
   const [selectedAircraft, setSelectedAircraft] = useState('')
