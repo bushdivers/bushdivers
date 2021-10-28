@@ -2944,15 +2944,24 @@ var Dispatch = function Dispatch(_ref) {
               return _context2.abrupt("return");
 
             case 3:
+              if (!(cargo.contract_type_id === 2 && cargo.cargo_qty <= 1)) {
+                _context2.next = 6;
+                break;
+              }
+
+              window.alert('You cannot split a passenger in half!');
+              return _context2.abrupt("return");
+
+            case 6:
               amount = window.prompt('Enter quantity to split (this will create a new cargo entry with that amount)');
 
               if (!amount) {
-                _context2.next = 16;
+                _context2.next = 19;
                 break;
               }
 
               if (!(amount < cargo.cargo_qty)) {
-                _context2.next = 13;
+                _context2.next = 16;
                 break;
               }
 
@@ -2961,10 +2970,10 @@ var Dispatch = function Dispatch(_ref) {
                 id: cargo.id,
                 qty: amount
               };
-              _context2.next = 9;
+              _context2.next = 12;
               return axios__WEBPACK_IMPORTED_MODULE_5___default().post('/api/cargo/split', data);
 
-            case 9:
+            case 12:
               res = _context2.sent;
 
               // reload
@@ -2976,20 +2985,20 @@ var Dispatch = function Dispatch(_ref) {
                 window.alert('Issue splitting cargo');
               }
 
-              _context2.next = 14;
-              break;
-
-            case 13:
-              window.alert("New cargo amount must be less than total cargo: ".concat(cargo.cargo_qty));
-
-            case 14:
               _context2.next = 17;
               break;
 
             case 16:
-              window.alert('Cargo split has been cancelled');
+              window.alert("New cargo amount must be less than total cargo: ".concat(cargo.cargo_qty));
 
             case 17:
+              _context2.next = 20;
+              break;
+
+            case 19:
+              window.alert('Cargo split has been cancelled');
+
+            case 20:
             case "end":
               return _context2.stop();
           }

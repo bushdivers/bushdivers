@@ -61,6 +61,10 @@ const Dispatch = ({ cargo, aircraft }) => {
       window.alert('please un-select any cargo before splitting!')
       return
     }
+    if (cargo.contract_type_id === 2 && cargo.cargo_qty <= 1) {
+      window.alert('You cannot split a passenger in half!')
+      return
+    }
     const amount = window.prompt('Enter quantity to split (this will create a new cargo entry with that amount)')
     if (amount) {
       if (amount < cargo.cargo_qty) {
