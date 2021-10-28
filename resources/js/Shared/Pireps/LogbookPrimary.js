@@ -21,7 +21,7 @@ const LogbookPrimary = ({ pirep }) => {
         </div>
         <div className="flex flex-col items-center my-2 mx-4">
           <div className="text-sm">{pirep.aircraft.fleet.manufacturer} {pirep.aircraft.fleet.name}</div>
-          <div className="text-xl">{pirep.aircraft.registration} ({pirep.aircraft.fleet.type})</div>
+          <div className="text-xl"><Link href={`/aircraft/${pirep.aircraft.id}`}>{pirep.aircraft.registration} ({pirep.aircraft.fleet.type})</Link></div>
         </div>
       </div>
     </div>

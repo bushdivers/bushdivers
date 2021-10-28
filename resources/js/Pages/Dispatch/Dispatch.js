@@ -13,7 +13,7 @@ import { Inertia } from '@inertiajs/inertia'
 
 const Dispatch = ({ cargo, aircraft }) => {
   const { auth } = usePage().props
-  const personWeight = 176.00
+  const personWeight = 170.00
   const avgasWeight = 5.99
   const jetFuelWeight = 6.79
   const [selectedAircraft, setSelectedAircraft] = useState('')
@@ -57,6 +57,14 @@ const Dispatch = ({ cargo, aircraft }) => {
   }
 
   async function splitCargo (cargo) {
+    if (selectedCargo.length > 0) {
+      window.alert('please un-select any cargo before splitting!')
+      return
+    }
+    if (cargo.contract_type_id === 2 && cargo.cargo_qty <= 1) {
+      window.alert('You cannot split a passenger in half!')
+      return
+    }
     const amount = window.prompt('Enter quantity to split (this will create a new cargo entry with that amount)')
     if (amount) {
       if (amount < cargo.cargo_qty) {

@@ -355,7 +355,7 @@ class SubmitPirepTest extends TestCase
             'pirep_id' => $this->pirep->id,
             'fuel_used' => 25,
             'distance' => 100,
-            'landing_rate' => 30,
+            'landing_rate' => 30.25,
             'block_off_time'=> $startTime,
             'block_on_time' => $endTime
         ];

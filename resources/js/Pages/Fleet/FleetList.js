@@ -83,7 +83,7 @@ const FleetCardContent = ({ fleet }) => {
           <tbody>
             {fleet.aircraft.map((aircraft) => (
               <tr key={aircraft.id}>
-                <td>{aircraft.registration}</td>
+                <td><Link href={`/aircraft/${aircraft.id}`}>{aircraft.registration}</Link></td>
                 <td><Link href={`/airports/${aircraft.hub_id}`}>{aircraft.hub_id}</Link></td>
                 <td><Link href={`/airports/${aircraft.current_airport_id}`}>{aircraft.current_airport_id}</Link></td>
                 <td>{aircraft.flight_time_mins}</td>

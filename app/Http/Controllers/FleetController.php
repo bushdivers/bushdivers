@@ -28,4 +28,10 @@ class FleetController extends Controller
             ->get();
         return response()->json(['aircraft' => $aircraft]);
     }
+
+    public function aircraftDetail($id): Response
+    {
+        $aircraft = Aircraft::with('fleet', 'pireps')->find($id);
+        return Inertia::render('Fleet/Aircraft', ['aircraft' => $aircraft]);
+    }
 }

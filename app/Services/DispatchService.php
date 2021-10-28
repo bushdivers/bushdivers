@@ -4,7 +4,7 @@ namespace App\Services;
 
 class DispatchService
 {
-    protected float $personWeight = 176.00;
+    protected float $personWeight = 170.00;
     protected float $avgasWeight = 5.99;
     protected float $jetFuelWeight = 6.79;
 

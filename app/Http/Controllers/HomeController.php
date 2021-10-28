@@ -36,7 +36,7 @@ class HomeController extends Controller
 
     public function finances(): Response
     {
-        $accounts = AccountLedger::with('pirep')->orderBy('created_at', 'desc')->get();
+        $accounts = AccountLedger::with('pirep')->orderBy('created_at', 'desc')->paginate(15);
         $balance = $accounts->sum('total');
 
         $largeAc = Aircraft::with(['fleet'])

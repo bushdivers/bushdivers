@@ -119,7 +119,7 @@ class CrewController extends Controller
 
     public function finances(): Response
     {
-        $accounts = DB::table('user_accounts')->where('user_id', Auth::user()->id)->orderBy('created_at', 'desc')->get();
+        $accounts = DB::table('user_accounts')->where('user_id', Auth::user()->id)->orderBy('created_at', 'desc')->paginate(10);
         $balance = $accounts->sum('total');
 
         return Inertia::render('Crew/MyFinances', ['accounts' => $accounts, 'balance' => $balance]);

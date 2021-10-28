@@ -58,7 +58,7 @@ const Logbook = ({ logbook }) => {
                       <span className="text-xs">{entry.arr_airport.name}</span>
                     </td>
                     <td>
-                      <span>{entry.aircraft.registration} ({entry.aircraft.fleet.type})</span><br/>
+                      <span><Link href={`/aircraft/${entry.aircraft.id}`}>{entry.aircraft.registration} ({entry.aircraft.fleet.type})</Link></span><br/>
                       <span className="text-xs">{entry.aircraft.fleet.manufacturer} {entry.aircraft.fleet.name}</span>
                     </td>
                     <td>{convertMinuteDecimalToHoursAndMinutes(entry.flight_time)}</td>

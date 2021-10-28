@@ -23,6 +23,7 @@ const PrivateLeftNav = (props) => {
     <>
       <div className={props.mobile ? 'px-2 pt-2 pb-3 space-y-1' : 'flex space-x-4'}>
         <Link href="/dashboard" className={props.mobile ? 'nav-link mobile' : 'nav-link'}>My Crew Page</Link>
+        <Link href="/airports" className={props.mobile ? 'nav-link mobile' : 'nav-link'}>Airport Search</Link>
         <Menu as="div" className={props.mobile ? 'relative' : 'ml-3 relative'}>
           <div>
             <Menu.Button className={props.mobile ? 'nav-link mobile' : 'nav-link'}>

@@ -23,4 +23,9 @@ class Aircraft extends Model
     {
         return $this->belongsTo(Airport::class, 'hub_id', 'identifier');
     }
+
+    public function pireps()
+    {
+        return $this->hasMany(Pirep::class, 'aircraft_id', 'id')->orderBy('submitted_at', 'desc');
+    }
 }
