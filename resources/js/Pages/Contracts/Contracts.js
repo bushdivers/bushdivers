@@ -152,13 +152,10 @@ const Contracts = ({ contracts, airport }) => {
                     <thead>
                     <tr className="">
                       <th>Departure</th>
-                      {/* <th>Current</th> */}
                       <th>Arrival</th>
                       <th>Distance</th>
                       <th>Heading</th>
                       <th>Total Cargo</th>
-                      {/* <th>Type</th> */}
-                      {/* <th>Cargo</th> */}
                       <th>Pay</th>
                       <th>Expires</th>
                       <td>Bid</td>
@@ -174,12 +171,6 @@ const Contracts = ({ contracts, airport }) => {
                             <span className="text-xs">{contract.dep_airport.name}</span>
                            </Tooltip>
                         </td>
-                        {/* <td> */}
-                        {/*   <Tooltip content={<AirportToolTip airport={contract.current_airport} />} direction="top"> */}
-                        {/*    <Link href={`/airports/${contract.current_airport_id}`}>{contract.current_airport_id}</Link><br/> */}
-                        {/*    <span className="text-xs">{contract.current_airport.name}</span> */}
-                        {/*   </Tooltip> */}
-                        {/* </td> */}
                         <td>
                            <Tooltip content={<AirportToolTip airport={contract.arr_airport} />} direction="top">
                             <Link href={`/airports/${contract.arr_airport_id}`}>{contract.arr_airport_id}</Link><br/>

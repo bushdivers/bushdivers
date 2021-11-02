@@ -2774,9 +2774,7 @@ var LogbookDetail = function LogbookDetail(_ref) {
       companyFinancials = _ref.companyFinancials,
       flightTotal = _ref.flightTotal;
   var auth = (0,_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_10__.usePage)().props.auth;
-  var submittedDate = (0,date_fns__WEBPACK_IMPORTED_MODULE_13__.default)(new Date(pirep.submitted_at), 'do MMMM yyyy hh:mm', {
-    timeZone: 'UTC'
-  });
+  var submittedDate = (0,date_fns__WEBPACK_IMPORTED_MODULE_13__.default)(new Date(pirep.submitted_at), 'do MMMM yyyy kk:mm');
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_Shared_Navigation_PageTitle__WEBPACK_IMPORTED_MODULE_1__.default, {
       title: "Pilot Report - ".concat(pirep.id)

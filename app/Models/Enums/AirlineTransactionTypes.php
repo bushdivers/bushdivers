@@ -13,4 +13,5 @@ class AirlineTransactionTypes
     public const FuelFees = 7;
     public const ContractIncome = 8;
     public const ContractExpenditure = 9;
+    public const GeneralExpenditure = 10;
 }

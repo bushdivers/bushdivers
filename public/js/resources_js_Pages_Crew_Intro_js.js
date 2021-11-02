@@ -2755,9 +2755,9 @@ var Intro = function Intro() {
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("span", {
           className: "text-orange-800 font-bold",
           children: "Welcome to the new Bush Divers Virtual Airline platform."
-        }), " We are so glad to have you on board, and excited about the opportunities this new platform can provide for us as a community."]
+        }), " We are so glad to have you on board as a new contract pilot, and excited about the opportunities this new platform can provide for us as a community."]
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
-        children: "Please do have a listen to the welcome message below, and then feel free to have a look round the platform. There is a new pilot handbook available here, that will explain everything about how the new platform works. Any questions, please post on the #va-support discord channel."
+        children: "Feel free to have a look round the platform. There is a new pilot handbook available here, that will explain everything about how the new platform works. Any questions, please post on the #va-support discord channel."
       })]
     })]
   });

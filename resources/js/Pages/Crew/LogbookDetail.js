@@ -14,7 +14,7 @@ import PirepFinancials from '../../Shared/Pireps/PirepFinancials'
 
 const LogbookDetail = ({ pirep, points, logs, cargo, pilotFinancials, companyFinancials, flightTotal }) => {
   const { auth } = usePage().props
-  const submittedDate = format(new Date(pirep.submitted_at), 'do MMMM yyyy hh:mm', { timeZone: 'UTC' })
+  const submittedDate = format(new Date(pirep.submitted_at), 'do MMMM yyyy kk:mm')
   return (
     <div>
       <PageTitle title={`Pilot Report - ${pirep.id}`} />

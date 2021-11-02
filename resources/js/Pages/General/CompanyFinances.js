@@ -24,6 +24,8 @@ const CompanyFinances = ({ accounts, balance, aircraftStorage, aircraftOps, hubs
         return 'Contract Income'
       case 9:
         return 'Contract Pilot Pay'
+      case 10:
+        return 'General Expenditure'
     }
   }
 

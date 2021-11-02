@@ -2782,6 +2782,9 @@ var CompanyFinances = function CompanyFinances(_ref) {
 
       case 9:
         return 'Contract Pilot Pay';
+
+      case 10:
+        return 'General Expenditure';
     }
   };
 

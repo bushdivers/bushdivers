@@ -37,7 +37,7 @@ class HomeController extends Controller
     public function finances(): Response
     {
         $accounts = AccountLedger::with('pirep')->orderBy('created_at', 'desc')->paginate(15);
-        $balance = $accounts->sum('total');
+        $balance = AccountLedger::all();
 
         $largeAc = Aircraft::with(['fleet'])
             ->whereHas('fleet', function ($q) {
@@ -83,7 +83,7 @@ class HomeController extends Controller
 
         return Inertia::render('General/CompanyFinances', [
             'accounts' => $accounts,
-            'balance' => $balance,
+            'balance' => $balance->sum('total'),
             'aircraftStorage' => $aircraftStorage,
             'aircraftOps' => $aircraftOps,
             'hubs' => $hubRental

@@ -36,7 +36,7 @@ const FleetCardContent = ({ fleet }) => {
             </div>
             <div className="md:mr-8">
               <span className="text-md font-bold text-gray-600">Fuel Type: </span><br/>
-              <span>100ll</span>
+              <span>{fleet.fuel_type === 1 ? <span>100ll</span> : <span>Jet Fuel</span>}</span>
             </div>
             <div className="mr-8">
               <span className="text-md font-bold text-gray-600">Fuel Capacity: </span><br/>
