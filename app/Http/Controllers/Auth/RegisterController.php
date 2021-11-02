@@ -5,8 +5,13 @@ namespace App\Http\Controllers\Auth;
 use App\General\MailTypes;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RegisterRequest;
+use App\Models\Enums\AirlineTransactionTypes;
+use App\Models\Enums\FinancialConsts;
+use App\Models\Enums\TransactionTypes;
 use App\Models\User;
 use App\Services\EmailService;
+use App\Services\FinancialsService;
+use App\Services\UserService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -44,6 +49,12 @@ class RegisterController extends Controller
         $token = $user->createToken('bush-tracker');
         $user->api_token = $token->plainTextToken;
         $user->save();
+
+        // add cash bonus
+        $financeService = new FinancialsService();
+        $userService = new UserService();
+        $financeService->addTransaction(AirlineTransactionTypes::GeneralExpenditure, FinancialConsts::WelcomeBonus, $user->pilotId.': Welcome bonus');
+        $userService->addUserAccountEntry($user->id, TransactionTypes::Bonus, FinancialConsts::WelcomeBonus);
 
         // send email
         $body = MailTypes::register($user);
