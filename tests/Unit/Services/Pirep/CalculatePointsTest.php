@@ -7,6 +7,7 @@ use App\Models\Booking;
 use App\Models\Contract;
 use App\Models\ContractCargo;
 use App\Models\Enums\AirlineTransactionTypes;
+use App\Models\Enums\FinancialConsts;
 use App\Models\Enums\PointsType;
 use App\Models\Enums\TransactionTypes;
 use App\Models\Fleet;
@@ -130,7 +131,7 @@ class CalculatePointsTest extends TestCase
         $this->assertDatabaseHas('account_ledgers', [
             'transaction_type' => AirlineTransactionTypes::ContractExpenditure,
             'pirep_id' => $this->pirep->id,
-            'total' => -200
+            'total' => -FinancialConsts::HubBonus
         ]);
     }
 

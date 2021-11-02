@@ -9,6 +9,7 @@ use App\Models\ContractCargo;
 use App\Models\Enums\AircraftState;
 use App\Models\Enums\AircraftStatus;
 use App\Models\Enums\AirlineTransactionTypes;
+use App\Models\Enums\FinancialConsts;
 use App\Models\Enums\PirepState;
 use App\Models\Enums\PirepStatus;
 use App\Models\Enums\PointsType;
@@ -36,8 +37,8 @@ class PirepService
             $this->addPointsEntry($pirep->id, PointsType::HOME_HUB_LABEL, PointsType::HOME_HUB);
             $userService = new UserService();
             $financialService = new FinancialsService();
-            $userService->addUserAccountEntry($pirep->user_id, TransactionTypes::Bonus, 200, $pirep->id);
-            $financialService->addTransaction(AirlineTransactionTypes::ContractExpenditure, 200, 'Returned aircraft home', $pirep->id);
+            $userService->addUserAccountEntry($pirep->user_id, TransactionTypes::Bonus, FinancialConsts::HubBonus, $pirep->id);
+            $financialService->addTransaction(AirlineTransactionTypes::ContractExpenditure, FinancialConsts::HubBonus, 'Returned aircraft home', $pirep->id);
         }
 
 
