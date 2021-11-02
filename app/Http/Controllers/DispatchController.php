@@ -70,6 +70,13 @@ class DispatchController extends Controller
 
     public function create(Request $request): RedirectResponse
     {
+
+        // check aircraft is available
+        $aircraft = Aircraft::find($request->aircraft);
+        if ($aircraft->user_id != null && $aircraft->state == 2) {
+            return redirect()->back()->with(['error' => 'Aircraft is part of another flight dispatch']);
+        }
+
         // create draft pirep with destination and detail
         $pirep = new Pirep();
         $pirep->id = Uuid::uuid4();
@@ -93,7 +100,6 @@ class DispatchController extends Controller
         }
 
         // update aircraft for user and fuel
-        $aircraft = Aircraft::find($request->aircraft);
         $aircraft->fuel_onboard = $request->fuel;
         $aircraft->user_id = Auth::user()->id;
         $aircraft->state = AircraftState::BOOKED;
