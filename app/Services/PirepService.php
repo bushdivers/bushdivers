@@ -157,7 +157,7 @@ class PirepService
 
     public function findInactivePireps()
     {
-        $dateToCompare = Carbon::now()->subHours(12);
+        $dateToCompare = Carbon::now()->subHours(2);
 
         $pireps = Pirep::where('status', PirepState::DISPATCH)
             ->where('created_at', '<', $dateToCompare)
