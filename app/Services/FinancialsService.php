@@ -28,46 +28,51 @@ class FinancialsService
     public function calcAircraftFees()
     {
         // small
-        $small = Aircraft::with(['fleet' => function ($q) {
-            $q->where('size', 'S');
-        }])->get();
+        $smallFleet = Fleet::where('size', 'S')->get();
         $smallRental = AirlineFees::where('fee_type', AirlineTransactionTypes::AircraftRentalFee)
-            ->where('fee_name', 'Aircraft Rental - Small')
+            ->where('fee_name', 'Aircraft Ownership - Small')
             ->first();
         $smallParking = AirlineFees::where('fee_type', AirlineTransactionTypes::AircraftStorageFees)
             ->where('fee_name', 'Aircraft Parking - Small')
             ->first();
-        foreach ($small as $aircraft) {
-            $this->addTransaction(AirlineTransactionTypes::AircraftRentalFee, $smallRental->fee_amount, 'Rental: '.$aircraft->registration);
-            $this->addTransaction(AirlineTransactionTypes::AircraftStorageFees, $smallParking->fee_amount, 'Parking: '.$aircraft->registration);
+        foreach ($smallFleet as $f) {
+            $aircraft = Aircraft::with('fleet')->where('fleet_id', $f->id)->get();
+            foreach ($aircraft as $a) {
+                $this->addTransaction(AirlineTransactionTypes::AircraftRentalFee, $smallRental->fee_amount, 'Rental: '.$a->registration);
+                $this->addTransaction(AirlineTransactionTypes::AircraftStorageFees, $smallParking->fee_amount, 'Parking: '.$a->registration);
+            }
+
         }
         // medium
-        $medium = Aircraft::with(['fleet' => function ($q) {
-            $q->where('size', 'M');
-        }])->get();
+        $mediumFleet = Fleet::where('size', 'M')->get();
         $mediumRental = AirlineFees::where('fee_type', AirlineTransactionTypes::AircraftRentalFee)
-            ->where('fee_name', 'Aircraft Rental - Medium')
+            ->where('fee_name', 'Aircraft Ownership - Medium')
             ->first();
         $mediumParking = AirlineFees::where('fee_type', AirlineTransactionTypes::AircraftStorageFees)
             ->where('fee_name', 'Aircraft Parking - Medium')
             ->first();
-        foreach ($medium as $aircraft) {
-            $this->addTransaction(AirlineTransactionTypes::AircraftRentalFee, $mediumRental->fee_amount, 'Rental: '.$aircraft->registration);
-            $this->addTransaction(AirlineTransactionTypes::AircraftStorageFees, $mediumParking->fee_amount, 'Parking: '.$aircraft->registration);
+        foreach ($mediumFleet as $f) {
+            $aircraft = Aircraft::with('fleet')->where('fleet_id', $f->id)->get();
+            foreach ($aircraft as $a) {
+                $this->addTransaction(AirlineTransactionTypes::AircraftRentalFee, $mediumRental->fee_amount, 'Rental: '.$a->registration);
+                $this->addTransaction(AirlineTransactionTypes::AircraftStorageFees, $mediumParking->fee_amount, 'Parking: '.$a->registration);
+            }
         }
         // large
-        $large = Aircraft::with(['fleet' => function ($q) {
-            $q->where('size', 'L');
-        }])->get();
+        $largeFleet = Fleet::where('size', 'L')->get();
         $largeRental = AirlineFees::where('fee_type', AirlineTransactionTypes::AircraftRentalFee)
-            ->where('fee_name', 'Aircraft Rental - Large')
+            ->where('fee_name', 'Aircraft Ownership - Large')
             ->first();
         $largeParking = AirlineFees::where('fee_type', AirlineTransactionTypes::AircraftStorageFees)
             ->where('fee_name', 'Aircraft Parking - Large')
             ->first();
-        foreach ($large as $aircraft) {
-            $this->addTransaction(AirlineTransactionTypes::AircraftRentalFee, $largeRental->fee_amount, 'Rental: '.$aircraft->registration);
-            $this->addTransaction(AirlineTransactionTypes::AircraftStorageFees, $largeParking->fee_amount, 'Parking: '.$aircraft->registration);
+        foreach ($largeFleet as $f) {
+            $aircraft = Aircraft::with('fleet')->where('fleet_id', $f->id)->get();
+            foreach ($aircraft as $a) {
+                $this->addTransaction(AirlineTransactionTypes::AircraftRentalFee, $largeRental->fee_amount, 'Rental: '.$a->registration);
+                $this->addTransaction(AirlineTransactionTypes::AircraftStorageFees, $largeParking->fee_amount, 'Parking: '.$a->registration);
+            }
+
         }
     }
 
