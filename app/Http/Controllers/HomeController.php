@@ -64,9 +64,9 @@ class HomeController extends Controller
         $largeStorageFee = $fees->where('fee_name', 'Aircraft Parking - Large')->first();
         $medStorageFee = $fees->where('fee_name', 'Aircraft Parking - Medium')->first();
         $smallStorageFee = $fees->where('fee_name', 'Aircraft Parking - Small')->first();
-        $largeRentalFee = $fees->where('fee_name', 'Aircraft Rental - Large')->first();
-        $medRentalFee = $fees->where('fee_name', 'Aircraft Rental - Medium')->first();
-        $smallRentalFee = $fees->where('fee_name', 'Aircraft Rental - Small')->first();
+        $largeRentalFee = $fees->where('fee_name', 'Aircraft Ownership - Large')->first();
+        $medRentalFee = $fees->where('fee_name', 'Aircraft Ownership - Medium')->first();
+        $smallRentalFee = $fees->where('fee_name', 'Aircraft Ownership - Small')->first();
         $hubRentalFee = $fees->where('fee_name', 'Hub Rental')->first();
 
         $largeStorage = $largeAc * $largeStorageFee->fee_amount;
