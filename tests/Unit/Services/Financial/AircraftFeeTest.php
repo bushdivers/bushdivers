@@ -60,17 +60,17 @@ class AircraftFeeTest extends TestCase
         ]);
         AirlineFees::factory()->create([
             'fee_type' => AirlineTransactionTypes::AircraftRentalFee,
-            'fee_name' => 'Aircraft Rental - Small',
+            'fee_name' => 'Aircraft Ownership - Small',
             'fee_amount' => 3000
         ]);
         AirlineFees::factory()->create([
             'fee_type' => AirlineTransactionTypes::AircraftRentalFee,
-            'fee_name' => 'Aircraft Rental - Medium',
+            'fee_name' => 'Aircraft Ownership - Medium',
             'fee_amount' => 7500
         ]);
         AirlineFees::factory()->create([
             'fee_type' => AirlineTransactionTypes::AircraftRentalFee,
-            'fee_name' => 'Aircraft Rental - Large',
+            'fee_name' => 'Aircraft Ownership - Large',
             'fee_amount' => 15000
         ]);
     }
