@@ -9,7 +9,7 @@ import CrewMap from '../../Shared/Components/Crew/CrewMap'
 const Dashboard = ({ lastFlight, rank, nextRank, awards, user, locations, balance }) => {
   return (
     <div>
-      <PageTitle title="Crew Page" />
+      <PageTitle title="My Crew Page" />
       <div className="mt-4 flex justify-between">
         <div className="flex justify-start items-center">
           <img width="75" src={rank.image}/>
@@ -40,7 +40,7 @@ const Dashboard = ({ lastFlight, rank, nextRank, awards, user, locations, balanc
               </div>
               {lastFlight && (
                 <>
-                  <div>{lastFlight.dep_airport.name} {lastFlight.departure_airport_id} - {lastFlight.arr_airport.name} {lastFlight.destination_airport_id}</div>
+                  <div>{lastFlight.dep_airport.name} <Link href={`/airports/${lastFlight.departure_airport_id}`}>{lastFlight.departure_airport_id}</Link> - {lastFlight.arr_airport.name} <Link href={`/airports/${lastFlight.destination_airport_id}`}>{lastFlight.destination_airport_id}</Link></div>
                   <div className="text-sm">
                     {dayjs.utc(lastFlight.submitted_at).fromNow()} - {dayjs(lastFlight.submitted_at).format('ddd DD MMM YYYY')}
                   </div>
@@ -79,14 +79,18 @@ const Dashboard = ({ lastFlight, rank, nextRank, awards, user, locations, balanc
             <div className="text-lg flex items-center">
               <i className="material-icons mr-2 md-36">emoji_events</i> Awards
             </div>
-            <div className="mt-4 flex flex-col md:flex-row justify-start">
-              {awards && awards.map((award) => (
-                <div className="mx-2 flex flex-col justify-center content-center items-center my-1" key={award.id}>
-                  <img height="100" width="100" src={award.image} />
-                  <div className="mt-1 text-sm text-center">{award.name}</div>
+            {!awards.length
+              ? <div className="mt-1 text-sm text-center">No awards yet. <Link href="/ranks#awards">Earn some!</Link></div>
+              : <div className="mt-4 flex flex-col md:flex-row justify-start">
+                  {awards && awards.map((award) => (
+                      <div className="mx-2 flex flex-col justify-center content-center items-center my-1"
+                           key={award.id}>
+                        <img height="100" width="100" src={award.image}/>
+                        <div className="mt-1 text-sm text-center">{award.name}</div>
+                      </div>
+                  ))}
                 </div>
-              ))}
-            </div>
+            }
           </div>
         </div>
         <div className="md:w-1/2 rounded shadow p-4 mt-2 bg-white mx-2">
