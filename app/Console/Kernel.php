@@ -34,7 +34,7 @@ class Kernel extends ConsoleKernel
             $pirepService = new PirepService();
             $inactivePireps = $pirepService->findInactivePireps();
             $pirepService->removeMultiplePireps($inactivePireps);
-        })->daily();
+        })->hourly();
 
         // contract generation
         $schedule->call(function () {
