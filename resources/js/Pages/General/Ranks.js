@@ -48,7 +48,7 @@ const Ranks = ({ ranks, awards }) => {
         </div>
       </div>
       <div className="rounded shadow bg-white p-4 mt-4">
-        <h2 className="text-xl mb-4">Awards</h2>
+        <h2 id="awards" className="text-xl mb-4">Awards</h2>
         {awards && (
           awards.map((award) => (
             <div key={award.id} className="flex justify-start items-center mb-4">
