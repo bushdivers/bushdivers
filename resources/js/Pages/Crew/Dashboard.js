@@ -60,18 +60,24 @@ const Dashboard = ({ lastFlight, rank, nextRank, awards, user, locations, balanc
                   <img width="60" src={rank.image} /> <span className="ml-2 text-sm">{rank.name}</span></div>
               </div>
               <div className="mt-4">
-                <div>Next Rank:</div>
-                <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
-                  <div className="flex items-center"><img width="60" src={nextRank.image} /> <span className="ml-2 text-sm">{nextRank.name}</span></div>
-                  <div className="text-sm flex">
-                    <div className="mr-2">Hours: </div> <div>{user.flights_time > (nextRank.hours * 60) ? <i className="material-icons text-green-500">check_circle</i> : <span>{convertMinuteDecimalToHoursAndMinutes((nextRank.hours * 60) - user.flights_time)}</span>}</div>
-                  </div>
-                  <div className="">
-                    <div className="text-sm flex items-center">
-                      <div className="mr-2">Points: </div><div>{user.points > nextRank.points ? <i className="material-icons text-green-500">check_circle</i> : <span>{nextRank.points - user.points}</span>}</div>
+                {!nextRank
+                  ? <div>Congratulations, {rank.name}.<br/>You have achieved the highest rank.</div>
+                  : <><div>Next Rank:</div>
+                      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
+                        <div className="flex items-center"><img width="60" src={nextRank.image} /> <span className="ml-2 text-sm">{nextRank.name}</span></div>
+                        <div className="text-sm flex">
+                        <div className="mr-2">
+                          Hours: {user.flights_time > (nextRank.hours * 60) ? <i className="material-icons text-green-500">check_circle</i> : <span>{convertMinuteDecimalToHoursAndMinutes((nextRank.hours * 60) - user.flights_time)}</span>}<br/>
+                          Points: {user.points > nextRank.points ? <i className="material-icons text-green-500">check_circle</i> : <span>{nextRank.points - user.points}</span>}
+                        </div>
+                      </div>
+                      <div className="">
+                        <div className="text-sm flex items-center">
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
+                    </>
+                }
               </div>
             </div>
           </div>
