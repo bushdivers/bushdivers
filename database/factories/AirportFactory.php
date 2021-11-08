@@ -28,7 +28,8 @@ class AirportFactory extends Factory
             'is_hub' => true,
             'lat' => -6.36188,
             'lon' => 143.23070,
-            'altitude' => 100
+            'altitude' => 100,
+            'size' => 4
         ];
     }
 }
