@@ -67,8 +67,8 @@ const Dashboard = ({ lastFlight, rank, nextRank, awards, user, locations, balanc
                         <div className="flex items-center"><img width="60" src={nextRank.image} /> <span className="ml-2 text-sm">{nextRank.name}</span></div>
                         <div className="text-sm flex">
                         <div className="mr-2">
-                          Hours: {user.flights_time > (nextRank.hours * 60) ? <i className="material-icons text-green-500">check_circle</i> : <span>{convertMinuteDecimalToHoursAndMinutes((nextRank.hours * 60) - user.flights_time)}</span>}<br/>
-                          Points: {user.points > nextRank.points ? <i className="material-icons text-green-500">check_circle</i> : <span>{nextRank.points - user.points}</span>}
+                          Hours: {user.flights_time >= (nextRank.hours * 60) ? <i className="material-icons text-green-500">check_circle</i> : <span>{convertMinuteDecimalToHoursAndMinutes((nextRank.hours * 60) - user.flights_time)}</span>}<br/>
+                          Points: {user.points >= nextRank.points ? <i className="material-icons text-green-500">check_circle</i> : <span>{nextRank.points - user.points}</span>}
                         </div>
                       </div>
                       <div className="">

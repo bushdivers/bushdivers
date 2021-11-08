@@ -2764,7 +2764,7 @@ var Dashboard = function Dashboard(_ref) {
       balance = _ref.balance;
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_Shared_Navigation_PageTitle__WEBPACK_IMPORTED_MODULE_2__.default, {
-      title: "Crew Page"
+      title: "My Crew Page"
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
       className: "mt-4 flex justify-between",
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
@@ -2817,7 +2817,13 @@ var Dashboard = function Dashboard(_ref) {
               })]
             }), lastFlight && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.Fragment, {
               children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
-                children: [lastFlight.dep_airport.name, " ", lastFlight.departure_airport_id, " - ", lastFlight.arr_airport.name, " ", lastFlight.destination_airport_id]
+                children: [lastFlight.dep_airport.name, " ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_5__.Link, {
+                  href: "/airports/".concat(lastFlight.departure_airport_id),
+                  children: lastFlight.departure_airport_id
+                }), " - ", lastFlight.arr_airport.name, " ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_5__.Link, {
+                  href: "/airports/".concat(lastFlight.destination_airport_id),
+                  children: lastFlight.destination_airport_id
+                })]
               }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
                 className: "text-sm",
                 children: [_Helpers_date_helpers__WEBPACK_IMPORTED_MODULE_3__.default.utc(lastFlight.submitted_at).fromNow(), " - ", (0,_Helpers_date_helpers__WEBPACK_IMPORTED_MODULE_3__.default)(lastFlight.submitted_at).format('ddd DD MMM YYYY')]
@@ -2849,52 +2855,48 @@ var Dashboard = function Dashboard(_ref) {
                   children: rank.name
                 })]
               })]
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
               className: "mt-4",
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
-                children: "Next Rank:"
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
-                className: "flex flex-col lg:flex-row lg:items-center lg:justify-between",
-                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
-                  className: "flex items-center",
-                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("img", {
-                    width: "60",
-                    src: nextRank.image
-                  }), " ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("span", {
-                    className: "ml-2 text-sm",
-                    children: nextRank.name
-                  })]
+              children: !nextRank ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
+                children: ["Congratulations, ", rank.name, ".", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("br", {}), "You have achieved the highest rank."]
+              }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.Fragment, {
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+                  children: "Next Rank:"
                 }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
-                  className: "text-sm flex",
-                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
-                    className: "mr-2",
-                    children: "Hours: "
-                  }), " ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
-                    children: user.flights_time > nextRank.hours * 60 ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("i", {
-                      className: "material-icons text-green-500",
-                      children: "check_circle"
-                    }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("span", {
-                      children: (0,_Helpers_date_helpers__WEBPACK_IMPORTED_MODULE_3__.convertMinuteDecimalToHoursAndMinutes)(nextRank.hours * 60 - user.flights_time)
-                    })
-                  })]
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
-                  className: "",
-                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
-                    className: "text-sm flex items-center",
-                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+                  className: "flex flex-col lg:flex-row lg:items-center lg:justify-between",
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
+                    className: "flex items-center",
+                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("img", {
+                      width: "60",
+                      src: nextRank.image
+                    }), " ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("span", {
+                      className: "ml-2 text-sm",
+                      children: nextRank.name
+                    })]
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+                    className: "text-sm flex",
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
                       className: "mr-2",
-                      children: "Points: "
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
-                      children: user.points > nextRank.points ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("i", {
+                      children: ["Hours: ", user.flights_time >= nextRank.hours * 60 ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("i", {
+                        className: "material-icons text-green-500",
+                        children: "check_circle"
+                      }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("span", {
+                        children: (0,_Helpers_date_helpers__WEBPACK_IMPORTED_MODULE_3__.convertMinuteDecimalToHoursAndMinutes)(nextRank.hours * 60 - user.flights_time)
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("br", {}), "Points: ", user.points >= nextRank.points ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("i", {
                         className: "material-icons text-green-500",
                         children: "check_circle"
                       }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("span", {
                         children: nextRank.points - user.points
-                      })
-                    })]
-                  })
+                      })]
+                    })
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+                    className: "",
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+                      className: "text-sm flex items-center"
+                    })
+                  })]
                 })]
-              })]
+              })
             })]
           })]
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
@@ -2905,7 +2907,13 @@ var Dashboard = function Dashboard(_ref) {
               className: "material-icons mr-2 md-36",
               children: "emoji_events"
             }), " Awards"]
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+          }), !awards.length ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
+            className: "mt-1 text-sm text-center",
+            children: ["No awards yet. ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_5__.Link, {
+              href: "/ranks#awards",
+              children: "Earn some!"
+            })]
+          }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
             className: "mt-4 flex flex-col md:flex-row justify-start",
             children: awards && awards.map(function (award) {
               return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
@@ -2963,7 +2971,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var accessToken = 'pk.eyJ1IjoicnVzc2VsbHd3ZXN0IiwiYSI6ImNrc29vZm5paDEweGIzMnA3MXAzYTFuMDQifQ.7veU-ARmzYClHDFsVQvT5g';
+var accessToken = 'pk.eyJ1IjoicnVzc2VsbHd3ZXN0IiwiYSI6ImNrc29vZm5paDEweGIzMnA3MXAzYTFuMDQifQ.7veU-ARmzYClHDFsVQvT5g'; // const accessToken = 'pk.eyJ1Ijoicm9icm95YXVzIiwiYSI6ImNrdm93aDJ0cDB5dGQyb3FzNzNyd295YnUifQ.WMW0eFmvUhNoNWr9flPPYQ'
 
 var CrewMap = function CrewMap(props) {
   var mapContainer = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(null);
@@ -2973,8 +2981,8 @@ var CrewMap = function CrewMap(props) {
     map.current = new (maplibre_gl__WEBPACK_IMPORTED_MODULE_1___default().Map)({
       container: mapContainer.current,
       style: 'mapbox://styles/mapbox/dark-v10',
-      center: [0, 0],
-      zoom: 1,
+      center: [145.0, -5.8],
+      zoom: 4,
       accessToken: accessToken
     });
   });
@@ -2986,7 +2994,7 @@ var CrewMap = function CrewMap(props) {
           console.log(locationLonLat);
           var locationPopup = new (maplibre_gl__WEBPACK_IMPORTED_MODULE_1___default().Popup)({
             offset: 25
-          }).setText(location.identifier);
+          }).setText(location.identifier + ' ' + location.name);
           var ap = new (maplibre_gl__WEBPACK_IMPORTED_MODULE_1___default().Marker)({
             color: '#F97316',
             scale: 0.5
@@ -3035,19 +3043,22 @@ var PilotStats = function PilotStats(props) {
       className: "md:w-1/6 my-1",
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_Elements_StatCard__WEBPACK_IMPORTED_MODULE_1__.default, {
         title: "Flights",
-        stat: props.flights
+        stat: props.flights,
+        link: "/logbook"
       })
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
       className: "md:w-1/6 my-1",
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_Elements_StatCard__WEBPACK_IMPORTED_MODULE_1__.default, {
         title: "Hours",
-        stat: props.hours > 0 ? (0,_Helpers_date_helpers__WEBPACK_IMPORTED_MODULE_2__.convertMinuteDecimalToHoursAndMinutes)(props.hours) : 0
+        stat: props.hours > 0 ? (0,_Helpers_date_helpers__WEBPACK_IMPORTED_MODULE_2__.convertMinuteDecimalToHoursAndMinutes)(props.hours) : 0,
+        link: "/logbook"
       })
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
       className: "md:w-1/6 my-1",
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_Elements_StatCard__WEBPACK_IMPORTED_MODULE_1__.default, {
         title: "Points",
-        stat: props.points
+        stat: props.points,
+        link: "/logbook"
       })
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
       className: "md:w-1/6 my-1",
@@ -3059,13 +3070,15 @@ var PilotStats = function PilotStats(props) {
       className: "md:w-1/6 my-1",
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_Elements_StatCard__WEBPACK_IMPORTED_MODULE_1__.default, {
         title: "Location",
-        stat: props.location
+        stat: props.location,
+        link: '/airports/' + props.location
       })
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
       className: "md:w-1/6 my-1",
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_Elements_StatCard__WEBPACK_IMPORTED_MODULE_1__.default, {
         title: "Cash",
-        stat: '$' + props.balance
+        stat: '$' + props.balance,
+        link: "/my-finances"
       })
     })]
   });
@@ -3161,18 +3174,27 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @inertiajs/inertia-react */ "./node_modules/@inertiajs/inertia-react/dist/index.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+
 
 
 
 
 var StatCard = function StatCard(props) {
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
     className: "rounded shadow bg-white p-4 mr-2 text-center",
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+    children: [!props.link ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
       className: "text-2xl",
       children: props.stat
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+    }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+      className: "text-2xl",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Link, {
+        href: props.link,
+        className: "ml-2 btn",
+        children: props.stat
+      })
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
       className: "text-sm",
       children: props.title
     })]

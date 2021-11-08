@@ -2843,6 +2843,7 @@ var Ranks = function Ranks(_ref) {
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
       className: "rounded shadow bg-white p-4 mt-4",
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("h2", {
+        id: "awards",
         className: "text-xl mb-4",
         children: "Awards"
       }), awards && awards.map(function (award) {
