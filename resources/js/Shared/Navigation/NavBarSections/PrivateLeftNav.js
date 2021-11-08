@@ -37,9 +37,6 @@ const PrivateLeftNav = (props) => {
                 {({ active }) => <Link href="/hubs" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Hubs</Link>}
               </Menu.Item>
               <Menu.Item>
-                {({ active }) => <Link href="/fleet" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Fleet</Link>}
-              </Menu.Item>
-              <Menu.Item>
                 {({ active }) => <Link href="/roster" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Pilot Roster</Link>}
               </Menu.Item>
               <Menu.Item>
@@ -53,6 +50,24 @@ const PrivateLeftNav = (props) => {
               </Menu.Item>
               <Menu.Item>
                 {({ active }) => <a href="https://storage.googleapis.com/bush-divers.appspot.com/BushTracker.zip" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Bush Tracker</a>}
+              </Menu.Item>
+            </Menu.Items>
+          </Transition>
+        </Menu>
+        <Menu as="div" className={props.mobile ? 'relative' : 'ml-3 relative'}>
+          <div>
+            <Menu.Button className={props.mobile ? 'nav-link mobile' : 'nav-link'}>
+              <span className="sr-only">Open Aircraft menu</span>
+              <DropdownTitle title="Aircraft" />
+            </Menu.Button>
+          </div>
+          <Transition as={Fragment} enter="transition ease-out duration-100" enterFrom="transform opacity-0 scale-95" enterTo="transform opacity-100 scale-100" leave="transition ease-in duration-75" leaveFrom="transform opacity-100 scale-100" leaveTo="transform opacity-0 scale-95">
+            <Menu.Items className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white focus:outline-none">
+              <Menu.Item>
+                {({ active }) => <Link href="/fleet" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Bush Divers Fleet</Link>}
+              </Menu.Item>
+              <Menu.Item>
+                {({ active }) => <Link href="/rentals" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Aircraft Rentals</Link>}
               </Menu.Item>
             </Menu.Items>
           </Transition>

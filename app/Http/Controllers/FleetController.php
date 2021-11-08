@@ -20,7 +20,6 @@ class FleetController extends Controller
             ->where('company_fleet', true)
             ->orderBy('type')
             ->get();
-//        $aircraft = Aircraft::with('location', 'fleet')->get();
         return Inertia::render('Fleet/FleetList', ['fleet' => $fleet]);
     }
 
