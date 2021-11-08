@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import Layout from '../../Shared/Layout'
 import PageTitle from '../../Shared/Navigation/PageTitle'
 import AirportMap from '../../Shared/Components/Airport/AirportMap'
-import { Inertia } from '@inertiajs/inertia'
 import { Link } from '@inertiajs/inertia-react'
 
 const AirportDetail = ({ airport, metar, aircraft }) => {
@@ -12,6 +11,16 @@ const AirportDetail = ({ airport, metar, aircraft }) => {
     setIcao(e.target.value)
   }
 
+  const renderAircraftStatus = (status) => {
+    switch (status) {
+      case 1:
+        return 'Available'
+      case 2:
+        return 'Reserved'
+      case 3:
+        return 'In Use'
+    }
+  }
   return (
     <>
       <div className="w-1/6 mb-2 flex items-center">
@@ -80,6 +89,7 @@ const AirportDetail = ({ airport, metar, aircraft }) => {
                 <th>Aircraft</th>
                 <th>Hub</th>
                 <th>Fuel</th>
+                <th>Status</th>
               </tr>
               </thead>
               <tbody>
@@ -89,6 +99,7 @@ const AirportDetail = ({ airport, metar, aircraft }) => {
                   <td>{ac.fleet.manufacturer} {ac.fleet.name} ({ac.fleet.type})</td>
                   <td>{ac.hub_id}</td>
                   <td>{ac.fuel_onboard}</td>
+                  <td>{renderAircraftStatus(ac.state)}</td>
                 </tr>
               ))}
               </tbody>
