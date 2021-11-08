@@ -99,7 +99,7 @@ const AirportDetail = ({ airport, metar, aircraft }) => {
                   <td>{ac.fleet.manufacturer} {ac.fleet.name} ({ac.fleet.type})</td>
                   <td>{ac.hub_id}</td>
                   <td>{ac.fuel_onboard}</td>
-                  <td>{renderAircraftStatus(ac.status)}</td>
+                  <td>{renderAircraftStatus(ac.state)}</td>
                 </tr>
               ))}
               </tbody>

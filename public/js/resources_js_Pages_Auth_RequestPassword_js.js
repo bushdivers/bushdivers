@@ -110,7 +110,7 @@ var RequestPassword = function RequestPassword() {
 };
 
 RequestPassword.layout = function (page) {
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_Shared_LayoutAuth__WEBPACK_IMPORTED_MODULE_3__.default, {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_Shared_LayoutAuth__WEBPACK_IMPORTED_MODULE_3__["default"], {
     children: page,
     title: "Request Password"
   });
