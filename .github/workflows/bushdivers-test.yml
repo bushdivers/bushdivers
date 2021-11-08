@@ -2,7 +2,8 @@ name: Bushdivers Stage
 
 on:
   push:
-    branches: [ dev ]
+    branches:
+      - main
 
 jobs:
   laravel-tests:

@@ -1,8 +1,9 @@
-name: Bushdivers Stage
+name: Bushdivers PR
 
 on:
   pull_request:
-    branches: [ main ]
+    branches:
+      - '**'
 
 jobs:
   laravel-tests:
