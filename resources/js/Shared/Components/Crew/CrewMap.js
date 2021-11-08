@@ -2,6 +2,7 @@ import React, { useRef, useEffect } from 'react'
 import maplibre from 'maplibre-gl'
 
 const accessToken = 'pk.eyJ1IjoicnVzc2VsbHd3ZXN0IiwiYSI6ImNrc29vZm5paDEweGIzMnA3MXAzYTFuMDQifQ.7veU-ARmzYClHDFsVQvT5g'
+// const accessToken = 'pk.eyJ1Ijoicm9icm95YXVzIiwiYSI6ImNrdm93aDJ0cDB5dGQyb3FzNzNyd295YnUifQ.WMW0eFmvUhNoNWr9flPPYQ'
 
 const CrewMap = (props) => {
   const mapContainer = useRef(null)
@@ -12,8 +13,8 @@ const CrewMap = (props) => {
     map.current = new maplibre.Map({
       container: mapContainer.current,
       style: 'mapbox://styles/mapbox/dark-v10',
-      center: [0, 0],
-      zoom: 1,
+      center: [145.0, -5.8],
+      zoom: 4,
       accessToken
     })
   })
@@ -25,7 +26,7 @@ const CrewMap = (props) => {
           const locationLonLat = [location.lon, location.lat]
           console.log(locationLonLat)
           const locationPopup = new maplibre.Popup({ offset: 25 }).setText(
-            location.identifier
+            location.identifier + ' ' + location.name
           )
 
           const ap = new maplibre.Marker({
