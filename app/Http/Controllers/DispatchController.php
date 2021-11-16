@@ -50,7 +50,8 @@ class DispatchController extends Controller
 
             $cargoWeight = $this->dispatchService->calculateCargoWeight($cargo);
             $passengerCount = $this->dispatchService->calculatePassengerCount($cargo);
-            $fuelWeight = $this->dispatchService->calculateFuelWeight($aircraft->fleet->fuel_type, $pirep->planned_fuel);
+            $fuelWeight = $this->dispatchService
+                ->calculateFuelWeight($aircraft->fleet->fuel_type, $pirep->planned_fuel);
 
             return Inertia::render('Dispatch/ActiveDispatch', [
                 'cargo' => $cargo,
@@ -144,7 +145,7 @@ class DispatchController extends Controller
         return ContractCargo::with('currentAirport', 'contract', 'contract.depAirport', 'contract.arrAirport')
             ->where('current_airport_id', $currentLocation)
             ->where('is_completed', false)
-            ->whereHas('contract', function ($q) use($userId) {
+            ->whereHas('contract', function ($q) use ($userId) {
                 $q->where('user_id', $userId)
                     ->where('is_completed', false);
             })->get();
@@ -152,11 +153,22 @@ class DispatchController extends Controller
 
     protected function getAircraftForDispatch($currentLocation): Collection
     {
-        return Aircraft::with('fleet')
+        $fleetAc = Aircraft::with('fleet')
             ->where('state', AircraftState::AVAILABLE)
             ->where('status', AircraftStatus::ACTIVE)
             ->where('current_airport_id', $currentLocation)
             ->get();
+
+        $rentalAc = Aircraft::with('fleet')
+            ->where('is_rental', true)
+            ->where('user_id', Auth::user()->id)
+            ->get();
+
+        if ($rentalAc) {
+            return $fleetAc->merge($rentalAc);
+        } else {
+            return $fleetAc;
+        }
     }
 
     protected function getCargoForActiveDispatch($ids): Collection
