@@ -4,28 +4,28 @@ namespace App\Http\Controllers\Auth;
 
 use App\General\MailTypes;
 use App\Http\Controllers\Controller;
-use App\Models\User;
-use App\Services\EmailService;
-use Illuminate\Http\Request;
-use Inertia\Inertia;
 use App\Http\Requests\PasswordRequest;
+use App\Models\User;
+use App\Services\Email\SendEmail;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Ramsey\Uuid\Uuid;
 
-class PasswordRequestController extends Controller
+class RequestPasswordResetController extends Controller
 {
-    protected EmailService $emailService;
+    protected SendEmail $sendEmail;
 
-    public function __construct()
+    public function __construct(SendEmail $sendEmail)
     {
-        $this->emailService = new EmailService();
+        $this->sendEmail = $sendEmail;
     }
-
-    public function index()
-    {
-        return Inertia::render('Auth/RequestPassword');
-    }
-
-    public function request(PasswordRequest $request)
+    /**
+     * Handle the incoming request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function __invoke(PasswordRequest $request): RedirectResponse
     {
         // create request uuid
         $user = User::where('email', $request->email)->first();
@@ -33,10 +33,9 @@ class PasswordRequestController extends Controller
         $user->save();
 
         $url = route('password.reset.index', ['token' => $user->reset_token]);
-
         // send email
         $body = MailTypes::passwordRequest($user, $url);
-        $this->emailService->sendEmail($body);
+        $this->sendEmail->execute($body);
 
         // redirect to login
         return redirect()->route('login.index')->with(['success' => 'Password request sent, please check your email']);
