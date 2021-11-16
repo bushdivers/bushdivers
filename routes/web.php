@@ -89,6 +89,8 @@ Route::middleware('auth')->group(function () {
         ->name('rentals');
     Route::post('/rentals', \App\Http\Controllers\Rentals\RentAircraftController::class)
         ->name('rentals.rent');
+    Route::post('/rentals/end/{id}', \App\Http\Controllers\Rentals\EndRentalController::class)
+        ->name('rentals.end');
 
 
     // Flights

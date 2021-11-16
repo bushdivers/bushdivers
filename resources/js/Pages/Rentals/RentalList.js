@@ -16,7 +16,18 @@ const RentalList = ({ aircraft, searchedIcao, myRentals }) => {
   }
 
   const handelCancel = (ac) => {
-    window.alert(`Cancel ${ac.registration}`)
+    if (ac.current_airport_id !== ac.hub_id) {
+      const confirm = window.confirm(`Aircraft ${ac.registration} is not at its home location, if you end the rental now you will not get your deposit back. Do you wish to continue?`)
+      if (confirm) {
+        returnRental(ac)
+      }
+    } else {
+      returnRental(ac)
+    }
+  }
+
+  const returnRental = (ac) => {
+    Inertia.post(`/rentals/end/${ac.id}`)
   }
 
   return (

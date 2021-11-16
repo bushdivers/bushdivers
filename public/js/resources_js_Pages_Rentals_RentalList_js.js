@@ -2782,7 +2782,19 @@ var RentalList = function RentalList(_ref) {
   };
 
   var handelCancel = function handelCancel(ac) {
-    window.alert("Cancel ".concat(ac.registration));
+    if (ac.current_airport_id !== ac.hub_id) {
+      var confirm = window.confirm("Aircraft ".concat(ac.registration, " is not at its home location, if you end the rental now you will not get your deposit back. Do you wish to continue?"));
+
+      if (confirm) {
+        returnRental(ac);
+      }
+    } else {
+      returnRental(ac);
+    }
+  };
+
+  var returnRental = function returnRental(ac) {
+    _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_4__.Inertia.post("/rentals/end/".concat(ac.id));
   };
 
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
