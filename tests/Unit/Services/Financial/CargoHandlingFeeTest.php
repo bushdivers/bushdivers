@@ -4,6 +4,7 @@ namespace Tests\Unit\Services\Financial;
 
 use App\Models\Aircraft;
 use App\Models\AirlineFees;
+use App\Models\Airport;
 use App\Models\Contract;
 use App\Models\ContractCargo;
 use App\Models\Enums\AirlineTransactionTypes;
@@ -26,6 +27,7 @@ class CargoHandlingFeeTest extends TestCase
     protected Model $pirep;
     protected Model $pirepCargo;
     protected Model $fleet;
+    protected Model $airport;
 
     protected function setUp(): void
     {
@@ -35,7 +37,12 @@ class CargoHandlingFeeTest extends TestCase
         $this->contractCargo = ContractCargo::factory()->create([
             'contract_id' => $this->contract->id
         ]);
-        $this->pirep = Pirep::factory()->create();
+        $this->airport = Airport::factory()->create([
+            'size' => 1
+        ]);
+        $this->pirep = Pirep::factory()->create([
+            'destination_airport_id' => $this->airport->identifier
+        ]);
         $this->pirepCargo = PirepCargo::factory()->create([
             'pirep_id' => $this->pirep->id,
             'contract_cargo_id' => $this->contractCargo->id
@@ -65,6 +72,27 @@ class CargoHandlingFeeTest extends TestCase
             'memo' => 'Cargo Handling',
             'pirep_id' => $this->pirep->id,
             'total' => -$cost,
+            'transaction_type' => AirlineTransactionTypes::GroundHandlingFees
+        ]);
+    }
+
+    public function test_cargo_not_calculated_for_small_airport()
+    {
+        $airport = Airport::factory()->create([
+            'size' => 1
+        ]);
+        $pirep = Pirep::factory()->create([
+            'destination_airport_id' => $airport->identifier
+        ]);
+        $pirepCargo = PirepCargo::factory()->create([
+            'pirep_id' => $pirep->id,
+            'contract_cargo_id' => $this->contractCargo->id
+        ]);
+
+        $this->financialsService->calcCargoHandling($pirep);
+        $this->assertDatabaseMissing('account_ledgers', [
+            'memo' => 'Cargo Handling',
+            'pirep_id' => $this->pirep->id,
             'transaction_type' => AirlineTransactionTypes::GroundHandlingFees
         ]);
     }

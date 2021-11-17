@@ -125,6 +125,9 @@ class FinancialsService
 
     public function calcLandingFee($pirep)
     {
+        $airport = Airport::where('identifier', $pirep->destination_airport_id)->first();
+        if ($airport->size == 0) return;
+
         $userService = new UserService();
         $aircraft = Aircraft::with('fleet')->find($pirep->aircraft_id);
         $feeType = null;
@@ -144,12 +147,16 @@ class FinancialsService
         if (!$aircraft->is_rental) {
             $this->addTransaction(AirlineTransactionTypes::LandingFees, $fee->fee_amount, $feeType, $pirep->id);
         } else {
-            $userService->addUserAccountEntry($pirep->user_id, TransactionTypes::FlightFeesLanding, $fee->fee_amount, $pirep->id);
+            $userService->addUserAccountEntry($pirep->user_id, TransactionTypes::FlightFeesLanding,
+                $fee->fee_amount, $pirep->id);
         }
     }
 
     public function calcCargoHandling($pirep)
     {
+        $airport = Airport::where('identifier', $pirep->destination_airport_id)->first();
+        if ($airport->size == 0) return;
+
         $userService = new UserService();
         $aircraft = Aircraft::with('fleet')->find($pirep->aircraft_id);
         $pc = PirepCargo::where('pirep_id', $pirep->id)->get();
@@ -169,7 +176,6 @@ class FinancialsService
         } else {
             $userService->addUserAccountEntry($pirep->user_id, TransactionTypes::FlightFeesGround, $total, $pirep->id);
         }
-
     }
 
     public function calcContractPay($contractId, $pirep = null, $rental = false): float
