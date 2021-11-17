@@ -26,6 +26,13 @@ use Illuminate\Support\Facades\DB;
 
 class PirepService
 {
+    protected FinancialsService $financialsService;
+
+    public function __construct(FinancialsService $financialsService)
+    {
+        $this->financialsService = $financialsService;
+    }
+
     public function calculatePoints($pirep)
     {
         // completed flight
@@ -36,9 +43,8 @@ class PirepService
         if ($pirep->destination_airport_id == $aircraft->hub_id) {
             $this->addPointsEntry($pirep->id, PointsType::HOME_HUB_LABEL, PointsType::HOME_HUB);
             $userService = new UserService();
-            $financialService = new FinancialsService();
             $userService->addUserAccountEntry($pirep->user_id, TransactionTypes::Bonus, FinancialConsts::HubBonus, $pirep->id);
-            $financialService->addTransaction(AirlineTransactionTypes::ContractExpenditure, FinancialConsts::HubBonus, 'Returned aircraft home', $pirep->id);
+            $this->financialsService->addTransaction(AirlineTransactionTypes::ContractExpenditure, FinancialConsts::HubBonus, 'Returned aircraft home', $pirep->id);
         }
 
 

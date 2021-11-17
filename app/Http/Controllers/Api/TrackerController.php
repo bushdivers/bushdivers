@@ -35,12 +35,14 @@ class TrackerController extends Controller
     protected AirportService $airportService;
     protected FinancialsService $financialsService;
     protected UserService $userService;
+    protected PirepService $pirepService;
 
-    public function __construct(AirportService $airportService, FinancialsService $financialsService, UserService $userService)
+    public function __construct(AirportService $airportService, FinancialsService $financialsService, UserService $userService, PirepService $pirepService)
     {
         $this->airportService = $airportService;
         $this->financialsService = $financialsService;
         $this->userService = $userService;
+        $this->pirepService = $pirepService;
     }
 
     public function getDispatch(Request $request): JsonResponse
@@ -145,7 +147,6 @@ class TrackerController extends Controller
     public function submitPirep(Request $request): JsonResponse
     {
         $pirep = Pirep::find($request->pirep_id);
-        $pirepService = new PirepService();
 
         try {
             // calculate coordinate points in flight logs
@@ -196,9 +197,9 @@ class TrackerController extends Controller
         try {
             // process points and financials
             $this->financialsService->processPirepFinancials($pirep);
-            $pirepService->calculatePoints($pirep);
+            $this->pirepService->calculatePoints($pirep);
             // add total to pirep
-            $pirepService->updatePirepTotalScore($pirep);
+            $this->pirepService->updatePirepTotalScore($pirep);
         } catch (\Exception $e) {
             $this->rollbackSubmission(3, $request);
             return response()->json(['message' => $e->getMessage()], 500);

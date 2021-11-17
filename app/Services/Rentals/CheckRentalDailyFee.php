@@ -32,7 +32,12 @@ class CheckRentalDailyFee
                 ->sum('flight_time');
 
             if ($pirepTime < 120) {
-                $charge = $ac->fleet->rental_cost;
+                $remainder = $pirepTime / 120; // flight time / min time
+                $timeCharge = $ac->fleet->rental_cost * $remainder;
+                $fullCharge = $ac->fleet->rental_cost;
+
+                $charge = $pirepTime == 0 ? $fullCharge : $timeCharge;
+
                 $this->addUserTransaction->execute($ac->user_id, TransactionTypes::Rental, -$charge);
             }
         }

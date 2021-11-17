@@ -84,7 +84,7 @@ class SubmitPirepTest extends TestCase
             'user_id' => $this->user->id,
             'destination_airport_id' => $this->contract->arr_airport_id,
             'departure_airport_id' => $this->contract->dep_airport_id,
-            'aircraft_id' => $this->aircraft,
+            'aircraft_id' => $this->aircraft->id,
             'current_lat' => -6.14617,
             'current_lon' => 143.65733
         ]);

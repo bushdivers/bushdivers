@@ -14,10 +14,17 @@ use App\Models\Enums\FinancialConsts;
 use App\Models\Enums\TransactionTypes;
 use App\Models\Fleet;
 use App\Models\PirepCargo;
+use App\Services\Rentals\ChargeRentalFee;
 
 class FinancialsService
 {
     protected float $personWeight = 80.00;
+    protected ChargeRentalFee $chargeRentalFee;
+
+    public function __construct(ChargeRentalFee $chargeRentalFee)
+    {
+        $this->chargeRentalFee = $chargeRentalFee;
+    }
 
     public function calcMonthlyFees()
     {
@@ -88,6 +95,7 @@ class FinancialsService
 
     public function calcFuelUsedFee($pirep)
     {
+        $userService = new UserService();
         $aircraft = Aircraft::with('fleet')->find($pirep->aircraft_id);
         $fuelType = $aircraft->fleet->fuel_type == 1 ? 'Avgas' : 'Jet Fuel';
         $fuelCost = AirlineFees::where('fee_name', $fuelType)->first();
@@ -95,19 +103,29 @@ class FinancialsService
         $fuelUsedCost = $fuelCost->fee_amount * $pirep->fuel_used;
         // TODO: if negative, 0 fuel fee for company, and charge pilot for fuel
         if ($fuelUsedCost < 0) {
-            $this->addTransaction(AirlineTransactionTypes::FuelFees, +$fuelUsedCost, 'Fuel Cost', $pirep->id);
-            $this->addTransaction(AirlineTransactionTypes::FuelFees, +$fuelUsedCost, 'Fuel Cost Paid by Pilot', $pirep->id, 'credit');
+            if (!$aircraft->is_rental) {
+                $this->addTransaction(AirlineTransactionTypes::FuelFees, +$fuelUsedCost, 'Fuel Cost', $pirep->id);
+                $this->addTransaction(AirlineTransactionTypes::FuelFees, +$fuelUsedCost, 'Fuel Cost Paid by Pilot', $pirep->id, 'credit');
 
-            // add line to pilot transactions
-            $userService = new UserService();
-            $userService->addUserAccountEntry($pirep->user_id, TransactionTypes::FuelPenalty, $fuelUsedCost, $pirep->id);
+                // add line to pilot transactions
+                $userService->addUserAccountEntry($pirep->user_id, TransactionTypes::FuelPenalty, $fuelUsedCost, $pirep->id);
+            } else {
+                // add line to pilot transactions
+                $userService->addUserAccountEntry($pirep->user_id, TransactionTypes::FlightFeesFuel, $fuelUsedCost, $pirep->id);
+            }
+
         } else {
-            $this->addTransaction(AirlineTransactionTypes::FuelFees, $fuelUsedCost, 'Fuel Cost', $pirep->id);
+            if (!$aircraft->is_rental) {
+                $this->addTransaction(AirlineTransactionTypes::FuelFees, $fuelUsedCost, 'Fuel Cost', $pirep->id);
+            } else {
+                $userService->addUserAccountEntry($pirep->user_id, TransactionTypes::FlightFeesFuel, $fuelUsedCost, $pirep->id);
+            }
         }
     }
 
     public function calcLandingFee($pirep)
     {
+        $userService = new UserService();
         $aircraft = Aircraft::with('fleet')->find($pirep->aircraft_id);
         $feeType = null;
         switch ($aircraft) {
@@ -123,11 +141,17 @@ class FinancialsService
         }
 
         $fee = AirlineFees::where('fee_name', $feeType)->first();
-        $this->addTransaction(AirlineTransactionTypes::LandingFees, $fee->fee_amount, $feeType, $pirep->id);
+        if (!$aircraft->is_rental) {
+            $this->addTransaction(AirlineTransactionTypes::LandingFees, $fee->fee_amount, $feeType, $pirep->id);
+        } else {
+            $userService->addUserAccountEntry($pirep->user_id, TransactionTypes::FlightFeesLanding, $fee->fee_amount, $pirep->id);
+        }
     }
 
     public function calcCargoHandling($pirep)
     {
+        $userService = new UserService();
+        $aircraft = Aircraft::with('fleet')->find($pirep->aircraft_id);
         $pc = PirepCargo::where('pirep_id', $pirep->id)->get();
         $fee = AirlineFees::where('fee_type', AirlineTransactionTypes::GroundHandlingFees)->first();
         $weight = 0;
@@ -140,17 +164,26 @@ class FinancialsService
             }
         }
         $total = $weight * $fee->fee_amount;
-        $this->addTransaction(AirlineTransactionTypes::GroundHandlingFees, $total, 'Cargo Handling', $pirep->id);
+        if (!$aircraft->is_rental) {
+            $this->addTransaction(AirlineTransactionTypes::GroundHandlingFees, $total, 'Cargo Handling', $pirep->id);
+        } else {
+            $userService->addUserAccountEntry($pirep->user_id, TransactionTypes::FlightFeesGround, $total, $pirep->id);
+        }
+
     }
 
-    public function calcContractPay($contractId, $pirep = null): float
+    public function calcContractPay($contractId, $pirep = null, $rental = false): float
     {
         $contract = Contract::find($contractId);
         // company pay
         $companyPay = $contract->contract_value;
         $this->addTransaction(AirlineTransactionTypes::ContractIncome, $companyPay, 'Contract Pay: '. $contractId, $pirep, 'credit');
         // pilot pay
-        $pilotPay = (FinancialConsts::PilotPay / 100) * $contract->contract_value;
+        if ($rental) {
+            $pilotPay = (80 / 100) * $contract->contract_value;
+        } else {
+            $pilotPay = (FinancialConsts::PilotPay / 100) * $contract->contract_value;
+        }
         $this->addTransaction(AirlineTransactionTypes::ContractExpenditure, $pilotPay, 'Pilot Pay: '. $contractId, $pirep);
         return $pilotPay;
     }
@@ -175,7 +208,7 @@ class FinancialsService
     public function processPirepFinancials($pirep)
     {
         $userService = new UserService();
-
+        $aircraft = Aircraft::find($pirep->aircraft_id);
         $this->calcLandingFee($pirep);
         $this->calcFuelUsedFee($pirep);
 
@@ -190,7 +223,7 @@ class FinancialsService
                     ->first();
 
                 if (isset($contract)) {
-                    $pp = $this->calcContractPay($contract->id, $pirep->id);
+                    $pp = $this->calcContractPay($contract->id, $pirep->id, $aircraft->is_rental);
                     $userService->addUserAccountEntry($pirep->user_id, TransactionTypes::FlightPay, $pp, $pirep->id);
 //                    $userService->updateUserAccountBalance($pirep->user_id, $pp);
                     $contract->is_paid = true;
@@ -199,5 +232,9 @@ class FinancialsService
             }
         }
 
+        if ($aircraft->is_rental) {
+            // charge rental fee
+            $this->chargeRentalFee->execute($pirep->id);
+        }
     }
 }
