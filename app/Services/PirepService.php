@@ -178,12 +178,18 @@ class PirepService
         $aircraftService = new AircraftService();
         if ($pireps->count() > 1) {
             foreach ($pireps as $pirep) {
-                $aircraftService->updateAircraftState($pirep->aircraft_id, AircraftState::AVAILABLE);
-                $this->removePirep($pirep->id);
+                $aircraft = Aircraft::find($pirep->aircraft_id);
+                if (!$aircraft->is_rental) {
+                    $aircraftService->updateAircraftState($pirep->aircraft_id, AircraftState::AVAILABLE);
+                    $this->removePirep($pirep->id);
+                }
             }
         } elseif ($pireps->count() == 1) {
-            $aircraftService->updateAircraftState($pireps->aircraft_id, AircraftState::AVAILABLE);
-            $this->removePirep($pireps->id);
+            $aircraft = Aircraft::find($pireps->aircraft_id);
+            if (!$aircraft->is_rental) {
+                $aircraftService->updateAircraftState($pireps->aircraft_id, AircraftState::AVAILABLE);
+                $this->removePirep($pireps->id);
+            }
         }
 
     }
