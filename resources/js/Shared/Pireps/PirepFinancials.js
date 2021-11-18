@@ -16,9 +16,28 @@ const PirepFinancials = (props) => {
     }
   }
 
+  const renderPilotTransactionType = (transaction) => {
+    switch (transaction) {
+      case 1:
+        return 'Flight Pay'
+      case 4:
+        return 'Landing Fee'
+      case 5:
+        return 'Bonus'
+      case 6:
+        return 'Rental Fees'
+      case 7:
+        return 'Fuel Cost'
+      case 8:
+        return 'Ground Handling'
+      case 9:
+        return 'Landing Fees'
+    }
+  }
+
   return (
     <div className="bg-white rounded shadow p-4 my-2 mx-2 overflow-x-auto">
-      <div className="text-lg">Financials</div>
+      <div className="text-lg">Company Financials</div>
       <table className="table table-condensed table-auto">
         <thead>
         <tr>
@@ -36,7 +55,27 @@ const PirepFinancials = (props) => {
         </tbody>
       </table>
       <div className="text-right">
-        <div>Total: <span className={props.total < 0 && 'text-red-500'}>${props.total}</span></div>
+        <div>Total: <span className={props.companyTotal < 0 && 'text-red-500'}>${props.companyTotal}</span></div>
+      </div>
+      <div className="text-lg mt-2">Pilot Financials</div>
+      <table className="table table-condensed table-auto">
+        <thead>
+        <tr>
+          <th>Transaction</th>
+          <th>Total</th>
+        </tr>
+        </thead>
+        <tbody>
+        {props.pilot.map((pilot) => (
+          <tr key={pilot.id}>
+            <td>{renderPilotTransactionType(pilot.type)}</td>
+            <td className={pilot.total < 0 && 'text-red-500'}>${pilot.total}</td>
+          </tr>
+        ))}
+        </tbody>
+      </table>
+      <div className="text-right">
+        <div>Total: <span className={props.pilotTotal < 0 && 'text-red-500'}>${props.pilotTotal}</span></div>
       </div>
     </div>
   )

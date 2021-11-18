@@ -146,7 +146,10 @@ class PirepController extends Controller
 
         $companyFinancials = AccountLedger::where('pirep_id', $pirep)->get();
 
-        $total = round($companyFinancials->sum('total'),2);
+        $pilotFinancials = DB::table('user_accounts')->where('flight_id', $pirep)->get();
+
+        $companyTotal = round($companyFinancials->sum('total'),2);
+        $pilotTotal = round($pilotFinancials->sum('total'),2);
 
         return Inertia::render('Crew/LogbookDetail', [
             'pirep' => $p,
@@ -155,7 +158,9 @@ class PirepController extends Controller
             'coords' => $logs->pluck('lat', 'lon'),
             'cargo' => $cargo,
             'companyFinancials' => $companyFinancials,
-            'flightTotal' => $total
+            'pilotFinancials' => $pilotFinancials,
+            'companyTotal' => $companyTotal,
+            'pilotTotal' => $pilotTotal
         ]);
     }
 

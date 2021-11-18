@@ -26,6 +26,6 @@ class ChargeRentalFee
 
         $flightTimeMins = $pirep->flight_time;
         $charge = ($flightTimeMins / 60) * $fleet->rental_cost;
-        $this->addUserTransaction->execute($pirep->user_id, TransactionTypes::Rental, $charge, $pirepId);
+        $this->addUserTransaction->execute($pirep->user_id, TransactionTypes::Rental, -$charge, $pirepId);
     }
 }

@@ -2772,7 +2772,8 @@ var LogbookDetail = function LogbookDetail(_ref) {
       cargo = _ref.cargo,
       pilotFinancials = _ref.pilotFinancials,
       companyFinancials = _ref.companyFinancials,
-      flightTotal = _ref.flightTotal;
+      companyTotal = _ref.companyTotal,
+      pilotTotal = _ref.pilotTotal;
   var auth = (0,_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_10__.usePage)().props.auth;
   var submittedDate = (0,date_fns__WEBPACK_IMPORTED_MODULE_13__.default)(new Date(pirep.submitted_at), 'do MMMM yyyy kk:mm');
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
@@ -2800,7 +2801,8 @@ var LogbookDetail = function LogbookDetail(_ref) {
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_Shared_Pireps_PirepFinancials__WEBPACK_IMPORTED_MODULE_11__.default, {
           company: companyFinancials,
           pilot: pilotFinancials,
-          total: flightTotal
+          companyTotal: companyTotal,
+          pilotTotal: pilotTotal
         })]
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
         className: "md:w-1/2",
@@ -4242,11 +4244,36 @@ var PirepFinancials = function PirepFinancials(props) {
     }
   };
 
+  var renderPilotTransactionType = function renderPilotTransactionType(transaction) {
+    switch (transaction) {
+      case 1:
+        return 'Flight Pay';
+
+      case 4:
+        return 'Landing Fee';
+
+      case 5:
+        return 'Bonus';
+
+      case 6:
+        return 'Rental Fees';
+
+      case 7:
+        return 'Fuel Cost';
+
+      case 8:
+        return 'Ground Handling';
+
+      case 9:
+        return 'Landing Fees';
+    }
+  };
+
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
     className: "bg-white rounded shadow p-4 my-2 mx-2 overflow-x-auto",
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
       className: "text-lg",
-      children: "Financials"
+      children: "Company Financials"
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("table", {
       className: "table table-condensed table-auto",
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("thead", {
@@ -4273,8 +4300,41 @@ var PirepFinancials = function PirepFinancials(props) {
       className: "text-right",
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
         children: ["Total: ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("span", {
-          className: props.total < 0 && 'text-red-500',
-          children: ["$", props.total]
+          className: props.companyTotal < 0 && 'text-red-500',
+          children: ["$", props.companyTotal]
+        })]
+      })
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+      className: "text-lg mt-2",
+      children: "Pilot Financials"
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("table", {
+      className: "table table-condensed table-auto",
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("thead", {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("tr", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("th", {
+            children: "Transaction"
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("th", {
+            children: "Total"
+          })]
+        })
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("tbody", {
+        children: props.pilot.map(function (pilot) {
+          return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("tr", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("td", {
+              children: renderPilotTransactionType(pilot.type)
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("td", {
+              className: pilot.total < 0 && 'text-red-500',
+              children: ["$", pilot.total]
+            })]
+          }, pilot.id);
+        })
+      })]
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+      className: "text-right",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+        children: ["Total: ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("span", {
+          className: props.pilotTotal < 0 && 'text-red-500',
+          children: ["$", props.pilotTotal]
         })]
       })
     })]

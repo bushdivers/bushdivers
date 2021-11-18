@@ -2980,9 +2980,9 @@ var DispatchSummary = function DispatchSummary(props) {
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
         className: "mt-1",
         children: ["Fuel: ", props.pirep ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("span", {
-          children: [props.pirep.planned_fuel, " gal | ", props.fuelWeight, " lbs"]
+          children: [props.pirep.planned_fuel, " gal | ", props.fuelWeight.toFixed(2), " lbs"]
         }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("span", {
-          children: [props.fuel, " gal | ", props.fuelWeight, " lbs"]
+          children: [props.fuel, " gal | ", props.fuelWeight.toFixed(2), " lbs"]
         })]
       })]
     })]

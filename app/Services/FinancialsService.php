@@ -104,21 +104,21 @@ class FinancialsService
         // TODO: if negative, 0 fuel fee for company, and charge pilot for fuel
         if ($fuelUsedCost < 0) {
             if (!$aircraft->is_rental) {
-                $this->addTransaction(AirlineTransactionTypes::FuelFees, +$fuelUsedCost, 'Fuel Cost', $pirep->id);
-                $this->addTransaction(AirlineTransactionTypes::FuelFees, +$fuelUsedCost, 'Fuel Cost Paid by Pilot', $pirep->id, 'credit');
+                $this->addTransaction(AirlineTransactionTypes::FuelFees, $fuelUsedCost, 'Fuel Cost', $pirep->id);
+                $this->addTransaction(AirlineTransactionTypes::FuelFees, $fuelUsedCost, 'Fuel Cost Paid by Pilot', $pirep->id, 'credit');
 
                 // add line to pilot transactions
-                $userService->addUserAccountEntry($pirep->user_id, TransactionTypes::FuelPenalty, $fuelUsedCost, $pirep->id);
+                $userService->addUserAccountEntry($pirep->user_id, TransactionTypes::FuelPenalty, -$fuelUsedCost, $pirep->id);
             } else {
                 // add line to pilot transactions
-                $userService->addUserAccountEntry($pirep->user_id, TransactionTypes::FlightFeesFuel, $fuelUsedCost, $pirep->id);
+                $userService->addUserAccountEntry($pirep->user_id, TransactionTypes::FlightFeesFuel, -$fuelUsedCost, $pirep->id);
             }
 
         } else {
             if (!$aircraft->is_rental) {
                 $this->addTransaction(AirlineTransactionTypes::FuelFees, $fuelUsedCost, 'Fuel Cost', $pirep->id);
             } else {
-                $userService->addUserAccountEntry($pirep->user_id, TransactionTypes::FlightFeesFuel, $fuelUsedCost, $pirep->id);
+                $userService->addUserAccountEntry($pirep->user_id, TransactionTypes::FlightFeesFuel, -$fuelUsedCost, $pirep->id);
             }
         }
     }
@@ -148,7 +148,7 @@ class FinancialsService
             $this->addTransaction(AirlineTransactionTypes::LandingFees, $fee->fee_amount, $feeType, $pirep->id);
         } else {
             $userService->addUserAccountEntry($pirep->user_id, TransactionTypes::FlightFeesLanding,
-                $fee->fee_amount, $pirep->id);
+                -$fee->fee_amount, $pirep->id);
         }
     }
 
@@ -174,7 +174,7 @@ class FinancialsService
         if (!$aircraft->is_rental) {
             $this->addTransaction(AirlineTransactionTypes::GroundHandlingFees, $total, 'Cargo Handling', $pirep->id);
         } else {
-            $userService->addUserAccountEntry($pirep->user_id, TransactionTypes::FlightFeesGround, $total, $pirep->id);
+            $userService->addUserAccountEntry($pirep->user_id, TransactionTypes::FlightFeesGround, -$total, $pirep->id);
         }
     }
 

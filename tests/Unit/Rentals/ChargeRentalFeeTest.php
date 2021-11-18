@@ -58,7 +58,7 @@ class ChargeRentalFeeTest extends TestCase
         $this->assertDatabaseHas('user_accounts', [
             'type' => TransactionTypes::Rental,
             'user_id' => $this->user->id,
-            'total' => (120 / 60) * 100
+            'total' => -(120 / 60) * 100
         ]);
     }
 
@@ -76,7 +76,7 @@ class ChargeRentalFeeTest extends TestCase
         $this->assertDatabaseHas('user_accounts', [
             'type' => TransactionTypes::Rental,
             'user_id' => $this->user->id,
-            'total' => (60 / 60) * 100
+            'total' => -(60 / 60) * 100
         ]);
     }
 
@@ -94,7 +94,7 @@ class ChargeRentalFeeTest extends TestCase
         $this->assertDatabaseHas('user_accounts', [
             'type' => TransactionTypes::Rental,
             'user_id' => $this->user->id,
-            'total' => (30 / 60) * 100
+            'total' => -(30 / 60) * 100
         ]);
     }
 }
