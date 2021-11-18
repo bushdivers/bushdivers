@@ -162,6 +162,7 @@ class DispatchController extends Controller
         $rentalAc = Aircraft::with('fleet')
             ->where('is_rental', true)
             ->where('user_id', Auth::user()->id)
+            ->where('current_airport_id', $currentLocation)
             ->get();
 
         if ($rentalAc) {
