@@ -155,6 +155,7 @@ class DispatchController extends Controller
     {
         $fleetAc = Aircraft::with('fleet')
             ->where('state', AircraftState::AVAILABLE)
+            ->where('is_rental', false)
             ->where('status', AircraftStatus::ACTIVE)
             ->where('current_airport_id', $currentLocation)
             ->get();
