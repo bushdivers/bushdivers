@@ -270,9 +270,16 @@ class ContractService
 
     public function removeStaleContracts()
     {
-        Contract::where('user_id', null)
+
+        $contracts = Contract::where('user_id', null)
+            ->where('is_available', true)
             ->where('is_completed', false)
             ->where('expires_at', '<', Carbon::now())
-            ->delete();
+            ->get();
+
+        foreach ($contracts as $contract) {
+            ContractCargo::where('contract_id', $contract->id)->delete();
+            $contract->delete();
+        }
     }
 }

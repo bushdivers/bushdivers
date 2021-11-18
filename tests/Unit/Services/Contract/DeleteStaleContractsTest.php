@@ -19,7 +19,10 @@ class DeleteStaleContractsTest extends TestCase
     public function test_stale_contracts_are_removed()
     {
         $contract = Contract::factory()->create([
-            'expires_at' => Carbon::now()->subDays(5)
+            'expires_at' => Carbon::now()->subDays(5),
+            'user_id' => null,
+            'is_available' => true,
+            'is_completed' => false
         ]);
 
         $contractService = new ContractService();
