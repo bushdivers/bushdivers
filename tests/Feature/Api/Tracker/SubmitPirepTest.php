@@ -427,7 +427,7 @@ class SubmitPirepTest extends TestCase
 
         $this->assertDatabaseHas('user_accounts', [
             'flight_id' => $this->pirep->id,
-            'total' => $fuelCost,
+            'total' => -$fuelCost,
             'type' => TransactionTypes::FuelPenalty
         ]);
     }
