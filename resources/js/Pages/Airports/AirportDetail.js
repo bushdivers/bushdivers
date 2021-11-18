@@ -41,6 +41,10 @@ const AirportDetail = ({ airport, metar, aircraft }) => {
                 <div className="text-xl">{airport.identifier}</div>
               </div>
               <div className="flex flex-col items-center my-2 mx-4">
+                <div className="text-sm">Size</div>
+                <div className="text-xl">{airport.size}</div>
+              </div>
+              <div className="flex flex-col items-center my-2 mx-4">
                 <div className="text-sm">Country</div>
                 <div className="text-xl">{airport.country}</div>
               </div>
