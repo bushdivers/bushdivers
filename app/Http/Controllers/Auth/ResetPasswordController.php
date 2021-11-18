@@ -6,26 +6,28 @@ use App\General\MailTypes;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PasswordResetRequest;
 use App\Models\User;
-use App\Services\EmailService;
+use App\Services\Email\SendEmail;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
-use Inertia\Inertia;
 
-class PasswordResetController extends Controller
+class ResetPasswordController extends Controller
 {
-    protected EmailService $emailService;
+    protected SendEmail $sendEmail;
 
-    public function __construct()
+    public function __construct(SendEmail $sendEmail)
     {
-        $this->emailService = new EmailService();
+        $this->sendEmail = $sendEmail;
     }
 
-    public function index($token)
-    {
-        return Inertia::render('Auth/ResetPassword', ['token' => $token]);
-    }
-
-    public function reset(PasswordResetRequest $request)
+    /**
+     * Handle the incoming request.
+     *
+     * @param  PasswordResetRequest  $request
+     * @return RedirectResponse
+     */
+    public function __invoke(PasswordResetRequest $request): RedirectResponse
     {
         // create request uuid
         $user = User::where('reset_token', $request->token)->firstorFail();
@@ -35,7 +37,7 @@ class PasswordResetController extends Controller
 
         // send email
         $body = MailTypes::passwordReset($user);
-        $this->emailService->sendEmail($body);
+        $this->sendEmail->execute($body);
 
         // redirect to login
         return redirect()->route('login.index')->with(['success' => 'Password reset successfully, please login']);

@@ -14,12 +14,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/aircraft/{icao}', [\App\Http\Controllers\FleetController::class, 'getAvailableAircraft'])->name('fleet.available.aircraft');
-Route::get('/airport/search/{search}', [\App\Http\Controllers\Api\AirportController::class, 'getAirportFromSearch'])->name('airport.search');
-Route::get('/jumpseat/cost/{from}/{to}', [\App\Http\Controllers\Api\AirportController::class, 'getCostOfJumpseat'])->name('jumpseat.cost');
-Route::get('/flights/distance/{from}/{to}', [\App\Http\Controllers\Api\FlightController::class, 'getDistance'])->name('flights.distance');
-Route::get('/liveflights', [\App\Http\Controllers\PirepController::class, 'liveFlights'])->name('flights.live');
-Route::post('/cargo/split', [\App\Http\Controllers\Api\ContractsController::class, 'splitCargo'])->name('cargo.split');
+Route::get('/aircraft/{icao}', [\App\Http\Controllers\FleetController::class, 'getAvailableAircraft'])
+    ->name('fleet.available.aircraft');
+Route::get('/airport/search/{search}', [\App\Http\Controllers\Api\AirportController::class, 'getAirportFromSearch'])
+    ->name('airport.search');
+Route::get('/jumpseat/cost/{from}/{to}', [\App\Http\Controllers\Api\AirportController::class, 'getCostOfJumpseat'])
+    ->name('jumpseat.cost');
+Route::get('/flights/distance/{from}/{to}', [\App\Http\Controllers\Api\FlightController::class, 'getDistance'])
+    ->name('flights.distance');
+Route::get('/liveflights', [\App\Http\Controllers\PirepController::class, 'liveFlights'])
+    ->name('flights.live');
+Route::post('/cargo/split', [\App\Http\Controllers\Api\ContractsController::class, 'splitCargo'])
+    ->name('cargo.split');
 
 
 

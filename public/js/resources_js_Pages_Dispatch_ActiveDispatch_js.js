@@ -2943,11 +2943,14 @@ var DispatchSummary = function DispatchSummary(props) {
           children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("i", {
             className: "material-icons mr-2",
             children: "flight"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("span", {
-            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Link, {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("span", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Link, {
               href: "/aircraft/".concat(props.selectedAircraft.id),
               children: [props.selectedAircraft.registration, " - ", props.selectedAircraft.fleet.manufacturer, " ", props.selectedAircraft.fleet.name, " (", props.selectedAircraft.fleet.type, ")"]
-            })
+            }), " ", props.selectedAircraft.is_rental ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("span", {
+              className: "bg-orange-500 text-white rounded px-2",
+              children: "Rental"
+            }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.Fragment, {})]
           })]
         })
       })
@@ -2977,9 +2980,9 @@ var DispatchSummary = function DispatchSummary(props) {
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
         className: "mt-1",
         children: ["Fuel: ", props.pirep ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("span", {
-          children: [props.pirep.planned_fuel, " gal | ", props.fuelWeight, " lbs"]
+          children: [props.pirep.planned_fuel, " gal | ", props.fuelWeight.toFixed(2), " lbs"]
         }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("span", {
-          children: [props.fuel, " gal | ", props.fuelWeight, " lbs"]
+          children: [props.fuel, " gal | ", props.fuelWeight.toFixed(2), " lbs"]
         })]
       })]
     })]
@@ -3480,23 +3483,14 @@ var PrivateLeftNav = function PrivateLeftNav(props) {
               children: function children(_ref2) {
                 var active = _ref2.active;
                 return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Link, {
-                  href: "/fleet",
-                  className: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50",
-                  children: "Fleet"
-                });
-              }
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_headlessui_react__WEBPACK_IMPORTED_MODULE_6__.Menu.Item, {
-              children: function children(_ref3) {
-                var active = _ref3.active;
-                return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Link, {
                   href: "/roster",
                   className: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50",
                   children: "Pilot Roster"
                 });
               }
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_headlessui_react__WEBPACK_IMPORTED_MODULE_6__.Menu.Item, {
-              children: function children(_ref4) {
-                var active = _ref4.active;
+              children: function children(_ref3) {
+                var active = _ref3.active;
                 return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Link, {
                   href: "/ranks",
                   className: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50",
@@ -3504,8 +3498,8 @@ var PrivateLeftNav = function PrivateLeftNav(props) {
                 });
               }
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_headlessui_react__WEBPACK_IMPORTED_MODULE_6__.Menu.Item, {
-              children: function children(_ref5) {
-                var active = _ref5.active;
+              children: function children(_ref4) {
+                var active = _ref4.active;
                 return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Link, {
                   href: "/finances",
                   className: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50",
@@ -3513,8 +3507,8 @@ var PrivateLeftNav = function PrivateLeftNav(props) {
                 });
               }
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_headlessui_react__WEBPACK_IMPORTED_MODULE_6__.Menu.Item, {
-              children: function children(_ref6) {
-                var active = _ref6.active;
+              children: function children(_ref5) {
+                var active = _ref5.active;
                 return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("a", {
                   href: "https://storage.googleapis.com/bush-divers.appspot.com/Bush%20Divers%20-%20Handbook.pdf",
                   target: "_blank",
@@ -3523,12 +3517,56 @@ var PrivateLeftNav = function PrivateLeftNav(props) {
                 });
               }
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_headlessui_react__WEBPACK_IMPORTED_MODULE_6__.Menu.Item, {
-              children: function children(_ref7) {
-                var active = _ref7.active;
+              children: function children(_ref6) {
+                var active = _ref6.active;
                 return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("a", {
                   href: "https://storage.googleapis.com/bush-divers.appspot.com/BushTracker.zip",
                   className: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50",
                   children: "Bush Tracker"
+                });
+              }
+            })]
+          })
+        })]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)(_headlessui_react__WEBPACK_IMPORTED_MODULE_6__.Menu, {
+        as: "div",
+        className: props.mobile ? 'relative' : 'ml-3 relative',
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)(_headlessui_react__WEBPACK_IMPORTED_MODULE_6__.Menu.Button, {
+            className: props.mobile ? 'nav-link mobile' : 'nav-link',
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("span", {
+              className: "sr-only",
+              children: "Open Aircraft menu"
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_Elements_DropdownTitle__WEBPACK_IMPORTED_MODULE_2__.default, {
+              title: "Aircraft"
+            })]
+          })
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_headlessui_react__WEBPACK_IMPORTED_MODULE_7__.Transition, {
+          as: react__WEBPACK_IMPORTED_MODULE_0__.Fragment,
+          enter: "transition ease-out duration-100",
+          enterFrom: "transform opacity-0 scale-95",
+          enterTo: "transform opacity-100 scale-100",
+          leave: "transition ease-in duration-75",
+          leaveFrom: "transform opacity-100 scale-100",
+          leaveTo: "transform opacity-0 scale-95",
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)(_headlessui_react__WEBPACK_IMPORTED_MODULE_6__.Menu.Items, {
+            className: "origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white focus:outline-none",
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_headlessui_react__WEBPACK_IMPORTED_MODULE_6__.Menu.Item, {
+              children: function children(_ref7) {
+                var active = _ref7.active;
+                return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Link, {
+                  href: "/fleet",
+                  className: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50",
+                  children: "Bush Divers Fleet"
+                });
+              }
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_headlessui_react__WEBPACK_IMPORTED_MODULE_6__.Menu.Item, {
+              children: function children(_ref8) {
+                var active = _ref8.active;
+                return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Link, {
+                  href: "/rentals",
+                  className: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50",
+                  children: "Aircraft Rentals"
                 });
               }
             })]
@@ -3558,8 +3596,8 @@ var PrivateLeftNav = function PrivateLeftNav(props) {
           children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)(_headlessui_react__WEBPACK_IMPORTED_MODULE_6__.Menu.Items, {
             className: "origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white focus:outline-none",
             children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_headlessui_react__WEBPACK_IMPORTED_MODULE_6__.Menu.Item, {
-              children: function children(_ref8) {
-                var active = _ref8.active;
+              children: function children(_ref9) {
+                var active = _ref9.active;
                 return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Link, {
                   href: "/contracts",
                   className: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50",
@@ -3567,8 +3605,8 @@ var PrivateLeftNav = function PrivateLeftNav(props) {
                 });
               }
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_headlessui_react__WEBPACK_IMPORTED_MODULE_6__.Menu.Item, {
-              children: function children(_ref9) {
-                var active = _ref9.active;
+              children: function children(_ref10) {
+                var active = _ref10.active;
                 return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Link, {
                   href: "/my-contracts",
                   className: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50",
@@ -3580,8 +3618,8 @@ var PrivateLeftNav = function PrivateLeftNav(props) {
                 });
               }
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_headlessui_react__WEBPACK_IMPORTED_MODULE_6__.Menu.Item, {
-              children: function children(_ref10) {
-                var active = _ref10.active;
+              children: function children(_ref11) {
+                var active = _ref11.active;
                 return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Link, {
                   href: "/completed-contracts",
                   className: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50",
@@ -3589,8 +3627,8 @@ var PrivateLeftNav = function PrivateLeftNav(props) {
                 });
               }
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_headlessui_react__WEBPACK_IMPORTED_MODULE_6__.Menu.Item, {
-              children: function children(_ref11) {
-                var active = _ref11.active;
+              children: function children(_ref12) {
+                var active = _ref12.active;
                 return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Link, {
                   href: "/dispatch",
                   className: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50",

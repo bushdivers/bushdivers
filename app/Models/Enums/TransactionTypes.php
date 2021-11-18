@@ -9,4 +9,8 @@ class TransactionTypes
     public const ContractPenalty = 3;
     public const FuelPenalty = 4;
     public const Bonus = 5;
+    public const Rental = 6;
+    public const FlightFeesFuel = 7;
+    public const FlightFeesGround = 8;
+    public const FlightFeesLanding= 9;
 }

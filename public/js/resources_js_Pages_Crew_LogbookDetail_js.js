@@ -2772,7 +2772,8 @@ var LogbookDetail = function LogbookDetail(_ref) {
       cargo = _ref.cargo,
       pilotFinancials = _ref.pilotFinancials,
       companyFinancials = _ref.companyFinancials,
-      flightTotal = _ref.flightTotal;
+      companyTotal = _ref.companyTotal,
+      pilotTotal = _ref.pilotTotal;
   var auth = (0,_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_10__.usePage)().props.auth;
   var submittedDate = (0,date_fns__WEBPACK_IMPORTED_MODULE_13__.default)(new Date(pirep.submitted_at), 'do MMMM yyyy kk:mm');
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
@@ -2800,7 +2801,8 @@ var LogbookDetail = function LogbookDetail(_ref) {
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_Shared_Pireps_PirepFinancials__WEBPACK_IMPORTED_MODULE_11__.default, {
           company: companyFinancials,
           pilot: pilotFinancials,
-          total: flightTotal
+          companyTotal: companyTotal,
+          pilotTotal: pilotTotal
         })]
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
         className: "md:w-1/2",
@@ -3320,23 +3322,14 @@ var PrivateLeftNav = function PrivateLeftNav(props) {
               children: function children(_ref2) {
                 var active = _ref2.active;
                 return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Link, {
-                  href: "/fleet",
-                  className: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50",
-                  children: "Fleet"
-                });
-              }
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_headlessui_react__WEBPACK_IMPORTED_MODULE_6__.Menu.Item, {
-              children: function children(_ref3) {
-                var active = _ref3.active;
-                return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Link, {
                   href: "/roster",
                   className: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50",
                   children: "Pilot Roster"
                 });
               }
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_headlessui_react__WEBPACK_IMPORTED_MODULE_6__.Menu.Item, {
-              children: function children(_ref4) {
-                var active = _ref4.active;
+              children: function children(_ref3) {
+                var active = _ref3.active;
                 return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Link, {
                   href: "/ranks",
                   className: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50",
@@ -3344,8 +3337,8 @@ var PrivateLeftNav = function PrivateLeftNav(props) {
                 });
               }
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_headlessui_react__WEBPACK_IMPORTED_MODULE_6__.Menu.Item, {
-              children: function children(_ref5) {
-                var active = _ref5.active;
+              children: function children(_ref4) {
+                var active = _ref4.active;
                 return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Link, {
                   href: "/finances",
                   className: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50",
@@ -3353,8 +3346,8 @@ var PrivateLeftNav = function PrivateLeftNav(props) {
                 });
               }
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_headlessui_react__WEBPACK_IMPORTED_MODULE_6__.Menu.Item, {
-              children: function children(_ref6) {
-                var active = _ref6.active;
+              children: function children(_ref5) {
+                var active = _ref5.active;
                 return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("a", {
                   href: "https://storage.googleapis.com/bush-divers.appspot.com/Bush%20Divers%20-%20Handbook.pdf",
                   target: "_blank",
@@ -3363,12 +3356,56 @@ var PrivateLeftNav = function PrivateLeftNav(props) {
                 });
               }
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_headlessui_react__WEBPACK_IMPORTED_MODULE_6__.Menu.Item, {
-              children: function children(_ref7) {
-                var active = _ref7.active;
+              children: function children(_ref6) {
+                var active = _ref6.active;
                 return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("a", {
                   href: "https://storage.googleapis.com/bush-divers.appspot.com/BushTracker.zip",
                   className: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50",
                   children: "Bush Tracker"
+                });
+              }
+            })]
+          })
+        })]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)(_headlessui_react__WEBPACK_IMPORTED_MODULE_6__.Menu, {
+        as: "div",
+        className: props.mobile ? 'relative' : 'ml-3 relative',
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)(_headlessui_react__WEBPACK_IMPORTED_MODULE_6__.Menu.Button, {
+            className: props.mobile ? 'nav-link mobile' : 'nav-link',
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("span", {
+              className: "sr-only",
+              children: "Open Aircraft menu"
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_Elements_DropdownTitle__WEBPACK_IMPORTED_MODULE_2__.default, {
+              title: "Aircraft"
+            })]
+          })
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_headlessui_react__WEBPACK_IMPORTED_MODULE_7__.Transition, {
+          as: react__WEBPACK_IMPORTED_MODULE_0__.Fragment,
+          enter: "transition ease-out duration-100",
+          enterFrom: "transform opacity-0 scale-95",
+          enterTo: "transform opacity-100 scale-100",
+          leave: "transition ease-in duration-75",
+          leaveFrom: "transform opacity-100 scale-100",
+          leaveTo: "transform opacity-0 scale-95",
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)(_headlessui_react__WEBPACK_IMPORTED_MODULE_6__.Menu.Items, {
+            className: "origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white focus:outline-none",
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_headlessui_react__WEBPACK_IMPORTED_MODULE_6__.Menu.Item, {
+              children: function children(_ref7) {
+                var active = _ref7.active;
+                return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Link, {
+                  href: "/fleet",
+                  className: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50",
+                  children: "Bush Divers Fleet"
+                });
+              }
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_headlessui_react__WEBPACK_IMPORTED_MODULE_6__.Menu.Item, {
+              children: function children(_ref8) {
+                var active = _ref8.active;
+                return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Link, {
+                  href: "/rentals",
+                  className: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50",
+                  children: "Aircraft Rentals"
                 });
               }
             })]
@@ -3398,8 +3435,8 @@ var PrivateLeftNav = function PrivateLeftNav(props) {
           children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)(_headlessui_react__WEBPACK_IMPORTED_MODULE_6__.Menu.Items, {
             className: "origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white focus:outline-none",
             children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_headlessui_react__WEBPACK_IMPORTED_MODULE_6__.Menu.Item, {
-              children: function children(_ref8) {
-                var active = _ref8.active;
+              children: function children(_ref9) {
+                var active = _ref9.active;
                 return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Link, {
                   href: "/contracts",
                   className: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50",
@@ -3407,8 +3444,8 @@ var PrivateLeftNav = function PrivateLeftNav(props) {
                 });
               }
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_headlessui_react__WEBPACK_IMPORTED_MODULE_6__.Menu.Item, {
-              children: function children(_ref9) {
-                var active = _ref9.active;
+              children: function children(_ref10) {
+                var active = _ref10.active;
                 return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Link, {
                   href: "/my-contracts",
                   className: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50",
@@ -3420,8 +3457,8 @@ var PrivateLeftNav = function PrivateLeftNav(props) {
                 });
               }
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_headlessui_react__WEBPACK_IMPORTED_MODULE_6__.Menu.Item, {
-              children: function children(_ref10) {
-                var active = _ref10.active;
+              children: function children(_ref11) {
+                var active = _ref11.active;
                 return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Link, {
                   href: "/completed-contracts",
                   className: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50",
@@ -3429,8 +3466,8 @@ var PrivateLeftNav = function PrivateLeftNav(props) {
                 });
               }
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_headlessui_react__WEBPACK_IMPORTED_MODULE_6__.Menu.Item, {
-              children: function children(_ref11) {
-                var active = _ref11.active;
+              children: function children(_ref12) {
+                var active = _ref12.active;
                 return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Link, {
                   href: "/dispatch",
                   className: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50",
@@ -4207,11 +4244,36 @@ var PirepFinancials = function PirepFinancials(props) {
     }
   };
 
+  var renderPilotTransactionType = function renderPilotTransactionType(transaction) {
+    switch (transaction) {
+      case 1:
+        return 'Flight Pay';
+
+      case 4:
+        return 'Landing Fee';
+
+      case 5:
+        return 'Bonus';
+
+      case 6:
+        return 'Rental Fees';
+
+      case 7:
+        return 'Fuel Cost';
+
+      case 8:
+        return 'Ground Handling';
+
+      case 9:
+        return 'Landing Fees';
+    }
+  };
+
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
     className: "bg-white rounded shadow p-4 my-2 mx-2 overflow-x-auto",
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
       className: "text-lg",
-      children: "Financials"
+      children: "Company Financials"
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("table", {
       className: "table table-condensed table-auto",
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("thead", {
@@ -4238,8 +4300,41 @@ var PirepFinancials = function PirepFinancials(props) {
       className: "text-right",
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
         children: ["Total: ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("span", {
-          className: props.total < 0 && 'text-red-500',
-          children: ["$", props.total]
+          className: props.companyTotal < 0 && 'text-red-500',
+          children: ["$", props.companyTotal]
+        })]
+      })
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+      className: "text-lg mt-2",
+      children: "Pilot Financials"
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("table", {
+      className: "table table-condensed table-auto",
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("thead", {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("tr", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("th", {
+            children: "Transaction"
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("th", {
+            children: "Total"
+          })]
+        })
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("tbody", {
+        children: props.pilot.map(function (pilot) {
+          return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("tr", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("td", {
+              children: renderPilotTransactionType(pilot.type)
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("td", {
+              className: pilot.total < 0 && 'text-red-500',
+              children: ["$", pilot.total]
+            })]
+          }, pilot.id);
+        })
+      })]
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+      className: "text-right",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+        children: ["Total: ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("span", {
+          className: props.pilotTotal < 0 && 'text-red-500',
+          children: ["$", props.pilotTotal]
         })]
       })
     })]

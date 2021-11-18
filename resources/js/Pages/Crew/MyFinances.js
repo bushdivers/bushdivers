@@ -16,6 +16,10 @@ const MyFinances = ({ accounts, balance }) => {
         return 'Refuel Penalty'
       case 5:
         return 'Bonus Pay (i.e returning aircraft to hub)'
+      case 6:
+        return 'Aircraft Rental Deposit'
+      default:
+        return 'Other'
     }
   }
 

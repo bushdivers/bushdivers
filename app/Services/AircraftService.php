@@ -41,12 +41,14 @@ class AircraftService
         $aircraft->save();
     }
 
-    public function updateAircraftLocation(int $aircraft, string $icao, $lat, $lon)
+    public function updateAircraftLocation(int $aircraft, string $icao, $lat = null, $lon = null)
     {
         $aircraft = Aircraft::find($aircraft);
         $aircraft->current_airport_id = $icao;
-        $aircraft->last_lat = $lat;
-        $aircraft->last_lon = $lon;
+        if ($lon != null && $lat != null) {
+            $aircraft->last_lat = $lat;
+            $aircraft->last_lon = $lon;
+        }
         $aircraft->save();
     }
 

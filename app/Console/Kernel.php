@@ -6,11 +6,24 @@ use App\Services\AircraftService;
 use App\Services\ContractService;
 use App\Services\FinancialsService;
 use App\Services\PirepService;
+use App\Services\Rentals\CheckRentalDailyFee;
+use App\Services\Rentals\EndRental;
 use Illuminate\Console\Scheduling\Schedule;
+use Illuminate\Contracts\Events\Dispatcher;
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
 class Kernel extends ConsoleKernel
 {
+
+    protected CheckRentalDailyFee $checkRentalDailyFee;
+
+    public function __construct(Application $app, Dispatcher $events, CheckRentalDailyFee $checkRentalDailyFee)
+    {
+        parent::__construct($app, $events);
+        $this->checkRentalDailyFee = $checkRentalDailyFee;
+    }
+
     /**
      * The Artisan commands provided by your application.
      *
@@ -46,6 +59,10 @@ class Kernel extends ConsoleKernel
         $schedule->call(function () {
             $contractService = new ContractService();
             $contractService->findHubsInNeedOfContracts();
+        })->daily();
+
+        $schedule->call(function () {
+            $this->checkRentalDailyFee->execute();
         })->daily();
 
         // financial calculations
