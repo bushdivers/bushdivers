@@ -131,7 +131,7 @@ class PirepService
                 $points = PointsType::LANDING_RATE_61_180;
                 $type = PointsType::LANDING_RATE_61_180_LABEL;
                 break;
-            case ($landingRate >= 181.00 && $landingRate < 400.00):
+            case ($landingRate >= 180.00 && $landingRate < 400.00):
                 $points = PointsType::LANDING_RATE_181_400;
                 $type = PointsType::LANDING_RATE_181_400_LABEL;
                 break;
