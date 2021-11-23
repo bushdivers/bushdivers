@@ -135,6 +135,50 @@ class CalculatePointsTest extends TestCase
         ]);
     }
 
+    public function test_hub_points_for_flight_inc_hub_not_added_for_rental()
+    {
+        $aircraft = Aircraft::factory()->create([
+            'fleet_id' => $this->fleet->id,
+            'is_rental' => true
+        ]);
+
+        $pirep = Pirep::factory()->create([
+            'user_id' => $this->user->id,
+            'aircraft_id' => $aircraft->id
+        ]);
+        $this->pirepService->calculatePoints($pirep);
+        $this->assertDatabaseMissing('points', [
+            'pirep_id' => $pirep->id,
+            'type_name' => PointsType::HOME_HUB_LABEL,
+            'points' => PointsType::HOME_HUB
+        ]);
+    }
+
+    public function test_hub_bonus_for_flight_inc_hub_not_added_for_rental()
+    {
+        $aircraft = Aircraft::factory()->create([
+            'fleet_id' => $this->fleet->id,
+            'is_rental' => true
+        ]);
+
+        $pirep = Pirep::factory()->create([
+            'user_id' => $this->user->id,
+            'aircraft_id' => $aircraft->id
+        ]);
+        $this->pirepService->calculatePoints($pirep);
+        $this->assertDatabaseMissing('user_accounts', [
+            'user_id' => $pirep->user_id,
+            'flight_id' => $pirep->id,
+            'type' => TransactionTypes::Bonus
+        ]);
+
+        $this->assertDatabaseMissing('account_ledgers', [
+            'transaction_type' => AirlineTransactionTypes::ContractExpenditure,
+            'pirep_id' => $pirep->id,
+            'total' => -FinancialConsts::HubBonus
+        ]);
+    }
+
     public function test_hub_points_for_flight_exc_hub()
     {
         $contract = Contract::factory()->create([

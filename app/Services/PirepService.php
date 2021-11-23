@@ -40,13 +40,16 @@ class PirepService
 
         // hub
         $aircraft = Aircraft::find($pirep->aircraft_id);
-        if ($pirep->destination_airport_id == $aircraft->hub_id) {
-            $this->addPointsEntry($pirep->id, PointsType::HOME_HUB_LABEL, PointsType::HOME_HUB);
-            $userService = new UserService();
-            $userService->addUserAccountEntry($pirep->user_id, TransactionTypes::Bonus, FinancialConsts::HubBonus, $pirep->id);
-            $this->financialsService->addTransaction(AirlineTransactionTypes::ContractExpenditure, FinancialConsts::HubBonus, 'Returned aircraft home', $pirep->id);
+        if (!$aircraft->is_rental) {
+            if ($pirep->destination_airport_id == $aircraft->hub_id) {
+                $this->addPointsEntry($pirep->id, PointsType::HOME_HUB_LABEL, PointsType::HOME_HUB);
+                $userService = new UserService();
+                $userService->addUserAccountEntry($pirep->user_id, TransactionTypes::Bonus, FinancialConsts::HubBonus,
+                    $pirep->id);
+                $this->financialsService->addTransaction(AirlineTransactionTypes::ContractExpenditure,
+                    FinancialConsts::HubBonus, 'Returned aircraft home', $pirep->id);
+            }
         }
-
 
 
         // time

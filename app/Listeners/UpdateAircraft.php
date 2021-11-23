@@ -3,6 +3,7 @@
 namespace App\Listeners;
 
 use App\Events\PirepFiled;
+use App\Models\Aircraft;
 use App\Models\Enums\AircraftState;
 use App\Models\Flight;
 use App\Services\AircraftService;
@@ -30,8 +31,11 @@ class UpdateAircraft
     public function handle(PirepFiled $event)
     {
         $aircraftService = new AircraftService();
+        $aircraft = Aircraft::find($event->pirep->aircraft_id);
+        if (!$aircraft->is_rental) {
+            $aircraftService->updateAircraftState($event->pirep->aircraft_id, AircraftState::AVAILABLE);
+        }
         $aircraftService->updateAircraftFuel($event->pirep->aircraft_id, $event->pirep->fuel_used);
-        $aircraftService->updateAircraftState($event->pirep->aircraft_id, AircraftState::AVAILABLE);
         $aircraftService->updateAircraftHours($event->pirep->aircraft_id, $event->pirep->flight_time);
         $aircraftService->updateAircraftLocation($event->pirep->aircraft_id, $event->pirep->destination_airport_id, $event->pirep->current_lat, $event->pirep->current_lon);
         $aircraftService->updateAircraftLastFlightDate($event->pirep->aircraft_id, $event->pirep->submitted_at);
