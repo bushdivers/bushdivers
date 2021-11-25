@@ -3,17 +3,17 @@
 namespace App\Http\Controllers\Airports;
 
 use App\Http\Controllers\Controller;
-use App\Services\AirportService;
+use App\Services\Airports\CalcCostOfJumpseat;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class GetJumpseatCostController extends Controller
 {
-    protected AirportService $airportService;
+    protected CalcCostOfJumpseat $calcCostOfJumpseat;
 
-    public function __construct(AirportService $airportService)
+    public function __construct(CalcCostOfJumpseat $calcCostOfJumpseat)
     {
-        $this->airportService = $airportService;
+        $this->calcCostOfJumpseat = $calcCostOfJumpseat;
     }
 
     /**
@@ -24,7 +24,7 @@ class GetJumpseatCostController extends Controller
      */
     public function __invoke(Request $request, $from, $to): JsonResponse
     {
-        $jump = $this->airportService->getCostOfJumpseat($from, $to);
+        $jump = $this->calcCostOfJumpseat->execute($from, $to);
         return response()->json(['cost' => $jump['cost'], 'distance' => $jump['distance']]);
     }
 }

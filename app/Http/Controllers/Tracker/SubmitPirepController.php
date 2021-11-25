@@ -13,22 +13,32 @@ use App\Models\Pirep;
 use App\Models\PirepCargo;
 use App\Models\Point;
 use App\Models\User;
-use App\Services\ContractService;
-use App\Services\FinancialsService;
-use App\Services\PirepService;
+use App\Services\Contracts\UpdateContractCargoProgress;
+use App\Services\Finance\ProcessPirepFinancials;
+use App\Services\Pireps\CalculatePirepPoints;
+use App\Services\Pireps\SetPirepTotalScore;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class SubmitPirepController extends Controller
 {
-    protected FinancialsService $financialsService;
-    protected PirepService $pirepService;
+    protected UpdateContractCargoProgress $updateContractCargoProgress;
+    protected ProcessPirepFinancials $processPirepFinancials;
+    protected CalculatePirepPoints $calculatePirepPoints;
+    protected SetPirepTotalScore $setPirepTotalScore;
 
-    public function __construct(FinancialsService $financialsService, PirepService $pirepService)
+    public function __construct(
+        UpdateContractCargoProgress $updateContractCargoProgress,
+        ProcessPirepFinancials $processPirepFinancials,
+        CalculatePirepPoints $calculatePirepPoints,
+        SetPirepTotalScore $setPirepTotalScore
+    )
     {
-        $this->financialsService = $financialsService;
-        $this->pirepService = $pirepService;
+        $this->updateContractCargoProgress = $updateContractCargoProgress;
+        $this->processPirepFinancials = $processPirepFinancials;
+        $this->calculatePirepPoints = $calculatePirepPoints;
+        $this->setPirepTotalScore = $setPirepTotalScore;
     }
 
     /**
@@ -75,11 +85,10 @@ class SubmitPirepController extends Controller
         if (!$pirep->is_empty) {
             try {
                 // update cargo and contract
-                $contractService = new ContractService();
                 $pc = PirepCargo::where('pirep_id', $pirep->id)->get();
                 foreach ($pc as $c) {
                     $contractCargo = ContractCargo::find($c->contract_cargo_id);
-                    $contractService->updateCargo($contractCargo->id, $pirep->destination_airport_id);
+                    $this->updateContractCargoProgress->execute($contractCargo->id, $pirep->destination_airport_id);
                 }
             } catch (\Exception $e) {
                 $this->rollbackSubmission(2, $request);
@@ -89,10 +98,10 @@ class SubmitPirepController extends Controller
 
         try {
             // process points and financials
-            $this->financialsService->processPirepFinancials($pirep);
-            $this->pirepService->calculatePoints($pirep);
+            $this->processPirepFinancials->execute($pirep);
+            $this->calculatePirepPoints->execute($pirep);
             // add total to pirep
-            $this->pirepService->updatePirepTotalScore($pirep);
+            $this->setPirepTotalScore->execute($pirep);
         } catch (\Exception $e) {
             $this->rollbackSubmission(3, $request);
             return response()->json(['message' => $e->getMessage()], 500);

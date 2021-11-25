@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Airports;
 use App\Http\Controllers\Controller;
 use App\Models\Aircraft;
 use App\Models\Airport;
-use App\Services\WeatherService;
+use App\Services\Airports\GetMetarForAirport;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -14,11 +14,11 @@ use Inertia\Response;
 class ShowAirportController extends Controller
 {
 
-    protected WeatherService $wxService;
+    protected GetMetarForAirport $getMetarForAirport;
 
-    public function __construct(WeatherService $weatherService)
+    public function __construct(GetMetarForAirport $getMetarForAirport)
     {
-        $this->wxService = $weatherService;
+        $this->getMetarForAirport = $getMetarForAirport;
     }
 
     /**
@@ -37,7 +37,7 @@ class ShowAirportController extends Controller
             return redirect()->back()->with(['error' => 'Airport not found']);
         }
 
-        $metar = $this->wxService->getMetar($icao);
+        $metar = $this->getMetarForAirport->execute($icao);
         $aircraft = Aircraft::with('fleet')
             ->where('current_airport_id', $icao)
             ->get();

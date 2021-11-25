@@ -5,7 +5,8 @@ namespace App\Http\Controllers\Tracker;
 use App\Http\Controllers\Controller;
 use App\Models\Enums\PirepState;
 use App\Models\Pirep;
-use App\Services\DispatchService;
+use App\Services\Dispatch\CalcCargoWeight;
+use App\Services\Dispatch\CalcPassengerCount;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,6 +14,18 @@ use Illuminate\Support\Facades\DB;
 
 class GetActiveDispatchController extends Controller
 {
+    protected CalcCargoWeight $calcCargoWeight;
+    protected CalcPassengerCount $calcPassengerCount;
+
+    public function __construct(
+        CalcCargoWeight $calcCargoWeight,
+        CalcPassengerCount $calcPassengerCount
+    )
+    {
+        $this->calcPassengerCount = $calcPassengerCount;
+        $this->calcCargoWeight = $calcCargoWeight;
+    }
+
     /**
      * Handle the incoming request.
      *
@@ -21,7 +34,6 @@ class GetActiveDispatchController extends Controller
      */
     public function __invoke(Request $request): JsonResponse
     {
-        $dispatchService = new DispatchService();
 
         $dispatch = Pirep::with('aircraft', 'aircraft.fleet', 'depAirport', 'arrAirport')
             ->where('user_id', Auth::user()->id)
@@ -41,8 +53,8 @@ class GetActiveDispatchController extends Controller
                 ->select('contract_cargos.id', 'contract_type_id', 'cargo_qty')
                 ->get();
 
-            $cargoWeight = $dispatchService->calculateCargoWeight($cargo, false);
-            $passengerCount = $dispatchService->calculatePassengerCount($cargo);
+            $cargoWeight = $this->calcCargoWeight->execute($cargo, false);
+            $passengerCount = $this->calcPassengerCount->execute($cargo);
         }
 
         $data = [

@@ -10,7 +10,9 @@ use App\Models\Enums\AircraftStatus;
 use App\Models\Enums\PirepState;
 use App\Models\Pirep;
 use App\Models\PirepCargo;
-use App\Services\DispatchService;
+use App\Services\Dispatch\CalcCargoWeight;
+use App\Services\Dispatch\CalcFuelWeight;
+use App\Services\Dispatch\CalcPassengerCount;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
@@ -19,11 +21,19 @@ use Inertia\Response;
 
 class ShowDispatchController extends Controller
 {
-    protected DispatchService $dispatchService;
+    protected CalcCargoWeight $calcCargoWeight;
+    protected CalcPassengerCount $calcPassengerCount;
+    protected CalcFuelWeight $calcFuelWeight;
 
-    public function __construct(DispatchService $dispatchService)
+    public function __construct(
+        CalcCargoWeight $calcCargoWeight,
+        CalcPassengerCount $calcPassengerCount,
+        CalcFuelWeight $calcFuelWeight
+    )
     {
-        $this->dispatchService = $dispatchService;
+        $this->calcCargoWeight = $calcCargoWeight;
+        $this->calcPassengerCount = $calcPassengerCount;
+        $this->calcFuelWeight = $calcFuelWeight;
     }
 
     /**
@@ -49,10 +59,9 @@ class ShowDispatchController extends Controller
 //            $cargo = $this->getCargoForActiveDispatch($pc);
             $aircraft = Aircraft::with('fleet')->find($pirep->aircraft_id);
 
-            $cargoWeight = $this->dispatchService->calculateCargoWeight($cargo);
-            $passengerCount = $this->dispatchService->calculatePassengerCount($cargo);
-            $fuelWeight = $this->dispatchService
-                ->calculateFuelWeight($aircraft->fleet->fuel_type, $pirep->planned_fuel);
+            $cargoWeight = $this->calcCargoWeight->execute($cargo);
+            $passengerCount = $this->calcPassengerCount->execute($cargo);
+            $fuelWeight = $this->calcFuelWeight->execute($aircraft->fleet->fuel_type, $pirep->planned_fuel);
 
             return Inertia::render('Dispatch/ActiveDispatch', [
                 'cargo' => $cargo,

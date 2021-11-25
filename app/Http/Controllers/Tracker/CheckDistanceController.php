@@ -3,17 +3,17 @@
 namespace App\Http\Controllers\Tracker;
 
 use App\Http\Controllers\Controller;
-use App\Services\AirportService;
+use App\Services\Airports\CalcDistanceBetweenPoints;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class CheckDistanceController extends Controller
 {
-    protected AirportService $airportService;
+    protected CalcDistanceBetweenPoints $calcDistanceBetweenPoints;
 
-    public function __construct(AirportService $airportService)
+    public function __construct(CalcDistanceBetweenPoints $calcDistanceBetweenPoints)
     {
-        $this->airportService = $airportService;
+        $this->calcDistanceBetweenPoints = $calcDistanceBetweenPoints;
     }
 
     /**
@@ -24,7 +24,7 @@ class CheckDistanceController extends Controller
      */
     public function __invoke(Request $request): JsonResponse
     {
-        $distance = $this->airportService->calculateDistanceBetweenPoints(
+        $distance = $this->calcDistanceBetweenPoints->execute(
             $request->StartLat,
             $request->StartLon,
             $request->EndLat,
