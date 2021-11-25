@@ -1,17 +1,16 @@
 <?php
 
-namespace App\Services;
-
+namespace App\Services\Airports;
 
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 
-class WeatherService
+class GetMetarForAirport
 {
     private $apiKey = 'a12889c7844f470580dca7f41c';
     private $baseMetarUrl = 'https://api.checkwx.com/metar/';
 
-    public function getMetar(string $icao): string
+    public function execute(string $icao): string
     {
         // check if metar exists in cache
         if (Cache::has($icao.'-metar')) {
@@ -32,8 +31,6 @@ class WeatherService
         }
 
         return $this->returnMetarAsString($response->json(['data']), $icao);
-
-
     }
 
     protected function returnMetarAsString($data, string $icao): string

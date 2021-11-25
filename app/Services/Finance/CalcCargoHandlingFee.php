@@ -1,0 +1,53 @@
+<?php
+
+namespace App\Services\Finance;
+
+use App\Models\Aircraft;
+use App\Models\AirlineFees;
+use App\Models\Airport;
+use App\Models\ContractCargo;
+use App\Models\Enums\AirlineTransactionTypes;
+use App\Models\Enums\ContractType;
+use App\Models\Enums\TransactionTypes;
+use App\Models\Enums\WeightConsts;
+use App\Models\PirepCargo;
+
+class CalcCargoHandlingFee
+{
+    protected AddAirlineTransaction $addAirlineTransaction;
+    protected AddUserTransaction $addUserTransaction;
+
+    public function __construct(
+        AddAirlineTransaction $addAirlineTransaction,
+        AddUserTransaction $addUserTransaction
+    )
+    {
+        $this->addAirlineTransaction = $addAirlineTransaction;
+        $this->addUserTransaction = $addUserTransaction;
+    }
+
+    public function execute($pirep)
+    {
+        $airport = Airport::where('identifier', $pirep->destination_airport_id)->first();
+        if ($airport->size == 0) return;
+
+        $aircraft = Aircraft::with('fleet')->find($pirep->aircraft_id);
+        $pc = PirepCargo::where('pirep_id', $pirep->id)->get();
+        $fee = AirlineFees::where('fee_type', AirlineTransactionTypes::GroundHandlingFees)->first();
+        $weight = 0;
+        foreach ($pc as $c) {
+            $cargo = ContractCargo::find($c->contract_cargo_id);
+            if ($cargo->contract_type_id == ContractType::Cargo) {
+                $weight += $cargo->cargo_qty;
+            } else if ($cargo->contract_type_id == ContractType::Passenger) {
+                $weight = $cargo->cargo_qty * WeightConsts::PERSON_WEIGHT;
+            }
+        }
+        $total = $weight * $fee->fee_amount;
+        if (!$aircraft->is_rental) {
+            $this->addAirlineTransaction->execute(AirlineTransactionTypes::GroundHandlingFees, $total, 'Cargo Handling', $pirep->id);
+        } else {
+            $this->addUserTransaction->execute($pirep->user_id, TransactionTypes::FlightFeesGround, -$total, $pirep->id);
+        }
+    }
+}

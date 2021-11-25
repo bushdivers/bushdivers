@@ -1,15 +1,13 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\User;
 
-use App\Models\Enums\PirepState;
-use App\Models\Pirep;
 use App\Models\Rank;
 use App\Models\User;
 
-class RankService
+class CheckUserRank
 {
-    public function checkRank(int $userId)
+    public function execute(int $userId)
     {
         $user = User::find($userId);
         // get users rank
