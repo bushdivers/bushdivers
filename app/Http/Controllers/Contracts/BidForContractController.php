@@ -42,7 +42,7 @@ class BidForContractController extends Controller
             'pax' => $request->pax
         ];
 
-        $contracts = $this->getContractsFromCriteria($criteria);
+        $contracts = $this->getContractsFromCriteria->execute($criteria);
         $airport = Airport::where('identifier', $criteria['icao'])->first();
 
         return Inertia::render('Contracts/Contracts', ['contracts' => $contracts, 'airport' => $airport])->with(['success' => 'Contract bid successfully']);
