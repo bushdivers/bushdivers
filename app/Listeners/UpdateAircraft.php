@@ -50,7 +50,9 @@ class UpdateAircraft
     public function handle(PirepFiled $event)
     {
         $aircraft = Aircraft::find($event->pirep->aircraft_id);
-        if (!$aircraft->is_rental) {
+        if ($aircraft->is_rental) {
+            $this->updateAircraftState->execute($event->pirep->aircraft_id, AircraftState::AVAILABLE, $event->pirep->user_id);
+        } else {
             $this->updateAircraftState->execute($event->pirep->aircraft_id, AircraftState::AVAILABLE);
         }
         $this->updateAircraftFuel->execute($event->pirep->aircraft_id, $event->pirep->fuel_used);

@@ -74,7 +74,7 @@ class ShowDispatchController extends Controller
         }
 
         $cargo = $this->getCargoForDispatch(Auth::user()->current_airport_id, Auth::user()->id);
-        $aircraft = Aircraft::with('fleet')->find($pirep->aircraft_id);
+//        $aircraft = Aircraft::with('fleet')->find($pirep->aircraft_id);
         $aircraft = $this->getAircraftForDispatch(Auth::user()->current_airport_id);
 
         return Inertia::render('Dispatch/Dispatch', ['cargo' => $cargo, 'aircraft' => $aircraft]);
