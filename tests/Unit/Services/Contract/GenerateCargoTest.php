@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Services\Contract;
 
-use App\Services\ContractService;
+use App\Services\Cargo\GenerateCargo;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
@@ -11,7 +11,7 @@ class GenerateCargoTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected ContractService $contractService;
+    protected GenerateCargo $generateCargo;
 
     protected function setUp(): void
     {
@@ -22,7 +22,7 @@ class GenerateCargoTest extends TestCase
             ['type' => 2, 'text' => 'Medics'],
             ['type' => 2, 'text' => 'Locals'],
         ]);
-        $this->contractService = new ContractService();
+        $this->generateCargo = $this->app->make(GenerateCargo::class);
     }
 
     /**
@@ -32,15 +32,14 @@ class GenerateCargoTest extends TestCase
      */
     public function test_cargo_generation_returns_array()
     {
-        $cargo = $this->contractService->generateCargo();
+        $cargo = $this->generateCargo->execute(10);
         $this->assertIsArray($cargo);
     }
 
     public function test_cargo_generation_returns_keys_in_array()
     {
-        $cargo = $this->contractService->generateCargo();
-        $this->assertArrayHasKey('name', $cargo);
-        $this->assertArrayHasKey('type', $cargo);
-        $this->assertArrayHasKey('qty', $cargo);
+        $cargo = $this->generateCargo->execute(10);
+        $this->assertArrayHasKey('cargo_type', $cargo);
+        $this->assertArrayHasKey('cargo_qty', $cargo);
     }
 }

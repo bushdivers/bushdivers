@@ -3,16 +3,18 @@
 namespace Tests\Unit\Services\Aircraft;
 
 use App\Models\Aircraft;
-use App\Models\Booking;
 use App\Models\Contract;
 use App\Models\ContractCargo;
 use App\Models\Enums\AircraftState;
 use App\Models\Fleet;
-use App\Models\Flight;
 use App\Models\Pirep;
 use App\Models\PirepCargo;
 use App\Models\User;
-use App\Services\AircraftService;
+use App\Services\Aircraft\UpdateAircraftFuel;
+use App\Services\Aircraft\UpdateAircraftHours;
+use App\Services\Aircraft\UpdateAircraftLastFlight;
+use App\Services\Aircraft\UpdateAircraftLocation;
+use App\Services\Aircraft\UpdateAircraftState;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -32,6 +34,11 @@ class UpdateAircraftDataTest extends TestCase
     protected Model $fleet;
     protected Model $aircraft;
     protected Model $booking;
+    protected UpdateAircraftState $updateAircraftState;
+    protected UpdateAircraftFuel $updateAircraftFuel;
+    protected UpdateAircraftHours $updateAircraftHours;
+    protected UpdateAircraftLastFlight $updateAircraftLastFlight;
+    protected UpdateAircraftLocation $updateAircraftLocation;
 
     public function setUp(): void
     {
@@ -77,7 +84,11 @@ class UpdateAircraftDataTest extends TestCase
             'contract_cargo_id' => $this->contractCargo->id
         ]);
 
-        $this->aircraftService = new AircraftService();
+        $this->updateAircraftState = $this->app->make(UpdateAircraftState::class);
+        $this->updateAircraftFuel = $this->app->make(UpdateAircraftFuel::class);
+        $this->updateAircraftLastFlight = $this->app->make(UpdateAircraftLastFlight::class);
+        $this->updateAircraftLocation = $this->app->make(UpdateAircraftLocation::class);
+        $this->updateAircraftHours = $this->app->make(UpdateAircraftHours::class);
     }
     /**
      * A basic unit test example.
@@ -87,7 +98,7 @@ class UpdateAircraftDataTest extends TestCase
     public function test_aircraft_state_updated()
     {
         $state = AircraftState::IN_USE;
-        $this->aircraftService->updateAircraftState($this->aircraft->id, $state);
+        $this->updateAircraftState->execute($this->aircraft->id, $state);
         $this->assertDatabaseHas('aircraft', [
             'id' => $this->aircraft->id,
             'state' => $state
@@ -96,7 +107,7 @@ class UpdateAircraftDataTest extends TestCase
 
     public function test_aircraft_fuel_updated()
     {
-        $this->aircraftService->updateAircraftFuel($this->aircraft->id, 20);
+        $this->updateAircraftFuel->execute($this->aircraft->id, 20);
         $this->assertDatabaseHas('aircraft', [
             'id' => $this->aircraft->id,
             'fuel_onboard' => $this->aircraft->fuel_onboard - 20
@@ -109,7 +120,7 @@ class UpdateAircraftDataTest extends TestCase
             'fleet_id' => $this->fleet->id,
             'fuel_onboard' => 0
         ]);
-        $this->aircraftService->updateAircraftFuel($aircraft->id, 20);
+        $this->updateAircraftFuel->execute($aircraft->id, 20);
         $this->assertDatabaseHas('aircraft', [
             'id' => $aircraft->id,
             'fuel_onboard' => 0
@@ -118,7 +129,7 @@ class UpdateAircraftDataTest extends TestCase
 
     public function test_aircraft_hours_updated()
     {
-        $this->aircraftService->updateAircraftHours($this->aircraft->id, 20);
+        $this->updateAircraftHours->execute($this->aircraft->id, 20);
         $this->assertDatabaseHas('aircraft', [
             'id' => $this->aircraft->id,
             'flight_time_mins' => $this->aircraft->flight_time_mins += 20
@@ -130,7 +141,7 @@ class UpdateAircraftDataTest extends TestCase
         $icao = 'EGLL';
         $lat = -6.14617;
         $lon = 143.65733;
-        $this->aircraftService->updateAircraftLocation($this->aircraft->id, $icao, $lat, $lon);
+        $this->updateAircraftLocation->execute($this->aircraft->id, $icao, $lat, $lon);
         $this->assertDatabaseHas('aircraft', [
             'id' => $this->aircraft->id,
             'current_airport_id' => $icao,
@@ -141,7 +152,7 @@ class UpdateAircraftDataTest extends TestCase
     public function test_aircraft_last_flight_updated()
     {
         $date = Carbon::now();
-        $this->aircraftService->updateAircraftLastFlightDate($this->aircraft->id, $date);
+        $this->updateAircraftLastFlight->execute($this->aircraft->id, $date);
         $this->assertDatabaseHas('aircraft', [
             'id' => $this->aircraft->id,
             'last_flight' => $date

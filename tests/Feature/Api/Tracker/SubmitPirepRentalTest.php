@@ -143,7 +143,7 @@ class SubmitPirepRentalTest extends TestCase
             'block_off_time'=> $startTime,
             'block_on_time' => $endTime
         ];
-
+        $this->withExceptionHandling();
         $response = $this->postJson('/api/pirep/submit', $data);
 
         $response->assertStatus(200);

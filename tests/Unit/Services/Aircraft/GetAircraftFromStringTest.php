@@ -5,7 +5,7 @@ namespace Tests\Unit\Services\Aircraft;
 //use PHPUnit\Framework\TestCase;
 use App\Models\Aircraft;
 use App\Models\Fleet;
-use App\Services\AircraftService;
+use App\Services\Aircraft\GetAircraftFromString;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -14,7 +14,7 @@ class GetAircraftFromStringTest extends TestCase
 {
 
     use RefreshDatabase;
-    protected AircraftService $acService;
+    protected GetAircraftFromString $getAircraftFromString;
     protected Model $aircraft;
     protected Model $fleet;
 
@@ -26,7 +26,7 @@ class GetAircraftFromStringTest extends TestCase
             'fleet_id' => $this->fleet->id
         ]);
 
-        $this->acService = new AircraftService();
+        $this->getAircraftFromString = $this->app->make(GetAircraftFromString::class);
     }
     /**
      * A basic unit test example.
@@ -37,7 +37,7 @@ class GetAircraftFromStringTest extends TestCase
     {
         $aircraftString = $this->fleet->name.' - '.$this->aircraft->registration;
 
-        $aircraft = $this->acService->findAircraftFromString($aircraftString);
+        $aircraft = $this->getAircraftFromString->execute($aircraftString);
 
         $this->assertEquals($this->aircraft->registration, $aircraft->registration);
     }
@@ -45,7 +45,7 @@ class GetAircraftFromStringTest extends TestCase
     public function test_returns_null_for_missing_aircraft()
     {
         $aircraftString = $this->fleet->name.' - P2-GHH';
-        $aircraft = $this->acService->findAircraftFromString($aircraftString);
+        $aircraft = $this->getAircraftFromString->execute($aircraftString);
         $this->assertNull($aircraft);
     }
 }

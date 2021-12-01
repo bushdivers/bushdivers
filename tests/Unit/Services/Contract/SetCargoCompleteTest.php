@@ -4,7 +4,7 @@ namespace Tests\Unit\Services\Contract;
 
 use App\Models\Contract;
 use App\Models\ContractCargo;
-use App\Services\ContractService;
+use App\Services\Contracts\UpdateContractCargoProgress;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
@@ -14,7 +14,7 @@ class SetCargoCompleteTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected ContractService $contractService;
+    protected UpdateContractCargoProgress $updateContractCargoProgress;
     protected Model $contract;
     protected Model $contractCargo;
 
@@ -27,7 +27,7 @@ class SetCargoCompleteTest extends TestCase
             ['type' => 2, 'text' => 'Medics'],
             ['type' => 2, 'text' => 'Locals'],
         ]);
-        $this->contractService = new ContractService();
+        $this->updateContractCargoProgress = $this->app->make(UpdateContractCargoProgress::class);
 
         $this->contract = Contract::factory()->create();
         $this->contractCargo = ContractCargo::factory()->create([
@@ -42,7 +42,7 @@ class SetCargoCompleteTest extends TestCase
      */
     public function test_cargo_is_completed()
     {
-        $this->contractService->updateCargo($this->contractCargo->id, $this->contract->arr_airport_id);
+        $this->updateContractCargoProgress->execute($this->contractCargo->id, $this->contract->arr_airport_id);
         $this->assertDatabaseHas('contract_cargos', [
             'id' => $this->contractCargo->id,
             'is_completed' => true
@@ -51,7 +51,7 @@ class SetCargoCompleteTest extends TestCase
 
     public function test_cargo_is_not_completed_when_at_different_airport()
     {
-        $this->contractService->updateCargo($this->contractCargo->id, 'KLAX');
+        $this->updateContractCargoProgress->execute($this->contractCargo->id, 'KLAX');
         $this->assertDatabaseHas('contract_cargos', [
             'id' => $this->contractCargo->id,
             'is_completed' => false
@@ -60,7 +60,7 @@ class SetCargoCompleteTest extends TestCase
 
     public function test_cargo_location_is_updated()
     {
-        $this->contractService->updateCargo($this->contractCargo->id, 'AYMR');
+        $this->updateContractCargoProgress->execute($this->contractCargo->id, 'AYMR');
         $this->assertDatabaseHas('contract_cargos', [
             'id' => $this->contractCargo->id,
             'current_airport_id' => 'AYMR'

@@ -3,7 +3,7 @@
 namespace Tests\Unit\Services\Contract;
 
 use App\Models\Airport;
-use App\Services\ContractService;
+use App\Services\Contracts\FindHubsInNeedOfContracts;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
@@ -13,7 +13,7 @@ class GenerateHubContractsTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected ContractService $contractService;
+    protected FindHubsInNeedOfContracts $findHubsInNeedOfContracts;
     protected Model $airport1;
     protected Model $airport2;
     protected Model $airport3;
@@ -54,7 +54,7 @@ class GenerateHubContractsTest extends TestCase
             'lon' => 143.07904,
             'altitude' => 100
         ]);
-        $this->contractService = new ContractService();
+        $this->findHubsInNeedOfContracts = $this->app->make(FindHubsInNeedOfContracts::class);
     }
     /**
      * A basic unit test example.
@@ -63,7 +63,7 @@ class GenerateHubContractsTest extends TestCase
      */
     public function test_contract_from_hub_is_generated()
     {
-        $this->contractService->findHubsInNeedOfContracts();
+        $this->findHubsInNeedOfContracts->execute();
         $this->assertDatabaseHas('contracts', [
             'dep_airport_id' => $this->airportHub->identifier,
             'arr_airport_id' => $this->airport2->identifier
@@ -72,7 +72,7 @@ class GenerateHubContractsTest extends TestCase
 
     public function test_contract_from_hub_cargo_is_generated()
     {
-        $this->contractService->findHubsInNeedOfContracts();
+        $this->findHubsInNeedOfContracts->execute();
         $this->assertDatabaseHas('contract_cargos', [
             'current_airport_id' => $this->airportHub->identifier
         ]);
@@ -80,7 +80,7 @@ class GenerateHubContractsTest extends TestCase
 
     public function test_contract_to_hub_is_generated()
     {
-        $this->contractService->findHubsInNeedOfContracts();
+        $this->findHubsInNeedOfContracts->execute();
         $this->assertDatabaseHas('contracts', [
             'dep_airport_id' => $this->airport2->identifier,
             'arr_airport_id' => $this->airportHub->identifier
@@ -89,7 +89,7 @@ class GenerateHubContractsTest extends TestCase
 
     public function test_contract_to_hub_cargo_is_generated()
     {
-        $this->contractService->findHubsInNeedOfContracts();
+        $this->findHubsInNeedOfContracts->execute();
         $this->assertDatabaseHas('contract_cargos', [
             'current_airport_id' => $this->airport2->identifier
         ]);

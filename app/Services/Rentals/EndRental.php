@@ -5,17 +5,25 @@ namespace App\Services\Rentals;
 use App\Models\Aircraft;
 use App\Models\Enums\AircraftState;
 use App\Models\Enums\TransactionTypes;
+use App\Services\Aircraft\UpdateAircraftLocation;
+use App\Services\Aircraft\UpdateAircraftState;
 use App\Services\AircraftService;
 use App\Services\Finance\AddUserTransaction;
 
 class EndRental
 {
-    protected AircraftService $aircraftService;
+    protected UpdateAircraftLocation $updateAircraftLocation;
+    protected UpdateAircraftState $updateAircraftState;
     protected AddUserTransaction $addUserTransaction;
 
-    public function __construct(AircraftService $aircraftService, AddUserTransaction $addUserTransaction)
+    public function __construct(
+        UpdateAircraftLocation $updateAircraftLocation,
+        UpdateAircraftState $updateAircraftState,
+        AddUserTransaction $addUserTransaction
+    )
     {
-        $this->aircraftService = $aircraftService;
+        $this->updateAircraftLocation = $updateAircraftLocation;
+        $this->updateAircraftState = $updateAircraftState;
         $this->addUserTransaction = $addUserTransaction;
     }
 
@@ -30,9 +38,9 @@ class EndRental
             $this->addUserTransaction->execute($userId, TransactionTypes::Rental, $deposit);
         } else {
             // update aircraft location
-            $this->aircraftService->updateAircraftLocation($aircraftId, $aircraft->hub_id);
+            $this->updateAircraftLocation->execute($aircraftId, $aircraft->hub_id);
         }
         // update aircraft status
-        $this->aircraftService->updateAircraftState($aircraftId, AircraftState::AVAILABLE);
+        $this->updateAircraftState->execute($aircraftId, AircraftState::AVAILABLE);
     }
 }

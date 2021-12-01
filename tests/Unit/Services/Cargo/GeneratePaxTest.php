@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Services\Cargo;
 
-use App\Services\CargoService;
+use App\Services\Cargo\GeneratePax;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
@@ -11,7 +11,7 @@ class GeneratePaxTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected CargoService $cargoService;
+    protected GeneratePax $generatePax;
 
     public function setUp(): void
     {
@@ -21,7 +21,7 @@ class GeneratePaxTest extends TestCase
             ['type' => 2, 'text' => 'Locals'],
         ]);
 
-        $this->cargoService = new CargoService();
+        $this->generatePax = $this->app->make(GeneratePax::class);
     }
 
     /**
@@ -31,7 +31,7 @@ class GeneratePaxTest extends TestCase
      */
     public function test_pax_generation_returns_array()
     {
-        $pax = $this->cargoService->generatePax(10);
+        $pax = $this->generatePax->execute(10);
         $this->assertIsArray($pax);
         $this->assertArrayHasKey('pax_type', $pax);
         $this->assertArrayHasKey('baggage', $pax);

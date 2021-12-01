@@ -4,7 +4,7 @@ namespace Tests\Unit\Services\Contract;
 
 use App\Models\Contract;
 use App\Models\ContractCargo;
-use App\Services\ContractService;
+use App\Services\Contracts\CheckForContractCompletion;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -15,7 +15,7 @@ class SetContractCompleteTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected ContractService $contractService;
+    protected CheckForContractCompletion $checkForContractCompletion;
     protected Model $contract;
     protected Model $contractCargo;
 
@@ -28,7 +28,7 @@ class SetContractCompleteTest extends TestCase
             ['type' => 2, 'text' => 'Medics'],
             ['type' => 2, 'text' => 'Locals'],
         ]);
-        $this->contractService = new ContractService();
+        $this->checkForContractCompletion = $this->app->make(CheckForContractCompletion::class);
 
         $this->contract = Contract::factory()->create();
         ContractCargo::factory()->count(2)->create([
@@ -45,7 +45,7 @@ class SetContractCompleteTest extends TestCase
     {
         ContractCargo::where('contract_id', $this->contract->id)->update(['is_completed' => true, 'completed_at' => Carbon::now()]);
 
-        $this->contractService->setContractCompleted($this->contract);
+        $this->checkForContractCompletion->execute($this->contract);
         $this->assertDatabaseHas('contracts', [
             'id' => $this->contract->id,
             'is_completed' => true
@@ -58,7 +58,7 @@ class SetContractCompleteTest extends TestCase
         $cargo->is_completed = true;
         $cargo->completed_at = Carbon::now();
 
-        $this->contractService->setContractCompleted($this->contract);
+        $this->checkForContractCompletion->execute($this->contract);
         $this->assertDatabaseHas('contracts', [
             'id' => $this->contract->id,
             'is_completed' => false

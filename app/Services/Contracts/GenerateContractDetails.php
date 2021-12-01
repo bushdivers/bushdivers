@@ -2,6 +2,7 @@
 
 namespace App\Services\Contracts;
 
+use App\Services\Airports\CalcBearingBetweenPoints;
 use App\Services\Airports\CalcDistanceBetweenPoints;
 use Illuminate\Support\Facades\Log;
 
@@ -11,18 +12,21 @@ class GenerateContractDetails
     protected GenerateContractCargo $generateContractCargo;
     protected CalcContractValue $calcContractValue;
     protected CalcDistanceBetweenPoints $calcDistanceBetweenPoints;
+    protected CalcBearingBetweenPoints $calcBearingBetweenPoints;
 
     public function __construct(
         StoreContract $storeContract,
         GenerateContractCargo $generateContractCargo,
         CalcContractValue $calcContractValue,
-        CalcDistanceBetweenPoints $calcDistanceBetweenPoints
+        CalcDistanceBetweenPoints $calcDistanceBetweenPoints,
+        CalcBearingBetweenPoints $calcBearingBetweenPoints
     )
     {
         $this->storeContract = $storeContract;
         $this->generateContractCargo = $generateContractCargo;
         $this->calcContractValue = $calcContractValue;
         $this->calcDistanceBetweenPoints = $calcDistanceBetweenPoints;
+        $this->calcBearingBetweenPoints = $calcBearingBetweenPoints;
     }
 
     public function execute($origin, $airports)
@@ -34,7 +38,7 @@ class GenerateContractDetails
                     $cargo = $this->generateContractCargo->execute();
                     // get distance and heading
                     $distance = $this->calcDistanceBetweenPoints->execute($origin->lat, $origin->lon, $airport->lat, $airport->lon);
-                    $heading = $this->calcDistanceBetweenPoints->execute($origin->lat, $origin->lon, $airport->lat, $airport->lon, $airport->magnetic_variance);
+                    $heading = $this->calcBearingBetweenPoints->execute($origin->lat, $origin->lon, $airport->lat, $airport->lon, $airport->magnetic_variance);
                     $contractValue = $this->calcContractValue->execute($cargo['type'], $cargo['qty'], $distance);
                     // create contract
                     $this->storeContract->execute($origin->identifier, $airport->identifier, $distance, $heading, $cargo, $contractValue);

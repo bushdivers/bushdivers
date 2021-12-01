@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Services\Cargo;
 
-use App\Services\CargoService;
+use App\Services\Cargo\GenerateCargo;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
@@ -11,7 +11,7 @@ class GenerateCargoTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected CargoService $cargoService;
+    protected GenerateCargo $generateCargo;
 
     public function setUp(): void
     {
@@ -21,7 +21,7 @@ class GenerateCargoTest extends TestCase
             ['type' => 1, 'text' => 'Building materials'],
         ]);
 
-        $this->cargoService = new CargoService();
+        $this->generateCargo = $this->app->make(GenerateCargo::class);
     }
 
     /**
@@ -31,7 +31,7 @@ class GenerateCargoTest extends TestCase
      */
     public function test_cargo_generation_returns_array()
     {
-        $cargo = $this->cargoService->generateCargo(10);
+        $cargo = $this->generateCargo->execute(10);
         $this->assertIsArray($cargo);
         $this->assertArrayHasKey('cargo_type', $cargo);
     }

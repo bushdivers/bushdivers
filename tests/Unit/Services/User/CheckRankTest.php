@@ -4,8 +4,7 @@ namespace Tests\Unit\Services\User;
 
 use App\Models\Rank;
 use App\Models\User;
-use App\Services\RankService;
-use App\Services\UserService;
+use App\Services\User\CheckUserRank;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
@@ -15,7 +14,7 @@ class CheckRankTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected RankService $rankService;
+    protected CheckUserRank $checkUserRank;
     protected Model $user;
 
     protected function setUp(): void
@@ -27,7 +26,7 @@ class CheckRankTest extends TestCase
             'flights_time' => 301, // mins
             'points' => 51
         ]);
-        $this->rankService = new RankService();
+        $this->checkUserRank = $this->app->make(CheckUserRank::class);
     }
     /**
      * A basic unit test example.
@@ -36,7 +35,7 @@ class CheckRankTest extends TestCase
      */
     public function test_rank_gets_updated()
     {
-        $this->rankService->checkRank($this->user->id);
+        $this->checkUserRank->execute($this->user->id);
         $this->assertDatabaseHas('users', [
             'id' => $this->user->id,
             'rank_id' => 2
@@ -51,7 +50,7 @@ class CheckRankTest extends TestCase
             'points' => 55
         ]);
 
-        $this->rankService->checkRank($user->id);
+        $this->checkUserRank->execute($user->id);
         $this->assertDatabaseHas('users', [
             'id' => $this->user->id,
             'rank_id' => 1

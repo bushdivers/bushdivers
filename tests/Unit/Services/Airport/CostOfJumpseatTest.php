@@ -3,7 +3,7 @@
 namespace Tests\Unit\Services\Airport;
 
 use App\Models\Airport;
-use App\Services\AirportService;
+use App\Services\Airports\CalcCostOfJumpseat;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -15,6 +15,7 @@ class CostOfJumpseatTest extends TestCase
 
     protected Model $fromAirport;
     protected Model $toAirport;
+    protected CalcCostOfJumpseat $calcCostOfJumpseat;
 
     protected function setUp(): void
     {
@@ -26,6 +27,8 @@ class CostOfJumpseatTest extends TestCase
             'lat' => -5.82781,
             'lon' => 144.29953
         ]);
+
+        $this->calcCostOfJumpseat = $this->app->make(CalcCostOfJumpseat::class);
     }
     /**
      * A basic unit test example.
@@ -34,8 +37,7 @@ class CostOfJumpseatTest extends TestCase
      */
     public function test_jumpseat_calculated()
     {
-        $airportService = new AirportService();
-        $data = $airportService->getCostOfJumpseat('AYMR', 'AYMH');
+        $data = $this->calcCostOfJumpseat->execute('AYMR', 'AYMH');
         $expected = round(71.4 * 0.25, 2);
         $this->assertEquals($expected, $data['cost']);
     }
@@ -43,7 +45,6 @@ class CostOfJumpseatTest extends TestCase
     public function test_jumpseat_invalid_icao_handled()
     {
         $this->expectException(ModelNotFoundException::class);
-        $airportService = new AirportService();
-        $airportService->getCostOfJumpseat('AYMR', 'EGLL');
+        $this->calcCostOfJumpseat->execute('AYMR', 'EGLL');
     }
 }

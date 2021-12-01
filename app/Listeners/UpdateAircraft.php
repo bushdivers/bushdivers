@@ -5,21 +5,40 @@ namespace App\Listeners;
 use App\Events\PirepFiled;
 use App\Models\Aircraft;
 use App\Models\Enums\AircraftState;
-use App\Models\Flight;
-use App\Services\AircraftService;
+use App\Services\Aircraft\UpdateAircraftFuel;
+use App\Services\Aircraft\UpdateAircraftHours;
+use App\Services\Aircraft\UpdateAircraftLastFlight;
+use App\Services\Aircraft\UpdateAircraftLocation;
+use App\Services\Aircraft\UpdateAircraftState;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
+use Tests\Unit\Services\Aircraft\UpdateAircraftDataTest;
 
 class UpdateAircraft
 {
+    protected UpdateAircraftState $updateAircraftState;
+    protected UpdateAircraftFuel $updateAircraftFuel;
+    protected UpdateAircraftHours $updateAircraftHours;
+    protected UpdateAircraftLocation $updateAircraftLocation;
+    protected UpdateAircraftLastFlight $updateAircraftLastFlight;
     /**
      * Create the event listener.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(
+        UpdateAircraftState $updateAircraftState,
+        UpdateAircraftFuel $updateAircraftFuel,
+        UpdateAircraftHours $updateAircraftHours,
+        UpdateAircraftLocation $updateAircraftLocation,
+        UpdateAircraftLastFlight $updateAircraftLastFlight
+    )
     {
-        //
+        $this->updateAircraftState = $updateAircraftState;
+        $this->updateAircraftFuel = $updateAircraftFuel;
+        $this->updateAircraftHours = $updateAircraftHours;
+        $this->updateAircraftLocation = $updateAircraftLocation;
+        $this->updateAircraftLastFlight = $updateAircraftLastFlight;
     }
 
     /**
@@ -30,14 +49,13 @@ class UpdateAircraft
      */
     public function handle(PirepFiled $event)
     {
-        $aircraftService = new AircraftService();
         $aircraft = Aircraft::find($event->pirep->aircraft_id);
         if (!$aircraft->is_rental) {
-            $aircraftService->updateAircraftState($event->pirep->aircraft_id, AircraftState::AVAILABLE);
+            $this->updateAircraftState->execute($event->pirep->aircraft_id, AircraftState::AVAILABLE);
         }
-        $aircraftService->updateAircraftFuel($event->pirep->aircraft_id, $event->pirep->fuel_used);
-        $aircraftService->updateAircraftHours($event->pirep->aircraft_id, $event->pirep->flight_time);
-        $aircraftService->updateAircraftLocation($event->pirep->aircraft_id, $event->pirep->destination_airport_id, $event->pirep->current_lat, $event->pirep->current_lon);
-        $aircraftService->updateAircraftLastFlightDate($event->pirep->aircraft_id, $event->pirep->submitted_at);
+        $this->updateAircraftFuel->execute($event->pirep->aircraft_id, $event->pirep->fuel_used);
+        $this->updateAircraftHours->execute($event->pirep->aircraft_id, $event->pirep->flight_time);
+        $this->updateAircraftLocation->execute($event->pirep->aircraft_id, $event->pirep->destination_airport_id, $event->pirep->current_lat, $event->pirep->current_lon);
+        $this->updateAircraftLastFlight->execute($event->pirep->aircraft_id, $event->pirep->submitted_at);
     }
 }

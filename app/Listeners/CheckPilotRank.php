@@ -3,20 +3,21 @@
 namespace App\Listeners;
 
 use App\Events\PirepFiled;
-use App\Services\RankService;
+use App\Services\User\CheckUserRank;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
 class CheckPilotRank
 {
+    protected CheckUserRank $checkUserRank;
     /**
      * Create the event listener.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(CheckUserRank $checkUserRank)
     {
-        //
+        $this->checkUserRank = $checkUserRank;
     }
 
     /**
@@ -27,7 +28,6 @@ class CheckPilotRank
      */
     public function handle(PirepFiled $event)
     {
-        $rankService = new RankService();
-        $rankService->checkRank($event->pirep->user_id);
+        $this->checkUserRank->execute($event->pirep->user_id);
     }
 }

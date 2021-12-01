@@ -3,7 +3,7 @@
 namespace Tests\Unit\Services\User;
 
 use App\Models\User;
-use App\Services\UserService;
+use App\Services\User\UpdateUserHours;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -12,7 +12,7 @@ class UpdatePilotHoursTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected UserService $userService;
+    protected UpdateUserHours $updateUserHours;
     protected Model $user;
 
     protected function setUp(): void
@@ -22,7 +22,7 @@ class UpdatePilotHoursTest extends TestCase
             'flights_time' => 60,
             'flights' => 2
         ]);
-        $this->userService = new UserService();
+        $this->updateUserHours = $this->app->make(UpdateUserHours::class);
     }
 
     /**
@@ -33,7 +33,7 @@ class UpdatePilotHoursTest extends TestCase
     public function test_pilot_flight_time_updated()
     {
         ;
-        $this->userService->updatePilotHours(30, $this->user->id);
+        $this->updateUserHours->execute(30, $this->user->id);
         $this->assertDatabaseHas('users', [
             'flights_time' => 90
         ]);
@@ -42,7 +42,7 @@ class UpdatePilotHoursTest extends TestCase
     public function test_pilot_flights_count_updated()
     {
         ;
-        $this->userService->updatePilotHours(30, $this->user->id);
+        $this->updateUserHours->execute(30, $this->user->id);
         $this->assertDatabaseHas('users', [
             'flights' => 3
         ]);
