@@ -38,7 +38,7 @@ class FindContractsController extends Controller
             return Inertia::render('Contracts/Contracts')->with(['error' => 'Airport not found']);
         }
 
-        $contracts = $this->getContractsFromCriteria($criteria);
+        $contracts = $this->getContractsFromCriteria->execute($criteria);
 
         return Inertia::render('Contracts/Contracts', ['contracts' => $contracts, 'airport' => $airport]);
     }
