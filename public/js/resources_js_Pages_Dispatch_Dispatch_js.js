@@ -2854,7 +2854,9 @@ var Dispatch = function Dispatch(_ref) {
       setDeadHead = _useState20[1];
 
   function handleDeadHead() {
-    setDeadHead(!deadHead);
+    if (!selectedAircraft.maintenance_status) {
+      setDeadHead(!deadHead);
+    }
   }
 
   function handleAircraftSelect(ac) {
@@ -2863,6 +2865,14 @@ var Dispatch = function Dispatch(_ref) {
       return a.id === ac.id;
     }));
     setFuel(ac.fuel_onboard);
+
+    if (ac.maintenance_status) {
+      window.alert('This aircraft is in need of maintenance, and therefore cannot be used for commercial purposes');
+      setDeadHead(true);
+    } else {
+      setDeadHead(false);
+    }
+
     calculateFuelWeight(ac, ac.fuel_onboard);
   }
 
@@ -3237,10 +3247,16 @@ var Aircraft = function Aircraft(props) {
               },
               className: props.selectedAircraft.id === ac.id ? 'bg-orange-200 hover:bg-orange-100' : '',
               children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("td", {
-                children: [ac.registration, " ", ac.is_rental ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("span", {
-                  className: "bg-orange-500 text-white rounded px-2",
+                children: [ac.registration, ac.is_rental ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("span", {
+                  className: "bg-orange-500 text-white rounded ml-2 px-2",
                   children: "Rental"
-                }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.Fragment, {})]
+                }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.Fragment, {}), ac.maintenance_status && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("span", {
+                  className: "ml-2 text-orange-500",
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("i", {
+                    className: "material-icons md-18",
+                    children: "engineering"
+                  })
+                })]
               }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("td", {
                 children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_2__.Link, {
                   href: "/airports/".concat(ac.hub_id),

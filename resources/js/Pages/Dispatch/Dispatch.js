@@ -28,13 +28,21 @@ const Dispatch = ({ cargo, aircraft }) => {
   const [deadHead, setDeadHead] = useState(false)
 
   function handleDeadHead () {
-    setDeadHead(!deadHead)
+    if (!selectedAircraft.maintenance_status) {
+      setDeadHead(!deadHead)
+    }
   }
 
   function handleAircraftSelect (ac) {
     setSubmitError(null)
     setSelectedAircraft(aircraft.find(a => a.id === ac.id))
     setFuel(ac.fuel_onboard)
+    if (ac.maintenance_status) {
+      window.alert('This aircraft is in need of maintenance, and therefore cannot be used for commercial purposes')
+      setDeadHead(true)
+    } else {
+      setDeadHead(false)
+    }
     calculateFuelWeight(ac, ac.fuel_onboard)
   }
 
