@@ -2752,7 +2752,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var Aircraft = function Aircraft(_ref) {
-  var aircraft = _ref.aircraft;
+  var aircraft = _ref.aircraft,
+      maintenanceStatus = _ref.maintenanceStatus;
+  console.log(aircraft);
 
   var calculateDistanceFlown = function calculateDistanceFlown(pireps) {
     return pireps.reduce(function (a, pirep) {
@@ -2761,36 +2763,39 @@ var Aircraft = function Aircraft(_ref) {
   };
 
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_Shared_Navigation_PageTitle__WEBPACK_IMPORTED_MODULE_1__.default, {
-      title: "".concat(aircraft.registration, " - ").concat(aircraft.fleet.manufacturer, " ").concat(aircraft.fleet.name, " (").concat(aircraft.fleet.type, ")")
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+      className: "flex justify-start items-center",
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_Shared_Navigation_PageTitle__WEBPACK_IMPORTED_MODULE_1__.default, {
+        title: "".concat(aircraft.registration, " - ").concat(aircraft.fleet.manufacturer, " ").concat(aircraft.fleet.name, " (").concat(aircraft.fleet.type, ")")
+      }), maintenanceStatus && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+        className: "ml-2 text-orange-500",
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("i", {
+          className: "material-icons md-36",
+          children: "engineering"
+        })
+      })]
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
       className: "flex flex-col md:flex-row justify-between",
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
-        className: "md:w-1/6 my-1",
+        className: "md:w-1/5 my-1",
         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_Shared_Elements_StatCard__WEBPACK_IMPORTED_MODULE_3__.default, {
           title: "Flights",
           stat: aircraft.pireps.length
         })
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
-        className: "md:w-1/6 my-1",
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_Shared_Elements_StatCard__WEBPACK_IMPORTED_MODULE_3__.default, {
-          title: "Airframe Time",
-          stat: (0,_Helpers_date_helpers__WEBPACK_IMPORTED_MODULE_4__.convertMinuteDecimalToHoursAndMinutes)(aircraft.flight_time_mins)
-        })
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
-        className: "md:w-1/6 my-1",
+        className: "md:w-1/5 my-1",
         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_Shared_Elements_StatCard__WEBPACK_IMPORTED_MODULE_3__.default, {
           title: "Distance Flown",
           stat: calculateDistanceFlown(aircraft.pireps)
         })
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
-        className: "md:w-1/6 my-1",
+        className: "md:w-1/5 my-1",
         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_Shared_Elements_StatCard__WEBPACK_IMPORTED_MODULE_3__.default, {
           title: "Current Location",
           stat: aircraft.current_airport_id
         })
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
-        className: "md:w-1/6 my-1",
+        className: "md:w-1/5 my-1",
         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_Shared_Elements_StatCard__WEBPACK_IMPORTED_MODULE_3__.default, {
           title: "Current Fuel",
           stat: aircraft.fuel_onboard
@@ -2798,11 +2803,62 @@ var Aircraft = function Aircraft(_ref) {
       })]
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
       className: "flex flex-col md:flex-row md:justify-between mt-4",
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
         className: "md:w-1/2 mx-2",
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+          className: "flex flex-col md:flex-row justify-between",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+            className: "md:w-1/3 my-1",
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_Shared_Elements_StatCard__WEBPACK_IMPORTED_MODULE_3__.default, {
+              title: "Airframe Time",
+              stat: (aircraft.flight_time_mins / 60).toFixed(2)
+            })
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+            className: "md:w-1/3 my-1",
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_Shared_Elements_StatCard__WEBPACK_IMPORTED_MODULE_3__.default, {
+              title: "Time since 100hr",
+              stat: (aircraft.mins_since_100hr / 60).toFixed(2)
+            })
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+            className: "md:w-1/3 my-1",
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_Shared_Elements_StatCard__WEBPACK_IMPORTED_MODULE_3__.default, {
+              title: "TBO Interval",
+              stat: aircraft.fleet.tbo_mins / 60
+            })
+          })]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+          className: "bg-white p-4 rounded shadow overflow-x-auto my-2",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+            className: "text-lg mb-2",
+            children: "Maintenance"
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("table", {
+            className: "table table-auto table-condensed",
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("thead", {
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("tr", {
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("th", {
+                  children: "Engine #"
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("th", {
+                  children: "Time since TBO"
+                })]
+              })
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("tbody", {
+              children: aircraft.engines.map(function (engine) {
+                return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("tr", {
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("td", {
+                    children: engine.engine_no
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("td", {
+                    children: (engine.mins_since_tbo / 60).toFixed(2)
+                  })]
+                }, engine.id);
+              })
+            })]
+          })]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
           className: "bg-white p-4 rounded shadow overflow-x-auto",
-          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("table", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+            className: "text-lg mb-2",
+            children: "Flights"
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("table", {
             className: "table table-auto table-condensed",
             children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("thead", {
               children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("tr", {
@@ -2835,8 +2891,8 @@ var Aircraft = function Aircraft(_ref) {
                 }, pirep.id);
               })
             })]
-          })
-        })
+          })]
+        })]
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
         className: "md:w-1/2 mx-1",
         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {

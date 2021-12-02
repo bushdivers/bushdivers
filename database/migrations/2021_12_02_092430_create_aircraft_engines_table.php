@@ -16,6 +16,7 @@ class CreateAircraftEnginesTable extends Migration
         Schema::create('aircraft_engines', function (Blueprint $table) {
             $table->id();
             $table->foreignId('aircraft_id');
+            $table->integer('engine_no');
             $table->integer('mins_since_tbo')->default(0);
             $table->timestamps();
         });

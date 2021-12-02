@@ -9,6 +9,10 @@ class Aircraft extends Model
 {
     use HasFactory;
 
+    protected $appends = [
+        'maintenance_status'
+    ];
+
     public function fleet()
     {
         return $this->belongsTo(Fleet::class);
@@ -32,5 +36,22 @@ class Aircraft extends Model
     public function engines()
     {
         return $this->hasMany(AircraftEngine::class);
+    }
+
+    public function getMaintenanceStatusAttribute()
+    {
+        $status = false;
+        // check 100 hr
+        if ($this->mins_since_100hr >= (100 * 60)) {
+            $status = true;
+        }
+        // check tbo
+        foreach ($this->engines as $engine) {
+            if ($engine->mins_since_tbo >= $this->fleet->tbo_mins) {
+                $status = true;
+            }
+        }
+
+        return $status;
     }
 }

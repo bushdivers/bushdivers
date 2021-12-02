@@ -87,7 +87,7 @@ const FleetCardContent = ({ fleet }) => {
                 <td><Link href={`/airports/${aircraft.hub_id}`}>{aircraft.hub_id}</Link></td>
                 <td><Link href={`/airports/${aircraft.current_airport_id}`}>{aircraft.current_airport_id}</Link></td>
                 <td>{aircraft.flight_time_mins}</td>
-                <td>{renderAircraftStatus(aircraft.state)}</td>
+                <td>{renderAircraftStatus(aircraft.state)} {aircraft.maintenance_status && <span className="ml-2 text-orange-500"><i className="material-icons">engineering</i></span>}</td>
               </tr>
             ))}
           </tbody>
