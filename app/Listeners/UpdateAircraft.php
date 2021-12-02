@@ -9,6 +9,7 @@ use App\Services\Aircraft\UpdateAircraftFuel;
 use App\Services\Aircraft\UpdateAircraftHours;
 use App\Services\Aircraft\UpdateAircraftLastFlight;
 use App\Services\Aircraft\UpdateAircraftLocation;
+use App\Services\Aircraft\UpdateAircraftMaintenanceTimes;
 use App\Services\Aircraft\UpdateAircraftState;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
@@ -21,6 +22,7 @@ class UpdateAircraft
     protected UpdateAircraftHours $updateAircraftHours;
     protected UpdateAircraftLocation $updateAircraftLocation;
     protected UpdateAircraftLastFlight $updateAircraftLastFlight;
+    protected UpdateAircraftMaintenanceTimes $updateAircraftMaintenanceTimes;
     /**
      * Create the event listener.
      *
@@ -31,7 +33,8 @@ class UpdateAircraft
         UpdateAircraftFuel $updateAircraftFuel,
         UpdateAircraftHours $updateAircraftHours,
         UpdateAircraftLocation $updateAircraftLocation,
-        UpdateAircraftLastFlight $updateAircraftLastFlight
+        UpdateAircraftLastFlight $updateAircraftLastFlight,
+        UpdateAircraftMaintenanceTimes $updateAircraftMaintenanceTimes
     )
     {
         $this->updateAircraftState = $updateAircraftState;
@@ -39,6 +42,7 @@ class UpdateAircraft
         $this->updateAircraftHours = $updateAircraftHours;
         $this->updateAircraftLocation = $updateAircraftLocation;
         $this->updateAircraftLastFlight = $updateAircraftLastFlight;
+        $this->updateAircraftMaintenanceTimes = $updateAircraftMaintenanceTimes;
     }
 
     /**
@@ -59,5 +63,6 @@ class UpdateAircraft
         $this->updateAircraftHours->execute($event->pirep->aircraft_id, $event->pirep->flight_time);
         $this->updateAircraftLocation->execute($event->pirep->aircraft_id, $event->pirep->destination_airport_id, $event->pirep->current_lat, $event->pirep->current_lon);
         $this->updateAircraftLastFlight->execute($event->pirep->aircraft_id, $event->pirep->submitted_at);
+        $this->updateAircraftMaintenanceTimes->execute($event->pirep->aircraft_id, $event->pirep->flight_time);
     }
 }

@@ -83,4 +83,9 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Airport::class, 'current_airport_id', 'identifier');
     }
+
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class);
+    }
 }

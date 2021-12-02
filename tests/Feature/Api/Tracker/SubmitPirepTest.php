@@ -4,6 +4,7 @@ namespace Tests\Feature\Api\Tracker;
 
 use App\Events\PirepFiled;
 use App\Models\Aircraft;
+use App\Models\AircraftEngine;
 use App\Models\AirlineFees;
 use App\Models\Airport;
 use App\Models\Booking;
@@ -43,6 +44,7 @@ class SubmitPirepTest extends TestCase
     protected Model $fleet;
     protected Model $aircraft;
     protected Model $booking;
+    protected Model $aircraftEngine;
 
     public function setUp(): void
     {
@@ -64,6 +66,11 @@ class SubmitPirepTest extends TestCase
             'user_id' => $this->user->id,
             'flight_time_mins' => 0
         ]);
+
+        $this->aircraftEngine = AircraftEngine::factory()->create([
+            'aircraft_id' => $this->aircraft->id
+        ]);
+
         DB::table('cargo_types')->insert([
             ['type' => 1, 'text' => 'Solar Panels'],
             ['type' => 1, 'text' => 'Building materials'],
@@ -1061,5 +1068,34 @@ class SubmitPirepTest extends TestCase
         $response = $this->postJson('/api/pirep/submit', $data);
 
         $response->assertStatus(400);
+    }
+
+    public function test_aircraft_maintenance_times_are_updated()
+    {
+        Sanctum::actingAs(
+            $this->user,
+            ['*']
+        );
+
+        $startTime = "05/10/2021 01:00:00";
+        $endTime = "05/10/2021 01:45:00";
+
+        $data = [
+            'pirep_id' => $this->pirep->id,
+            'fuel_used' => 25,
+            'distance' => 76,
+            'landing_rate' => -149.12,
+            'block_off_time'=> $startTime,
+            'block_on_time' => $endTime
+        ];
+
+        $previous = $this->aircraft->flight_time_mins;
+        $this->postJson('/api/pirep/submit', $data);
+
+        $this->aircraftEngine->refresh();
+        $this->aircraft->refresh();
+
+        $this->assertEquals($previous+45, $this->aircraft->mins_since_100hr);
+        $this->assertEquals($previous+45, $this->aircraftEngine->mins_since_tbo);
     }
 }

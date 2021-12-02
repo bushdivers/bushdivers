@@ -28,4 +28,9 @@ class Aircraft extends Model
     {
         return $this->hasMany(Pirep::class, 'aircraft_id', 'id')->orderBy('submitted_at', 'desc');
     }
+
+    public function engines()
+    {
+        return $this->hasMany(AircraftEngine::class);
+    }
 }
