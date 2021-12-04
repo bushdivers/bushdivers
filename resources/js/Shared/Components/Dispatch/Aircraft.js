@@ -34,7 +34,7 @@ const Aircraft = (props) => {
                   <td>{ac.registration} {ac.is_rental ? <span className="bg-orange-500 text-white rounded px-2">Rental</span> : <></>}</td>
                   <td><Link href={`/airports/${ac.hub_id}`}>{ac.hub_id}</Link></td>
                   <td>{ac.fleet.manufacturer} {ac.fleet.name} ({ac.fleet.type})</td>
-                  <td>{ac.fuel_onboard}</td>
+                  <td>{ac.fuel_onboard.toLocaleString(navigator.language)}</td>
                 </tr>
               ))}
               </tbody>

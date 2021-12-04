@@ -24,7 +24,7 @@ const FleetCardContent = ({ fleet }) => {
         <div className="flex flex-col">
           <div className="md:ml-3">
             <div className="text-2xl">{fleet.type} - {fleet.manufacturer} {fleet.name}</div>
-            <p>{fleet.aircraft.length} aircraft in fleet</p>
+            <p>{fleet.aircraft.length.toLocaleString(navigator.language)} aircraft in fleet</p>
           </div>
           <img className="rounded w-full md:w-auto" src="https://via.placeholder.com/300x150" />
         </div>
@@ -36,33 +36,33 @@ const FleetCardContent = ({ fleet }) => {
             </div>
             <div className="md:mr-8">
               <span className="text-md font-bold text-gray-600">Fuel Type: </span><br/>
-              <span>{fleet.fuel_type === 1 ? <span>100ll</span> : <span>Jet Fuel</span>}</span>
+              <span>{fleet.fuel_type === 1 ? <span>Avgas</span> : <span>Jet Fuel</span>}</span>
             </div>
             <div className="mr-8">
               <span className="text-md font-bold text-gray-600">Fuel Capacity: </span><br/>
-              <span>{fleet.fuel_capacity} gal</span>
+              <span>{fleet.fuel_capacity.toLocaleString(navigator.language)} gal</span>
             </div>
           </div>
           <div className="flex flex-col md:flex-row mt-4">
             <div className="mr-8">
               <span className="text-md font-bold text-gray-600">Service Ceiling: </span><br/>
-              <span>{fleet.service_ceiling} ft</span>
+              <span>{fleet.service_ceiling.toLocaleString(navigator.language)} ft</span>
             </div>
             <div className="mr-8">
               <span className="text-md font-bold text-gray-600">Max Range: </span><br/>
-              <span>{fleet.range} nm</span>
+              <span>{fleet.range.toLocaleString(navigator.language)} nm</span>
             </div>
             <div className="mr-8">
               <span className="text-md font-bold text-gray-600">Max Cruise Speed: </span><br/>
-              <span>{fleet.cruise_speed} kts</span>
+              <span>{fleet.cruise_speed.toLocaleString(navigator.language)} kts</span>
             </div>
             <div className="mr-8">
               <span className="text-md font-bold text-gray-600">PAX Capacity: </span><br/>
-              <span>{fleet.pax_capacity}</span>
+              <span>{fleet.pax_capacity.toLocaleString(navigator.language)}</span>
             </div>
             <div className="mr-8">
               <span className="text-md font-bold text-gray-600">Cargo Capacity: </span><br/>
-              <span>{fleet.cargo_capacity} lbs</span>
+              <span>{fleet.cargo_capacity.toLocaleString(navigator.language)} lbs</span>
             </div>
           </div>
         </div>
@@ -86,7 +86,7 @@ const FleetCardContent = ({ fleet }) => {
                 <td><Link href={`/aircraft/${aircraft.id}`}>{aircraft.registration}</Link></td>
                 <td><Link href={`/airports/${aircraft.hub_id}`}>{aircraft.hub_id}</Link></td>
                 <td><Link href={`/airports/${aircraft.current_airport_id}`}>{aircraft.current_airport_id}</Link></td>
-                <td>{aircraft.flight_time_mins}</td>
+                <td>{aircraft.flight_time_mins.toLocaleString(navigator.language)}</td>
                 <td>{renderAircraftStatus(aircraft.state)}</td>
               </tr>
             ))}

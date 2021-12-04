@@ -49,7 +49,7 @@ const Cargo = (props) => {
                     <td>{detail.id}</td>
                     <td>{detail.current_airport_id}</td>
                     <td>{detail.contract.arr_airport_id}</td>
-                    <td>{detail.contract.distance} nm</td>
+                    <td>{detail.contract.distance.toLocaleString(navigator.language)} nm</td>
                     <td>
                       <div className="flex items-center">
                         <div className="w-1/2">
@@ -63,8 +63,8 @@ const Cargo = (props) => {
                     <td>{detail.contract_type_id === 1 ? 'Cargo' : 'Passenger'}</td>
                     <td>
                       {detail.contract_type_id === 1
-                        ? <div><span>{detail.cargo_qty} lbs</span> <span className="text-xs">{detail.cargo}</span></div>
-                        : <div><span>{detail.cargo_qty}</span> <span className="text-xs">{detail.cargo}</span></div>
+                        ? <div><span>{detail.cargo_qty.toLocaleString(navigator.language)} lbs</span> <span className="text-xs">{detail.cargo}</span></div>
+                        : <div><span>{detail.cargo_qty.toLocaleString(navigator.language)}</span> <span className="text-xs">{detail.cargo}</span></div>
                       }
                     </td>
                   </tr>

@@ -21,13 +21,13 @@ const PirepCargo = (props) => {
             <td>{detail.id}</td>
             <td>{detail.contract.dep_airport_id}</td>
             <td>{detail.contract.arr_airport_id}</td>
-            <td>{detail.contract.distance}</td>
+            <td>{detail.contract.distance.toLocaleString(navigator.language)}</td>
             <td>{detail.contract.heading}</td>
             <td>{detail.contract_type_id === 1 ? 'Cargo' : 'Passenger'}</td>
             <td>
               {detail.contract_type_id === 1
-                ? <div><span>{detail.cargo_qty} lbs</span> <span className="text-xs">{detail.cargo}</span></div>
-                : <div><span>{detail.cargo_qty}</span> <span className="text-xs">{detail.cargo}</span></div>
+                ? <div><span>{detail.cargo_qty.toLocaleString(navigator.language)} lbs</span> <span className="text-xs">{detail.cargo}</span></div>
+                : <div><span>{detail.cargo_qty.toLocaleString(navigator.language)}</span> <span className="text-xs">{detail.cargo}</span></div>
               }
             </td>
           </tr>
