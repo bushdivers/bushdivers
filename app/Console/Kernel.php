@@ -2,10 +2,12 @@
 
 namespace App\Console;
 
-use App\Services\AircraftService;
-use App\Services\ContractService;
-use App\Services\FinancialsService;
-use App\Services\PirepService;
+use App\Services\Contracts\FindAirportsInNeedOfContracts;
+use App\Services\Contracts\FindHubsInNeedOfContracts;
+use App\Services\Contracts\RemoveStaleContracts;
+use App\Services\Finance\CalcMonthlyFees;
+use App\Services\Pireps\FindInactivePireps;
+use App\Services\Pireps\RemoveMultiplePireps;
 use App\Services\Rentals\CheckRentalDailyFee;
 use App\Services\Rentals\EndRental;
 use Illuminate\Console\Scheduling\Schedule;
@@ -17,11 +19,33 @@ class Kernel extends ConsoleKernel
 {
 
     protected CheckRentalDailyFee $checkRentalDailyFee;
+    protected FindInactivePireps $findInactivePireps;
+    protected RemoveMultiplePireps $removeMultiplePireps;
+    protected FindAirportsInNeedOfContracts $findAirportsInNeedOfContracts;
+    protected FindHubsInNeedOfContracts $findHubsInNeedOfContracts;
+    protected CalcMonthlyFees $calcMonthlyFees;
+    protected RemoveStaleContracts $removeStaleContracts;
 
-    public function __construct(Application $app, Dispatcher $events, CheckRentalDailyFee $checkRentalDailyFee)
+    public function __construct(
+        Application $app,
+        Dispatcher $events,
+        CheckRentalDailyFee $checkRentalDailyFee,
+        FindInactivePireps $findInactivePireps,
+        RemoveMultiplePireps $removeMultiplePireps,
+        FindAirportsInNeedOfContracts $findAirportsInNeedOfContracts,
+        FindHubsInNeedOfContracts $findHubsInNeedOfContracts,
+        CalcMonthlyFees $calcMonthlyFees,
+        RemoveStaleContracts $removeStaleContracts
+    )
     {
         parent::__construct($app, $events);
         $this->checkRentalDailyFee = $checkRentalDailyFee;
+        $this->findInactivePireps = $findInactivePireps;
+        $this->removeMultiplePireps = $removeMultiplePireps;
+        $this->findAirportsInNeedOfContracts = $findAirportsInNeedOfContracts;
+        $this->findHubsInNeedOfContracts = $findHubsInNeedOfContracts;
+        $this->calcMonthlyFees = $calcMonthlyFees;
+        $this->removeStaleContracts = $removeStaleContracts;
     }
 
     /**
@@ -44,21 +68,18 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')->hourly();
         // removed inactive pireps to clear up booked planes
         $schedule->call(function () {
-            $pirepService = new PirepService();
-            $inactivePireps = $pirepService->findInactivePireps();
-            $pirepService->removeMultiplePireps($inactivePireps);
+            $inactivePireps = $this->findInactivePireps->execute();
+            $this->removeMultiplePireps->execute($inactivePireps);
         })->hourly();
 
         // contract generation
         $schedule->call(function () {
-            $contractService = new ContractService();
-            $contractService->findAirportsInNeedOfContracts();
+            $this->findAirportsInNeedOfContracts->execute();
         })->daily();
 
         // contract generation - hubs
         $schedule->call(function () {
-            $contractService = new ContractService();
-            $contractService->findHubsInNeedOfContracts();
+            $this->findHubsInNeedOfContracts->execute();
         })->daily();
 
         $schedule->call(function () {
@@ -67,14 +88,12 @@ class Kernel extends ConsoleKernel
 
         // financial calculations
         $schedule->call(function () {
-            $financeService = new FinancialsService();
-            $financeService->calcMonthlyFees();
+            $this->calcMonthlyFees->execute();
         })->monthly();
 
         // remove stale contracts
         $schedule->call(function () {
-            $contractService = new ContractService();
-            $contractService->removeStaleContracts();
+            $this->removeStaleContracts->execute();
         })->weekly();
     }
 
