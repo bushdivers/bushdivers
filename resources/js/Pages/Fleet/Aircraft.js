@@ -4,13 +4,37 @@ import Layout from '../../Shared/Layout'
 import StatCard from '../../Shared/Elements/StatCard'
 import { convertMinuteDecimalToHoursAndMinutes } from '../../Helpers/date.helpers'
 import AircraftMap from '../../Shared/Components/Fleet/AircraftMap'
+import { usePage } from '@inertiajs/inertia-react'
+import { Inertia } from '../../../../public/js/app'
 
 const Aircraft = ({ aircraft, maintenanceStatus }) => {
-  console.log(aircraft)
+  const { auth } = usePage().props
+
   const calculateDistanceFlown = (pireps) => {
     return pireps.reduce((a, pirep) => {
       return a + pirep.distance
     }, 0)
+  }
+
+  const shouldShowMaintenance = () => {
+    return auth.user.user_roles.includes('fleet_manager')
+  }
+
+  const handleTBO = (aircraft, engine) => {
+    const data = {
+      aircraft,
+      engine,
+      type: 2
+    }
+    Inertia.post('/aircraft/maintenance', data)
+  }
+
+  const handle100hr = (aircraft) => {
+    const data = {
+      aircraft,
+      type: 1
+    }
+    Inertia.post('/aircraft/maintenance', data)
   }
 
   return (
@@ -47,12 +71,24 @@ const Aircraft = ({ aircraft, maintenanceStatus }) => {
             </div>
           </div>
           <div className="bg-white p-4 rounded shadow overflow-x-auto my-2">
+            {shouldShowMaintenance()
+              ? (
+                <div className="flex justify-between">
+                  <div className="text-lg mb-2">Maintenance</div>
+                  <div>
+                    <button className="btn btn-secondary" onClick={() => handle100hr(aircraft.id)}>Perform 100hr</button>
+                  </div>
+                </div>
+                )
+              : <div className="text-lg mb-2">Maintenance</div>
+            }
             <div className="text-lg mb-2">Maintenance</div>
             <table className="table table-auto table-condensed">
               <thead>
               <tr>
                 <th>Engine #</th>
                 <th>Time since TBO</th>
+                {shouldShowMaintenance() && <th>Action</th>}
               </tr>
               </thead>
               <tbody>
@@ -60,6 +96,7 @@ const Aircraft = ({ aircraft, maintenanceStatus }) => {
                 <tr key={engine.id}>
                   <td>{engine.engine_no}</td>
                   <td>{(engine.mins_since_tbo / 60).toFixed(2)}</td>
+                  {shouldShowMaintenance() && <td><button className="btn btn-secondary" onClick={() => handleTBO(aircraft.id, engine.id)}>Perform TBO</button></td>}
                 </tr>
               ))}
               </tbody>

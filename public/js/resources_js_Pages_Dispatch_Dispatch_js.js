@@ -2866,7 +2866,7 @@ var Dispatch = function Dispatch(_ref) {
     }));
     setFuel(ac.fuel_onboard);
 
-    if (ac.maintenance_status) {
+    if (ac.maintenance_status && !ac.is_rental) {
       window.alert('This aircraft is in need of maintenance, and therefore cannot be used for commercial purposes');
       setDeadHead(true);
     } else {
@@ -3250,7 +3250,7 @@ var Aircraft = function Aircraft(props) {
                 children: [ac.registration, ac.is_rental ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("span", {
                   className: "bg-orange-500 text-white rounded ml-2 px-2",
                   children: "Rental"
-                }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.Fragment, {}), ac.maintenance_status && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("span", {
+                }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.Fragment, {}), ac.maintenance_status && ac.is_rental ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.Fragment, {}) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("span", {
                   className: "ml-2 text-orange-500",
                   children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("i", {
                     className: "material-icons md-18",

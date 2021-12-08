@@ -37,7 +37,7 @@ const Aircraft = (props) => {
                       ? <span className="bg-orange-500 text-white rounded ml-2 px-2">Rental</span>
                       : <></>
                     }
-                    {ac.maintenance_status && <span className="ml-2 text-orange-500"><i className="material-icons md-18">engineering</i></span>}
+                    {ac.maintenance_status && ac.is_rental ? <></> : <span className="ml-2 text-orange-500"><i className="material-icons md-18">engineering</i></span>}
                   </td>
                   <td><Link href={`/airports/${ac.hub_id}`}>{ac.hub_id}</Link></td>
                   <td>{ac.fleet.manufacturer} {ac.fleet.name} ({ac.fleet.type})</td>

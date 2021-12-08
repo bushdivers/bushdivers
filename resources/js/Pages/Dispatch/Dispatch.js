@@ -37,7 +37,7 @@ const Dispatch = ({ cargo, aircraft }) => {
     setSubmitError(null)
     setSelectedAircraft(aircraft.find(a => a.id === ac.id))
     setFuel(ac.fuel_onboard)
-    if (ac.maintenance_status) {
+    if (ac.maintenance_status && !ac.is_rental) {
       window.alert('This aircraft is in need of maintenance, and therefore cannot be used for commercial purposes')
       setDeadHead(true)
     } else {

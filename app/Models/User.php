@@ -44,7 +44,8 @@ class User extends Authenticatable
 
     protected $appends = [
         'private_name',
-        'pilot_id'
+        'pilot_id',
+        'user_roles'
     ];
 
     public function getPrivateNameAttribute()
@@ -67,6 +68,16 @@ class User extends Authenticatable
     {
         $bookings = Contract::where('user_id', $this->id)->where('is_completed', false)->get();
         return $bookings->count();
+    }
+
+    public function getUserRolesAttribute()
+    {
+        $r = [];
+        foreach ($this->roles as $role) {
+            $r[] = $role->role;
+        }
+
+        return $r;
     }
 
     public function rank()

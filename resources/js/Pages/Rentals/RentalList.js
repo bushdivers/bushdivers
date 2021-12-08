@@ -50,7 +50,7 @@ const RentalList = ({ aircraft, searchedIcao, myRentals }) => {
             <tbody>
             {myRentals && myRentals.map((ac) => (
               <tr key={ac.id}>
-                <td><Link href={`aircraft/${ac.id}`}>{ac.registration} {ac.maintenance_status && <span className="ml-2 text-orange-500"><i className="material-icons md-18">engineering</i></span>}</Link></td>
+                <td><Link href={`aircraft/${ac.id}`}>{ac.registration}</Link></td>
                 <td>{ac.fleet.manufacturer} {ac.fleet.name} ({ac.fleet.type})</td>
                 <td><Link href={`airports/${ac.current_airport_id}`}>{ac.current_airport_id}</Link></td>
                 <td><Link href={`airports/${ac.hub_id}`}>{ac.hub_id}</Link></td>
@@ -83,7 +83,7 @@ const RentalList = ({ aircraft, searchedIcao, myRentals }) => {
             <tbody>
               {aircraft && aircraft.map((ac) => (
                 <tr key={ac.id}>
-                  <td><Link href={`aircraft/${ac.id}`}>{ac.registration} {ac.maintenance_status && <span className="ml-2 text-orange-500"><i className="material-icons md-18">engineering</i></span>}</Link></td>
+                  <td><Link href={`aircraft/${ac.id}`}>{ac.registration}</Link></td>
                   <td>{ac.fleet.manufacturer} {ac.fleet.name} ({ac.fleet.type})</td>
                   <td><Link href={`airports/${ac.current_airport_id}`}>{ac.current_airport_id}</Link></td>
                   <td><Link href={`airports/${ac.hub_id}`}>{ac.hub_id}</Link></td>
