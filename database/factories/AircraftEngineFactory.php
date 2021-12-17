@@ -22,7 +22,7 @@ class AircraftEngineFactory extends Factory
     public function definition()
     {
         return [
-
+            'engine_no' => 1
         ];
     }
 }

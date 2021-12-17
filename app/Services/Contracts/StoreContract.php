@@ -9,7 +9,7 @@ use Carbon\Carbon;
 
 class StoreContract
 {
-    public function execute($start, $dest, $distance, $heading, $cargo, $value)
+    public function execute($start, $dest, $distance, $heading, $cargo, $value, $custom = false, $userId = null)
     {
         $contract = new Contract();
         $contract->dep_airport_id = $start;
@@ -18,6 +18,12 @@ class StoreContract
         $contract->heading = $heading;
         $contract->contract_value = $value;
         $contract->expires_at = Carbon::now()->addDays(rand(1,8));
+
+        if ($custom) {
+            $contract->is_available = 0;
+            $contract->user_id = $userId;
+        }
+
         $contract->save();
 
         $contractCargo = new ContractCargo();
