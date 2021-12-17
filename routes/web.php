@@ -112,6 +112,8 @@ Route::middleware('auth')->group(function () {
         ->name('contracts.search');
     Route::post('/contracts/bid', \App\Http\Controllers\Contracts\BidForContractController::class)
         ->name('contracts.bid');
+    Route::post('/contracts/custom', \App\Http\Controllers\Contracts\CreateCustomRouteController::class)
+        ->name('contracts.custom');
     Route::post('/contracts/cancel', \App\Http\Controllers\Contracts\CancelContractController::class)
         ->name('contracts.cancel');
 

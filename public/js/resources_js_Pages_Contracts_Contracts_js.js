@@ -2751,15 +2751,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var _Shared_Navigation_PageTitle__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../Shared/Navigation/PageTitle */ "./resources/js/Shared/Navigation/PageTitle.js");
 /* harmony import */ var _Shared_Layout__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../Shared/Layout */ "./resources/js/Shared/Layout.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _Shared_Elements_NoContent__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../Shared/Elements/NoContent */ "./resources/js/Shared/Elements/NoContent.js");
-/* harmony import */ var _Shared_Elements_Tooltip__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../Shared/Elements/Tooltip */ "./resources/js/Shared/Elements/Tooltip.js");
-/* harmony import */ var _inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @inertiajs/inertia-react */ "./node_modules/@inertiajs/inertia-react/dist/index.js");
-/* harmony import */ var _Helpers_date_helpers__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../Helpers/date.helpers */ "./resources/js/Helpers/date.helpers.js");
-/* harmony import */ var _Shared_Components_Contracts_ContractMap__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../Shared/Components/Contracts/ContractMap */ "./resources/js/Shared/Components/Contracts/ContractMap.js");
-/* harmony import */ var _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @inertiajs/inertia */ "./node_modules/@inertiajs/inertia/dist/index.js");
-/* harmony import */ var _Shared_Components_Contracts_CargoDetails__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../Shared/Components/Contracts/CargoDetails */ "./resources/js/Shared/Components/Contracts/CargoDetails.js");
+/* harmony import */ var _Shared_Elements_NoContent__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../Shared/Elements/NoContent */ "./resources/js/Shared/Elements/NoContent.js");
+/* harmony import */ var _Shared_Elements_Tooltip__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../Shared/Elements/Tooltip */ "./resources/js/Shared/Elements/Tooltip.js");
+/* harmony import */ var _inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @inertiajs/inertia-react */ "./node_modules/@inertiajs/inertia-react/dist/index.js");
+/* harmony import */ var _Helpers_date_helpers__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../Helpers/date.helpers */ "./resources/js/Helpers/date.helpers.js");
+/* harmony import */ var _Shared_Components_Contracts_ContractMap__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../Shared/Components/Contracts/ContractMap */ "./resources/js/Shared/Components/Contracts/ContractMap.js");
+/* harmony import */ var _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @inertiajs/inertia */ "./node_modules/@inertiajs/inertia/dist/index.js");
+/* harmony import */ var _Shared_Components_Contracts_CargoDetails__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../Shared/Components/Contracts/CargoDetails */ "./resources/js/Shared/Components/Contracts/CargoDetails.js");
+/* harmony import */ var _Shared_Components_Contracts_CustomContract__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../Shared/Components/Contracts/CustomContract */ "./resources/js/Shared/Components/Contracts/CustomContract.js");
 /* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 
 
@@ -2824,7 +2823,7 @@ var AirportToolTip = function AirportToolTip(props) {
 var Contracts = function Contracts(_ref) {
   var contracts = _ref.contracts,
       airport = _ref.airport;
-  var auth = (0,_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_7__.usePage)().props.auth;
+  var auth = (0,_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_6__.usePage)().props.auth;
 
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(''),
       _useState2 = _slicedToArray(_useState, 2),
@@ -2863,6 +2862,11 @@ var Contracts = function Contracts(_ref) {
       showDetail = _useState12[0],
       setShowDetail = _useState12[1];
 
+  var _useState13 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
+      _useState14 = _slicedToArray(_useState13, 2),
+      showCustom = _useState14[0],
+      setShowCustom = _useState14[1];
+
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
     if (contracts && airport) {
       setTitle("Contracts - ".concat(airport.name, " (").concat(airport.identifier, ")"));
@@ -2890,28 +2894,14 @@ var Contracts = function Contracts(_ref) {
               // setContracts([])
 
               setSelectedContract('');
+              setShowCustom(false);
 
               if (values.icao.length > 0) {
                 // Call api to find contracts
-                _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_10__.Inertia.post('/contracts', values); // const response = await axios.get(`/api/contracts/search/${values.icao}/${values.distance}/${values.cargo}/${values.pax}`)
-                // if (!response.data.airport) {
-                //   setError('No airport found')
-                //   setTitle('Contracts')
-                //   return
-                // }
-                // if (response.data.airport) {
-                //   setAirport(response.data.airport)
-                //   setTitle(`Contracts - ${response.data.airport.name} (${response.data.airport.identifier})`)
-                // }
-                // if (response.data.contracts.length > 0) {
-                //   setContracts(response.data.contracts)
-                //   setError(null)
-                // } else {
-                //   setError('No contracts found')
-                // }
+                _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_9__.Inertia.post('/contracts', values);
               }
 
-            case 3:
+            case 4:
             case "end":
               return _context.stop();
           }
@@ -2936,7 +2926,7 @@ var Contracts = function Contracts(_ref) {
       cargo: values.cargo,
       pax: values.pax
     };
-    _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_10__.Inertia.post('/contracts/bid', data);
+    _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_9__.Inertia.post('/contracts/bid', data);
   };
 
   var toggleDetail = function toggleDetail() {
@@ -2950,95 +2940,114 @@ var Contracts = function Contracts(_ref) {
       className: "flex flex-col lg:flex-row justify-between mt-4",
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
         className: "lg:w-2/3 lg:mr-2",
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
           className: "rounded shadow bg-white p-4",
-          children: [error && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
-            className: "text-sm text-red-500 mt-1",
-            children: error
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
-            className: "inline-block mx-2",
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("label", {
-              htmlFor: "icao",
-              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("span", {
-                className: "text-gray-700",
-                children: "Airport (ICAO)"
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
+            className: "flex justify-between items-end",
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
+              children: [error && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
+                className: "text-sm text-red-500 mt-1",
+                children: error
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
+                className: "inline-block mx-2",
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("label", {
+                  htmlFor: "icao",
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("span", {
+                    className: "text-gray-700",
+                    children: "Airport (ICAO)"
+                  })
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("input", {
+                  id: "icao",
+                  type: "text",
+                  className: "form-input form",
+                  value: values.icao,
+                  onChange: handleChange
+                })]
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
+                className: "inline-block mx-2",
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("label", {
+                  htmlFor: "distance",
+                  className: "block",
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("span", {
+                    className: "text-gray-700",
+                    children: "Distance range"
+                  })
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("select", {
+                  id: "distance",
+                  value: values.distance,
+                  onChange: handleChange,
+                  className: "form-select form",
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("option", {
+                    children: "Up to 50nm"
+                  }, "Up to 50nm"), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("option", {
+                    children: "50nm-150nm"
+                  }, "50nm-150nm"), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("option", {
+                    children: "150nm+"
+                  }, "150nm+")]
+                })]
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
+                className: "inline-block mx-2",
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("label", {
+                  htmlFor: "cargo",
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("span", {
+                    className: "text-gray-700",
+                    children: "Max cargo (lbs)"
+                  })
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("input", {
+                  id: "cargo",
+                  type: "text",
+                  className: "form-input form",
+                  value: values.cargo,
+                  onChange: handleChange
+                })]
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
+                className: "inline-block mx-2",
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("label", {
+                  htmlFor: "pax",
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("span", {
+                    className: "text-gray-700",
+                    children: "Max passengers (qty)"
+                  })
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("input", {
+                  id: "pax",
+                  type: "text",
+                  className: "form-input form",
+                  value: values.pax,
+                  onChange: handleChange
+                })]
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
+                className: "inline-block mx-2",
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("button", {
+                  onClick: function onClick() {
+                    return handleSearch();
+                  },
+                  className: "btn btn-secondary",
+                  children: "Find"
+                })
+              })]
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
+              className: "inline-block mx-2",
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("button", {
+                onClick: function onClick() {
+                  return setShowCustom(true);
+                },
+                className: "btn btn-secondary",
+                children: "Create Custom"
               })
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("input", {
-              id: "icao",
-              type: "text",
-              className: "form-input form",
-              value: values.icao,
-              onChange: handleChange
             })]
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
-            className: "inline-block mx-2",
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("label", {
-              htmlFor: "distance",
-              className: "block",
-              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("span", {
-                className: "text-gray-700",
-                children: "Distance range"
-              })
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("select", {
-              id: "distance",
-              value: values.distance,
-              onChange: handleChange,
-              className: "form-select form",
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("option", {
-                children: "Up to 50nm"
-              }, "Up to 50nm"), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("option", {
-                children: "50nm-150nm"
-              }, "50nm-150nm"), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("option", {
-                children: "150nm+"
-              }, "150nm+")]
-            })]
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
-            className: "inline-block mx-2",
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("label", {
-              htmlFor: "cargo",
-              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("span", {
-                className: "text-gray-700",
-                children: "Max cargo (lbs)"
-              })
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("input", {
-              id: "cargo",
-              type: "text",
-              className: "form-input form",
-              value: values.cargo,
-              onChange: handleChange
-            })]
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
-            className: "inline-block mx-2",
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("label", {
-              htmlFor: "pax",
-              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("span", {
-                className: "text-gray-700",
-                children: "Max passengers (qty)"
-              })
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("input", {
-              id: "pax",
-              type: "text",
-              className: "form-input form",
-              value: values.pax,
-              onChange: handleChange
-            })]
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
-            className: "inline-block mx-2",
-            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("button", {
-              onClick: function onClick() {
-                return handleSearch();
-              },
-              className: "btn btn-secondary",
-              children: "Find"
-            })
-          })]
+          })
+        }), showCustom && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_Shared_Components_Contracts_CustomContract__WEBPACK_IMPORTED_MODULE_11__.default, {
+          departureIcao: values.icao,
+          hideSection: function hideSection() {
+            return setShowCustom(false);
+          }
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
           className: "rounded shadow bg-white overflow-x-auto mt-4",
-          children: [!airport && !contracts && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_Shared_Elements_NoContent__WEBPACK_IMPORTED_MODULE_5__.default, {
+          children: [!airport && !contracts && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_Shared_Elements_NoContent__WEBPACK_IMPORTED_MODULE_4__.default, {
             content: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(EmptyData, {
               airport: ""
             })
-          }), airport && contracts && contracts.length === 0 && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_Shared_Elements_NoContent__WEBPACK_IMPORTED_MODULE_5__.default, {
+          }), airport && contracts && contracts.length === 0 && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_Shared_Elements_NoContent__WEBPACK_IMPORTED_MODULE_4__.default, {
             content: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(EmptyData, {
               airport: airport
             })
@@ -3084,12 +3093,12 @@ var Contracts = function Contracts(_ref) {
                       },
                       className: contract.id === selectedContract.id ? 'bg-orange-200 hover:bg-orange-100' : '',
                       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("td", {
-                        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)(_Shared_Elements_Tooltip__WEBPACK_IMPORTED_MODULE_6__.default, {
+                        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)(_Shared_Elements_Tooltip__WEBPACK_IMPORTED_MODULE_5__.default, {
                           content: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(AirportToolTip, {
                             airport: contract.dep_airport
                           }),
                           direction: "top",
-                          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_7__.Link, {
+                          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_6__.Link, {
                             href: "/airports/".concat(contract.dep_airport_id),
                             children: contract.dep_airport_id
                           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("br", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("span", {
@@ -3098,12 +3107,12 @@ var Contracts = function Contracts(_ref) {
                           })]
                         })
                       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("td", {
-                        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)(_Shared_Elements_Tooltip__WEBPACK_IMPORTED_MODULE_6__.default, {
+                        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)(_Shared_Elements_Tooltip__WEBPACK_IMPORTED_MODULE_5__.default, {
                           content: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(AirportToolTip, {
                             airport: contract.arr_airport
                           }),
                           direction: "top",
-                          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_7__.Link, {
+                          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_6__.Link, {
                             href: "/airports/".concat(contract.arr_airport_id),
                             children: contract.arr_airport_id
                           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("br", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("span", {
@@ -3149,10 +3158,10 @@ var Contracts = function Contracts(_ref) {
                       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("td", {
                         children: ["$", contract.contract_value.toLocaleString()]
                       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("td", {
-                        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_Shared_Elements_Tooltip__WEBPACK_IMPORTED_MODULE_6__.default, {
-                          content: (0,_Helpers_date_helpers__WEBPACK_IMPORTED_MODULE_8__.default)(contract.expires_at).format('HH:mm a'),
+                        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_Shared_Elements_Tooltip__WEBPACK_IMPORTED_MODULE_5__.default, {
+                          content: (0,_Helpers_date_helpers__WEBPACK_IMPORTED_MODULE_7__.default)(contract.expires_at).format('HH:mm a'),
                           direction: "top",
-                          children: (0,_Helpers_date_helpers__WEBPACK_IMPORTED_MODULE_8__.default)(contract.expires_at).format('DD/MM/YYYY')
+                          children: (0,_Helpers_date_helpers__WEBPACK_IMPORTED_MODULE_7__.default)(contract.expires_at).format('DD/MM/YYYY')
                         })
                       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("td", {
                         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("button", {
@@ -3163,7 +3172,7 @@ var Contracts = function Contracts(_ref) {
                           children: "Bid"
                         })
                       })]
-                    }, contract.id), showDetail && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_Shared_Components_Contracts_CargoDetails__WEBPACK_IMPORTED_MODULE_11__.default, {
+                    }, contract.id), showDetail && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_Shared_Components_Contracts_CargoDetails__WEBPACK_IMPORTED_MODULE_10__.default, {
                       contract: contract
                     })]
                   });
@@ -3177,7 +3186,7 @@ var Contracts = function Contracts(_ref) {
         className: "lg:w-1/3 lg:ml-2 mt-2 lg:mt-0",
         children: airport && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
           className: "rounded shadow bg-white p-4",
-          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_Shared_Components_Contracts_ContractMap__WEBPACK_IMPORTED_MODULE_9__.default, {
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_Shared_Components_Contracts_ContractMap__WEBPACK_IMPORTED_MODULE_8__.default, {
             departure: selectedAirport,
             destination: selectedContract.arr_airport,
             size: "large"
@@ -3419,6 +3428,164 @@ var ContractMap = function ContractMap(props) {
 };
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ContractMap);
+
+/***/ }),
+
+/***/ "./resources/js/Shared/Components/Contracts/CustomContract.js":
+/*!********************************************************************!*\
+  !*** ./resources/js/Shared/Components/Contracts/CustomContract.js ***!
+  \********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @inertiajs/inertia */ "./node_modules/@inertiajs/inertia/dist/index.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
+
+
+
+
+var CustomContract = function CustomContract(_ref) {
+  var departureIcao = _ref.departureIcao,
+      hideSection = _ref.hideSection;
+
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(null),
+      _useState2 = _slicedToArray(_useState, 2),
+      error = _useState2[0],
+      setError = _useState2[1];
+
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(departureIcao),
+      _useState4 = _slicedToArray(_useState3, 2),
+      dep = _useState4[0],
+      setDep = _useState4[1];
+
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(''),
+      _useState6 = _slicedToArray(_useState5, 2),
+      arr = _useState6[0],
+      setArr = _useState6[1];
+
+  var handleChangeDep = function handleChangeDep(e) {
+    setDep(e.target.value);
+  };
+
+  var handleChangeArr = function handleChangeArr(e) {
+    setArr(e.target.value);
+  };
+
+  var handleCreate = /*#__PURE__*/function () {
+    var _ref2 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              if (!(dep && arr)) {
+                _context.next = 6;
+                break;
+              }
+
+              _context.next = 3;
+              return _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_2__.Inertia.post('/contracts/custom', {
+                departure: dep,
+                arrival: arr
+              });
+
+            case 3:
+              hideSection();
+              _context.next = 7;
+              break;
+
+            case 6:
+              setError('Please enter a departure and arrival ICAO');
+
+            case 7:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee);
+    }));
+
+    return function handleCreate() {
+      return _ref2.apply(this, arguments);
+    };
+  }();
+
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+    className: "my-2 p-2 bg-white rounded shadow",
+    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+      children: [error && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+        className: "text-sm text-red-500 mt-1",
+        children: error
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+        className: "inline-block mx-2",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
+          htmlFor: "icao",
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("span", {
+            className: "text-gray-700",
+            children: "Departure Airport (ICAO)"
+          })
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
+          id: "icao",
+          type: "text",
+          className: "form-input form",
+          value: dep,
+          onChange: handleChangeDep
+        })]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+        className: "inline-block mx-2",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
+          htmlFor: "icao",
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("span", {
+            className: "text-gray-700",
+            children: "Arrival Airport (ICAO)"
+          })
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
+          id: "icao",
+          type: "text",
+          className: "form-input form",
+          value: arr,
+          onChange: handleChangeArr
+        })]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+        className: "inline-block mx-2",
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+          onClick: function onClick() {
+            return handleCreate();
+          },
+          className: "btn btn-secondary",
+          children: "Create"
+        })
+      })]
+    })
+  });
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (CustomContract);
 
 /***/ }),
 

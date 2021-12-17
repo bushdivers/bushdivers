@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import PageTitle from '../../Shared/Navigation/PageTitle'
 import Layout from '../../Shared/Layout'
-import axios from 'axios'
 import NoContent from '../../Shared/Elements/NoContent'
 import Tooltip from '../../Shared/Elements/Tooltip'
 import { Link, usePage } from '@inertiajs/inertia-react'
@@ -9,6 +8,7 @@ import dayjs from '../../Helpers/date.helpers'
 import ContractMap from '../../Shared/Components/Contracts/ContractMap'
 import { Inertia } from '@inertiajs/inertia'
 import CargoDetails from '../../Shared/Components/Contracts/CargoDetails'
+import CustomContract from '../../Shared/Components/Contracts/CustomContract'
 
 const EmptyData = (props) => {
   return (
@@ -43,6 +43,7 @@ const Contracts = ({ contracts, airport }) => {
   const [selectedContract, setSelectedContract] = useState({})
   const [error, setError] = useState(null)
   const [showDetail, setShowDetail] = useState(false)
+  const [showCustom, setShowCustom] = useState(false)
 
   useEffect(() => {
     if (contracts && airport) {
@@ -67,25 +68,10 @@ const Contracts = ({ contracts, airport }) => {
     // setSelectedAirport(null)
     // setContracts([])
     setSelectedContract('')
+    setShowCustom(false)
     if (values.icao.length > 0) {
       // Call api to find contracts
       Inertia.post('/contracts', values)
-      // const response = await axios.get(`/api/contracts/search/${values.icao}/${values.distance}/${values.cargo}/${values.pax}`)
-      // if (!response.data.airport) {
-      //   setError('No airport found')
-      //   setTitle('Contracts')
-      //   return
-      // }
-      // if (response.data.airport) {
-      //   setAirport(response.data.airport)
-      //   setTitle(`Contracts - ${response.data.airport.name} (${response.data.airport.identifier})`)
-      // }
-      // if (response.data.contracts.length > 0) {
-      //   setContracts(response.data.contracts)
-      //   setError(null)
-      // } else {
-      //   setError('No contracts found')
-      // }
     }
   }
 
@@ -114,31 +100,39 @@ const Contracts = ({ contracts, airport }) => {
       <div className="flex flex-col lg:flex-row justify-between mt-4">
         <div className="lg:w-2/3 lg:mr-2">
           <div className="rounded shadow bg-white p-4">
-            {error && <div className="text-sm text-red-500 mt-1">{error}</div>}
-              <div className="inline-block mx-2">
-                <label htmlFor="icao"><span className="text-gray-700">Airport (ICAO)</span></label>
-                <input id="icao" type="text" className="form-input form" value={values.icao} onChange={handleChange} />
+            <div className="flex justify-between items-end">
+              <div>
+                {error && <div className="text-sm text-red-500 mt-1">{error}</div>}
+                <div className="inline-block mx-2">
+                  <label htmlFor="icao"><span className="text-gray-700">Airport (ICAO)</span></label>
+                  <input id="icao" type="text" className="form-input form" value={values.icao} onChange={handleChange} />
+                </div>
+                <div className="inline-block mx-2">
+                  <label htmlFor="distance" className="block"><span className="text-gray-700">Distance range</span></label>
+                  <select id="distance" value={values.distance} onChange={handleChange} className="form-select form">
+                    <option key="Up to 50nm">Up to 50nm</option>
+                    <option key="50nm-150nm">50nm-150nm</option>
+                    <option key="150nm+">150nm+</option>
+                  </select>
+                </div>
+                <div className="inline-block mx-2">
+                  <label htmlFor="cargo"><span className="text-gray-700">Max cargo (lbs)</span></label>
+                  <input id="cargo" type="text" className="form-input form" value={values.cargo} onChange={handleChange} />
+                </div>
+                <div className="inline-block mx-2">
+                  <label htmlFor="pax"><span className="text-gray-700">Max passengers (qty)</span></label>
+                  <input id="pax" type="text" className="form-input form" value={values.pax} onChange={handleChange} />
+                </div>
+                <div className="inline-block mx-2">
+                  <button onClick={() => handleSearch()} className="btn btn-secondary">Find</button>
+                </div>
               </div>
-              <div className="inline-block mx-2">
-                <label htmlFor="distance" className="block"><span className="text-gray-700">Distance range</span></label>
-                <select id="distance" value={values.distance} onChange={handleChange} className="form-select form">
-                  <option key="Up to 50nm">Up to 50nm</option>
-                  <option key="50nm-150nm">50nm-150nm</option>
-                  <option key="150nm+">150nm+</option>
-                </select>
-              </div>
-              <div className="inline-block mx-2">
-                <label htmlFor="cargo"><span className="text-gray-700">Max cargo (lbs)</span></label>
-                <input id="cargo" type="text" className="form-input form" value={values.cargo} onChange={handleChange} />
-              </div>
-              <div className="inline-block mx-2">
-                <label htmlFor="pax"><span className="text-gray-700">Max passengers (qty)</span></label>
-                <input id="pax" type="text" className="form-input form" value={values.pax} onChange={handleChange} />
-              </div>
-              <div className="inline-block mx-2">
-                <button onClick={() => handleSearch()} className="btn btn-secondary">Find</button>
-              </div>
+            <div className="inline-block mx-2">
+              <button onClick={() => setShowCustom(true)} className="btn btn-secondary">Create Custom</button>
+            </div>
+            </div>
           </div>
+          {showCustom && <CustomContract departureIcao={values.icao} hideSection={() => setShowCustom(false)} />}
           <div className="rounded shadow bg-white overflow-x-auto mt-4">
             {!airport && !contracts && <NoContent content={<EmptyData airport="" />} />}
             {airport && contracts && contracts.length === 0 && <NoContent content={<EmptyData airport={airport} />} />}
