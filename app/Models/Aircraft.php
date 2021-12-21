@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -11,6 +12,10 @@ class Aircraft extends Model
 
     protected $appends = [
         'maintenance_status'
+    ];
+
+    protected $casts = [
+        'last_inspected_at' => 'datetime'
     ];
 
     public function fleet()
@@ -38,18 +43,30 @@ class Aircraft extends Model
         return $this->hasMany(AircraftEngine::class);
     }
 
+    public function maintenance()
+    {
+        return $this->hasMany(MaintenanceLog::class);
+    }
+
     public function getMaintenanceStatusAttribute()
     {
+        $oneYearAgo = Carbon::now()->subYear();
         $status = false;
-        // check 100 hr
-        if ($this->mins_since_100hr >= (100 * 60)) {
+        if ($this->last_inspected_at && $this->last_inspected_at->lessThan($oneYearAgo)) {
             $status = true;
         }
-        // check tbo
+        // check tbo and 100hr
         foreach ($this->engines as $engine) {
             if ($engine->mins_since_tbo >= $this->fleet->tbo_mins) {
                 $status = true;
             }
+            if ($engine->mins_since_100hr >= (100 * 60)) {
+                $status = true;
+            }
+        }
+
+        if ($this->is_rental) {
+            $status = false;
         }
 
         return $status;

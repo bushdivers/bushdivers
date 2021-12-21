@@ -5,6 +5,7 @@ namespace App\Services\Aircraft;
 use App\Models\Aircraft;
 use App\Models\AircraftEngine;
 use App\Models\Enums\MaintenanceTypes;
+use Carbon\Carbon;
 
 class ResetAircraftMaintenanceTimes
 {
@@ -12,14 +13,19 @@ class ResetAircraftMaintenanceTimes
     {
         switch ($type) {
             case MaintenanceTypes::Maintenance100hr:
-                $aircraft = Aircraft::find($aircraftId);
-                $aircraft->mins_since_100hr = 0;
-                $aircraft>save();
+                $engine = AircraftEngine::find($engineId);
+                $engine->mins_since_100hr = 0;
+                $engine->save();
                 break;
             case MaintenanceTypes::MaintenanceTBO:
                 $engine = AircraftEngine::find($engineId);
                 $engine->mins_since_tbo = 0;
                 $engine->save();
+                break;
+            case MaintenanceTypes::Annual:
+                $aircraft = Aircraft::find($aircraftId);
+                $aircraft->last_inspected_at = Carbon::now();
+                $aircraft->save();
                 break;
         }
     }

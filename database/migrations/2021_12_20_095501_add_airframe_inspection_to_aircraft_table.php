@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class Add100hrToAircraftTable extends Migration
+class AddAirframeInspectionToAircraftTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class Add100hrToAircraftTable extends Migration
     public function up()
     {
         Schema::table('aircraft', function (Blueprint $table) {
-            $table->integer('mins_since_100hr')->default(0);
+            $table->dateTime('last_inspected_at')->nullable();
         });
     }
 
@@ -26,7 +26,7 @@ class Add100hrToAircraftTable extends Migration
     public function down()
     {
         Schema::table('aircraft', function (Blueprint $table) {
-            $table->dropColumn('mins_since_100hr');
+            $table->dropColumn('last_inspected_at');
         });
     }
 }

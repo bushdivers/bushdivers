@@ -18,6 +18,7 @@ class CreateAircraftEnginesTable extends Migration
             $table->foreignId('aircraft_id');
             $table->integer('engine_no');
             $table->integer('mins_since_tbo')->default(0);
+            $table->integer('mins_since_100hr')->default(0);
             $table->timestamps();
         });
     }

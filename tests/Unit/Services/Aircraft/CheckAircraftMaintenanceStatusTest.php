@@ -6,6 +6,7 @@ use App\Models\Aircraft;
 use App\Models\AircraftEngine;
 use App\Models\Fleet;
 use App\Services\Aircraft\CheckAircraftMaintenanceStatus;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -31,25 +32,27 @@ class CheckAircraftMaintenanceStatusTest extends TestCase
 
         $this->aircraft1 = Aircraft::factory()->create([
             'fleet_id' => $this->fleet->id,
-            'mins_since_100hr' => 6000
+            'last_inspected_at' => Carbon::now()->subYears(2)
         ]);
 
         $this->aircraft1Engine = AircraftEngine::factory()->create([
             'aircraft_id' => $this->aircraft1->id,
             'engine_no' => 1,
-            'mins_since_tbo' => 6000
+            'mins_since_tbo' => 6000,
+            'mins_since_100hr' => 6000
         ]);
 
         $this->aircraft2 = Aircraft::factory()->create([
             'registration' => 'P2-TEST',
             'fleet_id' => $this->fleet->id,
-            'mins_since_100hr' => 10
+            'last_inspected_at' => Carbon::now()->subMonth(1)
         ]);
 
         $this->aircraft2Engine = AircraftEngine::factory()->create([
             'aircraft_id' => $this->aircraft2->id,
             'engine_no' => 1,
-            'mins_since_tbo' => 10
+            'mins_since_tbo' => 10,
+            'mins_since_100hr' => 10
         ]);
 
         $this->checkAircraftMaintenanceStatus = $this->app->make(CheckAircraftMaintenanceStatus::class);
@@ -60,15 +63,27 @@ class CheckAircraftMaintenanceStatusTest extends TestCase
      *
      * @return void
      */
-    public function test_aircraft_maintence_is_needed()
+    public function test_aircraft_annual_is_needed()
     {
         $res = $this->checkAircraftMaintenanceStatus->execute($this->aircraft1->id);
-        $this->assertTrue($res);
+        $this->assertTrue($res['annual']);
+    }
+
+    public function test_aircraft_100_is_needed()
+    {
+        $res = $this->checkAircraftMaintenanceStatus->execute($this->aircraft1->id);
+        $this->assertTrue($res['100hr']);
+    }
+
+    public function test_aircraft_tbo_is_needed()
+    {
+        $res = $this->checkAircraftMaintenanceStatus->execute($this->aircraft1->id);
+        $this->assertTrue($res['tbo']);
     }
 
     public function test_aircraft_maintence_is_not_needed()
     {
         $res = $this->checkAircraftMaintenanceStatus->execute($this->aircraft2->id);
-        $this->assertFalse($res);
+        $this->assertFalse($res['annual']);
     }
 }

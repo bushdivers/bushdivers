@@ -6,4 +6,5 @@ class MaintenanceTypes
 {
     public const Maintenance100hr = 1;
     public const MaintenanceTBO = 2;
+    public const Annual = 3;
 }

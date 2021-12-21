@@ -1095,7 +1095,7 @@ class SubmitPirepTest extends TestCase
         $this->aircraftEngine->refresh();
         $this->aircraft->refresh();
 
-        $this->assertEquals($previous+45, $this->aircraft->mins_since_100hr);
+        $this->assertEquals($previous+45, $this->aircraftEngine->mins_since_100hr);
         $this->assertEquals($previous+45, $this->aircraftEngine->mins_since_tbo);
     }
 }

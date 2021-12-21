@@ -26,6 +26,8 @@ class AddMaintenanceLog
                     $cost = MaintenanceCosts::CostTBOLarge;
                     break;
             }
+        } elseif ($typeId == MaintenanceTypes::Annual) {
+            $cost = MaintenanceCosts::CostAnnual;
         }
 
         $maintenance = new MaintenanceLog();
