@@ -98,6 +98,7 @@ class ShowDispatchController extends Controller
             ->where('is_rental', false)
             ->where('status', AircraftStatus::ACTIVE)
             ->where('current_airport_id', $currentLocation)
+            ->where('owner_id', 0)
             ->get();
 
         $rentalAc = Aircraft::with('fleet')
@@ -106,10 +107,12 @@ class ShowDispatchController extends Controller
             ->where('current_airport_id', $currentLocation)
             ->get();
 
-        if ($rentalAc) {
-            return $fleetAc->merge($rentalAc);
-        } else {
-            return $fleetAc;
-        }
+        $privateAc = Aircraft::with('fleet')
+            ->where('is_rental', false)
+            ->where('owner_id', Auth::user()->id)
+            ->where('current_airport_id', $currentLocation)
+            ->get();
+
+        return collect($fleetAc)->merge($rentalAc)->merge($privateAc);
     }
 }
