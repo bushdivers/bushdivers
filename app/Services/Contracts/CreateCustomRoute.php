@@ -6,6 +6,7 @@ use App\Models\Airport;
 use App\Models\Enums\ContractType;
 use App\Services\Airports\CalcBearingBetweenPoints;
 use App\Services\Airports\CalcDistanceBetweenPoints;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class CreateCustomRoute
 {
@@ -29,22 +30,28 @@ class CreateCustomRoute
 
     public function execute($dep, $arr, $userId)
     {
-        $depAirport = Airport::where('identifier', $dep)->first();
-        $arrAirport = Airport::where('identifier', $arr)->first();
-        // contract info
-        $distance = $this->calcDistanceBetweenPoints->execute($depAirport->lat, $depAirport->lon, $arrAirport->lat, $arrAirport->lon);
-        $heading = $this->calcBearingBetweenPoints->execute($depAirport->lat, $depAirport->lon, $arrAirport->lat, $arrAirport->lon, $depAirport->magnetic_variance);
+        try {
+            $depAirport = Airport::where('identifier', $dep)->firstOrFail();
+            $arrAirport = Airport::where('identifier', $arr)->firstOrFail();
 
-        // cargo info
-        $cargo = [
-            'type' => ContractType::Cargo,
-            'qty' => 300,
-            'name' => 'Second hand goods'
-        ];
+            // contract info
+            $distance = $this->calcDistanceBetweenPoints->execute($depAirport->lat, $depAirport->lon, $arrAirport->lat, $arrAirport->lon);
+            $heading = $this->calcBearingBetweenPoints->execute($depAirport->lat, $depAirport->lon, $arrAirport->lat, $arrAirport->lon, $depAirport->magnetic_variance);
 
-        $value = $this->calcContractValue->execute($cargo['type'], $cargo['qty'], $distance);
+            // cargo info
+            $cargo = [
+                'type' => ContractType::Cargo,
+                'qty' => 300,
+                'name' => 'Second hand goods'
+            ];
 
-        // add contract
-        $this->storeContract->execute($dep, $arr, $distance, $heading, $cargo, $value, true, $userId);
+            $value = $this->calcContractValue->execute($cargo['type'], $cargo['qty'], $distance);
+
+            // add contract
+            $this->storeContract->execute($dep, $arr, $distance, $heading, $cargo, $value, true, $userId);
+        } catch (ModelNotFoundException $e) {
+            throw new ModelNotFoundException();
+        }
+
     }
 }
