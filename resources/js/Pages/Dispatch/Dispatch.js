@@ -34,6 +34,7 @@ const Dispatch = ({ cargo, aircraft }) => {
   }
 
   function handleAircraftSelect (ac) {
+    console.log(ac)
     setSubmitError(null)
     setSelectedAircraft(aircraft.find(a => a.id === ac.id))
     setFuel(ac.fuel_onboard)

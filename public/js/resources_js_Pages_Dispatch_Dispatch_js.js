@@ -2860,6 +2860,7 @@ var Dispatch = function Dispatch(_ref) {
   }
 
   function handleAircraftSelect(ac) {
+    console.log(ac);
     setSubmitError(null);
     setSelectedAircraft(aircraft.find(function (a) {
       return a.id === ac.id;
@@ -3215,6 +3216,7 @@ var EmptyData = function EmptyData(props) {
 };
 
 var Aircraft = function Aircraft(props) {
+  var auth = (0,_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_2__.usePage)().props.auth;
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
     className: "shadow rounded p-4 mt-2 mr-2 bg-white",
     children: props.aircraft.length === 0 ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_Elements_NoContent__WEBPACK_IMPORTED_MODULE_1__.default, {
@@ -3250,7 +3252,10 @@ var Aircraft = function Aircraft(props) {
                 children: [ac.registration, ac.is_rental ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("span", {
                   className: "bg-orange-500 text-white rounded ml-2 px-2",
                   children: "Rental"
-                }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.Fragment, {}), ac.maintenance_status && ac.is_rental ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.Fragment, {}) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("span", {
+                }) : ac.owner_id === auth.user.id ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("span", {
+                  className: "bg-orange-500 text-white rounded ml-2 px-2",
+                  children: "Private"
+                }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.Fragment, {}), ac.maintenance_status && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("span", {
                   className: "ml-2 text-orange-500",
                   children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("i", {
                     className: "material-icons md-18",
