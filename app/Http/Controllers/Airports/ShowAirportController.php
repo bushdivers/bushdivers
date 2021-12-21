@@ -27,7 +27,7 @@ class ShowAirportController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function __invoke(Request $request, $icao): Response | RedirectResponse
+    public function __invoke(Request $request, $icao = null): Response | RedirectResponse
     {
         if (!$icao) return Inertia::render('Airports/AirportDetail');
 
