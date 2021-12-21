@@ -20,6 +20,7 @@ class ShowFleetController extends Controller
     {
         $fleet = Fleet::with(['aircraft' => function ($q) {
             $q->where('is_rental', false);
+            $q->where('owner_id', 0);
         }])
             ->where('company_fleet', true)
             ->orderBy('type')

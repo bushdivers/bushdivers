@@ -44,10 +44,12 @@ class CalcCargoHandlingFee
             }
         }
         $total = $weight * $fee->fee_amount;
-        if (!$aircraft->is_rental) {
-            $this->addAirlineTransaction->execute(AirlineTransactionTypes::GroundHandlingFees, $total, 'Cargo Handling', $pirep->id);
-        } else {
+        if ($aircraft->is_rental) {
             $this->addUserTransaction->execute($pirep->user_id, TransactionTypes::FlightFeesGround, -$total, $pirep->id);
+        } elseif ($aircraft->owner_id > 0) {
+            $this->addUserTransaction->execute($pirep->user_id, TransactionTypes::FlightFeesGround, -$total, $pirep->id);
+        } else {
+            $this->addAirlineTransaction->execute(AirlineTransactionTypes::GroundHandlingFees, $total, 'Cargo Handling', $pirep->id);
         }
     }
 }

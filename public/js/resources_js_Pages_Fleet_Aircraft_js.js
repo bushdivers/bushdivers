@@ -2772,7 +2772,11 @@ var Aircraft = function Aircraft(_ref) {
   };
 
   var shouldShowMaintenance = function shouldShowMaintenance() {
-    return auth.user.user_roles.includes('fleet_manager');
+    if (aircraft.owner_id > 0) {
+      return aircraft.owner_id === auth.user.id;
+    } else {
+      return auth.user.user_roles.includes('fleet_manager');
+    }
   };
 
   var renderMaintenanceType = function renderMaintenanceType(maintenanceType) {
@@ -2789,6 +2793,10 @@ var Aircraft = function Aircraft(_ref) {
   };
 
   var checkAircraftAtHub = function checkAircraftAtHub(aircraft) {
+    if (aircraft.owner_id === auth.user.id) {
+      return true;
+    }
+
     return hubs.filter(function (h) {
       return h.identifier === aircraft.current_airport_id;
     }).length > 0;
@@ -2802,6 +2810,24 @@ var Aircraft = function Aircraft(_ref) {
       return;
     }
 
+    var cost = 0.00;
+
+    switch (aircraft.fleet.size) {
+      case 'S':
+        cost = 15000.00;
+        break;
+
+      case 'M':
+        cost = 30000.00;
+        break;
+
+      case 'L':
+        cost = 60000.00;
+        break;
+    }
+
+    var accept = window.confirm("TBO will cost $".concat(cost, ", do you want to proceed?"));
+    if (!accept) return;
     var data = {
       aircraft: aircraft.id,
       engine: engine,
@@ -2819,6 +2845,8 @@ var Aircraft = function Aircraft(_ref) {
       return;
     }
 
+    var accept = window.confirm('100 hour check will cost $2000.00, do you want to proceed?');
+    if (!accept) return;
     var data = {
       aircraft: aircraft.id,
       engine: engine,
@@ -2835,6 +2863,8 @@ var Aircraft = function Aircraft(_ref) {
       return;
     }
 
+    var accept = window.confirm('Annual airframe check will cost $2000.00, do you want to proceed?');
+    if (!accept) return;
     var data = {
       aircraft: aircraft.id,
       type: 3
@@ -2854,8 +2884,14 @@ var Aircraft = function Aircraft(_ref) {
           children: "engineering"
         })
       }), aircraft.is_rental ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("span", {
-        className: "ml-2 bg-orange-500 text-white p-1 rounded",
+        className: "ml-2 bg-orange-500 text-white p-1 rounded text-xs",
         children: "Rental"
+      }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.Fragment, {}), aircraft.owner_id > 0 && aircraft.owner_id === auth.user.id ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("span", {
+        className: "ml-2 bg-orange-500 text-white p-1 rounded text-xs",
+        children: "Private Plane - Owner"
+      }) : aircraft.owner_id > 0 ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("span", {
+        className: "ml-2 bg-orange-500 text-white p-1 rounded text-xs",
+        children: "Private Plane"
       }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.Fragment, {})]
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)("div", {
       className: "flex flex-col md:flex-row justify-between",
@@ -2914,7 +2950,7 @@ var Aircraft = function Aircraft(_ref) {
           children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("div", {
             className: "text-lg mb-2",
             children: "Maintenance"
-          }), shouldShowMaintenance && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("div", {
+          }), shouldShowMaintenance() && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("div", {
             className: "flex justify-between",
             children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("div", {
               children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("button", {

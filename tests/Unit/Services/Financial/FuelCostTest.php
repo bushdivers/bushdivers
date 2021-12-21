@@ -5,6 +5,7 @@ namespace Tests\Unit\Services\Financial;
 use App\Models\Aircraft;
 use App\Models\AirlineFees;
 use App\Models\Enums\AirlineTransactionTypes;
+use App\Models\Enums\TransactionTypes;
 use App\Models\Fleet;
 use App\Models\Pirep;
 use App\Services\Finance\CalcFuelUsedFee;
@@ -67,6 +68,56 @@ class FuelCostTest extends TestCase
             'total' => -$cost,
             'pirep_id' => $pirep->id,
             'memo' => 'Fuel Cost'
+        ]);
+    }
+
+    public function test_avgas_is_calculated_rental()
+    {
+        $this->aircraftAvGas = Aircraft::factory()->create([
+            'registration' => 'P2-SM',
+            'fleet_id' => $this->fleetAvGas->id,
+            'is_rental' => true
+        ]);
+
+        $pirep = Pirep::factory()->create([
+            'aircraft_id' => $this->aircraftAvGas->id,
+            'fuel_used' => 50
+        ]);
+
+        $cost = 50 * 2.15;
+        $this->calcFuelUsedFee->execute($pirep);
+        $this->assertDatabaseMissing('account_ledgers', [
+            'pirep_id' => $pirep->id
+        ]);
+        $this->assertDatabaseHas('user_accounts', [
+            'type' => TransactionTypes::FlightFeesFuel,
+            'total' => -$cost,
+            'flight_id' => $pirep->id
+        ]);
+    }
+
+    public function test_avgas_is_calculated_private()
+    {
+        $this->aircraftAvGas = Aircraft::factory()->create([
+            'registration' => 'P2-SM',
+            'fleet_id' => $this->fleetAvGas->id,
+            'owner_id' => 1
+        ]);
+
+        $pirep = Pirep::factory()->create([
+            'aircraft_id' => $this->aircraftAvGas->id,
+            'fuel_used' => 50
+        ]);
+
+        $cost = 50 * 2.15;
+        $this->calcFuelUsedFee->execute($pirep);
+        $this->assertDatabaseMissing('account_ledgers', [
+            'pirep_id' => $pirep->id
+        ]);
+        $this->assertDatabaseHas('user_accounts', [
+            'type' => TransactionTypes::FlightFeesFuel,
+            'total' => -$cost,
+            'flight_id' => $pirep->id
         ]);
     }
 

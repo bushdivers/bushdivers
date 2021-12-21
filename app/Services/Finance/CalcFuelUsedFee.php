@@ -30,7 +30,7 @@ class CalcFuelUsedFee
         $fuelUsedCost = $fuelCost->fee_amount * $pirep->fuel_used;
         // TODO: if negative, 0 fuel fee for company, and charge pilot for fuel
         if ($fuelUsedCost < 0) {
-            if (!$aircraft->is_rental) {
+            if (!$aircraft->is_rental && $aircraft->owner_id == 0) {
                 $this->addAirlineTransaction->execute(AirlineTransactionTypes::FuelFees, $fuelUsedCost, 'Fuel Cost', $pirep->id);
                 $this->addAirlineTransaction->execute(AirlineTransactionTypes::FuelFees, $fuelUsedCost, 'Fuel Cost Paid by Pilot', $pirep->id, 'credit');
 
@@ -43,7 +43,11 @@ class CalcFuelUsedFee
 
         } else {
             if (!$aircraft->is_rental) {
-                $this->addAirlineTransaction->execute(AirlineTransactionTypes::FuelFees, $fuelUsedCost, 'Fuel Cost', $pirep->id);
+                if ($aircraft->owner_id > 0) {
+                    $this->addUserTransaction->execute($pirep->user_id, TransactionTypes::FlightFeesFuel, -$fuelUsedCost, $pirep->id);
+                } else {
+                    $this->addAirlineTransaction->execute(AirlineTransactionTypes::FuelFees, $fuelUsedCost, 'Fuel Cost', $pirep->id);
+                }
             } else {
                 $this->addUserTransaction->execute($pirep->user_id, TransactionTypes::FlightFeesFuel, -$fuelUsedCost, $pirep->id);
             }

@@ -6,7 +6,7 @@ class MaintenanceCosts
 {
     public const Cost100hr = 2000.00;
     public const CostAnnual = 2000.00;
-    public const CostTBOSmall = 20000.00;
-    public const CostTBOMedium = 80000.00;
-    public const CostTBOLarge = 120000.00;
+    public const CostTBOSmall = 15000.00;
+    public const CostTBOMedium = 30000.00;
+    public const CostTBOLarge = 60000.00;
 }

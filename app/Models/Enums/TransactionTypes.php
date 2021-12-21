@@ -13,4 +13,6 @@ class TransactionTypes
     public const FlightFeesFuel = 7;
     public const FlightFeesGround = 8;
     public const FlightFeesLanding= 9;
+    public const AircraftMaintenanceFee = 10;
+    public const MonthlyOwnership = 11;
 }

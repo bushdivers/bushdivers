@@ -25,17 +25,19 @@ class RemoveMultiplePireps
         if ($pireps->count() > 1) {
             foreach ($pireps as $pirep) {
                 $aircraft = Aircraft::find($pirep->aircraft_id);
-                if (!$aircraft->is_rental) {
-                    $this->updateAircraftState->execute($pirep->aircraft_id, AircraftState::AVAILABLE);
-                    $this->removeSinglePirep->execute($pirep->id);
-                }
+                $this->runProcess($aircraft, $pirep->id);
             }
         } elseif ($pireps->count() == 1) {
             $aircraft = Aircraft::find($pireps->aircraft_id);
-            if (!$aircraft->is_rental) {
-                $this->updateAircraftState->execute($pireps->aircraft_id, AircraftState::AVAILABLE);
-                $this->removeSinglePirep->execute($pireps->id);
-            }
+            $this->runProcess($aircraft, $pireps->id);
+        }
+    }
+
+    private function runProcess($aircraft, $pirepId)
+    {
+        if (!$aircraft->is_rental || $aircraft->owner_id > 0) {
+            $this->updateAircraftState->execute($aircraft->id, AircraftState::AVAILABLE);
+            $this->removeSinglePirep->execute($pirepId);
         }
     }
 }

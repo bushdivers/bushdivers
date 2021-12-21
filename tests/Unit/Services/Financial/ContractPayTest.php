@@ -34,6 +34,7 @@ class ContractPayTest extends TestCase
     protected Model $pirepCargo;
     protected Model $fleet;
     protected Model $aircraft;
+    protected Model $aircraftPrivate;
     protected Model $user;
     protected Model $airport;
 
@@ -49,6 +50,10 @@ class ContractPayTest extends TestCase
         ]);
         $this->aircraft = Aircraft::factory()->create([
             'fleet_id' => $this->fleet->id
+        ]);
+        $this->aircraftPrivate = Aircraft::factory()->create([
+            'fleet_id' => $this->fleet->id,
+            'owner_id' => $this->user->id
         ]);
         $this->contract = Contract::factory()->create([
             'is_completed' => true,
@@ -111,6 +116,26 @@ class ContractPayTest extends TestCase
         $companyPay = (FinancialConsts::CompanyPay / 100) * $this->contract->contract_value;
         $totalPay = $expectedPay + $companyPay;
         $pay = $this->calcContractPay->execute($this->contract->id);
+        $this->assertEquals($expectedPay, $pay);
+        $this->assertEquals($totalPay, $this->contract->contract_value);
+    }
+
+    public function test_pilot_pay_is_returned_for_private()
+    {
+        $expectedPay = (80 / 100) * $this->contract->contract_value;
+        $companyPay = (20 / 100) * $this->contract->contract_value;
+        $totalPay = $expectedPay + $companyPay;
+        $pay = $this->calcContractPay->execute($this->contract->id, null, false, true);
+        $this->assertEquals($expectedPay, $pay);
+        $this->assertEquals($totalPay, $this->contract->contract_value);
+    }
+
+    public function test_pilot_pay_is_returned_for_rental()
+    {
+        $expectedPay = (80 / 100) * $this->contract->contract_value;
+        $companyPay = (20 / 100) * $this->contract->contract_value;
+        $totalPay = $expectedPay + $companyPay;
+        $pay = $this->calcContractPay->execute($this->contract->id, null, true, false);
         $this->assertEquals($expectedPay, $pay);
         $this->assertEquals($totalPay, $this->contract->contract_value);
     }

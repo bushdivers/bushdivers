@@ -2769,7 +2769,22 @@ var MyFinances = function MyFinances(_ref) {
         return 'Bonus Pay (i.e returning aircraft to hub)';
 
       case 6:
-        return 'Aircraft Rental Deposit';
+        return 'Aircraft Rental Fees';
+
+      case 7:
+        return 'Fuel Fees';
+
+      case 8:
+        return 'Ground Handling Fees';
+
+      case 9:
+        return 'Landing Fees';
+
+      case 10:
+        return 'Aircraft Maintenance Fees';
+
+      case 11:
+        return 'Monthly Aircraft Ownership cost';
 
       default:
         return 'Other';

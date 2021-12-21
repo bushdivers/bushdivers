@@ -45,7 +45,7 @@ class Aircraft extends Model
 
     public function maintenance()
     {
-        return $this->hasMany(MaintenanceLog::class);
+        return $this->hasMany(MaintenanceLog::class)->orderBy('created_at', 'desc');
     }
 
     public function getMaintenanceStatusAttribute()

@@ -8,6 +8,7 @@ use App\Models\Airport;
 use App\Models\Contract;
 use App\Models\ContractCargo;
 use App\Models\Enums\AirlineTransactionTypes;
+use App\Models\Enums\TransactionTypes;
 use App\Models\Fleet;
 use App\Models\Pirep;
 use App\Models\PirepCargo;
@@ -18,7 +19,6 @@ use Tests\TestCase;
 
 class CargoHandlingFeeTest extends TestCase
 {
-
     use RefreshDatabase;
 
     protected CalcCargoHandlingFee $calcCargoHandlingFee;
@@ -28,6 +28,9 @@ class CargoHandlingFeeTest extends TestCase
     protected Model $pirepCargo;
     protected Model $fleet;
     protected Model $airport;
+    protected Model $aircraft;
+    protected Model $aircraftRental;
+    protected Model $aircraftPrivate;
 
     protected function setUp(): void
     {
@@ -40,13 +43,7 @@ class CargoHandlingFeeTest extends TestCase
         $this->airport = Airport::factory()->create([
             'size' => 1
         ]);
-        $this->pirep = Pirep::factory()->create([
-            'destination_airport_id' => $this->airport->identifier
-        ]);
-        $this->pirepCargo = PirepCargo::factory()->create([
-            'pirep_id' => $this->pirep->id,
-            'contract_cargo_id' => $this->contractCargo->id
-        ]);
+
         AirlineFees::factory()->create([
             'fee_type' => AirlineTransactionTypes::GroundHandlingFees,
             'fee_name' => 'Cargo Handling',
@@ -54,8 +51,27 @@ class CargoHandlingFeeTest extends TestCase
             'fee_amount' => 0.15
         ]);
         $this->fleet = Fleet::factory()->create();
-        Aircraft::factory()->create([
+        $this->aircraft = Aircraft::factory()->create([
             'fleet_id' => $this->fleet->id
+        ]);
+
+        $this->aircraftRental = Aircraft::factory()->create([
+            'fleet_id' => $this->fleet->id,
+            'is_rental' => true
+        ]);
+
+        $this->aircraftPrivate = Aircraft::factory()->create([
+            'fleet_id' => $this->fleet->id,
+            'owner_id' => 1
+        ]);
+
+        $this->pirep = Pirep::factory()->create([
+            'destination_airport_id' => $this->airport->identifier,
+            'aircraft_id' => $this->aircraft
+        ]);
+        $this->pirepCargo = PirepCargo::factory()->create([
+            'pirep_id' => $this->pirep->id,
+            'contract_cargo_id' => $this->contractCargo->id
         ]);
 
     }
@@ -73,6 +89,52 @@ class CargoHandlingFeeTest extends TestCase
             'pirep_id' => $this->pirep->id,
             'total' => -$cost,
             'transaction_type' => AirlineTransactionTypes::GroundHandlingFees
+        ]);
+    }
+
+    public function test_cargo_calculated_for_rental()
+    {
+        $pirep = Pirep::factory()->create([
+            'destination_airport_id' => $this->airport->identifier,
+            'aircraft_id' => $this->aircraftRental->id
+        ]);
+        PirepCargo::factory()->create([
+            'pirep_id' => $pirep->id,
+            'contract_cargo_id' => $this->contractCargo->id
+        ]);
+
+        $cost = $this->contractCargo->cargo_qty * 0.15;
+        $this->calcCargoHandlingFee->execute($pirep);
+        $this->assertDatabaseMissing('account_ledgers', [
+            'pirep_id' => $pirep->id,
+        ]);
+        $this->assertDatabaseHas('user_accounts', [
+            'flight_id' => $pirep->id,
+            'total' => -$cost,
+            'type' => TransactionTypes::FlightFeesGround
+        ]);
+    }
+
+    public function test_cargo_calculated_for_private()
+    {
+        $pirep = Pirep::factory()->create([
+            'destination_airport_id' => $this->airport->identifier,
+            'aircraft_id' => $this->aircraftPrivate->id
+        ]);
+        PirepCargo::factory()->create([
+            'pirep_id' => $pirep->id,
+            'contract_cargo_id' => $this->contractCargo->id
+        ]);
+
+        $cost = $this->contractCargo->cargo_qty * 0.15;
+        $this->calcCargoHandlingFee->execute($pirep);
+        $this->assertDatabaseMissing('account_ledgers', [
+            'pirep_id' => $pirep->id,
+        ]);
+        $this->assertDatabaseHas('user_accounts', [
+            'flight_id' => $pirep->id,
+            'total' => -$cost,
+            'type' => TransactionTypes::FlightFeesGround
         ]);
     }
 

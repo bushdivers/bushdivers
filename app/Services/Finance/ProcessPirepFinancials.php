@@ -52,7 +52,8 @@ class ProcessPirepFinancials
                     ->first();
 
                 if (isset($contract)) {
-                    $pp = $this->calcContractPay->execute($contract->id, $pirep->id, $aircraft->is_rental);
+                    $privatePlane = !($aircraft->owner_id == 0);
+                    $pp = $this->calcContractPay->execute($contract->id, $pirep->id, $aircraft->is_rental, $privatePlane);
                     $this->addUserTransaction->execute($pirep->user_id, TransactionTypes::FlightPay, $pp, $pirep->id);
                     $contract->is_paid = true;
                     $contract->save();

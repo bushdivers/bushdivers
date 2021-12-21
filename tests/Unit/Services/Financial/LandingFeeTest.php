@@ -8,6 +8,7 @@ use App\Models\Airport;
 use App\Models\Contract;
 use App\Models\ContractCargo;
 use App\Models\Enums\AirlineTransactionTypes;
+use App\Models\Enums\TransactionTypes;
 use App\Models\Fleet;
 use App\Models\Pirep;
 use App\Models\PirepCargo;
@@ -86,6 +87,52 @@ class LandingFeeTest extends TestCase
             'transaction_type' => AirlineTransactionTypes::LandingFees,
             'memo' => 'Landing Fees - Small',
             'pirep_id' => $pirep->id,
+            'total' => -35
+        ]);
+    }
+
+    public function test_small_landing_fee_not_calculated_rental()
+    {
+        $aircraft = Aircraft::factory()->create([
+            'fleet_id' => $this->fleetSmall->id,
+            'is_rental' => true
+        ]);
+
+        $pirep = Pirep::factory()->create([
+            'aircraft_id' => $aircraft->id,
+            'destination_airport_id' => $this->airport->identifier
+        ]);
+        $this->calcLandingFee->execute($pirep);
+        $this->assertDatabaseMissing('account_ledgers', [
+            'pirep_id' => $pirep->id
+        ]);
+
+        $this->assertDatabaseHas('user_accounts', [
+            'type' => TransactionTypes::FlightFeesLanding,
+            'flight_id' => $pirep->id,
+            'total' => -35
+        ]);
+    }
+
+    public function test_small_landing_fee_not_calculated_private()
+    {
+        $aircraft = Aircraft::factory()->create([
+            'fleet_id' => $this->fleetSmall->id,
+            'owner_id' => 1
+        ]);
+
+        $pirep = Pirep::factory()->create([
+            'aircraft_id' => $aircraft->id,
+            'destination_airport_id' => $this->airport->identifier
+        ]);
+        $this->calcLandingFee->execute($pirep);
+        $this->assertDatabaseMissing('account_ledgers', [
+            'pirep_id' => $pirep->id
+        ]);
+
+        $this->assertDatabaseHas('user_accounts', [
+            'type' => TransactionTypes::FlightFeesLanding,
+            'flight_id' => $pirep->id,
             'total' => -35
         ]);
     }

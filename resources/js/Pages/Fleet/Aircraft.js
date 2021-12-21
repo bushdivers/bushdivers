@@ -18,7 +18,11 @@ const Aircraft = ({ aircraft, maintenanceStatus, hubs }) => {
   }
 
   const shouldShowMaintenance = () => {
-    return auth.user.user_roles.includes('fleet_manager')
+    if (aircraft.owner_id > 0) {
+      return aircraft.owner_id === auth.user.id
+    } else {
+      return auth.user.user_roles.includes('fleet_manager')
+    }
   }
 
   const renderMaintenanceType = (maintenanceType) => {
@@ -33,6 +37,9 @@ const Aircraft = ({ aircraft, maintenanceStatus, hubs }) => {
   }
 
   const checkAircraftAtHub = (aircraft) => {
+    if (aircraft.owner_id === auth.user.id) {
+      return true
+    }
     return hubs.filter(h => h.identifier === aircraft.current_airport_id).length > 0
   }
 
@@ -42,6 +49,20 @@ const Aircraft = ({ aircraft, maintenanceStatus, hubs }) => {
       window.alert('Aircraft is not at a hub')
       return
     }
+    let cost = 0.00
+    switch (aircraft.fleet.size) {
+      case 'S':
+        cost = 15000.00
+        break
+      case 'M':
+        cost = 30000.00
+        break
+      case 'L':
+        cost = 60000.00
+        break
+    }
+    const accept = window.confirm(`TBO will cost $${cost}, do you want to proceed?`)
+    if (!accept) return
     const data = {
       aircraft: aircraft.id,
       engine,
@@ -56,6 +77,10 @@ const Aircraft = ({ aircraft, maintenanceStatus, hubs }) => {
       window.alert('Aircraft is not at a hub')
       return
     }
+
+    const accept = window.confirm('100 hour check will cost $2000.00, do you want to proceed?')
+    if (!accept) return
+
     const data = {
       aircraft: aircraft.id,
       engine,
@@ -70,6 +95,10 @@ const Aircraft = ({ aircraft, maintenanceStatus, hubs }) => {
       window.alert('Aircraft is not at a hub')
       return
     }
+
+    const accept = window.confirm('Annual airframe check will cost $2000.00, do you want to proceed?')
+    if (!accept) return
+
     const data = {
       aircraft: aircraft.id,
       type: 3
@@ -82,7 +111,8 @@ const Aircraft = ({ aircraft, maintenanceStatus, hubs }) => {
       <div className="flex justify-start items-center">
         <PageTitle title={`${aircraft.registration} - ${aircraft.fleet.manufacturer} ${aircraft.fleet.name} (${aircraft.fleet.type})`} />
         {aircraft.maintenance_status && !aircraft.is_rental && <span className="ml-2 text-orange-500"><i className="material-icons">engineering</i></span>}
-        {aircraft.is_rental ? <span className="ml-2 bg-orange-500 text-white p-1 rounded">Rental</span> : <></>}
+        {aircraft.is_rental ? <span className="ml-2 bg-orange-500 text-white p-1 rounded text-xs">Rental</span> : <></>}
+        {aircraft.owner_id > 0 && aircraft.owner_id === auth.user.id ? <span className="ml-2 bg-orange-500 text-white p-1 rounded text-xs">Private Plane - Owner</span> : aircraft.owner_id > 0 ? <span className="ml-2 bg-orange-500 text-white p-1 rounded text-xs">Private Plane</span> : <></>}
       </div>
       <div className="flex flex-col md:flex-row justify-between">
         <div className="md:w-1/5 my-1">
@@ -114,7 +144,7 @@ const Aircraft = ({ aircraft, maintenanceStatus, hubs }) => {
           { !aircraft.is_rental && (
             <div className="bg-white p-4 rounded shadow overflow-x-auto my-2">
              <div className="text-lg mb-2">Maintenance</div>
-            {shouldShowMaintenance &&
+            {shouldShowMaintenance() &&
               (
                 <div className="flex justify-between">
                   <div>

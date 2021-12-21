@@ -143,4 +143,31 @@ class RemoveMultiplePirepsTest extends TestCase
             'user_id' => $this->user->id
         ]);
     }
+
+    public function test_nothing_changed_if_aircraft_is_privately_owned()
+    {
+        $aircraft = Aircraft::factory()->create([
+            'fleet_id' => $this->fleet->id,
+            'fuel_onboard' => 50,
+            'current_airport_id' => 'AYMR',
+            'user_id' => $this->user->id,
+            'owner_id' => $this->user->id
+        ]);
+
+        $pirep = Pirep::factory()->create([
+            'user_id' => $this->user->id,
+            'destination_airport_id' => $this->contract->arr_airport_id,
+            'departure_airport_id' => $this->contract->dep_airport_id,
+            'aircraft_id' => $aircraft->id
+        ]);
+
+        $this->assertDatabaseHas('pireps', [
+            'id' => $pirep->id
+        ]);
+
+        $this->assertDatabaseHas('aircraft', [
+            'id' => $pirep->aircraft_id,
+            'user_id' => $this->user->id
+        ]);
+    }
 }
