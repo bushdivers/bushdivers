@@ -27,7 +27,7 @@ const FleetCardContent = ({ fleet }) => {
             <div className="text-2xl">{fleet.type} - {fleet.manufacturer} {fleet.name}</div>
             <p>{fleet.aircraft.length} aircraft in fleet</p>
           </div>
-          <img className="rounded w-full md:w-auto" src="https://via.placeholder.com/300x150" />
+          <img className="rounded w-full md:w-auto" src={fleet.image_url} />
         </div>
         <div className="ml-2">
           <div className="flex flex-col md:flex-row mt-2 md:mt-0">

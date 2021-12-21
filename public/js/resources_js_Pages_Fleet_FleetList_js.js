@@ -2832,7 +2832,7 @@ var FleetCardContent = function FleetCardContent(_ref) {
           })]
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("img", {
           className: "rounded w-full md:w-auto",
-          src: "https://via.placeholder.com/300x150"
+          src: fleet.image_url
         })]
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
         className: "ml-2",
