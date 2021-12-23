@@ -40,6 +40,7 @@ class ShowAirportController extends Controller
         $metar = $this->getMetarForAirport->execute($icao);
         $aircraft = Aircraft::with('fleet')
             ->where('current_airport_id', $icao)
+            ->where('owner_id', 0)
             ->get();
         return Inertia::render('Airports/AirportDetail', ['airport' => $airport, 'metar' => $metar, 'aircraft' => $aircraft]);
     }
