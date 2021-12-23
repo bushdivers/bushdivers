@@ -114,6 +114,19 @@ const Aircraft = ({ aircraft, maintenanceStatus, hubs }) => {
         {aircraft.is_rental ? <span className="ml-2 bg-orange-500 text-white p-1 rounded text-xs">Rental</span> : <></>}
         {aircraft.owner_id > 0 && aircraft.owner_id === auth.user.id ? <span className="ml-2 bg-orange-500 text-white p-1 rounded text-xs">Private Plane - Owner</span> : aircraft.owner_id > 0 ? <span className="ml-2 bg-orange-500 text-white p-1 rounded text-xs">Private Plane</span> : <></>}
       </div>
+      {maintenanceStatus['100hr'] || maintenanceStatus.annual || maintenanceStatus.tbo
+        ? (
+          <div className="text-red-400">
+            <p>Maintenance Required:</p>
+            <ul>
+              {maintenanceStatus.annual && <li>Airframe Annual Inspection</li>}
+              {maintenanceStatus['100hr'] && <li>100 Hour Inspection</li>}
+              {maintenanceStatus.tbo && <li>Engine Overhaul</li>}
+            </ul>
+          </div>
+          )
+        : <></>
+      }
       <div className="flex flex-col md:flex-row justify-between">
         <div className="md:w-1/5 my-1">
           <StatCard title="Flights" stat={aircraft.pireps.length} />

@@ -10,6 +10,10 @@ a:hover {
     text-decoration: underline;
 }
 
+ul {
+    @apply list-disc list-inside;
+}
+
 .material-icons {
     font-family: 'Material Icons';
     font-weight: normal;

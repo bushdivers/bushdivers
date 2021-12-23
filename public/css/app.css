@@ -28169,6 +28169,11 @@ a:hover {
   text-decoration: underline;
 }
 
+ul {
+  list-style-position: inside;
+  list-style-type: disc;
+}
+
 .material-icons {
   font-family: 'Material Icons';
   font-weight: normal;
