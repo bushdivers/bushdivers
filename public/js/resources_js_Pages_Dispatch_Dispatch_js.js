@@ -2751,17 +2751,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var _Shared_Layout__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../Shared/Layout */ "./resources/js/Shared/Layout.js");
 /* harmony import */ var _Shared_Navigation_PageTitle__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../Shared/Navigation/PageTitle */ "./resources/js/Shared/Navigation/PageTitle.js");
-/* harmony import */ var _Shared_Elements_NoContent__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../Shared/Elements/NoContent */ "./resources/js/Shared/Elements/NoContent.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @inertiajs/inertia-react */ "./node_modules/@inertiajs/inertia-react/dist/index.js");
-/* harmony import */ var _Shared_Components_Dispatch_DispatchSummary__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../Shared/Components/Dispatch/DispatchSummary */ "./resources/js/Shared/Components/Dispatch/DispatchSummary.js");
-/* harmony import */ var _Shared_Components_Dispatch_Destination__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../Shared/Components/Dispatch/Destination */ "./resources/js/Shared/Components/Dispatch/Destination.js");
-/* harmony import */ var _Shared_Components_Dispatch_Fuel__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../Shared/Components/Dispatch/Fuel */ "./resources/js/Shared/Components/Dispatch/Fuel.js");
-/* harmony import */ var _Shared_Components_Dispatch_Cargo__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../Shared/Components/Dispatch/Cargo */ "./resources/js/Shared/Components/Dispatch/Cargo.js");
-/* harmony import */ var _Shared_Components_Dispatch_Aircraft__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../Shared/Components/Dispatch/Aircraft */ "./resources/js/Shared/Components/Dispatch/Aircraft.js");
-/* harmony import */ var _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @inertiajs/inertia */ "./node_modules/@inertiajs/inertia/dist/index.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @inertiajs/inertia-react */ "./node_modules/@inertiajs/inertia-react/dist/index.js");
+/* harmony import */ var _Shared_Components_Dispatch_DispatchSummary__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../Shared/Components/Dispatch/DispatchSummary */ "./resources/js/Shared/Components/Dispatch/DispatchSummary.js");
+/* harmony import */ var _Shared_Components_Dispatch_Destination__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../Shared/Components/Dispatch/Destination */ "./resources/js/Shared/Components/Dispatch/Destination.js");
+/* harmony import */ var _Shared_Components_Dispatch_Fuel__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../Shared/Components/Dispatch/Fuel */ "./resources/js/Shared/Components/Dispatch/Fuel.js");
+/* harmony import */ var _Shared_Components_Dispatch_Cargo__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../Shared/Components/Dispatch/Cargo */ "./resources/js/Shared/Components/Dispatch/Cargo.js");
+/* harmony import */ var _Shared_Components_Dispatch_Aircraft__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../Shared/Components/Dispatch/Aircraft */ "./resources/js/Shared/Components/Dispatch/Aircraft.js");
+/* harmony import */ var _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @inertiajs/inertia */ "./node_modules/@inertiajs/inertia/dist/index.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -2782,7 +2781,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
-
+ // import NoContent from '../../Shared/Elements/NoContent'
 
 
 
@@ -2798,7 +2797,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 var Dispatch = function Dispatch(_ref) {
   var cargo = _ref.cargo,
       aircraft = _ref.aircraft;
-  var auth = (0,_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_6__.usePage)().props.auth;
+  var auth = (0,_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_5__.usePage)().props.auth;
   var personWeight = 170.00;
   var avgasWeight = 5.99;
   var jetFuelWeight = 6.79;
@@ -2982,14 +2981,14 @@ var Dispatch = function Dispatch(_ref) {
                 qty: amount
               };
               _context2.next = 12;
-              return axios__WEBPACK_IMPORTED_MODULE_5___default().post('/api/cargo/split', data);
+              return axios__WEBPACK_IMPORTED_MODULE_4___default().post('/api/cargo/split', data);
 
             case 12:
               res = _context2.sent;
 
               // reload
               if (res.status === 201) {
-                _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_12__.Inertia.reload({
+                _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_11__.Inertia.reload({
                   only: ['cargo']
                 });
               } else {
@@ -3088,7 +3087,7 @@ var Dispatch = function Dispatch(_ref) {
       cargo: cargo,
       is_empty: deadHead
     };
-    _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_12__.Inertia.post('/dispatch', data);
+    _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_11__.Inertia.post('/dispatch', data);
   }
 
   function handleSubmitDispatch() {
@@ -3111,38 +3110,38 @@ var Dispatch = function Dispatch(_ref) {
     }
   }
 
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(_Shared_Navigation_PageTitle__WEBPACK_IMPORTED_MODULE_3__.default, {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_Shared_Navigation_PageTitle__WEBPACK_IMPORTED_MODULE_3__.default, {
       title: "Dispatch - ".concat(auth.user.current_airport_id)
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
       className: "flex flex-col md:flex-row justify-between mt-4",
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
         className: "md:w-1/2",
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(_Shared_Components_Dispatch_Aircraft__WEBPACK_IMPORTED_MODULE_11__.default, {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_Shared_Components_Dispatch_Aircraft__WEBPACK_IMPORTED_MODULE_10__.default, {
           aircraft: aircraft,
           selectedAircraft: selectedAircraft,
           handleAircraftSelect: handleAircraftSelect
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(_Shared_Components_Dispatch_Cargo__WEBPACK_IMPORTED_MODULE_10__.default, {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_Shared_Components_Dispatch_Cargo__WEBPACK_IMPORTED_MODULE_9__.default, {
           cargo: cargo,
           selectedCargo: selectedCargo,
           handleCargoSelect: handleCargoSelect,
           splitCargo: splitCargo,
           deadHead: deadHead,
           handleDeadHead: handleDeadHead
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(_Shared_Components_Dispatch_Destination__WEBPACK_IMPORTED_MODULE_8__.default, {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_Shared_Components_Dispatch_Destination__WEBPACK_IMPORTED_MODULE_7__.default, {
           currentAirport: auth.user.current_airport_id,
           updateDestinationValue: setDestination
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(_Shared_Components_Dispatch_Fuel__WEBPACK_IMPORTED_MODULE_9__.default, {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_Shared_Components_Dispatch_Fuel__WEBPACK_IMPORTED_MODULE_8__.default, {
           selectedAircraft: selectedAircraft,
           fuel: fuel,
           handleUpdateFuel: handleUpdateFuel,
           error: error
         })]
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("div", {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
         className: "md:w-1/2 mt-2",
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
           className: "shadow rounded p-4 md:ml-2 bg-white",
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(_Shared_Components_Dispatch_DispatchSummary__WEBPACK_IMPORTED_MODULE_7__.default, {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_Shared_Components_Dispatch_DispatchSummary__WEBPACK_IMPORTED_MODULE_6__.default, {
             selectedAircraft: selectedAircraft,
             selectedCargo: selectedCargo,
             personWeight: personWeight,
@@ -3152,15 +3151,15 @@ var Dispatch = function Dispatch(_ref) {
             destination: destination,
             fuel: fuel,
             deadHead: deadHead
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
             className: "mt-2 text-right",
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("button", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("button", {
               onClick: function onClick() {
                 return handleSubmitDispatch();
               },
               className: "btn btn-secondary",
               children: "File Dispatch"
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("br", {}), submitError && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("div", {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("br", {}), submitError && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
               className: "text-red-500 text-xs",
               children: submitError
             })]
@@ -3172,7 +3171,7 @@ var Dispatch = function Dispatch(_ref) {
 };
 
 Dispatch.layout = function (page) {
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(_Shared_Layout__WEBPACK_IMPORTED_MODULE_2__.default, {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_Shared_Layout__WEBPACK_IMPORTED_MODULE_2__.default, {
     children: page,
     title: "Dispatch"
   });
@@ -3249,7 +3248,10 @@ var Aircraft = function Aircraft(props) {
               },
               className: props.selectedAircraft.id === ac.id ? 'bg-orange-200 hover:bg-orange-100' : '',
               children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("td", {
-                children: [ac.registration, ac.is_rental ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("span", {
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_2__.Link, {
+                  href: "/aircraft/".concat(ac.id),
+                  children: ac.registration
+                }), ac.is_rental ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("span", {
                   className: "bg-orange-500 text-white rounded ml-2 px-2",
                   children: "Rental"
                 }) : ac.owner_id === auth.user.id ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("span", {
