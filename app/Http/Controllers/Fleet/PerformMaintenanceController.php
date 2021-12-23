@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Fleet;
 
 use App\Http\Controllers\Controller;
+use App\Models\AccountLedger;
 use App\Models\Aircraft;
 use App\Models\Enums\AirlineTransactionTypes;
 use App\Models\Enums\MaintenanceTypes;
@@ -58,6 +59,14 @@ class PerformMaintenanceController extends Controller
                 ->sum('total');
 
             if ($cost > $userBalance) {
+                return redirect()->back()->with(['error' => 'Insufficient funds to perform maintenance']);
+            }
+        }
+
+        if ($aircraft->owner_id == 0) {
+            $balance = AccountLedger::all()->sum('total');
+
+            if ($cost > $balance) {
                 return redirect()->back()->with(['error' => 'Insufficient funds to perform maintenance']);
             }
         }
