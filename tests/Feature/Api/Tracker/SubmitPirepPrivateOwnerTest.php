@@ -24,7 +24,7 @@ use Illuminate\Support\Facades\DB;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
-class SubmitPirepRentalTest extends TestCase
+class SubmitPirepPrivateOwnerTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -56,7 +56,8 @@ class SubmitPirepRentalTest extends TestCase
             'current_airport_id' => 'AYMR',
             'user_id' => $this->user->id,
             'flight_time_mins' => 0,
-            'is_rental' => true
+            'is_rental' => false,
+            'owner_id' => $this->user->id
         ]);
         DB::table('cargo_types')->insert([
             ['type' => 1, 'text' => 'Solar Panels'],
@@ -149,7 +150,7 @@ class SubmitPirepRentalTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function test_pilot_pay_calc_for_rental()
+    public function test_pilot_pay_calc_for_private()
     {
         Sanctum::actingAs(
             $this->user,
@@ -177,7 +178,7 @@ class SubmitPirepRentalTest extends TestCase
         ]);
     }
 
-    public function test_fees_charged_to_pilot_for_rental()
+    public function test_fees_charged_to_pilot_for_private()
     {
         Sanctum::actingAs(
             $this->user,
@@ -211,6 +212,86 @@ class SubmitPirepRentalTest extends TestCase
         $this->assertDatabaseHas('user_accounts', [
             'flight_id' => $this->pirep->id,
             'type' => TransactionTypes::FlightFeesGround
+        ]);
+    }
+
+    public function test_aircraft_position_updated()
+    {
+        Sanctum::actingAs(
+            $this->user,
+            ['*']
+        );
+        $startTime = "05/10/2021 01:00:00";
+        $endTime = "05/10/2021 01:30:00";
+        $fuelCost = 25 * 2.15;
+
+        $data = [
+            'pirep_id' => $this->pirep->id,
+            'fuel_used' => 25,
+            'distance' => 76,
+            'landing_rate' => -149.12,
+            'block_off_time'=> $startTime,
+            'block_on_time' => $endTime
+        ];
+
+        $this->postJson('/api/pirep/submit', $data);
+
+        $this->assertDatabaseHas('aircraft', [
+            'current_airport_id' => $this->pirep->destination_airport_id
+        ]);
+    }
+
+    public function test_user_position_updated()
+    {
+        Sanctum::actingAs(
+            $this->user,
+            ['*']
+        );
+        $startTime = "05/10/2021 01:00:00";
+        $endTime = "05/10/2021 01:30:00";
+        $fuelCost = 25 * 2.15;
+
+        $data = [
+            'pirep_id' => $this->pirep->id,
+            'fuel_used' => 25,
+            'distance' => 76,
+            'landing_rate' => -149.12,
+            'block_off_time'=> $startTime,
+            'block_on_time' => $endTime
+        ];
+
+        $this->postJson('/api/pirep/submit', $data);
+
+        $this->assertDatabaseHas('users', [
+            'id' => $this->user->id,
+            'current_airport_id' => $this->pirep->destination_airport_id
+        ]);
+    }
+
+    public function test_cargo_pision_updated()
+    {
+        Sanctum::actingAs(
+            $this->user,
+            ['*']
+        );
+        $startTime = "05/10/2021 01:00:00";
+        $endTime = "05/10/2021 01:30:00";
+        $fuelCost = 25 * 2.15;
+
+        $data = [
+            'pirep_id' => $this->pirep->id,
+            'fuel_used' => 25,
+            'distance' => 76,
+            'landing_rate' => -149.12,
+            'block_off_time'=> $startTime,
+            'block_on_time' => $endTime
+        ];
+
+        $this->postJson('/api/pirep/submit', $data);
+
+        $this->assertDatabaseHas('contract_cargos', [
+            'id' => $this->contractCargo->id,
+            'current_airport_id' => $this->pirep->destination_airport_id
         ]);
     }
 }
