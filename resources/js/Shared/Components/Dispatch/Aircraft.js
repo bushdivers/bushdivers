@@ -33,7 +33,7 @@ const Aircraft = (props) => {
               {props.aircraft.map((ac) => (
                 <tr key={ac.id} onClick={() => props.handleAircraftSelect(ac)} className={props.selectedAircraft.id === ac.id ? 'bg-orange-200 hover:bg-orange-100' : ''}>
                   <td>
-                    {ac.registration}
+                    <Link href={`/aircraft/${ac.id}`}>{ac.registration}</Link>
                     {ac.is_rental
                       ? <span className="bg-orange-500 text-white rounded ml-2 px-2">Rental</span>
                       : ac.owner_id === auth.user.id ? <span className="bg-orange-500 text-white rounded ml-2 px-2">Private</span> : <></>
