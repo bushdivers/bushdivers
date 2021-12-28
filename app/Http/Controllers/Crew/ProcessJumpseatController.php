@@ -34,9 +34,20 @@ class ProcessJumpseatController extends Controller
     {
         $transactionValue = $request->cost;
 
+        $isCost = true;
+
+        if (Auth::user()->current_airport_id == 'AYMR' && $request->icao == 'PAMX') {
+            $isCost = false;
+        }
+        if (Auth::user()->current_airport_id == 'PAMX' && $request->icao == 'AYMR') {
+            $isCost = false;
+        }
+
         $this->updateUserLocation->execute($request->icao, Auth::user()->id);
 //        $this->userService->updateUserAccountBalance(Auth::user()->id, -$transactionValue);
-        $this->addUserTransaction->execute(Auth::user()->id, TransactionTypes::Jumpseat, -$transactionValue);
+        if ($isCost) {
+            $this->addUserTransaction->execute(Auth::user()->id, TransactionTypes::Jumpseat, -$transactionValue);
+        }
 
         return redirect()->back()->with(['success' => 'Relocated successfully to '.$request->icao.' at a cost of $'.$request->cost]);
     }
