@@ -14,7 +14,7 @@ class CheckUserRank
         $currentRank = Rank::find($user->rank_id);
         if ($nextRank = Rank::find($currentRank->id + 1)) {
             // check users hours and points vs next ranks requirements
-            if ($user->flights_time >= $nextRank->hours && $user->points >= $nextRank->points) {
+            if (($user->flights_time / 60) >= $nextRank->hours && $user->points >= $nextRank->points) {
                 // upgrade to next rank
                 $user->rank_id = $nextRank->id;
                 $user->save();
