@@ -2780,7 +2780,7 @@ var Home = function Home(_ref) {
           children: stats.flights
         })]
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
-        className: "bg-white rounded shadow p-4 md:w-1/4 my-1 mx-2",
+        className: "bg-white rounded shadow p-4 md:w-1/5 my-1 mx-2",
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
           className: "text-gray-600 text-xl",
           children: "Total Hours"
@@ -2789,7 +2789,7 @@ var Home = function Home(_ref) {
           children: (0,_Helpers_date_helpers__WEBPACK_IMPORTED_MODULE_4__.convertMinuteDecimalToHoursAndMinutes)(stats.hours)
         })]
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
-        className: "bg-white rounded shadow p-4 md:w-1/4 my-1 mx-2",
+        className: "bg-white rounded shadow p-4 md:w-1/5 my-1 mx-2",
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
           className: "text-gray-600 text-xl",
           children: "Total Pilots"
@@ -2798,7 +2798,16 @@ var Home = function Home(_ref) {
           children: stats.pilots
         })]
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
-        className: "bg-white rounded shadow p-4 md:w-1/4 my-1 mx-2s",
+        className: "bg-white rounded shadow p-4 md:w-1/5 my-1 mx-2",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
+          className: "text-gray-600 text-xl",
+          children: "Regions"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
+          className: "text-4xl",
+          children: "2"
+        })]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+        className: "bg-white rounded shadow p-4 md:w-1/5 my-1 mx-2",
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
           className: "text-gray-600 text-xl",
           children: "Hubs"

@@ -27,15 +27,19 @@ const Home = ({ stats }) => {
           <div className="text-gray-600 text-xl">Total Flights</div>
           <div className="text-4xl">{stats.flights}</div>
         </div>
-        <div className="bg-white rounded shadow p-4 md:w-1/4 my-1 mx-2">
+        <div className="bg-white rounded shadow p-4 md:w-1/5 my-1 mx-2">
           <div className="text-gray-600 text-xl">Total Hours</div>
           <div className="text-4xl">{convertMinuteDecimalToHoursAndMinutes(stats.hours)}</div>
         </div>
-        <div className="bg-white rounded shadow p-4 md:w-1/4 my-1 mx-2">
+        <div className="bg-white rounded shadow p-4 md:w-1/5 my-1 mx-2">
           <div className="text-gray-600 text-xl">Total Pilots</div>
           <div className="text-4xl">{stats.pilots}</div>
         </div>
-        <div className="bg-white rounded shadow p-4 md:w-1/4 my-1 mx-2s">
+        <div className="bg-white rounded shadow p-4 md:w-1/5 my-1 mx-2">
+          <div className="text-gray-600 text-xl">Regions</div>
+          <div className="text-4xl">2</div>
+        </div>
+        <div className="bg-white rounded shadow p-4 md:w-1/5 my-1 mx-2">
           <div className="text-gray-600 text-xl">Hubs</div>
           <div className="text-4xl">{stats.hubs}</div>
         </div>

@@ -65,8 +65,9 @@ const LiveFlightMap = (props) => {
     map.current = new maplibre.Map({
       container: mapContainer.current,
       style: 'mapbox://styles/mapbox/dark-v10',
-      center: [143.23070, -6.36188],
-      zoom: 5,
+      // center: [143.23070, -6.36188],
+      center: [165.272614, 29.530900],
+      zoom: 2,
       accessToken
     })
 
