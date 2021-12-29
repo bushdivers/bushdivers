@@ -17,12 +17,11 @@ class FindAirportsInNeedOfContracts
         $this->generateContracts = $generateContracts;
     }
 
-    public function execute()
+    public function execute($country)
     {
         // find all airports in PNG area
         try {
-            $airports = Airport::where('lat', '<', 0)
-                ->whereIn('country', ['ID', 'PG'])
+            $airports = Airport::where('country', $country)
                 ->get();
 
             foreach ($airports as $airport) {

@@ -18,7 +18,6 @@ class FindAirportsWithinDistance
         $results = DB::table('airports')
             ->select('identifier', 'lat', 'lon', 'magnetic_variance')
             ->where('identifier', '<>', $originAirport->identifier)
-            ->whereIn('country', ['PG', 'ID'])
             ->whereBetween('lat', [$minLat, $maxLat])
             ->whereBetween('lon', [$minLon, $maxLon])
             ->get();
