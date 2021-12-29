@@ -44,7 +44,6 @@ class ProcessJumpseatController extends Controller
         }
 
         $this->updateUserLocation->execute($request->icao, Auth::user()->id);
-//        $this->userService->updateUserAccountBalance(Auth::user()->id, -$transactionValue);
         if ($isCost) {
             $this->addUserTransaction->execute(Auth::user()->id, TransactionTypes::Jumpseat, -$transactionValue);
         }
