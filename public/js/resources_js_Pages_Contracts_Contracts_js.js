@@ -3101,6 +3101,9 @@ var Contracts = function Contracts(_ref) {
                           children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_6__.Link, {
                             href: "/airports/".concat(contract.dep_airport_id),
                             children: contract.dep_airport_id
+                          }), contract.dep_airport.longest_runway_surface, " ", contract.dep_airport.longest_runway_surface === 'W' && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("span", {
+                            className: "material-icons",
+                            children: "anchor"
                           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("br", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("span", {
                             className: "text-xs",
                             children: contract.dep_airport.name
@@ -3115,6 +3118,9 @@ var Contracts = function Contracts(_ref) {
                           children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_6__.Link, {
                             href: "/airports/".concat(contract.arr_airport_id),
                             children: contract.arr_airport_id
+                          }), " ", contract.arr_airport.longest_runway_surface === 'W' && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("span", {
+                            className: "material-icons",
+                            children: "anchor"
                           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("br", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("span", {
                             className: "text-xs",
                             children: contract.arr_airport.name

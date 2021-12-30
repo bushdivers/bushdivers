@@ -29,7 +29,7 @@ const AirportDetail = ({ airport, metar, aircraft }) => {
       </div>
       { !airport
         ? <PageTitle title="Airport Search" />
-        : <PageTitle title={`${airport.name} - ${airport.identifier}`} />
+        : <PageTitle title={`${airport.name} - ${airport.identifier} `} />
       }
       { airport && (
       <div className="flex flex-col lg:flex-row justify-between">
@@ -38,7 +38,7 @@ const AirportDetail = ({ airport, metar, aircraft }) => {
             <div className="flex justify-between overflow-x-auto">
               <div className="flex flex-col items-center my-2 mx-4">
                 <div className="text-sm">ICAO</div>
-                <div className="text-xl">{airport.identifier}</div>
+                <div className="text-xl">{airport.identifier} {airport.longest_runway_surface === 'W' && <span className="material-icons md-18">anchor</span>}</div>
               </div>
               <div className="flex flex-col items-center my-2 mx-4">
                 <div className="text-sm">Size</div>

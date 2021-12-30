@@ -48,7 +48,7 @@ const Cargo = (props) => {
                     <td><button className="btn btn-secondary btn-small" onClick={() => props.splitCargo(detail)}>Split</button></td>
                     <td>{detail.id}</td>
                     <td>{detail.current_airport_id}</td>
-                    <td>{detail.contract.arr_airport_id}</td>
+                    <td>{detail.contract.arr_airport_id} {detail.contract.arr_airport.longest_runway_surface === 'W' && <span className="material-icons md-18">anchor</span>}</td>
                     <td>{detail.contract.distance} nm</td>
                     <td>
                       <div className="flex items-center">

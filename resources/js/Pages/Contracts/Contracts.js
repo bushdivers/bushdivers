@@ -161,13 +161,13 @@ const Contracts = ({ contracts, airport }) => {
                       <tr key={contract.id} onClick={() => updateSelectedContract(contract)} className={contract.id === selectedContract.id ? 'bg-orange-200 hover:bg-orange-100' : ''}>
                         <td>
                            <Tooltip content={<AirportToolTip airport={contract.dep_airport} />} direction="top">
-                            <Link href={`/airports/${contract.dep_airport_id}`}>{contract.dep_airport_id}</Link><br/>
-                            <span className="text-xs">{contract.dep_airport.name}</span>
+                            <Link href={`/airports/${contract.dep_airport_id}`}>{contract.dep_airport_id}</Link>{contract.dep_airport.longest_runway_surface} {contract.dep_airport.longest_runway_surface === 'W' && <span className="material-icons">anchor</span>}<br/>
+                             <span className="text-xs">{contract.dep_airport.name}</span>
                            </Tooltip>
                         </td>
                         <td>
                            <Tooltip content={<AirportToolTip airport={contract.arr_airport} />} direction="top">
-                            <Link href={`/airports/${contract.arr_airport_id}`}>{contract.arr_airport_id}</Link><br/>
+                            <Link href={`/airports/${contract.arr_airport_id}`}>{contract.arr_airport_id}</Link> {contract.arr_airport.longest_runway_surface === 'W' && <span className="material-icons">anchor</span>}<br/>
                             <span className="text-xs">{contract.arr_airport.name}</span>
                            </Tooltip>
                         </td>
