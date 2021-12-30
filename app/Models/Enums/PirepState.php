@@ -8,6 +8,7 @@ class PirepState
     public const IN_PROGRESS = 2;
     public const ACCEPTED = 3;
     public const REJECTED = 4;
+    public const REVIEW = 5;
 
     public static $labels = [
         self::DISPATCH => 'Dispatch',
