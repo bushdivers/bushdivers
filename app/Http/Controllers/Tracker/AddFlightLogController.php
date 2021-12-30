@@ -21,7 +21,7 @@ class AddFlightLogController extends Controller
      */
     public function __invoke(Request $request): JsonResponse
     {
-        $pirep = Pirep::find($request->pirep_id);
+        $pirep = Pirep::findOrFail($request->pirep_id);
         $logs = FlightLog::where('pirep_id', $request->pirep_id)->get();
         if ($logs->count() < 1) {
             $pirep->state = PirepState::IN_PROGRESS;
