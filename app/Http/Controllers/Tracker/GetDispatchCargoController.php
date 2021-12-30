@@ -24,6 +24,9 @@ class GetDispatchCargoController extends Controller
             ->where('state', PirepState::DISPATCH)
             ->first();
 
+        $dispatch->state = PirepState::IN_PROGRESS;
+        $dispatch->save();
+
         $cargo = DB::table('pirep_cargos')
             ->join('contract_cargos', 'pirep_cargos.contract_cargo_id', '=', 'contract_cargos.id')
             ->where('pirep_cargos.pirep_id', $dispatch->id)
