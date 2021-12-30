@@ -5,7 +5,7 @@ import DispatchSummary from '../../Shared/Components/Dispatch/DispatchSummary'
 import { Inertia } from '@inertiajs/inertia'
 
 const ActiveDispatch = ({ cargo, aircraft, cargoWeight, fuelWeight, passengerCount, pirep }) => {
-  const personWeight = 80.00
+  const personWeight = 170.00
 
   function handleCancel () {
     const res = window.confirm('You have an active flight, if you cancel now you will lose all progress')

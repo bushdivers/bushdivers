@@ -2756,7 +2756,7 @@ var ActiveDispatch = function ActiveDispatch(_ref) {
       fuelWeight = _ref.fuelWeight,
       passengerCount = _ref.passengerCount,
       pirep = _ref.pirep;
-  var personWeight = 80.00;
+  var personWeight = 170.00;
 
   function handleCancel() {
     var res = window.confirm('You have an active flight, if you cancel now you will lose all progress');
