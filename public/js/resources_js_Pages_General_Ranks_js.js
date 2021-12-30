@@ -3518,6 +3518,15 @@ var PrivateLeftNav = function PrivateLeftNav(props) {
                   children: "Flight Dispatch"
                 });
               }
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_headlessui_react__WEBPACK_IMPORTED_MODULE_6__.Menu.Item, {
+              children: function children(_ref13) {
+                var active = _ref13.active;
+                return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Link, {
+                  href: "/pireps/submit",
+                  className: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50",
+                  children: "Submit Pirep"
+                });
+              }
             })]
           })
         })]

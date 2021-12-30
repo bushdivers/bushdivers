@@ -2781,6 +2781,12 @@ var LogbookDetail = function LogbookDetail(_ref) {
       title: "Pilot Report - ".concat(pirep.id)
     }), submittedDate, " ", auth.user.is_admin && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("span", {
       children: [pirep.pilot.pilot_id, " - ", pirep.pilot.private_name]
+    }), pirep.state === 5 ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("span", {
+      className: "bg-orange-500 px-2 ml-2 text-white text-sm rounded",
+      children: "Review"
+    }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("span", {
+      className: "bg-green-500 px-2 ml-2 text-white text-sm rounded",
+      children: "Completed"
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
       className: "flex flex-col md:flex-row justify-between",
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
@@ -3472,6 +3478,15 @@ var PrivateLeftNav = function PrivateLeftNav(props) {
                   href: "/dispatch",
                   className: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50",
                   children: "Flight Dispatch"
+                });
+              }
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_headlessui_react__WEBPACK_IMPORTED_MODULE_6__.Menu.Item, {
+              children: function children(_ref13) {
+                var active = _ref13.active;
+                return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Link, {
+                  href: "/pireps/submit",
+                  className: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50",
+                  children: "Submit Pirep"
                 });
               }
             })]

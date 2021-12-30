@@ -32,6 +32,8 @@ const Pireps = ({ pireps }) => {
         return 'Accepted'
       case 4:
         return 'Rejected'
+      case 5:
+        return 'Review'
     }
   }
 
@@ -41,6 +43,10 @@ const Pireps = ({ pireps }) => {
 
   function handleSearch () {
     if (pirepId !== '') Inertia.get(`/logbook/${pirepId}`)
+  }
+
+  function approvePirep (entry) {
+    Inertia.post('/pireps/approve', { pirep_id: entry.id })
   }
 
   return (
@@ -68,12 +74,16 @@ const Pireps = ({ pireps }) => {
                   <th>Pilot</th>
                   <th>State</th>
                   <th>Date</th>
+                  <th></th>
                 </tr>
                 </thead>
                 <tbody>
                 {pireps.data.map((entry) => (
                   <tr key={entry.id}>
-                    <td className="text-orange-500 hover:underline" onClick={() => loadPirep(entry)}>View Details</td>
+                    <td className="text-orange-500 hover:underline" onClick={() => loadPirep(entry)}>
+                      View Details
+                      {entry.state === 5 && <span className="bg-orange-500 px-2 ml-2 text-white text-sm rounded">Review</span>}
+                    </td>
                     <td>
                       {entry.departure_airport_id}<br/>
                       <span className="text-xs">{entry.dep_airport.name}</span>
@@ -94,6 +104,9 @@ const Pireps = ({ pireps }) => {
                       {renderPirepState(entry.state)}
                     </td>
                     <td>{format(new Date(entry.submitted_at), 'dd LLL yyyy')}</td>
+                    <td>
+                      {entry.state === 5 && <span onClick={() => approvePirep(entry)} className="p-1 hover:rounded hover:shadow material-icons">check</span>}
+                    </td>
                   </tr>
                 ))}
                 </tbody>

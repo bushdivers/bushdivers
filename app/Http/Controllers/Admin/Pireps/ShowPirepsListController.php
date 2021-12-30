@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin\Pireps;
 
 use App\Http\Controllers\Controller;
+use App\Models\Enums\PirepState;
 use App\Models\Pirep;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -19,6 +20,8 @@ class ShowPirepsListController extends Controller
     public function __invoke(Request $request): Response
     {
         $pireps = Pirep::with('depAirport', 'arrAirport', 'aircraft', 'aircraft.fleet', 'pilot')
+            ->whereIn('state', [PirepState::ACCEPTED, PirepState::REVIEW])
+            ->orderBy('state', 'desc')
             ->orderBy('submitted_at', 'desc')
             ->paginate(10);
 

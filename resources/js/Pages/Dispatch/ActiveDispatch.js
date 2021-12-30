@@ -17,6 +17,7 @@ const ActiveDispatch = ({ cargo, aircraft, cargoWeight, fuelWeight, passengerCou
   return (
     <div>
       <PageTitle title="Current Dispatch" />
+      <p>{pirep.id}</p>
       {pirep.state === 2 && <div><span className="text-orange-500">Current flight in progress</span></div>}
       <div className="flex flex-col md:flex-row justify-between">
         <div className="md:mr-2 md:w-1/2">

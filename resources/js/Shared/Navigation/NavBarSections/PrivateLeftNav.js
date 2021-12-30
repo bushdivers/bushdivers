@@ -93,6 +93,9 @@ const PrivateLeftNav = (props) => {
               <Menu.Item>
                 {({ active }) => <Link href="/dispatch" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Flight Dispatch</Link>}
               </Menu.Item>
+              <Menu.Item>
+                {({ active }) => <Link href="/pireps/submit" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Submit Pirep</Link>}
+              </Menu.Item>
             </Menu.Items>
           </Transition>
         </Menu>

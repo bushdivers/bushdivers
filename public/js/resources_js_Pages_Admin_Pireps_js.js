@@ -2804,6 +2804,9 @@ var Pireps = function Pireps(_ref) {
 
       case 4:
         return 'Rejected';
+
+      case 5:
+        return 'Review';
     }
   };
 
@@ -2813,6 +2816,12 @@ var Pireps = function Pireps(_ref) {
 
   function handleSearch() {
     if (pirepId !== '') _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_6__.Inertia.get("/logbook/".concat(pirepId));
+  }
+
+  function approvePirep(entry) {
+    _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_6__.Inertia.post('/pireps/approve', {
+      pirep_id: entry.id
+    });
   }
 
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
@@ -2865,17 +2874,20 @@ var Pireps = function Pireps(_ref) {
                 children: "State"
               }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("th", {
                 children: "Date"
-              })]
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("th", {})]
             })
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("tbody", {
             children: pireps.data.map(function (entry) {
               return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("tr", {
-                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("td", {
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("td", {
                   className: "text-orange-500 hover:underline",
                   onClick: function onClick() {
                     return loadPirep(entry);
                   },
-                  children: "View Details"
+                  children: ["View Details", entry.state === 5 && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("span", {
+                    className: "bg-orange-500 px-2 ml-2 text-white text-sm rounded",
+                    children: "Review"
+                  })]
                 }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("td", {
                   children: [entry.departure_airport_id, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("br", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("span", {
                     className: "text-xs",
@@ -2904,6 +2916,14 @@ var Pireps = function Pireps(_ref) {
                   children: renderPirepState(entry.state)
                 }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("td", {
                   children: (0,date_fns__WEBPACK_IMPORTED_MODULE_8__.default)(new Date(entry.submitted_at), 'dd LLL yyyy')
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("td", {
+                  children: entry.state === 5 && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("span", {
+                    onClick: function onClick() {
+                      return approvePirep(entry);
+                    },
+                    className: "p-1 hover:rounded hover:shadow material-icons",
+                    children: "check"
+                  })
                 })]
               }, entry.id);
             })
@@ -3676,6 +3696,15 @@ var PrivateLeftNav = function PrivateLeftNav(props) {
                   href: "/dispatch",
                   className: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50",
                   children: "Flight Dispatch"
+                });
+              }
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_headlessui_react__WEBPACK_IMPORTED_MODULE_6__.Menu.Item, {
+              children: function children(_ref13) {
+                var active = _ref13.active;
+                return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Link, {
+                  href: "/pireps/submit",
+                  className: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50",
+                  children: "Submit Pirep"
                 });
               }
             })]

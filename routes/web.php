@@ -116,6 +116,12 @@ Route::middleware('auth')->group(function () {
         ->name('contracts.custom');
     Route::post('/contracts/cancel', \App\Http\Controllers\Contracts\CancelContractController::class)
         ->name('contracts.cancel');
+    Route::get('/pireps/submit', \App\Http\Controllers\Pireps\ShowPirepSubmissionController::class)
+        ->name('pireps.submit');
+    Route::post('/pireps/submit', \App\Http\Controllers\Pireps\ProcessPirepSubmissionController::class)
+        ->name('pireps.process');
+    Route::post('/pireps/approve', \App\Http\Controllers\Pireps\ApprovePirepController::class)
+        ->name('pireps.approve');
 
     Route::middleware('admin')->group(function () {
         Route::get('/admin/pireps', \App\Http\Controllers\Admin\Pireps\ShowPirepsListController::class)

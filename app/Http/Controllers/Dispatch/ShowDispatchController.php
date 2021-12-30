@@ -46,7 +46,7 @@ class ShowDispatchController extends Controller
     {
         // check for existing Pirep
         $pirep = Pirep::where('user_id', Auth::user()->id)
-            ->where('state', '<>', PirepState::ACCEPTED)
+            ->whereNotIn('state', [PirepState::ACCEPTED, PirepState::REVIEW])
             ->first();
 
         if ($pirep) {
