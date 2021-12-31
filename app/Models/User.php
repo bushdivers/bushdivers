@@ -70,6 +70,12 @@ class User extends Authenticatable
         return $bookings->count();
     }
 
+    public function getRank()
+    {
+        return Rank::find($this->rank_id);
+
+    }
+
     public function getUserRolesAttribute()
     {
         $r = [];

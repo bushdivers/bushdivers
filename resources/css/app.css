@@ -2,16 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 
-a {
-    @apply text-orange-500;
+.link {
+    @apply text-orange-400;
 }
 
-a:hover {
+.link:hover {
     text-decoration: underline;
 }
 
-ul {
+ul.disc {
     @apply list-disc list-inside;
+}
+
+h1 {
+    @apply text-lg;
 }
 
 .material-icons {
@@ -235,4 +239,8 @@ ul {
 
 .map-container-xl {
     height: calc(100vh - 200px);
+}
+
+.map-container-full {
+    height: calc(100vh - 6rem);
 }
