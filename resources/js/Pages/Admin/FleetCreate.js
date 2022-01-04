@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
-import Layout from '../../Shared/Layout'
 import PageTitle from '../../Shared/Navigation/PageTitle'
 import { usePage } from '@inertiajs/inertia-react'
 import { Inertia } from '@inertiajs/inertia'
+import AppLayout from '../../Shared/AppLayout'
 
 const FleetCreate = () => {
   const { errors } = usePage().props
@@ -39,7 +39,7 @@ const FleetCreate = () => {
   }
 
   return (
-    <div>
+    <div className="p-4">
       <PageTitle title="Create Fleet" />
       <div className="lg:w-1/2 bg-white mt-2 p-4 rounded shadow">
         <form onSubmit={handleSubmit}>
@@ -132,6 +132,6 @@ const FleetCreate = () => {
   )
 }
 
-FleetCreate.layout = page => <Layout children={page} title="Admin - Create Fleet" />
+FleetCreate.layout = page => <AppLayout children={page} title="Admin - Create Fleet" heading="Create Fleet" />
 
 export default FleetCreate

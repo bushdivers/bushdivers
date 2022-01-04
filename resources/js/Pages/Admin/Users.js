@@ -1,13 +1,13 @@
 import React from 'react'
 import PageTitle from '../../Shared/Navigation/PageTitle'
-import Layout from '../../Shared/Layout'
 import { format } from 'date-fns'
 import Pagination from '../../Shared/Elements/Pagination'
 import { Link } from '@inertiajs/inertia-react'
+import AppLayout from '../../Shared/AppLayout'
 
 const Users = ({ users }) => {
   return (
-    <div>
+    <div className="p-4">
       <PageTitle title="Users" />
       <div className="bg-white rounded shadow overflow-x-auto">
         <table className="table table-auto">
@@ -68,6 +68,6 @@ const Users = ({ users }) => {
   )
 }
 
-Users.layout = page => <Layout children={page} title="Admin - Users" />
+Users.layout = page => <AppLayout children={page} title="Admin - Users" heading="Users" />
 
 export default Users

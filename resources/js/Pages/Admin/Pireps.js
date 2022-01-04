@@ -1,11 +1,10 @@
 import React, { useState } from 'react'
-import Layout from '../../Shared/Layout'
 import PageTitle from '../../Shared/Navigation/PageTitle'
 import NoContent from '../../Shared/Elements/NoContent'
-import { convertMinuteDecimalToHoursAndMinutes } from '../../Helpers/date.helpers'
 import { format } from 'date-fns'
 import Pagination from '../../Shared/Elements/Pagination'
 import { Inertia } from '@inertiajs/inertia'
+import AppLayout from '../../Shared/AppLayout'
 
 const EmptyData = () => {
   return (
@@ -50,7 +49,7 @@ const Pireps = ({ pireps }) => {
   }
 
   return (
-    <div>
+    <div className="p-4">
       <PageTitle title="Pireps" />
       <div className="bg-white rounded shadow overflow-x-auto">
         {pireps.length === 0
@@ -120,6 +119,6 @@ const Pireps = ({ pireps }) => {
   )
 }
 
-Pireps.layout = page => <Layout children={page} title="Admin - Pireps" />
+Pireps.layout = page => <AppLayout children={page} title="Admin - Pireps" heading="Pireps" />
 
 export default Pireps

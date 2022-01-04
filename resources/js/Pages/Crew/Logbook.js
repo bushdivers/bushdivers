@@ -1,13 +1,11 @@
 import React from 'react'
-import PageTitle from '../../Shared/Navigation/PageTitle'
-import Layout from '../../Shared/Layout'
 import NoContent from '../../Shared/Elements/NoContent'
 import { Link } from '@inertiajs/inertia-react'
-// import Tooltip from '../../Shared/Elements/Tooltip'
 import { convertMinuteDecimalToHoursAndMinutes } from '../../Helpers/date.helpers'
 import { format } from 'date-fns'
 import { Inertia } from '@inertiajs/inertia'
 import Pagination from '../../Shared/Elements/Pagination'
+import AppLayout from '../../Shared/AppLayout'
 
 const EmptyData = () => {
   return (
@@ -24,8 +22,7 @@ const Logbook = ({ logbook }) => {
   }
 
   return (
-    <div>
-      <PageTitle title="Logbook" />
+    <div className="p-4">
       <p className="text-sm mb-1">{logbook.length > 0 && <span>Total pireps: {logbook.length} </span> } </p>
       <div className="bg-white rounded shadow overflow-x-auto">
         {logbook.length === 0
@@ -81,6 +78,6 @@ const Logbook = ({ logbook }) => {
   )
 }
 
-Logbook.layout = page => <Layout children={page} title="Logbook" />
+Logbook.layout = page => <AppLayout children={page} title="Logbook" heading="Logbook" />
 
 export default Logbook

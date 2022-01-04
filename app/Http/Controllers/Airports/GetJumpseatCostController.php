@@ -25,6 +25,16 @@ class GetJumpseatCostController extends Controller
     public function __invoke(Request $request, $from, $to): JsonResponse
     {
         $jump = $this->calcCostOfJumpseat->execute($from, $to);
-        return response()->json(['cost' => $jump['cost'], 'distance' => $jump['distance']]);
+        $cost = $jump['cost'];
+        $distance = $jump['distance'];
+        if ($from == 'AYMR' && $to == 'PAMX') {
+            $cost = 0.00;
+        }
+
+        if ($from == 'PAMX' && $to == 'AYMR') {
+            $cost = 0.00;
+        }
+
+        return response()->json(['cost' => $cost, 'distance' => $distance]);
     }
 }

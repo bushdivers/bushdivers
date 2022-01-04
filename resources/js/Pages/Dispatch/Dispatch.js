@@ -1,6 +1,4 @@
 import React, { useState } from 'react'
-import Layout from '../../Shared/Layout'
-import PageTitle from '../../Shared/Navigation/PageTitle'
 // import NoContent from '../../Shared/Elements/NoContent'
 import axios from 'axios'
 import { usePage } from '@inertiajs/inertia-react'
@@ -10,6 +8,7 @@ import Fuel from '../../Shared/Components/Dispatch/Fuel'
 import Cargo from '../../Shared/Components/Dispatch/Cargo'
 import Aircraft from '../../Shared/Components/Dispatch/Aircraft'
 import { Inertia } from '@inertiajs/inertia'
+import AppLayout from '../../Shared/AppLayout'
 
 const Dispatch = ({ cargo, aircraft }) => {
   const { auth } = usePage().props
@@ -180,8 +179,8 @@ const Dispatch = ({ cargo, aircraft }) => {
   }
 
   return (
-    <div>
-      <PageTitle title={`Dispatch - ${auth.user.current_airport_id}`} />
+    <div className="p-4">
+      <h1>{`Dispatch - ${auth.user.current_airport_id}`}</h1>
       <div className="flex flex-col md:flex-row justify-between mt-4">
         <div className="md:w-1/2">
           <Aircraft aircraft={aircraft} selectedAircraft={selectedAircraft} handleAircraftSelect={handleAircraftSelect} />
@@ -213,6 +212,6 @@ const Dispatch = ({ cargo, aircraft }) => {
   )
 }
 
-Dispatch.layout = page => <Layout children={page} title="Dispatch" />
+Dispatch.layout = page => <AppLayout children={page} title="Dispatch" heading="Flight Dispatch" />
 
 export default Dispatch

@@ -9,9 +9,9 @@ const Dashboard = ({ lastFlight, user, locations }) => {
   return (
     <div className="relative">
       <CrewMap size="full" locations={locations && locations.length > 0 ? locations : []} />
-      <div className="absolute z-30 bg-gray-800 w-1/3 text-white opacity-80 h-auto top-4 left-4 p-4 rounded shadow">
+      <div className="absolute z-30 bg-gray-800 w-1/2 md:w-1/3 text-white opacity-80 h-auto top-4 left-4 p-4 rounded shadow">
         <div>
-          <div className="text-lg flex flex-col md:flex-row items-center justify-between mb-2">
+          <div className="text-lg flex flex-col md:flex-row items-start md:items-center justify-between mb-2">
             <div className="flex items-center">
               <i className="material-icons mr-2 md-36">flight_land</i> Last Flight
             </div>

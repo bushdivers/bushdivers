@@ -1,8 +1,7 @@
 import React from 'react'
-import Layout from '../../Shared/Layout'
-import PageTitle from '../../Shared/Navigation/PageTitle'
 import DispatchSummary from '../../Shared/Components/Dispatch/DispatchSummary'
 import { Inertia } from '@inertiajs/inertia'
+import AppLayout from '../../Shared/AppLayout'
 
 const ActiveDispatch = ({ cargo, aircraft, cargoWeight, fuelWeight, passengerCount, pirep }) => {
   const personWeight = 170.00
@@ -15,8 +14,7 @@ const ActiveDispatch = ({ cargo, aircraft, cargoWeight, fuelWeight, passengerCou
   }
 
   return (
-    <div>
-      <PageTitle title="Current Dispatch" />
+    <div className="p-4">
       <p>{pirep.id}</p>
       {pirep.state === 2 && <div><span className="text-orange-500">Current flight in progress</span></div>}
       <div className="flex flex-col md:flex-row justify-between">
@@ -87,6 +85,6 @@ const ActiveDispatch = ({ cargo, aircraft, cargoWeight, fuelWeight, passengerCou
   )
 }
 
-ActiveDispatch.layout = page => <Layout children={page} title="Active Dispatch" />
+ActiveDispatch.layout = page => <AppLayout children={page} title="Active Dispatch" heading="Active Dispatch" />
 
 export default ActiveDispatch

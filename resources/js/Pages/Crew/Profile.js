@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
-import PageTitle from '../../Shared/Navigation/PageTitle'
-import Layout from '../../Shared/Layout'
 import { Inertia } from '@inertiajs/inertia'
 import { Link, usePage } from '@inertiajs/inertia-react'
 import ApiKey from '../../Shared/Components/Crew/ApiKey'
+import { convertMinuteDecimalToHoursAndMinutes } from '../../Helpers/date.helpers'
+import AppLayout from '../../Shared/AppLayout'
 
 const Profile = ({ profile, hubs, rank, nextRank, awards }) => {
   const { errors } = usePage().props
@@ -32,8 +32,7 @@ const Profile = ({ profile, hubs, rank, nextRank, awards }) => {
   }
 
   return (
-    <div>
-      <PageTitle title="Profile" />
+    <div className="p-4">
       <div className="flex flex-col md:flex-row justify-between md:items-start">
         <div className="bg-white rounded shadow mt-4 p-4 md:w-1/2">
           <form onSubmit={handleSubmit}>
@@ -120,6 +119,6 @@ const Profile = ({ profile, hubs, rank, nextRank, awards }) => {
   )
 }
 
-Profile.layout = page => <Layout children={page} title="Profile" />
+Profile.layout = page => <AppLayout children={page} title="Profile" heading="Profile" />
 
 export default Profile

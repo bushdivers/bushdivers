@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
-import Layout from '../../Shared/Layout'
-import PageTitle from '../../Shared/Navigation/PageTitle'
 import { usePage } from '@inertiajs/inertia-react'
 import { Inertia } from '@inertiajs/inertia'
+import AppLayout from '../../Shared/AppLayout'
 
 const Submission = () => {
   const { errors } = usePage().props
@@ -28,8 +27,7 @@ const Submission = () => {
   }
 
   return (
-    <div>
-      <PageTitle title="Submit Manual Pirep" />
+    <div className="p-4">
       <p>This page is for submitting pireps manually, in case Bush Tracker is unable to submit a pirep. All submission will be reviewed by management</p>
       <div className="bg-white rounded shadow p-4 mt-4">
         <div className="w-1/2">
@@ -62,6 +60,6 @@ const Submission = () => {
   )
 }
 
-Submission.layout = page => <Layout children={page} title="Submit Pirep" />
+Submission.layout = page => <AppLayout children={page} title="Submit Pirep" heading="Submit Manual Pirep" />
 
 export default Submission

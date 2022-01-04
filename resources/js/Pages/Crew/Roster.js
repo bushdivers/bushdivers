@@ -1,14 +1,12 @@
 import React from 'react'
-import PageTitle from '../../Shared/Navigation/PageTitle'
-import Layout from '../../Shared/Layout'
 import { Link } from '@inertiajs/inertia-react'
 import Tooltip from '../../Shared/Elements/Tooltip'
 import { convertMinuteDecimalToHoursAndMinutes } from '../../Helpers/date.helpers'
+import AppLayout from '../../Shared/AppLayout'
 
 const Roster = ({ roster }) => {
   return (
-    <div>
-      <PageTitle title="Roster" />
+    <div className="p-4">
       <div className="rounded shadow bg-white mt-4 overflow-x-auto">
         <div>
           <table className="table table-auto">
@@ -63,6 +61,6 @@ const Roster = ({ roster }) => {
   )
 }
 
-Roster.layout = page => <Layout children={page} title="Roster" />
+Roster.layout = page => <AppLayout children={page} title="Roster" heading="Pilot Roster" />
 
 export default Roster

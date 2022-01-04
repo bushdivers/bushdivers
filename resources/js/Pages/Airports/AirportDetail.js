@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
-import Layout from '../../Shared/Layout'
-import PageTitle from '../../Shared/Navigation/PageTitle'
 import AirportMap from '../../Shared/Components/Airport/AirportMap'
 import { Link } from '@inertiajs/inertia-react'
+import AppLayout from '../../Shared/AppLayout'
 
 const AirportDetail = ({ airport, metar, aircraft }) => {
   const [icao, setIcao] = useState()
@@ -22,14 +21,14 @@ const AirportDetail = ({ airport, metar, aircraft }) => {
     }
   }
   return (
-    <>
+    <div className="p-4">
       <div className="w-1/6 mb-2 flex items-center">
         <input id="airport" type="text" placeholder="ICAO" className="form-input form inline-block" value={icao} onChange={handleAirportChange} />
         <Link href={`/airports/${icao}`} className="ml-2 btn btn-secondary">Go</Link>
       </div>
       { !airport
-        ? <PageTitle title="Airport Search" />
-        : <PageTitle title={`${airport.name} - ${airport.identifier} `} />
+        ? <h1>Airport Search</h1>
+        : <h1>{airport.name} - {airport.identifier}</h1>
       }
       { airport && (
       <div className="flex flex-col lg:flex-row justify-between">
@@ -115,10 +114,10 @@ const AirportDetail = ({ airport, metar, aircraft }) => {
         </div>
       </div>
       )}
-    </>
+    </div>
   )
 }
 
-AirportDetail.layout = page => <Layout children={page} title="Airport Details" />
+AirportDetail.layout = page => <AppLayout children={page} title="Airport Details" heading="Airport Details" />
 
 export default AirportDetail

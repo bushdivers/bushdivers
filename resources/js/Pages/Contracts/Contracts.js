@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import PageTitle from '../../Shared/Navigation/PageTitle'
-import Layout from '../../Shared/Layout'
 import NoContent from '../../Shared/Elements/NoContent'
 import Tooltip from '../../Shared/Elements/Tooltip'
 import { Link, usePage } from '@inertiajs/inertia-react'
@@ -9,6 +7,7 @@ import ContractMap from '../../Shared/Components/Contracts/ContractMap'
 import { Inertia } from '@inertiajs/inertia'
 import CargoDetails from '../../Shared/Components/Contracts/CargoDetails'
 import CustomContract from '../../Shared/Components/Contracts/CustomContract'
+import AppLayout from '../../Shared/AppLayout'
 
 const EmptyData = (props) => {
   return (
@@ -95,8 +94,8 @@ const Contracts = ({ contracts, airport }) => {
   }
 
   return (
-    <div>
-      <PageTitle title={title} />
+    <div className="p-4">
+      <h1>{title}</h1>
       <div className="flex flex-col lg:flex-row justify-between mt-4">
         <div className="lg:w-2/3 lg:mr-2">
           <div className="rounded shadow bg-white p-4">
@@ -226,6 +225,6 @@ const Contracts = ({ contracts, airport }) => {
   )
 }
 
-Contracts.layout = page => <Layout children={page} title="Find a Contract" />
+Contracts.layout = page => <AppLayout children={page} title="Find a Contract" heading="Find a Contract" />
 
 export default Contracts

@@ -1,15 +1,12 @@
 import React from 'react'
-import Layout from '../../Shared/Layout'
-import PageTitle from '../../Shared/Navigation/PageTitle'
 import dayjs from '../../Helpers/date.helpers'
 import { Link } from '@inertiajs/inertia-react'
 import Pagination from '../../Shared/Elements/Pagination'
+import AppLayout from '../../Shared/AppLayout'
 
 const CompletedContracts = ({ contracts }) => {
   return (
-    <div>
-      <PageTitle title="My Completed Contracts" />
-      <div className="mt-4">{contracts ? <span>{contracts.length} completed contracts</span> : <span>No completed contracts</span>}</div>
+    <div className="p-4">
       <div className="mt-1">
         {contracts && contracts.data.map((contract) => (
           <div key={contract.id} className="mt-1 shadow rounded bg-white py-4 px-8 overflow-x-auto">
@@ -69,6 +66,6 @@ const CompletedContracts = ({ contracts }) => {
   )
 }
 
-CompletedContracts.layout = page => <Layout children={page} title="Completed Contracts" />
+CompletedContracts.layout = page => <AppLayout children={page} title="Completed Contracts" heading="Completed Contracts" />
 
 export default CompletedContracts

@@ -25,7 +25,7 @@ export default function AppLayout ({ children, title, heading }) {
               {flash.success && <FlashMessage type="success" message={flash.success} />}
               {children}
             </div>
-            <AppFooter />
+            {/*<AppFooter />*/}
           </main>
         </div>
   )

@@ -78,6 +78,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/my-finances', \App\Http\Controllers\Crew\ShowUserFinancesController::class)
         ->name('crew.finances');
 
+    Route::get('/fleet-aircraft', \App\Http\Controllers\Fleet\ShowFleetAircraftController::class)
+        ->name('fleet.aircraft');
+
     // Airports
     Route::get('/airports/{icao?}', \App\Http\Controllers\Airports\ShowAirportController::class)
         ->name('airport');
@@ -120,8 +123,6 @@ Route::middleware('auth')->group(function () {
         ->name('pireps.submit');
     Route::post('/pireps/submit', \App\Http\Controllers\Pireps\ProcessPirepSubmissionController::class)
         ->name('pireps.process');
-    Route::post('/pireps/approve', \App\Http\Controllers\Pireps\ApprovePirepController::class)
-        ->name('pireps.approve');
 
     Route::middleware('admin')->group(function () {
         Route::get('/admin/pireps', \App\Http\Controllers\Admin\Pireps\ShowPirepsListController::class)
@@ -150,5 +151,7 @@ Route::middleware('auth')->group(function () {
             ->name('admin.aircraft.store');
         Route::get('/admin/aircraft/delete/{id}', \App\Http\Controllers\Admin\Fleet\DeleteAircraftController::class)
             ->name('admin.aircraft.delete');
+        Route::post('/pireps/approve', \App\Http\Controllers\Pireps\ApprovePirepController::class)
+            ->name('pireps.approve');
     });
 });

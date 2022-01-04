@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
-import Layout from '../../Shared/Layout'
 import PageTitle from '../../Shared/Navigation/PageTitle'
 import { usePage } from '@inertiajs/inertia-react'
 import { Inertia } from '@inertiajs/inertia'
+import AppLayout from '../../Shared/AppLayout'
 
 const AircraftCreate = ({ fleet, hubs }) => {
   console.log(fleet)
@@ -28,7 +28,7 @@ const AircraftCreate = ({ fleet, hubs }) => {
   }
 
   return (
-    <div>
+    <div className="p-4">
       <PageTitle title="Create Aircraft" />
       <div className="lg:w-1/2 bg-white mt-2 p-4 rounded shadow">
         <form onSubmit={handleSubmit}>
@@ -58,6 +58,6 @@ const AircraftCreate = ({ fleet, hubs }) => {
   )
 }
 
-AircraftCreate.layout = page => <Layout children={page} title="Admin - Create Aircraft" />
+AircraftCreate.layout = page => <AppLayout children={page} title="Admin - Create Aircraft" heading="Creat New Aircraft" />
 
 export default AircraftCreate

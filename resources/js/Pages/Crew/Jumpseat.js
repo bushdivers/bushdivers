@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react'
-import PageTitle from '../../Shared/Navigation/PageTitle'
-import Layout from '../../Shared/Layout'
+import React, { useState } from 'react'
 import { Inertia } from '@inertiajs/inertia'
 import axios from 'axios'
+import AppLayout from '../../Shared/AppLayout'
 
 const Jumpseat = ({ user, spent, balance }) => {
   const [airport, setAirport] = useState('')
@@ -10,7 +9,7 @@ const Jumpseat = ({ user, spent, balance }) => {
   const [transfer, setTransfer] = useState('')
   const [error, setError] = useState(null)
   const [distance, setDistance] = useState(null)
-  const [price, setPrice] = useState(null)
+  const [price, setPrice] = useState(-1)
 
   const handleChange = async (e) => {
     setError(null)
@@ -23,6 +22,7 @@ const Jumpseat = ({ user, spent, balance }) => {
         setTransfer(response.data.airport.identifier)
         setError(null)
         const priceResp = await axios.get(`/api/jumpseat/cost/${user.current_airport_id}/${response.data.airport.identifier}`)
+        console.log(priceResp)
         if (priceResp.status === 200) {
           setPrice(priceResp.data.cost)
           setDistance(priceResp.data.distance)
@@ -51,13 +51,12 @@ const Jumpseat = ({ user, spent, balance }) => {
     setAirport('')
     setIcao('')
     setTransfer('')
-    setPrice(null)
+    setPrice(-1)
     setDistance(null)
   }
 
   return (
-    <div>
-      <PageTitle title="Jumpseat" />
+    <div className="p-4">
       <div className="flex flex-col lg:flex-row justify-between">
         <div className="lg:w-1/2 rounded shadow p-4 mx-2 mt-4 bg-white">
           <div className="flex justify-between">
@@ -79,12 +78,15 @@ const Jumpseat = ({ user, spent, balance }) => {
                 <div>{distance} nm</div>
               </div>
             )}
-            {price && (
-            <div className="w-1/2 mx-4 text-center">
-              <div>Price</div>
-              <div>${price}</div>
-            </div>
-            )}
+            {price >= 0
+              ? (
+                  <div className="w-1/2 mx-4 text-center">
+                    <div>Price</div>
+                    <div>${price}</div>
+                  </div>
+                )
+              : <></>
+            }
           </div>
           <div className="flex justify-end mt-12">
             <button className="btn btn-primary" onClick={() => processJumpseat()}>Purchase Ticket</button>
@@ -107,6 +109,6 @@ const Jumpseat = ({ user, spent, balance }) => {
   )
 }
 
-Jumpseat.layout = page => <Layout title="Jumpseat" children={page} />
+Jumpseat.layout = page => <AppLayout title="Jumpseat" children={page} heading="Jumpseat" />
 
 export default Jumpseat

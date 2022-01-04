@@ -27,9 +27,8 @@ const SideBar = ({ isNavVisible, setNavState }) => {
           <NavItem link="/live-flights" icon="near_me" text="Live Flights" />
           <NavItem link="/airports" icon="business" text="Airports" />
           <NavSection name="HQ" />
-          <NavItem link="/hubs" icon="hub" text="Hubs" />
           <NavItem link="/roster" icon="people" text="Roster" />
-          <NavItem link="/fleet" icon="flight" text="Fleet" />
+          <NavItem link="/fleet-aircraft" icon="flight" text="Fleet" />
           <NavItem link="/finances" icon="account_balance_wallet" text="Company Finances" />
           <NavItem link="/finances" icon="download" text="Resources" />
           <NavSection name="Contracts" />

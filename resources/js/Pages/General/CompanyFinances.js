@@ -1,7 +1,6 @@
 import React from 'react'
-import PageTitle from '../../Shared/Navigation/PageTitle'
-import Layout from '../../Shared/Layout'
 import Pagination from '../../Shared/Elements/Pagination'
+import AppLayout from '../../Shared/AppLayout'
 
 const CompanyFinances = ({ accounts, balance, aircraftStorage, aircraftOps, hubs }) => {
   const renderTransactionType = (transactionType) => {
@@ -30,8 +29,7 @@ const CompanyFinances = ({ accounts, balance, aircraftStorage, aircraftOps, hubs
   }
 
   return (
-    <div>
-      <PageTitle title="Bush Divers Finances" />
+    <div className="p-4">
       <div className="flex flex-col md:flex-row md:justify-between">
         <div className="md:w-1/2 md:mx-2">
           <div className="bg-white shadow rounded p-4 mt-2">
@@ -76,6 +74,6 @@ const CompanyFinances = ({ accounts, balance, aircraftStorage, aircraftOps, hubs
   )
 }
 
-CompanyFinances.layout = page => <Layout children={page} title="Bush Divers Finances" />
+CompanyFinances.layout = page => <AppLayout children={page} title="Bush Divers Finances" heading="Bush Divers Finances" />
 
 export default CompanyFinances

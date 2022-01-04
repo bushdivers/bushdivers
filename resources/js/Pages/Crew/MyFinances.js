@@ -1,7 +1,6 @@
 import React from 'react'
-import PageTitle from '../../Shared/Navigation/PageTitle'
-import Layout from '../../Shared/Layout'
 import Pagination from '../../Shared/Elements/Pagination'
+import AppLayout from '../../Shared/AppLayout'
 
 const MyFinances = ({ accounts, balance }) => {
   const renderTransactionType = (transactionType) => {
@@ -34,8 +33,7 @@ const MyFinances = ({ accounts, balance }) => {
   }
 
   return (
-    <div>
-      <PageTitle title="My Finances" />
+    <div className="p-4">
       <div className="md:w-1/2">
         <div className="bg-white shadow rounded p-4 mt-2">
           <div className="text-lg">Current Balance</div>
@@ -60,6 +58,6 @@ const MyFinances = ({ accounts, balance }) => {
   )
 }
 
-MyFinances.layout = page => <Layout children={page} title="My Finances" />
+MyFinances.layout = page => <AppLayout children={page} title="My Finances" heading="My Finances" />
 
 export default MyFinances

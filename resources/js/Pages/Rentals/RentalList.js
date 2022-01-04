@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
-import PageTitle from '../../Shared/Navigation/PageTitle'
-import Layout from '../../Shared/Layout'
 import { Link } from '@inertiajs/inertia-react'
 import { Inertia } from '@inertiajs/inertia'
+import AppLayout from '../../Shared/AppLayout'
 
 const RentalList = ({ aircraft, searchedIcao, myRentals }) => {
   const [icao, setIcao] = useState()
@@ -31,8 +30,7 @@ const RentalList = ({ aircraft, searchedIcao, myRentals }) => {
   }
 
   return (
-    <div>
-      <PageTitle title="Aircraft Rentals" />
+    <div className="p-4">
       <div>
         <h2 className="text-xl my-2">My Rentals</h2>
         <div className="bg-white rounded shadow overflow-x-auto">
@@ -99,6 +97,6 @@ const RentalList = ({ aircraft, searchedIcao, myRentals }) => {
   )
 }
 
-RentalList.layout = page => <Layout children={page} title="Aircraft Rentals" />
+RentalList.layout = page => <AppLayout children={page} title="Aircraft Rentals" heading="Aircraft Rentals" />
 
 export default RentalList

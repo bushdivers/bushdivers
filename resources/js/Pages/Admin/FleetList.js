@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
 import PageTitle from '../../Shared/Navigation/PageTitle'
-import Layout from '../../Shared/Layout'
 import NoContent from '../../Shared/Elements/NoContent'
 import Tooltip from '../../Shared/Elements/Tooltip'
 import { Link } from '@inertiajs/inertia-react'
 import dayjs from '../../Helpers/date.helpers'
 import CargoDetails from '../../Shared/Components/Contracts/CargoDetails'
 import FleetAircraft from '../../Shared/Admin/FleetAircraft'
+import AppLayout from '../../Shared/AppLayout'
 
 const EmptyData = (props) => {
   return (
@@ -25,7 +25,7 @@ const FleetList = ({ fleet }) => {
   }
 
   return (
-    <div>
+    <div className="p-4">
       <PageTitle title="Fleet" />
       <div className="flex flex-col lg:flex-row justify-between mt-4">
         <div className="w-full">
@@ -87,6 +87,6 @@ const FleetList = ({ fleet }) => {
   )
 }
 
-FleetList.layout = page => <Layout children={page} title="Admin - Fleet" />
+FleetList.layout = page => <AppLayout children={page} title="Admin - Fleet" heading="Fleet List" />
 
 export default FleetList

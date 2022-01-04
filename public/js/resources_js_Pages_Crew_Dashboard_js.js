@@ -74,10 +74,10 @@ var Dashboard = function Dashboard(_ref) {
       size: "full",
       locations: locations && locations.length > 0 ? locations : []
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
-      className: "absolute z-30 bg-gray-800 w-1/3 text-white opacity-80 h-auto top-4 left-4 p-4 rounded shadow",
+      className: "absolute z-30 bg-gray-800 w-1/2 md:w-1/3 text-white opacity-80 h-auto top-4 left-4 p-4 rounded shadow",
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
-          className: "text-lg flex flex-col md:flex-row items-center justify-between mb-2",
+          className: "text-lg flex flex-col md:flex-row items-start md:items-center justify-between mb-2",
           children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
             className: "flex items-center",
             children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("i", {
@@ -238,7 +238,7 @@ function AppLayout(_ref) {
           type: "success",
           message: flash.success
         }), children]
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_Navigation_AppFooter__WEBPACK_IMPORTED_MODULE_4__.default, {})]
+      })]
     })]
   });
 }
@@ -649,15 +649,11 @@ var SideBar = function SideBar(_ref) {
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_Navigation_NavSection__WEBPACK_IMPORTED_MODULE_3__.default, {
           name: "HQ"
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_Navigation_NavItem__WEBPACK_IMPORTED_MODULE_2__.default, {
-          link: "/hubs",
-          icon: "hub",
-          text: "Hubs"
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_Navigation_NavItem__WEBPACK_IMPORTED_MODULE_2__.default, {
           link: "/roster",
           icon: "people",
           text: "Roster"
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_Navigation_NavItem__WEBPACK_IMPORTED_MODULE_2__.default, {
-          link: "/fleet",
+          link: "/fleet-aircraft",
           icon: "flight",
           text: "Fleet"
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_Navigation_NavItem__WEBPACK_IMPORTED_MODULE_2__.default, {
