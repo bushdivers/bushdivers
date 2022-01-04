@@ -2,6 +2,7 @@ import React from 'react'
 import DispatchSummary from '../../Shared/Components/Dispatch/DispatchSummary'
 import { Inertia } from '@inertiajs/inertia'
 import AppLayout from '../../Shared/AppLayout'
+import { Link } from '@inertiajs/inertia-react'
 
 const ActiveDispatch = ({ cargo, aircraft, cargoWeight, fuelWeight, passengerCount, pirep }) => {
   const personWeight = 170.00
@@ -15,7 +16,7 @@ const ActiveDispatch = ({ cargo, aircraft, cargoWeight, fuelWeight, passengerCou
 
   return (
     <div className="p-4">
-      <p>{pirep.id}</p>
+      <div>{pirep.id} <Link className="ml-2" href="/pireps/submit"><button className="btn btn-secondary">Submit Manual Pirep</button></Link></div>
       {pirep.state === 2 && <div><span className="text-orange-500">Current flight in progress</span></div>}
       <div className="flex flex-col md:flex-row justify-between">
         <div className="md:mr-2 md:w-1/2">
