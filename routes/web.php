@@ -78,6 +78,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/my-finances', \App\Http\Controllers\Crew\ShowUserFinancesController::class)
         ->name('crew.finances');
 
+    Route::get('/resources', \App\Http\Controllers\General\ShowResourcesController::class)
+        ->name('resources');
+
     Route::get('/fleet-aircraft', \App\Http\Controllers\Fleet\ShowFleetAircraftController::class)
         ->name('fleet.aircraft');
 

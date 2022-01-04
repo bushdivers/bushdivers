@@ -704,7 +704,7 @@ var SideBar = function SideBar(_ref) {
           icon: "account_balance_wallet",
           text: "Company Finances"
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_Navigation_NavItem__WEBPACK_IMPORTED_MODULE_2__.default, {
-          link: "/finances",
+          link: "/resources",
           icon: "download",
           text: "Resources"
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_Navigation_NavSection__WEBPACK_IMPORTED_MODULE_3__.default, {
