@@ -138,7 +138,7 @@ var Dashboard = function Dashboard(_ref) {
           text: "Flights"
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_Shared_Elements_StatBlock__WEBPACK_IMPORTED_MODULE_5__.default, {
           width: "1/3",
-          data: user.flights_time,
+          data: user.flights_time > 0 ? (0,_Helpers_date_helpers__WEBPACK_IMPORTED_MODULE_1__.convertMinuteDecimalToHoursAndMinutes)(user.flights_time) : 0,
           text: "Hours"
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_Shared_Elements_StatBlock__WEBPACK_IMPORTED_MODULE_5__.default, {
           width: "1/3",

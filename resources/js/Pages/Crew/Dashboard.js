@@ -1,5 +1,5 @@
 import React from 'react'
-import dayjs from '../../Helpers/date.helpers'
+import dayjs, { convertMinuteDecimalToHoursAndMinutes } from '../../Helpers/date.helpers'
 import { Link } from '@inertiajs/inertia-react'
 import CrewMap from '../../Shared/Components/Crew/CrewMap'
 import AppLayout from '../../Shared/AppLayout'
@@ -41,7 +41,7 @@ const Dashboard = ({ lastFlight, user, locations }) => {
         </div>
         <div className="mt-4 flex flex-col md:flex-row">
           <StatBlock width="1/3" data={user.flights} text="Flights" />
-          <StatBlock width="1/3" data={user.flights_time} text="Hours" />
+          <StatBlock width="1/3" data={user.flights_time > 0 ? convertMinuteDecimalToHoursAndMinutes(user.flights_time) : 0} text="Hours" />
           <StatBlock width="1/3" data={user.points} text="Points" />
         </div>
       </div>
