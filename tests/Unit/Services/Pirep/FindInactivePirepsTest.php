@@ -5,6 +5,7 @@ namespace Tests\Unit\Services\Pirep;
 use App\Models\Aircraft;
 use App\Models\Contract;
 use App\Models\ContractCargo;
+use App\Models\Enums\PirepState;
 use App\Models\Fleet;
 use App\Models\Pirep;
 use App\Models\PirepCargo;
@@ -72,6 +73,22 @@ class FindInactivePirepsTest extends TestCase
         $this->assertEquals(0, $pireps->count());
     }
 
+    public function test_pirep_not_removed_when_active_flight()
+    {
+        $this->pirep = Pirep::factory()->create([
+            'user_id' => $this->user->id,
+            'destination_airport_id' => $this->contract->arr_airport_id,
+            'departure_airport_id' => $this->contract->dep_airport_id,
+            'aircraft_id' => $this->aircraft->id,
+            'created_at' => Carbon::now()->subHours(4),
+            'state' => PirepState::IN_PROGRESS
+        ]);
+
+        $pireps = $this->findInactivePireps->execute();
+
+        $this->assertEquals(0, $pireps->count());
+    }
+
     public function test_pireps_will_be_removed()
     {
         $this->pirep = Pirep::factory()->create([
@@ -79,7 +96,8 @@ class FindInactivePirepsTest extends TestCase
             'destination_airport_id' => $this->contract->arr_airport_id,
             'departure_airport_id' => $this->contract->dep_airport_id,
             'aircraft_id' => $this->aircraft->id,
-            'created_at' => Carbon::now()->subHours(3)
+            'created_at' => Carbon::now()->subHours(4),
+            'state' => PirepState::DISPATCH
         ]);
 
         $pireps = $this->findInactivePireps->execute();
