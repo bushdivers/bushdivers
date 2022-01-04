@@ -22,8 +22,7 @@ class ShowLogbookController extends Controller
     {
         $logbook = Pirep::with('depAirport', 'arrAirport', 'aircraft', 'aircraft.fleet')
             ->where('user_id', Auth::user()->id)
-            ->where('state', PirepState::ACCEPTED)
-            ->orWhere('state', PirepState::REVIEW)
+            ->whereIn('state', [PirepState::ACCEPTED, PirepState::REVIEW])
             ->orderBy('submitted_at', 'desc')
             ->paginate(10);
 
