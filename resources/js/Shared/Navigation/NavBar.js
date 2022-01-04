@@ -1,15 +1,10 @@
 import React, { Fragment } from 'react'
-import { Disclosure, Menu, Transition } from '@headlessui/react'
-import { usePage, Link } from '@inertiajs/inertia-react'
+import { Disclosure } from '@headlessui/react'
+import { Link } from '@inertiajs/inertia-react'
 import PublicLeftNav from './NavBarSections/PublicLeftNav'
-import PrivateLeftNav from './NavBarSections/PrivateLeftNav'
 import PublicRightNav from './NavBarSections/PublicRightNav'
-import PrivateRightNav from './NavBarSections/PrivateRightNav'
-import UserName from './NavBarSections/UserName'
-import AdminMenu from './NavBarSections/AdminMenu'
 
 export default function NavBar () {
-  const { auth } = usePage().props
   return (
     <Disclosure as="nav" className="bg-white border-b-2 border-orange-500 shadow-sm z-10">
       {({ open }) => (
@@ -48,29 +43,18 @@ export default function NavBar () {
                   <span className="hidden lg:block ml-3">Bush Divers</span>
                 </div>
                 <div className="hidden sm:block sm:ml-6">
-                  {!auth.user ? <PublicLeftNav /> : <PrivateLeftNav auth={auth} />}
+                  <PublicLeftNav />
                 </div>
               </div>
               <div className="hidden sm:block sm:ml-6">
-                {!auth.user ? <PublicRightNav /> : <PrivateRightNav auth={auth} />}
+                <PublicRightNav />
               </div>
             </div>
           </div>
-          {!auth.user
-            ? (
-              <Disclosure.Panel className="sm:hidden">
-                <PublicLeftNav mobile={true} />
-                <PublicRightNav mobile={true} />
-              </Disclosure.Panel>
-              )
-            : (
-              <Disclosure.Panel className="sm:hidden">
-                <PrivateLeftNav mobile={true} auth={auth} />
-                <PrivateRightNav mobile={true} auth={auth} />
-                {auth.user.is_admin && <AdminMenu mobile={true} />}
-              </Disclosure.Panel>
-              )
-          }
+          <Disclosure.Panel className="sm:hidden">
+            <PublicLeftNav mobile={true} />
+            <PublicRightNav mobile={true} />
+          </Disclosure.Panel>
         </>
       )}
     </Disclosure>

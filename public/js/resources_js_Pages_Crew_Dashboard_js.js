@@ -602,6 +602,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
 var SideBar = function SideBar(_ref) {
   var isNavVisible = _ref.isNavVisible,
       setNavState = _ref.setNavState;
@@ -708,7 +709,23 @@ var SideBar = function SideBar(_ref) {
           link: "/logout",
           icon: "lock",
           text: "Sign Out"
-        })]
+        }), auth.user.is_admin ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.Fragment, {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_Navigation_NavSection__WEBPACK_IMPORTED_MODULE_3__.default, {
+            name: "Admin"
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_Navigation_NavItem__WEBPACK_IMPORTED_MODULE_2__.default, {
+            link: "/admin/pireps",
+            icon: "text_snippet",
+            text: "Pireps"
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_Navigation_NavItem__WEBPACK_IMPORTED_MODULE_2__.default, {
+            link: "/admin/fleet",
+            icon: "flight",
+            text: "Fleet"
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_Navigation_NavItem__WEBPACK_IMPORTED_MODULE_2__.default, {
+            link: "/admin/users",
+            icon: "people",
+            text: "Users"
+          })]
+        }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.Fragment, {})]
       })
     })]
   });

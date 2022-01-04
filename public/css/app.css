@@ -28580,6 +28580,27 @@ h1 {
   height: calc(100vh - 6rem);
 }
 
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #A1A1AA #F4F4F5;
+}
+
+/* Works on Chrome, Edge, and Safari */
+
+*::-webkit-scrollbar {
+  width: 0.9rem;
+}
+
+*::-webkit-scrollbar-track {
+  background: #F4F4F5;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #A1A1AA;
+  border-radius: 0.9rem;
+  border: 1px solid #F4F4F5;
+}
+
 @media (min-width: 640px) {
   .sm\:container {
     width: 100%;
