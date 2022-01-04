@@ -12,7 +12,7 @@ const NavItem = ({ text, link, icon, numeric }) => {
           <i className="material-icons">{icon}</i>
         </span>
         <span className="ml-3">{text}</span>
-        {numeric && (
+        {numeric >= 0 && (
           <span
             className="flex items-center justify-center text-xs text-orange-500 font-semibold bg-orange-100 h-6 px-2 rounded-full ml-auto"
           >{numeric}</span>
