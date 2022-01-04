@@ -2,10 +2,10 @@ import React, { useState } from 'react'
 import PageTitle from '../../Shared/Navigation/PageTitle'
 import Layout from '../../Shared/Layout'
 import { Inertia } from '@inertiajs/inertia'
-import { usePage } from '@inertiajs/inertia-react'
+import { Link, usePage } from '@inertiajs/inertia-react'
 import ApiKey from '../../Shared/Components/Crew/ApiKey'
 
-const Profile = ({ profile, hubs }) => {
+const Profile = ({ profile, hubs, rank, nextRank, awards }) => {
   const { errors } = usePage().props
   const [values, setValues] = useState({
     email: profile.email,
@@ -76,6 +76,43 @@ const Profile = ({ profile, hubs }) => {
         <div className="md:w-1/2 md:ml-4 mt-4">
           <div className="bg-white rounded shadow p-4">
             <ApiKey apiKey={profile.api_token} />
+          </div>
+          <div className="mt-4 bg-white rounded shadow p-4">
+            {!nextRank
+              ? <div>Congratulations, {rank.name}.<br/>You have achieved the highest rank.</div>
+              : <><div>Next Rank:</div>
+                <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
+                  <div className="flex items-center"><img width="60" src={nextRank.image} /> <span className="ml-2 text-sm">{nextRank.name}</span></div>
+                  <div className="text-sm flex">
+                    <div className="mr-2">
+                      Hours: {profile.flights_time >= (nextRank.hours * 60) ? <i className="material-icons text-green-500">check_circle</i> : <span>{convertMinuteDecimalToHoursAndMinutes((nextRank.hours * 60) - profile.flights_time)}</span>}<br/>
+                      Points: {profile.points >= nextRank.points ? <i className="material-icons text-green-500">check_circle</i> : <span>{nextRank.points - profile.points}</span>}
+                    </div>
+                  </div>
+                  <div className="">
+                    <div className="text-sm flex items-center">
+                    </div>
+                  </div>
+                </div>
+              </>
+            }
+          </div>
+          <div className="rounded shadow p-4 mt-4 bg-white">
+            <div className="text-lg flex items-center">
+              <i className="material-icons mr-2 md-36">emoji_events</i> Awards
+            </div>
+            {!awards.length
+              ? <div className="mt-1 text-sm text-center">No awards yet. <Link href="/ranks#awards">Earn some!</Link></div>
+              : <div className="mt-4 flex flex-col md:flex-row justify-start">
+                {awards && awards.map((award) => (
+                  <div className="mx-2 flex flex-col justify-center content-center items-center my-1"
+                       key={award.id}>
+                    <img height="100" width="100" src={award.image}/>
+                    <div className="mt-1 text-sm text-center">{award.name}</div>
+                  </div>
+                ))}
+              </div>
+            }
           </div>
         </div>
       </div>

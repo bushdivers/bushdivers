@@ -28,6 +28,13 @@ const Header = ({ heading, setNavState }) => {
           <div className="mr-1 md:mr-4">
             <span className="nav-link cursor-pointer" onMouseOver={showLocalTime} onMouseLeave={showUTCTime}>{displayDate} {timeFormat}</span>
           </div>
+          <div className="hidden md:inline-block mr-4">
+            <div className="flex items-center">
+              <div className="mx-1">${auth.user.balance}</div>
+              <div className="mx-1">{auth.user.points} XP</div>
+              <div className="mx-1">{auth.user.current_airport_id}</div>
+            </div>
+          </div>
           <div className="flex items-center mx-2">
             <img width="60" className="mr-3" src={auth.user.rank.image} />
             <Tooltip content="Profile" direction="left">

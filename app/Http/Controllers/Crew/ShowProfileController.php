@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Crew;
 
 use App\Http\Controllers\Controller;
+use App\Models\Rank;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -21,12 +22,20 @@ class ShowProfileController extends Controller
     {
         $user = User::find(Auth::user()->id);
 
+        $rank = Rank::find($user->rank_id);
+        $nextRank = Rank::find($user->rank_id + 1);
+
         if ($user->api_token == null) {
             $token = $user->createToken('bush-tracker');
             $user->api_token = $token->plainTextToken;
             $user->save();
         }
 
-        return Inertia::render('Crew/Profile', ['profile' => $user]);
+        return Inertia::render('Crew/Profile', [
+            'profile' => $user,
+            'rank' => $rank,
+            'nextRank' => $nextRank,
+            'awards' => $user->awards
+        ]);
     }
 }

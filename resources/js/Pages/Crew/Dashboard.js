@@ -1,13 +1,11 @@
 import React from 'react'
-import Layout from '../../Shared/Layout'
-// import PageTitle from '../../Shared/Navigation/PageTitle'
-import dayjs, { convertMinuteDecimalToHoursAndMinutes } from '../../Helpers/date.helpers'
-import PilotStats from '../../Shared/Components/Crew/PilotStats'
+import dayjs from '../../Helpers/date.helpers'
 import { Link } from '@inertiajs/inertia-react'
 import CrewMap from '../../Shared/Components/Crew/CrewMap'
 import AppLayout from '../../Shared/AppLayout'
+import StatBlock from '../../Shared/Elements/StatBlock'
 
-const Dashboard = ({ lastFlight, rank, nextRank, awards, user, locations, balance }) => {
+const Dashboard = ({ lastFlight, user, locations }) => {
   return (
     <div className="relative">
       <CrewMap size="full" locations={locations && locations.length > 0 ? locations : []} />
@@ -36,45 +34,16 @@ const Dashboard = ({ lastFlight, rank, nextRank, awards, user, locations, balanc
               </div>
               <div className="mt-2 text-sm flex items-center">
                 <i className="material-icons md-18">local_airport</i>
-                {lastFlight.aircraft.fleet.type} - {lastFlight.aircraft.registration}
+                <Link className="link ml-2" href={`/aircraft/${lastFlight.aircraft.id}`}>{lastFlight.aircraft.fleet.type} - {lastFlight.aircraft.registration}</Link>
               </div>
             </>
           )}
         </div>
         <div className="mt-4 flex flex-col md:flex-row">
-          <div className="flex flex-col p-2 m-2 w-full md:w-1/3">
-            <div className="text-2xl text-white font-bold">
-              {user.flights}
-            </div>
-            <div className="text-gray-300">
-              Flights
-            </div>
-          </div>
-          <div className="flex flex-col p-2 m-2 w-1/3">
-            <div className="text-2xl text-white font-bold">
-              {user.flights_time}
-            </div>
-            <div className="text-gray-300">
-              Hours
-            </div>
-          </div>
-          <div className="flex flex-col p-2 m-2 w-1/3">
-            <div className="text-2xl text-white font-bold">
-              {user.points}
-            </div>
-            <div className="text-gray-300">
-              Points
-            </div>
-          </div>
+          <StatBlock width="1/3" data={user.flights} text="Flights" />
+          <StatBlock width="1/3" data={user.flights_time} text="Hours" />
+          <StatBlock width="1/3" data={user.points} text="Points" />
         </div>
-        {/*<PilotStats*/}
-        {/*  flights={user.flights}*/}
-        {/*  hours={user.flights_time}*/}
-        {/*  location={user.current_airport_id}*/}
-        {/*  balance={balance}*/}
-        {/*  awards={awards && awards.length > 0 ? awards.length : 0}*/}
-        {/*  points={user.points}*/}
-        {/*/>*/}
       </div>
     </div>
   )

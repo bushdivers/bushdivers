@@ -30,9 +30,6 @@ class ShowDashboardController extends Controller
             ->orderBy('submitted_at', 'desc')
             ->first();
 
-        $rank = Rank::find($user->rank_id);
-        $nextRank = Rank::find($user->rank_id + 1);
-
         $locations = DB::table('airports')
             ->join('pireps', 'airports.identifier', '=', 'pireps.destination_airport_id')
             ->select('airports.identifier', 'airports.name', 'airports.lon', 'airports.lat')
@@ -40,18 +37,10 @@ class ShowDashboardController extends Controller
             ->distinct()
             ->get();
 
-        $balance = DB::table('user_accounts')
-            ->where('user_id', Auth::user()->id)
-            ->sum('total');
-
         return Inertia::render('Crew/Dashboard', [
             'user' => $user,
             'lastFlight' => $lastFlight,
-            'rank' => $rank,
-            'nextRank' => $nextRank,
-            'awards' => $user->awards,
             'locations' => $locations,
-            'balance' => $balance
         ]);
     }
 }
