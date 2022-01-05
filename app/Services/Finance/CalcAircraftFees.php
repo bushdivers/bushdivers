@@ -4,6 +4,7 @@ namespace App\Services\Finance;
 
 use App\Models\Aircraft;
 use App\Models\AirlineFees;
+use App\Models\Enums\AircraftStatus;
 use App\Models\Enums\AirlineTransactionTypes;
 use App\Models\Enums\TransactionTypes;
 use App\Models\Fleet;
@@ -35,6 +36,7 @@ class CalcAircraftFees
         foreach ($smallFleet as $f) {
             $aircraft = Aircraft::with('fleet')
                 ->where('is_rental', false)
+                ->where('status', AircraftStatus::ACTIVE)
                 ->where('fleet_id', $f->id)
                 ->get();
             foreach ($aircraft as $a) {
@@ -58,6 +60,7 @@ class CalcAircraftFees
             $aircraft = Aircraft::with('fleet')
                 ->where('is_rental', false)
                 ->where('fleet_id', $f->id)
+                ->where('status', AircraftStatus::ACTIVE)
                 ->get();
             foreach ($aircraft as $a) {
                 if ($a->owner_id == 0) {
@@ -80,6 +83,7 @@ class CalcAircraftFees
             $aircraft = Aircraft::with('fleet')
                 ->where('is_rental', false)
                 ->where('fleet_id', $f->id)
+                ->where('status', AircraftStatus::ACTIVE)
                 ->get();
             foreach ($aircraft as $a) {
                 if ($a->owner_id == 0) {
