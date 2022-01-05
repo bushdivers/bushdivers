@@ -19,9 +19,6 @@ class ShowLiveFlightsController extends Controller
      */
     public function __invoke(Request $request): Response
     {
-        $liveFlights = Pirep::with('depAirport', 'arrAirport', 'aircraft', 'aircraft.fleet', 'pilot')
-            ->where('state', PirepState::IN_PROGRESS)
-            ->get();
-        return Inertia::render('Flights/LiveFlights', ['flights' => $liveFlights]);
+        return Inertia::render('Flights/LiveFlights');
     }
 }
