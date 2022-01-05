@@ -1,11 +1,11 @@
-import React, { useRef, useEffect, useState } from 'react'
+import React, { useRef, useEffect } from 'react'
 import maplibre from 'maplibre-gl'
 import { useInterval } from '../../../Helpers/useInterval'
 import axios from 'axios'
 
 const accessToken = 'pk.eyJ1IjoicnVzc2VsbHd3ZXN0IiwiYSI6ImNrc29vZm5paDEweGIzMnA3MXAzYTFuMDQifQ.7veU-ARmzYClHDFsVQvT5g'
 
-const LiveFlightMap = (props) => {
+const LiveFlightMap = ({ size, updateFlightCount }) => {
   const mapContainer = useRef(null)
   const map = useRef(null)
   const markers = useRef([])
@@ -25,6 +25,8 @@ const LiveFlightMap = (props) => {
     if (res.status === 200) {
       flights = res.data.flights
     }
+
+    updateFlightCount(flights.length)
 
     flights.forEach(f => {
       const flightLngLat = [f.current_lon, f.current_lat]
@@ -82,7 +84,7 @@ const LiveFlightMap = (props) => {
 
   return (
     <>
-      <div ref={mapContainer} className={('map-container-' + props.size)} />
+      <div ref={mapContainer} className={('map-container-' + size)} />
     </>
   )
 }

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 // import NoContent from '../../Shared/Elements/NoContent'
 // import { Link } from '@inertiajs/inertia-react'
 // import Tooltip from '../../Shared/Elements/Tooltip'
@@ -15,12 +15,17 @@ import StatBlock from '../../Shared/Elements/StatBlock'
 //   )
 // }
 
-const LiveFlights = ({ flights }) => {
+const LiveFlights = () => {
+  const [flightCount, setFlightCount] = useState(0)
+  const updateFlightCount = (count) => {
+    setFlightCount(count)
+  }
+
   return (
     <div className="relative">
-      <LiveFlightMap flights={flights} size="full" />
+      <LiveFlightMap size="full" updateFlightCount={updateFlightCount} />
       <div className="absolute z-30 bg-gray-800 w-1/2 md:w-1/6 text-white opacity-80 h-auto top-4 left-4 p-4 rounded shadow">
-        <StatBlock width="1/2" data={flights.length} text="Current Flights" />
+        <StatBlock width="1/2" data={flightCount} text="Current Flights" />
       </div>
     </div>
   )
