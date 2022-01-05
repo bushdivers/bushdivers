@@ -26,6 +26,8 @@ Route::get('/liveflights', \App\Http\Controllers\Pireps\GetLiveFlightsController
     ->name('flights.live');
 Route::post('/cargo/split', \App\Http\Controllers\Dispatch\SplitCargoController::class)
     ->name('cargo.split');
+Route::get('/resources/categories', \App\Http\Controllers\Admin\Resources\GetCategoriesController::class)
+    ->name('resources.categories');
 
 
 

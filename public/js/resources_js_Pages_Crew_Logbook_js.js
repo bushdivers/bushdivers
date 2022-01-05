@@ -751,6 +751,10 @@ var SideBar = function SideBar(_ref) {
             link: "/admin/users",
             icon: "people",
             text: "Users"
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_Navigation_NavItem__WEBPACK_IMPORTED_MODULE_2__.default, {
+            link: "/admin/resources",
+            icon: "download",
+            text: "Resources"
           })]
         }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.Fragment, {})]
       })
