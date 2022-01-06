@@ -14,7 +14,7 @@ const RentalList = ({ aircraft, myRentals }) => {
   }
 
   const handleCancel = (ac) => {
-    if (ac.current_airport_id !== ac.hub_id) {
+    if (ac.current_airport_id !== ac.rental_airport_id) {
       const confirm = window.confirm(`Aircraft ${ac.registration} is not at its home location, if you end the rental now you will not get your deposit back. Do you wish to continue?`)
       if (confirm) {
         returnRental(ac)

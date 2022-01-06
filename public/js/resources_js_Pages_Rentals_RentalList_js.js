@@ -75,7 +75,7 @@ var RentalList = function RentalList(_ref) {
   };
 
   var handleCancel = function handleCancel(ac) {
-    if (ac.current_airport_id !== ac.hub_id) {
+    if (ac.current_airport_id !== ac.rental_airport_id) {
       var confirm = window.confirm("Aircraft ".concat(ac.registration, " is not at its home location, if you end the rental now you will not get your deposit back. Do you wish to continue?"));
 
       if (confirm) {
