@@ -5,6 +5,7 @@ namespace App\Services\Rentals;
 use App\Models\Aircraft;
 use App\Models\Enums\TransactionTypes;
 use App\Models\Pirep;
+use App\Models\Rental;
 use App\Services\Finance\AddUserTransaction;
 use Carbon\Carbon;
 
@@ -19,12 +20,9 @@ class CheckRentalDailyFee
 
     public function execute()
     {
-        $aircraft = Aircraft::with('fleet')
-            ->where('is_rental', true)
-            ->where('user_id', '<>', null)
-            ->get();
+        $rentals = Rental::where('is_active', true)->get();
 
-        foreach ($aircraft as $ac) {
+        foreach ($rentals as $ac) {
             // check if flown more than 2 hours
             $pirepTime = Pirep::where('aircraft_id', $ac->id)
                 ->where('user_id', $ac->user_id)
