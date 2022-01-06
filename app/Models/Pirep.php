@@ -22,6 +22,11 @@ class Pirep extends Model
         return $this->belongsTo(Aircraft::class);
     }
 
+    public function rental()
+    {
+        return $this->belongsTo(Rental::class, 'aircraft_id', 'id');
+    }
+
     public function logs()
     {
         return $this->hasMany(FlightLog::class);

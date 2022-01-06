@@ -20,8 +20,16 @@ class GetLiveFlightsController extends Controller
     {
         $liveFlights = Pirep::with('depAirport', 'arrAirport', 'aircraft', 'aircraft.fleet', 'pilot')
             ->where('state', PirepState::IN_PROGRESS)
+            ->where('is_rental', false)
             ->get();
 
-        return response()->json(['flights' => $liveFlights]);
+        $liveRentalFlights = Pirep::with('depAirport', 'arrAirport', 'rental', 'rental.fleet', 'pilot')
+            ->where('state', PirepState::IN_PROGRESS)
+            ->where('is_rental', true)
+            ->get();
+
+        $flights = collect($liveFlights)->merge($liveRentalFlights);
+
+        return response()->json(['flights' => $flights]);
     }
 }
