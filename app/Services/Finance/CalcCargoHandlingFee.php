@@ -11,6 +11,7 @@ use App\Models\Enums\ContractType;
 use App\Models\Enums\TransactionTypes;
 use App\Models\Enums\WeightConsts;
 use App\Models\PirepCargo;
+use App\Models\Rental;
 
 class CalcCargoHandlingFee
 {
@@ -30,8 +31,12 @@ class CalcCargoHandlingFee
     {
         $airport = Airport::where('identifier', $pirep->destination_airport_id)->first();
         if ($airport->size == 0) return;
+        if ($pirep->is_rental) {
+            $aircraft = Rental::with('fleet')->find($pirep->aircraft_id);
+        } else {
+            $aircraft = Aircraft::with('fleet')->find($pirep->aircraft_id);
+        }
 
-        $aircraft = Aircraft::with('fleet')->find($pirep->aircraft_id);
         $pc = PirepCargo::where('pirep_id', $pirep->id)->get();
         $fee = AirlineFees::where('fee_type', AirlineTransactionTypes::GroundHandlingFees)->first();
         $weight = 0;
@@ -44,7 +49,7 @@ class CalcCargoHandlingFee
             }
         }
         $total = $weight * $fee->fee_amount;
-        if ($aircraft->is_rental) {
+        if ($pirep->is_rental) {
             $this->addUserTransaction->execute($pirep->user_id, TransactionTypes::FlightFeesGround, -$total, $pirep->id);
         } elseif ($aircraft->owner_id > 0) {
             $this->addUserTransaction->execute($pirep->user_id, TransactionTypes::FlightFeesGround, -$total, $pirep->id);

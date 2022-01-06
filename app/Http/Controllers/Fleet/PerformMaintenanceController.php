@@ -75,13 +75,11 @@ class PerformMaintenanceController extends Controller
         $this->resetAircraftMaintenanceTimes->execute($request->aircraft, $request->type, $request->engine);
         // add maintenance log
         $this->addMaintenanceLog->execute($request->aircraft, $request->type, Auth::user()->id, $cost, $request->engine);
-        // add airline transaction if not a rental
-        if (!$aircraft->is_rental) {
-            if ($aircraft->owner_id > 0) {
-                $this->addUserTransaction->execute($aircraft->owner_id, TransactionTypes::AircraftMaintenanceFee, -$cost);
-            } else {
-                $this->addAirlineTransaction->execute(AirlineTransactionTypes::AircraftMaintenanceFee, $cost, 'Maintenance: '.$aircraft->registration);
-            }
+        // add transaction
+        if ($aircraft->owner_id > 0) {
+            $this->addUserTransaction->execute($aircraft->owner_id, TransactionTypes::AircraftMaintenanceFee, -$cost);
+        } else {
+            $this->addAirlineTransaction->execute(AirlineTransactionTypes::AircraftMaintenanceFee, $cost, 'Maintenance: '.$aircraft->registration);
         }
 
         return redirect()->back()->with(['success' => 'Maintenance performed successfully']);

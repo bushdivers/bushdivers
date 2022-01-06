@@ -35,7 +35,6 @@ class CalcAircraftFees
             ->first();
         foreach ($smallFleet as $f) {
             $aircraft = Aircraft::with('fleet')
-                ->where('is_rental', false)
                 ->where('status', AircraftStatus::ACTIVE)
                 ->where('fleet_id', $f->id)
                 ->get();
@@ -58,7 +57,6 @@ class CalcAircraftFees
             ->first();
         foreach ($mediumFleet as $f) {
             $aircraft = Aircraft::with('fleet')
-                ->where('is_rental', false)
                 ->where('fleet_id', $f->id)
                 ->where('status', AircraftStatus::ACTIVE)
                 ->get();
@@ -81,7 +79,6 @@ class CalcAircraftFees
             ->first();
         foreach ($largeFleet as $f) {
             $aircraft = Aircraft::with('fleet')
-                ->where('is_rental', false)
                 ->where('fleet_id', $f->id)
                 ->where('status', AircraftStatus::ACTIVE)
                 ->get();

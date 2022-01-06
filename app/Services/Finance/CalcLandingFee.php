@@ -42,7 +42,7 @@ class CalcLandingFee
         }
 
         $fee = AirlineFees::where('fee_name', $feeType)->first();
-        if (!$aircraft->is_rental) {
+        if (!$pirep->is_rental) {
             if ($aircraft->owner_id > 0) {
                 $this->addUserTransaction->execute($pirep->user_id, TransactionTypes::FlightFeesLanding,
                     -$fee->fee_amount, $pirep->id);
