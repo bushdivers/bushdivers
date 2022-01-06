@@ -37,7 +37,10 @@ class ProcessPirepFinancials
 
     public function execute($pirep)
     {
-        $aircraft = Aircraft::find($pirep->aircraft_id);
+        if (!$pirep->is_rental) {
+            $aircraft = Aircraft::find($pirep->aircraft_id);
+        }
+
         $this->calcLandingFee->execute($pirep);
         $this->calcFuelUsedFee->execute($pirep);
 
@@ -52,8 +55,13 @@ class ProcessPirepFinancials
                     ->first();
 
                 if (isset($contract)) {
-                    $privatePlane = !($aircraft->owner_id == 0);
-                    $pp = $this->calcContractPay->execute($contract->id, $pirep->id, $aircraft->is_rental, $privatePlane);
+                    if (!$pirep->is_rental) {
+                        $privatePlane = !($aircraft->owner_id == 0);
+                    } else {
+                        $privatePlane = false;
+                    }
+
+                    $pp = $this->calcContractPay->execute($contract->id, $pirep->id, $pirep->is_rental, $privatePlane);
                     $this->addUserTransaction->execute($pirep->user_id, TransactionTypes::FlightPay, $pp, $pirep->id);
                     $contract->is_paid = true;
                     $contract->save();

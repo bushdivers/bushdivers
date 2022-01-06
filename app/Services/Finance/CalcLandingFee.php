@@ -7,6 +7,7 @@ use App\Models\AirlineFees;
 use App\Models\Airport;
 use App\Models\Enums\AirlineTransactionTypes;
 use App\Models\Enums\TransactionTypes;
+use App\Models\Rental;
 
 class CalcLandingFee
 {
@@ -27,7 +28,11 @@ class CalcLandingFee
         $airport = Airport::where('identifier', $pirep->destination_airport_id)->first();
         if ($airport->size == 0) return;
 
-        $aircraft = Aircraft::with('fleet')->find($pirep->aircraft_id);
+        if ($pirep->is_rental) {
+            $aircraft = Rental::with('fleet')->find($pirep->aircraft_id);
+        } else {
+            $aircraft = Aircraft::with('fleet')->find($pirep->aircraft_id);
+        }
         $feeType = null;
         switch ($aircraft) {
             case $aircraft->fleet->size == 'S':

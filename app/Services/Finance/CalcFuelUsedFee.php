@@ -6,6 +6,7 @@ use App\Models\Aircraft;
 use App\Models\AirlineFees;
 use App\Models\Enums\AirlineTransactionTypes;
 use App\Models\Enums\TransactionTypes;
+use App\Models\Rental;
 
 class CalcFuelUsedFee
 {
@@ -23,7 +24,11 @@ class CalcFuelUsedFee
 
     public function execute($pirep)
     {
-        $aircraft = Aircraft::with('fleet')->find($pirep->aircraft_id);
+        if ($pirep->is_rental) {
+            $aircraft = Rental::with('fleet')->find($pirep->aircraft_id);
+        } else {
+            $aircraft = Aircraft::with('fleet')->find($pirep->aircraft_id);
+        }
         $fuelType = $aircraft->fleet->fuel_type == 1 ? 'Avgas' : 'Jet Fuel';
         $fuelCost = AirlineFees::where('fee_name', $fuelType)->first();
 

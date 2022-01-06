@@ -18,6 +18,7 @@ use App\Services\Finance\ProcessPirepFinancials;
 use App\Services\Pireps\CalculatePirepPoints;
 use App\Services\Pireps\SetPirepTotalScore;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -115,42 +116,50 @@ class SubmitPirepController extends Controller
 
     protected function rollbackSubmission(int $stage, $pirep)
     {
-        // pirep reset
-        $p = Pirep::find($pirep->id);
-        $score = $p->score;
-        $p->fuel_used = null;
-        $p->distance = null;
-        $p->flight_time = null;
-        $p->landing_rate = null;
-        $p->state = PirepState::IN_PROGRESS;
-        $p->status = PirepStatus::BOARDING;
-        $p->submitted_at = null;
-        $p->block_off_time = null;
-        $p->block_on_time = null;
-        $p->score = null;
-        $p->save();
+        try {
+            // pirep reset
+            $p = Pirep::findOrFail($pirep->id);
+            if ($p->score) {
+                $score = $p->score;
+            }
+            $p->fuel_used = null;
+            $p->distance = null;
+            $p->flight_time = null;
+            $p->landing_rate = null;
+            $p->state = PirepState::IN_PROGRESS;
+            $p->status = PirepStatus::BOARDING;
+            $p->submitted_at = null;
+            $p->block_off_time = null;
+            $p->block_on_time = null;
+            $p->score = null;
+            $p->save();
 
-        // uncomplete contracts
-        $pc = PirepCargo::where('pirep_id', $pirep->id)->get();
-        foreach ($pc as $c) {
-            $contractCargo = ContractCargo::find($c->contract_cargo_id);
-            $contractCargo->is_completed = false;
-            $contractCargo->completed_at = null;
-            $contractCargo->save();
-            $contract = Contract::find($contractCargo->contract_id);
-            $contract->is_completed = false;
-            $contract->completed_at = null;
-            $contract->save();
+            // uncomplete contracts
+            $pc = PirepCargo::where('pirep_id', $pirep->id)->get();
+            foreach ($pc as $c) {
+                $contractCargo = ContractCargo::find($c->contract_cargo_id);
+                $contractCargo->is_completed = false;
+                $contractCargo->completed_at = null;
+                $contractCargo->save();
+                $contract = Contract::find($contractCargo->contract_id);
+                $contract->is_completed = false;
+                $contract->completed_at = null;
+                $contract->save();
+            }
+            // remove financials
+            AccountLedger::where('pirep_id', $pirep->id)->destroy();
+
+            // remove points
+            Point::where('pirep_id', $pirep->id)->destroy();
+
+            if ($score) {
+                $user = User::find($pirep->user_id);
+                $user->points = $user->points - $score;
+                $user->save();
+            }
+        } catch (ModelNotFoundException) {
+            return;
         }
-        // remove financials
-        AccountLedger::where('pirep_id', $pirep->id)->destroy();
-
-        // remove points
-        Point::where('pirep_id', $pirep->id)->destroy();
-
-        $user = User::find($pirep->user_id);
-        $user->points = $user->points - $score;
-        $user->save();
 
     }
 }
