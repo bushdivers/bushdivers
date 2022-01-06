@@ -6,6 +6,7 @@ use App\Models\Aircraft;
 use App\Models\Enums\TransactionTypes;
 use App\Models\Fleet;
 use App\Models\Pirep;
+use App\Models\Rental;
 use App\Services\Finance\AddUserTransaction;
 
 class ChargeRentalFee
@@ -20,7 +21,7 @@ class ChargeRentalFee
     public function execute($pirepId)
     {
         $pirep = Pirep::find($pirepId);
-        $aircraft = Aircraft::find($pirep->aircraft_id);
+        $aircraft = Rental::find($pirep->aircraft_id);
         $fleet = Fleet::find($aircraft->fleet_id);
 
 

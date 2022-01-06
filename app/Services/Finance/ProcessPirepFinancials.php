@@ -61,7 +61,7 @@ class ProcessPirepFinancials
             }
         }
 
-        if ($aircraft->is_rental) {
+        if ($pirep->is_rental) {
             // charge rental fee
             $this->chargeRentalFee->execute($pirep->id);
         }
