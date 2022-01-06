@@ -35,7 +35,6 @@ const Logbook = ({ logbook }) => {
                   <th></th>
                   <th>Departure</th>
                   <th>Arrival</th>
-                  <th>Aircraft</th>
                   <th>Time</th>
                   <th>Distance</th>
                   <th>Points</th>
@@ -56,10 +55,6 @@ const Logbook = ({ logbook }) => {
                     <td>
                      {entry.destination_airport_id}<br/>
                       <span className="text-xs">{entry.arr_airport.name}</span>
-                    </td>
-                    <td>
-                      <span><Link href={`/aircraft/${entry.aircraft.id}`}>{entry.aircraft.registration} ({entry.aircraft.fleet.type})</Link></span><br/>
-                      <span className="text-xs">{entry.aircraft.fleet.manufacturer} {entry.aircraft.fleet.name}</span>
                     </td>
                     <td>{convertMinuteDecimalToHoursAndMinutes(entry.flight_time)}</td>
                     <td>{entry.distance}nm</td>

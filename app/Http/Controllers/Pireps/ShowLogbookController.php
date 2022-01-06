@@ -20,7 +20,7 @@ class ShowLogbookController extends Controller
      */
     public function __invoke(Request $request): Response
     {
-        $logbook = Pirep::with('depAirport', 'arrAirport', 'aircraft', 'aircraft.fleet')
+        $logbook = Pirep::with('depAirport', 'arrAirport')
             ->where('user_id', Auth::user()->id)
             ->whereIn('state', [PirepState::ACCEPTED, PirepState::REVIEW])
             ->orderBy('submitted_at', 'desc')

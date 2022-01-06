@@ -20,8 +20,8 @@ const LogbookPrimary = ({ pirep }) => {
           <div className="text-xs">{format(new Date(pirep.block_on_time), 'kk:mm')}</div>
         </div>
         <div className="flex flex-col items-center my-2 mx-4">
-          <div className="text-sm">{pirep.aircraft.fleet.manufacturer} {pirep.aircraft.fleet.name}</div>
-          <div className="text-xl"><Link href={`/aircraft/${pirep.aircraft.id}`}>{pirep.aircraft.registration} ({pirep.aircraft.fleet.type})</Link></div>
+          <div className="text-sm">{pirep.is_rental ? <span>{pirep.rental.fleet.manufacturer} {pirep.rental.fleet.name}</span> : <span>{pirep.aircraft.fleet.manufacturer} {pirep.aircraft.fleet.name}</span>}</div>
+          <div className="text-xl">{pirep.is_rental ? <span>{pirep.rental.registration} ({pirep.rental.fleet.type})</span> : <Link href={`/aircraft/${pirep.aircraft.id}`}>{pirep.aircraft.registration} ({pirep.aircraft.fleet.type})</Link>}</div>
         </div>
       </div>
     </div>
