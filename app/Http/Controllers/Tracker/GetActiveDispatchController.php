@@ -38,10 +38,22 @@ class GetActiveDispatchController extends Controller
         $dispatch = Pirep::with('aircraft', 'aircraft.fleet', 'depAirport', 'arrAirport')
             ->where('user_id', Auth::user()->id)
             ->where('state', PirepState::DISPATCH)
+            ->where('is_rental', false)
             ->first();
 
-        if (!$dispatch) {
+        $rentalDispatch = Pirep::with('rental', 'rental.fleet', 'depAirport', 'arrAirport')
+            ->where('user_id', Auth::user()->id)
+            ->where('state', PirepState::DISPATCH)
+            ->where('is_rental', true)
+            ->first();
+
+
+        if (!$dispatch && !$rentalDispatch) {
             return response()->json(['message' => 'No dispatch available'], 204);
+        }
+
+        if (!$dispatch) {
+            $dispatch = $rentalDispatch;
         }
 
         $cargoWeight = 0;
@@ -65,9 +77,9 @@ class GetActiveDispatchController extends Controller
             'destination_airport_lat' => $dispatch->arrAirport->lat,
             'destination_airport_lon' => $dispatch->arrAirport->lon,
             'destination_airport_id' => $dispatch->destination_airport_id,
-            'name' => $dispatch->aircraft->fleet->manufacturer . ' ' . $dispatch->aircraft->fleet->name,
-            'aircraft_type' => $dispatch->aircraft->fleet->type,
-            'registration' => $dispatch->aircraft->registration,
+            'name' => $dispatch->is_rental ? $dispatch->rental->fleet->manufacturer . ' ' . $dispatch->rental->fleet->name : $dispatch->aircraft->fleet->manufacturer . ' ' . $dispatch->aircraft->fleet->name,
+            'aircraft_type' => $dispatch->is_rental ? $dispatch->rental->fleet->type : $dispatch->aircraft->fleet->type,
+            'registration' => $dispatch->is_rental ? $dispatch->rental->registration : $dispatch->aircraft->registration,
             'planned_fuel' => $dispatch->planned_fuel,
             'cargo_weight' => $cargoWeight,
             'passenger_count' => $passengerCount,
