@@ -1,20 +1,19 @@
 import React, { useState } from 'react'
-import { Link } from '@inertiajs/inertia-react'
+import { Link, usePage } from '@inertiajs/inertia-react'
 import { Inertia } from '@inertiajs/inertia'
 import AppLayout from '../../Shared/AppLayout'
 
-const RentalList = ({ aircraft, searchedIcao, myRentals }) => {
-  const [icao, setIcao] = useState()
-
-  const handleAirportChange = (e) => {
-    setIcao(e.target.value)
-  }
+const RentalList = ({ aircraft, myRentals }) => {
+  const { auth } = usePage().props
 
   const handleRental = (ac) => {
-    Inertia.post('/rentals', { aircraft: ac.id })
+    const confirm = window.confirm(`Confirm you would like to rent a ${ac.manufacturer} ${ac.name} for $${ac.rental_cost}ph and a returnable deposit of $${ac.rental_cost * 10}`)
+    if (confirm) {
+      Inertia.post('/rentals', { aircraft: ac.id })
+    }
   }
 
-  const handelCancel = (ac) => {
+  const handleCancel = (ac) => {
     if (ac.current_airport_id !== ac.hub_id) {
       const confirm = window.confirm(`Aircraft ${ac.registration} is not at its home location, if you end the rental now you will not get your deposit back. Do you wish to continue?`)
       if (confirm) {
@@ -48,50 +47,35 @@ const RentalList = ({ aircraft, searchedIcao, myRentals }) => {
             <tbody>
             {myRentals && myRentals.map((ac) => (
               <tr key={ac.id}>
-                <td><Link href={`aircraft/${ac.id}`}>{ac.registration}</Link></td>
+                <td>{ac.registration}</td>
                 <td>{ac.fleet.manufacturer} {ac.fleet.name} ({ac.fleet.type})</td>
                 <td><Link href={`airports/${ac.current_airport_id}`}>{ac.current_airport_id}</Link></td>
-                <td><Link href={`airports/${ac.hub_id}`}>{ac.hub_id}</Link></td>
+                <td><Link href={`airports/${ac.rental_airport_id}`}>{ac.rental_airport_id}</Link></td>
                 <td>${ac.fleet.rental_cost}</td>
-                <td><span className="text-orange-500" onClick={() => handelCancel(ac)}>End rental</span></td>
+                <td><span className="text-orange-500" onClick={() => handleCancel(ac)}>End rental</span></td>
               </tr>
             ))}
             </tbody>
           </table>
         </div>
       </div>
-      <div>
-        <h2 className="text-xl my-2">Aircraft Available for Rental {searchedIcao && <span> - {searchedIcao}</span>}</h2>
-        <div className="w-1/6 mb-2 flex items-center">
-          <input id="airport" type="text" placeholder="ICAO" className="form-input form inline-block" value={icao} onChange={handleAirportChange} />
-          <Link href={`/rentals/${icao}`} className="ml-2 btn btn-secondary">Go</Link>
-        </div>
-        <div className="bg-white rounded shadow overflow-x-auto">
-          <table className="table table-auto table-condensed">
-            <thead>
-            <tr>
-              <th>Registration</th>
-              <th>Type</th>
-              <th>Location</th>
-              <th>Home</th>
-              <th>Rental Cost (hour)</th>
-              <th>Actions</th>
-            </tr>
-            </thead>
-            <tbody>
-              {aircraft && aircraft.map((ac) => (
-                <tr key={ac.id}>
-                  <td><Link href={`aircraft/${ac.id}`}>{ac.registration}</Link></td>
-                  <td>{ac.fleet.manufacturer} {ac.fleet.name} ({ac.fleet.type})</td>
-                  <td><Link href={`airports/${ac.current_airport_id}`}>{ac.current_airport_id}</Link></td>
-                  <td><Link href={`airports/${ac.hub_id}`}>{ac.hub_id}</Link></td>
-                  <td>${ac.fleet.rental_cost}</td>
-                  <td><span className="text-orange-500" onClick={() => handleRental(ac)}>Rent</span></td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+      <div className="mt-4">
+        <h2 className="text-xl my-2">Aircraft Available for Rental - {auth.user.current_airport_id}</h2>
+          <div className="flex flex-wrap justify-start mt-2">
+            {aircraft && aircraft.map((ac) => (
+              <div key={ac.id} className="bg-white w-1/4 mx-4 rounded shadow my-2">
+                <img className="rounded-t" src={ac.rental_image} />
+                <div className="p-3">
+                  <div className="text-xl">{ac.type} {ac.manufacturer} - {ac.name}</div>
+                  <div className="mt-1">${ac.rental_cost} per hour <span className="text-sm">(min. 2 hours per day)</span></div>
+                  <div>${ac.rental_cost * 10} Returnable deposit</div>
+                  <div className="mt-6 text-center">
+                    <button onClick={() => handleRental(ac)} className="btn btn-secondary">Rent {ac.name}</button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
       </div>
     </div>
   )

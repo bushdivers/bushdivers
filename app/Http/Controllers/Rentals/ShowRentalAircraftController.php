@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Rentals;
 
 use App\Http\Controllers\Controller;
-use App\Models\Aircraft;
+use App\Models\Airport;
+use App\Models\Fleet;
+use App\Models\Rental;
 use App\Models\Enums\AircraftState;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -18,26 +20,29 @@ class ShowRentalAircraftController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function __invoke(Request $request, $icao = null): Response
+    public function __invoke(Request $request): Response
     {
-        if ($icao) {
-            $aircraft = Aircraft::with('fleet', 'location')
-                ->where('is_rental', true)
-                ->where('user_id', null)
-                ->where('current_airport_id', $icao)
-                ->get();
+        $currentLocation = Airport::where('identifier', Auth::user()->current_airport_id)->first();
+
+        if ($currentLocation->is_hub) {
+            if ($currentLocation->size >= 3) {
+                $aircraft = Fleet::where('is_rental', true)->get();
+            }
+            if ($currentLocation->size < 3) {
+                $aircraft = Fleet::where('is_rental', true)
+                    ->where('size', 0)
+                    ->get();
+            }
         } else {
-            $aircraft = Aircraft::with('fleet', 'location')
-                ->where('is_rental', true)
-                ->where('user_id', null)
-                ->get();
+            $aircraft = [];
         }
 
-        $myRentals = Aircraft::with('fleet', 'location')
-            ->where('is_rental', true)
+
+        $myRentals = Rental::with('fleet')
             ->where('user_id', Auth::user()->id)
+            ->where('is_active', true)
             ->get();
 
-        return Inertia::render('Rentals/RentalList', ['aircraft' => $aircraft, 'searchedIcao' => $icao, 'myRentals' => $myRentals]);
+        return Inertia::render('Rentals/RentalList', ['aircraft' => $aircraft, 'myRentals' => $myRentals]);
     }
 }
