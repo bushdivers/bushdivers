@@ -1,5 +1,4 @@
 import React from 'react'
-import { Link } from '@inertiajs/inertia-react'
 
 const DispatchSummary = (props) => {
   return (
@@ -8,7 +7,7 @@ const DispatchSummary = (props) => {
       <p className="mt-2">Planned Destination: {props.pirep ? <span>{props.pirep.destination_airport_id}</span> : <span>{props.destination}</span>}</p>
       <div className="mt-2">
         <div>
-          {props.selectedAircraft && <div className="flex justify-start items-center"><i className="material-icons mr-2">flight</i><span><Link href={`/aircraft/${props.selectedAircraft.id}`}>{props.selectedAircraft.registration} - {props.selectedAircraft.fleet.manufacturer} {props.selectedAircraft.fleet.name} ({props.selectedAircraft.fleet.type})</Link> {props.selectedAircraft.is_rental ? <span className="bg-orange-500 text-white rounded px-2">Rental</span> : <></>}</span></div>}
+          {props.selectedAircraft && <div className="flex justify-start items-center"><i className="material-icons mr-2">flight</i><span>{props.selectedAircraft.registration} - {props.selectedAircraft.fleet.manufacturer} {props.selectedAircraft.fleet.name} ({props.selectedAircraft.fleet.type}) {props.pirep && props.pirep.is_rental ? <span className="bg-orange-500 text-white rounded px-2">Rental</span> : <></>}</span></div>}
         </div>
       </div>
       <div className="mt-2">

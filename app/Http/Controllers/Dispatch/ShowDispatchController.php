@@ -10,6 +10,7 @@ use App\Models\Enums\AircraftStatus;
 use App\Models\Enums\PirepState;
 use App\Models\Pirep;
 use App\Models\PirepCargo;
+use App\Models\Rental;
 use App\Services\Dispatch\CalcCargoWeight;
 use App\Services\Dispatch\CalcFuelWeight;
 use App\Services\Dispatch\CalcPassengerCount;
@@ -57,7 +58,11 @@ class ShowDispatchController extends Controller
                 ->get();
 
 //            $cargo = $this->getCargoForActiveDispatch($pc);
-            $aircraft = Aircraft::with('fleet')->find($pirep->aircraft_id);
+            if ($pirep->is_rental) {
+                $aircraft = Rental::with('fleet')->find($pirep->aircraft_id);
+            } else {
+                $aircraft = Aircraft::with('fleet')->find($pirep->aircraft_id);
+            }
 
             $cargoWeight = $this->calcCargoWeight->execute($cargo);
             $passengerCount = $this->calcPassengerCount->execute($cargo);
@@ -95,20 +100,18 @@ class ShowDispatchController extends Controller
     {
         $fleetAc = Aircraft::with('fleet')
             ->where('state', AircraftState::AVAILABLE)
-            ->where('is_rental', false)
             ->where('status', AircraftStatus::ACTIVE)
             ->where('current_airport_id', $currentLocation)
             ->where('owner_id', 0)
             ->get();
 
-        $rentalAc = Aircraft::with('fleet')
-            ->where('is_rental', true)
+        $rentalAc = Rental::with('fleet')
             ->where('user_id', Auth::user()->id)
+            ->where('is_active', true)
             ->where('current_airport_id', $currentLocation)
             ->get();
 
         $privateAc = Aircraft::with('fleet')
-            ->where('is_rental', false)
             ->where('owner_id', Auth::user()->id)
             ->where('current_airport_id', $currentLocation)
             ->get();

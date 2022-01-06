@@ -8,6 +8,7 @@ use App\Models\Enums\AircraftState;
 use App\Models\Enums\PirepState;
 use App\Models\Pirep;
 use App\Models\PirepCargo;
+use App\Models\Rental;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -24,8 +25,13 @@ class CreateDispatchController extends Controller
     public function __invoke(Request $request): RedirectResponse
     {
         // check aircraft is available
-        $aircraft = Aircraft::find($request->aircraft);
-        if ($aircraft->user_id != null && $aircraft->state == 2) {
+        $isRental = false;
+        $aircraft = Aircraft::where('registration', $request->aircraft)->first();
+
+        if (!$aircraft) {
+            $aircraft = Rental::where('registration', $request->aircraft)->first();
+            $isRental = true;
+        } elseif ($aircraft->user_id != null && $aircraft->state == 2) {
             return redirect()->back()->with(['error' => 'Aircraft is part of another flight dispatch']);
         }
 
@@ -33,12 +39,13 @@ class CreateDispatchController extends Controller
         $pirep = new Pirep();
         $pirep->id = Uuid::uuid4();
         $pirep->user_id = Auth::user()->id;
-        $pirep->aircraft_id = $request->aircraft;
+        $pirep->aircraft_id = $aircraft->id;
         $pirep->departure_airport_id = Auth::user()->current_airport_id;
         $pirep->destination_airport_id = $request->destination;
         $pirep->planned_fuel = $request->fuel;
         $pirep->state = PirepState::DISPATCH;
         $pirep->is_empty = $request->is_empty;
+        $pirep->is_rental = $isRental;
         $pirep->save();
 
         if (!$request->is_empty) {
@@ -52,10 +59,15 @@ class CreateDispatchController extends Controller
         }
 
         // update aircraft for user and fuel
-        $aircraft->fuel_onboard = $request->fuel;
-        $aircraft->user_id = Auth::user()->id;
-        $aircraft->state = AircraftState::BOOKED;
-        $aircraft->save();
+        if (!$isRental) {
+            $aircraft->fuel_onboard = $request->fuel;
+            $aircraft->user_id = Auth::user()->id;
+            $aircraft->state = AircraftState::BOOKED;
+            $aircraft->save();
+        } else {
+            $aircraft->fuel_onboard = $request->fuel;
+            $aircraft->save();
+        }
 
         return redirect()->back()->with(['success' => 'Dispatch created successfully']);
     }

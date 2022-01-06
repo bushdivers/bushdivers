@@ -31,16 +31,18 @@ const Aircraft = (props) => {
               </thead>
               <tbody>
               {props.aircraft.map((ac) => (
-                <tr key={ac.id} onClick={() => props.handleAircraftSelect(ac)} className={props.selectedAircraft.id === ac.id ? 'bg-orange-200 hover:bg-orange-100' : ''}>
+                <tr key={ac.id} onClick={() => props.handleAircraftSelect(ac)} className={props.selectedAircraft.registration === ac.registration ? 'bg-orange-200 hover:bg-orange-100' : ''}>
                   <td>
-                    <Link href={`/aircraft/${ac.id}`}>{ac.registration}</Link>
-                    {ac.is_rental
-                      ? <span className="bg-orange-500 text-white rounded ml-2 px-2">Rental</span>
-                      : ac.owner_id === auth.user.id ? <span className="bg-orange-500 text-white rounded ml-2 px-2">Private</span> : <></>
-                    }
+                    {ac.hub_id && <Link href={`/aircraft/${ac.id}`}>{ac.registration}</Link>}
+                    {ac.rental_airport_id && <span>{ac.registration}</span>}
+                    {ac.owner_id === auth.user.id ? <span className="bg-orange-500 text-white rounded ml-2 px-2">Private</span> : <></>}
+                    {ac.rental_airport_id && <span className="bg-orange-500 text-white rounded ml-2 px-2">Rental</span>}
                     {ac.maintenance_status && <span className="ml-2 text-orange-500"><i className="material-icons md-18">engineering</i></span>}
                   </td>
-                  <td><Link href={`/airports/${ac.hub_id}`}>{ac.hub_id}</Link></td>
+                  <td>
+                    {ac.hub_id && <Link href={`/airports/${ac.hub_id}`}>{ac.hub_id}</Link>}
+                    {ac.rental_airport_id && ac.rental_airport_id}
+                  </td>
                   <td>{ac.fleet.manufacturer} {ac.fleet.name} ({ac.fleet.type})</td>
                   <td>{ac.fuel_onboard}</td>
                 </tr>

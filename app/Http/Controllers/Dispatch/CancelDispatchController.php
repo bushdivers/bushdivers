@@ -29,10 +29,12 @@ class CancelDispatchController extends Controller
         }
 
         // clear up aircraft assignment
-        $aircraft = Aircraft::find($pirep->aircraft_id);
-        $aircraft->state = AircraftState::AVAILABLE;
-        $aircraft->user_id = null;
-        $aircraft->save();
+        if (!$pirep->is_rental) {
+            $aircraft = Aircraft::find($pirep->aircraft_id);
+            $aircraft->state = AircraftState::AVAILABLE;
+            $aircraft->user_id = null;
+            $aircraft->save();
+        }
 
         // remove pirep cargo entries
         PirepCargo::where('pirep_id', $pirep->id)->delete();
