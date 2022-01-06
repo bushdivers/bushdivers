@@ -14,6 +14,7 @@ class FindInactivePireps
 
         $pireps = Pirep::where('state', PirepState::DISPATCH)
             ->where('created_at', '<', $dateToCompare)
+            ->where('is_rental', false)
             ->get();
 
         return $pireps;
