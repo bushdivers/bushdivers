@@ -69,6 +69,13 @@ const RentalList = ({ aircraft, myRentals }) => {
                   <div className="text-xl">{ac.type} {ac.manufacturer} - {ac.name}</div>
                   <div className="mt-1">${ac.rental_cost} per hour <span className="text-sm">(min. 2 hours per day)</span></div>
                   <div>${ac.rental_cost * 10} Returnable deposit</div>
+                  <div className="mt-2">
+                    <div>Cargo (lbs): {ac.cargo_capacity}</div>
+                    <div>Pax: {ac.pax_capacity}</div>
+                    <div>Fuel (gal): {ac.fuel_capacity}</div>
+                    <div>Cruise (kts): {ac.cruise_speed}</div>
+                    <div>Range (nm): {ac.range}</div>
+                  </div>
                   <div className="mt-6 text-center">
                     <button onClick={() => handleRental(ac)} className="btn btn-secondary">Rent {ac.name}</button>
                   </div>
