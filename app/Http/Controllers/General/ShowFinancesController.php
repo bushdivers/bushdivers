@@ -26,7 +26,6 @@ class ShowFinancesController extends Controller
         $balance = AccountLedger::all();
 
         $largeAc = Aircraft::with(['fleet'])
-            ->where('is_rental', false)
             ->where('owner_id', 0)
             ->whereHas('fleet', function ($q) {
                 $q->where('size', 'L');
@@ -34,7 +33,6 @@ class ShowFinancesController extends Controller
             ->where('status', AircraftStatus::ACTIVE)
             ->count();
         $smallAc = Aircraft::with(['fleet'])
-            ->where('is_rental', false)
             ->where('owner_id', 0)
             ->whereHas('fleet', function ($q) {
                 $q->where('size', 'S');
@@ -42,7 +40,6 @@ class ShowFinancesController extends Controller
             ->where('status', AircraftStatus::ACTIVE)
             ->count();
         $medAc = Aircraft::with(['fleet'])
-            ->where('is_rental', false)
             ->where('owner_id', 0)
             ->whereHas('fleet', function ($q) {
                 $q->where('size', 'M');
