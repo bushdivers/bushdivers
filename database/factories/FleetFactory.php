@@ -39,7 +39,9 @@ class FleetFactory extends Factory
             'service_ceiling' => 25000,
             'range' => 1200,
             'cruise_speed' => 175,
-            'image_url' => ''
+            'image_url' => '',
+            'rental_size' => 1,
+            'is_rental' => false
         ];
     }
 }

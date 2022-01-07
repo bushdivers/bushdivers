@@ -12,6 +12,8 @@ use App\Models\Enums\TransactionTypes;
 use App\Models\Fleet;
 use App\Models\Pirep;
 use App\Models\PirepCargo;
+use App\Models\Rental;
+use App\Models\User;
 use App\Services\Finance\CalcLandingFee;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -93,14 +95,17 @@ class LandingFeeTest extends TestCase
 
     public function test_small_landing_fee_not_calculated_rental()
     {
-        $aircraft = Aircraft::factory()->create([
+        $user = User::factory()->create();
+
+        $aircraft = Rental::factory()->create([
             'fleet_id' => $this->fleetSmall->id,
-            'is_rental' => true
+            'user_id' => $user->id
         ]);
 
         $pirep = Pirep::factory()->create([
             'aircraft_id' => $aircraft->id,
-            'destination_airport_id' => $this->airport->identifier
+            'destination_airport_id' => $this->airport->identifier,
+            'is_rental' => true
         ]);
         $this->calcLandingFee->execute($pirep);
         $this->assertDatabaseMissing('account_ledgers', [

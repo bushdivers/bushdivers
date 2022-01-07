@@ -6,6 +6,7 @@ use App\Models\Aircraft;
 use App\Models\Enums\TransactionTypes;
 use App\Models\Fleet;
 use App\Models\Pirep;
+use App\Models\Rental;
 use App\Models\User;
 use App\Services\Rentals\CheckRentalDailyFee;
 use Carbon\Carbon;
@@ -30,9 +31,8 @@ class CheckRentalDailyFeeTest extends TestCase
             'rental_cost' => 200.00
         ]);
         $this->user = User::factory()->create();
-        $this->aircraft = Aircraft::factory()->create([
+        $this->aircraft = Rental::factory()->create([
             'fleet_id' => $this->fleet->id,
-            'is_rental' => true,
             'user_id' => $this->user->id
         ]);
 
@@ -50,7 +50,8 @@ class CheckRentalDailyFeeTest extends TestCase
             'aircraft_id' => $this->aircraft->id,
             'user_id' => $this->user->id,
             'flight_time' => 250,
-            'submitted_at' => Carbon::today()->addHours(3)
+            'submitted_at' => Carbon::today()->addHours(3),
+            'is_rental' => true,
         ]);
 
         $this->checkRentalDailyFee->execute();
@@ -66,7 +67,8 @@ class CheckRentalDailyFeeTest extends TestCase
             'aircraft_id' => $this->aircraft->id,
             'user_id' => $this->user->id,
             'flight_time' => 60,
-            'submitted_at' => Carbon::today()->addHours(3)
+            'submitted_at' => Carbon::today()->addHours(3),
+            'is_rental' => true,
         ]);
 
         $remainder = 60 / 120; // flight time / min time

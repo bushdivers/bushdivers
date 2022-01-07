@@ -24,11 +24,25 @@ class ShowDashboardController extends Controller
     public function __invoke(Request $request): Response
     {
         $user = User::find(Auth::user()->id);
-        $lastFlight = Pirep::with('aircraft', 'aircraft.fleet', 'depAirport', 'arrAirport')
-            ->where('user_id', $user->id)
+
+        $lastFlightQ = Pirep::where('user_id', $user->id)
             ->where('state', PirepState::ACCEPTED)
             ->orderBy('submitted_at', 'desc')
             ->first();
+
+        if ($lastFlightQ->is_rental) {
+            $lastFlight = Pirep::with('rental', 'rental.fleet', 'depAirport', 'arrAirport')
+                ->where('user_id', $user->id)
+                ->where('state', PirepState::ACCEPTED)
+                ->orderBy('submitted_at', 'desc')
+                ->first();
+        } else {
+            $lastFlight = Pirep::with('aircraft', 'aircraft.fleet', 'depAirport', 'arrAirport')
+                ->where('user_id', $user->id)
+                ->where('state', PirepState::ACCEPTED)
+                ->orderBy('submitted_at', 'desc')
+                ->first();
+        }
 
         $locations = DB::table('airports')
             ->join('pireps', 'airports.identifier', '=', 'pireps.destination_airport_id')

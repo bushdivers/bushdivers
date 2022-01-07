@@ -9,6 +9,7 @@ use App\Models\Enums\AircraftState;
 use App\Models\Fleet;
 use App\Models\Pirep;
 use App\Models\PirepCargo;
+use App\Models\Rental;
 use App\Models\User;
 use App\Services\Pireps\RemoveMultiplePireps;
 use Carbon\Carbon;
@@ -119,19 +120,19 @@ class RemoveMultiplePirepsTest extends TestCase
 
     public function test_nothing_changed_if_aircraft_is_rental()
     {
-        $aircraft = Aircraft::factory()->create([
+        $aircraft = Rental::factory()->create([
             'fleet_id' => $this->fleet->id,
             'fuel_onboard' => 50,
             'current_airport_id' => 'AYMR',
-            'user_id' => $this->user->id,
-            'is_rental' => true
+            'user_id' => $this->user->id
         ]);
 
         $pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,
             'destination_airport_id' => $this->contract->arr_airport_id,
             'departure_airport_id' => $this->contract->dep_airport_id,
-            'aircraft_id' => $aircraft->id
+            'aircraft_id' => $aircraft->id,
+            'is_rental' => true
         ]);
 
         $this->assertDatabaseHas('pireps', [

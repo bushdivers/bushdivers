@@ -29,7 +29,8 @@ class PirepFactory extends Factory
             'aircraft_id' => 1,
             'user_id' => 1,
             'destination_airport_id' => 'AYMN',
-            'departure_airport_id' => 'AYMR'
+            'departure_airport_id' => 'AYMR',
+            'is_rental' => false
         ];
     }
 }

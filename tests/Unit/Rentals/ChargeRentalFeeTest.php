@@ -6,6 +6,7 @@ use App\Models\Aircraft;
 use App\Models\Enums\TransactionTypes;
 use App\Models\Fleet;
 use App\Models\Pirep;
+use App\Models\Rental;
 use App\Models\User;
 use App\Services\Rentals\ChargeRentalFee;
 use Carbon\Carbon;
@@ -30,9 +31,8 @@ class ChargeRentalFeeTest extends TestCase
         $this->fleet = Fleet::factory()->create([
             'rental_cost' => 100.00
         ]);
-        $this->aircraft = Aircraft::factory()->create([
+        $this->aircraft = Rental::factory()->create([
             'fleet_id' => $this->fleet->id,
-            'is_rental' => true,
             'user_id' => $this->user->id
         ]);
 
@@ -50,7 +50,8 @@ class ChargeRentalFeeTest extends TestCase
             'user_id' => $this->user->id,
             'aircraft_id' => $this->aircraft->id,
             'submitted_at' => Carbon::now(),
-            'flight_time' => 120
+            'flight_time' => 120,
+            'is_rental' => true
         ]);
 
         $this->chargeRentalFee->execute($pirep->id);
@@ -68,7 +69,8 @@ class ChargeRentalFeeTest extends TestCase
             'user_id' => $this->user->id,
             'aircraft_id' => $this->aircraft->id,
             'submitted_at' => Carbon::now(),
-            'flight_time' => 60
+            'flight_time' => 60,
+            'is_rental' => true
         ]);
 
         $this->chargeRentalFee->execute($pirep->id);
@@ -86,7 +88,8 @@ class ChargeRentalFeeTest extends TestCase
             'user_id' => $this->user->id,
             'aircraft_id' => $this->aircraft->id,
             'submitted_at' => Carbon::now(),
-            'flight_time' => 30
+            'flight_time' => 30,
+            'is_rental' => true
         ]);
 
         $this->chargeRentalFee->execute($pirep->id);

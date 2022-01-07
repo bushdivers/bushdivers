@@ -12,6 +12,8 @@ use App\Models\Enums\TransactionTypes;
 use App\Models\Fleet;
 use App\Models\Pirep;
 use App\Models\PirepCargo;
+use App\Models\Rental;
+use App\Models\User;
 use App\Services\Finance\CalcCargoHandlingFee;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -31,6 +33,7 @@ class CargoHandlingFeeTest extends TestCase
     protected Model $aircraft;
     protected Model $aircraftRental;
     protected Model $aircraftPrivate;
+    protected Model $user;
 
     protected function setUp(): void
     {
@@ -44,6 +47,8 @@ class CargoHandlingFeeTest extends TestCase
             'size' => 1
         ]);
 
+        $this->user = User::factory()->create();
+
         AirlineFees::factory()->create([
             'fee_type' => AirlineTransactionTypes::GroundHandlingFees,
             'fee_name' => 'Cargo Handling',
@@ -55,9 +60,9 @@ class CargoHandlingFeeTest extends TestCase
             'fleet_id' => $this->fleet->id
         ]);
 
-        $this->aircraftRental = Aircraft::factory()->create([
+        $this->aircraftRental = Rental::factory()->create([
             'fleet_id' => $this->fleet->id,
-            'is_rental' => true
+            'user_id' => $this->user->id
         ]);
 
         $this->aircraftPrivate = Aircraft::factory()->create([
@@ -96,7 +101,8 @@ class CargoHandlingFeeTest extends TestCase
     {
         $pirep = Pirep::factory()->create([
             'destination_airport_id' => $this->airport->identifier,
-            'aircraft_id' => $this->aircraftRental->id
+            'aircraft_id' => $this->aircraftRental->id,
+            'is_rental' => true
         ]);
         PirepCargo::factory()->create([
             'pirep_id' => $pirep->id,

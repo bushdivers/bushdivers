@@ -68,6 +68,7 @@ var Dashboard = function Dashboard(_ref) {
   var lastFlight = _ref.lastFlight,
       user = _ref.user,
       locations = _ref.locations;
+  console.log(lastFlight);
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
     className: "relative",
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_Shared_Components_Crew_CrewMap__WEBPACK_IMPORTED_MODULE_3__.default, {
@@ -123,7 +124,9 @@ var Dashboard = function Dashboard(_ref) {
             children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("i", {
               className: "material-icons md-18",
               children: "local_airport"
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_2__.Link, {
+            }), lastFlight.is_rental ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("span", {
+              children: [lastFlight.rental.fleet.type, " - ", lastFlight.rental.registration]
+            }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_2__.Link, {
               className: "link ml-2",
               href: "/aircraft/".concat(lastFlight.aircraft.id),
               children: [lastFlight.aircraft.fleet.type, " - ", lastFlight.aircraft.registration]

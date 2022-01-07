@@ -8,6 +8,8 @@ use App\Models\Enums\AirlineTransactionTypes;
 use App\Models\Enums\TransactionTypes;
 use App\Models\Fleet;
 use App\Models\Pirep;
+use App\Models\Rental;
+use App\Models\User;
 use App\Services\Finance\CalcFuelUsedFee;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -73,15 +75,18 @@ class FuelCostTest extends TestCase
 
     public function test_avgas_is_calculated_rental()
     {
-        $this->aircraftAvGas = Aircraft::factory()->create([
+        $user = User::factory()->create();
+
+        $this->aircraftAvGas = Rental::factory()->create([
             'registration' => 'P2-SM',
             'fleet_id' => $this->fleetAvGas->id,
-            'is_rental' => true
+            'user_id' => $user->id
         ]);
 
         $pirep = Pirep::factory()->create([
             'aircraft_id' => $this->aircraftAvGas->id,
-            'fuel_used' => 50
+            'fuel_used' => 50,
+            'is_rental' => true
         ]);
 
         $cost = 50 * 2.15;

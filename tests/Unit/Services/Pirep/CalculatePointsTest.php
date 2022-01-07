@@ -12,6 +12,7 @@ use App\Models\Enums\TransactionTypes;
 use App\Models\Fleet;
 use App\Models\Pirep;
 use App\Models\PirepCargo;
+use App\Models\Rental;
 use App\Models\User;
 use App\Services\Pireps\CalculatePirepPoints;
 use Carbon\Carbon;
@@ -135,14 +136,15 @@ class CalculatePointsTest extends TestCase
 
     public function test_hub_points_for_flight_inc_hub_not_added_for_rental()
     {
-        $aircraft = Aircraft::factory()->create([
+        $aircraft = Rental::factory()->create([
             'fleet_id' => $this->fleet->id,
-            'is_rental' => true
+            'user_id' => $this->user->id
         ]);
 
         $pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,
-            'aircraft_id' => $aircraft->id
+            'aircraft_id' => $aircraft->id,
+            'is_rental' => true
         ]);
         $this->calculatePirepPoints->execute($pirep);
         $this->assertDatabaseMissing('points', [
@@ -154,14 +156,15 @@ class CalculatePointsTest extends TestCase
 
     public function test_hub_bonus_for_flight_inc_hub_not_added_for_rental()
     {
-        $aircraft = Aircraft::factory()->create([
+        $aircraft = Rental::factory()->create([
             'fleet_id' => $this->fleet->id,
-            'is_rental' => true
+            'user_id' => $this->user->id
         ]);
 
         $pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,
-            'aircraft_id' => $aircraft->id
+            'aircraft_id' => $aircraft->id,
+            'is_rental' => true
         ]);
         $this->calculatePirepPoints->execute($pirep);
         $this->assertDatabaseMissing('user_accounts', [

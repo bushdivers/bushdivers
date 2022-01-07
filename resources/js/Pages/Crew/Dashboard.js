@@ -6,6 +6,7 @@ import AppLayout from '../../Shared/AppLayout'
 import StatBlock from '../../Shared/Elements/StatBlock'
 
 const Dashboard = ({ lastFlight, user, locations }) => {
+  console.log(lastFlight)
   return (
     <div className="relative">
       <CrewMap size="full" locations={locations && locations.length > 0 ? locations : []} />
@@ -34,7 +35,10 @@ const Dashboard = ({ lastFlight, user, locations }) => {
               </div>
               <div className="mt-2 text-sm flex items-center">
                 <i className="material-icons md-18">local_airport</i>
-                <Link className="link ml-2" href={`/aircraft/${lastFlight.aircraft.id}`}>{lastFlight.aircraft.fleet.type} - {lastFlight.aircraft.registration}</Link>
+                { lastFlight.is_rental
+                  ? <span>{lastFlight.rental.fleet.type} - {lastFlight.rental.registration}</span>
+                  : <Link className="link ml-2" href={`/aircraft/${lastFlight.aircraft.id}`}>{lastFlight.aircraft.fleet.type} - {lastFlight.aircraft.registration}</Link>
+                }
               </div>
             </>
           )}

@@ -5,6 +5,7 @@ namespace Tests\Unit\Rentals;
 use App\Models\Aircraft;
 use App\Models\Enums\TransactionTypes;
 use App\Models\Fleet;
+use App\Models\Rental;
 use App\Models\User;
 use App\Services\Rentals\EndRental;
 use Illuminate\Database\Eloquent\Model;
@@ -30,19 +31,17 @@ class EndRentalTest extends TestCase
 
         $this->user = User::factory()->create();
 
-        $this->aircraftHome = Aircraft::factory()->create([
+        $this->aircraftHome = Rental::factory()->create([
             'fleet_id' => $this->fleet->id,
-            'is_rental' => true,
             'current_airport_id' => 'AYMR',
-            'hub_id' => 'AYMR',
+            'rental_airport_id' => 'AYMR',
             'user_id' => $this->user->id
         ]);
 
-        $this->aircraftAway = Aircraft::factory()->create([
+        $this->aircraftAway = Rental::factory()->create([
             'fleet_id' => $this->fleet->id,
-            'is_rental' => true,
             'current_airport_id' => 'AYMH',
-            'hub_id' => 'AYMR',
+            'rental_airport_id' => 'AYMR',
             'user_id' => $this->user->id
         ]);
 
@@ -74,17 +73,10 @@ class EndRentalTest extends TestCase
         ]);
     }
 
-    public function test_aircraft_returned_home()
-    {
-        $this->endRental->execute($this->aircraftAway->id, $this->user->id);
-        $this->aircraftAway->refresh();
-        $this->assertEquals($this->aircraftAway->hub_id, $this->aircraftAway->current_airport_id);
-    }
-
-    public function test_aircraft_made_available()
+    public function test_rental_made_inactive()
     {
         $this->endRental->execute($this->aircraftHome->id, $this->user->id);
         $this->aircraftHome->refresh();
-        $this->assertEquals(null, $this->aircraftHome->user_id);
+        $this->assertEquals(0, $this->aircraftHome->is_active);
     }
 }

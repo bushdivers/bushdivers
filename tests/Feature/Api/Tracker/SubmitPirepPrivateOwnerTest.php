@@ -56,7 +56,6 @@ class SubmitPirepPrivateOwnerTest extends TestCase
             'current_airport_id' => 'AYMR',
             'user_id' => $this->user->id,
             'flight_time_mins' => 0,
-            'is_rental' => false,
             'owner_id' => $this->user->id
         ]);
         DB::table('cargo_types')->insert([
@@ -170,7 +169,7 @@ class SubmitPirepPrivateOwnerTest extends TestCase
 
         $this->postJson('/api/pirep/submit', $data);
 
-        $pp = (80 / 100) * $this->contract->contract_value;
+        $pp = (60 / 100) * $this->contract->contract_value;
 
         $this->assertDatabaseHas('user_accounts', [
             'flight_id' => $this->pirep->id,

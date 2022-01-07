@@ -122,8 +122,8 @@ class ContractPayTest extends TestCase
 
     public function test_pilot_pay_is_returned_for_private()
     {
-        $expectedPay = (80 / 100) * $this->contract->contract_value;
-        $companyPay = (20 / 100) * $this->contract->contract_value;
+        $expectedPay = (60 / 100) * $this->contract->contract_value;
+        $companyPay = (40 / 100) * $this->contract->contract_value;
         $totalPay = $expectedPay + $companyPay;
         $pay = $this->calcContractPay->execute($this->contract->id, null, false, true);
         $this->assertEquals($expectedPay, $pay);
@@ -132,8 +132,8 @@ class ContractPayTest extends TestCase
 
     public function test_pilot_pay_is_returned_for_rental()
     {
-        $expectedPay = (80 / 100) * $this->contract->contract_value;
-        $companyPay = (20 / 100) * $this->contract->contract_value;
+        $expectedPay = (60 / 100) * $this->contract->contract_value;
+        $companyPay = (40 / 100) * $this->contract->contract_value;
         $totalPay = $expectedPay + $companyPay;
         $pay = $this->calcContractPay->execute($this->contract->id, null, true, false);
         $this->assertEquals($expectedPay, $pay);

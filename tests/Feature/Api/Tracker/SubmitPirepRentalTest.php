@@ -14,6 +14,7 @@ use App\Models\Fleet;
 use App\Models\FlightLog;
 use App\Models\Pirep;
 use App\Models\PirepCargo;
+use App\Models\Rental;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
@@ -50,13 +51,11 @@ class SubmitPirepRentalTest extends TestCase
             'fuel_type' => 1,
             'size' => 'S'
         ]);
-        $this->aircraft = Aircraft::factory()->create([
+        $this->aircraft = Rental::factory()->create([
             'fleet_id' => $this->fleet->id,
             'fuel_onboard' => 50,
             'current_airport_id' => 'AYMR',
-            'user_id' => $this->user->id,
-            'flight_time_mins' => 0,
-            'is_rental' => true
+            'user_id' => $this->user->id
         ]);
         DB::table('cargo_types')->insert([
             ['type' => 1, 'text' => 'Solar Panels'],
@@ -80,7 +79,8 @@ class SubmitPirepRentalTest extends TestCase
             'departure_airport_id' => $this->contract->dep_airport_id,
             'aircraft_id' => $this->aircraft->id,
             'current_lat' => -6.14617,
-            'current_lon' => 143.65733
+            'current_lon' => 143.65733,
+            'is_rental' => true
         ]);
 
         $this->pirepCargo = PirepCargo::factory()->create([
@@ -143,7 +143,7 @@ class SubmitPirepRentalTest extends TestCase
             'block_off_time'=> $startTime,
             'block_on_time' => $endTime
         ];
-        $this->withExceptionHandling();
+
         $response = $this->postJson('/api/pirep/submit', $data);
 
         $response->assertStatus(200);
@@ -169,7 +169,7 @@ class SubmitPirepRentalTest extends TestCase
 
         $this->postJson('/api/pirep/submit', $data);
 
-        $pp = (80 / 100) * $this->contract->contract_value;
+        $pp = (60 / 100) * $this->contract->contract_value;
 
         $this->assertDatabaseHas('user_accounts', [
             'flight_id' => $this->pirep->id,

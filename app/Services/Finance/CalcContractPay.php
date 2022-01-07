@@ -23,7 +23,7 @@ class CalcContractPay
         $this->addAirlineTransaction->execute(AirlineTransactionTypes::ContractIncome, $companyPay, 'Contract Pay: '. $contractId, $pirep, 'credit');
         // pilot pay
         if ($rental || $privatePlane) {
-            $pilotPay = (80 / 100) * $contract->contract_value;
+            $pilotPay = (60 / 100) * $contract->contract_value;
         } else {
             $pilotPay = (FinancialConsts::PilotPay / 100) * $contract->contract_value;
         }

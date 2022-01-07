@@ -27,8 +27,7 @@ class AircraftFactory extends Factory
             'fuel_onboard' => 26.8,
             'state' => 1,
             'status' => 1,
-            'hub_id' => 'AYMR',
-            'is_rental' => false
+            'hub_id' => 'AYMR'
         ];
     }
 }

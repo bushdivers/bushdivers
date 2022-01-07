@@ -3,8 +3,10 @@
 namespace Tests\Unit\Rentals;
 
 use App\Models\Aircraft;
+use App\Models\Airport;
 use App\Models\Enums\TransactionTypes;
 use App\Models\Fleet;
+use App\Models\Rental;
 use App\Models\User;
 use App\Services\Rentals\StartRental;
 use Illuminate\Database\Eloquent\Model;
@@ -20,6 +22,8 @@ class StartRentalTest extends TestCase
     protected Model $fleet;
     protected Model $user;
     protected StartRental $startRental;
+    protected Model $usHub;
+    protected Model $pngHub;
 
     protected function setUp(): void
     {
@@ -28,10 +32,15 @@ class StartRentalTest extends TestCase
         $this->fleet = Fleet::factory()->create([
             'rental_cost' => 100.00
         ]);
-        $this->aircraft = Aircraft::factory()->create([
-            'fleet_id' => $this->fleet->id,
-            'is_rental' => true,
-            'hub_id' => 'AYMR'
+
+        $this->usHub = Airport::factory()->create([
+            'identifier' => 'PAMX',
+            'country' => 'US'
+        ]);
+
+        $this->pngHub = Airport::factory()->create([
+            'identifier' => 'AYMR',
+            'country' => 'PG'
         ]);
 
         $this->startRental = $this->app->make(StartRental::class);
@@ -56,26 +65,42 @@ class StartRentalTest extends TestCase
             'total' => -1000.00
         ]);
 
-        $result = $this->startRental->execute($this->aircraft->id, $this->user->id);
+        $result = $this->startRental->execute($this->fleet->id, $this->user->id, 'AYMR');
         $this->assertFalse($result);
     }
 
     public function test_successful_process_returns_true()
     {
-        $result = $this->startRental->execute($this->aircraft->id, $this->user->id);
+        $result = $this->startRental->execute($this->fleet->id, $this->user->id, 'AYMR');
         $this->assertTrue($result);
     }
 
     public function test_aircraft_assigned_to_user()
     {
-        $this->startRental->execute($this->aircraft->id, $this->user->id);
-        $this->aircraft->refresh();
-        $this->assertEquals($this->user->id, $this->aircraft->user_id);
+        $this->startRental->execute($this->fleet->id, $this->user->id, 'AYMR');
+        $this->assertDatabaseHas('rentals', [
+            'user_id' => $this->user->id
+        ]);
+    }
+
+    public function test_registration_generated_usa()
+    {
+        $this->startRental->execute($this->fleet->id, $this->user->id, 'PAMX');
+        $rental = Rental::where('user_id', $this->user->id)->first();
+
+        $this->assertMatchesRegularExpression('/([N])([0-9]){3}([R])/', $rental->registration);
+    }
+
+    public function test_registration_generated_png()
+    {
+        $this->startRental->execute($this->fleet->id, $this->user->id, 'AYMR');
+        $rental = Rental::where('user_id', $this->user->id)->first();
+        $this->assertMatchesRegularExpression('/([P])([2])([\-])([R])([0-9]){2}/', $rental->registration);
     }
 
     public function test_account_transaction_added()
     {
-        $this->startRental->execute($this->aircraft->id, $this->user->id);
+        $this->startRental->execute($this->fleet->id, $this->user->id, 'AYMR');
         $this->assertDatabaseHas('user_accounts', [
            'user_id' => $this->user->id,
            'type' => TransactionTypes::Rental,
