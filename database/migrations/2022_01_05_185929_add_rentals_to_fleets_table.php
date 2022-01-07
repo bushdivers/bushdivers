@@ -16,7 +16,7 @@ class AddRentalsToFleetsTable extends Migration
         Schema::table('fleets', function (Blueprint $table) {
             $table->boolean('is_rental')->default(false);
             $table->string('rental_image')->nullable();
-            $table->integer('rental_size');
+            $table->integer('rental_size')->default(0);
         });
     }
 
