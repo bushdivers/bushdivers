@@ -99,6 +99,46 @@ var AirportDetail = function AirportDetail(_ref) {
     }
   };
 
+  var renderRunwayText = function renderRunwayText(surface) {
+    switch (surface) {
+      case 'A':
+        return 'Asphalt';
+
+      case 'B':
+        return 'Bituminous';
+
+      case 'C':
+        return 'Concrete';
+
+      case 'CE':
+        return 'Cement';
+
+      case 'CR':
+        return 'Water';
+
+      case 'G':
+        return 'Grass';
+
+      case 'GR':
+        return 'Gravel';
+
+      case 'M':
+        return 'Macadam';
+
+      case 'S':
+        return 'Sand';
+
+      case 'T':
+        return 'Tarmac';
+
+      case 'W':
+        return 'Water';
+
+      default:
+        return 'Unknown';
+    }
+  };
+
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
     className: "p-4",
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
@@ -194,7 +234,7 @@ var AirportDetail = function AirportDetail(_ref) {
               className: "material-icons mr-2",
               children: "add_road"
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("span", {
-              children: [airport.longest_runway_surface, " ", airport.longest_runway_length, "ft x ", airport.longest_runway_width, "ft"]
+              children: [renderRunwayText(airport.longest_runway_surface), " ", airport.longest_runway_length, "ft x ", airport.longest_runway_width, "ft"]
             })]
           })
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {

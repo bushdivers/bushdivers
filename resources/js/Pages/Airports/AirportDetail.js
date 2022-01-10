@@ -20,6 +20,35 @@ const AirportDetail = ({ airport, metar, aircraft }) => {
         return 'In Use'
     }
   }
+
+  const renderRunwayText = (surface) => {
+    switch (surface) {
+      case 'A':
+        return 'Asphalt'
+      case 'B':
+        return 'Bituminous'
+      case 'C':
+        return 'Concrete'
+      case 'CE':
+        return 'Cement'
+      case 'CR':
+        return 'Water'
+      case 'G':
+        return 'Grass'
+      case 'GR':
+        return 'Gravel'
+      case 'M':
+        return 'Macadam'
+      case 'S':
+        return 'Sand'
+      case 'T':
+        return 'Tarmac'
+      case 'W':
+        return 'Water'
+      default:
+        return 'Unknown'
+    }
+  }
   return (
     <div className="p-4">
       <div className="w-1/6 mb-2 flex items-center">
@@ -65,7 +94,7 @@ const AirportDetail = ({ airport, metar, aircraft }) => {
             <div className="rounded shadow p-4 mt-2 bg-white mx-2">
               <div className="flex items-center">
                 <i className="material-icons mr-2">add_road</i>
-                <span>{airport.longest_runway_surface} {airport.longest_runway_length}ft x {airport.longest_runway_width}ft</span>
+                <span>{renderRunwayText(airport.longest_runway_surface)} {airport.longest_runway_length}ft x {airport.longest_runway_width}ft</span>
               </div>
             </div>
           )}
