@@ -408,11 +408,11 @@ var Contracts = function Contracts(_ref) {
                           content: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(AirportToolTip, {
                             airport: contract.dep_airport
                           }),
-                          direction: "top",
+                          direction: "right",
                           children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_4__.Link, {
                             href: "/airports/".concat(contract.dep_airport_id),
                             children: contract.dep_airport_id
-                          }), contract.dep_airport.longest_runway_surface, " ", contract.dep_airport.longest_runway_surface === 'W' && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("span", {
+                          }), " ", contract.dep_airport.longest_runway_surface === 'W' && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("span", {
                             className: "material-icons",
                             children: "anchor"
                           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("br", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("span", {
