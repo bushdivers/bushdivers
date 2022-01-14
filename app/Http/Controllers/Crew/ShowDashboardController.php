@@ -30,7 +30,7 @@ class ShowDashboardController extends Controller
             ->orderBy('submitted_at', 'desc')
             ->first();
 
-        if ($lastFlightQ->is_rental) {
+        if ($lastFlightQ && $lastFlightQ->is_rental) {
             $lastFlight = Pirep::with('rental', 'rental.fleet', 'depAirport', 'arrAirport')
                 ->where('user_id', $user->id)
                 ->where('state', PirepState::ACCEPTED)
