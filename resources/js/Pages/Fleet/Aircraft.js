@@ -6,6 +6,7 @@ import { usePage } from '@inertiajs/inertia-react'
 import { Inertia } from '@inertiajs/inertia'
 import dayjs from 'dayjs'
 import AppLayout from '../../Shared/AppLayout'
+import { Link } from '@inertiajs/inertia-react'
 
 const Aircraft = ({ aircraft, maintenanceStatus, hubs }) => {
   const { auth } = usePage().props
@@ -134,7 +135,10 @@ const Aircraft = ({ aircraft, maintenanceStatus, hubs }) => {
           <StatCard title="Distance Flown" stat={calculateDistanceFlown(aircraft.pireps)} />
          </div>
         <div className="md:w-1/5 my-1">
-          <StatCard title="Current Location" stat={aircraft.current_airport_id} />
+          <StatCard title="Current Location" stat={aircraft.current_airport_id} link={'/airports/' + aircraft.current_airport_id} />
+        </div>
+        <div className="md:w-1/5 my-1">
+          <StatCard title="Home Hub" stat={aircraft.hub_id} link={'/airports/' + aircraft.hub_id} />
         </div>
         <div className="md:w-1/5 my-1">
           <StatCard title="Current Fuel" stat={aircraft.fuel_onboard} />
