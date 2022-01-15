@@ -32,7 +32,7 @@ Route::get('/resources/categories', \App\Http\Controllers\Admin\Resources\GetCat
 
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::post('/contracts/generate', \App\Http\Controllers\Contracts\GenerateContractsController::class);
+    Route::post('/contracts/generate/{region}', \App\Http\Controllers\Contracts\GenerateContractsController::class);
     Route::get('/dispatch', \App\Http\Controllers\Tracker\GetActiveDispatchController::class);
     Route::get('/dispatch/cargo', \App\Http\Controllers\Tracker\GetDispatchCargoController::class);
     Route::post('/log', \App\Http\Controllers\Tracker\AddFlightLogController::class);

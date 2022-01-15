@@ -21,8 +21,9 @@ class GenerateContractsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function __invoke(Request $request)
+    public function __invoke(Request $request, $region)
     {
-        $this->findAirportsInNeedOfContracts->execute('CA');
+        $airports = $this->findAirportsInNeedOfContracts->execute($region);
+        dd($airports);
     }
 }
