@@ -30,7 +30,7 @@ class ShowDashboardController extends Controller
             ->orderBy('submitted_at', 'desc')
             ->first();
 
-        if ($lastFlightQ->is_rental) {
+        if ($lastFlightQ && $lastFlightQ->is_rental) {
             $lastFlight = Pirep::with('rental', 'rental.fleet', 'depAirport', 'arrAirport')
                 ->where('user_id', $user->id)
                 ->where('state', PirepState::ACCEPTED)
@@ -45,7 +45,10 @@ class ShowDashboardController extends Controller
         }
 
         $locations = DB::table('airports')
-            ->join('pireps', 'airports.identifier', '=', 'pireps.destination_airport_id')
+            ->join('pireps', function($join){
+                $join->on('airports.identifier', '=', 'pireps.departure_airport_id')
+                    ->orOn('airports.identifier', '=', 'pireps.destination_airport_id');
+             })
             ->select('airports.identifier', 'airports.name', 'airports.lon', 'airports.lat')
             ->where('pireps.user_id', Auth::user()->id)
             ->distinct()
