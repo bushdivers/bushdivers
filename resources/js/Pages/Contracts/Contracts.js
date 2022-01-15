@@ -22,7 +22,7 @@ const AirportToolTip = (props) => {
   return (
     <>
       <div>Altitude: {props.airport.altitude}ft</div>
-      <div>Longest Runway: {props.airport.longest_runway_surface} - {props.airport.longest_runway_length}ft x {props.airport.longest_runway_width}ft</div>
+      <div>Longest Runway: {props.airport.longest_runway_surface} - {props.airport.longest_runway_length.toLocaleString(navigator.language)}ft x {props.airport.longest_runway_width}ft</div>
     </>
   )
 }
@@ -185,7 +185,7 @@ const Contracts = ({ contracts, airport }) => {
                           {contract.cargo.map((detail) => (
                             <>
                               <span className="mr-1">{detail.contract_type_id === 1 ? 'Cargo' : 'Pax'}</span>
-                              <span>{detail.cargo_qty} {detail.contract_type_id === 1 ? 'lbs' : ''} {detail.cargo}</span>
+                              <span>{detail.cargo_qty.toLocaleString(navigator.language)} {detail.contract_type_id === 1 ? 'lbs' : ''} {detail.cargo}</span>
                               <br/>
                             </>
                           ))}

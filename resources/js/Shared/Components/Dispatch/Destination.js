@@ -37,7 +37,7 @@ const Destination = (props) => {
         <input id="icao" type="text" className="form-input form" value={icao} onChange={handleDestinationChange} />
       </div>
       {airport && <div className="text-sm mt-1">{airport}</div>}
-      {distance && <span className="text-sm">Distance: {distance}nm</span>}
+      {distance && <span className="text-sm">Distance: {distance.toLocaleString(navigator.language)}nm</span>}
       {airportError && <div className="text-sm text-red-500 mt-1">{airportError}</div>}
     </div>
   )

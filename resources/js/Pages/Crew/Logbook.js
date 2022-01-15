@@ -57,8 +57,8 @@ const Logbook = ({ logbook }) => {
                       <span className="text-xs">{entry.arr_airport.name}</span>
                     </td>
                     <td>{convertMinuteDecimalToHoursAndMinutes(entry.flight_time)}</td>
-                    <td>{entry.distance}nm</td>
-                    <td>{entry.score}</td>
+                    <td>{entry.distance.toLocaleString(navigator.language)}nm</td>
+                    <td>{entry.score.toLocaleString(navigator.language)}</td>
                     <td>{format(new Date(entry.submitted_at), 'dd LLL yyyy hh:mm', { timeZone: 'UTC' })}</td>
                   </tr>
                 ))}

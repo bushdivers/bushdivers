@@ -30,8 +30,8 @@ const Header = ({ heading, setNavState }) => {
           </div>
           <div className="hidden md:inline-block mr-4">
             <div className="flex items-center">
-              <div className="mx-1">${auth.user.balance}</div>
-              <div className="mx-1">{auth.user.points} XP</div>
+              <div className="mx-1">${auth.user.balance.toLocaleString(navigator.language)}</div>
+              <div className="mx-1">{auth.user.points.toLocaleString(navigator.language)} XP</div>
               <div className="mx-1">{auth.user.current_airport_id}</div>
             </div>
           </div>

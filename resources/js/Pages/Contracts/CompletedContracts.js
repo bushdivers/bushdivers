@@ -23,11 +23,11 @@ const CompletedContracts = ({ contracts }) => {
               </div>
               <div className="flex flex-col items-center content-center">
                 <div>Distance</div>
-                {contract.distance}nm
+                {contract.distance.toLocaleString(navigator.language)}nm
               </div>
               <div className="flex flex-col items-center content-center">
                 <div>Contract Pay</div>
-                ${(contract.contract_value - ((contract.contract_value * 60.00) / 100.00)).toFixed(2)}
+                ${(contract.contract_value - ((contract.contract_value * 60.00) / 100.00)).toFixed(2).toLocaleString(navigator.language)}
               </div>
               <div className="flex flex-col items-center content-center">
                 <div>Completed Date</div>
@@ -50,7 +50,7 @@ const CompletedContracts = ({ contracts }) => {
                   <td>{cargo.id}</td>
                   <td>{cargo.contract_type_id === 1 ? <span>Cargo</span> : <span>Passengers</span>}</td>
                   <td>{cargo.cargo}</td>
-                  <td>{cargo.cargo_qty}</td>
+                  <td>{cargo.cargo_qty.toLocaleString(navigator.language)}</td>
                   <td> {dayjs(cargo.completed_at).format('DD/MM/YYYY')}</td>
                 </tr>
               ))}

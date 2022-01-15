@@ -9,7 +9,7 @@ const Points = (props) => {
         {props.points.map((point) => (
           <div key={point.id} className="flex flex-col items-center my-2 mx-4">
             <div className="text-sm">{point.type_name}</div>
-            <div className="text-xl">{point.points}</div>
+            <div className="text-xl">{point.points.toLocaleString(navigator.language)}</div>
           </div>
         ))}
       </div>
