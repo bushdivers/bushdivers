@@ -14,5 +14,14 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // \App\Models\Crew::factory(10)->create();
+
+        $this->call([
+            AwardSeeder::class,
+            ContractTypeSeeder::class,
+            RankSeeder::class,
+            FleetSeeder::class,
+            AircraftSeeder::class
+        ]);
+
     }
 }
