@@ -3,7 +3,7 @@ import { Link, usePage } from '@inertiajs/inertia-react'
 import { Inertia } from '@inertiajs/inertia'
 import AppLayout from '../../Shared/AppLayout'
 
-const RentalList = ({ aircraft, myRentals }) => {
+const RentalList = ({ aircraft, myRentals, currentAirport }) => {
   const { auth } = usePage().props
 
   const handleRental = (ac) => {
@@ -26,6 +26,26 @@ const RentalList = ({ aircraft, myRentals }) => {
 
   const returnRental = (ac) => {
     Inertia.post(`/rentals/end/${ac.id}`)
+  }
+
+  const RentalButton = (props) => {
+    return (
+      <div className="mt-6 text-center">
+        <button onClick={() => handleRental(props.aircraft)} className="btn btn-secondary">Rent {props.aircraft.name}</button>
+      </div>
+    )
+  }
+
+  const renderRentalButton = (ac) => {
+    if (currentAirport.is_hub) {
+      if (ac.rental_size === 1 && currentAirport.size >= 3) {
+        return <RentalButton aircraft={ac} />
+      } else if (currentAirport.size < 3 && ac.rental_size === 0) {
+        return <RentalButton aircraft={ac} />
+      } else {
+        return <div className="mt-4 text-center text-sm text-red-500">Aircraft not available here</div>
+      }
+    }
   }
 
   return (
@@ -60,7 +80,12 @@ const RentalList = ({ aircraft, myRentals }) => {
         </div>
       </div>
       <div className="mt-4">
-        <h2 className="text-xl my-2">Aircraft Available for Rental - {auth.user.current_airport_id}</h2>
+        <h2 className="text-xl my-2">
+          {currentAirport.is_hub
+            ? <span>Aircraft Available for Rental - {auth.user.current_airport_id}</span>
+            : <span>{auth.user.current_airport_id} - <span className="text-sm text-red-500">You must be at a hub to rent aircraft</span></span>
+          }
+        </h2>
           <div className="flex flex-wrap justify-start mt-2">
             {aircraft && aircraft.map((ac) => (
               <div key={ac.id} className="bg-white w-1/4 mx-4 rounded shadow my-2">
@@ -76,9 +101,7 @@ const RentalList = ({ aircraft, myRentals }) => {
                     <div>Cruise (kts): {ac.cruise_speed}</div>
                     <div>Range (nm): {ac.range}</div>
                   </div>
-                  <div className="mt-6 text-center">
-                    <button onClick={() => handleRental(ac)} className="btn btn-secondary">Rent {ac.name}</button>
-                  </div>
+                  {renderRentalButton(ac)}
                 </div>
               </div>
             ))}

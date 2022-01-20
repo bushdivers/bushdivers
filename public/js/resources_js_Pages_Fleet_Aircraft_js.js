@@ -69,6 +69,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
 var Aircraft = function Aircraft(_ref) {
   var aircraft = _ref.aircraft,
       maintenanceStatus = _ref.maintenanceStatus,
@@ -235,7 +236,15 @@ var Aircraft = function Aircraft(_ref) {
         className: "md:w-1/5 my-1",
         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_Shared_Elements_StatCard__WEBPACK_IMPORTED_MODULE_1__.default, {
           title: "Current Location",
-          stat: aircraft.current_airport_id
+          stat: aircraft.current_airport_id,
+          link: '/airports/' + aircraft.current_airport_id
+        })
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("div", {
+        className: "md:w-1/5 my-1",
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_Shared_Elements_StatCard__WEBPACK_IMPORTED_MODULE_1__.default, {
+          title: "Home Hub",
+          stat: aircraft.hub_id,
+          link: '/airports/' + aircraft.hub_id
         })
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("div", {
         className: "md:w-1/5 my-1",

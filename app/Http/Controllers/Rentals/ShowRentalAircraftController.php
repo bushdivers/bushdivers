@@ -22,20 +22,18 @@ class ShowRentalAircraftController extends Controller
      */
     public function __invoke(Request $request): Response
     {
+        $aircraft = Fleet::where('is_rental', true)->get();
+
         $currentLocation = Airport::where('identifier', Auth::user()->current_airport_id)->first();
 
-        if ($currentLocation->is_hub) {
-            if ($currentLocation->size >= 3) {
-                $aircraft = Fleet::where('is_rental', true)->get();
-            }
-            if ($currentLocation->size < 3) {
-                $aircraft = Fleet::where('is_rental', true)
-                    ->where('size', 0)
-                    ->get();
-            }
-        } else {
-            $aircraft = [];
-        }
+//        if ($currentLocation->size >= 3) {
+//            $aircraft = Fleet::where('is_rental', true)->get();
+//        }
+//        else {
+//            $aircraft = Fleet::where('is_rental', true)
+//                ->where('size', 0)
+//                ->get();
+//        }
 
 
         $myRentals = Rental::with('fleet')
@@ -43,6 +41,6 @@ class ShowRentalAircraftController extends Controller
             ->where('is_active', true)
             ->get();
 
-        return Inertia::render('Rentals/RentalList', ['aircraft' => $aircraft, 'myRentals' => $myRentals]);
+        return Inertia::render('Rentals/RentalList', ['aircraft' => $aircraft, 'myRentals' => $myRentals, 'currentAirport' => $currentLocation]);
     }
 }

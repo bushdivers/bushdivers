@@ -61,7 +61,8 @@ __webpack_require__.r(__webpack_exports__);
 
 var RentalList = function RentalList(_ref) {
   var aircraft = _ref.aircraft,
-      myRentals = _ref.myRentals;
+      myRentals = _ref.myRentals,
+      currentAirport = _ref.currentAirport;
   var auth = (0,_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.usePage)().props.auth;
 
   var handleRental = function handleRental(ac) {
@@ -88,6 +89,38 @@ var RentalList = function RentalList(_ref) {
 
   var returnRental = function returnRental(ac) {
     _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_2__.Inertia.post("/rentals/end/".concat(ac.id));
+  };
+
+  var RentalButton = function RentalButton(props) {
+    return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+      className: "mt-6 text-center",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("button", {
+        onClick: function onClick() {
+          return handleRental(props.aircraft);
+        },
+        className: "btn btn-secondary",
+        children: ["Rent ", props.aircraft.name]
+      })
+    });
+  };
+
+  var renderRentalButton = function renderRentalButton(ac) {
+    if (currentAirport.is_hub) {
+      if (ac.rental_size === 1 && currentAirport.size >= 3) {
+        return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(RentalButton, {
+          aircraft: ac
+        });
+      } else if (currentAirport.size < 3 && ac.rental_size === 0) {
+        return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(RentalButton, {
+          aircraft: ac
+        });
+      } else {
+        return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+          className: "mt-4 text-center text-sm text-red-500",
+          children: "Aircraft not available here"
+        });
+      }
+    }
   };
 
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
@@ -151,9 +184,16 @@ var RentalList = function RentalList(_ref) {
       })]
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
       className: "mt-4",
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("h2", {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("h2", {
         className: "text-xl my-2",
-        children: ["Aircraft Available for Rental - ", auth.user.current_airport_id]
+        children: currentAirport.is_hub ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("span", {
+          children: ["Aircraft Available for Rental - ", auth.user.current_airport_id]
+        }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("span", {
+          children: [auth.user.current_airport_id, " - ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("span", {
+            className: "text-sm text-red-500",
+            children: "You must be at a hub to rent aircraft"
+          })]
+        })
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
         className: "flex flex-wrap justify-start mt-2",
         children: aircraft && aircraft.map(function (ac) {
@@ -188,16 +228,7 @@ var RentalList = function RentalList(_ref) {
                 }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
                   children: ["Range (nm): ", ac.range]
                 })]
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
-                className: "mt-6 text-center",
-                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("button", {
-                  onClick: function onClick() {
-                    return handleRental(ac);
-                  },
-                  className: "btn btn-secondary",
-                  children: ["Rent ", ac.name]
-                })
-              })]
+              }), renderRentalButton(ac)]
             })]
           }, ac.id);
         })
