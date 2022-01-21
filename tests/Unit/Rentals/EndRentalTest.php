@@ -35,14 +35,16 @@ class EndRentalTest extends TestCase
             'fleet_id' => $this->fleet->id,
             'current_airport_id' => 'AYMR',
             'rental_airport_id' => 'AYMR',
-            'user_id' => $this->user->id
+            'user_id' => $this->user->id,
+            'registration' => 'N12345'
         ]);
 
         $this->aircraftAway = Rental::factory()->create([
             'fleet_id' => $this->fleet->id,
             'current_airport_id' => 'AYMH',
             'rental_airport_id' => 'AYMR',
-            'user_id' => $this->user->id
+            'user_id' => $this->user->id,
+            'registration' => 'N1234A'
         ]);
 
         $this->endRental = $this->app->make(EndRental::class);

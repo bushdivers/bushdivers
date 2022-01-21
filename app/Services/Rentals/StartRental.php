@@ -63,9 +63,6 @@ class StartRental
         }
 
         while ($valid == false) {
-
-
-
             if ($country == 'PG' || $country == 'ID') {
                 $num = mt_rand(1, 99);
                 $num = str_pad($num, 2, 0, STR_PAD_LEFT);
@@ -77,7 +74,6 @@ class StartRental
             }
 
             $rental = Rental::where('registration', $reg)
-                ->where('is_active', true)
                 ->count();
             if ($rental == 0) {
                 $valid = true;
