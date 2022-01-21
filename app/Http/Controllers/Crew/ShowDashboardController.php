@@ -51,6 +51,7 @@ class ShowDashboardController extends Controller
              })
             ->select('airports.identifier', 'airports.name', 'airports.lon', 'airports.lat')
             ->where('pireps.user_id', Auth::user()->id)
+            ->where('pireps.state', PirepState::ACCEPTED)
             ->distinct()
             ->get();
 
