@@ -21,18 +21,19 @@ const AirportDetail = ({ airport, metar, aircraft }) => {
     }
   }
 
-  const renderAirportSize = (size) => {
-    switch (size) {
-      case 1:
-        return 'Small'
-      case 2:
-        return 'Regional'
-      case 3:
-        return 'Major'
-      case 4:
-        return 'International'
-    }
-  }
+  // For future use
+  // const renderAirportSize = (size) => {
+  //   switch (size) {
+  //     case 1:
+  //       return 'Small'
+  //     case 2:
+  //       return 'Regional'
+  //     case 3:
+  //       return 'Major'
+  //     case 4:
+  //       return 'International'
+  //   }
+  // }
 
   const renderRunwayText = (surface) => {
     switch (surface) {
@@ -83,7 +84,7 @@ const AirportDetail = ({ airport, metar, aircraft }) => {
               </div>
               <div className="flex flex-col items-center my-2 mx-4">
                 <div className="text-sm">Size</div>
-                <div className="text-xl">{renderAirportSize(airport.size)}</div>
+                <div className="text-xl">{airport.size}</div>
               </div>
               <div className="flex flex-col items-center my-2 mx-4">
                 <div className="text-sm">Country</div>
