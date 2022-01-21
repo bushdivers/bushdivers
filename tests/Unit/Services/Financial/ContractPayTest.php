@@ -53,7 +53,8 @@ class ContractPayTest extends TestCase
         ]);
         $this->aircraftPrivate = Aircraft::factory()->create([
             'fleet_id' => $this->fleet->id,
-            'owner_id' => $this->user->id
+            'owner_id' => $this->user->id,
+            'registration' => 'N12345'
         ]);
         $this->contract = Contract::factory()->create([
             'is_completed' => true,

@@ -104,9 +104,9 @@ class FuelCostTest extends TestCase
     public function test_avgas_is_calculated_private()
     {
         $this->aircraftAvGas = Aircraft::factory()->create([
-            'registration' => 'P2-SM',
             'fleet_id' => $this->fleetAvGas->id,
-            'owner_id' => 1
+            'owner_id' => 1,
+            'registration' => 'N12345'
         ]);
 
         $pirep = Pirep::factory()->create([

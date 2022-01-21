@@ -62,12 +62,14 @@ class CargoHandlingFeeTest extends TestCase
 
         $this->aircraftRental = Rental::factory()->create([
             'fleet_id' => $this->fleet->id,
-            'user_id' => $this->user->id
+            'user_id' => $this->user->id,
+            'registration' => 'N12345'
         ]);
 
         $this->aircraftPrivate = Aircraft::factory()->create([
             'fleet_id' => $this->fleet->id,
-            'owner_id' => 1
+            'owner_id' => 1,
+            'registration' => 'N12345P'
         ]);
 
         $this->pirep = Pirep::factory()->create([

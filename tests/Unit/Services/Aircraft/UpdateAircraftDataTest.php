@@ -118,7 +118,8 @@ class UpdateAircraftDataTest extends TestCase
     {
         $aircraft = Aircraft::factory()->create([
             'fleet_id' => $this->fleet->id,
-            'fuel_onboard' => 0
+            'fuel_onboard' => 0,
+            'registration' => 'N12345'
         ]);
         $this->updateAircraftFuel->execute($aircraft->id, 20);
         $this->assertDatabaseHas('aircraft', [

@@ -93,7 +93,8 @@ class RemoveMultiplePirepsTest extends TestCase
     public function test_multiple_pireps_removed()
     {
         $aircraft = Aircraft::factory()->create([
-            'fleet_id' => $this->fleet->id
+            'fleet_id' => $this->fleet->id,
+            'registration' => 'N12345'
         ]);
 
         $pirep = Pirep::factory()->create([
@@ -152,7 +153,8 @@ class RemoveMultiplePirepsTest extends TestCase
             'fuel_onboard' => 50,
             'current_airport_id' => 'AYMR',
             'user_id' => $this->user->id,
-            'owner_id' => $this->user->id
+            'owner_id' => $this->user->id,
+            'registration' => 'N12345'
         ]);
 
         $pirep = Pirep::factory()->create([
