@@ -69,7 +69,6 @@ const Pireps = ({ pireps }) => {
                   <th></th>
                   <th>Departure</th>
                   <th>Arrival</th>
-                  <th>Aircraft</th>
                   <th>Pilot</th>
                   <th>State</th>
                   <th>Date</th>
@@ -90,10 +89,6 @@ const Pireps = ({ pireps }) => {
                     <td>
                       {entry.destination_airport_id}<br/>
                       <span className="text-xs">{entry.arr_airport.name}</span>
-                    </td>
-                    <td>
-                      <span>{entry.aircraft.registration} ({entry.aircraft.fleet.type})</span><br/>
-                      <span className="text-xs">{entry.aircraft.fleet.manufacturer} {entry.aircraft.fleet.name}</span>
                     </td>
                     <td>
                       <span>{entry.pilot.pilot_id}</span><br/>
