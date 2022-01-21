@@ -50,7 +50,7 @@ class DistanceByLatLonTest extends TestCase
     {
         $lat = -6.36323;
         $lon = 143.24665;
-        $airport = $this->findAirportsByLatLon->execute($lat, $lon, 2);
+        $airport = $this->findAirportsByLatLon->execute($lat, $lon, 3);
         $this->assertEquals('AYMR', $airport->identifier);
     }
 
