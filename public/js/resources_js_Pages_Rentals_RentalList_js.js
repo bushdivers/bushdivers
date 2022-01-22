@@ -110,7 +110,7 @@ var RentalList = function RentalList(_ref) {
         return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(RentalButton, {
           aircraft: ac
         });
-      } else if (currentAirport.size < 3 && ac.rental_size === 0) {
+      } else if (ac.rental_size === 0) {
         return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(RentalButton, {
           aircraft: ac
         });

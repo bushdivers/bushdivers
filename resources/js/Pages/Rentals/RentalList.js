@@ -40,7 +40,7 @@ const RentalList = ({ aircraft, myRentals, currentAirport }) => {
     if (currentAirport.is_hub) {
       if (ac.rental_size === 1 && currentAirport.size >= 3) {
         return <RentalButton aircraft={ac} />
-      } else if (currentAirport.size < 3 && ac.rental_size === 0) {
+      } else if (ac.rental_size === 0) {
         return <RentalButton aircraft={ac} />
       } else {
         return <div className="mt-4 text-center text-sm text-red-500">Aircraft not available here</div>
