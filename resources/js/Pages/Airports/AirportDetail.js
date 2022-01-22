@@ -21,6 +21,20 @@ const AirportDetail = ({ airport, metar, aircraft }) => {
     }
   }
 
+  // For future use
+  // const renderAirportSize = (size) => {
+  //   switch (size) {
+  //     case 1:
+  //       return 'Small'
+  //     case 2:
+  //       return 'Regional'
+  //     case 3:
+  //       return 'Major'
+  //     case 4:
+  //       return 'International'
+  //   }
+  // }
+
   const renderRunwayText = (surface) => {
     switch (surface) {
       case 'A':
@@ -78,15 +92,15 @@ const AirportDetail = ({ airport, metar, aircraft }) => {
               </div>
               <div className="flex flex-col items-center my-2 mx-4">
                 <div className="text-sm">Latitude</div>
-                <div className="text-xl">{airport.lat}</div>
+                <div className="text-xl">{(airport.lat * 1).toFixed(4)}</div>
               </div>
               <div className="flex flex-col items-center my-2 mx-4">
                 <div className="text-sm">Longitude</div>
-                <div className="text-xl">{airport.lon}</div>
+                <div className="text-xl">{(airport.lon * 1).toFixed(4)}</div>
               </div>
               <div className="flex flex-col items-center my-2 mx-4">
                 <div className="text-sm">Altitude</div>
-                <div className="text-xl">{airport.altitude}ft</div>
+                <div className="text-xl">{airport.altitude.toLocaleString(navigator.language)}ft</div>
               </div>
             </div>
           </div>
@@ -94,7 +108,7 @@ const AirportDetail = ({ airport, metar, aircraft }) => {
             <div className="rounded shadow p-4 mt-2 bg-white mx-2">
               <div className="flex items-center">
                 <i className="material-icons mr-2">add_road</i>
-                <span>{renderRunwayText(airport.longest_runway_surface)} {airport.longest_runway_length}ft x {airport.longest_runway_width}ft</span>
+                <span>{renderRunwayText(airport.longest_runway_surface)} {airport.longest_runway_length.toLocaleString(navigator.language)}ft x {airport.longest_runway_width}ft</span>
               </div>
             </div>
           )}
@@ -130,7 +144,7 @@ const AirportDetail = ({ airport, metar, aircraft }) => {
                   <td><Link href={`/aircraft/${ac.id}`}>{ac.registration}</Link></td>
                   <td>{ac.fleet.manufacturer} {ac.fleet.name} ({ac.fleet.type})</td>
                   <td>{ac.hub_id}</td>
-                  <td>{ac.fuel_onboard}</td>
+                  <td>{ac.fuel_onboard.toLocaleString(navigator.language)}</td>
                   <td>{renderAircraftStatus(ac.state)}</td>
                 </tr>
               ))}

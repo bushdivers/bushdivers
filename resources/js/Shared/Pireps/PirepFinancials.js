@@ -49,13 +49,13 @@ const PirepFinancials = (props) => {
         {props.company.map((company) => (
           <tr key={company.id}>
             <td>{renderCompanyTransactionType(company.transaction_type)} - {company.memo}</td>
-            <td className={company.total < 0 && 'text-red-500'}>${company.total}</td>
+            <td className={company.total < 0 && 'text-red-500'}>${company.total.toLocaleString(navigator.language)}</td>
           </tr>
         ))}
         </tbody>
       </table>
       <div className="text-right">
-        <div>Total: <span className={props.companyTotal < 0 && 'text-red-500'}>${props.companyTotal}</span></div>
+        <div>Total: <span className={props.companyTotal < 0 && 'text-red-500'}>${props.companyTotal.toLocaleString(navigator.language)}</span></div>
       </div>
       <div className="text-lg mt-2">Pilot Financials</div>
       <table className="table table-condensed table-auto">
@@ -69,13 +69,13 @@ const PirepFinancials = (props) => {
         {props.pilot.map((pilot) => (
           <tr key={pilot.id}>
             <td>{renderPilotTransactionType(pilot.type)}</td>
-            <td className={pilot.total < 0 && 'text-red-500'}>${pilot.total}</td>
+            <td className={pilot.total < 0 && 'text-red-500'}>${pilot.total.toLocaleString(navigator.language)}</td>
           </tr>
         ))}
         </tbody>
       </table>
       <div className="text-right">
-        <div>Total: <span className={props.pilotTotal < 0 && 'text-red-500'}>${props.pilotTotal}</span></div>
+        <div>Total: <span className={props.pilotTotal < 0 && 'text-red-500'}>${props.pilotTotal.toLocaleString(navigator.language)}</span></div>
       </div>
     </div>
   )

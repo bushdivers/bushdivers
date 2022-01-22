@@ -75,14 +75,14 @@ const Jumpseat = ({ user, spent, balance }) => {
             {distance && (
               <div className="w-1/2 mx-4 text-center">
                 <div>Distance</div>
-                <div>{distance} nm</div>
+                <div>{distance.toLocaleString(navigator.language)} nm</div>
               </div>
             )}
             {price >= 0
               ? (
                   <div className="w-1/2 mx-4 text-center">
                     <div>Price</div>
-                    <div>${price}</div>
+                    <div>${price.toLocaleString(navigator.language)}</div>
                   </div>
                 )
               : <></>
@@ -95,13 +95,13 @@ const Jumpseat = ({ user, spent, balance }) => {
         <div className="lg:w-1/4 rounded shadow p-4 mx-2 mt-4 bg-white flex justify-center items-center">
           <div className="flex flex-col text-center">
             <div>Current Balance</div>
-            <div className="text-xl mt-2">${balance}</div>
+            <div className="text-xl mt-2">${balance.toLocaleString(navigator.language)}</div>
           </div>
         </div>
         <div className="lg:w-1/4 rounded shadow p-4 mx-2 mt-4 bg-white flex justify-center items-center">
           <div className="flex flex-col text-center">
             <div>Spent on Jumpseats</div>
-            <div className="text-xl mt-2">${spent}</div>
+            <div className="text-xl mt-2">${spent.toLocaleString(navigator.language)}</div>
           </div>
         </div>
       </div>

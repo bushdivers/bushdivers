@@ -37,25 +37,25 @@ const FleetCardContent = ({ fleet }) => {
             </div>
             <div className="md:mr-8">
               <span className="text-md font-bold text-gray-600">Fuel Type: </span><br/>
-              <span>{fleet.fuel_type === 1 ? <span>100ll</span> : <span>Jet Fuel</span>}</span>
+              <span>{fleet.fuel_type === 1 ? <span>Avgas</span> : <span>Jet Fuel</span>}</span>
             </div>
             <div className="mr-8">
               <span className="text-md font-bold text-gray-600">Fuel Capacity: </span><br/>
-              <span>{fleet.fuel_capacity} gal</span>
+              <span>{fleet.fuel_capacity.toLocaleString(navigator.language)} gal</span>
             </div>
           </div>
           <div className="flex flex-col md:flex-row mt-4">
             <div className="mr-8">
               <span className="text-md font-bold text-gray-600">Service Ceiling: </span><br/>
-              <span>{fleet.service_ceiling} ft</span>
+              <span>{fleet.service_ceiling.toLocaleString(navigator.language)} ft</span>
             </div>
             <div className="mr-8">
               <span className="text-md font-bold text-gray-600">Max Range: </span><br/>
-              <span>{fleet.range} nm</span>
+              <span>{fleet.range.toLocaleString(navigator.language)} nm</span>
             </div>
             <div className="mr-8">
               <span className="text-md font-bold text-gray-600">Max Cruise Speed: </span><br/>
-              <span>{fleet.cruise_speed} kts</span>
+              <span>{fleet.cruise_speed.toLocaleString(navigator.language)} kts</span>
             </div>
             <div className="mr-8">
               <span className="text-md font-bold text-gray-600">PAX Capacity: </span><br/>
@@ -63,7 +63,7 @@ const FleetCardContent = ({ fleet }) => {
             </div>
             <div className="mr-8">
               <span className="text-md font-bold text-gray-600">Cargo Capacity: </span><br/>
-              <span>{fleet.cargo_capacity} lbs</span>
+              <span>{fleet.cargo_capacity.toLocaleString(navigator.language)} lbs</span>
             </div>
           </div>
         </div>

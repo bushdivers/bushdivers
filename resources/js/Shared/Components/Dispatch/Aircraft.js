@@ -44,7 +44,7 @@ const Aircraft = (props) => {
                     {ac.rental_airport_id && ac.rental_airport_id}
                   </td>
                   <td>{ac.fleet.manufacturer} {ac.fleet.name} ({ac.fleet.type})</td>
-                  <td>{ac.fuel_onboard}</td>
+                  <td>{ac.fuel_onboard.toLocaleString(navigator.language)}</td>
                 </tr>
               ))}
               </tbody>
