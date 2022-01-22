@@ -43,15 +43,18 @@ const Login = () => {
             {errors.password && <div className="text-sm text-red-500">{errors.password}</div>}
           </div>
           <div className="my-2">
-            <label htmlFor="remember" className="inline-flex items-center">
+            <label htmlFor="remember" className="w-1/2 inline-flex items-center">
               <input id="remember" checked={values.remember} onChange={handleChange} type="checkbox" className="form-checkbox rounded border-gray-300 text-orange-500 shadow-sm focus:border-orange-300 focus:ring focus:ring-offset-0 focus:ring-orange-200 focus:ring-opacity-50" />
               <span className="text-gray-700 ml-2">Remember me</span>
             </label>
+            <div className="w-1/2 inline-flex justify-end align-text-bottom">
+              <Link href="/password" className="text-gray-700">Forgotten password?</Link>
+            </div>
           </div>
           <button className="btn btn-primary w-full">Login</button>
         </form>
         <div className="mt-2">
-          <Link href="/password">Forgotten password?</Link>
+          <Link href="/register">New to Bush Divers?</Link>
         </div>
       </div>
     </div>
