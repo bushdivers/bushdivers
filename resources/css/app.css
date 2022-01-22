@@ -138,10 +138,10 @@ h1 {
 }
 
 .table tbody>tr:hover {
-    @apply bg-gray-50 cursor-pointer;
+    @apply bg-gray-50;
 }
 .table-condensed tbody>tr:hover {
-    @apply bg-gray-50 cursor-pointer;
+    @apply bg-gray-50;
 }
 :root {
     --tooltip-text-color: white;

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Inertia } from '@inertiajs/inertia'
-import { usePage } from '@inertiajs/inertia-react'
+import { Link, usePage } from '@inertiajs/inertia-react'
 import LayoutAuth from '../../Shared/LayoutAuth'
 
 const Register = () => {
@@ -62,6 +62,9 @@ const Register = () => {
             </label>
           </div>
           <button className="btn btn-primary w-full">Register</button>
+          <div className="mt-2">
+            <Link href="/login">Already have an account?</Link>
+          </div>
         </form>
       </div>
     </div>
