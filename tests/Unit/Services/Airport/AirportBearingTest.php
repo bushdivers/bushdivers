@@ -24,6 +24,6 @@ class AirportBearingTest extends TestCase
     {
         $calcBearing = $this->app->make(CalcBearingBetweenPoints::class);
         $heading = $calcBearing->execute(-6.50917, 143.07904, -6.36188, 143.23070, 5.33706);
-        $this->assertEquals(39, $heading);
+        $this->assertEquals(40, $heading);
     }
 }

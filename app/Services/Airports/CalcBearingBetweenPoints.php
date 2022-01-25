@@ -2,15 +2,20 @@
 
 namespace App\Services\Airports;
 
+use Location\Bearing\BearingSpherical;
+use Location\Coordinate;
+
 class CalcBearingBetweenPoints
 {
     public function execute($latFrom, $lonFrom, $latTo, $lonTo, $destVariance): int
     {
-        $bearingDeg = (rad2deg(atan2(sin(deg2rad($lonTo) - deg2rad($lonFrom)) *
-                    cos(deg2rad($latTo)), cos(deg2rad($latFrom)) * sin(deg2rad($latTo)) -
-                    sin(deg2rad($latFrom)) * cos(deg2rad($latTo)) * cos(deg2rad($lonTo) - deg2rad($lonFrom)))) + 360) % 360;
+        $dep = new Coordinate($latFrom, $lonFrom);
+        $arr = new Coordinate($latTo, $lonTo);
 
-        $alteredBearing = $bearingDeg - $destVariance;
+        $bearingCalc = new BearingSpherical();
+        $bearing = $bearingCalc->calculateBearing($dep, $arr);
+
+        $alteredBearing = $bearing - $destVariance;
 
         return $alteredBearing < 0 ? $alteredBearing + 360 : $alteredBearing;
     }

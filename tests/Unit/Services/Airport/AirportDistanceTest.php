@@ -23,18 +23,18 @@ class AirportDistanceTest extends TestCase
     public function test_short_distance_between_moro_and_MH()
     {
         $distance = $this->calcDistanceBetweenPoints->execute(-6.36188, 143.23070, -5.82781, 144.29953);
-        $this->assertEquals(71.4, round($distance, 1));
+        $this->assertEquals(71.4, $distance);
     }
 
     public function test_mid_distance_between_moro_and_aypy()
     {
         $distance = $this->calcDistanceBetweenPoints->execute(-6.36188, 143.23070, -9.442119, 147.217545);
-        $this->assertEquals(300.7, round($distance, 1));
+        $this->assertEquals(300.7, $distance);
     }
 
     public function test_mid_distance_between_moro_and_heathrow()
     {
         $distance = $this->calcDistanceBetweenPoints->execute(-6.36188, 143.23070, 51.472099, -0.452730);
-        $this->assertEquals(7555.5, round($distance, 1));
+        $this->assertEquals(7555.4, $distance);
     }
 }

@@ -3,28 +3,18 @@
 namespace App\Services\Airports;
 
 use App\Models\Enums\DistanceConsts;
+use Location\Coordinate;
+use Location\Distance\Haversine;
 
 class CalcDistanceBetweenPoints
 {
     public function execute($latFrom, $lonFrom, $latTo, $lonTo, bool $startRad = false, bool $endRad = false): float
     {
-        if (!$startRad) {
-            $latFrom = deg2rad($latFrom);
-            $lonFrom = deg2rad($lonFrom);
-        }
+        $dep = new Coordinate($latFrom, $lonFrom);
+        $arr = new Coordinate($latTo, $lonTo);
 
-        if (!$endRad) {
-            $latTo = deg2rad($latTo);
-            $lonTo = deg2rad($lonTo);
-        }
+        $distance = $dep->getDistance($arr, new Haversine());
 
-        $thetaLat = $latTo - $latFrom;
-        $thetaLon = $lonTo - $lonFrom;
-
-        $a = sin($thetaLat / 2) * sin($thetaLat / 2) + cos($latFrom) * cos($latTo) * sin($thetaLon / 2) * sin($thetaLon / 2);
-        $c = 2 * atan2(sqrt($a), sqrt(1-$a));
-        $d = DistanceConsts::EarthRadius * $c;
-
-        return round($d,1);
+        return round($distance/DistanceConsts::MetersToNauticalMiles,1);
     }
 }
