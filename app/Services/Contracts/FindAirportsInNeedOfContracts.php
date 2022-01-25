@@ -19,10 +19,9 @@ class FindAirportsInNeedOfContracts
 
     public function execute($country)
     {
-        // find all airports in PNG area
+        // find all airports
         try {
-            $airports = Airport::where('country', $country)
-                ->get();
+            $airports = Airport::all();
 
             foreach ($airports as $airport) {
                 $currentJobs = Contract::where('dep_airport_id', $airport->identifier)
@@ -30,8 +29,24 @@ class FindAirportsInNeedOfContracts
                     ->where('expires_at', '>', Carbon::now())
                     ->count();
 
-                if ($currentJobs < ContractConsts::MAX_QTY_JOBS) {
-                    $numberToGenerate = ContractConsts::MAX_QTY_JOBS - $currentJobs;
+                $maxJobs = 0;
+                switch ($airport->size) {
+                    case 0:
+                    case 1:
+                        $maxJobs = ContractConsts::MAX_QTY_JOBS_SM;
+                        break;
+                    case 2:
+                    case 3:
+                        $maxJobs = ContractConsts::MAX_QTY_JOBS_MD;
+                        break;
+                    case 4:
+                    case 5:
+                        $maxJobs = ContractConsts::MAX_QTY_JOBS_LG;
+                        break;
+                }
+
+                if ($currentJobs < $maxJobs) {
+                    $numberToGenerate = $maxJobs - $currentJobs;
                     $this->generateContracts->execute($airport, $numberToGenerate);
                 }
             }

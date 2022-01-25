@@ -15,8 +15,8 @@ class FindAirportsByLatLon
     public function execute($lat, $lon, $distance)
     {
         $currentAirport = null;
-        $polyCreator = new CreatePolygon($lat, $lon, $distance);
-        $p = $polyCreator->create();
+        $polyCreator = new CreatePolygon();
+        $p = $polyCreator->execute($lat, $lon, $distance);
         $polygon = new Polygon();
         $location = new Coordinate($lat, $lon);
         foreach ($p as $point) {

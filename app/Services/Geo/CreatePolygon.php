@@ -10,15 +10,19 @@ class CreatePolygon
     protected float $lon;
     protected int $distance;
 
-    public function __construct(float $lat, float $lon, int $distance)
+//    public function __construct(float $lat, float $lon, int $distance)
+//    {
+//        $this->lat = $lat;
+//        $this->lon = $lon;
+//        $this->distance = $distance;
+//    }
+
+    public function execute(float $lat, float $lon, int $distance): array
     {
         $this->lat = $lat;
         $this->lon = $lon;
         $this->distance = $distance;
-    }
 
-    public function create(): array
-    {
         $n = 16;
         $flatCoordinates = [];
         $coordinates = [];
