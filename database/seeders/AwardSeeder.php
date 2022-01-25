@@ -20,7 +20,11 @@ class AwardSeeder extends Seeder
             ['name' => '6 Months Service', 'type' => AwardType::MONTHS, 'value' => 6, 'image' => 'https://res.cloudinary.com/dpwytlrc2/image/upload/v1630673958/VA/awards/6Months.png'],
             ['name' => '50 Flights', 'type' => AwardType::FLIGHTS, 'value' => 50, 'image' => 'https://res.cloudinary.com/dpwytlrc2/image/upload/v1630673958/VA/awards/50Flights.png'],
             ['name' => '50 Hours', 'type' => AwardType::HOURS, 'value' => 50, 'image' => 'https://res.cloudinary.com/dpwytlrc2/image/upload/v1630673958/VA/awards/50Hours.png'],
-            ['name' => 'Patreon', 'type' => AwardType::BOOLEAN, 'value' => 1, 'image' => 'https://res.cloudinary.com/dpwytlrc2/image/upload/v1630673958/VA/awards/patreon.png']
+            ['name' => 'Patreon', 'type' => AwardType::BOOLEAN, 'value' => 1, 'image' => 'https://res.cloudinary.com/dpwytlrc2/image/upload/v1630673958/VA/awards/patreon.png'],
+            ['name' => '50 Airports', 'type' => AwardType::AIRPORTS, 'value' => 50, 'image' => 'https://res.cloudinary.com/dpwytlrc2/image/upload/v1630673958/VA/awards/50Flights.png'],
+            ['name' => '100 Airports', 'type' => AwardType::AIRPORTS, 'value' => 100, 'image' => 'https://res.cloudinary.com/dpwytlrc2/image/upload/v1630673958/VA/awards/50Flights.png'],
+            ['name' => '150 Airports', 'type' => AwardType::AIRPORTS, 'value' => 150, 'image' => 'https://res.cloudinary.com/dpwytlrc2/image/upload/v1630673958/VA/awards/50Flights.png'],
+            ['name' => '200 Airports', 'type' => AwardType::AIRPORTS, 'value' => 200, 'image' => 'https://res.cloudinary.com/dpwytlrc2/image/upload/v1630673958/VA/awards/50Flights.png']
         ]);
     }
 }

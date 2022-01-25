@@ -41,6 +41,11 @@ class CheckAwardStatus
                         $this->addAwardToUser->execute($userId, $award->id);
                     }
                     break;
+                case AwardType::AIRPORTS:
+                    if ($user->airports >= $award->value && !$awardAchieved) {
+                        $this->addAwardToUser->execute($userId, $award->id);
+                    }
+                    break;
             }
         }
     }

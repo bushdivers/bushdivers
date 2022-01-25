@@ -44,9 +44,10 @@ const Dashboard = ({ lastFlight, user, locations }) => {
           )}
         </div>
         <div className="mt-4 flex flex-col md:flex-row">
-          <StatBlock width="1/3" data={user.flights.toLocaleString(navigator.language)} text="Flights" />
-          <StatBlock width="1/3" data={user.flights_time > 0 ? convertMinuteDecimalToHoursAndMinutes(user.flights_time) : 0} text="Hours" />
-          <StatBlock width="1/3" data={user.points.toLocaleString(navigator.language)} text="Points" />
+          <StatBlock width="1/4" data={user.flights.toLocaleString(navigator.language)} text="Flights" />
+          <StatBlock width="1/4" data={user.flights_time > 0 ? convertMinuteDecimalToHoursAndMinutes(user.flights_time) : 0} text="Hours" />
+          <StatBlock width="1/4" data={user.points.toLocaleString(navigator.language)} text="Points" />
+          <StatBlock width="1/4" data={user.airport_count.toLocaleString(navigator.language)} text="Airports" />
         </div>
       </div>
     </div>

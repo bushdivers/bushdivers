@@ -5,6 +5,7 @@ namespace App\Listeners;
 use App\Events\PirepFiled;
 use App\Services\User\UpdateUserHours;
 use App\Services\User\UpdateUserLocation;
+use App\Services\User\UpdateUserAirportCount;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
@@ -12,6 +13,7 @@ class UpdatePilotFlights
 {
     protected UpdateUserHours $updateUserHours;
     protected UpdateUserLocation $updateUserLocation;
+    protected UpdateUserAirportCount $updateUserAirportCount;
     /**
      * Create the event listener.
      *
@@ -19,11 +21,13 @@ class UpdatePilotFlights
      */
     public function __construct(
         UpdateUserHours $updateUserHours,
-        UpdateUserLocation $updateUserLocation
+        UpdateUserLocation $updateUserLocation,
+        UpdateUserAirportCount $updateUserAirportCount
     )
     {
         $this->updateUserHours = $updateUserHours;
         $this->updateUserLocation = $updateUserLocation;
+        $this->updateUserAirportCount = $updateUserAirportCount;
     }
 
     /**
@@ -36,5 +40,6 @@ class UpdatePilotFlights
     {
         $this->updateUserHours->execute($event->pirep->flight_time, $event->pirep->user_id);
         $this->updateUserLocation->execute($event->pirep->destination_airport_id, $event->pirep->user_id);
+        $this->updateUserAirportCount->execute($event->pirep->user_id);
     }
 }
