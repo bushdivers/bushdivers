@@ -15,6 +15,7 @@ class AddUserIdToContractCargosTable extends Migration
     {
         Schema::table('contract_cargos', function (Blueprint $table) {
             $table->foreignId('user_id')->nullable();
+            $table->boolean('is_available')->default(true);
         });
     }
 
@@ -26,7 +27,7 @@ class AddUserIdToContractCargosTable extends Migration
     public function down()
     {
         Schema::table('contract_cargos', function (Blueprint $table) {
-            $table->dropColumn('user_id');
+            $table->dropColumn(['user_id', 'is_available']);
         });
     }
 }
