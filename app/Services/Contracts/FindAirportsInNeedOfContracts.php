@@ -6,7 +6,6 @@ use App\Models\Airport;
 use App\Models\Contract;
 use App\Models\Enums\ContractConsts;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class FindAirportsInNeedOfContracts
@@ -18,12 +17,12 @@ class FindAirportsInNeedOfContracts
         $this->generateContracts = $generateContracts;
     }
 
-    public function execute($region)
+    public function execute($country)
     {
-
-        // find all airports in specified area
+        // find all airports in PNG area
         try {
-            $airports = DB::select('CALL GetAirportsForArea(?)', array($region));
+            $airports = Airport::where('country', $country)
+                ->get();
 
             foreach ($airports as $airport) {
                 $currentJobs = Contract::where('dep_airport_id', $airport->identifier)
