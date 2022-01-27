@@ -2,23 +2,13 @@ import React, { useState } from 'react'
 import AirportMap from '../../Shared/Components/Airport/AirportMap'
 import { Link } from '@inertiajs/inertia-react'
 import AppLayout from '../../Shared/AppLayout'
+import LocalAircraftTable from '../../Shared/Components/Fleet/LocalAircraftTable'
 
 const AirportDetail = ({ airport, metar, aircraft }) => {
   const [icao, setIcao] = useState()
 
   const handleAirportChange = (e) => {
     setIcao(e.target.value)
-  }
-
-  const renderAircraftStatus = (status) => {
-    switch (status) {
-      case 1:
-        return 'Available'
-      case 2:
-        return 'Reserved'
-      case 3:
-        return 'In Use'
-    }
   }
 
   // For future use
@@ -127,29 +117,7 @@ const AirportDetail = ({ airport, metar, aircraft }) => {
             </div>
           </div>
           <div className="rounded shadow p-4 mt-2 bg-white mx-2 overflow-x-auto">
-            <div className="text-lg">Available Aircraft</div>
-            <table className="mt-2 table table-auto table-condensed">
-              <thead>
-              <tr>
-                <th>Registration</th>
-                <th>Aircraft</th>
-                <th>Hub</th>
-                <th>Fuel</th>
-                <th>Status</th>
-              </tr>
-              </thead>
-              <tbody>
-              {aircraft && aircraft.map((ac) => (
-                <tr key={ac.id}>
-                  <td><Link href={`/aircraft/${ac.id}`}>{ac.registration}</Link></td>
-                  <td>{ac.fleet.manufacturer} {ac.fleet.name} ({ac.fleet.type})</td>
-                  <td>{ac.hub_id}</td>
-                  <td>{ac.fuel_onboard.toLocaleString(navigator.language)}</td>
-                  <td>{renderAircraftStatus(ac.state)}</td>
-                </tr>
-              ))}
-              </tbody>
-            </table>
+            <LocalAircraftTable aircraftlist={aircraft} />
           </div>
         </div>
         <div className="lg:w-1/2 rounded shadow p-4 mt-2 bg-white mx-2">

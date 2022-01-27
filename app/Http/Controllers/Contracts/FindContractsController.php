@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Contracts;
 
 use App\Http\Controllers\Controller;
+use App\Models\Aircraft;
 use App\Models\Airport;
+use App\Models\Enums\AircraftStatus;
 use App\Services\Contracts\GetContractsFromCriteria;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -40,6 +42,12 @@ class FindContractsController extends Controller
 
         $contracts = $this->getContractsFromCriteria->execute($criteria);
 
-        return Inertia::render('Contracts/Contracts', ['contracts' => $contracts, 'airport' => $airport]);
+        $aircraft = Aircraft::with('fleet')
+            ->where('current_airport_id', $request->icao)
+            ->where('owner_id', 0)
+            ->where('status', AircraftStatus::ACTIVE)
+            ->get();
+
+        return Inertia::render('Contracts/Contracts', ['contracts' => $contracts, 'airport' => $airport, 'aircraft' => $aircraft]);
     }
 }

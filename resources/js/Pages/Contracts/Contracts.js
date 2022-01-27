@@ -8,6 +8,7 @@ import { Inertia } from '@inertiajs/inertia'
 import CargoDetails from '../../Shared/Components/Contracts/CargoDetails'
 import CustomContract from '../../Shared/Components/Contracts/CustomContract'
 import AppLayout from '../../Shared/AppLayout'
+import LocalAircraftTable from '../../Shared/Components/Fleet/LocalAircraftTable'
 
 const EmptyData = (props) => {
   return (
@@ -27,7 +28,7 @@ const AirportToolTip = (props) => {
   )
 }
 
-const Contracts = ({ contracts, airport }) => {
+const Contracts = ({ contracts, airport, aircraft }) => {
   const { auth } = usePage().props
   const [selectedAirport, setSelectedAirport] = useState('')
   const [title, setTitle] = useState('Contracts')
@@ -45,11 +46,15 @@ const Contracts = ({ contracts, airport }) => {
   const [showCustom, setShowCustom] = useState(false)
 
   useEffect(() => {
-    if (contracts && airport) {
-      setTitle(`Contracts - ${airport.name} (${airport.identifier})`)
+    if (airport) {
       setSelectedAirport(airport)
+      if (contracts) {
+        setTitle(`Contracts - ${airport.name} (${airport.identifier})`)
+      } else {
+        setTitle(`Contract Search - ${airport.name} (${airport.identifier})`)
+      }
     } else {
-      setTitle('Contracts')
+      setTitle('Contract Search - Enter Airport')
     }
   }, [contracts])
 
@@ -132,6 +137,9 @@ const Contracts = ({ contracts, airport }) => {
             </div>
           </div>
           {showCustom && <CustomContract departureIcao={values.icao} hideSection={() => setShowCustom(false)} />}
+          <div className="rounded shadow p-4 mt-2 bg-white mx-2 overflow-x-auto">
+            <LocalAircraftTable aircraftlist={aircraft} />
+          </div>
           <div className="rounded shadow bg-white overflow-x-auto mt-4">
             {!airport && !contracts && <NoContent content={<EmptyData airport="" />} />}
             {airport && contracts && contracts.length === 0 && <NoContent content={<EmptyData airport={airport} />} />}
