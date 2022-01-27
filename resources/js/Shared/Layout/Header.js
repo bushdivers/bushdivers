@@ -30,14 +30,32 @@ const Header = ({ heading, setNavState }) => {
           </div>
           <div className="hidden md:inline-block mr-4">
             <div className="flex items-center">
-              <div className="mx-1">${auth.user.balance.toLocaleString(navigator.language)}</div>
-              <div className="mx-1">{auth.user.points.toLocaleString(navigator.language)} XP</div>
-              <div className="mx-1">{auth.user.current_airport_id}</div>
+              <div className="mx-1">
+                <Tooltip content="My Finances" direction="bottom">
+                  <Link href="/my-finances">
+                    ${auth.user.balance.toLocaleString(navigator.language)}
+                  </Link>
+                </Tooltip>
+              </div>
+              <div className="mx-1">
+                <Tooltip content="My Logbook" direction="bottom">
+                  <Link href="/logbook">
+                    {auth.user.points.toLocaleString(navigator.language)} XP
+                  </Link>
+                </Tooltip>
+              </div>
+              <div className="mx-1">
+                <Tooltip content="Current Airport" direction="bottom">
+                <Link href={`/airports/${auth.user.current_airport_id}`} className="ml-2 btn cursor-pointer">
+                  {auth.user.current_airport_id}
+                </Link>
+                </Tooltip>
+              </div>
             </div>
           </div>
           <div className="flex items-center mx-2">
             <img width="60" className="mr-3" src={auth.user.rank.image} />
-            <Tooltip content="Profile" direction="left">
+            <Tooltip content="Profile" direction="bottom">
             <Link href="/profile">
               <span className="flex flex-col">
                 <span className="font-semibold text-orange-500 tracking-wide leading-none">{auth.user.name}</span>
