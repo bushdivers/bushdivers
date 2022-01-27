@@ -2,6 +2,9 @@
 
 Notes about setting up a development environment for the Bush Divers VA platform using Docker.
 
+To contribute, get setup as per below and look through some of the issues on Github.
+You will then need to raise a Pull Request to get your changes added.
+
 ## Resources
 Here's a [great Git primer](https://www.madebymike.com.au/writing/how-to-git/)
 
