@@ -21,7 +21,8 @@ class FindAirportsInNeedOfContracts
     {
         // find all airports
         try {
-            $airports = Airport::all();
+//            $airports = Airport::all();
+            $airports = Airport::where('country', $country)->get();
 
             foreach ($airports as $airport) {
                 $currentJobs = Contract::where('dep_airport_id', $airport->identifier)
