@@ -18,7 +18,7 @@ const Home = ({ stats }) => {
           />
           <div className="text-3xl pb-4">
             Welcome to Bush Divers VA<br/>
-            Bush flying in and around Papua New Guinea
+            Bush flying in and around Papua New Guinea and Alaska
           </div>
         </div>
       </div>
