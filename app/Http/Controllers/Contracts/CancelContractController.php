@@ -28,8 +28,7 @@ class CancelContractController extends Controller
         // check if contract has cargo in a non-completed pirep
         $cargo = ContractCargo::where('contract_id', $contract->id)->pluck('id');
         $pc = PirepCargo::whereIn('contract_cargo_id', $cargo)->pluck('pirep_id');
-        $pirepsCount = Pirep::where('user_id', Auth::user()->id)
-            ->where('state', '<>', PirepState::ACCEPTED)
+        $pirepsCount = Pirep::where('state', '<>', PirepState::ACCEPTED)
             ->whereIn('id', $pc)
             ->count();
 
@@ -39,7 +38,6 @@ class CancelContractController extends Controller
 
         // set contract to not available
         $contract->is_available = true;
-        $contract->user_id = null;
         $contract->save();
 
         $user = User::find(Auth::user()->id);
@@ -48,6 +46,6 @@ class CancelContractController extends Controller
             $user->save();
         }
 
-        return redirect()->back()->with(['success' => 'Contract bid cancelled successfully']);
+        return redirect()->back()->with(['success' => 'Active contract cancelled successfully']);
     }
 }

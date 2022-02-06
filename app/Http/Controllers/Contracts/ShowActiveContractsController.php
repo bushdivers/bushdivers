@@ -21,7 +21,7 @@ class ShowActiveContractsController extends Controller
     {
         $contracts = Contract::with('depAirport', 'arrAirport', 'cargo', 'cargo.currentAirport')
             ->where('is_completed', false)
-            ->where('user_id', Auth::user()->id)
+            ->wheres('is_available', false)
             ->orderBy('expires_at', 'asc')
             ->get();
 

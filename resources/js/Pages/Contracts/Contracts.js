@@ -151,7 +151,7 @@ const Contracts = ({ contracts, airport }) => {
                       <th>Total Cargo</th>
                       <th>Pay</th>
                       <th>Expires</th>
-                      <td>Bid</td>
+                      <td>Accept</td>
                     </tr>
                     </thead>
                     <tbody>
@@ -190,20 +190,13 @@ const Contracts = ({ contracts, airport }) => {
                             </>
                           ))}
                         </td>
-                        {/* <td>{contract.contract_type_id === 1 ? 'Cargo' : 'Passenger'}</td> */}
-                        {/* <td> */}
-                        {/*  {contract.contract_type_id === 1 */}
-                        {/*    ? <div><span>{contract.cargo_qty} kg</span><br /><span className="text-xs">{contract.cargo}</span></div> */}
-                        {/*    : <div><span>{contract.pax_qty}</span><br /><span className="text-xs">{contract.pax}</span></div> */}
-                        {/*  } */}
-                        {/* </td> */}
                         <td>${contract.contract_value.toLocaleString()}</td>
                         <td>
                           <Tooltip content={dayjs(contract.expires_at).format('HH:mm a')} direction="top">
                           {dayjs(contract.expires_at).format('DD/MM/YYYY')}
                           </Tooltip>
                         </td>
-                        <td><button onClick={() => bidForContract(contract)} className="btn btn-secondary btn-small">Bid</button></td>
+                        <td><button onClick={() => bidForContract(contract)} className="btn btn-secondary btn-small">Accept</button></td>
                       </tr>
                       { showDetail && <CargoDetails contract={contract} />}
                       </>

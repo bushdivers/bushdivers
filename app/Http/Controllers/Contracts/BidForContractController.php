@@ -32,7 +32,6 @@ class BidForContractController extends Controller
 
         // set contract to not available
         $contract->is_available = false;
-        $contract->user_id = Auth::user()->id;
         $contract->save();
 
         $criteria = [
@@ -45,6 +44,6 @@ class BidForContractController extends Controller
         $contracts = $this->getContractsFromCriteria->execute($criteria);
         $airport = Airport::where('identifier', $criteria['icao'])->first();
 
-        return Inertia::render('Contracts/Contracts', ['contracts' => $contracts, 'airport' => $airport])->with(['success' => 'Contract bid successfully']);
+        return Inertia::render('Contracts/Contracts', ['contracts' => $contracts, 'airport' => $airport])->with(['success' => 'Contract accepted successfully']);
     }
 }
