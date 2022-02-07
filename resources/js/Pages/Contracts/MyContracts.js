@@ -76,7 +76,7 @@ const MyContracts = ({ contracts }) => {
                     <tbody>
                     {contracts && contracts.map((contract) => (
                       <>
-                      <tr key={contract.id} onClick={() => updateSelectedContract(contract)} className={contract.id === selectedContract.id ? 'bg-orange-200 hover:bg-orange-100' : ''}>
+                      <tr key={contract.id} onClick={() => updateSelectedContract(contract)} className={contract.id === selectedContract.id ? 'bg-orange-200 hover:bg-orange-100 cursor-pointer' : 'cursor-pointer'}>
                         <td>
                            <Tooltip content={<AirportToolTip airport={contract.dep_airport} />} direction="top">
                              <Link href={`/airports/${contract.dep_airport_id}`}>{contract.dep_airport_id}</Link> {contract.dep_airport.longest_runway_surface === 'W' && <span className="material-icons md-18">anchor</span>}
