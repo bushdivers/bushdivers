@@ -9,4 +9,5 @@ class FinancialConsts
     public const CancelPenalty = 10;
     public const WelcomeBonus = 200;
     public const HubBonus = 800;
+    public const ExpiryMultiplier = 0.2;
 }

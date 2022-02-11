@@ -5,9 +5,11 @@ namespace App\Services\Finance;
 use App\Models\Aircraft;
 use App\Models\Contract;
 use App\Models\ContractCargo;
+use App\Models\Enums\FinancialConsts;
 use App\Models\Enums\TransactionTypes;
 use App\Models\PirepCargo;
 use App\Services\Rentals\ChargeRentalFee;
+use Carbon\Carbon;
 
 class ProcessPirepFinancials
 {
@@ -62,11 +64,14 @@ class ProcessPirepFinancials
                     }
 
                     $pp = $this->calcContractPay->execute($contract->id, $pirep->id, $pirep->is_rental, $privatePlane);
-
                     $cc = ContractCargo::where('contract_id', $contract->id)->get();
                     $payPerPilot = $pp / $cc->count();
 
                     foreach ($cc as $cargoPay) {
+                        $contract = Contract::find($cc->contract_id);
+                        if (Carbon::now()->greaterThan($contract->expires_at)) {
+                            $payPerPilot = round($payPerPilot - ($payPerPilot * FinancialConsts::ExpiryMultiplier),2);
+                        }
                         $this->addUserTransaction->execute($cargoPay->user_id, TransactionTypes::FlightPay, $payPerPilot, $pirep->id);
                     }
                     $contract->is_paid = true;
