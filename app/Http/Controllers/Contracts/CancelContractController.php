@@ -37,6 +37,9 @@ class CancelContractController extends Controller
         }
 
         // set contract to not available
+        if ($contract->user_id !== null) {
+            $contract->user_id = null;
+        }
         $contract->is_available = true;
         $contract->save();
 
