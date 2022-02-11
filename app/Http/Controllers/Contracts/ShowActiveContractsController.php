@@ -19,12 +19,20 @@ class ShowActiveContractsController extends Controller
      */
     public function __invoke(Request $request): Response
     {
-        $contracts = Contract::with('depAirport', 'arrAirport', 'cargo', 'cargo.currentAirport')
+        $customContracts = Contract::with('depAirport', 'arrAirport', 'cargo', 'cargo.currentAirport')
             ->where('is_completed', false)
             ->where('is_available', false)
+            ->where('user_id', Auth::user()->id)
             ->orderBy('expires_at', 'asc')
             ->get();
 
-        return Inertia::render('Contracts/MyContracts', ['contracts' => $contracts]);
+        $contracts = Contract::with('depAirport', 'arrAirport', 'cargo', 'cargo.currentAirport')
+            ->where('is_completed', false)
+            ->where('is_available', false)
+            ->where('user_id', null)
+            ->orderBy('expires_at', 'asc')
+            ->get();
+
+        return Inertia::render('Contracts/MyContracts', ['contracts' => $contracts, 'custom' => $customContracts]);
     }
 }
