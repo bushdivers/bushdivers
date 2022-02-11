@@ -62,7 +62,13 @@ class ProcessPirepFinancials
                     }
 
                     $pp = $this->calcContractPay->execute($contract->id, $pirep->id, $pirep->is_rental, $privatePlane);
-                    $this->addUserTransaction->execute($pirep->user_id, TransactionTypes::FlightPay, $pp, $pirep->id);
+
+                    $cc = ContractCargo::where('contract_id', $contract->id)->get();
+                    $payPerPilot = $pp / $cc->count();
+
+                    foreach ($cc as $cargoPay) {
+                        $this->addUserTransaction->execute($cargoPay->user_id, TransactionTypes::FlightPay, $payPerPilot, $pirep->id);
+                    }
                     $contract->is_paid = true;
                     $contract->save();
                 }
