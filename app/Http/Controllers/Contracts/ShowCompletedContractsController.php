@@ -21,7 +21,6 @@ class ShowCompletedContractsController extends Controller
     {
         $contracts = Contract::with('depAirport', 'arrAirport', 'cargo')
             ->where('is_completed', true)
-            ->where('user_id', Auth::user()->id)
             ->orderBy('completed_at', 'desc')
             ->paginate(10);
 

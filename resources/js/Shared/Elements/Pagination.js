@@ -14,7 +14,7 @@ const Pagination = props => {
           Next
         </a>
       </div>
-      <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+      <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-start">
         <div>
           <p className="text-sm text-gray-700">
             Showing
@@ -26,7 +26,7 @@ const Pagination = props => {
             results
           </p>
         </div>
-        <div>
+        <div className="pl-4">
           {props.pages.total > props.pages.per_page && (
             <nav className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
               <Link href={props.pages.prev_page_url}

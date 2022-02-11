@@ -63,7 +63,10 @@ class ShowPirepController extends Controller
 
         $companyFinancials = AccountLedger::where('pirep_id', $pirep)->get();
 
-        $pilotFinancials = DB::table('user_accounts')->where('flight_id', $pirep)->get();
+        $pilotFinancials = DB::table('user_accounts')
+            ->where('flight_id', $pirep)
+            ->where('user_id', Auth::user()->id)
+            ->get();
 
         $companyTotal = round($companyFinancials->sum('total'),2);
         $pilotTotal = round($pilotFinancials->sum('total'),2);

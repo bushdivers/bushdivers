@@ -19,7 +19,7 @@ const PirepFinancials = (props) => {
   const renderPilotTransactionType = (transaction) => {
     switch (transaction) {
       case 1:
-        return 'Flight Pay'
+        return 'Contract Pay'
       case 4:
         return 'Landing Fee'
       case 5:
