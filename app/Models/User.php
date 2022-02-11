@@ -54,7 +54,7 @@ class User extends Authenticatable
         $split = explode(' ', $this->name);
 
         if (count($split) >= 2) {
-            return $split[0] . mb_substr($split[1], 0, 1);
+            return $split[0] . ' ' . mb_substr($split[1], 0, 1);
         } else {
             return $this->name;
         }
