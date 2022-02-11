@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Contracts;
 
 use App\Http\Requests\CustomRouteRequest;
+use App\Models\Contract;
 use App\Services\Contracts\CreateCustomRoute;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\RedirectResponse;
@@ -28,6 +29,14 @@ class CreateCustomRouteController extends Controller
      */
     public function __invoke(CustomRouteRequest $request): RedirectResponse
     {
+        $existingCustom = Contract::where('user_id', Auth::user()->id)
+            ->where('is_completed', false)
+            ->count();
+
+        if ($existingCustom > 0) {
+            return redirect()->back()->with(['error' => 'You already have an outstanding custom contract']);
+        }
+
         try {
             $this->createCustomRoute->execute(strtoupper($request->departure), strtoupper($request->arrival), Auth::user()->id);
 
