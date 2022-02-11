@@ -264,3 +264,23 @@ h1 {
     border-radius: 0.9rem;
     border: 1px solid #F4F4F5;
 }
+
+.ribbon {
+    width: 200px;
+    padding: 16px;
+    z-index: 20;
+    @apply absolute text-center text-white bg-orange-500 cursor-pointer;
+}
+
+.ribbon-sticky {
+    position: fixed;
+}
+
+.ribbon-top    { top: 25px; }
+.ribbon-bottom { bottom: 25px; }
+.ribbon-left   { left: -50px; }
+.ribbon-right  { right: -50px; }
+
+.ribbon-bottom.ribbon-right {
+    transform: rotate(-45deg);
+}
