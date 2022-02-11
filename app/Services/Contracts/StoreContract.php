@@ -29,6 +29,8 @@ class StoreContract
         $contractCargo = new ContractCargo();
         $contractCargo->contract_id = $contract->id;
         $contractCargo->current_airport_id = $start;
+        $contractCargo->dep_airport_id = $start;
+        $contractCargo->arr_airport_id = $dest;
         if ($cargo['type'] == 1) {
             $contractCargo->contract_type_id = ContractType::Cargo;
         } else {
