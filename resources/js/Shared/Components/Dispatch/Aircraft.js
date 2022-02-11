@@ -29,7 +29,7 @@ const Aircraft = (props) => {
                 <th>Current Fuel</th>
               </tr>
               </thead>
-              <tbody>
+              <tbody className="cursor-pointer">
               {props.aircraft.map((ac) => (
                 <tr key={ac.id} onClick={() => props.handleAircraftSelect(ac)} className={props.selectedAircraft.registration === ac.registration ? 'bg-orange-200 hover:bg-orange-100' : ''}>
                   <td>
