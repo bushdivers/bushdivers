@@ -32,7 +32,7 @@ const SideBar = ({ isNavVisible, setNavState }) => {
           <NavItem link="/finances" icon="account_balance_wallet" text="Company Finances" />
           <NavItem link="/resources" icon="download" text="Resources" />
           <NavSection name="Contracts" />
-          <NavItem link="/my-contracts" icon="assignment_ind" text="My Contracts" numeric={auth.user.current_bids} />
+          <NavItem link="/available-contracts" icon="assignment_ind" text="Available Contracts" numeric={auth.user.current_bids} />
           <NavItem link="/contracts" icon="assignment" text="Find a Contract" />
           <NavItem link="/completed-contracts" icon="assignment_turned_in" text="Completed Contracts" />
           <NavItem link="/dispatch" icon="assignment_returned" text="Flight Dispatch" />

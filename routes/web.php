@@ -102,7 +102,7 @@ Route::middleware('auth')->group(function () {
 
 
     // Flights
-    Route::get('/my-contracts', \App\Http\Controllers\Contracts\ShowActiveContractsController::class)
+    Route::get('/available-contracts', \App\Http\Controllers\Contracts\ShowActiveContractsController::class)
         ->name('bids');
     Route::get('/completed-contracts', \App\Http\Controllers\Contracts\ShowCompletedContractsController::class)
         ->name('contracts.completed');
