@@ -154,7 +154,7 @@ const Contracts = ({ contracts, airport }) => {
                       <td>Accept</td>
                     </tr>
                     </thead>
-                    <tbody>
+                    <tbody className="cursor-pointer">
                     {contracts && contracts.map((contract) => (
                       <>
                       <tr key={contract.id} onClick={() => updateSelectedContract(contract)} className={contract.id === selectedContract.id ? 'bg-orange-200 hover:bg-orange-100' : ''}>
