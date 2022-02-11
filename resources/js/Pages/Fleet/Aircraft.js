@@ -6,13 +6,12 @@ import { usePage } from '@inertiajs/inertia-react'
 import { Inertia } from '@inertiajs/inertia'
 import dayjs from 'dayjs'
 import AppLayout from '../../Shared/AppLayout'
-import { Link } from '@inertiajs/inertia-react'
 
-const Aircraft = ({ aircraft, maintenanceStatus, hubs }) => {
+const Aircraft = ({ aircraft, maintenanceStatus, hubs, pireps }) => {
   const { auth } = usePage().props
 
-  const calculateDistanceFlown = (pireps) => {
-    return pireps.reduce((a, pirep) => {
+  const calculateDistanceFlown = (p) => {
+    return p.reduce((a, pirep) => {
       return a + pirep.distance
     }, 0)
   }
@@ -129,10 +128,10 @@ const Aircraft = ({ aircraft, maintenanceStatus, hubs }) => {
       }
       <div className="flex flex-col md:flex-row justify-between">
         <div className="md:w-1/5 my-1">
-          <StatCard title="Flights" stat={aircraft.pireps.length} />
+          <StatCard title="Flights" stat={pireps.length} />
         </div>
          <div className="md:w-1/5 my-1">
-          <StatCard title="Distance Flown" stat={calculateDistanceFlown(aircraft.pireps)} />
+          <StatCard title="Distance Flown" stat={calculateDistanceFlown(pireps)} />
          </div>
         <div className="md:w-1/5 my-1">
           <StatCard title="Current Location" stat={aircraft.current_airport_id} link={'/airports/' + aircraft.current_airport_id} />
@@ -231,7 +230,7 @@ const Aircraft = ({ aircraft, maintenanceStatus, hubs }) => {
               </tr>
               </thead>
               <tbody>
-              {aircraft.pireps.map((pirep) => (
+              {pireps && pireps.map((pirep) => (
                 <tr key={pirep.id}>
                   <td>{pirep.submitted_at}</td>
                   <td>{pirep.departure_airport_id}</td>
