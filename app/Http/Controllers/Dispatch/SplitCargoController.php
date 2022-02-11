@@ -25,6 +25,9 @@ class SplitCargoController extends Controller
         $newCargo->contract_id = $cargo->contract_id;
         $newCargo->contract_type_id = $cargo->contract_type_id;
         $newCargo->current_airport_id = $cargo->current_airport_id;
+        $newCargo->dep_airport_id = $cargo->dep_airport_id;
+        $newCargo->arr_airport_id = $cargo->arr_airport_id;
+        $newCargo->is_available = true;
         $newCargo->cargo = $cargo->cargo;
         $newCargo->cargo_qty = $request->qty;
         $newCargo->save();
