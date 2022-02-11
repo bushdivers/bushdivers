@@ -2,6 +2,8 @@
 
 namespace App\Console;
 
+use App\Models\Enums\FinancialConsts;
+use App\Services\Contracts\ExpiryContractCheck;
 use App\Services\Contracts\FindAirportsInNeedOfContracts;
 use App\Services\Contracts\FindHubsInNeedOfContracts;
 use App\Services\Contracts\RemoveStaleContracts;
@@ -25,6 +27,7 @@ class Kernel extends ConsoleKernel
     protected FindHubsInNeedOfContracts $findHubsInNeedOfContracts;
     protected CalcMonthlyFees $calcMonthlyFees;
     protected RemoveStaleContracts $removeStaleContracts;
+    protected ExpiryContractCheck $expiryContractCheck;
 
     public function __construct(
         Application $app,
@@ -35,7 +38,8 @@ class Kernel extends ConsoleKernel
         FindAirportsInNeedOfContracts $findAirportsInNeedOfContracts,
         FindHubsInNeedOfContracts $findHubsInNeedOfContracts,
         CalcMonthlyFees $calcMonthlyFees,
-        RemoveStaleContracts $removeStaleContracts
+        RemoveStaleContracts $removeStaleContracts,
+        ExpiryContractCheck $expiryContractCheck
     )
     {
         parent::__construct($app, $events);
@@ -46,6 +50,7 @@ class Kernel extends ConsoleKernel
         $this->findHubsInNeedOfContracts = $findHubsInNeedOfContracts;
         $this->calcMonthlyFees = $calcMonthlyFees;
         $this->removeStaleContracts = $removeStaleContracts;
+        $this->expiryContractCheck = $expiryContractCheck;
     }
 
     /**
@@ -71,6 +76,30 @@ class Kernel extends ConsoleKernel
             $inactivePireps = $this->findInactivePireps->execute();
             $this->removeMultiplePireps->execute($inactivePireps);
         })->hourly();
+
+        $schedule->call(function () {
+            $this->expiryContractCheck->execute(FinancialConsts::ContractExpiryDaysStr);
+        })->twiceDaily();
+
+        $schedule->call(function () {
+            $this->expiryContractCheck->execute(FinancialConsts::ContractExpiryDayStr);
+        })->everyFourHours();
+
+        $schedule->call(function () {
+            $this->expiryContractCheck->execute(FinancialConsts::ContractExpiryHalfStr);
+        })->everySixHours();
+
+        $schedule->call(function () {
+            $this->expiryContractCheck->execute(FinancialConsts::ContractExpiryHoursStr);
+        })->hourly();
+
+        $schedule->call(function () {
+            $this->expiryContractCheck->execute(FinancialConsts::ContractExpiryHourStr);
+        })->everyThirtyMinutes();
+
+        $schedule->call(function () {
+            $this->expiryContractCheck->execute(FinancialConsts::ContractExpiryMinsStr);
+        })->everyFifteenMinutes();
 
         // contract generation
         $schedule->call(function () {
