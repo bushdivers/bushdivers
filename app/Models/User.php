@@ -51,9 +51,10 @@ class User extends Authenticatable
 
     public function getPrivateNameAttribute()
     {
-        $words = explode(' ', $this->name);
-        if (count($words) >= 2) {
-            return $words[0] . ' ' .  end($words)[0];
+        $split = explode(' ', $this->name);
+
+        if (count($split) >= 2) {
+            return $split[0] . mb_substr($split[1], 0, 1);
         } else {
             return $this->name;
         }
