@@ -17,7 +17,7 @@ class FindAirportsInNeedOfContracts
         $this->generateContracts = $generateContracts;
     }
 
-    public function execute($country)
+    public function execute()
     {
         // find all airports
         try {

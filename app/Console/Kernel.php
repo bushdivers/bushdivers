@@ -103,16 +103,7 @@ class Kernel extends ConsoleKernel
 
         // contract generation
         $schedule->call(function () {
-            $this->findAirportsInNeedOfContracts->execute('PG');
-        })->daily();
-        $schedule->call(function () {
-            $this->findAirportsInNeedOfContracts->execute('ID');
-        })->daily();
-        $schedule->call(function () {
-            $this->findAirportsInNeedOfContracts->execute('CA');
-        })->daily();
-        $schedule->call(function () {
-            $this->findAirportsInNeedOfContracts->execute('US');
+            $this->findAirportsInNeedOfContracts->execute();
         })->daily();
 
         // contract generation - hubs
