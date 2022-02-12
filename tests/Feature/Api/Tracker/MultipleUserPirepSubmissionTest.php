@@ -2,34 +2,42 @@
 
 namespace Tests\Feature\Api\Tracker;
 
+use App\Events\PirepFiled;
 use App\Models\Aircraft;
+use App\Models\AircraftEngine;
 use App\Models\AirlineFees;
 use App\Models\Airport;
+use App\Models\Booking;
 use App\Models\Contract;
 use App\Models\ContractCargo;
+use App\Models\Enums\AircraftState;
 use App\Models\Enums\AirlineTransactionTypes;
 use App\Models\Enums\FinancialConsts;
+use App\Models\Enums\PointsType;
 use App\Models\Enums\TransactionTypes;
 use App\Models\Fleet;
+use App\Models\Flight;
 use App\Models\FlightLog;
 use App\Models\Pirep;
 use App\Models\PirepCargo;
-use App\Models\Rental;
 use App\Models\User;
+use App\Services\ContractService;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Event;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
-class SubmitPirepRentalTest extends TestCase
+class MultipleUserPirepSubmissionTest extends TestCase
 {
     use RefreshDatabase;
 
     protected Model $user;
+    protected Model $user2;
     protected Model $pirep;
     protected Model $pirepCargo;
     protected Model $contract;
@@ -37,6 +45,7 @@ class SubmitPirepRentalTest extends TestCase
     protected Model $fleet;
     protected Model $aircraft;
     protected Model $booking;
+    protected Model $aircraftEngine;
 
     public function setUp(): void
     {
@@ -47,16 +56,31 @@ class SubmitPirepRentalTest extends TestCase
             'points' => 49,
             'created_at' => Carbon::now()->addYears(-2)
         ]);
+
+        $this->user2 = User::factory()->create([
+            'rank_id' => 1,
+            'flights_time' => 299,
+            'points' => 49,
+            'created_at' => Carbon::now()->addYears(-2),
+            'email' => 't@t.com'
+        ]);
+
         $this->fleet = Fleet::factory()->create([
             'fuel_type' => 1,
             'size' => 'S'
         ]);
-        $this->aircraft = Rental::factory()->create([
+        $this->aircraft = Aircraft::factory()->create([
             'fleet_id' => $this->fleet->id,
             'fuel_onboard' => 50,
             'current_airport_id' => 'AYMR',
-            'user_id' => $this->user->id
+            'user_id' => $this->user->id,
+            'flight_time_mins' => 0
         ]);
+
+        $this->aircraftEngine = AircraftEngine::factory()->create([
+            'aircraft_id' => $this->aircraft->id
+        ]);
+
         DB::table('cargo_types')->insert([
             ['type' => 1, 'text' => 'Solar Panels'],
             ['type' => 1, 'text' => 'Building materials'],
@@ -65,7 +89,7 @@ class SubmitPirepRentalTest extends TestCase
         ]);
 
         $this->contract = Contract::factory()->create([
-            'contract_value' => 250.00,
+            'contract_value' => 500.00,
             'dep_airport_id' => 'AYMR',
             'arr_airport_id' => 'AYMN'
         ]);
@@ -74,16 +98,30 @@ class SubmitPirepRentalTest extends TestCase
             'current_airport_id' => $this->contract->dep_airport_id,
             'dep_airport_id' => 'AYMR',
             'arr_airport_id' => 'AYMN',
-            'user_id' => $this->user->id
+            'user_id' => $this->user->id,
+            'cargo_qty' => 700,
+            'is_available' => false
         ]);
+
+        ContractCargo::factory()->create([
+            'contract_id' => $this->contract->id,
+            'current_airport_id' => 'AYMN',
+            'dep_airport_id' => 'AYMR',
+            'arr_airport_id' => 'AYMN',
+            'user_id' => $this->user2->id,
+            'completed_at' => Carbon::now(),
+            'cargo_qty' => 300,
+            'is_completed' => true,
+            'is_available' => false
+        ]);
+
         $this->pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,
-            'destination_airport_id' => $this->contract->arr_airport_id,
+            'destination_airport_id' => 'AYMN',
             'departure_airport_id' => $this->contract->dep_airport_id,
             'aircraft_id' => $this->aircraft->id,
             'current_lat' => -6.14617,
-            'current_lon' => 143.65733,
-            'is_rental' => true
+            'current_lon' => 143.65733
         ]);
 
         $this->pirepCargo = PirepCargo::factory()->create([
@@ -126,8 +164,13 @@ class SubmitPirepRentalTest extends TestCase
             'fee_name' => 'Landing Fees - Small',
             'fee_amount' => 35.00
         ]);
-    }
 
+    }
+    /**
+     * A basic feature test example.
+     *
+     * @return void
+     */
     public function test_pirep_submitted_successfully()
     {
         Artisan::call('db:seed --class=RankSeeder');
@@ -152,15 +195,16 @@ class SubmitPirepRentalTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function test_fees_charged_to_pilot_for_rental()
+    public function test_contract_is_set_completed()
     {
+        Artisan::call('db:seed --class=RankSeeder');
         Sanctum::actingAs(
             $this->user,
             ['*']
         );
+
         $startTime = "05/10/2021 01:00:00";
-        $endTime = "05/10/2021 01:30:00";
-        $fuelCost = 25 * 2.15;
+        $endTime = "05/10/2021 01:45:00";
 
         $data = [
             'pirep_id' => $this->pirep->id,
@@ -171,21 +215,81 @@ class SubmitPirepRentalTest extends TestCase
             'block_on_time' => $endTime
         ];
 
-        $this->postJson('/api/pirep/submit', $data);
+        $response = $this->postJson('/api/pirep/submit', $data);
+
+        $this->contract->refresh();
+        $this->assertEquals(1, $this->contract->is_completed);
+    }
+
+    public function test_contract_cargos_are_set_completed()
+    {
+        Artisan::call('db:seed --class=RankSeeder');
+        Sanctum::actingAs(
+            $this->user,
+            ['*']
+        );
+
+        $startTime = "05/10/2021 01:00:00";
+        $endTime = "05/10/2021 01:45:00";
+
+        $data = [
+            'pirep_id' => $this->pirep->id,
+            'fuel_used' => 25,
+            'distance' => 76,
+            'landing_rate' => -149.12,
+            'block_off_time'=> $startTime,
+            'block_on_time' => $endTime
+        ];
+
+        $response = $this->postJson('/api/pirep/submit', $data);
+
+        $this->assertDatabaseHas('contract_cargos', [
+            'contract_id' => $this->contract->id,
+            'user_id' => $this->user->id,
+            'is_completed' => 1
+        ]);
+    }
+
+    public function test_pay_split_between_users()
+    {
+        Artisan::call('db:seed --class=RankSeeder');
+        Sanctum::actingAs(
+            $this->user,
+            ['*']
+        );
+
+        $startTime = "05/10/2021 01:00:00";
+        $endTime = "05/10/2021 01:45:00";
+
+        $data = [
+            'pirep_id' => $this->pirep->id,
+            'fuel_used' => 25,
+            'distance' => 76,
+            'landing_rate' => -149.12,
+            'block_off_time'=> $startTime,
+            'block_on_time' => $endTime
+        ];
+
+        $response = $this->postJson('/api/pirep/submit', $data);
+
+        $pp = (FinancialConsts::PilotPay / 100) * $this->contract->contract_value;
+
+        $userPerc = (700 / 1000);
+        $user2Perc = (300 / 1000);
+
+        $userVal = round($userPerc * $pp,2);
+        $user2Val = round($user2Perc * $pp,2);
 
         $this->assertDatabaseHas('user_accounts', [
-            'flight_id' => $this->pirep->id,
-            'type' => TransactionTypes::FlightFeesFuel
+            'user_id' => $this->user->id,
+            'total' => $userVal,
+            'type' => TransactionTypes::FlightPay
         ]);
 
         $this->assertDatabaseHas('user_accounts', [
-            'flight_id' => $this->pirep->id,
-            'type' => TransactionTypes::FlightFeesLanding
-        ]);
-
-        $this->assertDatabaseHas('user_accounts', [
-            'flight_id' => $this->pirep->id,
-            'type' => TransactionTypes::FlightFeesGround
+            'user_id' => $this->user2->id,
+            'total' => $user2Val,
+            'type' => TransactionTypes::FlightPay
         ]);
     }
 }

@@ -153,34 +153,6 @@ class SubmitPirepPrivateOwnerTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function test_pilot_pay_calc_for_private()
-    {
-        Sanctum::actingAs(
-            $this->user,
-            ['*']
-        );
-        $startTime = "05/10/2021 01:00:00";
-        $endTime = "05/10/2021 01:30:00";
-
-        $data = [
-            'pirep_id' => $this->pirep->id,
-            'fuel_used' => 25,
-            'distance' => 76,
-            'landing_rate' => -149.12,
-            'block_off_time'=> $startTime,
-            'block_on_time' => $endTime
-        ];
-
-        $this->postJson('/api/pirep/submit', $data);
-
-        $pp = (50 / 100) * $this->contract->contract_value;
-
-        $this->assertDatabaseHas('user_accounts', [
-            'flight_id' => $this->pirep->id,
-            'total' => $pp
-        ]);
-    }
-
     public function test_return_home_bonus_not_given_for_private()
     {
         Sanctum::actingAs(
