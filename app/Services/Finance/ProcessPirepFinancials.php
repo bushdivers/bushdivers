@@ -68,7 +68,7 @@ class ProcessPirepFinancials
                     $payPerPilot = $pp / $cc->count();
 
                     foreach ($cc as $cargoPay) {
-                        $contract = Contract::find($cc->contract_id);
+//                        $c = Contract::find($cc->contract_id);
                         if (Carbon::now()->greaterThan($contract->expires_at)) {
                             $payPerPilot = round($payPerPilot - ($payPerPilot * FinancialConsts::ExpiryMultiplier),2);
                         }

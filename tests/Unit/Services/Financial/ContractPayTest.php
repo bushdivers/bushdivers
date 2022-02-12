@@ -62,7 +62,8 @@ class ContractPayTest extends TestCase
         ]);
         $this->contractCargo = ContractCargo::factory()->create([
             'contract_id' => $this->contract->id,
-            'is_completed' => true
+            'is_completed' => true,
+            'user_id' => $this->user->id
         ]);
 
         $this->airport = Airport::factory()->create();
@@ -123,8 +124,8 @@ class ContractPayTest extends TestCase
 
     public function test_pilot_pay_is_returned_for_private()
     {
-        $expectedPay = (60 / 100) * $this->contract->contract_value;
-        $companyPay = (40 / 100) * $this->contract->contract_value;
+        $expectedPay = (50 / 100) * $this->contract->contract_value;
+        $companyPay = (50 / 100) * $this->contract->contract_value;
         $totalPay = $expectedPay + $companyPay;
         $pay = $this->calcContractPay->execute($this->contract->id, null, false, true);
         $this->assertEquals($expectedPay, $pay);
@@ -133,8 +134,8 @@ class ContractPayTest extends TestCase
 
     public function test_pilot_pay_is_returned_for_rental()
     {
-        $expectedPay = (60 / 100) * $this->contract->contract_value;
-        $companyPay = (40 / 100) * $this->contract->contract_value;
+        $expectedPay = (50 / 100) * $this->contract->contract_value;
+        $companyPay = (50 / 100) * $this->contract->contract_value;
         $totalPay = $expectedPay + $companyPay;
         $pay = $this->calcContractPay->execute($this->contract->id, null, true, false);
         $this->assertEquals($expectedPay, $pay);

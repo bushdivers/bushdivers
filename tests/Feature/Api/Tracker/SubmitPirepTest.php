@@ -85,7 +85,10 @@ class SubmitPirepTest extends TestCase
         ]);
         $this->contractCargo = ContractCargo::factory()->create([
             'contract_id' => $this->contract->id,
-            'current_airport_id' => $this->contract->dep_airport_id
+            'current_airport_id' => $this->contract->dep_airport_id,
+            'dep_airport_id' => 'AYMR',
+            'arr_airport_id' => 'AYMN',
+            'user_id' => $this->user->id
         ]);
         $this->pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,
