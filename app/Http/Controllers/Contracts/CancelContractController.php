@@ -36,6 +36,10 @@ class CancelContractController extends Controller
             return redirect()->back()->with(['error' => 'Contract is part of an active dispatch and cannot be cancelled']);
         }
 
+        if ($contract->user_id != Auth::user()->id && !Auth::user()->is_admin) {
+            return redirect()->back()->with(['error' => 'It is not possible to cancel this contract']);
+        }
+
         // set contract to not available
         if ($contract->user_id !== null) {
             $contract->user_id = null;
