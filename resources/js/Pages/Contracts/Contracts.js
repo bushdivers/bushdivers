@@ -192,9 +192,7 @@ const Contracts = ({ contracts, airport }) => {
                         </td>
                         <td>${contract.contract_value.toLocaleString()}</td>
                         <td>
-                          <Tooltip content={dayjs(contract.expires_at).format('HH:mm a')} direction="top">
-                          {dayjs(contract.expires_at).format('DD/MM/YYYY')}
-                          </Tooltip>
+                          {dayjs(contract.expires_at).format('DD/MM/YYYY HH:mm')}
                         </td>
                         <td><button onClick={() => bidForContract(contract)} className="btn btn-secondary btn-small">Accept</button></td>
                       </tr>

@@ -113,9 +113,7 @@ const MyContracts = ({ contracts, custom }) => {
                       </td>
                       <td>${contract.contract_value.toLocaleString()}</td>
                       <td>
-                        <Tooltip content={dayjs(contract.expires_at).format('HH:mm a')} direction="top">
-                          {dayjs(contract.expires_at).format('DD/MM/YYYY')}
-                        </Tooltip>
+                        {dayjs(contract.expires_at).format('DD/MM/YYYY HH:mm')}
                       </td>
                       <td>
                         <button onClick={() => cancelBid(contract)} className="btn btn-secondary flex items-center">
@@ -192,9 +190,7 @@ const MyContracts = ({ contracts, custom }) => {
                         </td>
                         <td>${contract.contract_value.toLocaleString()}</td>
                         <td>
-                          <Tooltip content={dayjs(contract.expires_at).format('HH:mm a')} direction="top">
-                          {dayjs(contract.expires_at).format('DD/MM/YYYY')}
-                          </Tooltip>
+                          {dayjs(contract.expires_at).format('DD/MM/YYYY HH:mm')}
                         </td>
                         {auth.user.is_admin
                           ? (
