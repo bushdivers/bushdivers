@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import NoContent from '../../Shared/Elements/NoContent'
 import Tooltip from '../../Shared/Elements/Tooltip'
-import { Link } from '@inertiajs/inertia-react'
+import { Link, usePage } from '@inertiajs/inertia-react'
 import dayjs from '../../Helpers/date.helpers'
 import { Inertia } from '@inertiajs/inertia'
 import CargoDetails from '../../Shared/Components/Contracts/CargoDetails'
@@ -27,6 +27,7 @@ const AirportToolTip = (props) => {
 }
 
 const MyContracts = ({ contracts, custom }) => {
+  const { auth } = usePage().props
   const [selectedContract, setSelectedContract] = useState('')
   const [showDetail, setShowDetail] = useState(false)
 
@@ -150,7 +151,7 @@ const MyContracts = ({ contracts, custom }) => {
                       <th>Total Cargo</th>
                       <th>Pay</th>
                       <th>Expires</th>
-                      <td>Cancel</td>
+                      {auth.user.is_admin ? <td>Cancel</td> : <></>}
                     </tr>
                     </thead>
                     <tbody className="cursor-pointer">
@@ -195,11 +196,16 @@ const MyContracts = ({ contracts, custom }) => {
                           {dayjs(contract.expires_at).format('DD/MM/YYYY')}
                           </Tooltip>
                         </td>
-                        <td>
-                          <button onClick={() => cancelBid(contract)} className="btn btn-secondary flex items-center">
-                            <i className="material-icons md-18">close</i>
-                          </button>
-                        </td>
+                        {auth.user.is_admin
+                          ? (
+                            <td>
+                              <button onClick={() => cancelBid(contract)} className="btn btn-secondary flex items-center">
+                                <i className="material-icons md-18">close</i>
+                              </button>
+                            </td>
+                            )
+                          : <></>
+                        }
                       </tr>
                       { showDetail && <CargoDetails contract={contract} />}
                       </>
