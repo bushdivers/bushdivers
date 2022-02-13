@@ -476,11 +476,7 @@ var Contracts = function Contracts(_ref) {
                       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("td", {
                         children: ["$", contract.contract_value.toLocaleString()]
                       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("td", {
-                        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(_Shared_Elements_Tooltip__WEBPACK_IMPORTED_MODULE_3__.default, {
-                          content: (0,_Helpers_date_helpers__WEBPACK_IMPORTED_MODULE_5__.default)(contract.expires_at).format('HH:mm a'),
-                          direction: "top",
-                          children: (0,_Helpers_date_helpers__WEBPACK_IMPORTED_MODULE_5__.default)(contract.expires_at).format('DD/MM/YYYY')
-                        })
+                        children: (0,_Helpers_date_helpers__WEBPACK_IMPORTED_MODULE_5__.default)(contract.expires_at).format('DD/MM/YYYY HH:mm')
                       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("td", {
                         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("button", {
                           onClick: function onClick() {

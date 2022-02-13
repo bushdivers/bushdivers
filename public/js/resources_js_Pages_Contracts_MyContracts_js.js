@@ -106,6 +106,7 @@ var AirportToolTip = function AirportToolTip(props) {
 var MyContracts = function MyContracts(_ref) {
   var contracts = _ref.contracts,
       custom = _ref.custom;
+  var auth = (0,_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_3__.usePage)().props.auth;
 
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
       _useState2 = _slicedToArray(_useState, 2),
@@ -264,11 +265,7 @@ var MyContracts = function MyContracts(_ref) {
                       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)("td", {
                         children: ["$", contract.contract_value.toLocaleString()]
                       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("td", {
-                        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_Shared_Elements_Tooltip__WEBPACK_IMPORTED_MODULE_2__.default, {
-                          content: (0,_Helpers_date_helpers__WEBPACK_IMPORTED_MODULE_4__.default)(contract.expires_at).format('HH:mm a'),
-                          direction: "top",
-                          children: (0,_Helpers_date_helpers__WEBPACK_IMPORTED_MODULE_4__.default)(contract.expires_at).format('DD/MM/YYYY')
-                        })
+                        children: (0,_Helpers_date_helpers__WEBPACK_IMPORTED_MODULE_4__.default)(contract.expires_at).format('DD/MM/YYYY HH:mm')
                       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("td", {
                         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("button", {
                           onClick: function onClick() {
@@ -327,9 +324,9 @@ var MyContracts = function MyContracts(_ref) {
                     children: "Pay"
                   }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("th", {
                     children: "Expires"
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("td", {
+                  }), auth.user.is_admin ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("td", {
                     children: "Cancel"
-                  })]
+                  }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.Fragment, {})]
                 })
               }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("tbody", {
                 className: "cursor-pointer",
@@ -412,12 +409,8 @@ var MyContracts = function MyContracts(_ref) {
                       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)("td", {
                         children: ["$", contract.contract_value.toLocaleString()]
                       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("td", {
-                        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_Shared_Elements_Tooltip__WEBPACK_IMPORTED_MODULE_2__.default, {
-                          content: (0,_Helpers_date_helpers__WEBPACK_IMPORTED_MODULE_4__.default)(contract.expires_at).format('HH:mm a'),
-                          direction: "top",
-                          children: (0,_Helpers_date_helpers__WEBPACK_IMPORTED_MODULE_4__.default)(contract.expires_at).format('DD/MM/YYYY')
-                        })
-                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("td", {
+                        children: (0,_Helpers_date_helpers__WEBPACK_IMPORTED_MODULE_4__.default)(contract.expires_at).format('DD/MM/YYYY HH:mm')
+                      }), auth.user.is_admin ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("td", {
                         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("button", {
                           onClick: function onClick() {
                             return cancelBid(contract);
@@ -428,7 +421,7 @@ var MyContracts = function MyContracts(_ref) {
                             children: "close"
                           })
                         })
-                      })]
+                      }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.Fragment, {})]
                     }, contract.id), showDetail && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_Shared_Components_Contracts_CargoDetails__WEBPACK_IMPORTED_MODULE_6__.default, {
                       contract: contract
                     })]
