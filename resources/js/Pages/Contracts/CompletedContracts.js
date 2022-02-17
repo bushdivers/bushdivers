@@ -26,8 +26,8 @@ const CompletedContracts = ({ contracts }) => {
                 {contract.distance.toLocaleString(navigator.language)}nm
               </div>
               <div className="flex flex-col items-center content-center">
-                <div>Contract Pay</div>
-                ${(contract.contract_value - ((contract.contract_value * 60.00) / 100.00)).toFixed(2).toLocaleString(navigator.language)}
+                <div>Contract Value</div>
+                ${parseFloat(contract.cargo.map(detail => detail.contract_value).reduce((total, num) => total + Math.fround(num), 0)).toFixed(2)}
               </div>
               <div className="flex flex-col items-center content-center">
                 <div>Completed Date</div>

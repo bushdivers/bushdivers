@@ -65,16 +65,16 @@ class ProcessPirepFinancials
 
                     $pp = $this->calcContractPay->execute($contract->id, $pirep->id, $pirep->is_rental, $privatePlane);
                     $cc = ContractCargo::where('contract_id', $contract->id)->get();
-                    $totalCargo = $cc->sum('cargo_qty');
+                    // $totalCargo = $cc->sum('cargo_qty');
                     foreach ($cc as $ccargo) {
                         $c = Contract::find($ccargo->contract_id);
 
-                        if (Carbon::now()->greaterThan($c->expires_at)) {
-                            $pp = round($pp - ($pp * FinancialConsts::ExpiryMultiplier),2);
-                        }
+                        // $pilotPayPerc = $ccargo->cargo_qty / $totalCargo;
+                        $pilotPay = (FinancialConsts::PilotPay / 100) * $ccargo->contract_value;
 
-                        $pilotPayPerc = $ccargo->cargo_qty / $totalCargo;
-                        $pilotPay = $pilotPayPerc * $pp;
+                        if (Carbon::now()->greaterThan($c->expires_at)) {
+                            $pilotPay = round($pilotPay - ($pp * FinancialConsts::ExpiryMultiplier),2);
+                        }
 
                         $this->addUserTransaction->execute($ccargo->user_id, TransactionTypes::FlightPay, $pilotPay, $pirep->id);
                     }

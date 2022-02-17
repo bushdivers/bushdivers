@@ -40,8 +40,10 @@ class MultipleUserPirepSubmissionTest extends TestCase
     protected Model $user2;
     protected Model $pirep;
     protected Model $pirepCargo;
+    protected Model $pirepCargo2;
     protected Model $contract;
     protected Model $contractCargo;
+    protected Model $contractCargo2;
     protected Model $fleet;
     protected Model $aircraft;
     protected Model $booking;
@@ -89,7 +91,6 @@ class MultipleUserPirepSubmissionTest extends TestCase
         ]);
 
         $this->contract = Contract::factory()->create([
-            'contract_value' => 500.00,
             'dep_airport_id' => 'AYMR',
             'arr_airport_id' => 'AYMN'
         ]);
@@ -100,10 +101,11 @@ class MultipleUserPirepSubmissionTest extends TestCase
             'arr_airport_id' => 'AYMN',
             'user_id' => $this->user->id,
             'cargo_qty' => 700,
-            'is_available' => false
+            'is_available' => false,
+            'contract_value' => 400.00,
         ]);
 
-        ContractCargo::factory()->create([
+        $this->contractCargo2 = ContractCargo::factory()->create([
             'contract_id' => $this->contract->id,
             'current_airport_id' => 'AYMN',
             'dep_airport_id' => 'AYMR',
@@ -112,7 +114,8 @@ class MultipleUserPirepSubmissionTest extends TestCase
             'completed_at' => Carbon::now(),
             'cargo_qty' => 300,
             'is_completed' => true,
-            'is_available' => false
+            'is_available' => false,
+            'contract_value' => 100.00
         ]);
 
         $this->pirep = Pirep::factory()->create([
@@ -127,6 +130,11 @@ class MultipleUserPirepSubmissionTest extends TestCase
         $this->pirepCargo = PirepCargo::factory()->create([
             'pirep_id' => $this->pirep->id,
             'contract_cargo_id' => $this->contractCargo->id
+        ]);
+
+        $this->pirepCargo2 = PirepCargo::factory()->create([
+            'pirep_id' => $this->pirep->id,
+            'contract_cargo_id' => $this->contractCargo2->id
         ]);
 
         Airport::factory()->create([
@@ -272,13 +280,9 @@ class MultipleUserPirepSubmissionTest extends TestCase
 
         $response = $this->postJson('/api/pirep/submit', $data);
 
-        $pp = (FinancialConsts::PilotPay / 100) * $this->contract->contract_value;
+        $userVal = (FinancialConsts::PilotPay / 100) * $this->contractCargo->contract_value;
+        $user2Val = (FinancialConsts::PilotPay / 100) * $this->contractCargo2->contract_value;
 
-        $userPerc = (700 / 1000);
-        $user2Perc = (300 / 1000);
-
-        $userVal = round($userPerc * $pp,2);
-        $user2Val = round($user2Perc * $pp,2);
 
         $this->assertDatabaseHas('user_accounts', [
             'user_id' => $this->user->id,

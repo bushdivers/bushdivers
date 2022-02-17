@@ -74,7 +74,9 @@ class GenerateHubContractsTest extends TestCase
     {
         $this->findHubsInNeedOfContracts->execute();
         $this->assertDatabaseHas('contract_cargos', [
-            'current_airport_id' => $this->airportHub->identifier
+            'current_airport_id' => $this->airportHub->identifier,
+            'dep_airport_id' => $this->airportHub->identifier,
+            'arr_airport_id' => $this->airport2->identifier
         ]);
     }
 
@@ -91,7 +93,9 @@ class GenerateHubContractsTest extends TestCase
     {
         $this->findHubsInNeedOfContracts->execute();
         $this->assertDatabaseHas('contract_cargos', [
-            'current_airport_id' => $this->airport2->identifier
+            'current_airport_id' => $this->airport2->identifier,
+            'dep_airport_id' => $this->airport2->identifier,
+            'arr_airport_id' => $this->airportHub->identifier
         ]);
     }
 }

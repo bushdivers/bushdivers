@@ -68,7 +68,9 @@ class GenerateContractDetailsTest extends TestCase
         $airports = collect([$this->airport1, $this->airport2]);
         $this->generateContractDetails->execute($this->origin, $airports);
         $this->assertDatabaseHas('contract_cargos', [
-            'current_airport_id' => $this->origin->identifier
+            'current_airport_id' => $this->origin->identifier,
+            'dep_airport_id' => $this->origin->identifier,
+            'arr_airport_id' => $this->airport1->identifier
         ]);
     }
 }

@@ -16,7 +16,6 @@ class StoreContract
         $contract->arr_airport_id = $dest;
         $contract->distance = $distance;
         $contract->heading = $heading;
-        $contract->contract_value = $value;
         $contract->expires_at = Carbon::now()->addDays(rand(1,8));
 
         if ($custom) {
@@ -31,6 +30,7 @@ class StoreContract
         $contractCargo->current_airport_id = $start;
         $contractCargo->dep_airport_id = $start;
         $contractCargo->arr_airport_id = $dest;
+        $contractCargo->contract_value = $value;
         if ($cargo['type'] == 1) {
             $contractCargo->contract_type_id = ContractType::Cargo;
         } else {

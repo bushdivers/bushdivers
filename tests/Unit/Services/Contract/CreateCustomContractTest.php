@@ -60,7 +60,9 @@ class CreateCustomContractTest extends TestCase
 
         $this->assertDatabaseHas('contract_cargos', [
             'cargo' => 'Second hand goods',
-            'current_airport_id' => $this->airport1->identifier
+            'current_airport_id' => $this->airport1->identifier,
+            'dep_airport_id' => $this->airport1->identifier,
+            'arr_airport_id' => $this->airport2->identifier,
         ]);
     }
 }

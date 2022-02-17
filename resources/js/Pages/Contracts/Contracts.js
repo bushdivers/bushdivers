@@ -149,7 +149,7 @@ const Contracts = ({ contracts, airport }) => {
                       <th>Distance</th>
                       <th>Heading</th>
                       <th>Total Cargo</th>
-                      <th>Pay</th>
+                      <th>Value</th>
                       <th>Expires</th>
                       <td>Accept</td>
                     </tr>
@@ -190,7 +190,9 @@ const Contracts = ({ contracts, airport }) => {
                             </>
                           ))}
                         </td>
-                        <td>${contract.contract_value.toLocaleString()}</td>
+                        <td>
+                          ${parseFloat(contract.cargo.map(detail => detail.contract_value).reduce((total, num) => total + Math.fround(num), 0)).toFixed(2)}<br/>
+                        </td>
                         <td>
                           {dayjs(contract.expires_at).format('DD/MM/YYYY HH:mm')}
                         </td>

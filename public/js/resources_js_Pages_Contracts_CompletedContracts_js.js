@@ -104,8 +104,12 @@ var CompletedContracts = function CompletedContracts(_ref) {
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
               className: "flex flex-col items-center content-center",
               children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
-                children: "Contract Pay"
-              }), "$", (contract.contract_value - contract.contract_value * 60.00 / 100.00).toFixed(2).toLocaleString(navigator.language)]
+                children: "Contract Value"
+              }), "$", parseFloat(contract.cargo.map(function (detail) {
+                return detail.contract_value;
+              }).reduce(function (total, num) {
+                return total + Math.fround(num);
+              }, 0)).toFixed(2)]
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
               className: "flex flex-col items-center content-center",
               children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {

@@ -177,7 +177,7 @@ var MyContracts = function MyContracts(_ref) {
                   }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("th", {
                     children: "Total Cargo"
                   }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("th", {
-                    children: "Pay"
+                    children: "Value"
                   }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("th", {
                     children: "Expires"
                   }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("td", {
@@ -263,7 +263,11 @@ var MyContracts = function MyContracts(_ref) {
                           });
                         })
                       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)("td", {
-                        children: ["$", contract.contract_value.toLocaleString()]
+                        children: ["$", parseFloat(contract.cargo.map(function (detail) {
+                          return detail.contract_value;
+                        }).reduce(function (total, num) {
+                          return total + Math.fround(num);
+                        }, 0)).toFixed(2), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("br", {})]
                       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("td", {
                         children: (0,_Helpers_date_helpers__WEBPACK_IMPORTED_MODULE_4__.default)(contract.expires_at).format('DD/MM/YYYY HH:mm')
                       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("td", {
@@ -321,7 +325,7 @@ var MyContracts = function MyContracts(_ref) {
                   }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("th", {
                     children: "Total Cargo"
                   }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("th", {
-                    children: "Pay"
+                    children: "Value"
                   }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("th", {
                     children: "Expires"
                   }), auth.user.is_admin ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("td", {
@@ -407,7 +411,11 @@ var MyContracts = function MyContracts(_ref) {
                           });
                         })
                       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)("td", {
-                        children: ["$", contract.contract_value.toLocaleString()]
+                        children: ["$", parseFloat(contract.cargo.map(function (detail) {
+                          return detail.contract_value;
+                        }).reduce(function (total, num) {
+                          return total + Math.fround(num);
+                        }, 0)).toFixed(2), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("br", {})]
                       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("td", {
                         children: (0,_Helpers_date_helpers__WEBPACK_IMPORTED_MODULE_4__.default)(contract.expires_at).format('DD/MM/YYYY HH:mm')
                       }), auth.user.is_admin ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("td", {
@@ -583,6 +591,8 @@ var CargoDetails = function CargoDetails(props) {
           children: ["Cargo Type: ", detail.contract_type_id === 1 ? 'Cargo' : 'Passenger']
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("td", {
           children: ["Cargo: ", detail.cargo_qty.toLocaleString(navigator.language), " ", detail.contract_type_id === 1 ? 'lbs' : '', " ", detail.cargo]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("td", {
+          children: ["Value: $", detail.contract_value]
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("td", {
           children: detail.is_completed ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("i", {
             className: "material-icons md-18 text-green-500",

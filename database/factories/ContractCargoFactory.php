@@ -26,7 +26,10 @@ class ContractCargoFactory extends Factory
             'contract_type_id' => ContractType::Cargo,
             'current_airport_id' => 'AYMR',
             'cargo' => 'Test Cargo',
-            'cargo_qty' => 300
+            'cargo_qty' => 300,
+            'contract_value' => 250,
+            'dep_airport_id' => 'AYMR',
+            'arr_airport_id' => 'AYMN',
         ];
     }
 }

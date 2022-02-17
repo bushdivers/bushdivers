@@ -19,7 +19,7 @@ class CreateContractsTable extends Migration
             $table->string('arr_airport_id');
             $table->decimal('distance');
             $table->integer('heading');
-            $table->decimal('contract_value');
+            $table->decimal('contract_value')->nullable();
             $table->integer('reputation')->nullable();
             $table->boolean('is_available')->default(true);
             $table->boolean('is_completed')->default(false);
