@@ -30,6 +30,7 @@ class ContractCargoFactory extends Factory
             'contract_value' => 250,
             'dep_airport_id' => 'AYMR',
             'arr_airport_id' => 'AYMN',
+            'is_completed' => false
         ];
     }
 }

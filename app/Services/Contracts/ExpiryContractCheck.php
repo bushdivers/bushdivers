@@ -3,6 +3,7 @@
 namespace App\Services\Contracts;
 
 use App\Models\Contract;
+use App\Models\ContractCargo;
 use App\Models\Enums\FinancialConsts;
 use Carbon\Carbon;
 
@@ -65,11 +66,16 @@ class ExpiryContractCheck
     protected function updateContracts($multiplier, $contracts, $field)
     {
         foreach ($contracts as $contract) {
+            $cc = ContractCargo::where('contract_id', $contract->id)
+                ->where('is_completed', false)
+                ->get();
+            foreach ($cc as $cargo) {
+                $cargo->contract_value = $cargo->contract_value * $multiplier;
+                $cargo->save();
+            }
             $contract->update([
-                'contract_value' => $contract->contract_value * $multiplier,
                 $field => true
             ]);
-
             //$contract->save();
         }
     }
