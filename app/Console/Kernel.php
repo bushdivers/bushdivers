@@ -102,14 +102,14 @@ class Kernel extends ConsoleKernel
         })->everyFifteenMinutes();
 
         // contract generation
-        $schedule->call(function () {
-            $this->findAirportsInNeedOfContracts->execute();
-        })->daily();
+//        $schedule->call(function () {
+//            $this->findAirportsInNeedOfContracts->execute();
+//        })->daily();
 
         // contract generation - hubs
-        $schedule->call(function () {
-            $this->findHubsInNeedOfContracts->execute();
-        })->daily();
+//        $schedule->call(function () {
+//            $this->findHubsInNeedOfContracts->execute();
+//        })->daily();
 
         $schedule->call(function () {
             $this->checkRentalDailyFee->execute();
