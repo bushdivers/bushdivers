@@ -31,7 +31,7 @@ const Aircraft = (props) => {
               </thead>
               <tbody className="cursor-pointer">
               {props.aircraft.map((ac) => (
-                <tr key={ac.id} onClick={() => props.handleAircraftSelect(ac)} className={props.selectedAircraft.registration === ac.registration ? 'bg-orange-200 hover:bg-orange-100' : ''}>
+                <tr key={ac.id} onClick={() => props.handleAircraftSelect(ac)} className={props.selectedAircraft.registration === ac.registration ? 'bg-orange-200 hover:bg-orange-100 cursor-pointer' : 'cursor-pointer'}>
                   <td>
                     {ac.hub_id && <Link href={`/aircraft/${ac.id}`}>{ac.registration}</Link>}
                     {ac.rental_airport_id && <span>{ac.registration}</span>}
