@@ -18,9 +18,12 @@ class DatabaseSeeder extends Seeder
         $this->call([
             AwardSeeder::class,
             ContractTypeSeeder::class,
+            ContractSeeder::class,
+            ContractCargoSeeder::class,
             RankSeeder::class,
             FleetSeeder::class,
-            AircraftSeeder::class
+            AircraftSeeder::class,
+            AirportSeeder::class
         ]);
 
     }
