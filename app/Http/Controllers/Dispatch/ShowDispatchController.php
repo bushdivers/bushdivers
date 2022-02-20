@@ -93,8 +93,8 @@ class ShowDispatchController extends Controller
             ->where('is_available', true)
             ->whereHas('contract', function ($q) {
                 $q->where('is_completed', false)
-                    ->where('is_available', 0);
-//                    ->where('user_id', null);
+                    ->where('is_available', 0)
+                    ->whereIn('user_id', [null, 0]);
             })->get();
         //dd($bd);
         $personal = ContractCargo::with('currentAirport', 'contract', 'contract.depAirport', 'contract.arrAirport')
