@@ -340,7 +340,7 @@ var MyContracts = function MyContracts(_ref) {
                       onClick: function onClick() {
                         return updateSelectedContract(contract);
                       },
-                      className: contract.id === selectedContract.id ? 'bg-orange-200 hover:bg-orange-100' : '',
+                      className: contract.id === selectedContract.id ? 'bg-orange-200 hover:bg-orange-100 cursor-pointer' : 'cursor-pointer',
                       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("td", {
                         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)(_Shared_Elements_Tooltip__WEBPACK_IMPORTED_MODULE_2__.default, {
                           content: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(AirportToolTip, {

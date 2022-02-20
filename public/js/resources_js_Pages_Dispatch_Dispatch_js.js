@@ -653,7 +653,7 @@ var Aircraft = function Aircraft(props) {
               onClick: function onClick() {
                 return props.handleAircraftSelect(ac);
               },
-              className: props.selectedAircraft.registration === ac.registration ? 'bg-orange-200 hover:bg-orange-100' : '',
+              className: props.selectedAircraft.registration === ac.registration ? 'bg-orange-200 hover:bg-orange-100 cursor-pointer' : 'cursor-pointer',
               children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("td", {
                 children: [ac.hub_id && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_2__.Link, {
                   href: "/aircraft/".concat(ac.id),

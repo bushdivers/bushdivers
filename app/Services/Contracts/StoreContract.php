@@ -15,6 +15,7 @@ class StoreContract
         $contract->dep_airport_id = $start;
         $contract->arr_airport_id = $dest;
         $contract->distance = $distance;
+        $contract->contract_value = $value;
         $contract->heading = $heading;
         $contract->expires_at = Carbon::now()->addDays(rand(1,8));
 
