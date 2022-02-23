@@ -107,7 +107,7 @@ class Kernel extends ConsoleKernel
         })->daily();
 
         $schedule->call(function () {
-            $this->findAirportsInNeedOfContracts->execute('AK');
+            $this->findAirportsInNeedOfContracts->execute('US');
         })->daily();
 
          //contract generation - hubs
