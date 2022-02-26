@@ -101,19 +101,19 @@ class Kernel extends ConsoleKernel
             $this->expiryContractCheck->execute(FinancialConsts::ContractExpiryMinsStr);
         })->everyFifteenMinutes();
 
-         // contract generation
-//        $schedule->call(function () {
-//            $this->findAirportsInNeedOfContracts->execute('PG');
-//        })->daily();
-//
-//        $schedule->call(function () {
-//            $this->findAirportsInNeedOfContracts->execute('US');
-//        })->daily();
+          //contract generation
+        $schedule->call(function () {
+            $this->findAirportsInNeedOfContracts->execute('PG');
+        })->daily();
+
+        $schedule->call(function () {
+            $this->findAirportsInNeedOfContracts->execute('US');
+        })->daily();
 
          //contract generation - hubs
-//        $schedule->call(function () {
-//            $this->findHubsInNeedOfContracts->execute();
-//        })->daily();
+        $schedule->call(function () {
+            $this->findHubsInNeedOfContracts->execute();
+        })->daily();
 
         $schedule->call(function () {
             $this->checkRentalDailyFee->execute();
