@@ -88,4 +88,20 @@ class RemovePirepTest extends TestCase
         $this->removeSinglePirep->execute($this->pirep->id);
         $this->assertDatabaseMissing('pireps', ['id' => $this->pirep->id]);
     }
+
+    public function test_pirep_cargo_is_removed()
+    {
+        $this->removeSinglePirep->execute($this->pirep->id);
+        $this->assertDatabaseMissing('pirep_cargos', ['pirep_id' => $this->pirep->id]);
+    }
+
+    public function test_contract_cargo_reset()
+    {
+        $this->removeSinglePirep->execute($this->pirep->id);
+        $this->assertDatabaseHas('contract_cargos', [
+            'contract_id' => $this->contract->id,
+            'is_available' => 1,
+            'user_id' => null
+        ]);
+    }
 }
