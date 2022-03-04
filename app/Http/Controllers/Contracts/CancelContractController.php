@@ -24,7 +24,7 @@ class CancelContractController extends Controller
     public function __invoke(Request $request): RedirectResponse
     {
         $contract = Contract::find($request->id);
-
+        $contractCargo = ContractCargo::where('contract_id', $contract->id)->get();
         // check if contract has cargo in a non-completed pirep
         $cargo = ContractCargo::where('contract_id', $contract->id)->pluck('id');
         $pc = PirepCargo::whereIn('contract_cargo_id', $cargo)->pluck('pirep_id');
@@ -46,6 +46,12 @@ class CancelContractController extends Controller
         }
         $contract->is_available = true;
         $contract->save();
+
+        foreach ($contractCargo as $cc) {
+            $cc->user_id = null;
+            $cc->is_available = true;
+            $cc->save();
+        }
 
         $user = User::find(Auth::user()->id);
         if ($user->points >= 1) {
