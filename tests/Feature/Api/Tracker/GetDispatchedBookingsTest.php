@@ -122,7 +122,7 @@ class GetDispatchedBookingsTest extends TestCase
 
         $response = $this->getJson('/api/dispatch');
         $response->assertStatus(200);
-        $response->assertJsonFragment(['is_empty' => '1']);
+        $response->assertJson(['is_empty' => '1']);
     }
 
     public function test_returns_cargo_for_booking()

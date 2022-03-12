@@ -61,24 +61,24 @@ class GenerateHubContractsTest extends TestCase
      *
      * @return void
      */
-    public function test_contract_from_hub_is_generated()
-    {
-        $this->findHubsInNeedOfContracts->execute();
-        $this->assertDatabaseHas('contracts', [
-            'dep_airport_id' => $this->airportHub->identifier,
-            'arr_airport_id' => $this->airport2->identifier
-        ]);
-    }
-
-    public function test_contract_from_hub_cargo_is_generated()
-    {
-        $this->findHubsInNeedOfContracts->execute();
-        $this->assertDatabaseHas('contract_cargos', [
-            'current_airport_id' => $this->airportHub->identifier,
-            'dep_airport_id' => $this->airportHub->identifier,
-            'arr_airport_id' => $this->airport2->identifier
-        ]);
-    }
+//    public function test_contract_from_hub_is_generated()
+//    {
+//        $this->findHubsInNeedOfContracts->execute();
+//        $this->assertDatabaseHas('contracts', [
+//            'dep_airport_id' => $this->airportHub->identifier,
+//            'arr_airport_id' => $this->airport2->identifier
+//        ]);
+//    }
+//
+//    public function test_contract_from_hub_cargo_is_generated()
+//    {
+//        $this->findHubsInNeedOfContracts->execute();
+//        $this->assertDatabaseHas('contract_cargos', [
+//            'current_airport_id' => $this->airportHub->identifier,
+//            'dep_airport_id' => $this->airportHub->identifier,
+//            'arr_airport_id' => $this->airport2->identifier
+//        ]);
+//    }
 
     public function test_contract_to_hub_is_generated()
     {
