@@ -17,11 +17,11 @@ class FindAirportsInNeedOfContracts
         $this->generateContracts = $generateContracts;
     }
 
-    public function execute($country)
+    public function execute($letter)
     {
         // find all airports
         try {
-            $airports = Airport::where('country', $country)->get();
+            $airports = Airport::where('identifier', 'like', $letter.'%')->get();
 
             foreach ($airports as $airport) {
                 $currentJobs = Contract::where('dep_airport_id', $airport->identifier)

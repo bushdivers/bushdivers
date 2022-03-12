@@ -172,7 +172,9 @@ class ContractPayTest extends TestCase
 
         $this->assertDatabaseHas('user_accounts', [
             'type' => TransactionTypes::FlightPay,
-            'total' => $pilotPay
+            'total' => $pilotPay,
+            'flight_id' => $this->pirep->id,
+            'user_id' => $this->contractCargo->user_id
         ]);
     }
 
