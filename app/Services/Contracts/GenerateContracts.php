@@ -8,6 +8,7 @@ use App\Services\Airports\CalcDistanceBetweenPoints;
 use App\Services\Airports\FindAirportsWithinDistance;
 use App\Services\Geo\CreatePolygon;
 use App\Services\Geo\IsPointInPolygon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class GenerateContracts
@@ -52,44 +53,98 @@ class GenerateContracts
             $longAirports = [];
 
             // get airports
-            $airports = Airport::all();
+            //$airports = Airport::all();
+            $shortA = DB::select(DB::raw(
+                "SELECT *
+                        FROM (
+                          SELECT
+                            airports.*,
+                            3956 * ACOS(COS(RADIANS($airport->lat)) * COS(RADIANS(lat)) * COS(RADIANS($airport->lon) - RADIANS(lon)) + SIN(RADIANS($airport->lat)) * SIN(RADIANS(lat))) AS `distance`
+                          FROM bushdiversva.airports
+                          WHERE
+                            lat
+                              BETWEEN $airport->lat - (300 / 69)
+                              AND $airport->lat + (300 / 69)
+                            AND lon
+                              BETWEEN $airport->lon - (300 / (69 * COS(RADIANS($airport->lat))))
+                              AND $airport->lon + (300 / (69* COS(RADIANS($airport->lat))))
+                        ) r
+                        WHERE distance BETWEEN 1 AND 50
+                        ORDER BY distance ASC"
+            ));
+            $medA = DB::select(DB::raw(
+                "SELECT *
+                        FROM (
+                          SELECT
+                            airports.*,
+                            3956 * ACOS(COS(RADIANS($airport->lat)) * COS(RADIANS(lat)) * COS(RADIANS($airport->lon) - RADIANS(lon)) + SIN(RADIANS($airport->lat)) * SIN(RADIANS(lat))) AS `distance`
+                          FROM bushdiversva.airports
+                          WHERE
+                            lat
+                              BETWEEN $airport->lat - (300 / 69)
+                              AND $airport->lat + (300 / 69)
+                            AND lon
+                              BETWEEN $airport->lon - (300 / (69 * COS(RADIANS($airport->lat))))
+                              AND $airport->lon + (300 / (69* COS(RADIANS($airport->lat))))
+                        ) r
+                        WHERE distance BETWEEN 51 AND 150
+                        ORDER BY distance ASC"
+            ));
+            $longA = DB::select(DB::raw(
+                "SELECT *
+                        FROM (
+                          SELECT
+                            airports.*,
+                            3956 * ACOS(COS(RADIANS($airport->lat)) * COS(RADIANS(lat)) * COS(RADIANS($airport->lon) - RADIANS(lon)) + SIN(RADIANS($airport->lat)) * SIN(RADIANS(lat))) AS `distance`
+                          FROM bushdiversva.airports
+                          WHERE
+                            lat
+                              BETWEEN $airport->lat - (300 / 69)
+                              AND $airport->lat + (300 / 69)
+                            AND lon
+                              BETWEEN $airport->lon - (300 / (69 * COS(RADIANS($airport->lat))))
+                              AND $airport->lon + (300 / (69* COS(RADIANS($airport->lat))))
+                        ) r
+                        WHERE distance BETWEEN 151 AND 300
+                        ORDER BY distance ASC"
+            ));
 
-            foreach ($airports as $a) {
-                $point = [$a->lat, $a->lon];
-                if ($this->isPointInPolygon->execute($point, $polyShort)
-                    && $this->calcDistanceBetweenPoints->execute($airport->lat, $airport->lon, $a->lat, $a->lon) <= 50) {
-                    $shortAirports[] = $a;
-                }
-
-                if ($this->isPointInPolygon->execute($point, $polyMed)
-                    && $this->calcDistanceBetweenPoints->execute($airport->lat, $airport->lon, $a->lat, $a->lon) > 50
-                    && $this->calcDistanceBetweenPoints->execute($airport->lat, $airport->lon, $a->lat, $a->lon) <= 150) {
-                    $medAirports[] = $a;
-                }
-
-                if ($this->isPointInPolygon->execute($point, $polyLong)
-                    && $this->calcDistanceBetweenPoints->execute($airport->lat, $airport->lon, $a->lat, $a->lon) > 150) {
-                    $longAirports[] = $a;
-                }
-            }
+//            foreach ($airports as $a) {
+//                $point = [$a->lat, $a->lon];
+//                if ($this->isPointInPolygon->execute($point, $polyShort)
+//                    && $this->calcDistanceBetweenPoints->execute($airport->lat, $airport->lon, $a->lat, $a->lon) <= 50) {
+//                    $shortAirports[] = $a;
+//                }
+//
+//                if ($this->isPointInPolygon->execute($point, $polyMed)
+//                    && $this->calcDistanceBetweenPoints->execute($airport->lat, $airport->lon, $a->lat, $a->lon) > 50
+//                    && $this->calcDistanceBetweenPoints->execute($airport->lat, $airport->lon, $a->lat, $a->lon) <= 150) {
+//                    $medAirports[] = $a;
+//                }
+//
+//                if ($this->isPointInPolygon->execute($point, $polyLong)
+//                    && $this->calcDistanceBetweenPoints->execute($airport->lat, $airport->lon, $a->lat, $a->lon) > 150) {
+//                    $longAirports[] = $a;
+//                }
+//            }
 
 
             // pick (n) random airports in each category
-            $shortAirports = collect($shortAirports);
+            $shortAirports = collect($shortA);
             if ($shortAirports->count() <= $shortQty && $shortAirports->count() > 0) {
                 $this->generateContractDetails->execute($airport, $shortAirports);
             } elseif (count($shortAirports) > 0) {
                 $this->generateContractDetails->execute($airport, $shortAirports->random($shortQty));
             }
 
-            $medAirports = collect($medAirports);
+            $medAirports = collect($medA);
             if ($medAirports->count() <= $medQty && $medAirports->count() > 0) {
                 $this->generateContractDetails->execute($airport, $medAirports);
             } elseif ($medAirports->count() > 0) {
                 $this->generateContractDetails->execute($airport, $medAirports->random($medQty));
             }
 
-            $longAirports = collect($longAirports);
+            $longAirports = collect($longA);
             if ($longAirports->count() <= $longQty && $longAirports->count() > 0) {
                 $this->generateContractDetails->execute($airport, $longAirports);
             } elseif ($longAirports->count() > 0) {
