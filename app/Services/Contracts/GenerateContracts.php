@@ -60,7 +60,7 @@ class GenerateContracts
                           SELECT
                             airports.*,
                             3956 * ACOS(COS(RADIANS($airport->lat)) * COS(RADIANS(lat)) * COS(RADIANS($airport->lon) - RADIANS(lon)) + SIN(RADIANS($airport->lat)) * SIN(RADIANS(lat))) AS `distance`
-                          FROM bushdiversva.airports
+                          FROM airports
                           WHERE
                             lat
                               BETWEEN $airport->lat - (300 / 69)
@@ -78,7 +78,7 @@ class GenerateContracts
                           SELECT
                             airports.*,
                             3956 * ACOS(COS(RADIANS($airport->lat)) * COS(RADIANS(lat)) * COS(RADIANS($airport->lon) - RADIANS(lon)) + SIN(RADIANS($airport->lat)) * SIN(RADIANS(lat))) AS `distance`
-                          FROM bushdiversva.airports
+                          FROM airports
                           WHERE
                             lat
                               BETWEEN $airport->lat - (300 / 69)
@@ -96,7 +96,7 @@ class GenerateContracts
                           SELECT
                             airports.*,
                             3956 * ACOS(COS(RADIANS($airport->lat)) * COS(RADIANS(lat)) * COS(RADIANS($airport->lon) - RADIANS(lon)) + SIN(RADIANS($airport->lat)) * SIN(RADIANS(lat))) AS `distance`
-                          FROM bushdiversva.airports
+                          FROM airports
                           WHERE
                             lat
                               BETWEEN $airport->lat - (300 / 69)
