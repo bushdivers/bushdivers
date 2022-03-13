@@ -42,16 +42,21 @@ class CancelContractController extends Controller
 
         // set contract to not available
         if ($contract->user_id !== null) {
-            $contract->user_id = null;
-        }
-        $contract->is_available = true;
-        $contract->save();
+            ContractCargo::where('contract_id', $contract->id)->delete();
+            Contract::where('id', $request->id)->delete();
+        } else {
+            $contract->is_available = true;
+            $contract->save();
 
-        foreach ($contractCargo as $cc) {
-            $cc->user_id = null;
-            $cc->is_available = true;
-            $cc->save();
+            foreach ($contractCargo as $cc) {
+                $cc->user_id = null;
+                $cc->is_available = true;
+                $cc->save();
+            }
         }
+
+
+
 
         $user = User::find(Auth::user()->id);
         if ($user->points >= 1) {
