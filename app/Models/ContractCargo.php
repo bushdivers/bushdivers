@@ -23,4 +23,9 @@ class ContractCargo extends Model
     {
         return $this->belongsTo(Airport::class, 'current_airport_id', 'identifier');
     }
+
+    public function pirepCargo()
+    {
+        return $this->hasOne(PirepCargo::class, 'contract_cargo_id', 'id');
+    }
 }

@@ -593,12 +593,15 @@ var CargoDetails = function CargoDetails(props) {
           children: ["Cargo: ", detail.cargo_qty.toLocaleString(navigator.language), " ", detail.contract_type_id === 1 ? 'lbs' : '', " ", detail.cargo]
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("td", {
           children: ["Value: $", detail.contract_value]
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("td", {
-          children: detail.is_completed ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("i", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("td", {
+          children: [detail.is_completed ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("i", {
             className: "material-icons md-18 text-green-500",
             children: "check_circle"
-          }) : ''
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("td", {})]
+          }) : '', detail.pirep_cargo && !detail.is_completed ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("i", {
+            className: "material-icons md-18 text-orange-500",
+            children: "assignment_returned"
+          }) : '']
+        })]
       }, detail.id);
     })
   });
