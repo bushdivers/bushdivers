@@ -13,10 +13,10 @@ class GenerateContractCargo
         $cargo = $types->random();
         if ($cargo->type == 1) {
             // random qty cargo = 500 - 10000 lbs
-            $qty = rand(100, 10000);
+            $qty = rand(100, 6000);
         } else {
             // random qty pax = 1-20
-            $qty = rand(1, 15);
+            $qty = rand(1, 8);
         }
         return ['name' => $cargo->text, 'type' => $cargo->type, 'qty' => $qty];
     }
