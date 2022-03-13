@@ -60,6 +60,7 @@ class CreateDispatchController extends Controller
                 $contractCargo = ContractCargo::find($cargo);
                 $contractCargo->is_available = false;
                 $contractCargo->user_id = Auth::user()->id;
+                $contractCargo->active_pirep = $pirep->id;
                 $contractCargo->save();
             }
         }

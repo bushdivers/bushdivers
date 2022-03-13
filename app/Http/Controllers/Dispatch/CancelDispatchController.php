@@ -40,7 +40,7 @@ class CancelDispatchController extends Controller
 
         ContractCargo::where('user_id', Auth::user()->id)
             ->where('is_completed', false)
-            ->update(['is_available' => true, 'user_id' => null]);
+            ->update(['is_available' => true, 'user_id' => null, 'active_pirep' => null]);
 
         // remove pirep cargo entries
         PirepCargo::where('pirep_id', $pirep->id)->delete();

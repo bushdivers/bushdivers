@@ -89,7 +89,7 @@ class SubmitPirepController extends Controller
                 $pc = PirepCargo::where('pirep_id', $pirep->id)->get();
                 foreach ($pc as $c) {
                     $contractCargo = ContractCargo::find($c->contract_cargo_id);
-                    $this->updateContractCargoProgress->execute($contractCargo->id, $pirep->destination_airport_id);
+                    $this->updateContractCargoProgress->execute($contractCargo->id, $pirep->destination_airport_id, $pirep->id);
                 }
             } catch (\Exception $e) {
                 $this->rollbackSubmission(2, $request);

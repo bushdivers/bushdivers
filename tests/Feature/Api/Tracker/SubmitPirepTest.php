@@ -665,7 +665,7 @@ class SubmitPirepTest extends TestCase
             'id' => $this->contractCargo->id,
             'is_completed' => false,
             'current_airport_id' => 'AYTE',
-            'user_id' => 0
+            'user_id' => null
         ]);
     }
 

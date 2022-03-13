@@ -1,6 +1,8 @@
 import React from 'react'
+import Tooltip from '../../Elements/Tooltip'
 
 const CargoDetails = (props) => {
+  console.log(props.contract.cargo)
   return (
     <>
       {props.contract.cargo.map((detail) => (
@@ -12,7 +14,11 @@ const CargoDetails = (props) => {
           <td>Value: ${detail.contract_value}</td>
           <td>
             {detail.is_completed ? <i className="material-icons md-18 text-green-500">check_circle</i> : '' }
-            {detail.pirep_cargo && !detail.is_completed ? <i className="material-icons md-18 text-orange-500">assignment_returned</i> : '' }
+            {detail.active_pirep && (
+              <Tooltip content="Active Dispatch" position="top">
+                <i className="material-icons md-18 text-orange-500">assignment_returned</i>
+              </Tooltip>
+            )}
           </td>
         </tr>
       ))}

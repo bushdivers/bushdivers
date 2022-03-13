@@ -16,6 +16,7 @@ class RemoveSinglePirep
             $cc = ContractCargo::find($cargo->contract_cargo_id);
             $cc->is_available = 1;
             $cc->user_id = null;
+            $cc->active_pirep = null;
             $cc->save();
         }
 
