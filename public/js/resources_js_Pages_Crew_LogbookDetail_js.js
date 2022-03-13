@@ -90,9 +90,9 @@ var LogbookDetail = function LogbookDetail(_ref) {
     className: "p-4",
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("h1", {
       children: "Pilot Report - ".concat(pirep.id)
-    }), submittedDate, " ", auth.user.is_admin && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("span", {
+    }), submittedDate, " ", auth.user.is_admin ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("span", {
       children: [pirep.pilot.pilot_id, " - ", pirep.pilot.private_name]
-    }), pirep.state === 5 ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("span", {
+    }) : '', pirep.state === 5 ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("span", {
       className: "bg-orange-500 px-2 ml-2 text-white text-sm rounded",
       children: "Review"
     }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("span", {

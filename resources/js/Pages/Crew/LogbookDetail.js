@@ -17,7 +17,7 @@ const LogbookDetail = ({ pirep, points, logs, cargo, pilotFinancials, companyFin
   return (
     <div className="p-4">
       <h1>{`Pilot Report - ${pirep.id}`}</h1>
-      {submittedDate} {auth.user.is_admin && <span>{pirep.pilot.pilot_id} - {pirep.pilot.private_name}</span>}
+      {submittedDate} {auth.user.is_admin ? <span>{pirep.pilot.pilot_id} - {pirep.pilot.private_name}</span> : ''}
       {pirep.state === 5 ? <span className="bg-orange-500 px-2 ml-2 text-white text-sm rounded">Review</span> : <span className="bg-green-500 px-2 ml-2 text-white text-sm rounded">Completed</span>}
       <div className="flex flex-col md:flex-row justify-between">
         <div className="md:w-1/2">

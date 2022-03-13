@@ -76,7 +76,7 @@ class ProcessPirepFinancials
                             $pilotPay = round($pilotPay - ($pp * FinancialConsts::ExpiryMultiplier),2);
                         }
 
-                        $this->addUserTransaction->execute($ccargo->user_id, TransactionTypes::FlightPay, $pilotPay, $pirep->id);
+                        $this->addUserTransaction->execute($ccargo->user_id, TransactionTypes::FlightPay, $pilotPay, $ccargo->completed_pirep);
                     }
                     $contract->is_paid = true;
                     $contract->save();
