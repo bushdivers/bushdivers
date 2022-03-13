@@ -60,18 +60,18 @@ class ContractPayTest extends TestCase
             'is_completed' => true,
             'completed_at' => Carbon::now()
         ]);
-        $this->contractCargo = ContractCargo::factory()->create([
-            'contract_id' => $this->contract->id,
-            'is_completed' => true,
-            'user_id' => $this->user->id
-        ]);
-
         $this->airport = Airport::factory()->create();
-
         $this->pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,
             'destination_airport_id' => $this->airport->identifier
         ]);
+        $this->contractCargo = ContractCargo::factory()->create([
+            'contract_id' => $this->contract->id,
+            'is_completed' => true,
+            'user_id' => $this->user->id,
+            'completed_pirep' => $this->pirep->id
+        ]);
+
         $this->pirepCargo = PirepCargo::factory()->create([
             'pirep_id' => $this->pirep->id,
             'contract_cargo_id' => $this->contractCargo->id
