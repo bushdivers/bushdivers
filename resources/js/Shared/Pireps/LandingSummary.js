@@ -1,7 +1,7 @@
 import React from 'react'
 import LandingMap from './LandingMap'
 
-const LandingSummary = ({ pirep }) => {
+const LandingSummary = ({ pirep, mapStyle }) => {
   return (
     <div className="rounded shadow p-4 mt-2 bg-white mx-2">
       <div className="text-lg">Landing Summary</div>
@@ -19,7 +19,7 @@ const LandingSummary = ({ pirep }) => {
           <div className="text-xl">{pirep.landing_bank}nm</div>
         </div>
       </div>
-      <LandingMap pirep={pirep} size="small" />
+      <LandingMap pirep={pirep} size="small" mapStyle={mapStyle} />
     </div>
   )
 }

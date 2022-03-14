@@ -32,9 +32,9 @@ const LogbookDetail = ({ pirep, points, logs, cargo, pilotFinancials, companyFin
         </div>
         <div className="md:w-1/2">
           <div className="rounded shadow p-4 mt-2 bg-white mx-2">
-            <PirepMap pirep={pirep} coords={logs} size="small" />
+            <PirepMap pirep={pirep} coords={logs} size="small" mapStyle={auth.user.map_style} />
           </div>
-          <LandingSummary pirep={pirep} />
+          <LandingSummary pirep={pirep} mapStyle={auth.user.map_style} />
         </div>
       </div>
     </div>

@@ -218,7 +218,7 @@ const MyContracts = ({ contracts, custom }) => {
         </div>
         <div className="lg:w-1/3 lg:ml-2 mt-2 lg:mt-0">
           { contracts && contracts.length > 0 && <div className="rounded shadow bg-white p-4">
-            <MyContractMap data={selectedContract} size="large" />
+            <MyContractMap data={selectedContract} size="large" mapStyle={auth.user.map_style} />
           </div>}
         </div>
       </div>

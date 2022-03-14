@@ -5,6 +5,7 @@ import React, { useState } from 'react'
 import LiveFlightMap from '../../Shared/Components/Flights/LiveFlightMap'
 import AppLayout from '../../Shared/AppLayout'
 import StatBlock from '../../Shared/Elements/StatBlock'
+import { usePage } from '@inertiajs/inertia-react'
 
 // const EmptyData = () => {
 //   return (
@@ -16,6 +17,7 @@ import StatBlock from '../../Shared/Elements/StatBlock'
 // }
 
 const LiveFlights = () => {
+  const { auth } = usePage().props
   const [flightCount, setFlightCount] = useState(0)
   const updateFlightCount = (count) => {
     setFlightCount(count)
@@ -23,8 +25,8 @@ const LiveFlights = () => {
 
   return (
     <div className="relative">
-      <LiveFlightMap size="full" updateFlightCount={updateFlightCount} />
-      <div className="absolute z-30 bg-gray-800 w-1/2 md:w-1/6 text-white opacity-80 h-auto top-4 left-4 p-4 rounded shadow">
+      <LiveFlightMap size="full" updateFlightCount={updateFlightCount} mapStyle={auth.user.map_style} />
+      <div className="absolute z-30 bg-white w-1/2 md:w-1/6 opacity-80 h-auto top-4 left-4 p-4 rounded shadow">
         <StatBlock width="1/2" data={flightCount} text="Current Flights" />
       </div>
     </div>

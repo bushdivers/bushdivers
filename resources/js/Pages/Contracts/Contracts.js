@@ -210,7 +210,7 @@ const Contracts = ({ contracts, airport }) => {
         </div>
         <div className="lg:w-1/3 lg:ml-2 mt-2 lg:mt-0">
           { airport && <div className="rounded shadow bg-white p-4">
-            <ContractMap departure={selectedAirport} destination={selectedContract.arr_airport} size="large" />
+            <ContractMap departure={selectedAirport} destination={selectedContract.arr_airport} size="large" mapStyle={auth.user.map_style} />
           </div>}
         </div>
       </div>

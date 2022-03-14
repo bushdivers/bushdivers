@@ -1,5 +1,6 @@
 import React, { useRef, useEffect } from 'react'
 import maplibre from 'maplibre-gl'
+import { parseMapStyle } from '../../../Helpers/general.helpers'
 
 const accessToken = 'pk.eyJ1IjoicnVzc2VsbHd3ZXN0IiwiYSI6ImNrc29vZm5paDEweGIzMnA3MXAzYTFuMDQifQ.7veU-ARmzYClHDFsVQvT5g'
 // const accessToken = 'pk.eyJ1Ijoicm9icm95YXVzIiwiYSI6ImNrdm93aDJ0cDB5dGQyb3FzNzNyd295YnUifQ.WMW0eFmvUhNoNWr9flPPYQ'
@@ -12,7 +13,8 @@ const CrewMap = (props) => {
     if (map.current) return
     map.current = new maplibre.Map({
       container: mapContainer.current,
-      style: 'mapbox://styles/mapbox/dark-v10',
+      // style: 'mapbox://styles/mapbox/dark-v10',
+      style: parseMapStyle(props.mapStyle),
       center: [145.0, -5.8],
       zoom: 4,
       accessToken

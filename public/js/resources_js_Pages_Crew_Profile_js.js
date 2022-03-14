@@ -103,6 +103,21 @@ var Profile = function Profile(_ref) {
       values = _useState2[0],
       setValues = _useState2[1];
 
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(profile.map_style),
+      _useState4 = _slicedToArray(_useState3, 2),
+      mapStyle = _useState4[0],
+      setMapStyle = _useState4[1];
+
+  function handleMapChange(e) {
+    setMapStyle(e.target.value);
+  }
+
+  function handleUpdateMap() {
+    _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_1__.Inertia.put('/settings/map', {
+      map_style: mapStyle
+    });
+  }
+
   function handleChange(e) {
     var key = e.target.id;
     var value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
@@ -328,6 +343,90 @@ var Profile = function Profile(_ref) {
                 })]
               }, award.id);
             })
+          })]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+          className: "rounded shadow p-4 mt-4 bg-white",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+            children: "Map Style"
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+            className: "mt-2 flex flex-wrap",
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+              className: "mx-2 flex flex-col items-start",
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("label", {
+                className: "inline-flex items-center",
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("input", {
+                  type: "radio",
+                  className: "form-radio",
+                  name: "accountType",
+                  value: "dark",
+                  checked: mapStyle === 'dark',
+                  onChange: handleMapChange
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("span", {
+                  className: "mx-2 cursor-pointer",
+                  children: "Dark"
+                })]
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("img", {
+                src: "https://res.cloudinary.com/dji0yvkef/image/upload/c_scale,w_150/v1647292891/BDVA/maps/dark_ftbhz9.png"
+              })]
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+              className: "mx-2 flex flex-col items-start",
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("label", {
+                className: "inline-flex items-center",
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("input", {
+                  type: "radio",
+                  className: "form-radio",
+                  name: "accountType",
+                  value: "light",
+                  checked: mapStyle === 'light',
+                  onChange: handleMapChange
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("span", {
+                  className: "mx-2 cursor-pointer",
+                  children: "Light"
+                })]
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("img", {
+                src: "https://res.cloudinary.com/dji0yvkef/image/upload/c_scale,w_150/v1647292892/BDVA/maps/light_ascwde.png"
+              })]
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+              className: "mx-2 flex flex-col items-start",
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("label", {
+                className: "inline-flex items-center",
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("input", {
+                  type: "radio",
+                  className: "form-radio",
+                  name: "accountType",
+                  value: "street",
+                  checked: mapStyle === 'street',
+                  onChange: handleMapChange
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("span", {
+                  className: "mx-2 cursor-pointer",
+                  children: "Street"
+                })]
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("img", {
+                src: "https://res.cloudinary.com/dji0yvkef/image/upload/c_scale,w_150/v1647292892/BDVA/maps/street_liemax.png"
+              })]
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+              className: "mx-2 flex flex-col items-start",
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("label", {
+                className: "inline-flex items-center",
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("input", {
+                  type: "radio",
+                  className: "form-radio",
+                  name: "accountType",
+                  value: "satellite",
+                  checked: mapStyle === 'satellite',
+                  onChange: handleMapChange
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("span", {
+                  className: "mx-2 cursor-pointer",
+                  children: "Satellite"
+                })]
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("img", {
+                src: "https://res.cloudinary.com/dji0yvkef/image/upload/c_scale,w_150/v1647292892/BDVA/maps/satellite_rcdhkd.png"
+              })]
+            })]
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("button", {
+            onClick: handleUpdateMap,
+            className: "btn btn-secondary ml-2",
+            children: "Update"
           })]
         })]
       })]

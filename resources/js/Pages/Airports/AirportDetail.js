@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
 import AirportMap from '../../Shared/Components/Airport/AirportMap'
-import { Link } from '@inertiajs/inertia-react'
+import { Link, usePage } from '@inertiajs/inertia-react'
 import AppLayout from '../../Shared/AppLayout'
 
 const AirportDetail = ({ airport, metar, aircraft }) => {
+  const { auth } = usePage().props
   const [icao, setIcao] = useState()
 
   const handleAirportChange = (e) => {
@@ -153,7 +154,7 @@ const AirportDetail = ({ airport, metar, aircraft }) => {
           </div>
         </div>
         <div className="lg:w-1/2 rounded shadow p-4 mt-2 bg-white mx-2">
-          <AirportMap airport={airport} size="large" />
+          <AirportMap airport={airport} size="large" mapStyle={auth.user.map_style} />
         </div>
       </div>
       )}

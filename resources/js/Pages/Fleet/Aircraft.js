@@ -245,7 +245,7 @@ const Aircraft = ({ aircraft, maintenanceStatus, hubs, pireps }) => {
         </div>
         <div className="md:w-1/2 mx-1">
           <div className="bg-white p-4 rounded shadow overflow-x-auto">
-             <AircraftMap aircraft={aircraft} size="large" />
+             <AircraftMap aircraft={aircraft} size="large" mapStyle={auth.user.map_style} />
           </div>
         </div>
       </div>

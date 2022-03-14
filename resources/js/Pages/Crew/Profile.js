@@ -16,6 +16,15 @@ const Profile = ({ profile, hubs, rank, nextRank, awards }) => {
     volanta_username: profile.volanta_username,
     discord_username: profile.discord_username
   })
+  const [mapStyle, setMapStyle] = useState(profile.map_style)
+
+  function handleMapChange (e) {
+    setMapStyle(e.target.value)
+  }
+
+  function handleUpdateMap () {
+    Inertia.put('/settings/map', { map_style: mapStyle })
+  }
 
   function handleChange (e) {
     const key = e.target.id
@@ -112,6 +121,40 @@ const Profile = ({ profile, hubs, rank, nextRank, awards }) => {
                 ))}
               </div>
             }
+          </div>
+          <div className="rounded shadow p-4 mt-4 bg-white">
+            <div>Map Style</div>
+            <div className="mt-2 flex flex-wrap">
+              <div className="mx-2 flex flex-col items-start">
+                <label className="inline-flex items-center">
+                  <input type="radio" className="form-radio" name="accountType" value="dark" checked={mapStyle === 'dark'} onChange={handleMapChange} />
+                  <span className="mx-2 cursor-pointer">Dark</span>
+                </label>
+                <img src="https://res.cloudinary.com/dji0yvkef/image/upload/c_scale,w_150/v1647292891/BDVA/maps/dark_ftbhz9.png" />
+              </div>
+              <div className="mx-2 flex flex-col items-start">
+                <label className="inline-flex items-center">
+                  <input type="radio" className="form-radio" name="accountType" value="light" checked={mapStyle === 'light'} onChange={handleMapChange} />
+                    <span className="mx-2 cursor-pointer">Light</span>
+                </label>
+                <img src="https://res.cloudinary.com/dji0yvkef/image/upload/c_scale,w_150/v1647292892/BDVA/maps/light_ascwde.png"/>
+              </div>
+              <div className="mx-2 flex flex-col items-start">
+                <label className="inline-flex items-center">
+                  <input type="radio" className="form-radio" name="accountType" value="street" checked={mapStyle === 'street'} onChange={handleMapChange} />
+                  <span className="mx-2 cursor-pointer">Street</span>
+                </label>
+                <img src="https://res.cloudinary.com/dji0yvkef/image/upload/c_scale,w_150/v1647292892/BDVA/maps/street_liemax.png" />
+              </div>
+              <div className="mx-2 flex flex-col items-start">
+                <label className="inline-flex items-center">
+                  <input type="radio" className="form-radio" name="accountType" value="satellite" checked={mapStyle === 'satellite'} onChange={handleMapChange} />
+                  <span className="mx-2 cursor-pointer">Satellite</span>
+                </label>
+                <img src="https://res.cloudinary.com/dji0yvkef/image/upload/c_scale,w_150/v1647292892/BDVA/maps/satellite_rcdhkd.png" />
+              </div>
+            </div>
+            <button onClick={handleUpdateMap} className="btn btn-secondary ml-2">Update</button>
           </div>
         </div>
       </div>

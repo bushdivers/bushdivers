@@ -36,6 +36,35 @@ var convertMinuteDecimalToHoursAndMinutes = function convertMinuteDecimalToHours
 
 /***/ }),
 
+/***/ "./resources/js/Helpers/general.helpers.js":
+/*!*************************************************!*\
+  !*** ./resources/js/Helpers/general.helpers.js ***!
+  \*************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "parseMapStyle": () => (/* binding */ parseMapStyle)
+/* harmony export */ });
+var parseMapStyle = function parseMapStyle(mapStyle) {
+  switch (mapStyle) {
+    case 'dark':
+      return 'mapbox://styles/mapbox/dark-v10';
+
+    case 'light':
+      return 'mapbox://styles/mapbox/light-v10';
+
+    case 'street':
+      return 'mapbox://styles/mapbox/streets-v11';
+
+    case 'satellite':
+      return 'mapbox://styles/mapbox/satellite-streets-v11';
+  }
+};
+
+/***/ }),
+
 /***/ "./resources/js/Pages/Crew/Dashboard.js":
 /*!**********************************************!*\
   !*** ./resources/js/Pages/Crew/Dashboard.js ***!
@@ -73,9 +102,10 @@ var Dashboard = function Dashboard(_ref) {
     className: "relative",
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_Shared_Components_Crew_CrewMap__WEBPACK_IMPORTED_MODULE_3__.default, {
       size: "full",
-      locations: locations && locations.length > 0 ? locations : []
+      locations: locations && locations.length > 0 ? locations : [],
+      mapStyle: user.map_style
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
-      className: "absolute z-30 bg-gray-800 w-1/2 md:w-1/3 text-white opacity-80 h-auto top-4 left-4 p-4 rounded shadow",
+      className: "absolute z-30 bg-white w-1/2 md:w-1/3 h-auto opacity-90 top-4 left-4 p-4 rounded shadow",
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
           className: "text-lg flex flex-col md:flex-row items-start md:items-center justify-between mb-2",
@@ -273,7 +303,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var maplibre_gl__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! maplibre-gl */ "./node_modules/maplibre-gl/dist/maplibre-gl.js");
 /* harmony import */ var maplibre_gl__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(maplibre_gl__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _Helpers_general_helpers__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../Helpers/general.helpers */ "./resources/js/Helpers/general.helpers.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+
 
 
 
@@ -287,7 +319,8 @@ var CrewMap = function CrewMap(props) {
     if (map.current) return;
     map.current = new (maplibre_gl__WEBPACK_IMPORTED_MODULE_1___default().Map)({
       container: mapContainer.current,
-      style: 'mapbox://styles/mapbox/dark-v10',
+      // style: 'mapbox://styles/mapbox/dark-v10',
+      style: (0,_Helpers_general_helpers__WEBPACK_IMPORTED_MODULE_2__.parseMapStyle)(props.mapStyle),
       center: [145.0, -5.8],
       zoom: 4,
       accessToken: accessToken
@@ -310,8 +343,8 @@ var CrewMap = function CrewMap(props) {
       });
     }
   }, [props.locations]);
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.Fragment, {
-    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.Fragment, {
+    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
       ref: mapContainer,
       className: "map-container-".concat(props.size, " relative overflow-hidden")
     })
@@ -389,10 +422,10 @@ var StatBlock = function StatBlock(_ref) {
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
     className: "flex flex-col p-2 m-2 w-".concat(width),
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
-      className: "text-2xl text-white font-bold",
+      className: "text-2xl font-bold",
       children: data
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
-      className: "text-gray-300",
+      className: "text-gray-800",
       children: text
     })]
   });

@@ -36,6 +36,35 @@ var convertMinuteDecimalToHoursAndMinutes = function convertMinuteDecimalToHours
 
 /***/ }),
 
+/***/ "./resources/js/Helpers/general.helpers.js":
+/*!*************************************************!*\
+  !*** ./resources/js/Helpers/general.helpers.js ***!
+  \*************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "parseMapStyle": () => (/* binding */ parseMapStyle)
+/* harmony export */ });
+var parseMapStyle = function parseMapStyle(mapStyle) {
+  switch (mapStyle) {
+    case 'dark':
+      return 'mapbox://styles/mapbox/dark-v10';
+
+    case 'light':
+      return 'mapbox://styles/mapbox/light-v10';
+
+    case 'street':
+      return 'mapbox://styles/mapbox/streets-v11';
+
+    case 'satellite':
+      return 'mapbox://styles/mapbox/satellite-streets-v11';
+  }
+};
+
+/***/ }),
+
 /***/ "./resources/js/Pages/Fleet/Aircraft.js":
 /*!**********************************************!*\
   !*** ./resources/js/Pages/Fleet/Aircraft.js ***!
@@ -413,7 +442,8 @@ var Aircraft = function Aircraft(_ref) {
           className: "bg-white p-4 rounded shadow overflow-x-auto",
           children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_Shared_Components_Fleet_AircraftMap__WEBPACK_IMPORTED_MODULE_3__.default, {
             aircraft: aircraft,
-            size: "large"
+            size: "large",
+            mapStyle: auth.user.map_style
           })
         })
       })]
@@ -541,7 +571,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var maplibre_gl__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! maplibre-gl */ "./node_modules/maplibre-gl/dist/maplibre-gl.js");
 /* harmony import */ var maplibre_gl__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(maplibre_gl__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _Helpers_general_helpers__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../Helpers/general.helpers */ "./resources/js/Helpers/general.helpers.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -553,6 +584,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
 
 
 
@@ -573,7 +605,7 @@ var AircraftMap = function AircraftMap(props) {
     if (map.current) return;
     map.current = new (maplibre_gl__WEBPACK_IMPORTED_MODULE_1___default().Map)({
       container: mapContainer.current,
-      style: 'mapbox://styles/mapbox/dark-v10',
+      style: (0,_Helpers_general_helpers__WEBPACK_IMPORTED_MODULE_2__.parseMapStyle)(props.mapStyle),
       center: [props.aircraft.last_lon, props.aircraft.last_lat],
       zoom: 14,
       accessToken: accessToken
@@ -590,8 +622,8 @@ var AircraftMap = function AircraftMap(props) {
       });
     }
   }, [props.aircraft]);
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.Fragment, {
-    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.Fragment, {
+    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
       ref: mapContainer,
       className: 'map-container-' + props.size
     })

@@ -988,6 +988,35 @@ function omit(object, keysToOmit) {
 
 /***/ }),
 
+/***/ "./resources/js/Helpers/general.helpers.js":
+/*!*************************************************!*\
+  !*** ./resources/js/Helpers/general.helpers.js ***!
+  \*************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "parseMapStyle": () => (/* binding */ parseMapStyle)
+/* harmony export */ });
+var parseMapStyle = function parseMapStyle(mapStyle) {
+  switch (mapStyle) {
+    case 'dark':
+      return 'mapbox://styles/mapbox/dark-v10';
+
+    case 'light':
+      return 'mapbox://styles/mapbox/light-v10';
+
+    case 'street':
+      return 'mapbox://styles/mapbox/streets-v11';
+
+    case 'satellite':
+      return 'mapbox://styles/mapbox/satellite-streets-v11';
+  }
+};
+
+/***/ }),
+
 /***/ "./resources/js/Pages/Airports/Hubs.js":
 /*!*********************************************!*\
   !*** ./resources/js/Pages/Airports/Hubs.js ***!
@@ -1003,7 +1032,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Shared_Layout__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../Shared/Layout */ "./resources/js/Shared/Layout.js");
 /* harmony import */ var _Shared_Navigation_PageTitle__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../Shared/Navigation/PageTitle */ "./resources/js/Shared/Navigation/PageTitle.js");
 /* harmony import */ var _Shared_Components_Hubs_HubMap__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../Shared/Components/Hubs/HubMap */ "./resources/js/Shared/Components/Hubs/HubMap.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @inertiajs/inertia-react */ "./node_modules/@inertiajs/inertia-react/dist/index.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+
 
 
 
@@ -1014,21 +1045,23 @@ __webpack_require__.r(__webpack_exports__);
 
 var Hubs = function Hubs(_ref) {
   var hubs = _ref.hubs;
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.Fragment, {
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_Shared_Navigation_PageTitle__WEBPACK_IMPORTED_MODULE_2__.default, {
+  var auth = (0,_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_4__.usePage)().props.auth;
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.Fragment, {
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_Shared_Navigation_PageTitle__WEBPACK_IMPORTED_MODULE_2__.default, {
       title: "Hubs"
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
       className: "mt-4 rounded shadow bg-white p-4",
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_Shared_Components_Hubs_HubMap__WEBPACK_IMPORTED_MODULE_3__.default, {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_Shared_Components_Hubs_HubMap__WEBPACK_IMPORTED_MODULE_3__.default, {
         hubs: hubs,
-        size: "xl"
+        size: "xl",
+        mapStyle: auth.user.map_style
       })
     })]
   });
 };
 
 Hubs.layout = function (page) {
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_Shared_Layout__WEBPACK_IMPORTED_MODULE_1__.default, {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_Shared_Layout__WEBPACK_IMPORTED_MODULE_1__.default, {
     children: page,
     title: "Hubs"
   });
@@ -1052,7 +1085,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var maplibre_gl__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! maplibre-gl */ "./node_modules/maplibre-gl/dist/maplibre-gl.js");
 /* harmony import */ var maplibre_gl__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(maplibre_gl__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _Helpers_general_helpers__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../Helpers/general.helpers */ "./resources/js/Helpers/general.helpers.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+
 
 
 
@@ -1066,7 +1101,7 @@ var HubMap = function HubMap(props) {
     if (map.current) return;
     map.current = new (maplibre_gl__WEBPACK_IMPORTED_MODULE_1___default().Map)({
       container: mapContainer.current,
-      style: 'mapbox://styles/mapbox/dark-v10',
+      style: (0,_Helpers_general_helpers__WEBPACK_IMPORTED_MODULE_2__.parseMapStyle)(props.mapStyle),
       center: [165.272614, 29.530900],
       zoom: 2,
       accessToken: accessToken
@@ -1090,8 +1125,8 @@ var HubMap = function HubMap(props) {
       });
     }
   }, []);
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.Fragment, {
-    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.Fragment, {
+    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
       ref: mapContainer,
       className: 'map-container-' + props.size
     })

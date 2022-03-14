@@ -47,6 +47,35 @@ var convertMinuteDecimalToHoursAndMinutes = function convertMinuteDecimalToHours
 
 /***/ }),
 
+/***/ "./resources/js/Helpers/general.helpers.js":
+/*!*************************************************!*\
+  !*** ./resources/js/Helpers/general.helpers.js ***!
+  \*************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "parseMapStyle": () => (/* binding */ parseMapStyle)
+/* harmony export */ });
+var parseMapStyle = function parseMapStyle(mapStyle) {
+  switch (mapStyle) {
+    case 'dark':
+      return 'mapbox://styles/mapbox/dark-v10';
+
+    case 'light':
+      return 'mapbox://styles/mapbox/light-v10';
+
+    case 'street':
+      return 'mapbox://styles/mapbox/streets-v11';
+
+    case 'satellite':
+      return 'mapbox://styles/mapbox/satellite-streets-v11';
+  }
+};
+
+/***/ }),
+
 /***/ "./resources/js/Helpers/useInterval.js":
 /*!*********************************************!*\
   !*** ./resources/js/Helpers/useInterval.js ***!
@@ -96,7 +125,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Shared_Components_Flights_LiveFlightMap__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../Shared/Components/Flights/LiveFlightMap */ "./resources/js/Shared/Components/Flights/LiveFlightMap.js");
 /* harmony import */ var _Shared_AppLayout__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../Shared/AppLayout */ "./resources/js/Shared/AppLayout.js");
 /* harmony import */ var _Shared_Elements_StatBlock__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../Shared/Elements/StatBlock */ "./resources/js/Shared/Elements/StatBlock.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @inertiajs/inertia-react */ "./node_modules/@inertiajs/inertia-react/dist/index.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -115,6 +145,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
+
  // const EmptyData = () => {
 //   return (
 //     <>
@@ -128,6 +159,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 var LiveFlights = function LiveFlights() {
+  var auth = (0,_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_4__.usePage)().props.auth;
+
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(0),
       _useState2 = _slicedToArray(_useState, 2),
       flightCount = _useState2[0],
@@ -137,14 +170,15 @@ var LiveFlights = function LiveFlights() {
     setFlightCount(count);
   };
 
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
     className: "relative",
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_Shared_Components_Flights_LiveFlightMap__WEBPACK_IMPORTED_MODULE_1__.default, {
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_Shared_Components_Flights_LiveFlightMap__WEBPACK_IMPORTED_MODULE_1__.default, {
       size: "full",
-      updateFlightCount: updateFlightCount
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
-      className: "absolute z-30 bg-gray-800 w-1/2 md:w-1/6 text-white opacity-80 h-auto top-4 left-4 p-4 rounded shadow",
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_Shared_Elements_StatBlock__WEBPACK_IMPORTED_MODULE_3__.default, {
+      updateFlightCount: updateFlightCount,
+      mapStyle: auth.user.map_style
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
+      className: "absolute z-30 bg-white w-1/2 md:w-1/6 opacity-80 h-auto top-4 left-4 p-4 rounded shadow",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_Shared_Elements_StatBlock__WEBPACK_IMPORTED_MODULE_3__.default, {
         width: "1/2",
         data: flightCount,
         text: "Current Flights"
@@ -154,7 +188,7 @@ var LiveFlights = function LiveFlights() {
 };
 
 LiveFlights.layout = function (page) {
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_Shared_AppLayout__WEBPACK_IMPORTED_MODULE_2__.default, {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_Shared_AppLayout__WEBPACK_IMPORTED_MODULE_2__.default, {
     children: page,
     title: "Live Flights",
     heading: "Live Flights"
@@ -278,7 +312,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Helpers_useInterval__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../Helpers/useInterval */ "./resources/js/Helpers/useInterval.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _Helpers_general_helpers__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../Helpers/general.helpers */ "./resources/js/Helpers/general.helpers.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -291,11 +326,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 
 
+
 var accessToken = 'pk.eyJ1IjoicnVzc2VsbHd3ZXN0IiwiYSI6ImNrc29vZm5paDEweGIzMnA3MXAzYTFuMDQifQ.7veU-ARmzYClHDFsVQvT5g';
 
 var LiveFlightMap = function LiveFlightMap(_ref) {
   var size = _ref.size,
-      updateFlightCount = _ref.updateFlightCount;
+      updateFlightCount = _ref.updateFlightCount,
+      mapStyle = _ref.mapStyle;
   var mapContainer = (0,react__WEBPACK_IMPORTED_MODULE_1__.useRef)(null);
   var map = (0,react__WEBPACK_IMPORTED_MODULE_1__.useRef)(null);
   var markers = (0,react__WEBPACK_IMPORTED_MODULE_1__.useRef)([]); // const [flights, setFlights] = useState([])
@@ -397,7 +434,7 @@ var LiveFlightMap = function LiveFlightMap(_ref) {
           case 2:
             map.current = new (maplibre_gl__WEBPACK_IMPORTED_MODULE_2___default().Map)({
               container: mapContainer.current,
-              style: 'mapbox://styles/mapbox/dark-v10',
+              style: (0,_Helpers_general_helpers__WEBPACK_IMPORTED_MODULE_5__.parseMapStyle)(mapStyle),
               // center: [143.23070, -6.36188],
               center: [165.272614, 29.530900],
               zoom: 2,
@@ -418,8 +455,8 @@ var LiveFlightMap = function LiveFlightMap(_ref) {
   //   loadMarkers()
   // }, [flights])
 
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.Fragment, {
-    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.Fragment, {
+    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
       ref: mapContainer,
       className: 'map-container-' + size
     })
@@ -497,10 +534,10 @@ var StatBlock = function StatBlock(_ref) {
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
     className: "flex flex-col p-2 m-2 w-".concat(width),
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
-      className: "text-2xl text-white font-bold",
+      className: "text-2xl font-bold",
       children: data
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
-      className: "text-gray-300",
+      className: "text-gray-800",
       children: text
     })]
   });
