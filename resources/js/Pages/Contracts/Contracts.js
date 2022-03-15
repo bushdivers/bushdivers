@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react'
 import NoContent from '../../Shared/Elements/NoContent'
 import Tooltip from '../../Shared/Elements/Tooltip'
 import { Link, usePage } from '@inertiajs/inertia-react'
-import dayjs from '../../Helpers/date.helpers'
+import dayjs, { convertMinuteDecimalToHoursAndMinutes } from '../../Helpers/date.helpers'
 import ContractMap from '../../Shared/Components/Contracts/ContractMap'
 import { Inertia } from '@inertiajs/inertia'
 import CargoDetails from '../../Shared/Components/Contracts/CargoDetails'
 import CustomContract from '../../Shared/Components/Contracts/CustomContract'
 import AppLayout from '../../Shared/AppLayout'
+import StatBlock from '../../Shared/Elements/StatBlock'
 
 const EmptyData = (props) => {
   return (
@@ -33,16 +34,17 @@ const Contracts = ({ contracts, airport }) => {
   const [title, setTitle] = useState('Contracts')
   // const [icao, setIcao] = useState('')
   const [values, setValues] = useState({
-    icao: auth.user.current_airport_id,
-    distance: 'Up to 50nm',
-    cargo: 10000,
-    pax: 12
+    icao: '' //auth.user.current_airport_id
+    // distance: 'Up to 50nm',
+    // cargo: 10000,
+    // pax: 12
   })
   // const [contracts, setContracts] = useState([])
   const [selectedContract, setSelectedContract] = useState({})
   const [error, setError] = useState(null)
   const [showDetail, setShowDetail] = useState(false)
   const [showCustom, setShowCustom] = useState(false)
+  const [showContracts, setShowContracts] = useState(false)
 
   useEffect(() => {
     if (contracts && airport) {
@@ -64,13 +66,14 @@ const Contracts = ({ contracts, airport }) => {
 
   const handleSearch = async () => {
     setError(null)
-    // setSelectedAirport(null)
-    // setContracts([])
     setSelectedContract('')
     setShowCustom(false)
     if (values.icao.length > 0) {
       // Call api to find contracts
       Inertia.post('/contracts', values)
+      setShowContracts(true)
+    } else {
+      setError('Please enter an ICAO')
     }
   }
 
@@ -94,126 +97,91 @@ const Contracts = ({ contracts, airport }) => {
   }
 
   return (
-    <div className="p-4">
-      <h1>{title}</h1>
-      <div className="flex flex-col lg:flex-row justify-between mt-4">
-        <div className="lg:w-2/3 lg:mr-2">
-          <div className="rounded shadow bg-white p-4">
-            <div className="flex justify-between items-end">
-              <div>
-                {error && <div className="text-sm text-red-500 mt-1">{error}</div>}
-                <div className="inline-block mx-2">
-                  <label htmlFor="icao"><span className="text-gray-700">Airport (ICAO)</span></label>
-                  <input id="icao" type="text" className="form-input form" value={values.icao} onChange={handleChange} />
+    <div className="relative">
+      <ContractMap departure={selectedAirport} destination={selectedContract.arr_airport} size="full" mapStyle={auth.user.map_style} />
+        <div className="absolute z-30 top-4 left-4 py-2 px-4 bg-white w-1/2 md:w-1/3 opacity-90 shadow rounded">
+          <div className="flex flex-col md:flex-row justify-start items-baseline">
+            <div>
+              <input id="icao" type="text" placeholder="search ICAO" className="form-input form" value={values.icao} onChange={handleChange} />
+            </div>
+            <div><button onClick={() => handleSearch()} className="btn btn-secondary ml-2">Find</button></div>
+            <div><button onClick={() => setShowCustom(true)} className="btn btn-secondary ml-2">Custom</button></div>
+          </div>
+          {error && <span className="text-sm text-red-500">{error}</span>}
+        </div>
+      {showCustom && (
+        <div className="absolute z-30 top-4 left-1/3 ml-8 py-2 px-4 bg-white w-1/2 md:w-1/3 opacity-90 shadow rounded">
+          <CustomContract departureIcao={values.icao} hideSection={() => setShowCustom(false)} />
+        </div>
+      )}
+      {showContracts && (<div className="absolute z-30 top-20 left-4 bottom-4 bg-white w-1/2 md:w-1/3 opacity-90 shadow rounded h-auto overflow-y-auto mt-2">
+          {contracts && contracts.map((contract) => (
+            <div key={contract.id} onClick={() => updateSelectedContract(contract)} className={`${contract.id === selectedContract.id ? 'bg-orange-200 hover:bg-orange-100' : ''} border-t-2 text-sm cursor-pointer`}>
+              <div className="px-4 py-2 flex justify-between items-center">
+                <div className="text-xs text-gray-700">
+                  {dayjs(contract.expires_at).format('DD/MM/YYYY HH:mm')}
                 </div>
-                <div className="inline-block mx-2">
-                  <label htmlFor="distance" className="block"><span className="text-gray-700">Distance range</span></label>
-                  <select id="distance" value={values.distance} onChange={handleChange} className="form-select form">
-                    <option key="Up to 50nm">Up to 50nm</option>
-                    <option key="50nm-150nm">50nm-150nm</option>
-                    <option key="150nm+">150nm+</option>
-                  </select>
-                </div>
-                <div className="inline-block mx-2">
-                  <label htmlFor="cargo"><span className="text-gray-700">Max cargo (lbs)</span></label>
-                  <input id="cargo" type="text" className="form-input form" value={values.cargo} onChange={handleChange} />
-                </div>
-                <div className="inline-block mx-2">
-                  <label htmlFor="pax"><span className="text-gray-700">Max passengers (qty)</span></label>
-                  <input id="pax" type="text" className="form-input form" value={values.pax} onChange={handleChange} />
-                </div>
-                <div className="inline-block mx-2">
-                  <button onClick={() => handleSearch()} className="btn btn-secondary">Find</button>
+                <button onClick={() => bidForContract(contract)} className="btn btn-secondary btn-small">
+                  <i className="material-icons md-16">check</i>
+                </button>
+              </div>
+              <div className="px-4 py-2 flex justify-between">
+                <div className="flex items-center space-x-4">
+                  <div className="mx-1 flex items-center">
+                    <i className="material-icons md-16 mr-1">inventory</i>
+                    <span>{contract.cargo.length}</span>
+                  </div>
+                  <div className="mx-1 flex items-center">
+                    <i className="material-icons md-16 mr-1">work</i>
+                    <span>{parseFloat(contract.cargo.filter(cc => cc.contract_type_id === 1).map(detail => detail.cargo_qty).reduce((total, num) => total + Math.fround(num), 0))} lbs</span>
+                  </div>
+                  <div className="mx-1 flex items-center">
+                    <i className="material-icons md-16 mr-1">people</i>
+                    <span>{parseFloat(contract.cargo.filter(cc => cc.contract_type_id === 2).map(detail => detail.cargo_qty).reduce((total, num) => total + Math.fround(num), 0))}</span>
+                  </div>
+                  <div className="mx-1 flex items-center">
+                    <i className="material-icons md-16 mr-1">location_on</i>
+                    <span>{contract.distance} nm</span>
+                  </div>
+                  <div className="mx-1 flex items-center">
+                    <i className="material-icons md-16 mr-1">currency_bitcoin</i>
+                    <span>${parseFloat(contract.cargo.map(detail => detail.contract_value).reduce((total, num) => total + Math.fround(num), 0)).toFixed(2)}</span>
+                  </div>
                 </div>
               </div>
-            <div className="inline-block mx-2">
-              <button onClick={() => setShowCustom(true)} className="btn btn-secondary">Create Custom</button>
-            </div>
-            </div>
-          </div>
-          {showCustom && <CustomContract departureIcao={values.icao} hideSection={() => setShowCustom(false)} />}
-          <div className="rounded shadow bg-white overflow-x-auto mt-4">
-            {!airport && !contracts && <NoContent content={<EmptyData airport="" />} />}
-            {airport && contracts && contracts.length === 0 && <NoContent content={<EmptyData airport={airport} />} />}
-            {contracts && contracts.length > 0 &&
-            // (
-                <div>
-                  <div>
-                    <button onClick={toggleDetail} className="btn btn-secondary m-2">Toggle Cargo Details</button>
-                  </div>
-                  <table className="table-condensed table-auto">
-                    <thead>
-                    <tr className="">
-                      <th>Departure</th>
-                      <th>Arrival</th>
-                      <th>Distance</th>
-                      <th>Heading</th>
-                      <th>Total Cargo</th>
-                      <th>Value</th>
-                      <th>Expires</th>
-                      <td>Accept</td>
-                    </tr>
-                    </thead>
-                    <tbody className="cursor-pointer">
-                    {contracts && contracts.map((contract) => (
-                      <>
-                      <tr key={contract.id} onClick={() => updateSelectedContract(contract)} className={contract.id === selectedContract.id ? 'bg-orange-200 hover:bg-orange-100 cursor-pointer' : 'cursor-pointer'}>
-                        <td>
-                           <Tooltip content={<AirportToolTip airport={contract.dep_airport} />} direction="right">
-                            <Link href={`/airports/${contract.dep_airport_id}`}>{contract.dep_airport_id}</Link> {contract.dep_airport.longest_runway_surface === 'W' && <span className="material-icons">anchor</span>}<br/>
-                             <span className="text-xs">{contract.dep_airport.name}</span>
-                           </Tooltip>
-                        </td>
-                        <td>
-                           <Tooltip content={<AirportToolTip airport={contract.arr_airport} />} direction="top">
-                            <Link href={`/airports/${contract.arr_airport_id}`}>{contract.arr_airport_id}</Link> {contract.arr_airport.longest_runway_surface === 'W' && <span className="material-icons">anchor</span>}<br/>
-                            <span className="text-xs">{contract.arr_airport.name}</span>
-                           </Tooltip>
-                        </td>
-                        <td>{contract.distance} nm</td>
-                        <td>
-                          <div className="flex items-center">
-                            <div className="w-1/2">
-                              <span className="mr-2">{contract.heading}</span>
-                            </div>
-                            <div className="w-1/2 flex">
-                              <span style={{ transform: `rotate(${contract.heading}deg)` }}><i className="material-icons md-18 text-gray-800">north</i></span>
-                            </div>
+              <div className="flex justify-between px-4 py-2">
+                <div className="mt-1 text-xs">
+                  {contracts && contract.cargo.map((c) => (
+                    <div key="c.id" className="flex justify-between items-center cursor-pointer">
+                      <div className="flex justify-between items-center text-sm">
+                        <div className="flex items-baseline space-x-1 mr-4">
+                          <div className="">{c.current_airport_id}</div>
+                        </div>
+                        <div className="flex items-center space-x-1 mr-4">
+                          <div className="mr-1 flex items-center">
+                            <i className="material-icons md-16 mr-1">flight_takeoff</i>
+                            {c.dep_airport_id}
                           </div>
-                        </td>
-                        <td>
-                          {contract.cargo.map((detail) => (
-                            <>
-                              <span className="mr-1">{detail.contract_type_id === 1 ? 'Cargo' : 'Pax'}</span>
-                              <span>{detail.cargo_qty.toLocaleString(navigator.language)} {detail.contract_type_id === 1 ? 'lbs' : ''} {detail.cargo}</span>
-                              <br/>
-                            </>
-                          ))}
-                        </td>
-                        <td>
-                          ${parseFloat(contract.cargo.map(detail => detail.contract_value).reduce((total, num) => total + Math.fround(num), 0)).toFixed(2)}<br/>
-                        </td>
-                        <td>
-                          {dayjs(contract.expires_at).format('DD/MM/YYYY HH:mm')}
-                        </td>
-                        <td><button onClick={() => bidForContract(contract)} className="btn btn-secondary btn-small">Accept</button></td>
-                      </tr>
-                      { showDetail && <CargoDetails contract={contract} />}
-                      </>
-                    ))}
-                    </tbody>
-                  </table>
+                          <div className="mr-2 flex items-center">
+                            <i className="material-icons md-16 mr-1">flight_land</i>
+                            {c.arr_airport_id}
+                          </div>
+                        </div>
+                        <div className="flex items-center space-x-1">
+                          <div className="mr-1">{c.cargo_qty} {c.contract_type_id === 1 ? 'lbs' : ''}</div>
+                          <div className="mr-2">{c.cargo}</div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-              // )
-            }
-          </div>
+              </div>
+
+            </div>
+          ))}
         </div>
-        <div className="lg:w-1/3 lg:ml-2 mt-2 lg:mt-0">
-          { airport && <div className="rounded shadow bg-white p-4">
-            <ContractMap departure={selectedAirport} destination={selectedContract.arr_airport} size="large" mapStyle={auth.user.map_style} />
-          </div>}
-        </div>
-      </div>
+      )}
+      {/*</div>*/}
     </div>
   )
 }

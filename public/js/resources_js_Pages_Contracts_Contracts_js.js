@@ -102,7 +102,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Shared_Components_Contracts_CargoDetails__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../Shared/Components/Contracts/CargoDetails */ "./resources/js/Shared/Components/Contracts/CargoDetails.js");
 /* harmony import */ var _Shared_Components_Contracts_CustomContract__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../Shared/Components/Contracts/CustomContract */ "./resources/js/Shared/Components/Contracts/CustomContract.js");
 /* harmony import */ var _Shared_AppLayout__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../Shared/AppLayout */ "./resources/js/Shared/AppLayout.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _Shared_Elements_StatBlock__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../Shared/Elements/StatBlock */ "./resources/js/Shared/Elements/StatBlock.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -141,22 +142,23 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
+
 var EmptyData = function EmptyData(props) {
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.Fragment, {
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("i", {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.Fragment, {
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("i", {
       className: "material-icons md-48",
       children: "airplane_ticket"
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("div", {
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
       children: props.airport ? 'There are no contracts for this airport' : 'Please enter an airport'
     })]
   });
 };
 
 var AirportToolTip = function AirportToolTip(props) {
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.Fragment, {
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("div", {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.Fragment, {
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
       children: ["Altitude: ", props.airport.altitude, "ft"]
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("div", {
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
       children: ["Longest Runway: ", props.airport.longest_runway_surface, " - ", props.airport.longest_runway_length.toLocaleString(navigator.language), "ft x ", props.airport.longest_runway_width, "ft"]
     })]
   });
@@ -179,10 +181,11 @@ var Contracts = function Contracts(_ref) {
 
 
   var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)({
-    icao: auth.user.current_airport_id,
-    distance: 'Up to 50nm',
-    cargo: 10000,
-    pax: 12
+    icao: '' //auth.user.current_airport_id
+    // distance: 'Up to 50nm',
+    // cargo: 10000,
+    // pax: 12
+
   }),
       _useState6 = _slicedToArray(_useState5, 2),
       values = _useState6[0],
@@ -209,6 +212,11 @@ var Contracts = function Contracts(_ref) {
       showCustom = _useState14[0],
       setShowCustom = _useState14[1];
 
+  var _useState15 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
+      _useState16 = _slicedToArray(_useState15, 2),
+      showContracts = _useState16[0],
+      setShowContracts = _useState16[1];
+
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
     if (contracts && airport) {
       setTitle("Contracts - ".concat(airport.name, " (").concat(airport.identifier, ")"));
@@ -232,15 +240,16 @@ var Contracts = function Contracts(_ref) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              setError(null); // setSelectedAirport(null)
-              // setContracts([])
-
+              setError(null);
               setSelectedContract('');
               setShowCustom(false);
 
               if (values.icao.length > 0) {
                 // Call api to find contracts
                 _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_7__.Inertia.post('/contracts', values);
+                setShowContracts(true);
+              } else {
+                setError('Please enter an ICAO');
               }
 
             case 4:
@@ -275,281 +284,193 @@ var Contracts = function Contracts(_ref) {
     setShowDetail(!showDetail);
   };
 
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("div", {
-    className: "p-4",
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("h1", {
-      children: title
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("div", {
-      className: "flex flex-col lg:flex-row justify-between mt-4",
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("div", {
-        className: "lg:w-2/3 lg:mr-2",
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("div", {
-          className: "rounded shadow bg-white p-4",
-          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("div", {
-            className: "flex justify-between items-end",
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("div", {
-              children: [error && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("div", {
-                className: "text-sm text-red-500 mt-1",
-                children: error
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("div", {
-                className: "inline-block mx-2",
-                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("label", {
-                  htmlFor: "icao",
-                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("span", {
-                    className: "text-gray-700",
-                    children: "Airport (ICAO)"
-                  })
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("input", {
-                  id: "icao",
-                  type: "text",
-                  className: "form-input form",
-                  value: values.icao,
-                  onChange: handleChange
-                })]
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("div", {
-                className: "inline-block mx-2",
-                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("label", {
-                  htmlFor: "distance",
-                  className: "block",
-                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("span", {
-                    className: "text-gray-700",
-                    children: "Distance range"
-                  })
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("select", {
-                  id: "distance",
-                  value: values.distance,
-                  onChange: handleChange,
-                  className: "form-select form",
-                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("option", {
-                    children: "Up to 50nm"
-                  }, "Up to 50nm"), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("option", {
-                    children: "50nm-150nm"
-                  }, "50nm-150nm"), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("option", {
-                    children: "150nm+"
-                  }, "150nm+")]
-                })]
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("div", {
-                className: "inline-block mx-2",
-                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("label", {
-                  htmlFor: "cargo",
-                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("span", {
-                    className: "text-gray-700",
-                    children: "Max cargo (lbs)"
-                  })
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("input", {
-                  id: "cargo",
-                  type: "text",
-                  className: "form-input form",
-                  value: values.cargo,
-                  onChange: handleChange
-                })]
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("div", {
-                className: "inline-block mx-2",
-                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("label", {
-                  htmlFor: "pax",
-                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("span", {
-                    className: "text-gray-700",
-                    children: "Max passengers (qty)"
-                  })
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("input", {
-                  id: "pax",
-                  type: "text",
-                  className: "form-input form",
-                  value: values.pax,
-                  onChange: handleChange
-                })]
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("div", {
-                className: "inline-block mx-2",
-                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("button", {
-                  onClick: function onClick() {
-                    return handleSearch();
-                  },
-                  className: "btn btn-secondary",
-                  children: "Find"
-                })
-              })]
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("div", {
-              className: "inline-block mx-2",
-              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("button", {
-                onClick: function onClick() {
-                  return setShowCustom(true);
-                },
-                className: "btn btn-secondary",
-                children: "Create Custom"
-              })
-            })]
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
+    className: "relative",
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_Shared_Components_Contracts_ContractMap__WEBPACK_IMPORTED_MODULE_6__.default, {
+      departure: selectedAirport,
+      destination: selectedContract.arr_airport,
+      size: "full",
+      mapStyle: auth.user.map_style
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
+      className: "absolute z-30 top-4 left-4 py-2 px-4 bg-white w-1/2 md:w-1/3 opacity-90 shadow rounded",
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
+        className: "flex flex-col md:flex-row justify-start items-baseline",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("input", {
+            id: "icao",
+            type: "text",
+            placeholder: "search ICAO",
+            className: "form-input form",
+            value: values.icao,
+            onChange: handleChange
           })
-        }), showCustom && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(_Shared_Components_Contracts_CustomContract__WEBPACK_IMPORTED_MODULE_9__.default, {
-          departureIcao: values.icao,
-          hideSection: function hideSection() {
-            return setShowCustom(false);
-          }
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("div", {
-          className: "rounded shadow bg-white overflow-x-auto mt-4",
-          children: [!airport && !contracts && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(_Shared_Elements_NoContent__WEBPACK_IMPORTED_MODULE_2__.default, {
-            content: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(EmptyData, {
-              airport: ""
-            })
-          }), airport && contracts && contracts.length === 0 && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(_Shared_Elements_NoContent__WEBPACK_IMPORTED_MODULE_2__.default, {
-            content: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(EmptyData, {
-              airport: airport
-            })
-          }), contracts && contracts.length > 0 &&
-          /*#__PURE__*/
-          // (
-          (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("div", {
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("div", {
-              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("button", {
-                onClick: toggleDetail,
-                className: "btn btn-secondary m-2",
-                children: "Toggle Cargo Details"
-              })
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("table", {
-              className: "table-condensed table-auto",
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("thead", {
-                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("tr", {
-                  className: "",
-                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("th", {
-                    children: "Departure"
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("th", {
-                    children: "Arrival"
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("th", {
-                    children: "Distance"
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("th", {
-                    children: "Heading"
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("th", {
-                    children: "Total Cargo"
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("th", {
-                    children: "Value"
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("th", {
-                    children: "Expires"
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("td", {
-                    children: "Accept"
-                  })]
-                })
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("tbody", {
-                className: "cursor-pointer",
-                children: contracts && contracts.map(function (contract) {
-                  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.Fragment, {
-                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("tr", {
-                      onClick: function onClick() {
-                        return updateSelectedContract(contract);
-                      },
-                      className: contract.id === selectedContract.id ? 'bg-orange-200 hover:bg-orange-100 cursor-pointer' : 'cursor-pointer',
-                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("td", {
-                        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)(_Shared_Elements_Tooltip__WEBPACK_IMPORTED_MODULE_3__.default, {
-                          content: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(AirportToolTip, {
-                            airport: contract.dep_airport
-                          }),
-                          direction: "right",
-                          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_4__.Link, {
-                            href: "/airports/".concat(contract.dep_airport_id),
-                            children: contract.dep_airport_id
-                          }), " ", contract.dep_airport.longest_runway_surface === 'W' && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("span", {
-                            className: "material-icons",
-                            children: "anchor"
-                          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("br", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("span", {
-                            className: "text-xs",
-                            children: contract.dep_airport.name
-                          })]
-                        })
-                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("td", {
-                        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)(_Shared_Elements_Tooltip__WEBPACK_IMPORTED_MODULE_3__.default, {
-                          content: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(AirportToolTip, {
-                            airport: contract.arr_airport
-                          }),
-                          direction: "top",
-                          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_4__.Link, {
-                            href: "/airports/".concat(contract.arr_airport_id),
-                            children: contract.arr_airport_id
-                          }), " ", contract.arr_airport.longest_runway_surface === 'W' && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("span", {
-                            className: "material-icons",
-                            children: "anchor"
-                          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("br", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("span", {
-                            className: "text-xs",
-                            children: contract.arr_airport.name
-                          })]
-                        })
-                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("td", {
-                        children: [contract.distance, " nm"]
-                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("td", {
-                        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("div", {
-                          className: "flex items-center",
-                          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("div", {
-                            className: "w-1/2",
-                            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("span", {
-                              className: "mr-2",
-                              children: contract.heading
-                            })
-                          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("div", {
-                            className: "w-1/2 flex",
-                            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("span", {
-                              style: {
-                                transform: "rotate(".concat(contract.heading, "deg)")
-                              },
-                              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("i", {
-                                className: "material-icons md-18 text-gray-800",
-                                children: "north"
-                              })
-                            })
-                          })]
-                        })
-                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("td", {
-                        children: contract.cargo.map(function (detail) {
-                          return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.Fragment, {
-                            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("span", {
-                              className: "mr-1",
-                              children: detail.contract_type_id === 1 ? 'Cargo' : 'Pax'
-                            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("span", {
-                              children: [detail.cargo_qty.toLocaleString(navigator.language), " ", detail.contract_type_id === 1 ? 'lbs' : '', " ", detail.cargo]
-                            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("br", {})]
-                          });
-                        })
-                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("td", {
-                        children: ["$", parseFloat(contract.cargo.map(function (detail) {
-                          return detail.contract_value;
-                        }).reduce(function (total, num) {
-                          return total + Math.fround(num);
-                        }, 0)).toFixed(2), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("br", {})]
-                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("td", {
-                        children: (0,_Helpers_date_helpers__WEBPACK_IMPORTED_MODULE_5__.default)(contract.expires_at).format('DD/MM/YYYY HH:mm')
-                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("td", {
-                        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("button", {
-                          onClick: function onClick() {
-                            return bidForContract(contract);
-                          },
-                          className: "btn btn-secondary btn-small",
-                          children: "Accept"
-                        })
-                      })]
-                    }, contract.id), showDetail && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(_Shared_Components_Contracts_CargoDetails__WEBPACK_IMPORTED_MODULE_8__.default, {
-                      contract: contract
-                    })]
-                  });
-                })
-              })]
-            })]
-          }) // )
-          ]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("button", {
+            onClick: function onClick() {
+              return handleSearch();
+            },
+            className: "btn btn-secondary ml-2",
+            children: "Find"
+          })
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("button", {
+            onClick: function onClick() {
+              return setShowCustom(true);
+            },
+            className: "btn btn-secondary ml-2",
+            children: "Custom"
+          })
         })]
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("div", {
-        className: "lg:w-1/3 lg:ml-2 mt-2 lg:mt-0",
-        children: airport && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("div", {
-          className: "rounded shadow bg-white p-4",
-          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(_Shared_Components_Contracts_ContractMap__WEBPACK_IMPORTED_MODULE_6__.default, {
-            departure: selectedAirport,
-            destination: selectedContract.arr_airport,
-            size: "large",
-            mapStyle: auth.user.map_style
-          })
-        })
+      }), error && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("span", {
+        className: "text-sm text-red-500",
+        children: error
       })]
+    }), showCustom && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
+      className: "absolute z-30 top-4 left-1/3 ml-8 py-2 px-4 bg-white w-1/2 md:w-1/3 opacity-90 shadow rounded",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_Shared_Components_Contracts_CustomContract__WEBPACK_IMPORTED_MODULE_9__.default, {
+        departureIcao: values.icao,
+        hideSection: function hideSection() {
+          return setShowCustom(false);
+        }
+      })
+    }), showContracts && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
+      className: "absolute z-30 top-20 left-4 bottom-4 bg-white w-1/2 md:w-1/3 opacity-90 shadow rounded h-auto overflow-y-auto mt-2",
+      children: contracts && contracts.map(function (contract) {
+        return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
+          onClick: function onClick() {
+            return updateSelectedContract(contract);
+          },
+          className: "".concat(contract.id === selectedContract.id ? 'bg-orange-200 hover:bg-orange-100' : '', " border-t-2 text-sm cursor-pointer"),
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
+            className: "px-4 py-2 flex justify-between items-center",
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
+              className: "text-xs text-gray-700",
+              children: (0,_Helpers_date_helpers__WEBPACK_IMPORTED_MODULE_5__.default)(contract.expires_at).format('DD/MM/YYYY HH:mm')
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("button", {
+              onClick: function onClick() {
+                return bidForContract(contract);
+              },
+              className: "btn btn-secondary btn-small",
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("i", {
+                className: "material-icons md-16",
+                children: "check"
+              })
+            })]
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
+            className: "px-4 py-2 flex justify-between",
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
+              className: "flex items-center space-x-4",
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
+                className: "mx-1 flex items-center",
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("i", {
+                  className: "material-icons md-16 mr-1",
+                  children: "inventory"
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("span", {
+                  children: contract.cargo.length
+                })]
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
+                className: "mx-1 flex items-center",
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("i", {
+                  className: "material-icons md-16 mr-1",
+                  children: "work"
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("span", {
+                  children: [parseFloat(contract.cargo.filter(function (cc) {
+                    return cc.contract_type_id === 1;
+                  }).map(function (detail) {
+                    return detail.cargo_qty;
+                  }).reduce(function (total, num) {
+                    return total + Math.fround(num);
+                  }, 0)), " lbs"]
+                })]
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
+                className: "mx-1 flex items-center",
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("i", {
+                  className: "material-icons md-16 mr-1",
+                  children: "people"
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("span", {
+                  children: parseFloat(contract.cargo.filter(function (cc) {
+                    return cc.contract_type_id === 2;
+                  }).map(function (detail) {
+                    return detail.cargo_qty;
+                  }).reduce(function (total, num) {
+                    return total + Math.fround(num);
+                  }, 0))
+                })]
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
+                className: "mx-1 flex items-center",
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("i", {
+                  className: "material-icons md-16 mr-1",
+                  children: "location_on"
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("span", {
+                  children: [contract.distance, " nm"]
+                })]
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
+                className: "mx-1 flex items-center",
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("i", {
+                  className: "material-icons md-16 mr-1",
+                  children: "currency_bitcoin"
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("span", {
+                  children: ["$", parseFloat(contract.cargo.map(function (detail) {
+                    return detail.contract_value;
+                  }).reduce(function (total, num) {
+                    return total + Math.fround(num);
+                  }, 0)).toFixed(2)]
+                })]
+              })]
+            })
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
+            className: "flex justify-between px-4 py-2",
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
+              className: "mt-1 text-xs",
+              children: contracts && contract.cargo.map(function (c) {
+                return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
+                  className: "flex justify-between items-center cursor-pointer",
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
+                    className: "flex justify-between items-center text-sm",
+                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
+                      className: "flex items-baseline space-x-1 mr-4",
+                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
+                        className: "",
+                        children: c.current_airport_id
+                      })
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
+                      className: "flex items-center space-x-1 mr-4",
+                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
+                        className: "mr-1 flex items-center",
+                        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("i", {
+                          className: "material-icons md-16 mr-1",
+                          children: "flight_takeoff"
+                        }), c.dep_airport_id]
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
+                        className: "mr-2 flex items-center",
+                        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("i", {
+                          className: "material-icons md-16 mr-1",
+                          children: "flight_land"
+                        }), c.arr_airport_id]
+                      })]
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
+                      className: "flex items-center space-x-1",
+                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
+                        className: "mr-1",
+                        children: [c.cargo_qty, " ", c.contract_type_id === 1 ? 'lbs' : '']
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
+                        className: "mr-2",
+                        children: c.cargo
+                      })]
+                    })]
+                  })
+                }, "c.id");
+              })
+            })
+          })]
+        }, contract.id);
+      })
     })]
   });
 };
 
 Contracts.layout = function (page) {
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(_Shared_AppLayout__WEBPACK_IMPORTED_MODULE_10__.default, {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_Shared_AppLayout__WEBPACK_IMPORTED_MODULE_10__.default, {
     children: page,
     title: "Find a Contract",
     heading: "Find a Contract"
@@ -781,27 +702,7 @@ var ContractMap = function ContractMap(props) {
       }
 
       var depLngLat = [props.departure.lon, props.departure.lat];
-      loadDeparture(depLngLat); // const depMarker
-      // const bounds = depMarker.current.getBounds()
-      // map.current.fitBounds(bounds, {
-      //   padding: 50
-      // })
-      // const depPopup = new maplibre.Popup({ offset: 25 }).setText(
-      //   `${props.departure.identifier} - ${props.departure.name}`
-      // )
-      //
-      //
-      // console.log(`${props.departure.lon} - ${props.departure.lat}`)
-      // const depLngLat = [props.departure.lon, props.departure.lat]
-      // const dep = new maplibre.Marker({
-      //   color: '#059669'
-      // })
-      //   .setLngLat(depLngLat)
-      //   .setPopup(depPopup)
-      //   .addTo(map.current)
-      // map.current.on('load', function () {
-      //
-      // })
+      loadDeparture(depLngLat);
     }
   }, [props.departure]);
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
@@ -843,7 +744,12 @@ var ContractMap = function ContractMap(props) {
           setSourceSet(true);
           var bounds = [depLngLat, arrLngLat];
           map.current.fitBounds(bounds, {
-            padding: 50
+            padding: {
+              top: 70,
+              bottom: 70,
+              right: 70,
+              left: 500
+            }
           });
         }
       }
@@ -995,53 +901,51 @@ var CustomContract = function CustomContract(_ref) {
     };
   }();
 
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
-    className: "my-2 p-2 bg-white rounded shadow",
-    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-      children: [error && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
-        className: "text-sm text-red-500 mt-1",
-        children: error
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-        className: "inline-block mx-2",
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
-          htmlFor: "icao",
-          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("span", {
-            className: "text-gray-700",
-            children: "Departure Airport (ICAO)"
-          })
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
-          id: "icao",
-          type: "text",
-          className: "form-input form",
-          value: dep,
-          onChange: handleChangeDep
-        })]
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-        className: "inline-block mx-2",
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
-          htmlFor: "icao",
-          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("span", {
-            className: "text-gray-700",
-            children: "Arrival Airport (ICAO)"
-          })
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
-          id: "icao",
-          type: "text",
-          className: "form-input form",
-          value: arr,
-          onChange: handleChangeArr
-        })]
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
-        className: "inline-block mx-2",
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
-          onClick: function onClick() {
-            return handleCreate();
-          },
-          className: "btn btn-secondary",
-          children: "Create"
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+    className: "flex items-end",
+    children: [error && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+      className: "text-sm text-red-500 mt-1",
+      children: error
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+      className: "inline-block mx-2",
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
+        htmlFor: "icao",
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("span", {
+          className: "text-gray-700",
+          children: "Departure Airport (ICAO)"
         })
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
+        id: "icao",
+        type: "text",
+        className: "form-input form",
+        value: dep,
+        onChange: handleChangeDep
       })]
-    })
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+      className: "inline-block mx-2",
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
+        htmlFor: "icao",
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("span", {
+          className: "text-gray-700",
+          children: "Arrival Airport (ICAO)"
+        })
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
+        id: "icao",
+        type: "text",
+        className: "form-input form",
+        value: arr,
+        onChange: handleChangeArr
+      })]
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+      className: "inline-block mx-2",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+        onClick: function onClick() {
+          return handleCreate();
+        },
+        className: "btn btn-secondary",
+        children: "Create"
+      })
+    })]
   });
 };
 
@@ -1114,6 +1018,43 @@ function NoContent(_ref) {
     children: content
   });
 }
+
+/***/ }),
+
+/***/ "./resources/js/Shared/Elements/StatBlock.js":
+/*!***************************************************!*\
+  !*** ./resources/js/Shared/Elements/StatBlock.js ***!
+  \***************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+
+
+
+
+var StatBlock = function StatBlock(_ref) {
+  var width = _ref.width,
+      data = _ref.data,
+      text = _ref.text;
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+    className: "flex flex-col p-2 m-2 w-".concat(width),
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+      className: "text-2xl font-bold",
+      children: data
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+      className: "text-gray-800",
+      children: text
+    })]
+  });
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (StatBlock);
 
 /***/ }),
 
