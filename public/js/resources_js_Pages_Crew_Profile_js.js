@@ -425,7 +425,7 @@ var Profile = function Profile(_ref) {
             })]
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("button", {
             onClick: handleUpdateMap,
-            className: "btn btn-secondary ml-2",
+            className: "btn btn-secondary ml-2 mt-2",
             children: "Update"
           })]
         })]

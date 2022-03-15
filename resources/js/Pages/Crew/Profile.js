@@ -154,7 +154,7 @@ const Profile = ({ profile, hubs, rank, nextRank, awards }) => {
                 <img src="https://res.cloudinary.com/dji0yvkef/image/upload/c_scale,w_150/v1647292892/BDVA/maps/satellite_rcdhkd.png" />
               </div>
             </div>
-            <button onClick={handleUpdateMap} className="btn btn-secondary ml-2">Update</button>
+            <button onClick={handleUpdateMap} className="btn btn-secondary ml-2 mt-2">Update</button>
           </div>
         </div>
       </div>
