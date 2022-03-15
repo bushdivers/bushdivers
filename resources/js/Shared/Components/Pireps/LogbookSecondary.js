@@ -1,5 +1,5 @@
 import React from 'react'
-import { convertMinuteDecimalToHoursAndMinutes } from '../../Helpers/date.helpers'
+import { convertMinuteDecimalToHoursAndMinutes } from '../../../Helpers/date.helpers'
 
 const LogbookSecondary = ({ pirep }) => {
   return (

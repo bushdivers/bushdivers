@@ -5,7 +5,7 @@ import Tooltip from '../../Shared/Elements/Tooltip'
 import { Link } from '@inertiajs/inertia-react'
 import dayjs from '../../Helpers/date.helpers'
 import CargoDetails from '../../Shared/Components/Contracts/CargoDetails'
-import FleetAircraft from '../../Shared/Admin/FleetAircraft'
+import FleetAircraft from '../../Shared/Components/Admin/FleetAircraft'
 import AppLayout from '../../Shared/AppLayout'
 
 const EmptyData = (props) => {

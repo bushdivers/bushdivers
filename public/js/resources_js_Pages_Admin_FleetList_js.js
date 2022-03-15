@@ -54,7 +54,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @inertiajs/inertia-react */ "./node_modules/@inertiajs/inertia-react/dist/index.js");
 /* harmony import */ var _Helpers_date_helpers__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../Helpers/date.helpers */ "./resources/js/Helpers/date.helpers.js");
 /* harmony import */ var _Shared_Components_Contracts_CargoDetails__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../Shared/Components/Contracts/CargoDetails */ "./resources/js/Shared/Components/Contracts/CargoDetails.js");
-Object(function webpackMissingModule() { var e = new Error("Cannot find module '../../Shared/Admin/FleetAircraft'"); e.code = 'MODULE_NOT_FOUND'; throw e; }());
+/* harmony import */ var _Shared_Components_Admin_FleetAircraft__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../Shared/Components/Admin/FleetAircraft */ "./resources/js/Shared/Components/Admin/FleetAircraft.js");
 /* harmony import */ var _Shared_AppLayout__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../Shared/AppLayout */ "./resources/js/Shared/AppLayout.js");
 /* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
@@ -192,7 +192,7 @@ var FleetList = function FleetList(_ref) {
                           })]
                         })
                       })]
-                    }, f.id), showDetail && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(Object(function webpackMissingModule() { var e = new Error("Cannot find module '../../Shared/Admin/FleetAircraft'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()), {
+                    }, f.id), showDetail && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_Shared_Components_Admin_FleetAircraft__WEBPACK_IMPORTED_MODULE_7__.default, {
                       fleet: f
                     })]
                   });
@@ -310,6 +310,57 @@ function AppLayout(_ref) {
     })]
   });
 }
+
+/***/ }),
+
+/***/ "./resources/js/Shared/Components/Admin/FleetAircraft.js":
+/*!***************************************************************!*\
+  !*** ./resources/js/Shared/Components/Admin/FleetAircraft.js ***!
+  \***************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @inertiajs/inertia-react */ "./node_modules/@inertiajs/inertia-react/dist/index.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+
+
+
+
+
+
+var FleetAircraft = function FleetAircraft(props) {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.Fragment, {
+    children: props.fleet.aircraft.map(function (detail) {
+      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("tr", {
+        className: "bg-gray-50",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("td", {
+          children: detail.registration
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("td", {
+          children: ["Current Location: ", detail.current_airport_id]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("td", {
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+            className: "flex items-center",
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Link, {
+              href: "/admin/aircraft/delete/".concat(detail.id),
+              className: "btn btn-light flex items-center",
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("i", {
+                className: "material-icons md-18",
+                children: "close"
+              })
+            })
+          })
+        })]
+      }, detail.id);
+    })
+  });
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (FleetAircraft);
 
 /***/ }),
 

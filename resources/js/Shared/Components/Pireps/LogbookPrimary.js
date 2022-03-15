@@ -1,6 +1,6 @@
 import React from 'react'
 import { format } from 'date-fns'
-import { convertMinuteDecimalToHoursAndMinutes } from '../../Helpers/date.helpers'
+import { convertMinuteDecimalToHoursAndMinutes } from '../../../Helpers/date.helpers'
 import { Link } from '@inertiajs/inertia-react'
 
 const LogbookPrimary = ({ pirep }) => {

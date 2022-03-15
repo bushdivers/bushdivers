@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import AppLayout from '../../Shared/AppLayout'
-import NewCategory from '../../Shared/Admin/Resources/NewCategory'
-import NewResource from '../../Shared/Admin/Resources/NewResource'
+import NewCategory from '../../Shared/Components/Admin/Resources/NewCategory'
+import NewResource from '../../Shared/Components/Admin/Resources/NewResource'
 import { Inertia } from '@inertiajs/inertia'
 
 const Resources = ({ resources }) => {

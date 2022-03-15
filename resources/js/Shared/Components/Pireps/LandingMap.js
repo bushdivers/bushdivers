@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react'
 import maplibre from 'maplibre-gl'
-import { parseMapStyle } from '../../Helpers/general.helpers'
+import { parseMapStyle } from '../../../Helpers/general.helpers'
 
 const accessToken = 'pk.eyJ1IjoicnVzc2VsbHd3ZXN0IiwiYSI6ImNrc29vZm5paDEweGIzMnA3MXAzYTFuMDQifQ.7veU-ARmzYClHDFsVQvT5g'
 
