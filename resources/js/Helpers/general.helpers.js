@@ -8,5 +8,7 @@ export const parseMapStyle = (mapStyle) => {
       return 'mapbox://styles/mapbox/streets-v11'
     case 'satellite':
       return 'mapbox://styles/mapbox/satellite-streets-v11'
+    default:
+      return 'mapbox://styles/mapbox/dark-v10'
   }
 }

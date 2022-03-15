@@ -60,6 +60,9 @@ var parseMapStyle = function parseMapStyle(mapStyle) {
 
     case 'satellite':
       return 'mapbox://styles/mapbox/satellite-streets-v11';
+
+    default:
+      return 'mapbox://styles/mapbox/dark-v10';
   }
 };
 
