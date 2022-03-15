@@ -34,29 +34,6 @@ const ContractMap = (props) => {
       }
       const depLngLat = [props.departure.lon, props.departure.lat]
       loadDeparture(depLngLat)
-
-      // const depMarker
-      // const bounds = depMarker.current.getBounds()
-      // map.current.fitBounds(bounds, {
-      //   padding: 50
-      // })
-      // const depPopup = new maplibre.Popup({ offset: 25 }).setText(
-      //   `${props.departure.identifier} - ${props.departure.name}`
-      // )
-      //
-      //
-      // console.log(`${props.departure.lon} - ${props.departure.lat}`)
-      // const depLngLat = [props.departure.lon, props.departure.lat]
-      // const dep = new maplibre.Marker({
-      //   color: '#059669'
-      // })
-      //   .setLngLat(depLngLat)
-      //   .setPopup(depPopup)
-      //   .addTo(map.current)
-
-      // map.current.on('load', function () {
-      //
-      // })
     }
   }, [props.departure])
 
@@ -100,7 +77,7 @@ const ContractMap = (props) => {
 
           const bounds = [depLngLat, arrLngLat]
           map.current.fitBounds(bounds, {
-            padding: 50
+            padding: { top: 70, bottom: 70, right: 70, left: 500 }
           })
         }
       }

@@ -26,19 +26,19 @@ class FindContractsController extends Controller
      */
     public function __invoke(Request $request): Response
     {
-        $criteria = [
-            'icao' => $request->icao,
-            'distance' => $request->distance,
-            'cargo' => $request->cargo,
-            'pax' => $request->pax
-        ];
+//        $criteria = [
+//            'icao' => $request->icao,
+//            'distance' => $request->distance,
+//            'cargo' => $request->cargo,
+//            'pax' => $request->pax
+//        ];
 
-        $airport = Airport::where('identifier', $criteria['icao'])->first();
+        $airport = Airport::where('identifier', $request->icao)->first();
         if (!$airport) {
             return Inertia::render('Contracts/Contracts')->with(['error' => 'Airport not found']);
         }
 
-        $contracts = $this->getContractsFromCriteria->execute($criteria);
+        $contracts = $this->getContractsFromCriteria->execute($request->icao);
 
         return Inertia::render('Contracts/Contracts', ['contracts' => $contracts, 'airport' => $airport]);
     }
