@@ -136,7 +136,7 @@ var Aircraft = function Aircraft(_ref) {
 
   var checkAircraftAtHub = function checkAircraftAtHub(aircraft) {
     if (aircraft.owner_id === auth.user.id) return true;
-    if (aircraft.location.is_hub || aircraft.location.size >= 4) return true;
+    if (aircraft.location.is_hub || aircraft.location.size >= 3) return true;
   };
 
   var handleTBO = function handleTBO(aircraft, engine) {
