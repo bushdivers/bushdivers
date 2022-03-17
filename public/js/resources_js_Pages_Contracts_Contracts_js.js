@@ -110,12 +110,6 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -180,47 +174,51 @@ var Contracts = function Contracts(_ref) {
       setTitle = _useState4[1]; // const [icao, setIcao] = useState('')
 
 
-  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)({
-    icao: '' //auth.user.current_airport_id
-    // distance: 'Up to 50nm',
-    // cargo: 10000,
-    // pax: 12
-
-  }),
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(auth.user.current_airport_id),
       _useState6 = _slicedToArray(_useState5, 2),
-      values = _useState6[0],
-      setValues = _useState6[1]; // const [contracts, setContracts] = useState([])
+      searchIcao = _useState6[0],
+      setSearchIcao = _useState6[1];
 
-
-  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)({}),
+  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('heading'),
       _useState8 = _slicedToArray(_useState7, 2),
-      selectedContract = _useState8[0],
-      setSelectedContract = _useState8[1];
+      sort = _useState8[0],
+      setSort = _useState8[1];
 
-  var _useState9 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(null),
+  var _useState9 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
       _useState10 = _slicedToArray(_useState9, 2),
-      error = _useState10[0],
-      setError = _useState10[1];
+      showSort = _useState10[0],
+      setShowSort = _useState10[1]; // const [contracts, setContracts] = useState([])
 
-  var _useState11 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
+
+  var _useState11 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)({}),
       _useState12 = _slicedToArray(_useState11, 2),
-      showDetail = _useState12[0],
-      setShowDetail = _useState12[1];
+      selectedContract = _useState12[0],
+      setSelectedContract = _useState12[1];
 
-  var _useState13 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(0),
+  var _useState13 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(null),
       _useState14 = _slicedToArray(_useState13, 2),
-      showDetailId = _useState14[0],
-      setShowDetailId = _useState14[1];
+      error = _useState14[0],
+      setError = _useState14[1];
 
   var _useState15 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
       _useState16 = _slicedToArray(_useState15, 2),
-      showCustom = _useState16[0],
-      setShowCustom = _useState16[1];
+      showDetail = _useState16[0],
+      setShowDetail = _useState16[1];
 
-  var _useState17 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
+  var _useState17 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(0),
       _useState18 = _slicedToArray(_useState17, 2),
-      showContracts = _useState18[0],
-      setShowContracts = _useState18[1];
+      showDetailId = _useState18[0],
+      setShowDetailId = _useState18[1];
+
+  var _useState19 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
+      _useState20 = _slicedToArray(_useState19, 2),
+      showCustom = _useState20[0],
+      setShowCustom = _useState20[1];
+
+  var _useState21 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
+      _useState22 = _slicedToArray(_useState21, 2),
+      showContracts = _useState22[0],
+      setShowContracts = _useState22[1];
 
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
     if (contracts && airport) {
@@ -230,28 +228,47 @@ var Contracts = function Contracts(_ref) {
       setTitle('Contracts');
     }
   }, [contracts]);
+  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
+    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            if (!(contracts.length > 0)) {
+              _context.next = 3;
+              break;
+            }
+
+            _context.next = 3;
+            return handleSearch();
+
+          case 3:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee);
+  })), [sort]);
 
   function handleChange(e) {
-    var key = e.target.id;
-    var value = e.target.value;
-    setValues(function (values) {
-      return _objectSpread(_objectSpread({}, values), {}, _defineProperty({}, key, value));
-    });
+    setSearchIcao(e.target.value);
   }
 
   var handleSearch = /*#__PURE__*/function () {
-    var _ref2 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
-      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+    var _ref3 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
         while (1) {
-          switch (_context.prev = _context.next) {
+          switch (_context2.prev = _context2.next) {
             case 0:
               setError(null);
               setSelectedContract('');
               setShowCustom(false);
 
-              if (values.icao.length > 0) {
+              if (searchIcao.length > 0) {
                 // Call api to find contracts
-                _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_7__.Inertia.post('/contracts', values);
+                _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_7__.Inertia.post('/contracts', {
+                  icao: searchIcao,
+                  sort: sort
+                });
                 setShowContracts(true);
               } else {
                 setError('Please enter an ICAO');
@@ -259,14 +276,14 @@ var Contracts = function Contracts(_ref) {
 
             case 4:
             case "end":
-              return _context.stop();
+              return _context2.stop();
           }
         }
-      }, _callee);
+      }, _callee2);
     }));
 
     return function handleSearch() {
-      return _ref2.apply(this, arguments);
+      return _ref3.apply(this, arguments);
     };
   }();
 
@@ -277,10 +294,7 @@ var Contracts = function Contracts(_ref) {
   var bidForContract = function bidForContract(contract) {
     var data = {
       id: contract.id,
-      icao: values.icao,
-      distance: values.distance,
-      cargo: values.cargo,
-      pax: values.pax
+      icao: searchIcao
     };
     _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_7__.Inertia.post('/contracts/bid', data);
   };
@@ -288,6 +302,24 @@ var Contracts = function Contracts(_ref) {
   var toggleDetail = function toggleDetail(id) {
     setShowDetail(!showDetail);
     setShowDetailId(id);
+  };
+
+  var toggleSort = function toggleSort() {
+    setShowSort(!showSort);
+    setShowCustom(false);
+  };
+
+  var toggleCustom = function toggleCustom() {
+    setShowCustom(!showCustom);
+    setShowSort(false);
+  };
+
+  var handleSort = function handleSort(s) {
+    setShowSort(false);
+
+    if (contracts.length > 0) {
+      setSort(s);
+    }
   };
 
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
@@ -307,7 +339,7 @@ var Contracts = function Contracts(_ref) {
             type: "text",
             placeholder: "search ICAO",
             className: "form-input form",
-            value: values.icao,
+            value: searchIcao,
             onChange: handleChange
           })
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
@@ -321,10 +353,21 @@ var Contracts = function Contracts(_ref) {
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
           children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("button", {
             onClick: function onClick() {
-              return setShowCustom(true);
+              return toggleCustom();
             },
             className: "btn btn-secondary ml-2",
             children: "Custom"
+          })
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("button", {
+            onClick: function onClick() {
+              return toggleSort();
+            },
+            className: "btn btn-light ml-2",
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("i", {
+              className: "material-icons md-16",
+              children: "sort"
+            })
           })
         })]
       }), error && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("span", {
@@ -334,11 +377,59 @@ var Contracts = function Contracts(_ref) {
     }), showCustom && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
       className: "absolute z-30 top-4 left-1/3 ml-8 py-2 px-4 bg-white w-1/2 md:w-1/3 opacity-90 shadow rounded",
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_Shared_Components_Contracts_CustomContract__WEBPACK_IMPORTED_MODULE_9__.default, {
-        departureIcao: values.icao,
+        departureIcao: searchIcao,
         hideSection: function hideSection() {
           return setShowCustom(false);
         }
       })
+    }), showSort && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
+      className: "absolute z-30 top-4 left-1/3 ml-8 bg-white w-1/2 md:w-1/5 opacity-90 shadow rounded",
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
+        onClick: function onClick() {
+          return handleSort('heading');
+        },
+        className: "border-b-2 border-gray-200 rounded-t py-2 hover:bg-orange-200 cursor-pointer",
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("span", {
+          className: "px-2",
+          children: "Heading (asc)"
+        })
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
+        onClick: function onClick() {
+          return handleSort('distance');
+        },
+        className: "border-b-2 border-gray-200 py-2 hover:bg-orange-200 cursor-pointer",
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("span", {
+          className: "px-2",
+          children: "Distance (asc)"
+        })
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
+        onClick: function onClick() {
+          return handleSort('contract_value');
+        },
+        className: "border-b-2 border-gray-200 py-2 hover:bg-orange-200 cursor-pointer",
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("span", {
+          className: "px-2",
+          children: "Value (desc)"
+        })
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
+        onClick: function onClick() {
+          return handleSort('payload');
+        },
+        className: "border-b-2 border-gray-200 py-2 hover:bg-orange-200 cursor-pointer",
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("span", {
+          className: "px-2",
+          children: "Payload (desc)"
+        })
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
+        onClick: function onClick() {
+          return handleSort('pax');
+        },
+        className: "rounded-b py-2 hover:bg-orange-200 cursor-pointer",
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("span", {
+          className: "px-2",
+          children: "Pax (desc)"
+        })
+      })]
     }), showContracts && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
       className: "absolute z-30 top-20 left-4 bottom-4 bg-white w-1/2 md:w-1/3 opacity-90 shadow rounded h-auto overflow-y-auto mb-2",
       children: contracts && contracts.map(function (contract) {

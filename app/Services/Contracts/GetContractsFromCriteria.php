@@ -8,8 +8,13 @@ use Carbon\Carbon;
 
 class GetContractsFromCriteria
 {
-    public function execute($icao): array
+    public function execute($icao, $sort): array
     {
+        $direction = match ($sort) {
+            'heading', 'distance' => 'asc',
+            'contract_value', 'payload', 'pax' => 'desc',
+            default => 'asc',
+        };
 //        $icao = $criteria['icao'];
 //        $distance = $criteria['distance'];
 //        $cargo = $criteria['cargo'];
@@ -30,7 +35,7 @@ class GetContractsFromCriteria
 //                $q->where('contract_type_id', ContractType::Passenger)
 //                    ->where('cargo_qty', '<=', $pax);
 //            })
-//            ->orderBy('heading')
+            ->orderBy($sort, $direction)
             ->get();
 
         $cargoContracts =  Contract::with('depAirport', 'arrAirport', 'cargo', 'cargo.currentAirport')
@@ -42,7 +47,7 @@ class GetContractsFromCriteria
 //                $q->where('contract_type_id', ContractType::Cargo)
 //                    ->where('cargo_qty', '<=', $cargo);
 //            })
-//            ->orderBy('heading')
+            ->orderBy($sort, $direction)
             ->get();
 
         $contracts = $paxContracts->merge($cargoContracts);

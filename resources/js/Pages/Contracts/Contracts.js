@@ -33,12 +33,9 @@ const Contracts = ({ contracts, airport }) => {
   const [selectedAirport, setSelectedAirport] = useState('')
   const [title, setTitle] = useState('Contracts')
   // const [icao, setIcao] = useState('')
-  const [values, setValues] = useState({
-    icao: '' //auth.user.current_airport_id
-    // distance: 'Up to 50nm',
-    // cargo: 10000,
-    // pax: 12
-  })
+  const [searchIcao, setSearchIcao] = useState(auth.user.current_airport_id)
+  const [sort, setSort] = useState('heading')
+  const [showSort, setShowSort] = useState(false)
   // const [contracts, setContracts] = useState([])
   const [selectedContract, setSelectedContract] = useState({})
   const [error, setError] = useState(null)
@@ -56,22 +53,23 @@ const Contracts = ({ contracts, airport }) => {
     }
   }, [contracts])
 
+  useEffect(async () => {
+    if (contracts.length > 0) {
+      await handleSearch()
+    }
+  }, [sort])
+
   function handleChange (e) {
-    const key = e.target.id
-    const value = e.target.value
-    setValues(values => ({
-      ...values,
-      [key]: value
-    }))
+    setSearchIcao(e.target.value)
   }
 
   const handleSearch = async () => {
     setError(null)
     setSelectedContract('')
     setShowCustom(false)
-    if (values.icao.length > 0) {
+    if (searchIcao.length > 0) {
       // Call api to find contracts
-      Inertia.post('/contracts', values)
+      Inertia.post('/contracts', { icao: searchIcao, sort: sort })
       setShowContracts(true)
     } else {
       setError('Please enter an ICAO')
@@ -85,10 +83,7 @@ const Contracts = ({ contracts, airport }) => {
   const bidForContract = (contract) => {
     const data = {
       id: contract.id,
-      icao: values.icao,
-      distance: values.distance,
-      cargo: values.cargo,
-      pax: values.pax
+      icao: searchIcao,
     }
     Inertia.post('/contracts/bid', data)
   }
@@ -98,22 +93,49 @@ const Contracts = ({ contracts, airport }) => {
     setShowDetailId(id)
   }
 
+  const toggleSort = () => {
+    setShowSort(!showSort)
+    setShowCustom(false)
+  }
+
+  const toggleCustom = () => {
+    setShowCustom(!showCustom)
+    setShowSort(false)
+  }
+
+  const handleSort = (s) => {
+    setShowSort(false)
+    if (contracts.length > 0) {
+      setSort(s)
+    }
+  }
+
   return (
     <div className="relative">
       <ContractMap departure={selectedAirport} destination={selectedContract.arr_airport} size="full" mapStyle={auth.user.map_style} />
         <div className="absolute z-30 top-4 left-4 py-2 px-4 bg-white w-1/2 md:w-1/3 opacity-90 shadow rounded">
           <div className="flex flex-col md:flex-row justify-start items-baseline">
             <div>
-              <input id="icao" type="text" placeholder="search ICAO" className="form-input form" value={values.icao} onChange={handleChange} />
+              <input id="icao" type="text" placeholder="search ICAO" className="form-input form" value={searchIcao} onChange={handleChange} />
             </div>
             <div><button onClick={() => handleSearch()} className="btn btn-secondary ml-2">Find</button></div>
-            <div><button onClick={() => setShowCustom(true)} className="btn btn-secondary ml-2">Custom</button></div>
+            <div><button onClick={() => toggleCustom()} className="btn btn-secondary ml-2">Custom</button></div>
+            <div><button onClick={() => toggleSort()} className="btn btn-light ml-2"><i className="material-icons md-16">sort</i></button></div>
           </div>
           {error && <span className="text-sm text-red-500">{error}</span>}
         </div>
       {showCustom && (
         <div className="absolute z-30 top-4 left-1/3 ml-8 py-2 px-4 bg-white w-1/2 md:w-1/3 opacity-90 shadow rounded">
-          <CustomContract departureIcao={values.icao} hideSection={() => setShowCustom(false)} />
+          <CustomContract departureIcao={searchIcao} hideSection={() => setShowCustom(false)} />
+        </div>
+      )}
+      {showSort && (
+        <div className="absolute z-30 top-4 left-1/3 ml-8 bg-white w-1/2 md:w-1/5 opacity-90 shadow rounded">
+          <div onClick={() => handleSort('heading')} className="border-b-2 border-gray-200 rounded-t py-2 hover:bg-orange-200 cursor-pointer"><span className="px-2">Heading (asc)</span></div>
+          <div onClick={() => handleSort('distance')} className="border-b-2 border-gray-200 py-2 hover:bg-orange-200 cursor-pointer"><span className="px-2">Distance (asc)</span></div>
+          <div onClick={() => handleSort('contract_value')} className="border-b-2 border-gray-200 py-2 hover:bg-orange-200 cursor-pointer"><span className="px-2">Value (desc)</span></div>
+          <div onClick={() => handleSort('payload')} className="border-b-2 border-gray-200 py-2 hover:bg-orange-200 cursor-pointer"><span className="px-2">Payload (desc)</span></div>
+          <div onClick={() => handleSort('pax')} className="rounded-b py-2 hover:bg-orange-200 cursor-pointer"><span className="px-2">Pax (desc)</span></div>
         </div>
       )}
       {showContracts && (<div className="absolute z-30 top-20 left-4 bottom-4 bg-white w-1/2 md:w-1/3 opacity-90 shadow rounded h-auto overflow-y-auto mb-2">
