@@ -104,7 +104,6 @@ __webpack_require__.r(__webpack_exports__);
 var Aircraft = function Aircraft(_ref) {
   var aircraft = _ref.aircraft,
       maintenanceStatus = _ref.maintenanceStatus,
-      hubs = _ref.hubs,
       pireps = _ref.pireps;
   var auth = (0,_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_4__.usePage)().props.auth;
 
@@ -136,20 +135,15 @@ var Aircraft = function Aircraft(_ref) {
   };
 
   var checkAircraftAtHub = function checkAircraftAtHub(aircraft) {
-    if (aircraft.owner_id === auth.user.id) {
-      return true;
-    }
-
-    return hubs.filter(function (h) {
-      return h.identifier === aircraft.current_airport_id;
-    }).length > 0;
+    if (aircraft.owner_id === auth.user.id) return true;
+    if (aircraft.location.is_hub || aircraft.location.size >= 4) return true;
   };
 
   var handleTBO = function handleTBO(aircraft, engine) {
     var res = checkAircraftAtHub(aircraft);
 
     if (!res) {
-      window.alert('Aircraft is not at a hub');
+      window.alert('Maintenance is not available at this airport');
       return;
     }
 
@@ -184,7 +178,7 @@ var Aircraft = function Aircraft(_ref) {
     var res = checkAircraftAtHub(aircraft);
 
     if (!res) {
-      window.alert('Aircraft is not at a hub');
+      window.alert('Maintenance is not available at this airport');
       return;
     }
 
@@ -202,7 +196,7 @@ var Aircraft = function Aircraft(_ref) {
     var res = checkAircraftAtHub(aircraft);
 
     if (!res) {
-      window.alert('Aircraft is not at a hub');
+      window.alert('Maintenance is not available at this airport');
       return;
     }
 

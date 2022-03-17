@@ -7,7 +7,7 @@ import { Inertia } from '@inertiajs/inertia'
 import dayjs from 'dayjs'
 import AppLayout from '../../Shared/AppLayout'
 
-const Aircraft = ({ aircraft, maintenanceStatus, hubs, pireps }) => {
+const Aircraft = ({ aircraft, maintenanceStatus, pireps }) => {
   const { auth } = usePage().props
 
   const calculateDistanceFlown = (p) => {
@@ -36,16 +36,14 @@ const Aircraft = ({ aircraft, maintenanceStatus, hubs, pireps }) => {
   }
 
   const checkAircraftAtHub = (aircraft) => {
-    if (aircraft.owner_id === auth.user.id) {
-      return true
-    }
-    return hubs.filter(h => h.identifier === aircraft.current_airport_id).length > 0
+    if (aircraft.owner_id === auth.user.id) return true
+    if (aircraft.location.is_hub || aircraft.location.size >= 4) return true
   }
 
   const handleTBO = (aircraft, engine) => {
     const res = checkAircraftAtHub(aircraft)
     if (!res) {
-      window.alert('Aircraft is not at a hub')
+      window.alert('Maintenance is not available at this airport')
       return
     }
     let cost = 0.00
@@ -73,7 +71,7 @@ const Aircraft = ({ aircraft, maintenanceStatus, hubs, pireps }) => {
   const handle100hr = (aircraft, engine) => {
     const res = checkAircraftAtHub(aircraft)
     if (!res) {
-      window.alert('Aircraft is not at a hub')
+      window.alert('Maintenance is not available at this airport')
       return
     }
 
@@ -91,7 +89,7 @@ const Aircraft = ({ aircraft, maintenanceStatus, hubs, pireps }) => {
   const handleAnnual = (aircraft) => {
     const res = checkAircraftAtHub(aircraft)
     if (!res) {
-      window.alert('Aircraft is not at a hub')
+      window.alert('Maintenance is not available at this airport')
       return
     }
 

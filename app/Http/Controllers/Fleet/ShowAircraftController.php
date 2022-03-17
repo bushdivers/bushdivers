@@ -29,11 +29,11 @@ class ShowAircraftController extends Controller
      */
     public function __invoke(Request $request, $id): Response
     {
-        $aircraft = Aircraft::with('fleet', 'engines', 'maintenance')->find($id);
+        $aircraft = Aircraft::with('fleet', 'engines', 'maintenance', 'location')->find($id);
         $pireps = Pirep::where('aircraft_id', $id)->where('is_rental', false)->orderBy('submitted_at', 'desc')->get();
-        $hubs = Airport::where('is_hub', true)->get();
+        // $hubs = Airport::where('is_hub', true)->get();
         $maintenanceStatus = $this->checkAircraftMaintenanceStatus->execute($id);
 
-        return Inertia::render('Fleet/Aircraft', ['aircraft' => $aircraft, 'maintenanceStatus' => $maintenanceStatus, 'hubs' => $hubs, 'pireps' => $pireps]);
+        return Inertia::render('Fleet/Aircraft', ['aircraft' => $aircraft, 'maintenanceStatus' => $maintenanceStatus, 'pireps' => $pireps]);
     }
 }
