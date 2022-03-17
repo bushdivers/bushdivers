@@ -47,10 +47,10 @@ class GenerateContracts
             $polyShort = $this->createPolygon->execute($airport->lat, $airport->lon, 50);
             $polyMed = $this->createPolygon->execute($airport->lat, $airport->lon, 150);
             $polyLong = $this->createPolygon->execute($airport->lat, $airport->lon, 250);
-
-            $shortAirports = [];
-            $medAirports = [];
-            $longAirports = [];
+//
+//            $shortAirports = [];
+//            $medAirports = [];
+//            $longAirports = [];
 
             // get airports
             //$airports = Airport::all();
@@ -108,25 +108,6 @@ class GenerateContracts
                         WHERE distance BETWEEN 151 AND 300
                         ORDER BY distance ASC"
             ));
-
-//            foreach ($airports as $a) {
-//                $point = [$a->lat, $a->lon];
-//                if ($this->isPointInPolygon->execute($point, $polyShort)
-//                    && $this->calcDistanceBetweenPoints->execute($airport->lat, $airport->lon, $a->lat, $a->lon) <= 50) {
-//                    $shortAirports[] = $a;
-//                }
-//
-//                if ($this->isPointInPolygon->execute($point, $polyMed)
-//                    && $this->calcDistanceBetweenPoints->execute($airport->lat, $airport->lon, $a->lat, $a->lon) > 50
-//                    && $this->calcDistanceBetweenPoints->execute($airport->lat, $airport->lon, $a->lat, $a->lon) <= 150) {
-//                    $medAirports[] = $a;
-//                }
-//
-//                if ($this->isPointInPolygon->execute($point, $polyLong)
-//                    && $this->calcDistanceBetweenPoints->execute($airport->lat, $airport->lon, $a->lat, $a->lon) > 150) {
-//                    $longAirports[] = $a;
-//                }
-//            }
 
 
             // pick (n) random airports in each category

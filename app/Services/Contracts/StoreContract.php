@@ -18,6 +18,11 @@ class StoreContract
         $contract->contract_value = $value;
         $contract->heading = $heading;
         $contract->expires_at = Carbon::now()->addDays(rand(1,8));
+        if ($cargo['type'] == 1) {
+            $contract->payload = $cargo['qty'];
+        } else {
+            $contract->pax = $cargo['qty'];
+        }
 
         if ($custom) {
             $contract->is_available = 0;
@@ -32,6 +37,9 @@ class StoreContract
         $contractCargo->dep_airport_id = $start;
         $contractCargo->arr_airport_id = $dest;
         $contractCargo->contract_value = $value;
+        $contractCargo->distance = $distance;
+        $contractCargo->heading = $heading;
+        $contractCargo->contract_value = $value;
         if ($cargo['type'] == 1) {
             $contractCargo->contract_type_id = ContractType::Cargo;
         } else {
@@ -39,6 +47,7 @@ class StoreContract
         }
         $contractCargo->cargo = $cargo['name'];
         $contractCargo->cargo_qty = $cargo['qty'];
+
         $contractCargo->save();
     }
 }
