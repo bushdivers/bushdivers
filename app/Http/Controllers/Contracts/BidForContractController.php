@@ -34,15 +34,15 @@ class BidForContractController extends Controller
         $contract->is_available = false;
         $contract->save();
 
-        $criteria = [
-            'icao' => $request->icao,
-            'distance' => $request->distance,
-            'cargo' => $request->cargo,
-            'pax' => $request->pax
-        ];
+//        $criteria = [
+//            'icao' => $request->icao,
+//            'distance' => $request->distance,
+//            'cargo' => $request->cargo,
+//            'pax' => $request->pax
+//        ];
 
-        $contracts = $this->getContractsFromCriteria->execute($criteria);
-        $airport = Airport::where('identifier', $criteria['icao'])->first();
+        $contracts = $this->getContractsFromCriteria->execute($request->icao, $request->sort);
+        $airport = Airport::where('identifier', $request->icao)->first();
 
         return Inertia::render('Contracts/Contracts', ['contracts' => $contracts, 'airport' => $airport])->with(['success' => 'Contract accepted successfully']);
     }

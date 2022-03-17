@@ -84,6 +84,7 @@ const Contracts = ({ contracts, airport }) => {
     const data = {
       id: contract.id,
       icao: searchIcao,
+      sort: sort
     }
     Inertia.post('/contracts/bid', data)
   }
@@ -119,8 +120,16 @@ const Contracts = ({ contracts, airport }) => {
               <input id="icao" type="text" placeholder="search ICAO" className="form-input form" value={searchIcao} onChange={handleChange} />
             </div>
             <div><button onClick={() => handleSearch()} className="btn btn-secondary ml-2">Find</button></div>
-            <div><button onClick={() => toggleCustom()} className="btn btn-secondary ml-2">Custom</button></div>
-            <div><button onClick={() => toggleSort()} className="btn btn-light ml-2"><i className="material-icons md-16">sort</i></button></div>
+            <div>
+              <Tooltip direction="top" content="Create custom contract">
+                <button onClick={() => toggleCustom()} className="btn btn-secondary ml-2">Custom</button>
+              </Tooltip>
+            </div>
+            <div>
+              <Tooltip direction="top" content="Sort contract list">
+                <button onClick={() => toggleSort()} className="btn btn-light ml-2"><i className="material-icons md-16">sort</i></button>
+              </Tooltip>
+            </div>
           </div>
           {error && <span className="text-sm text-red-500">{error}</span>}
         </div>
@@ -140,46 +149,64 @@ const Contracts = ({ contracts, airport }) => {
       )}
       {showContracts && (<div className="absolute z-30 top-20 left-4 bottom-4 bg-white w-1/2 md:w-1/3 opacity-90 shadow rounded h-auto overflow-y-auto mb-2">
           {contracts && contracts.map((contract) => (
-            <div key={contract.id} onClick={() => updateSelectedContract(contract)} className={`${contract.id === selectedContract.id ? 'bg-orange-200 hover:bg-orange-100' : ''} border-t-2 text-sm cursor-pointer`}>
+            <div key={contract.id} onClick={() => updateSelectedContract(contract)} className={`${contract.id === selectedContract.id ? 'bg-orange-200 hover:bg-orange-100' : ''} border-t-2 text-sm cursor-pointer z-40`}>
               <div className="px-4 py-2 flex justify-between items-center">
+                <Tooltip direction="right" content="Expiry date">
                 <div className="text-xs text-gray-700">
                   {dayjs(contract.expires_at).format('DD/MM/YYYY HH:mm')}
                 </div>
+                </Tooltip>
+                <Tooltip direction="left" content="Accept contract">
                 <button onClick={() => bidForContract(contract)} className="btn btn-secondary btn-small">
                   <i className="material-icons md-16">check</i>
                 </button>
+                </Tooltip>
               </div>
               <div className="px-4 py-2 flex justify-between">
                 <div className="flex items-center space-x-4">
+                  <Tooltip direction="right" content="Number of cargo items">
                   <div className="mx-1 flex items-center">
                     <i className="material-icons md-16 mr-1">inventory</i>
                     <span>{contract.cargo.length}</span>
                   </div>
+                  </Tooltip>
+                  <Tooltip direction="bottom" content="Total cargo">
                   <div className="mx-1 flex items-center">
                     <i className="material-icons md-16 mr-1">work</i>
                     <span>{contract.payload ? <>{contract.payload}</> : <>0</>} lbs</span>
                   </div>
+                  </Tooltip>
+                  <Tooltip direction="bottom" content="Total pax">
                   <div className="mx-1 flex items-center">
                     <i className="material-icons md-16 mr-1">people</i>
                     <span>{contract.pax ? <>{contract.pax}</> : <>0</>}</span>
                   </div>
+                  </Tooltip>
+                  <Tooltip direction="bottom" content="Distance">
                   <div className="mx-1 flex items-center">
                     <i className="material-icons md-16 mr-1">explore</i>
                     <span>{contract.distance} nm</span>
                   </div>
+                  </Tooltip>
+                  <Tooltip direction="bottom" content="Heading">
                   <div className="mx-1 flex items-center">
                     <span style={{ transform: `rotate(${contract.heading}deg)` }}><i className="material-icons md-16 text-gray-800">north</i></span>
                   </div>
+                  </Tooltip>
+                  <Tooltip direction="left" content="Contract value">
                   <div className="mx-1 flex items-center">
                     <i className="material-icons md-16 mr-1">currency_bitcoin</i>
                     <span>${contract.contract_value}</span>
                   </div>
+                  </Tooltip>
                 </div>
               </div>
               <div className="flex justify-start pl-4 py-1">
+                <Tooltip direction="right" content="Show cargo details">
                 <button className="btn btn-light flex justify-center items-center text-center" onClick={() => toggleDetail(contract.id)}>
                   {showDetail && showDetailId === contract.id ? <i className="material-icons md-16">remove</i> : <i className="material-icons md-16">add</i>}
                 </button>
+                </Tooltip>
               </div>
               {showDetail && showDetailId === contract.id && (
               <div className="flex justify-between px-4 py-2">
@@ -187,27 +214,37 @@ const Contracts = ({ contracts, airport }) => {
                   {contracts && contract.cargo.map((c) => (
                     <div key="c.id" className="flex justify-between items-center cursor-pointer">
                       <div className="flex justify-between items-center text-sm">
+                        <Tooltip direction="right" content="Current location">
                         <div className="flex items-baseline space-x-1 mr-4">
                           <i className="material-icons md-16">location_on</i>
                           <div className="">{c.current_airport_id}</div>
                         </div>
+                        </Tooltip>
                         <div className="flex items-center space-x-1 mr-4">
+                          <Tooltip direction="top" content="Origin">
                           <div className="mr-1 flex items-center">
                             <i className="material-icons md-16 mr-1">flight_takeoff</i>
                             {c.dep_airport_id}
                           </div>
+                          </Tooltip>
+                          <Tooltip direction="top" content="Destination">
                           <div className="mr-2 flex items-center">
                             <i className="material-icons md-16 mr-1">flight_land</i>
                             {c.arr_airport_id}
                           </div>
+                          </Tooltip>
                         </div>
+                        <Tooltip direction="top" content="Cargo">
                         <div className="mr-2 flex items-center space-x-1">
                           <div className="mr-1">{c.cargo_qty} {c.contract_type_id === 1 ? 'lbs' : ''}</div>
                           <div className="mr-2">{c.cargo}</div>
                         </div>
+                        </Tooltip>
+                        <Tooltip direction="left" content="Heading">
                         <div className="flex items-center space-x-1">
                           <span style={{ transform: `rotate(${contract.heading}deg)` }}><i className="material-icons md-16 text-gray-800">north</i></span>
                         </div>
+                        </Tooltip>
                       </div>
                     </div>
                   ))}
