@@ -43,6 +43,7 @@ const Contracts = ({ contracts, airport }) => {
   const [selectedContract, setSelectedContract] = useState({})
   const [error, setError] = useState(null)
   const [showDetail, setShowDetail] = useState(false)
+  const [showDetailId, setShowDetailId] = useState(0)
   const [showCustom, setShowCustom] = useState(false)
   const [showContracts, setShowContracts] = useState(false)
 
@@ -92,8 +93,9 @@ const Contracts = ({ contracts, airport }) => {
     Inertia.post('/contracts/bid', data)
   }
 
-  const toggleDetail = () => {
+  const toggleDetail = (id) => {
     setShowDetail(!showDetail)
+    setShowDetailId(id)
   }
 
   return (
@@ -114,7 +116,7 @@ const Contracts = ({ contracts, airport }) => {
           <CustomContract departureIcao={values.icao} hideSection={() => setShowCustom(false)} />
         </div>
       )}
-      {showContracts && (<div className="absolute z-30 top-20 left-4 bottom-4 bg-white w-1/2 md:w-1/3 opacity-90 shadow rounded h-auto overflow-y-auto mt-2">
+      {showContracts && (<div className="absolute z-30 top-20 left-4 bottom-4 bg-white w-1/2 md:w-1/3 opacity-90 shadow rounded h-auto overflow-y-auto mb-2">
           {contracts && contracts.map((contract) => (
             <div key={contract.id} onClick={() => updateSelectedContract(contract)} className={`${contract.id === selectedContract.id ? 'bg-orange-200 hover:bg-orange-100' : ''} border-t-2 text-sm cursor-pointer`}>
               <div className="px-4 py-2 flex justify-between items-center">
@@ -133,28 +135,38 @@ const Contracts = ({ contracts, airport }) => {
                   </div>
                   <div className="mx-1 flex items-center">
                     <i className="material-icons md-16 mr-1">work</i>
-                    <span>{parseFloat(contract.cargo.filter(cc => cc.contract_type_id === 1).map(detail => detail.cargo_qty).reduce((total, num) => total + Math.fround(num), 0))} lbs</span>
+                    <span>{contract.payload ? <>{contract.payload}</> : <>0</>} lbs</span>
                   </div>
                   <div className="mx-1 flex items-center">
                     <i className="material-icons md-16 mr-1">people</i>
-                    <span>{parseFloat(contract.cargo.filter(cc => cc.contract_type_id === 2).map(detail => detail.cargo_qty).reduce((total, num) => total + Math.fround(num), 0))}</span>
+                    <span>{contract.pax ? <>{contract.pax}</> : <>0</>}</span>
                   </div>
                   <div className="mx-1 flex items-center">
-                    <i className="material-icons md-16 mr-1">location_on</i>
+                    <i className="material-icons md-16 mr-1">explore</i>
                     <span>{contract.distance} nm</span>
                   </div>
                   <div className="mx-1 flex items-center">
+                    <span style={{ transform: `rotate(${contract.heading}deg)` }}><i className="material-icons md-16 text-gray-800">north</i></span>
+                  </div>
+                  <div className="mx-1 flex items-center">
                     <i className="material-icons md-16 mr-1">currency_bitcoin</i>
-                    <span>${parseFloat(contract.cargo.map(detail => detail.contract_value).reduce((total, num) => total + Math.fround(num), 0)).toFixed(2)}</span>
+                    <span>${contract.contract_value}</span>
                   </div>
                 </div>
               </div>
+              <div className="flex justify-start pl-4 py-1">
+                <button className="btn btn-light flex justify-center items-center text-center" onClick={() => toggleDetail(contract.id)}>
+                  {showDetail && showDetailId === contract.id ? <i className="material-icons md-16">remove</i> : <i className="material-icons md-16">add</i>}
+                </button>
+              </div>
+              {showDetail && showDetailId === contract.id && (
               <div className="flex justify-between px-4 py-2">
                 <div className="mt-1 text-xs">
                   {contracts && contract.cargo.map((c) => (
                     <div key="c.id" className="flex justify-between items-center cursor-pointer">
                       <div className="flex justify-between items-center text-sm">
                         <div className="flex items-baseline space-x-1 mr-4">
+                          <i className="material-icons md-16">location_on</i>
                           <div className="">{c.current_airport_id}</div>
                         </div>
                         <div className="flex items-center space-x-1 mr-4">
@@ -167,16 +179,19 @@ const Contracts = ({ contracts, airport }) => {
                             {c.arr_airport_id}
                           </div>
                         </div>
-                        <div className="flex items-center space-x-1">
+                        <div className="mr-2 flex items-center space-x-1">
                           <div className="mr-1">{c.cargo_qty} {c.contract_type_id === 1 ? 'lbs' : ''}</div>
                           <div className="mr-2">{c.cargo}</div>
+                        </div>
+                        <div className="flex items-center space-x-1">
+                          <span style={{ transform: `rotate(${contract.heading}deg)` }}><i className="material-icons md-16 text-gray-800">north</i></span>
                         </div>
                       </div>
                     </div>
                   ))}
                 </div>
               </div>
-
+              )}
             </div>
           ))}
         </div>

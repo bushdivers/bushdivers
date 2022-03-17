@@ -207,15 +207,20 @@ var Contracts = function Contracts(_ref) {
       showDetail = _useState12[0],
       setShowDetail = _useState12[1];
 
-  var _useState13 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
+  var _useState13 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(0),
       _useState14 = _slicedToArray(_useState13, 2),
-      showCustom = _useState14[0],
-      setShowCustom = _useState14[1];
+      showDetailId = _useState14[0],
+      setShowDetailId = _useState14[1];
 
   var _useState15 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
       _useState16 = _slicedToArray(_useState15, 2),
-      showContracts = _useState16[0],
-      setShowContracts = _useState16[1];
+      showCustom = _useState16[0],
+      setShowCustom = _useState16[1];
+
+  var _useState17 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
+      _useState18 = _slicedToArray(_useState17, 2),
+      showContracts = _useState18[0],
+      setShowContracts = _useState18[1];
 
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
     if (contracts && airport) {
@@ -280,8 +285,9 @@ var Contracts = function Contracts(_ref) {
     _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_7__.Inertia.post('/contracts/bid', data);
   };
 
-  var toggleDetail = function toggleDetail() {
+  var toggleDetail = function toggleDetail(id) {
     setShowDetail(!showDetail);
+    setShowDetailId(id);
   };
 
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
@@ -334,7 +340,7 @@ var Contracts = function Contracts(_ref) {
         }
       })
     }), showContracts && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
-      className: "absolute z-30 top-20 left-4 bottom-4 bg-white w-1/2 md:w-1/3 opacity-90 shadow rounded h-auto overflow-y-auto mt-2",
+      className: "absolute z-30 top-20 left-4 bottom-4 bg-white w-1/2 md:w-1/3 opacity-90 shadow rounded h-auto overflow-y-auto mb-2",
       children: contracts && contracts.map(function (contract) {
         return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
           onClick: function onClick() {
@@ -374,13 +380,11 @@ var Contracts = function Contracts(_ref) {
                   className: "material-icons md-16 mr-1",
                   children: "work"
                 }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("span", {
-                  children: [parseFloat(contract.cargo.filter(function (cc) {
-                    return cc.contract_type_id === 1;
-                  }).map(function (detail) {
-                    return detail.cargo_qty;
-                  }).reduce(function (total, num) {
-                    return total + Math.fround(num);
-                  }, 0)), " lbs"]
+                  children: [contract.payload ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.Fragment, {
+                    children: contract.payload
+                  }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.Fragment, {
+                    children: "0"
+                  }), " lbs"]
                 })]
               }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
                 className: "mx-1 flex items-center",
@@ -388,37 +392,57 @@ var Contracts = function Contracts(_ref) {
                   className: "material-icons md-16 mr-1",
                   children: "people"
                 }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("span", {
-                  children: parseFloat(contract.cargo.filter(function (cc) {
-                    return cc.contract_type_id === 2;
-                  }).map(function (detail) {
-                    return detail.cargo_qty;
-                  }).reduce(function (total, num) {
-                    return total + Math.fround(num);
-                  }, 0))
+                  children: contract.pax ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.Fragment, {
+                    children: contract.pax
+                  }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.Fragment, {
+                    children: "0"
+                  })
                 })]
               }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
                 className: "mx-1 flex items-center",
                 children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("i", {
                   className: "material-icons md-16 mr-1",
-                  children: "location_on"
+                  children: "explore"
                 }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("span", {
                   children: [contract.distance, " nm"]
                 })]
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
+                className: "mx-1 flex items-center",
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("span", {
+                  style: {
+                    transform: "rotate(".concat(contract.heading, "deg)")
+                  },
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("i", {
+                    className: "material-icons md-16 text-gray-800",
+                    children: "north"
+                  })
+                })
               }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
                 className: "mx-1 flex items-center",
                 children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("i", {
                   className: "material-icons md-16 mr-1",
                   children: "currency_bitcoin"
                 }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("span", {
-                  children: ["$", parseFloat(contract.cargo.map(function (detail) {
-                    return detail.contract_value;
-                  }).reduce(function (total, num) {
-                    return total + Math.fround(num);
-                  }, 0)).toFixed(2)]
+                  children: ["$", contract.contract_value]
                 })]
               })]
             })
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
+            className: "flex justify-start pl-4 py-1",
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("button", {
+              className: "btn btn-light flex justify-center items-center text-center",
+              onClick: function onClick() {
+                return toggleDetail(contract.id);
+              },
+              children: showDetail && showDetailId === contract.id ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("i", {
+                className: "material-icons md-16",
+                children: "remove"
+              }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("i", {
+                className: "material-icons md-16",
+                children: "add"
+              })
+            })
+          }), showDetail && showDetailId === contract.id && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
             className: "flex justify-between px-4 py-2",
             children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
               className: "mt-1 text-xs",
@@ -427,12 +451,15 @@ var Contracts = function Contracts(_ref) {
                   className: "flex justify-between items-center cursor-pointer",
                   children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
                     className: "flex justify-between items-center text-sm",
-                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
+                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
                       className: "flex items-baseline space-x-1 mr-4",
-                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
+                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("i", {
+                        className: "material-icons md-16",
+                        children: "location_on"
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
                         className: "",
                         children: c.current_airport_id
-                      })
+                      })]
                     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
                       className: "flex items-center space-x-1 mr-4",
                       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
@@ -449,7 +476,7 @@ var Contracts = function Contracts(_ref) {
                         }), c.arr_airport_id]
                       })]
                     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
-                      className: "flex items-center space-x-1",
+                      className: "mr-2 flex items-center space-x-1",
                       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
                         className: "mr-1",
                         children: [c.cargo_qty, " ", c.contract_type_id === 1 ? 'lbs' : '']
@@ -457,6 +484,17 @@ var Contracts = function Contracts(_ref) {
                         className: "mr-2",
                         children: c.cargo
                       })]
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
+                      className: "flex items-center space-x-1",
+                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("span", {
+                        style: {
+                          transform: "rotate(".concat(contract.heading, "deg)")
+                        },
+                        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("i", {
+                          className: "material-icons md-16 text-gray-800",
+                          children: "north"
+                        })
+                      })
                     })]
                   })
                 }, "c.id");
