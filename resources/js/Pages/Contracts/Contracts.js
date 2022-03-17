@@ -156,6 +156,11 @@ const Contracts = ({ contracts, airport }) => {
                   {dayjs(contract.expires_at).format('DD/MM/YYYY HH:mm')}
                 </div>
                 </Tooltip>
+                <Tooltip direction="bottom" content="Destination">
+                  <div className="text-sm text-gray-800 font-bold">
+                    {contract.arr_airport_id}
+                  </div>
+                </Tooltip>
                 <Tooltip direction="left" content="Accept contract">
                 <button onClick={() => bidForContract(contract)} className="btn btn-secondary btn-small">
                   <i className="material-icons md-16">check</i>

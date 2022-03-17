@@ -457,6 +457,13 @@ var Contracts = function Contracts(_ref) {
                 children: (0,_Helpers_date_helpers__WEBPACK_IMPORTED_MODULE_5__.default)(contract.expires_at).format('DD/MM/YYYY HH:mm')
               })
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_Shared_Elements_Tooltip__WEBPACK_IMPORTED_MODULE_3__.default, {
+              direction: "bottom",
+              content: "Destination",
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
+                className: "text-sm text-gray-800 font-bold",
+                children: contract.arr_airport_id
+              })
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_Shared_Elements_Tooltip__WEBPACK_IMPORTED_MODULE_3__.default, {
               direction: "left",
               content: "Accept contract",
               children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("button", {
