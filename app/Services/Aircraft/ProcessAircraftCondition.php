@@ -19,12 +19,17 @@ class ProcessAircraftCondition
         $this->updateAircraftCondition = $updateAircraftCondition;
     }
 
-    public function execute($aircraftId)
+    public function execute($aircraftId, $landingRate = 0)
     {
         $aircraft = Aircraft::find($aircraftId);
         $engines = AircraftEngine::where('aircraft_id', $aircraftId)->get();
 
         $aircraftWear = $this->calculateAircraftWear->execute($aircraft);
+        if ($landingRate >= 200 && $landingRate < 350) {
+            $aircraftWear = round($aircraftWear * 1.5);
+        } elseif ($landingRate >= 350) {
+            $aircraftWear = round($aircraftWear * 2.5);
+        }
         $this->updateAircraftCondition->execute($aircraftId, MaintenanceTypes::GeneralMaintenance, $aircraft->wear - $aircraftWear);
 
         foreach ($engines as $engine) {

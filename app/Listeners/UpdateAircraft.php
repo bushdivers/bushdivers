@@ -70,11 +70,9 @@ class UpdateAircraft
             $this->updateAircraftLocation->execute($event->pirep->aircraft_id, $event->pirep->destination_airport_id, $event->pirep->current_lat, $event->pirep->current_lon);
             $this->updateAircraftLastFlight->execute($event->pirep->aircraft_id, $event->pirep->submitted_at);
             $this->updateAircraftMaintenanceTimes->execute($event->pirep->aircraft_id, $event->pirep->flight_time);
+            $this->processAircraftCondition->execute($event->pirep->aircraft_id, $event->pirep->landing_rate);
         } else {
             $this->updateRentalAfterFlight->execute($event->pirep->aircraft_id, $event->pirep->fuel_used, $event->pirep->destination_airport_id);
         }
-
-        $this->processAircraftCondition->execute($event->pirep->aircraft_id);
-
     }
 }
