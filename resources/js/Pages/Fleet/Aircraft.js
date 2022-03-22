@@ -6,6 +6,7 @@ import { usePage } from '@inertiajs/inertia-react'
 import { Inertia } from '@inertiajs/inertia'
 import dayjs from 'dayjs'
 import AppLayout from '../../Shared/AppLayout'
+import AircraftCondition from '../../Shared/Components/Fleet/AircraftCondition'
 
 const Aircraft = ({ aircraft, maintenanceStatus, pireps }) => {
   const { auth } = usePage().props
@@ -32,6 +33,10 @@ const Aircraft = ({ aircraft, maintenanceStatus, pireps }) => {
         return 'Engine TBO'
       case 3:
         return 'Annual airframe inspection'
+      case 4:
+        return 'General Maintenance'
+      case 5:
+        return 'Engine Maintenance'
     }
   }
 
@@ -63,7 +68,8 @@ const Aircraft = ({ aircraft, maintenanceStatus, pireps }) => {
     const data = {
       aircraft: aircraft.id,
       engine,
-      type: 2
+      type: 2,
+      cat: 'Inspection'
     }
     Inertia.post('/aircraft/maintenance', data)
   }
@@ -81,7 +87,8 @@ const Aircraft = ({ aircraft, maintenanceStatus, pireps }) => {
     const data = {
       aircraft: aircraft.id,
       engine,
-      type: 1
+      type: 1,
+      cat: 'Inspection'
     }
     Inertia.post('/aircraft/maintenance', data)
   }
@@ -98,7 +105,26 @@ const Aircraft = ({ aircraft, maintenanceStatus, pireps }) => {
 
     const data = {
       aircraft: aircraft.id,
-      type: 3
+      type: 3,
+      cat: 'Inspection'
+    }
+    Inertia.post('/aircraft/maintenance', data)
+  }
+
+  const handleGeneralMaintenance = (aircraft, maintenanceType, engine = null) => {
+    const res = checkAircraftAtHub(aircraft)
+    if (!res) {
+      window.alert('Maintenance is not available at this airport')
+      return
+    }
+    const accept = window.confirm(`Are you sure you want to proceed with ${maintenanceType === 4 ? 'General' : 'Engine'} maintenance?`)
+    if (!accept) return
+
+    const data = {
+      aircraft: aircraft.id,
+      engine,
+      type: maintenanceType,
+      cat: 'General'
     }
     Inertia.post('/aircraft/maintenance', data)
   }
@@ -156,22 +182,28 @@ const Aircraft = ({ aircraft, maintenanceStatus, pireps }) => {
           </div>
           { !aircraft.is_rental && (
             <div className="bg-white p-4 rounded shadow overflow-x-auto my-2">
-             <div className="text-lg mb-2">Maintenance</div>
-            {shouldShowMaintenance() &&
-              (
-                <div className="flex justify-between">
-                  <div>
-                    <button className="btn btn-secondary my-1" onClick={() => handleAnnual(aircraft)}>Perform Annual</button>
+              <div className="flex justify-between">
+                <div className="text-lg mb-2">Maintenance</div>
+                {shouldShowMaintenance() &&
+                (
+                  <div className="flex justify-between space-x-1">
+                    <button className="btn btn-secondary btn-small my-1" onClick={() => handleGeneralMaintenance(aircraft, 4)}>General Maintenance</button>
+                    <button className="btn btn-secondary my-1 btn-small" onClick={() => handleAnnual(aircraft)}>Annual Inspection</button>
                   </div>
-                </div>
-              )
-            }
+                )
+                }
+              </div>
+              <div className="mt-2 my-4">
+                <div>Airframe Condition</div>
+                <AircraftCondition aircraftCondition={aircraft.wear} />
+              </div>
             <table className="table table-auto table-condensed">
               <thead>
               <tr>
                 <th>Engine #</th>
                 <th>Time since 100 hr</th>
                 <th>Time since TBO</th>
+                <th>Condition</th>
                 {shouldShowMaintenance() && <th>Action</th>}
               </tr>
               </thead>
@@ -179,12 +211,20 @@ const Aircraft = ({ aircraft, maintenanceStatus, pireps }) => {
               {aircraft.engines.map((engine) => (
                 <tr key={engine.id}>
                   <td>{engine.engine_no}</td>
-                  <td>{(engine.mins_since_100hr / 60).toFixed(2)}</td>
-                  <td>{(engine.mins_since_tbo / 60).toFixed(2)}</td>
+                  <td>
+                    {(engine.mins_since_100hr / 60).toFixed(2)}
+                    {shouldShowMaintenance() && <button className="btn btn-secondary ml-2 btn-small" onClick={() => handle100hr(aircraft, engine.id)}>100 hr</button>}
+                  </td>
+                  <td>
+                    {(engine.mins_since_tbo / 60).toFixed(2)}
+                    {shouldShowMaintenance() && <button className="btn btn-secondary ml-2 btn-small" onClick={() => handleTBO(aircraft, engine.id)}>TBO</button>}
+                  </td>
+                  <td>
+                    <AircraftCondition aircraftCondition={engine.wear} />
+                  </td>
                   {shouldShowMaintenance() &&
                     <td>
-                      <button className="btn btn-secondary" onClick={() => handle100hr(aircraft, engine.id)}>Perform 100 hr</button>
-                      <button className="btn btn-secondary ml-2" onClick={() => handleTBO(aircraft, engine.id)}>Perform TBO</button>
+                      <button onClick={() => handleGeneralMaintenance(aircraft, 5, engine.id)} className="btn btn-secondary btn-small">Engine Maintenance</button>
                     </td>}
                 </tr>
               ))}

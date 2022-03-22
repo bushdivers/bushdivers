@@ -27,7 +27,8 @@ class AircraftFactory extends Factory
             'fuel_onboard' => 26.8,
             'state' => 1,
             'status' => 1,
-            'hub_id' => 'AYMR'
+            'hub_id' => 'AYMR',
+            'flight_time_mins' => 0
         ];
     }
 }
