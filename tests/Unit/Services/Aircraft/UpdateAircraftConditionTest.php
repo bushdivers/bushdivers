@@ -6,20 +6,20 @@ use App\Models\Aircraft;
 use App\Models\AircraftEngine;
 use App\Models\Enums\MaintenanceTypes;
 use App\Models\Fleet;
-use App\Services\Aircraft\ResetAircraftCondition;
+use App\Services\Aircraft\UpdateAircraftCondition;
 use App\Services\Aircraft\UpdateAircraftMaintenanceTimes;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class ResetAircraftConditionTest extends TestCase
+class UpdateAircraftConditionTest extends TestCase
 {
     use RefreshDatabase;
 
     protected Model $aircraft;
     protected Model $aircraftEngine;
     protected Model $fleet;
-    protected ResetAircraftCondition $resetAircraftCondition;
+    protected UpdateAircraftCondition $resetAircraftCondition;
 
     protected function setUp(): void
     {
@@ -34,7 +34,7 @@ class ResetAircraftConditionTest extends TestCase
             'wear' => 50
         ]);
 
-        $this->resetAircraftCondition = $this->app->make(ResetAircraftCondition::class);
+        $this->resetAircraftCondition = $this->app->make(UpdateAircraftCondition::class);
     }
 
     /**
@@ -44,14 +44,14 @@ class ResetAircraftConditionTest extends TestCase
      */
     public function test_aircraft_wear_updated()
     {
-        $this->resetAircraftCondition->execute($this->aircraft->id, MaintenanceTypes::GeneralMaintenance);
+        $this->resetAircraftCondition->execute($this->aircraft->id, MaintenanceTypes::GeneralMaintenance, 100);
         $this->aircraft->refresh();
         $this->assertEquals(100, $this->aircraft->wear);
     }
 
     public function test_engine_wear_updated()
     {
-        $this->resetAircraftCondition->execute($this->aircraft->id, MaintenanceTypes::EngineMaintenance, $this->aircraftEngine->id);
+        $this->resetAircraftCondition->execute($this->aircraft->id, MaintenanceTypes::EngineMaintenance, 100, $this->aircraftEngine->id);
         $this->aircraftEngine->refresh();
         $this->assertEquals(100, $this->aircraftEngine->wear);
     }

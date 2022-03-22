@@ -7,19 +7,19 @@ use App\Models\AircraftEngine;
 use App\Models\Enums\MaintenanceTypes;
 use Carbon\Carbon;
 
-class ResetAircraftCondition
+class UpdateAircraftCondition
 {
-    public function execute($aircraftId, $type, $engineId = null)
+    public function execute($aircraftId, $type, $wear = 100, $engineId = null)
     {
         switch ($type) {
             case MaintenanceTypes::GeneralMaintenance:
                 $engine = Aircraft::find($aircraftId);
-                $engine->wear = 100;
+                $engine->wear = $wear;
                 $engine->save();
                 break;
             case MaintenanceTypes::EngineMaintenance:
                 $engine = AircraftEngine::find($engineId);
-                $engine->wear = 100;
+                $engine->wear = $wear;
                 $engine->save();
                 break;
         }

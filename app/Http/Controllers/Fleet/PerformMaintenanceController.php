@@ -11,7 +11,7 @@ use App\Models\Enums\MaintenanceTypes;
 use App\Models\Enums\TransactionTypes;
 use App\Services\Aircraft\AddMaintenanceLog;
 use App\Services\Aircraft\GetMaintenanceCost;
-use App\Services\Aircraft\ResetAircraftCondition;
+use App\Services\Aircraft\UpdateAircraftCondition;
 use App\Services\Aircraft\ResetAircraftMaintenanceTimes;
 use App\Services\Finance\AddAirlineTransaction;
 use App\Services\Finance\AddUserTransaction;
@@ -23,7 +23,7 @@ use Illuminate\Support\Facades\DB;
 class PerformMaintenanceController extends Controller
 {
     protected ResetAircraftMaintenanceTimes $resetAircraftMaintenanceTimes;
-    protected ResetAircraftCondition $resetAircraftCondition;
+    protected UpdateAircraftCondition $updateAircraftCondition;
     protected AddMaintenanceLog $addMaintenanceLog;
     protected AddAirlineTransaction $addAirlineTransaction;
     protected AddUserTransaction $addUserTransaction;
@@ -35,7 +35,7 @@ class PerformMaintenanceController extends Controller
         AddAirlineTransaction $addAirlineTransaction,
         AddUserTransaction $addUserTransaction,
         GetMaintenanceCost $getMaintenanceCost,
-        ResetAircraftCondition $resetAircraftCondition
+        UpdateAircraftCondition $updateAircraftCondition
     )
     {
         $this->resetAircraftMaintenanceTimes = $resetAircraftMaintenanceTimes;
@@ -43,7 +43,7 @@ class PerformMaintenanceController extends Controller
         $this->addAirlineTransaction = $addAirlineTransaction;
         $this->addUserTransaction = $addUserTransaction;
         $this->getMaintenanceCost = $getMaintenanceCost;
-        $this->resetAircraftCondition = $resetAircraftCondition;
+        $this->updateAircraftCondition = $updateAircraftCondition;
     }
 
     /**
@@ -98,7 +98,7 @@ class PerformMaintenanceController extends Controller
             }
         }
         if ($request->type == 4 || $request->type == 5) {
-            $this->resetAircraftCondition->execute($request->aircraft, $request->type, $request->engine);
+            $this->updateAircraftCondition->execute($request->aircraft, $request->type, $request->engine);
         } else {
             // process maintenance
             $this->resetAircraftMaintenanceTimes->execute($request->aircraft, $request->type, $request->engine);
