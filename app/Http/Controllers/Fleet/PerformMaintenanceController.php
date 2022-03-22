@@ -5,11 +5,13 @@ namespace App\Http\Controllers\Fleet;
 use App\Http\Controllers\Controller;
 use App\Models\AccountLedger;
 use App\Models\Aircraft;
+use App\Models\AircraftEngine;
 use App\Models\Enums\AirlineTransactionTypes;
 use App\Models\Enums\MaintenanceTypes;
 use App\Models\Enums\TransactionTypes;
 use App\Services\Aircraft\AddMaintenanceLog;
 use App\Services\Aircraft\GetMaintenanceCost;
+use App\Services\Aircraft\ResetAircraftCondition;
 use App\Services\Aircraft\ResetAircraftMaintenanceTimes;
 use App\Services\Finance\AddAirlineTransaction;
 use App\Services\Finance\AddUserTransaction;
@@ -21,6 +23,7 @@ use Illuminate\Support\Facades\DB;
 class PerformMaintenanceController extends Controller
 {
     protected ResetAircraftMaintenanceTimes $resetAircraftMaintenanceTimes;
+    protected ResetAircraftCondition $resetAircraftCondition;
     protected AddMaintenanceLog $addMaintenanceLog;
     protected AddAirlineTransaction $addAirlineTransaction;
     protected AddUserTransaction $addUserTransaction;
@@ -31,7 +34,8 @@ class PerformMaintenanceController extends Controller
         AddMaintenanceLog $addMaintenanceLog,
         AddAirlineTransaction $addAirlineTransaction,
         AddUserTransaction $addUserTransaction,
-        GetMaintenanceCost $getMaintenanceCost
+        GetMaintenanceCost $getMaintenanceCost,
+        ResetAircraftCondition $resetAircraftCondition
     )
     {
         $this->resetAircraftMaintenanceTimes = $resetAircraftMaintenanceTimes;
@@ -39,6 +43,7 @@ class PerformMaintenanceController extends Controller
         $this->addAirlineTransaction = $addAirlineTransaction;
         $this->addUserTransaction = $addUserTransaction;
         $this->getMaintenanceCost = $getMaintenanceCost;
+        $this->resetAircraftCondition = $resetAircraftCondition;
     }
 
     /**
@@ -49,9 +54,31 @@ class PerformMaintenanceController extends Controller
      */
     public function __invoke(Request $request): RedirectResponse
     {
+        $engine = null;
         $aircraft = Aircraft::find($request->aircraft);
+        if ($request->engine) {
+            $engine = AircraftEngine::find($request->engine);
+        }
         // get cost
         $cost = $this->getMaintenanceCost->execute($request->type, $aircraft->fleet->size);
+
+        if ($request->type == 4) {
+            if ($aircraft->wear < 70 && $aircraft->wear >= 45) {
+                $cost = $cost * 1.75;
+            }
+            if ($aircraft->wear < 45) {
+                $cost = $cost * 2.75;
+            }
+        }
+
+        if ($request->type == 5) {
+            if ($engine->wear < 70 && $engine->wear >= 45) {
+                $cost = $cost * 1.75;
+            }
+            if ($engine->wear < 45) {
+                $cost = $cost * 2.75;
+            }
+        }
 
         if ($aircraft->owner_id > 0) {
             $userBalance = $balance = DB::table('user_accounts')
@@ -70,9 +97,13 @@ class PerformMaintenanceController extends Controller
                 return redirect()->back()->with(['error' => 'Insufficient funds to perform maintenance']);
             }
         }
+        if ($request->type == 4 || $request->type == 5) {
+            $this->resetAircraftCondition->execute($request->aircraft, $request->type, $request->engine);
+        } else {
+            // process maintenance
+            $this->resetAircraftMaintenanceTimes->execute($request->aircraft, $request->type, $request->engine);
+        }
 
-        // process maintenance
-        $this->resetAircraftMaintenanceTimes->execute($request->aircraft, $request->type, $request->engine);
         // add maintenance log
         $this->addMaintenanceLog->execute($request->aircraft, $request->type, Auth::user()->id, $cost, $request->engine);
         // add transaction

@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link, usePage } from '@inertiajs/inertia-react'
+import AircraftCondition from './AircraftCondition'
 
 const FleetCardContent = ({ fleet }) => {
   const { auth } = usePage().props
@@ -79,6 +80,7 @@ const FleetCardContent = ({ fleet }) => {
               <th scope="col">Current Location</th>
               <th scope="col">Flight Time (minutes)</th>
               <th scope="col">Status</th>
+              <th scope="col">Overall Condition</th>
               {shouldShowMaintenance() && <th scope="col">Action</th>}
             </tr>
             </thead>
@@ -90,6 +92,9 @@ const FleetCardContent = ({ fleet }) => {
                 <td><Link href={`/airports/${aircraft.current_airport_id}`}>{aircraft.current_airport_id}</Link></td>
                 <td>{aircraft.flight_time_mins}</td>
                 <td>{renderAircraftStatus(aircraft.state)} {aircraft.maintenance_status && <span className="ml-2 text-orange-500"><i className="material-icons">engineering</i></span>}</td>
+                <td>
+                  <AircraftCondition aircraftCondition={aircraft.total_condition} />
+                </td>
                 {shouldShowMaintenance() && <td><Link href={`/aircraft/${aircraft.id}`} className="btn btn-secondary btn-small">Maintenance</Link></td>}
               </tr>
             ))}
