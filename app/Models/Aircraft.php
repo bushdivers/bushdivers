@@ -75,8 +75,10 @@ class Aircraft extends Model
 
     public function getTotalConditionAttribute()
     {
-        $engineWear = AircraftEngine::where('aircraft_id', $this->id)->sum('wear');
-        $total = $this->wear + $engineWear;
-        return round($total / 2);
+        $engines = AircraftEngine::where('aircraft_id', $this->id)->get();
+        $numEngines = $engines->count();
+        $totalEngineWear = $engines->sum('wear');
+        $total = $this->wear + $totalEngineWear;
+        return round($total / ($numEngines + 1));
     }
 }
