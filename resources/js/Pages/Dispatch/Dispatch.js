@@ -33,12 +33,11 @@ const Dispatch = ({ cargo, aircraft }) => {
   }
 
   function handleAircraftSelect (ac) {
-    console.log(ac)
     setSubmitError(null)
     setSelectedAircraft(aircraft.find(a => a.registration === ac.registration))
     setFuel(ac.fuel_onboard)
-    if (ac.maintenance_status) {
-      window.alert('This aircraft is in need of maintenance, and therefore cannot be used for commercial purposes')
+    if (ac.maintenance_status || ac.total_condition <= 25) {
+      window.alert('This aircraft is in need of maintenance, and therefore cannot be used for commercial purposes - please head to nearest size 4+ airport or hub for repairs.')
       setDeadHead(true)
     } else {
       setDeadHead(false)
