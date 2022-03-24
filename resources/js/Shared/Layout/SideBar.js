@@ -40,7 +40,7 @@ const SideBar = ({ isNavVisible, setNavState }) => {
           <NavItem link="/logbook" icon="text_snippet" text="Logbook" />
           <NavItem link="/my-finances" icon="account_balance" text="My Finances" />
           <NavItem link="/jumpseat" icon="airplane_ticket" text="Jumpseat" />
-          <NavItem link="/rentals" icon="flight_takeoff" text="Aircraft Rentals" />
+          <NavItem link="/marketplace" icon="flight_takeoff" text="Marketplace" />
           <NavItem link="/logout" icon="lock" text="Sign Out" />
           {auth.user.is_admin
             ? (

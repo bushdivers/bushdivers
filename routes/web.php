@@ -102,6 +102,16 @@ Route::middleware('auth')->group(function () {
     Route::post('/aircraft/maintenance', \App\Http\Controllers\Fleet\PerformMaintenanceController::class)
         ->name('aircraft.maintenance');
 
+    // marketplace
+    Route::get('/marketplace', \App\Http\Controllers\MarketPlace\ShowMarketPlaceController::class)
+        ->name('marketplace');
+    Route::get('/marketplace/{manufacturer}', \App\Http\Controllers\MarketPlace\ShowManufacturerController::class)
+        ->name('marketplace.manufacture');
+    Route::get('/marketplace/new/{fleet}', \App\Http\Controllers\MarketPlace\ShowPurchaseNewController::class)
+        ->name('marketplace.new');
+    Route::post('/marketplace/purchase', \App\Http\Controllers\MarketPlace\PurchaseNewController::class)
+        ->name('marketplace/new');
+
 
     // Flights
     Route::get('/available-contracts', \App\Http\Controllers\Contracts\ShowActiveContractsController::class)

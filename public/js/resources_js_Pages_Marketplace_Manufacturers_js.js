@@ -1,4 +1,4 @@
-(self["webpackChunk"] = self["webpackChunk"] || []).push([["resources_js_Pages_General_CompanyFinances_js"],{
+(self["webpackChunk"] = self["webpackChunk"] || []).push([["resources_js_Pages_Marketplace_Manufacturers_js"],{
 
 /***/ "./resources/js/Helpers/date.helpers.js":
 /*!**********************************************!*\
@@ -36,10 +36,10 @@ var convertMinuteDecimalToHoursAndMinutes = function convertMinuteDecimalToHours
 
 /***/ }),
 
-/***/ "./resources/js/Pages/General/CompanyFinances.js":
-/*!*******************************************************!*\
-  !*** ./resources/js/Pages/General/CompanyFinances.js ***!
-  \*******************************************************/
+/***/ "./resources/js/Pages/Marketplace/Manufacturers.js":
+/*!*********************************************************!*\
+  !*** ./resources/js/Pages/Marketplace/Manufacturers.js ***!
+  \*********************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -48,8 +48,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var _Shared_Elements_Pagination__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../Shared/Elements/Pagination */ "./resources/js/Shared/Elements/Pagination.js");
-/* harmony import */ var _Shared_AppLayout__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../Shared/AppLayout */ "./resources/js/Shared/AppLayout.js");
+/* harmony import */ var _Shared_AppLayout__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../Shared/AppLayout */ "./resources/js/Shared/AppLayout.js");
+/* harmony import */ var _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @inertiajs/inertia */ "./node_modules/@inertiajs/inertia/dist/index.js");
 /* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 
 
@@ -57,132 +57,44 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var CompanyFinances = function CompanyFinances(_ref) {
-  var accounts = _ref.accounts,
-      balance = _ref.balance,
-      aircraftStorage = _ref.aircraftStorage,
-      aircraftOps = _ref.aircraftOps,
-      hubs = _ref.hubs;
+var Manufacturers = function Manufacturers(_ref) {
+  var manufacturers = _ref.manufacturers;
 
-  var renderTransactionType = function renderTransactionType(transactionType) {
-    switch (transactionType) {
-      case 1:
-        return 'Hub Rental';
-
-      case 2:
-        return 'Aircraft Storage';
-
-      case 3:
-        return 'Aircraft Operations';
-
-      case 4:
-        return 'Aircraft Maintenance';
-
-      case 5:
-        return 'Ground Handling';
-
-      case 6:
-        return 'Landing Fees';
-
-      case 7:
-        return 'Fuel Costs';
-
-      case 8:
-        return 'Contract Income';
-
-      case 9:
-        return 'Contract Pilot Pay';
-
-      case 10:
-        return 'General Expenditure';
-    }
+  var selectManufacturer = function selectManufacturer(manufacturer) {
+    _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_2__.Inertia.get("marketplace/".concat(manufacturer));
   };
 
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
     className: "p-4",
-    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-      className: "flex flex-col md:flex-row md:justify-between",
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-        className: "md:w-1/2 md:mx-2",
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-          className: "bg-white shadow rounded p-4 mt-2",
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
-            className: "text-xl",
-            children: "Account Balance"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-            className: "text-2xl",
-            children: ["$", balance.toFixed(2)]
-          })]
-        }), accounts && accounts.data.map(function (entry) {
-          return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-            className: "bg-white shadow rounded p-4 mt-2 flex justify-between",
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-              children: ["$", entry.total, " ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("br", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("span", {
-                className: "text-sm",
-                children: renderTransactionType(entry.transaction_type)
-              })]
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-              children: ["memo: ", entry.memo]
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
-              children: entry.created_at
-            })]
-          }, entry.id);
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
-          className: "mt-2",
-          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_Shared_Elements_Pagination__WEBPACK_IMPORTED_MODULE_1__.default, {
-            pages: accounts
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("p", {
+      children: "Select a manufacturer:"
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+      className: "flex flex-wrap justify-start mt-4",
+      children: manufacturers && manufacturers.map(function (man) {
+        return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+          onClick: function onClick() {
+            return selectManufacturer(man.manufacturer);
+          },
+          className: "bg-white rounded shadow p-4 m-2 w-1/4 cursor-pointer",
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+            className: "text-lg",
+            children: man.manufacturer
           })
-        })]
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
-        className: "md:w-1/2 md:mx-2",
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-          className: "bg-white shadow rounded p-4 mt-2",
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
-            className: "text-xl mb-2",
-            children: "Monthly Costs"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-            className: "my-1",
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("span", {
-              className: "text-lg my-1",
-              children: "Aircraft Operations: "
-            }), " ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("br", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("span", {
-              className: "text-xl",
-              children: ["$", aircraftOps]
-            })]
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-            className: "my-1",
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("span", {
-              className: "text-lg my-1",
-              children: "Aircraft Storage: "
-            }), " ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("br", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("span", {
-              className: "text-xl",
-              children: ["$", aircraftStorage]
-            })]
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-            className: "my-1",
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("span", {
-              className: "text-lg my-1",
-              children: "Hub Rentals: "
-            }), " ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("br", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("span", {
-              className: "text-xl",
-              children: ["$", hubs]
-            })]
-          })]
-        })
-      })]
-    })
+        }, man.manufacturer);
+      })
+    })]
   });
 };
 
-CompanyFinances.layout = function (page) {
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_Shared_AppLayout__WEBPACK_IMPORTED_MODULE_2__.default, {
+Manufacturers.layout = function (page) {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_Shared_AppLayout__WEBPACK_IMPORTED_MODULE_1__.default, {
     children: page,
-    title: "Bush Divers Finances",
-    heading: "Bush Divers Finances"
+    title: "Marketplace",
+    heading: "Marketplace"
   });
 };
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (CompanyFinances);
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Manufacturers);
 
 /***/ }),
 
@@ -320,91 +232,6 @@ var FlashMessage = function FlashMessage(props) {
 };
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (FlashMessage);
-
-/***/ }),
-
-/***/ "./resources/js/Shared/Elements/Pagination.js":
-/*!****************************************************!*\
-  !*** ./resources/js/Shared/Elements/Pagination.js ***!
-  \****************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var _inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @inertiajs/inertia-react */ "./node_modules/@inertiajs/inertia-react/dist/index.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
-
-
-
-
-
-var Pagination = function Pagination(props) {
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
-    className: "bg-white px-4 py-3 flex items-center justify-between rounded sm:px-6",
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
-      className: "flex-1 flex justify-between sm:hidden",
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("a", {
-        href: "#",
-        className: "relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50",
-        children: "Previous"
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("a", {
-        href: "#",
-        className: "ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50",
-        children: "Next"
-      })]
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
-      className: "hidden sm:flex-1 sm:flex sm:items-center sm:justify-start",
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("p", {
-          className: "text-sm text-gray-700",
-          children: ["Showing", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("span", {
-            className: "font-medium mx-1",
-            children: props.pages.from
-          }), "to", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("span", {
-            className: "font-medium mx-1",
-            children: props.pages.to
-          }), "of", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("span", {
-            className: "font-medium mx-1",
-            children: props.pages.total
-          }), "results"]
-        })
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
-        className: "pl-4",
-        children: props.pages.total > props.pages.per_page && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("nav", {
-          className: "relative z-0 inline-flex rounded-md shadow-sm -space-x-px",
-          "aria-label": "Pagination",
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Link, {
-            href: props.pages.prev_page_url,
-            className: "relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50",
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("span", {
-              className: "sr-only",
-              children: "Previous"
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("i", {
-              className: "material-icons md-18 hover:no-underline",
-              children: "chevron_left"
-            })]
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Link, {
-            href: props.pages.next_page_url,
-            className: "relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50",
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("span", {
-              className: "sr-only",
-              children: "Next"
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("i", {
-              className: "material-icons md-18 hover:no-underline",
-              children: "chevron_right"
-            })]
-          })]
-        })
-      })]
-    })]
-  });
-};
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Pagination);
 
 /***/ }),
 

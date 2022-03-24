@@ -96,6 +96,9 @@ var MyFinances = function MyFinances(_ref) {
       case 11:
         return 'Monthly Aircraft Ownership cost';
 
+      case 12:
+        return 'Aircraft Purchase';
+
       default:
         return 'Other';
     }
@@ -702,9 +705,9 @@ var SideBar = function SideBar(_ref) {
           icon: "airplane_ticket",
           text: "Jumpseat"
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_Navigation_NavItem__WEBPACK_IMPORTED_MODULE_2__.default, {
-          link: "/rentals",
+          link: "/marketplace",
           icon: "flight_takeoff",
-          text: "Aircraft Rentals"
+          text: "Marketplace"
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_Navigation_NavItem__WEBPACK_IMPORTED_MODULE_2__.default, {
           link: "/logout",
           icon: "lock",
