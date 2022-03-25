@@ -24,6 +24,7 @@ const PurchaseNew = ({ fleet }) => {
   const [showFinanceCalc, setShowFinanceCalc] = useState(false)
   const [financeCost, setFinanceCost] = useState(0)
   const [purchaseMethod, setPurchaseMethod] = useState('buy')
+  const [calculated, setCalculated] = useState(false)
 
   const handleDeliveryChange = (e) => {
     setDeliver(e.target.checked)
@@ -106,6 +107,7 @@ const PurchaseNew = ({ fleet }) => {
     const interest = (principal * interestRate * termInYears)
     const amount = (principal + interest).toFixed(2)
     const monthly = (amount / term).toFixed(2)
+    setCalculated(true)
     setFinanceCost(interest)
     setFinanceAmount(amount)
     setMonthlyPayments(monthly)
@@ -143,6 +145,10 @@ const PurchaseNew = ({ fleet }) => {
       }
       Inertia.post('/marketplace/purchase', data)
     } else if (pMethod === 'finance') {
+      if (!calculated) {
+        window.alert('You need to calculate a finance agreement')
+        return
+      }
       const data = {
         fleetId: fleet.id,
         deliveryIcao: deliveryLocation,
@@ -225,7 +231,8 @@ const PurchaseNew = ({ fleet }) => {
                 <div className="flex justify-between"><span>Total Amount Payable</span><span>${financeAmount}</span></div>
                 <div className="flex justify-between"><span>Cost of Finance (interest @ 8%)</span><span>${(financeCost).toFixed(2)}</span></div>
               </div>
-              <div className="mt-4 flex justify-end">
+              <div className="mt-4 flex justify-between">
+                <div className="text-sm italic">Terms: Payments made on 1st of each month; More than two missed payments will result on aircraft being reclaimed.</div>
                 <button onClick={() => purchase('finance')} className="btn btn-secondary">Confirm Finance</button>
               </div>
             </div>

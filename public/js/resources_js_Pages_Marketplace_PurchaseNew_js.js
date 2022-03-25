@@ -188,6 +188,11 @@ var PurchaseNew = function PurchaseNew(_ref) {
       purchaseMethod = _useState36[0],
       setPurchaseMethod = _useState36[1];
 
+  var _useState37 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
+      _useState38 = _slicedToArray(_useState37, 2),
+      calculated = _useState38[0],
+      setCalculated = _useState38[1];
+
   var handleDeliveryChange = function handleDeliveryChange(e) {
     setDeliver(e.target.checked);
     setError(null);
@@ -310,6 +315,7 @@ var PurchaseNew = function PurchaseNew(_ref) {
     var interest = principal * interestRate * termInYears;
     var amount = (principal + interest).toFixed(2);
     var monthly = (amount / term).toFixed(2);
+    setCalculated(true);
     setFinanceCost(interest);
     setFinanceAmount(amount);
     setMonthlyPayments(monthly);
@@ -348,6 +354,11 @@ var PurchaseNew = function PurchaseNew(_ref) {
       };
       _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_5__.Inertia.post('/marketplace/purchase', data);
     } else if (pMethod === 'finance') {
+      if (!calculated) {
+        window.alert('You need to calculate a finance agreement');
+        return;
+      }
+
       var _data = {
         fleetId: fleet.id,
         deliveryIcao: deliveryLocation,
@@ -561,15 +572,18 @@ var PurchaseNew = function PurchaseNew(_ref) {
               children: ["$", financeCost.toFixed(2)]
             })]
           })]
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
-          className: "mt-4 flex justify-end",
-          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("button", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+          className: "mt-4 flex justify-between",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+            className: "text-sm italic",
+            children: "Terms: Payments made on 1st of each month; More than two missed payments will result on aircraft being reclaimed."
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("button", {
             onClick: function onClick() {
               return purchase('finance');
             },
             className: "btn btn-secondary",
             children: "Confirm Finance"
-          })
+          })]
         })]
       }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
         className: "mt-4 flex justify-end",
