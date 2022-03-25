@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class FinanceAgreement extends Model
 {
     use HasFactory;
-    
+
     protected $casts = [
         'last_payment_at' => 'datetime'
     ];
