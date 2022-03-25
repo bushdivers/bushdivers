@@ -967,7 +967,7 @@ var SideBar = function SideBar(_ref) {
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_Navigation_NavItem__WEBPACK_IMPORTED_MODULE_2__.default, {
           link: "/marketplace",
           icon: "flight_takeoff",
-          text: "Marketplace"
+          text: "My Aircraft"
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_Navigation_NavItem__WEBPACK_IMPORTED_MODULE_2__.default, {
           link: "/logout",
           icon: "lock",
