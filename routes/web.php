@@ -110,7 +110,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/marketplace/new/{fleet}', \App\Http\Controllers\MarketPlace\ShowPurchaseNewController::class)
         ->name('marketplace.new');
     Route::post('/marketplace/purchase', \App\Http\Controllers\MarketPlace\PurchaseNewController::class)
-        ->name('marketplace/new');
+        ->name('marketplace.new.purchase');
+    Route::post('/marketplace/finance', \App\Http\Controllers\MarketPlace\FinanceNewController::class)
+        ->name('marketplace.new.finance');
 
 
     // Flights

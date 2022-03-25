@@ -1,14 +1,10 @@
 import React from 'react'
 import AppLayout from '../../Shared/AppLayout'
-import { Inertia } from '@inertiajs/inertia'
+import { Link } from '@inertiajs/inertia-react'
 
 const Aircraft = ({ fleet, manufacturer }) => {
-  const buyNew = (fleet) => {
-    Inertia.get(`/marketplace/new/${fleet}`)
-  }
-
-  const buyUsed = (fleet) => {
-    window.alert('used!')
+  const buyFinance = (fleet) => {
+    window.alert('Finance!')
   }
 
   return (
@@ -38,8 +34,8 @@ const Aircraft = ({ fleet, manufacturer }) => {
               <span>Cruise Speed: {f.cruise_speed} KIAS</span>
             </div>
             <div className="mt-2 flex justify-between">
-              <button onClick={() => buyNew(f.id)} className="btn btn-secondary">Buy New</button>
-              <button onClick={() => buyUsed(f.id)} className="btn btn-primary">Buy Used</button>
+              <Link href={`/marketplace/new/${f.id}`} className="btn btn-secondary">Purchase New</Link>
+              <Link href={`/marketplace/used/${f.id}`} className="btn btn-primary">Purchase Used</Link>
             </div>
           </div>
         </div>

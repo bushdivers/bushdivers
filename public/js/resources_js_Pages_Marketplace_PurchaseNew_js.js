@@ -93,6 +93,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
+
 var PurchaseNew = function PurchaseNew(_ref) {
   var fleet = _ref.fleet;
   var auth = (0,_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_3__.usePage)().props.auth;
@@ -152,6 +153,41 @@ var PurchaseNew = function PurchaseNew(_ref) {
       regError = _useState22[0],
       setRegError = _useState22[1];
 
+  var _useState23 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(0.2 * fleet.new_price),
+      _useState24 = _slicedToArray(_useState23, 2),
+      deposit = _useState24[0],
+      setDeposit = _useState24[1];
+
+  var _useState25 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(3),
+      _useState26 = _slicedToArray(_useState25, 2),
+      term = _useState26[0],
+      setTerm = _useState26[1];
+
+  var _useState27 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(0),
+      _useState28 = _slicedToArray(_useState27, 2),
+      financeAmount = _useState28[0],
+      setFinanceAmount = _useState28[1];
+
+  var _useState29 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(0),
+      _useState30 = _slicedToArray(_useState29, 2),
+      monthlyPayments = _useState30[0],
+      setMonthlyPayments = _useState30[1];
+
+  var _useState31 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
+      _useState32 = _slicedToArray(_useState31, 2),
+      showFinanceCalc = _useState32[0],
+      setShowFinanceCalc = _useState32[1];
+
+  var _useState33 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(0),
+      _useState34 = _slicedToArray(_useState33, 2),
+      financeCost = _useState34[0],
+      setFinanceCost = _useState34[1];
+
+  var _useState35 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('buy'),
+      _useState36 = _slicedToArray(_useState35, 2),
+      purchaseMethod = _useState36[0],
+      setPurchaseMethod = _useState36[1];
+
   var handleDeliveryChange = function handleDeliveryChange(e) {
     setDeliver(e.target.checked);
     setError(null);
@@ -163,7 +199,7 @@ var PurchaseNew = function PurchaseNew(_ref) {
 
   var handleChange = /*#__PURE__*/function () {
     var _ref2 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee(e) {
-      var response, priceResp;
+      var response, priceResp, p;
       return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
@@ -173,7 +209,7 @@ var PurchaseNew = function PurchaseNew(_ref) {
               setIcao(e.target.value);
 
               if (!(e.target.value.length >= 3)) {
-                _context.next = 19;
+                _context.next = 18;
                 break;
               }
 
@@ -184,7 +220,7 @@ var PurchaseNew = function PurchaseNew(_ref) {
               response = _context.sent;
 
               if (!response.data.airport) {
-                _context.next = 18;
+                _context.next = 17;
                 break;
               }
 
@@ -196,22 +232,22 @@ var PurchaseNew = function PurchaseNew(_ref) {
 
             case 13:
               priceResp = _context.sent;
-              console.log(priceResp);
 
               if (priceResp.status === 200) {
-                setPrice(priceResp.data.cost);
+                p = priceResp.data.cost * 10;
+                setPrice(parseFloat(p));
                 setDistance(priceResp.data.distance);
               } else {
                 setError('Cannot calculate price');
               }
 
-              _context.next = 19;
+              _context.next = 18;
               break;
 
-            case 18:
+            case 17:
               setError('No airport found');
 
-            case 19:
+            case 18:
             case "end":
               return _context.stop();
           }
@@ -232,12 +268,58 @@ var PurchaseNew = function PurchaseNew(_ref) {
     setReg(e.target.value);
   };
 
-  var purchase = function purchase() {
+  var handlePurchaseMethodChange = function handlePurchaseMethodChange(e) {
+    var method = e.target.checked ? 'finance' : 'buy';
+    setPurchaseMethod(method);
+  };
+
+  var handleDepositChange = function handleDepositChange(e) {
+    if (typeof e.target.value === 'string') {
+      setDeposit(e.target.value === '' ? 0 : parseFloat(e.target.value));
+    } else {
+      setDeposit(e.target.value);
+    }
+  };
+
+  var handleTermChange = function handleTermChange(e) {
+    if (typeof e.target.value === 'string') {
+      var val = e.target.value === '' ? 0 : parseFloat(e.target.value);
+      setTerm(val < 3 ? 3 : parseFloat(e.target.value));
+    } else {
+      console.log(e.target.value);
+      setTerm(e.target.value < 3 ? 3 : e.target.value);
+    }
+  };
+
+  var calculate = function calculate() {
+    if (typeof deposit !== 'number') {
+      setDeposit(0);
+    }
+
+    if (parseInt(term) < 3 || parseInt(term) > 24) {
+      setTerm(3);
+      window.alert('Term must be between 3 and 24 months');
+      return;
+    }
+
+    var subTotal = parseFloat(fleet.new_price) + parseFloat(price); // subtotal less deposit = principal
+
+    var principal = subTotal - deposit;
+    var termInYears = term / 12;
+    var interestRate = 8 / 100;
+    var interest = principal * interestRate * termInYears;
+    var amount = (principal + interest).toFixed(2);
+    var monthly = (amount / term).toFixed(2);
+    setFinanceCost(interest);
+    setFinanceAmount(amount);
+    setMonthlyPayments(monthly);
+    setShowFinanceCalc(true);
+  };
+
+  var purchase = function purchase(pMethod) {
     setError(null);
     setHubError(null);
     setRegError(null);
-    console.log(reg);
-    var total = parseFloat(fleet.new_price) + parseFloat(price);
 
     if (reg == null || reg.length > 7) {
       setRegError('Registration must be at least 1 character and no more than 7');
@@ -249,9 +331,14 @@ var PurchaseNew = function PurchaseNew(_ref) {
       return;
     }
 
+    var total = pMethod === 'buy' ? parseFloat(fleet.new_price) + parseFloat(price) : deposit;
+
     if (total > auth.user.balance) {
       window.alert('You do not have sufficient funds');
-    } else {
+      return;
+    }
+
+    if (pMethod === 'buy') {
       var data = {
         total: total,
         fleetId: fleet.id,
@@ -260,6 +347,18 @@ var PurchaseNew = function PurchaseNew(_ref) {
         reg: reg
       };
       _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_5__.Inertia.post('/marketplace/purchase', data);
+    } else if (pMethod === 'finance') {
+      var _data = {
+        fleetId: fleet.id,
+        deliveryIcao: deliveryLocation,
+        hub: hub,
+        reg: reg,
+        deposit: deposit,
+        financeAmount: financeAmount,
+        term: term,
+        monthlyPayments: monthlyPayments
+      };
+      _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_5__.Inertia.post('/marketplace/finance', _data);
     }
   };
 
@@ -267,7 +366,9 @@ var PurchaseNew = function PurchaseNew(_ref) {
     className: "p-4",
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
       className: "text-lg",
-      children: ["Purchase New - ", fleet.manufacturer, " ", fleet.name]
+      children: ["Purchase New - ", fleet.manufacturer, " ", fleet.name, " ", purchaseMethod === 'finance' ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("span", {
+        children: "- On Finance"
+      }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.Fragment, {})]
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
       className: "mt-2 bg-white rounded shadow p-4",
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
@@ -306,32 +407,11 @@ var PurchaseNew = function PurchaseNew(_ref) {
           children: error
         })]
       }), !deliver && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+        className: "mt-2",
         children: ["Deliver to ", fleet.hq]
       }), deliver && airport && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+        className: "mt-2",
         children: ["Deliver from: ", fleet.hq, " to: ", airport]
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
-          className: "flex justify-between",
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("span", {
-            children: "Base Price"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("span", {
-            children: ["$", fleet.new_price]
-          })]
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
-          className: "flex justify-between",
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("span", {
-            children: "Delivery"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("span", {
-            children: ["$", price.toFixed(2)]
-          })]
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
-          className: "flex justify-between",
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("span", {
-            children: "Total"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("span", {
-            children: ["$", (parseFloat(fleet.new_price) + parseFloat(price)).toFixed(2)]
-          })]
-        })]
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
         className: "w-1/4",
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
@@ -371,11 +451,131 @@ var PurchaseNew = function PurchaseNew(_ref) {
             children: regError
           })]
         })]
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+        className: "my-4",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+          className: "flex justify-between",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("span", {
+            children: "Base Price"
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("span", {
+            children: ["$", fleet.new_price]
+          })]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+          className: "flex justify-between",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("span", {
+            children: "Delivery"
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("span", {
+            children: ["$", price.toFixed(2)]
+          })]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+          className: "flex justify-between",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("span", {
+            children: "Total"
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("span", {
+            children: ["$", (parseFloat(fleet.new_price) + parseFloat(price)).toFixed(2)]
+          })]
+        })]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("label", {
+        htmlFor: "method",
+        className: "inline-flex items-center",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("input", {
+          id: "method",
+          checked: purchaseMethod === 'finance',
+          onChange: handlePurchaseMethodChange,
+          type: "checkbox",
+          className: "form-checkbox rounded border-gray-300 text-orange-500 shadow-sm focus:border-orange-300 focus:ring focus:ring-offset-0 focus:ring-orange-200 focus:ring-opacity-50"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("span", {
+          className: "text-gray-700 ml-2",
+          children: "Finance purchase?"
+        })]
+      }), purchaseMethod === 'finance' ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+        className: "mt-4",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+          className: "text-lg",
+          children: "Finance Details"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+          className: "w-1/4",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+            className: "mt-2",
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("label", {
+              htmlFor: "deposit",
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("span", {
+                className: "text-gray-700",
+                children: "Deposit amount"
+              })
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("input", {
+              id: "deposit",
+              type: "text",
+              className: "form-input form",
+              value: deposit,
+              onChange: handleDepositChange
+            })]
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+            className: "mt-2",
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("label", {
+              htmlFor: "term",
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("span", {
+                className: "text-gray-700",
+                children: "Term (months) - min: 3; max: 24"
+              })
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("input", {
+              id: "term",
+              type: "text",
+              className: "form-input form",
+              value: term,
+              onChange: handleTermChange
+            })]
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("button", {
+            onClick: calculate,
+            className: "btn btn-primary mt-2",
+            children: "Calculate"
+          })]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+          className: "mt-2",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+            className: "flex justify-between",
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("span", {
+              children: "Deposit (due now)"
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("span", {
+              children: deposit > 0 ? "$".concat(deposit) : '-'
+            })]
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+            className: "flex justify-between",
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("span", {
+              children: "Monthly Payments"
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("span", {
+              children: ["$", monthlyPayments]
+            })]
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+            className: "flex justify-between",
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("span", {
+              children: "Total Amount Payable"
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("span", {
+              children: ["$", financeAmount]
+            })]
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+            className: "flex justify-between",
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("span", {
+              children: "Cost of Finance (interest @ 8%)"
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("span", {
+              children: ["$", financeCost.toFixed(2)]
+            })]
+          })]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+          className: "mt-4 flex justify-end",
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("button", {
+            onClick: function onClick() {
+              return purchase('finance');
+            },
+            className: "btn btn-secondary",
+            children: "Confirm Finance"
+          })
+        })]
+      }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
         className: "mt-4 flex justify-end",
         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("button", {
           onClick: function onClick() {
-            return purchase();
+            return purchase('buy');
           },
           className: "btn btn-secondary",
           children: "Purchase"
@@ -474,17 +674,6 @@ function AppLayout(_ref) {
           message: flash.success
         }), children]
       })]
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("a", {
-      rel: "noreferrer",
-      target: "_blank",
-      href: "https://www.patreon.com/bushdivers?fan_landing=true",
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
-        className: "ribbon ribbon-bottom ribbon-right ribbon-sticky",
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
-          className: "text-xs",
-          children: "Donate"
-        })
-      })
     })]
   });
 }

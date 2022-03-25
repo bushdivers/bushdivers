@@ -520,17 +520,6 @@ function AppLayout(_ref) {
           message: flash.success
         }), children]
       })]
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("a", {
-      rel: "noreferrer",
-      target: "_blank",
-      href: "https://www.patreon.com/bushdivers?fan_landing=true",
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
-        className: "ribbon ribbon-bottom ribbon-right ribbon-sticky",
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
-          className: "text-xs",
-          children: "Donate"
-        })
-      })
     })]
   });
 }

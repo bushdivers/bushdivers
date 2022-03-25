@@ -49,7 +49,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var _Shared_AppLayout__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../Shared/AppLayout */ "./resources/js/Shared/AppLayout.js");
-/* harmony import */ var _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @inertiajs/inertia */ "./node_modules/@inertiajs/inertia/dist/index.js");
+/* harmony import */ var _inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @inertiajs/inertia-react */ "./node_modules/@inertiajs/inertia-react/dist/index.js");
 /* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 
 
@@ -61,12 +61,8 @@ var Aircraft = function Aircraft(_ref) {
   var fleet = _ref.fleet,
       manufacturer = _ref.manufacturer;
 
-  var buyNew = function buyNew(fleet) {
-    _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_2__.Inertia.get("/marketplace/new/".concat(fleet));
-  };
-
-  var buyUsed = function buyUsed(fleet) {
-    window.alert('used!');
+  var buyFinance = function buyFinance(fleet) {
+    window.alert('Finance!');
   };
 
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
@@ -126,18 +122,14 @@ var Aircraft = function Aircraft(_ref) {
               })]
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
               className: "mt-2 flex justify-between",
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
-                onClick: function onClick() {
-                  return buyNew(f.id);
-                },
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_2__.Link, {
+                href: "/marketplace/new/".concat(f.id),
                 className: "btn btn-secondary",
-                children: "Buy New"
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
-                onClick: function onClick() {
-                  return buyUsed(f.id);
-                },
+                children: "Purchase New"
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_2__.Link, {
+                href: "/marketplace/used/".concat(f.id),
                 className: "btn btn-primary",
-                children: "Buy Used"
+                children: "Purchase Used"
               })]
             })]
           })]
@@ -236,17 +228,6 @@ function AppLayout(_ref) {
           message: flash.success
         }), children]
       })]
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("a", {
-      rel: "noreferrer",
-      target: "_blank",
-      href: "https://www.patreon.com/bushdivers?fan_landing=true",
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
-        className: "ribbon ribbon-bottom ribbon-right ribbon-sticky",
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
-          className: "text-xs",
-          children: "Donate"
-        })
-      })
     })]
   });
 }

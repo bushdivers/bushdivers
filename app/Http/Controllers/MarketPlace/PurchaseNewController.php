@@ -7,6 +7,7 @@ use App\Models\Aircraft;
 use App\Models\AircraftEngine;
 use App\Models\Enums\TransactionTypes;
 use App\Models\Fleet;
+use App\Services\Aircraft\CreateAircraft;
 use App\Services\Finance\AddUserTransaction;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
@@ -17,11 +18,13 @@ use Inertia\Inertia;
 
 class PurchaseNewController extends Controller
 {
+    protected CreateAircraft $createAircraft;
     protected AddUserTransaction $addUserTransaction;
 
-    public function __construct(AddUserTransaction $addUserTransaction)
+    public function __construct(AddUserTransaction $addUserTransaction, CreateAircraft $createAircraft)
     {
         $this->addUserTransaction = $addUserTransaction;
+        $this->createAircraft = $createAircraft;
     }
 
     /**
@@ -36,31 +39,9 @@ class PurchaseNewController extends Controller
         if ($request->total > Auth::user()->balance) {
             return redirect()->back()->with(['error' => 'Insufficient funds']);
         }
-
-        $fleet = Fleet::find($request->fleetId);
-
         $this->addUserTransaction->execute(Auth::user()->id, TransactionTypes::AircraftPurchase, -$request->total);
-        // create aircraft
-        $aircraft = new Aircraft();
-        $aircraft->fleet_id = $request->fleetId;
-        $aircraft->current_airport_id = $request->deliveryIcao;
-        $aircraft->registration = $request->reg;
-        $aircraft->state = 1;
-        $aircraft->status = 1;
-        $aircraft->hub_id = $request->hub;
-        $aircraft->last_inspected_at = Carbon::now();
-        $aircraft->owner_id = Auth::user()->id;
-        $aircraft->save();
+        $aircraft = $this->createAircraft->execute($request->all(), Auth::user()->id);
 
-        $numEngines = $fleet->number_of_engines;
-
-        for ($i = 0; $i < $numEngines; $i++) {
-            $engine = new AircraftEngine();
-            $engine->aircraft_id = $aircraft->id;
-            $engine->engine_no = $i + 1;
-            $engine->save();
-        }
-
-        return redirect()->to('/aircraft/'.$aircraft->id);
+        return redirect()->to('/aircraft/'.$aircraft->id)->with(['success' => 'Aircraft purchased']);
     }
 }

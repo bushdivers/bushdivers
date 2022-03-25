@@ -27,11 +27,11 @@ export default function AppLayout ({ children, title, heading }) {
             </div>
             {/*<AppFooter />*/}
           </main>
-          <a rel="noreferrer" target="_blank" href="https://www.patreon.com/bushdivers?fan_landing=true">
-            <div className="ribbon ribbon-bottom ribbon-right ribbon-sticky">
-              <div className="text-xs">Donate</div>
-            </div>
-          </a>
+          {/*<a rel="noreferrer" target="_blank" href="https://www.patreon.com/bushdivers?fan_landing=true">*/}
+          {/*  <div className="ribbon ribbon-bottom ribbon-right ribbon-sticky">*/}
+          {/*    <div className="text-xs">Donate</div>*/}
+          {/*  </div>*/}
+          {/*</a>*/}
         </div>
   )
 }

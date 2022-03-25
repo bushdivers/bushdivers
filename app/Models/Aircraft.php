@@ -15,6 +15,10 @@ class Aircraft extends Model
         'total_condition'
     ];
 
+    protected $fillable = [
+        'owner_id'
+    ];
+
     protected $casts = [
         'last_inspected_at' => 'datetime'
     ];
