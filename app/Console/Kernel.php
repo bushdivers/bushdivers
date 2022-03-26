@@ -113,7 +113,7 @@ class Kernel extends ConsoleKernel
         // remove stale contracts
         $schedule->call(function () {
             $this->removeStaleContracts->execute();
-        })->weekly();
+        })->dailyAt('23:00');
 
         //contract generation
 //        $schedule->call(function () {
