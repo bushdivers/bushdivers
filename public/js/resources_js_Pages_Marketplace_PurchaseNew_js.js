@@ -288,11 +288,9 @@ var PurchaseNew = function PurchaseNew(_ref) {
 
   var handleTermChange = function handleTermChange(e) {
     if (typeof e.target.value === 'string') {
-      var val = e.target.value === '' ? 0 : parseFloat(e.target.value);
-      setTerm(val < 3 ? 3 : parseFloat(e.target.value));
+      setTerm(parseFloat(e.target.value));
     } else {
-      console.log(e.target.value);
-      setTerm(e.target.value < 3 ? 3 : e.target.value);
+      setTerm(e.target.value);
     }
   };
 
