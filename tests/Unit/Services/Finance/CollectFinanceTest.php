@@ -125,7 +125,7 @@ class CollectFinanceTest extends TestCase
         $this->collectFinancePayments->execute();
         $finance->refresh();
         $aircraft->refresh();
-        $this->assertEquals(false, $finance->is_active);
+        $this->assertEquals(0, $finance->is_active);
         $this->assertEquals(null, $aircraft->owner_id);
     }
 }
