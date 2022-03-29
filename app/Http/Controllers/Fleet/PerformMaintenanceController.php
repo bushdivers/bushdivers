@@ -98,7 +98,7 @@ class PerformMaintenanceController extends Controller
             }
         }
         if ($request->type == 4 || $request->type == 5) {
-            $this->updateAircraftCondition->execute($request->aircraft, $request->type, $request->engine);
+            $this->updateAircraftCondition->execute($request->aircraft, $request->type, 100, $request->engine);
         } else {
             // process maintenance
             $this->resetAircraftMaintenanceTimes->execute($request->aircraft, $request->type, $request->engine);

@@ -20,6 +20,7 @@ class ResetAircraftMaintenanceTimes
             case MaintenanceTypes::MaintenanceTBO:
                 $engine = AircraftEngine::find($engineId);
                 $engine->mins_since_tbo = 0;
+                $engine->wear = 100;
                 $engine->save();
                 break;
             case MaintenanceTypes::Annual:

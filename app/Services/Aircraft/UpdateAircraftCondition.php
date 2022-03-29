@@ -9,7 +9,7 @@ use Carbon\Carbon;
 
 class UpdateAircraftCondition
 {
-    public function execute($aircraftId, $type, $wear = 100, $engineId = null)
+    public function execute($aircraftId, $type, $wear, $engineId = null)
     {
         switch ($type) {
             case MaintenanceTypes::GeneralMaintenance:
