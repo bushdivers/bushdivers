@@ -301,7 +301,7 @@ var PurchaseNew = function PurchaseNew(_ref) {
 
     if (parseInt(term) < 3 || parseInt(term) > 24) {
       setTerm(3);
-      window.alert('Term must be between 3 and 24 months');
+      window.alert('Term must be between 3 and 24 months, please calculate again');
       return;
     }
 

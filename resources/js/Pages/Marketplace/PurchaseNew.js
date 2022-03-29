@@ -94,7 +94,7 @@ const PurchaseNew = ({ fleet }) => {
     }
     if (parseInt(term) < 3 || parseInt(term) > 24) {
       setTerm(3)
-      window.alert('Term must be between 3 and 24 months')
+      window.alert('Term must be between 3 and 24 months, please calculate again')
       return
     }
     const subTotal = parseFloat(fleet.new_price) + parseFloat(price)
