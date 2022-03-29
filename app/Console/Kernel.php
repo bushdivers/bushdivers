@@ -8,6 +8,7 @@ use App\Services\Contracts\FindAirportsInNeedOfContracts;
 use App\Services\Contracts\FindHubsInNeedOfContracts;
 use App\Services\Contracts\RemoveStaleContracts;
 use App\Services\Finance\CalcMonthlyFees;
+use App\Services\Finance\CollectFinancePayments;
 use App\Services\Pireps\FindInactivePireps;
 use App\Services\Pireps\RemoveMultiplePireps;
 use App\Services\Rentals\CheckRentalDailyFee;
@@ -28,6 +29,7 @@ class Kernel extends ConsoleKernel
     protected CalcMonthlyFees $calcMonthlyFees;
     protected RemoveStaleContracts $removeStaleContracts;
     protected ExpiryContractCheck $expiryContractCheck;
+    protected CollectFinancePayments $collectFinancePayments;
 
     public function __construct(
         Application $app,
@@ -39,7 +41,8 @@ class Kernel extends ConsoleKernel
         FindHubsInNeedOfContracts $findHubsInNeedOfContracts,
         CalcMonthlyFees $calcMonthlyFees,
         RemoveStaleContracts $removeStaleContracts,
-        ExpiryContractCheck $expiryContractCheck
+        ExpiryContractCheck $expiryContractCheck,
+        CollectFinancePayments $collectFinancePayments,
     )
     {
         parent::__construct($app, $events);
@@ -51,6 +54,7 @@ class Kernel extends ConsoleKernel
         $this->calcMonthlyFees = $calcMonthlyFees;
         $this->removeStaleContracts = $removeStaleContracts;
         $this->expiryContractCheck = $expiryContractCheck;
+        $this->collectFinancePayments = $collectFinancePayments;
     }
 
     /**
@@ -108,6 +112,11 @@ class Kernel extends ConsoleKernel
         // financial calculations
         $schedule->call(function () {
             $this->calcMonthlyFees->execute();
+        })->monthly();
+
+        // finance payments
+        $schedule->call(function () {
+           $this->collectFinancePayments->execute();
         })->monthly();
 
         // remove stale contracts

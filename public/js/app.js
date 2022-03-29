@@ -38018,6 +38018,14 @@ var map = {
 		"./resources/js/Pages/Fleet/FleetList.js",
 		"resources_js_Pages_Fleet_FleetList_js"
 	],
+	"./Fleet/MyAircraft": [
+		"./resources/js/Pages/Fleet/MyAircraft.js",
+		"resources_js_Pages_Fleet_MyAircraft_js"
+	],
+	"./Fleet/MyAircraft.js": [
+		"./resources/js/Pages/Fleet/MyAircraft.js",
+		"resources_js_Pages_Fleet_MyAircraft_js"
+	],
 	"./Flights/LiveFlights": [
 		"./resources/js/Pages/Flights/LiveFlights.js",
 		"resources_js_Pages_Flights_LiveFlights_js"
@@ -38081,6 +38089,30 @@ var map = {
 	"./Home.js": [
 		"./resources/js/Pages/Home.js",
 		"resources_js_Pages_Home_js"
+	],
+	"./Marketplace/Aircraft": [
+		"./resources/js/Pages/Marketplace/Aircraft.js",
+		"resources_js_Pages_Marketplace_Aircraft_js"
+	],
+	"./Marketplace/Aircraft.js": [
+		"./resources/js/Pages/Marketplace/Aircraft.js",
+		"resources_js_Pages_Marketplace_Aircraft_js"
+	],
+	"./Marketplace/Manufacturers": [
+		"./resources/js/Pages/Marketplace/Manufacturers.js",
+		"resources_js_Pages_Marketplace_Manufacturers_js"
+	],
+	"./Marketplace/Manufacturers.js": [
+		"./resources/js/Pages/Marketplace/Manufacturers.js",
+		"resources_js_Pages_Marketplace_Manufacturers_js"
+	],
+	"./Marketplace/PurchaseNew": [
+		"./resources/js/Pages/Marketplace/PurchaseNew.js",
+		"resources_js_Pages_Marketplace_PurchaseNew_js"
+	],
+	"./Marketplace/PurchaseNew.js": [
+		"./resources/js/Pages/Marketplace/PurchaseNew.js",
+		"resources_js_Pages_Marketplace_PurchaseNew_js"
 	],
 	"./Pireps/Submission": [
 		"./resources/js/Pages/Pireps/Submission.js",
@@ -38236,7 +38268,7 @@ module.exports = webpackAsyncContext;
 /******/ 		// This function allow to reference async chunks
 /******/ 		__webpack_require__.u = (chunkId) => {
 /******/ 			// return url for filenames not based on template
-/******/ 			if ({"resources_js_Pages_Admin_AircraftCreate_js":1,"resources_js_Pages_Admin_FleetCreate_js":1,"resources_js_Pages_Admin_FleetEdit_js":1,"resources_js_Pages_Admin_FleetList_js":1,"resources_js_Pages_Admin_Pireps_js":1,"resources_js_Pages_Admin_Resources_js":1,"resources_js_Pages_Admin_Users_js":1,"resources_js_Pages_Airports_AirportDetail_js":1,"resources_js_Pages_Airports_Hubs_js":1,"resources_js_Pages_Auth_Login_js":1,"resources_js_Pages_Auth_Register_js":1,"resources_js_Pages_Auth_RequestPassword_js":1,"resources_js_Pages_Auth_ResetPassword_js":1,"resources_js_Pages_Contracts_CompletedContracts_js":1,"resources_js_Pages_Contracts_Contracts_js":1,"resources_js_Pages_Contracts_MyContracts_js":1,"resources_js_Pages_Crew_Dashboard_js":1,"resources_js_Pages_Crew_Intro_js":1,"resources_js_Pages_Crew_Jumpseat_js":1,"resources_js_Pages_Crew_Logbook_js":1,"resources_js_Pages_Crew_LogbookDetail_js":1,"resources_js_Pages_Crew_MyFinances_js":1,"resources_js_Pages_Crew_Profile_js":1,"resources_js_Pages_Crew_Roster_js":1,"resources_js_Pages_Dispatch_ActiveDispatch_js":1,"resources_js_Pages_Dispatch_Dispatch_js":1,"resources_js_Pages_Fleet_Aircraft_js":1,"resources_js_Pages_Fleet_FleetDetails_js":1,"resources_js_Pages_Fleet_FleetList_js":1,"resources_js_Pages_Flights_LiveFlights_js":1,"resources_js_Pages_General_CompanyFinances_js":1,"resources_js_Pages_General_Privacy_js":1,"resources_js_Pages_General_Ranks_js":1,"resources_js_Pages_General_Resources_js":1,"resources_js_Pages_General_Staff_js":1,"resources_js_Pages_General_Supporters_js":1,"resources_js_Pages_Home_js":1,"resources_js_Pages_Pireps_Submission_js":1,"resources_js_Pages_Rentals_RentalList_js":1}[chunkId]) return "js/" + chunkId + ".js";
+/******/ 			if ({"resources_js_Pages_Admin_AircraftCreate_js":1,"resources_js_Pages_Admin_FleetCreate_js":1,"resources_js_Pages_Admin_FleetEdit_js":1,"resources_js_Pages_Admin_FleetList_js":1,"resources_js_Pages_Admin_Pireps_js":1,"resources_js_Pages_Admin_Resources_js":1,"resources_js_Pages_Admin_Users_js":1,"resources_js_Pages_Airports_AirportDetail_js":1,"resources_js_Pages_Airports_Hubs_js":1,"resources_js_Pages_Auth_Login_js":1,"resources_js_Pages_Auth_Register_js":1,"resources_js_Pages_Auth_RequestPassword_js":1,"resources_js_Pages_Auth_ResetPassword_js":1,"resources_js_Pages_Contracts_CompletedContracts_js":1,"resources_js_Pages_Contracts_Contracts_js":1,"resources_js_Pages_Contracts_MyContracts_js":1,"resources_js_Pages_Crew_Dashboard_js":1,"resources_js_Pages_Crew_Intro_js":1,"resources_js_Pages_Crew_Jumpseat_js":1,"resources_js_Pages_Crew_Logbook_js":1,"resources_js_Pages_Crew_LogbookDetail_js":1,"resources_js_Pages_Crew_MyFinances_js":1,"resources_js_Pages_Crew_Profile_js":1,"resources_js_Pages_Crew_Roster_js":1,"resources_js_Pages_Dispatch_ActiveDispatch_js":1,"resources_js_Pages_Dispatch_Dispatch_js":1,"resources_js_Pages_Fleet_Aircraft_js":1,"resources_js_Pages_Fleet_FleetDetails_js":1,"resources_js_Pages_Fleet_FleetList_js":1,"resources_js_Pages_Fleet_MyAircraft_js":1,"resources_js_Pages_Flights_LiveFlights_js":1,"resources_js_Pages_General_CompanyFinances_js":1,"resources_js_Pages_General_Privacy_js":1,"resources_js_Pages_General_Ranks_js":1,"resources_js_Pages_General_Resources_js":1,"resources_js_Pages_General_Staff_js":1,"resources_js_Pages_General_Supporters_js":1,"resources_js_Pages_Home_js":1,"resources_js_Pages_Marketplace_Aircraft_js":1,"resources_js_Pages_Marketplace_Manufacturers_js":1,"resources_js_Pages_Marketplace_PurchaseNew_js":1,"resources_js_Pages_Pireps_Submission_js":1,"resources_js_Pages_Rentals_RentalList_js":1}[chunkId]) return "js/" + chunkId + ".js";
 /******/ 			// return url for filenames based on template
 /******/ 			return undefined;
 /******/ 		};

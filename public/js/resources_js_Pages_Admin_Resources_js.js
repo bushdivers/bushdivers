@@ -269,17 +269,6 @@ function AppLayout(_ref) {
           message: flash.success
         }), children]
       })]
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("a", {
-      rel: "noreferrer",
-      target: "_blank",
-      href: "https://www.patreon.com/bushdivers?fan_landing=true",
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
-        className: "ribbon ribbon-bottom ribbon-right ribbon-sticky",
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
-          className: "text-xs",
-          children: "Donate"
-        })
-      })
     })]
   });
 }
@@ -1011,9 +1000,9 @@ var SideBar = function SideBar(_ref) {
           icon: "airplane_ticket",
           text: "Jumpseat"
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_Navigation_NavItem__WEBPACK_IMPORTED_MODULE_2__.default, {
-          link: "/rentals",
+          link: "/my-aircraft",
           icon: "flight_takeoff",
-          text: "Aircraft Rentals"
+          text: "My Aircraft"
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_Navigation_NavItem__WEBPACK_IMPORTED_MODULE_2__.default, {
           link: "/logout",
           icon: "lock",

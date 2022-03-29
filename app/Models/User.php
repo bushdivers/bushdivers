@@ -46,7 +46,8 @@ class User extends Authenticatable
     protected $appends = [
         'private_name',
         'pilot_id',
-        'user_roles'
+        'user_roles',
+        'balance'
     ];
 
     public function getPrivateNameAttribute()
