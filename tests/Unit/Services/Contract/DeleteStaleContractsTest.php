@@ -3,6 +3,7 @@
 namespace Tests\Unit\Services\Contract;
 
 use App\Models\Contract;
+use App\Models\ContractCargo;
 use App\Services\Contracts\RemoveStaleContracts;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -39,6 +40,26 @@ class DeleteStaleContractsTest extends TestCase
 
         $this->assertDatabaseMissing('contracts', [
             'id' => $contract->id
+        ]);
+    }
+
+    public function test_stale_contracts_cargo_are_removed()
+    {
+        $contract = Contract::factory()->create([
+            'expires_at' => Carbon::now()->subDays(5),
+            'user_id' => null,
+            'is_available' => true,
+            'is_completed' => false
+        ]);
+
+        $cargo = ContractCargo::factory()->count(2)->create([
+            'contract_id' => $contract->id
+        ]);
+
+        $this->removeStaleContracts->execute();
+
+        $this->assertDatabaseMissing('contract_cargos', [
+            'contract_id' => $contract->id
         ]);
     }
 
