@@ -767,7 +767,7 @@ var SideBar = function SideBar(_ref) {
           icon: "airplane_ticket",
           text: "Jumpseat"
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_Navigation_NavItem__WEBPACK_IMPORTED_MODULE_2__.default, {
-          link: "/marketplace",
+          link: "/my-aircraft",
           icon: "flight_takeoff",
           text: "My Aircraft"
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_Navigation_NavItem__WEBPACK_IMPORTED_MODULE_2__.default, {

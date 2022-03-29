@@ -12,4 +12,9 @@ class FinanceAgreement extends Model
     protected $casts = [
         'last_payment_at' => 'datetime'
     ];
+
+    public function aircraft()
+    {
+        return $this->belongsTo(Aircraft::class);
+    }
 }

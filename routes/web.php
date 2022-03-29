@@ -114,6 +114,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/marketplace/finance', \App\Http\Controllers\MarketPlace\FinanceNewController::class)
         ->name('marketplace.new.finance');
 
+    Route::get('/my-aircraft', \App\Http\Controllers\Aircraft\ShowMyAircraftController::class)
+        ->name('aircraft.mine');
+
 
     // Flights
     Route::get('/available-contracts', \App\Http\Controllers\Contracts\ShowActiveContractsController::class)
