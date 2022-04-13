@@ -115,31 +115,28 @@ class ContractPayTest extends TestCase
     public function test_pilot_pay_is_returned()
     {
         $expectedPay = (FinancialConsts::PilotPay / 100) * $this->contractCargo->contract_value;
-        $companyPay = (FinancialConsts::CompanyPay / 100) * $this->contractCargo->contract_value;
-        $totalPay = $expectedPay + $companyPay;
+        $companyPay = $this->contractCargo->contract_value;
         $pay = $this->calcContractPay->execute($this->contract->id);
         $this->assertEquals($expectedPay, $pay);
-        $this->assertEquals($totalPay, $this->contract->contract_value);
+        $this->assertEquals($companyPay, $this->contract->contract_value);
     }
 
     public function test_pilot_pay_is_returned_for_private()
     {
-        $expectedPay = (50 / 100) * $this->contractCargo->contract_value;
-        $companyPay = (50 / 100) * $this->contractCargo->contract_value;
-        $totalPay = $expectedPay + $companyPay;
+        $expectedPay = (FinancialConsts::PrivatePilotPay / 100) * $this->contractCargo->contract_value;
+        $companyPay = $this->contractCargo->contract_value;
         $pay = $this->calcContractPay->execute($this->contract->id, null, false, true);
         $this->assertEquals($expectedPay, $pay);
-        $this->assertEquals($totalPay, $this->contract->contract_value);
+        $this->assertEquals($companyPay, $this->contract->contract_value);
     }
 
     public function test_pilot_pay_is_returned_for_rental()
     {
-        $expectedPay = (50 / 100) * $this->contractCargo->contract_value;
-        $companyPay = (50 / 100) * $this->contractCargo->contract_value;
-        $totalPay = $expectedPay + $companyPay;
+        $expectedPay = (FinancialConsts::PrivatePilotPay / 100) * $this->contractCargo->contract_value;
+        $companyPay = $this->contractCargo->contract_value;
         $pay = $this->calcContractPay->execute($this->contract->id, null, true, false);
         $this->assertEquals($expectedPay, $pay);
-        $this->assertEquals($totalPay, $this->contract->contract_value);
+        $this->assertEquals($companyPay, $this->contract->contract_value);
     }
 
     public function test_contract_company_pay_is_made_as_part_of_pirep_process()

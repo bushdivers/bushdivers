@@ -70,7 +70,11 @@ class ProcessPirepFinancials
                         $c = Contract::find($ccargo->contract_id);
 
                         // $pilotPayPerc = $ccargo->cargo_qty / $totalCargo;
-                        $pilotPay = (FinancialConsts::PilotPay / 100) * $ccargo->contract_value;
+                        if ($privatePlane || $pirep->is_rental) {
+                            $pilotPay = (FinancialConsts::PrivatePilotPay / 100) * $ccargo->contract_value;
+                        } else {
+                            $pilotPay = (FinancialConsts::PilotPay / 100) * $ccargo->contract_value;
+                        }
 
                         if (Carbon::now()->greaterThan($c->expires_at)) {
                             $pilotPay = round($pilotPay - ($pp * FinancialConsts::ExpiryMultiplier),2);

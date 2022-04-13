@@ -188,4 +188,33 @@ class SubmitPirepRentalTest extends TestCase
             'type' => TransactionTypes::FlightFeesGround
         ]);
     }
+
+    public function test_rental_pilot_pay_correct()
+    {
+        Sanctum::actingAs(
+            $this->user,
+            ['*']
+        );
+        $startTime = "05/10/2021 01:00:00";
+        $endTime = "05/10/2021 01:30:00";
+        $companyPay = $this->contractCargo->contract_value;
+        $pilotPay = (FinancialConsts::PrivatePilotPay / 100) * $companyPay;
+
+        $data = [
+            'pirep_id' => $this->pirep->id,
+            'fuel_used' => 25,
+            'distance' => 76,
+            'landing_rate' => -149.12,
+            'block_off_time'=> $startTime,
+            'block_on_time' => $endTime
+        ];
+
+        $this->postJson('/api/pirep/submit', $data);
+
+        $this->assertDatabaseHas('user_accounts', [
+            'flight_id' => $this->pirep->id,
+            'type' => TransactionTypes::FlightPay,
+            'total' => $pilotPay
+        ]);
+    }
 }
