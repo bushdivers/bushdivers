@@ -44,7 +44,7 @@ class CalculateEngineWearTest extends TestCase
         ]);
 
         $wear = $this->calculateEngineWear->execute($aircraftEngine);
-        $this->assertEquals(2, $wear);
+        $this->assertEquals(0.5, $wear);
     }
 
     public function test_low_engine_wear()
@@ -60,7 +60,7 @@ class CalculateEngineWearTest extends TestCase
         ]);
 
         $wear = $this->calculateEngineWear->execute($aircraftEngine);
-        $this->assertEquals(2, $wear);
+        $this->assertEquals(0.8, $wear);
     }
 
     public function test_mid_engine_wear()
@@ -76,7 +76,7 @@ class CalculateEngineWearTest extends TestCase
         ]);
 
         $wear = $this->calculateEngineWear->execute($aircraftEngine);
-        $this->assertEquals(3, $wear);
+        $this->assertEquals(1.4, $wear);
     }
 
     public function test_poor_engine_wear()
@@ -92,6 +92,6 @@ class CalculateEngineWearTest extends TestCase
         ]);
 
         $wear = $this->calculateEngineWear->execute($aircraftEngine);
-        $this->assertEquals(6, $wear);
+        $this->assertEquals(2, $wear);
     }
 }

@@ -5,7 +5,7 @@ import axios from 'axios'
 import { Inertia } from '@inertiajs/inertia'
 
 const PurchaseNew = ({ fleet }) => {
-  const { auth } = usePage().props
+  const { auth, errors } = usePage().props
   const [deliver, setDeliver] = useState(false)
   const [price, setPrice] = useState(0.00)
   const [error, setError] = useState(null)
@@ -241,6 +241,7 @@ const PurchaseNew = ({ fleet }) => {
             </div>
             )
         }
+        {errors.reg && <span className="text-sm text-red-500 my-2">The aircraft registration has already exists</span>}
       </div>
     </div>
   )

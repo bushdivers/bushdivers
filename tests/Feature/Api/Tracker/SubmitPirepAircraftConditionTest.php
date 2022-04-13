@@ -159,12 +159,12 @@ class SubmitPirepAircraftConditionTest extends TestCase
 
         $this->assertDatabaseHas('aircraft', [
             'id' => $this->aircraft->id,
-            'wear' => 98
+            'wear' => 99.3
         ]);
 
         $this->assertDatabaseHas('aircraft_engines', [
             'aircraft_id' => $this->aircraft->id,
-            'wear' => 98
+            'wear' => 99.5
         ]);
     }
 
@@ -190,12 +190,12 @@ class SubmitPirepAircraftConditionTest extends TestCase
 
         $this->assertDatabaseHas('aircraft', [
             'id' => $this->aircraft->id,
-            'wear' => 97
+            'wear' => 99
         ]);
 
         $this->assertDatabaseHas('aircraft_engines', [
             'aircraft_id' => $this->aircraft->id,
-            'wear' => 98
+            'wear' => 99.5
         ]);
     }
 
@@ -221,12 +221,12 @@ class SubmitPirepAircraftConditionTest extends TestCase
 
         $this->assertDatabaseHas('aircraft', [
             'id' => $this->aircraft->id,
-            'wear' => 95
+            'wear' => 98
         ]);
 
         $this->assertDatabaseHas('aircraft_engines', [
             'aircraft_id' => $this->aircraft->id,
-            'wear' => 98
+            'wear' => 99.5
         ]);
     }
 }

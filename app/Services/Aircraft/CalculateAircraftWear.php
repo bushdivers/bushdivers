@@ -7,22 +7,22 @@ class CalculateAircraftWear
     public function execute($aircraft)
     {
         if ($aircraft->flight_time_mins > 120000) {
-            $ageMultiplier = 2.5;
+            $ageMultiplier = 1.2;
         } else {
-            $ageMultiplier = 1.1;
+            $ageMultiplier = 0.2;
         }
 
-        $wearMultiplier = 1;
+        $wearMultiplier = 0.5;
         if ($aircraft->wear < 75 && $aircraft->wear >= 60) {
-            $wearMultiplier = 1.2;
+            $wearMultiplier = 0.8;
         } elseif ($aircraft->wear < 60 && $aircraft->wear >= 30) {
-            $wearMultiplier = 2.0;
+            $wearMultiplier = 1.4;
         } elseif ($aircraft->wear < 30) {
-            $wearMultiplier = 3.0;
+            $wearMultiplier = 2.0;
         }
 
-        $ageWear = 2 * $ageMultiplier;
-        $wear = 2 * $wearMultiplier;
-        return round(($ageWear + $wear) / 2);
+        $ageWear = $ageMultiplier;
+        $wear = $wearMultiplier;
+        return round($ageWear + $wear, 2);
     }
 }

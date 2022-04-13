@@ -96,7 +96,9 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 var PurchaseNew = function PurchaseNew(_ref) {
   var fleet = _ref.fleet;
-  var auth = (0,_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_3__.usePage)().props.auth;
+  var _usePage$props = (0,_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_3__.usePage)().props,
+      auth = _usePage$props.auth,
+      errors = _usePage$props.errors;
 
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
       _useState2 = _slicedToArray(_useState, 2),
@@ -592,6 +594,9 @@ var PurchaseNew = function PurchaseNew(_ref) {
           className: "btn btn-secondary",
           children: "Purchase"
         })
+      }), errors.reg && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("span", {
+        className: "text-sm text-red-500 my-2",
+        children: "The aircraft registration has already exists"
       })]
     })]
   });

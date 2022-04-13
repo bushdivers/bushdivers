@@ -49,7 +49,7 @@ class ProcessWearTest extends TestCase
         $aircraft->refresh();
         $aircraftEngine->refresh();
 
-        $this->assertEquals(98, $aircraft->wear);
-        $this->assertEquals(98, $aircraftEngine->wear);
+        $this->assertEquals(99.3, $aircraft->wear);
+        $this->assertEquals(99.5, $aircraftEngine->wear);
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\MarketPlace;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\PurchaseAircraftRequest;
 use App\Models\Aircraft;
 use App\Models\AircraftEngine;
 use App\Models\Enums\TransactionTypes;
@@ -33,7 +34,7 @@ class PurchaseNewController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return RedirectResponse
      */
-    public function __invoke(Request $request)
+    public function __invoke(PurchaseAircraftRequest $request)
     {
         // check balance & process funds
         if ($request->total > Auth::user()->balance) {
