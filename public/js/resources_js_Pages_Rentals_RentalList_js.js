@@ -646,7 +646,7 @@ var SideBar = function SideBar(_ref) {
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_Navigation_NavItem__WEBPACK_IMPORTED_MODULE_2__["default"], {
           link: "/dashboard",
           icon: "home",
-          text: "My Crew Page"
+          text: "Dashboard"
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_Navigation_NavItem__WEBPACK_IMPORTED_MODULE_2__["default"], {
           link: "/live-flights",
           icon: "near_me",
@@ -668,7 +668,7 @@ var SideBar = function SideBar(_ref) {
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_Navigation_NavItem__WEBPACK_IMPORTED_MODULE_2__["default"], {
           link: "/finances",
           icon: "account_balance_wallet",
-          text: "Company Finances"
+          text: "Finances"
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_Navigation_NavItem__WEBPACK_IMPORTED_MODULE_2__["default"], {
           link: "/resources",
           icon: "download",
@@ -678,16 +678,16 @@ var SideBar = function SideBar(_ref) {
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_Navigation_NavItem__WEBPACK_IMPORTED_MODULE_2__["default"], {
           link: "/available-contracts",
           icon: "assignment_ind",
-          text: "Available Contracts",
+          text: "Contracts",
           numeric: auth.user.current_bids
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_Navigation_NavItem__WEBPACK_IMPORTED_MODULE_2__["default"], {
           link: "/contracts",
           icon: "assignment",
-          text: "Find a Contract"
+          text: "Search"
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_Navigation_NavItem__WEBPACK_IMPORTED_MODULE_2__["default"], {
           link: "/completed-contracts",
           icon: "assignment_turned_in",
-          text: "Completed Contracts"
+          text: "Completed"
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_Navigation_NavItem__WEBPACK_IMPORTED_MODULE_2__["default"], {
           link: "/dispatch",
           icon: "assignment_returned",

@@ -23,18 +23,18 @@ const SideBar = ({ isNavVisible, setNavState }) => {
       </div>
       <div className="sidebar-content px-4 py-2">
         <ul className="flex flex-col w-full">
-          <NavItem link="/dashboard" icon="home" text="My Crew Page" />
+          <NavItem link="/dashboard" icon="home" text="Dashboard" />
           <NavItem link="/live-flights" icon="near_me" text="Live Flights" />
           <NavItem link="/airports" icon="business" text="Airports" />
           <NavSection name="HQ" />
           <NavItem link="/roster" icon="people" text="Roster" />
           <NavItem link="/fleet-aircraft" icon="flight" text="Fleet" />
-          <NavItem link="/finances" icon="account_balance_wallet" text="Company Finances" />
+          <NavItem link="/finances" icon="account_balance_wallet" text="Finances" />
           <NavItem link="/resources" icon="download" text="Resources" />
           <NavSection name="Contracts" />
-          <NavItem link="/available-contracts" icon="assignment_ind" text="Available Contracts" numeric={auth.user.current_bids} />
-          <NavItem link="/contracts" icon="assignment" text="Find a Contract" />
-          <NavItem link="/completed-contracts" icon="assignment_turned_in" text="Completed Contracts" />
+          <NavItem link="/available-contracts" icon="assignment_ind" text="Contracts" numeric={auth.user.current_bids} />
+          <NavItem link="/contracts" icon="assignment" text="Search" />
+          <NavItem link="/completed-contracts" icon="assignment_turned_in" text="Completed" />
           <NavItem link="/dispatch" icon="assignment_returned" text="Flight Dispatch" />
           <NavSection name="Pilot Area" />
           <NavItem link="/logbook" icon="text_snippet" text="Logbook" />
