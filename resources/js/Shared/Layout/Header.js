@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import { Link, usePage } from '@inertiajs/inertia-react'
 import dayjs from '../../Helpers/date.helpers'
 import Tooltip from '../Elements/Tooltip'
+import { faBurger } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const Header = ({ heading, setNavState }) => {
   const { auth } = usePage().props
@@ -21,7 +23,7 @@ const Header = ({ heading, setNavState }) => {
   return (
       <header className="flex flex-row justify-between items-center header fixed bg-white shadow left-0 lg:left-64 right-0 py-4 px-4 z-20">
         <div className="flex items-center">
-          <div className="lg:hidden mr-3 cursor-pointer" onClick={setNavState}><i className="material-icons">menu</i></div>
+          <div className="lg:hidden mr-3 cursor-pointer" onClick={setNavState}><FontAwesomeIcon icon={faBurger} /></div>
           <h1>{heading}</h1>
         </div>
         <div className="flex items-center">
