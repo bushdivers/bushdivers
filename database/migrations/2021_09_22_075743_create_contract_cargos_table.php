@@ -17,11 +17,20 @@ class CreateContractCargosTable extends Migration
             $table->id();
             $table->foreignId('contract_id');
             $table->foreignId('contract_type_id');
+            $table->string('dep_airport_id')->nullable();
+            $table->string('arr_airport_id')->nullable();
             $table->string('current_airport_id');
             $table->string('cargo')->nullable();
             $table->integer('cargo_qty')->nullable();
+            $table->decimal('contract_value')->default(0);
+            $table->decimal('distance')->nullable();
+            $table->integer('heading')->nullable();
             $table->boolean('is_completed')->default(false);
             $table->dateTime('completed_at')->nullable();
+            $table->foreignId('user_id')->nullable();
+            $table->boolean('is_available')->default(true);
+            $table->uuid('active_pirep')->nullable();
+            $table->uuid('completed_pirep')->nullable();
             $table->timestamps();
         });
     }

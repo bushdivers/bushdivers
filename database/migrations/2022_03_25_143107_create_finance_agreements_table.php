@@ -26,6 +26,7 @@ class CreateFinanceAgreementsTable extends Migration
             $table->integer('missed_payments');
             $table->dateTime('last_payment_at')->default(null);
             $table->boolean('is_paid')->default(false);
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }

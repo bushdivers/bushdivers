@@ -33,6 +33,17 @@ class CreateFleetsTable extends Migration
             $table->integer('range');
             $table->integer('cruise_speed');
             $table->string('image_url');
+            $table->string('size')->nullable();
+            $table->boolean('company_fleet')->default(false);
+            $table->decimal('rental_cost')->default(0.00);
+            $table->boolean('is_rental')->default(false);
+            $table->string('rental_image')->nullable();
+            $table->integer('rental_size')->default(0);
+            $table->integer('tbo_mins')->default(0);
+            $table->decimal('new_price', 12, 2)->nullable();
+            $table->decimal('used_low_price', 12, 2)->nullable();
+            $table->decimal('used_high_price', 12, 2)->nullable();
+            $table->string('hq', 5)->nullable();
             $table->timestamps();
         });
     }
