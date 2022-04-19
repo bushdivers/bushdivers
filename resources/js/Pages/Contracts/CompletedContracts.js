@@ -3,6 +3,8 @@ import dayjs from '../../Helpers/date.helpers'
 import { Link } from '@inertiajs/inertia-react'
 import Pagination from '../../Shared/Elements/Pagination'
 import AppLayout from '../../Shared/AppLayout'
+import { faPlaneDeparture, faPlaneArrival } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const CompletedContracts = ({ contracts }) => {
   return (
@@ -12,12 +14,12 @@ const CompletedContracts = ({ contracts }) => {
           <div key={contract.id} className="mt-1 shadow rounded bg-white py-4 px-8 overflow-x-auto">
             <div className="flex justify-between items-center">
               <div className="flex flex-col items-center content-center">
-                <i className="material-icons md-36">flight_takeoff</i>
+                <FontAwesomeIcon icon={faPlaneDeparture} />
                 <Link href={`/airports/${contract.dep_airport_id}`}>{contract.dep_airport_id}</Link>
                 <div className="text-sm">{contract.dep_airport.name}</div>
               </div>
               <div className="flex flex-col items-center content-center">
-                <i className="material-icons md-36">flight_land</i>
+                <FontAwesomeIcon icon={faPlaneArrival} />
                 <Link href={`/airports/${contract.arr_airport_id}`}>{contract.arr_airport_id}</Link>
                 <div className="text-sm">{contract.arr_airport.name}</div>
               </div>

@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import NoContent from '../../Shared/Elements/NoContent'
 import Tooltip from '../../Shared/Elements/Tooltip'
 import { Link, usePage } from '@inertiajs/inertia-react'
@@ -7,11 +8,12 @@ import { Inertia } from '@inertiajs/inertia'
 import CargoDetails from '../../Shared/Components/Contracts/CargoDetails'
 import MyContractMap from '../../Shared/Components/Contracts/MyContractMap'
 import AppLayout from '../../Shared/AppLayout'
+import { faArrowUp, faTicket, faXmark } from '@fortawesome/free-solid-svg-icons'
 
 const EmptyData = (props) => {
   return (
     <>
-      <i className="material-icons md-48">airplane_ticket</i>
+      <FontAwesomeIcon className="text-xl" icon={faTicket} />
       <div>{props.text}</div>
     </>
   )
@@ -98,7 +100,7 @@ const MyContracts = ({ contracts, custom }) => {
                             <span className="mr-2">{contract.heading}</span>
                           </div>
                           <div className="w-1/2 flex">
-                            <span style={{ transform: `rotate(${contract.heading}deg)` }}><i className="material-icons md-18 text-gray-800">north</i></span>
+                            <span style={{ transform: `rotate(${contract.heading}deg)` }}><FontAwesomeIcon icon={faArrowUp} className="text-gray-700" /></span>
                           </div>
                         </div>
                       </td>
@@ -118,7 +120,7 @@ const MyContracts = ({ contracts, custom }) => {
                       </td>
                       <td>
                         <button onClick={() => cancelBid(contract)} className="btn btn-secondary flex items-center">
-                          <i className="material-icons md-18">close</i>
+                          <FontAwesomeIcon icon={faXmark} />
                         </button>
                       </td>
                     </tr>
@@ -176,7 +178,7 @@ const MyContracts = ({ contracts, custom }) => {
                               <span className="mr-2">{contract.heading}</span>
                             </div>
                             <div className="w-1/2 flex">
-                              <span style={{ transform: `rotate(${contract.heading}deg)` }}><i className="material-icons md-18 text-gray-800">north</i></span>
+                              <span style={{ transform: `rotate(${contract.heading}deg)` }}><FontAwesomeIcon icon={faArrowUp} className="text-gray-700" /></span>
                             </div>
                           </div>
                         </td>
@@ -199,7 +201,7 @@ const MyContracts = ({ contracts, custom }) => {
                           ? (
                             <td>
                               <button onClick={() => cancelBid(contract)} className="btn btn-secondary flex items-center">
-                                <i className="material-icons md-18">close</i>
+                                <FontAwesomeIcon icon={faXmark} />
                               </button>
                             </td>
                             )

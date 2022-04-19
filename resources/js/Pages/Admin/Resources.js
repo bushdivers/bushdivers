@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import AppLayout from '../../Shared/AppLayout'
 import NewCategory from '../../Shared/Components/Admin/Resources/NewCategory'
 import NewResource from '../../Shared/Components/Admin/Resources/NewResource'
 import { Inertia } from '@inertiajs/inertia'
+import { faClose } from '@fortawesome/free-solid-svg-icons'
 
 const Resources = ({ resources }) => {
   const [showNewCat, setShowNewCat] = useState(false)
@@ -39,7 +41,7 @@ const Resources = ({ resources }) => {
               </div>
               <div className="flex items-center space-x-3">
                 <button onClick={() => handleEdit(resource)} className="btn btn-secondary">Edit</button>
-                <i onClick={() => removeResource(resource.id)} className="cursor-pointer hover:bg-gray-100 material-icons p-1 bg-gray-200 rounded">close</i>
+                <FontAwesomeIcon icon={faClose} onClick={() => removeResource(resource.id)} className="cursor-pointer hover:bg-gray-100 p-2 bg-gray-200 rounded" />
               </div>
             </div>
           ))}

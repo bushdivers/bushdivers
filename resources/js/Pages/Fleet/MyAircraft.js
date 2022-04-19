@@ -2,6 +2,8 @@ import React from 'react'
 import AppLayout from '../../Shared/AppLayout'
 import AircraftCondition from '../../Shared/Components/Fleet/AircraftCondition'
 import { Link } from '@inertiajs/inertia-react'
+import { faCheckCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const MyAircraft = ({ aircraft, rentals, agreements }) => {
   return (
@@ -72,7 +74,7 @@ const MyAircraft = ({ aircraft, rentals, agreements }) => {
           <div key={ag.id} className={`p-4 rounded shadow mb-2 ${ag.is_paid || !ag.is_active ? 'bg-gray-200 text-gray-500' : 'bg-white'}`}>
             <div className="flex justify-between items-center">
               <h1>Agreement #{ag.id}</h1>
-              {ag.is_paid ? <div className="material-icons text-green-500">check_circle</div> : !ag.is_active ? <div className="material-icons text-red-500">cancel</div> : <></>}
+              {ag.is_paid ? <FontAwesomeIcon icon={faCheckCircle} className="text-green-500" /> : !ag.is_active ? <FontAwesomeIcon icon={faTimesCircle} className="text-red-500"/> : <></>}
             </div>
             <h2>{ag.aircraft.registration}</h2>
             <div className="flex justify-between items-center mt-2">

@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
 import { Inertia } from '@inertiajs/inertia'
 import { Link, usePage } from '@inertiajs/inertia-react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import ApiKey from '../../Shared/Components/Crew/ApiKey'
 import { convertMinuteDecimalToHoursAndMinutes } from '../../Helpers/date.helpers'
 import AppLayout from '../../Shared/AppLayout'
+import { faAward } from '@fortawesome/free-solid-svg-icons'
 
 const Profile = ({ profile, hubs, rank, nextRank, awards }) => {
   const { errors } = usePage().props
@@ -107,7 +109,7 @@ const Profile = ({ profile, hubs, rank, nextRank, awards }) => {
           </div>
           <div className="rounded shadow p-4 mt-4 bg-white">
             <div className="text-lg flex items-center">
-              <i className="material-icons mr-2 md-36">emoji_events</i> Awards
+              <FontAwesomeIcon icon={faAward} className="mr-2"/> Awards
             </div>
             {!awards.length
               ? <div className="mt-1 text-sm text-center">No awards yet. <Link href="/ranks#awards">Earn some!</Link></div>

@@ -1,6 +1,8 @@
 import React from 'react'
 import { Link, usePage } from '@inertiajs/inertia-react'
 import AircraftCondition from './AircraftCondition'
+import { faScrewdriverWrench } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const FleetCardContent = ({ fleet }) => {
   const { auth } = usePage().props
@@ -91,7 +93,7 @@ const FleetCardContent = ({ fleet }) => {
                 <td><Link href={`/airports/${aircraft.hub_id}`}>{aircraft.hub_id}</Link></td>
                 <td><Link href={`/airports/${aircraft.current_airport_id}`}>{aircraft.current_airport_id}</Link></td>
                 <td>{aircraft.flight_time_mins}</td>
-                <td>{renderAircraftStatus(aircraft.state)} {aircraft.maintenance_status && <span className="ml-2 text-orange-500"><i className="material-icons">engineering</i></span>}</td>
+                <td>{renderAircraftStatus(aircraft.state)} {aircraft.maintenance_status && <span className="ml-2 text-orange-500"><FontAwesomeIcon icon={faScrewdriverWrench} /></span>}</td>
                 <td>
                   <AircraftCondition aircraftCondition={aircraft.total_condition} />
                 </td>

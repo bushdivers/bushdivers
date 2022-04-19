@@ -1,5 +1,7 @@
 import React from 'react'
 import { Link } from '@inertiajs/inertia-react'
+import { faClose } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const FleetAircraft = (props) => {
   return (
@@ -11,7 +13,7 @@ const FleetAircraft = (props) => {
           <td>
             <div className="flex items-center">
               <Link href={`/admin/aircraft/delete/${detail.id}`} className="btn btn-light flex items-center">
-                <i className="material-icons md-18">close</i>
+                <FontAwesomeIcon icon={faClose} />
               </Link>
             </div>
           </td>

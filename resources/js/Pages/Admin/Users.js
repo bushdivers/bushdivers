@@ -1,9 +1,11 @@
 import React from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import PageTitle from '../../Shared/Navigation/PageTitle'
 import { format } from 'date-fns'
 import Pagination from '../../Shared/Elements/Pagination'
 import { Link } from '@inertiajs/inertia-react'
 import AppLayout from '../../Shared/AppLayout'
+import { faBan, faCheckCircle, faUser, faUserShield } from '@fortawesome/free-solid-svg-icons'
 
 const Users = ({ users }) => {
   return (
@@ -40,8 +42,8 @@ const Users = ({ users }) => {
                   <span className="mr-2">{entry.is_active ? 'Active' : 'Blocked'}</span>
                     <Link href={`/admin/users/active/${entry.id}`} className="btn btn-light btn-small flex">
                       {entry.is_active
-                        ? <i className="material-icons md-18">block</i>
-                        : <i className="material-icons md-18">check_circle</i>
+                        ? <FontAwesomeIcon icon={faBan} />
+                        : <FontAwesomeIcon icon={faCheckCircle} />
                       }
                     </Link>
                 </div>
@@ -51,8 +53,8 @@ const Users = ({ users }) => {
                   <span className="mr-2">{entry.is_admin ? 'Yes' : 'No'}</span>
                   <Link href={`/admin/users/admin/${entry.id}`} className="btn btn-light btn-small flex">
                     {entry.is_admin
-                      ? <i className="material-icons md-18">person</i>
-                      : <i className="material-icons md-18">verified_user</i>
+                      ? <FontAwesomeIcon icon={faUser} />
+                      : <FontAwesomeIcon icon={faUserShield} />
                     }
                   </Link>
                 </div>

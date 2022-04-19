@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import NoContent from '../../Shared/Elements/NoContent'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Tooltip from '../../Shared/Elements/Tooltip'
 import { Link, usePage } from '@inertiajs/inertia-react'
 import dayjs, { convertMinuteDecimalToHoursAndMinutes } from '../../Helpers/date.helpers'
@@ -9,6 +10,14 @@ import CargoDetails from '../../Shared/Components/Contracts/CargoDetails'
 import CustomContract from '../../Shared/Components/Contracts/CustomContract'
 import AppLayout from '../../Shared/AppLayout'
 import StatBlock from '../../Shared/Elements/StatBlock'
+import {
+  faArrowDownShortWide, faArrowUp,
+  faBoxArchive,
+  faCheck,
+  faCompass, faDollarSign, faLocationDot, faMinus, faPlaneArrival, faPlaneDeparture, faPlus,
+  faSuitcase,
+  faUserGroup
+} from '@fortawesome/free-solid-svg-icons'
 
 const EmptyData = (props) => {
   return (
@@ -127,7 +136,7 @@ const Contracts = ({ contracts, airport }) => {
             </div>
             <div>
               <Tooltip direction="top" content="Sort contract list">
-                <button onClick={() => toggleSort()} className="btn btn-light ml-2"><i className="material-icons md-16">sort</i></button>
+                <button onClick={() => toggleSort()} className="btn btn-light ml-2"><FontAwesomeIcon icon={faArrowDownShortWide} /></button>
               </Tooltip>
             </div>
           </div>
@@ -163,44 +172,44 @@ const Contracts = ({ contracts, airport }) => {
                 </Tooltip>
                 <Tooltip direction="left" content="Accept contract">
                 <button onClick={() => bidForContract(contract)} className="btn btn-secondary btn-small">
-                  <i className="material-icons md-16">check</i>
+                  <FontAwesomeIcon icon={faCheck} />
                 </button>
                 </Tooltip>
               </div>
               <div className="px-4 py-2 flex justify-between">
                 <div className="flex items-center space-x-4">
                   <Tooltip direction="right" content="Number of cargo items">
-                  <div className="mx-1 flex items-center">
-                    <i className="material-icons md-16 mr-1">inventory</i>
+                  <div className="mx-1 flex items-center space-x-1">
+                    <FontAwesomeIcon icon={faBoxArchive} />
                     <span>{contract.cargo.length}</span>
                   </div>
                   </Tooltip>
                   <Tooltip direction="bottom" content="Total cargo">
-                  <div className="mx-1 flex items-center">
-                    <i className="material-icons md-16 mr-1">work</i>
+                  <div className="mx-1 flex items-center space-x-1">
+                    <FontAwesomeIcon icon={faSuitcase} />
                     <span>{contract.payload ? <>{contract.payload}</> : <>0</>} lbs</span>
                   </div>
                   </Tooltip>
                   <Tooltip direction="bottom" content="Total pax">
-                  <div className="mx-1 flex items-center">
-                    <i className="material-icons md-16 mr-1">people</i>
+                  <div className="mx-1 flex items-center space-x-1">
+                    <FontAwesomeIcon icon={faUserGroup} />
                     <span>{contract.pax ? <>{contract.pax}</> : <>0</>}</span>
                   </div>
                   </Tooltip>
                   <Tooltip direction="bottom" content="Distance">
-                  <div className="mx-1 flex items-center">
-                    <i className="material-icons md-16 mr-1">explore</i>
+                  <div className="mx-1 flex items-center space-x-1">
+                    <FontAwesomeIcon icon={faCompass} />
                     <span>{contract.distance} nm</span>
                   </div>
                   </Tooltip>
                   <Tooltip direction="bottom" content="Heading">
-                  <div className="mx-1 flex items-center">
-                    <span style={{ transform: `rotate(${contract.heading}deg)` }}><i className="material-icons md-16 text-gray-800">north</i></span>
+                  <div className="mx-1 flex items-center space-x-1">
+                    <span style={{ transform: `rotate(${contract.heading}deg)` }}><FontAwesomeIcon icon={faArrowUp} className="text-gray-700" /></span>
                   </div>
                   </Tooltip>
                   <Tooltip direction="left" content="Contract value">
-                  <div className="mx-1 flex items-center">
-                    <i className="material-icons md-16 mr-1">currency_bitcoin</i>
+                  <div className="mx-1 flex items-center space-x-1">
+                    <FontAwesomeIcon icon={faDollarSign} />
                     <span>${contract.contract_value}</span>
                   </div>
                   </Tooltip>
@@ -209,7 +218,7 @@ const Contracts = ({ contracts, airport }) => {
               <div className="flex justify-start pl-4 py-1">
                 <Tooltip direction="right" content="Show cargo details">
                 <button className="btn btn-light flex justify-center items-center text-center" onClick={() => toggleDetail(contract.id)}>
-                  {showDetail && showDetailId === contract.id ? <i className="material-icons md-16">remove</i> : <i className="material-icons md-16">add</i>}
+                  {showDetail && showDetailId === contract.id ? <FontAwesomeIcon icon={faMinus} /> : <FontAwesomeIcon icon={faPlus} />}
                 </button>
                 </Tooltip>
               </div>
@@ -221,21 +230,21 @@ const Contracts = ({ contracts, airport }) => {
                       <div className="flex justify-between items-center text-sm">
                         <Tooltip direction="right" content="Current location">
                         <div className="flex items-baseline space-x-1 mr-4">
-                          <i className="material-icons md-16">location_on</i>
+                          <FontAwesomeIcon icon={faLocationDot} />
                           <div className="">{c.current_airport_id}</div>
                         </div>
                         </Tooltip>
                         <div className="flex items-center space-x-1 mr-4">
                           <Tooltip direction="top" content="Origin">
-                          <div className="mr-1 flex items-center">
-                            <i className="material-icons md-16 mr-1">flight_takeoff</i>
-                            {c.dep_airport_id}
+                          <div className="mr-1 flex items-center space-x-1">
+                            <FontAwesomeIcon icon={faPlaneDeparture} />
+                            <span>{c.dep_airport_id}</span>
                           </div>
                           </Tooltip>
                           <Tooltip direction="top" content="Destination">
-                          <div className="mr-2 flex items-center">
-                            <i className="material-icons md-16 mr-1">flight_land</i>
-                            {c.arr_airport_id}
+                          <div className="mr-2 flex items-center space-x-1">
+                            <FontAwesomeIcon icon={faPlaneArrival} />
+                            <span>{c.arr_airport_id}</span>
                           </div>
                           </Tooltip>
                         </div>
@@ -247,7 +256,7 @@ const Contracts = ({ contracts, airport }) => {
                         </Tooltip>
                         <Tooltip direction="left" content="Heading">
                         <div className="flex items-center space-x-1">
-                          <span style={{ transform: `rotate(${contract.heading}deg)` }}><i className="material-icons md-16 text-gray-800">north</i></span>
+                          <span style={{ transform: `rotate(${contract.heading}deg)` }}><FontAwesomeIcon icon={faArrowUp} className="text-gray-700" /></span>
                         </div>
                         </Tooltip>
                       </div>
