@@ -12,6 +12,7 @@ class StoreContract
     public function execute($start, $dest, $distance, $heading, $cargo, $value, $custom = false, $userId = null)
     {
         $contract = new Contract();
+        $contract->contract_type_id = 1;
         $contract->dep_airport_id = $start;
         $contract->arr_airport_id = $dest;
         $contract->distance = $distance;
@@ -41,9 +42,9 @@ class StoreContract
         $contractCargo->heading = $heading;
         $contractCargo->contract_value = $value;
         if ($cargo['type'] == 1) {
-            $contractCargo->contract_type_id = ContractType::Cargo;
+            $contractCargo->cargo_type_id = ContractType::Cargo;
         } else {
-            $contractCargo->contract_type_id = ContractType::Passenger;
+            $contractCargo->cargo_type_id = ContractType::Passenger;
         }
         $contractCargo->cargo = $cargo['name'];
         $contractCargo->cargo_qty = $cargo['qty'];

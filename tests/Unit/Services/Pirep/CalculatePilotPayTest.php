@@ -76,24 +76,17 @@ class CalculatePilotPayTest extends TestCase
      *
      * @return void
      */
-    public function test_pay_calculated()
-    {
-        $pay = $this->contract->contract_value;
-        $this->calculatePilotPay->execute($this->pirep);
-        $this->assertDatabaseHas('users', ['account_balance' => $pay]);
-    }
 
-    public function test_pay_added_to_user_account_ledger()
-    {
-
-        $rank = Rank::where('name', 'Trainee')->first();
-        $pay = $this->contract->contract_value;
-        $this->calculatePilotPay->execute($this->pirep);
-        $this->assertDatabaseHas('user_accounts', [
-            'user_id' => $this->pirep->user_id,
-            'total' => $pay,
-            'flight_id' => $this->pirep->id
-        ]);
-    }
-
+//    public function test_pay_added_to_user_account_ledger()
+//    {
+//
+//        $rank = Rank::where('name', 'Trainee')->first();
+//        $pay = $this->contract->contract_value;
+//        $this->calculatePilotPay->execute($this->pirep);
+//        $this->assertDatabaseHas('user_accounts', [
+//            'user_id' => $this->pirep->user_id,
+//            'total' => $pay,
+//            'flight_id' => $this->pirep->id
+//        ]);
+//    }
 }

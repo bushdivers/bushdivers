@@ -23,7 +23,7 @@ class ContractCargoFactory extends Factory
     public function definition()
     {
         return [
-            'contract_type_id' => ContractType::Cargo,
+            'cargo_type_id' => ContractType::Cargo,
             'current_airport_id' => 'AYMR',
             'cargo' => 'Test Cargo',
             'cargo_qty' => 300,
