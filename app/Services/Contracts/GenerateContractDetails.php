@@ -41,7 +41,18 @@ class GenerateContractDetails
                     // get distance and heading
                     $distance = $this->calcDistanceBetweenPoints->execute($origin->lat, $origin->lon, $airport->lat, $airport->lon);
                     $heading = $this->calcBearingBetweenPoints->execute($origin->lat, $origin->lon, $airport->lat, $airport->lon, $airport->magnetic_variance);
+                    $expiry = Carbon::now()->addDays(rand(1,8));
+
+                    $expiryMultiplier = match ($expiry) {
+                        $expiry > Carbon::now()->addDays(5) && $expiry < Carbon::now()->addDays(7) => 1.2,
+                        $expiry > Carbon::now()->addDays(3) && $expiry < Carbon::now()->addDays(5) => 1.5,
+                        $expiry > Carbon::now()->addDays(1) && $expiry < Carbon::now()->addDays(3) => 1.8,
+                        $expiry < Carbon::now()->addHours(24) => 2.0,
+                        default => 0,
+                    };
+
                     $contractValue = $this->calcContractValue->execute($cargo['type'], $cargo['qty'], $distance);
+                    $contractValue = $contractValue * $expiryMultiplier;
                     // create contract
                     $contract = [
                         'id' => $origin->identifier.'-'.$airport->identifier,
@@ -53,10 +64,9 @@ class GenerateContractDetails
                         'distance' => $distance,
                         'heading' => $heading,
                         'contract_value' => $contractValue,
-                        'expires_at' => Carbon::now()->addDays(rand(1,8))
+                        'expires_at' => $expiry
                     ];
                     $contracts[] = $contract;
-//                    $this->storeContract->execute($origin->identifier, $airport->identifier, $distance, $heading, $cargo, $contractValue);
                 }
             }
             return $contracts;
