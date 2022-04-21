@@ -250,7 +250,7 @@ const Contracts = ({ contracts, airport }) => {
                         </div>
                         <Tooltip direction="top" content="Cargo">
                         <div className="mr-2 flex items-center space-x-1">
-                          <div className="mr-1">{c.cargo_qty} {c.contract_type_id === 1 ? 'lbs' : ''}</div>
+                          <div className="mr-1">{c.cargo_qty} {c.cargo_type_id === 1 ? 'lbs' : ''}</div>
                           <div className="mr-2">{c.cargo}</div>
                         </div>
                         </Tooltip>

@@ -1,6 +1,6 @@
 import React from 'react'
 import NoContent from '../../Elements/NoContent'
-import { faTicket } from '@fortawesome/free-solid-svg-icons'
+import { faArrowUp, faTicket } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const EmptyData = (props) => {
@@ -58,13 +58,13 @@ const Cargo = (props) => {
                           <span className="mr-2">{detail.contract.heading}</span>
                         </div>
                         <div className="w-1/2 flex">
-                          <span style={{ transform: `rotate(${detail.contract.heading}deg)` }}><i className="material-icons md-18 text-gray-800">north</i></span>
+                          <span style={{ transform: `rotate(${detail.contract.heading}deg)` }}><FontAwesomeIcon icon={faArrowUp} className="text-gray-800" /></span>
                         </div>
                       </div>
                     </td>
-                    <td>{detail.contract_type_id === 1 ? 'Cargo' : 'Passenger'}</td>
+                    <td>{detail.cargo_type_id === 1 ? 'Cargo' : 'Passenger'}</td>
                     <td>
-                      {detail.contract_type_id === 1
+                      {detail.cargo_type_id === 1
                         ? <div><span>{detail.cargo_qty.toLocaleString(navigator.language)} lbs</span> <span className="text-xs">{detail.cargo}</span></div>
                         : <div><span>{detail.cargo_qty}</span> <span className="text-xs">{detail.cargo}</span></div>
                       }

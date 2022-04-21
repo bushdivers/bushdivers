@@ -15222,9 +15222,9 @@ var CargoDetails = function CargoDetails(props) {
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("td", {
           children: ["Current Location: ", detail.current_airport_id]
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("td", {
-          children: ["Cargo Type: ", detail.contract_type_id === 1 ? 'Cargo' : 'Passenger']
+          children: ["Cargo Type: ", detail.cargo_type_id === 1 ? 'Cargo' : 'Passenger']
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("td", {
-          children: ["Cargo: ", detail.cargo_qty.toLocaleString(navigator.language), " ", detail.contract_type_id === 1 ? 'lbs' : '', " ", detail.cargo]
+          children: ["Cargo: ", detail.cargo_qty.toLocaleString(navigator.language), " ", detail.cargo_type_id === 1 ? 'lbs' : '', " ", detail.cargo]
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("td", {
           children: ["Value: $", detail.contract_value]
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("td", {

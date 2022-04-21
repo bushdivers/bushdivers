@@ -51,13 +51,13 @@ const Dispatch = ({ cargo, aircraft }) => {
     if (selectedCargo.find(sc => sc.id === cargo.id)) {
       await setSelectedCargo(selectedCargo.filter(sc => sc.id !== cargo.id))
       calculateCargoPayload('subtract', cargo)
-      if (cargo.contract_type_id === 2) {
+      if (cargo.cargo_type_id === 2) {
         calculatePax('subtract', cargo)
       }
     } else {
       await setSelectedCargo(sc => sc.concat(cargo))
       calculateCargoPayload('add', cargo)
-      if (cargo.contract_type_id === 2) {
+      if (cargo.cargo_type_id === 2) {
         calculatePax('add', cargo)
       }
     }
@@ -68,7 +68,7 @@ const Dispatch = ({ cargo, aircraft }) => {
       window.alert('please un-select any cargo before splitting!')
       return
     }
-    if (cargo.contract_type_id === 2 && cargo.cargo_qty <= 1) {
+    if (cargo.cargo_type_id === 2 && cargo.cargo_qty <= 1) {
       window.alert('You cannot split a passenger in half!')
       return
     }
@@ -113,13 +113,13 @@ const Dispatch = ({ cargo, aircraft }) => {
   function calculateCargoPayload (method, cargo) {
     let newTotal = 0
     if (method === 'subtract') {
-      if (cargo.contract_type_id === 1) {
+      if (cargo.cargo_type_id === 1) {
         newTotal = cargoWeight - cargo.cargo_qty
       } else {
         newTotal = cargoWeight - (cargo.cargo_qty * personWeight)
       }
     } else if (method === 'add') {
-      if (cargo.contract_type_id === 1) {
+      if (cargo.cargo_type_id === 1) {
         newTotal = cargoWeight + cargo.cargo_qty
       } else {
         newTotal = cargoWeight + (cargo.cargo_qty * personWeight)

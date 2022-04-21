@@ -17209,7 +17209,7 @@ var Dispatch = function Dispatch(_ref) {
             case 5:
               calculateCargoPayload('subtract', cargo);
 
-              if (cargo.contract_type_id === 2) {
+              if (cargo.cargo_type_id === 2) {
                 calculatePax('subtract', cargo);
               }
 
@@ -17225,7 +17225,7 @@ var Dispatch = function Dispatch(_ref) {
             case 11:
               calculateCargoPayload('add', cargo);
 
-              if (cargo.contract_type_id === 2) {
+              if (cargo.cargo_type_id === 2) {
                 calculatePax('add', cargo);
               }
 
@@ -17259,7 +17259,7 @@ var Dispatch = function Dispatch(_ref) {
               return _context2.abrupt("return");
 
             case 3:
-              if (!(cargo.contract_type_id === 2 && cargo.cargo_qty <= 1)) {
+              if (!(cargo.cargo_type_id === 2 && cargo.cargo_qty <= 1)) {
                 _context2.next = 6;
                 break;
               }
@@ -17344,13 +17344,13 @@ var Dispatch = function Dispatch(_ref) {
     var newTotal = 0;
 
     if (method === 'subtract') {
-      if (cargo.contract_type_id === 1) {
+      if (cargo.cargo_type_id === 1) {
         newTotal = cargoWeight - cargo.cargo_qty;
       } else {
         newTotal = cargoWeight - cargo.cargo_qty * personWeight;
       }
     } else if (method === 'add') {
-      if (cargo.contract_type_id === 1) {
+      if (cargo.cargo_type_id === 1) {
         newTotal = cargoWeight + cargo.cargo_qty;
       } else {
         newTotal = cargoWeight + cargo.cargo_qty * personWeight;
@@ -17825,17 +17825,17 @@ var Cargo = function Cargo(props) {
                       style: {
                         transform: "rotate(".concat(detail.contract.heading, "deg)")
                       },
-                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("i", {
-                        className: "material-icons md-18 text-gray-800",
-                        children: "north"
+                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_2__.FontAwesomeIcon, {
+                        icon: _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_4__.faArrowUp,
+                        className: "text-gray-800"
                       })
                     })
                   })]
                 })
               }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("td", {
-                children: detail.contract_type_id === 1 ? 'Cargo' : 'Passenger'
+                children: detail.cargo_type_id === 1 ? 'Cargo' : 'Passenger'
               }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("td", {
-                children: detail.contract_type_id === 1 ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+                children: detail.cargo_type_id === 1 ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
                   children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("span", {
                     children: [detail.cargo_qty.toLocaleString(navigator.language), " lbs"]
                   }), " ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("span", {

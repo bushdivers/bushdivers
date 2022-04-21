@@ -15125,9 +15125,9 @@ var MyContracts = function MyContracts(_ref) {
                           return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.Fragment, {
                             children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("span", {
                               className: "mr-1",
-                              children: detail.contract_type_id === 1 ? 'Cargo' : 'Pax'
+                              children: detail.cargo_type_id === 1 ? 'Cargo' : 'Pax'
                             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)("span", {
-                              children: [detail.cargo_qty.toLocaleString(navigator.language), " ", detail.contract_type_id === 1 ? 'lbs' : '', " ", detail.cargo]
+                              children: [detail.cargo_qty.toLocaleString(navigator.language), " ", detail.cargo_type_id === 1 ? 'lbs' : '', " ", detail.cargo]
                             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("br", {})]
                           });
                         })
@@ -15272,9 +15272,9 @@ var MyContracts = function MyContracts(_ref) {
                           return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.Fragment, {
                             children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("span", {
                               className: "mr-1",
-                              children: detail.contract_type_id === 1 ? 'Cargo' : 'Pax'
+                              children: detail.cargo_type_id === 1 ? 'Cargo' : 'Pax'
                             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)("span", {
-                              children: [detail.cargo_qty.toLocaleString(navigator.language), " ", detail.contract_type_id === 1 ? 'lbs' : '', " ", detail.cargo]
+                              children: [detail.cargo_qty.toLocaleString(navigator.language), " ", detail.cargo_type_id === 1 ? 'lbs' : '', " ", detail.cargo]
                             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("br", {})]
                           });
                         })
@@ -15448,9 +15448,9 @@ var CargoDetails = function CargoDetails(props) {
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("td", {
           children: ["Current Location: ", detail.current_airport_id]
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("td", {
-          children: ["Cargo Type: ", detail.contract_type_id === 1 ? 'Cargo' : 'Passenger']
+          children: ["Cargo Type: ", detail.cargo_type_id === 1 ? 'Cargo' : 'Passenger']
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("td", {
-          children: ["Cargo: ", detail.cargo_qty.toLocaleString(navigator.language), " ", detail.contract_type_id === 1 ? 'lbs' : '', " ", detail.cargo]
+          children: ["Cargo: ", detail.cargo_qty.toLocaleString(navigator.language), " ", detail.cargo_type_id === 1 ? 'lbs' : '', " ", detail.cargo]
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("td", {
           children: ["Value: $", detail.contract_value]
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("td", {

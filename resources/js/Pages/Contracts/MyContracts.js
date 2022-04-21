@@ -107,8 +107,8 @@ const MyContracts = ({ contracts, custom }) => {
                       <td>
                         {contract.cargo.map((detail) => (
                           <>
-                            <span className="mr-1">{detail.contract_type_id === 1 ? 'Cargo' : 'Pax'}</span>
-                            <span>{detail.cargo_qty.toLocaleString(navigator.language)} {detail.contract_type_id === 1 ? 'lbs' : ''} {detail.cargo}</span>
+                            <span className="mr-1">{detail.cargo_type_id === 1 ? 'Cargo' : 'Pax'}</span>
+                            <span>{detail.cargo_qty.toLocaleString(navigator.language)} {detail.cargo_type_id === 1 ? 'lbs' : ''} {detail.cargo}</span>
                             <br/>
                           </>
                         ))}
@@ -185,8 +185,8 @@ const MyContracts = ({ contracts, custom }) => {
                         <td>
                           {contract.cargo.map((detail) => (
                             <>
-                              <span className="mr-1">{detail.contract_type_id === 1 ? 'Cargo' : 'Pax'}</span>
-                              <span>{detail.cargo_qty.toLocaleString(navigator.language)} {detail.contract_type_id === 1 ? 'lbs' : ''} {detail.cargo}</span>
+                              <span className="mr-1">{detail.cargo_type_id === 1 ? 'Cargo' : 'Pax'}</span>
+                              <span>{detail.cargo_qty.toLocaleString(navigator.language)} {detail.cargo_type_id === 1 ? 'lbs' : ''} {detail.cargo}</span>
                               <br/>
                             </>
                           ))}

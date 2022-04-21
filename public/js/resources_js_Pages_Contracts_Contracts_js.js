@@ -15466,7 +15466,7 @@ var Contracts = function Contracts(_ref) {
                         className: "mr-2 flex items-center space-x-1",
                         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
                           className: "mr-1",
-                          children: [c.cargo_qty, " ", c.contract_type_id === 1 ? 'lbs' : '']
+                          children: [c.cargo_qty, " ", c.cargo_type_id === 1 ? 'lbs' : '']
                         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("div", {
                           className: "mr-2",
                           children: c.cargo
@@ -15625,9 +15625,9 @@ var CargoDetails = function CargoDetails(props) {
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("td", {
           children: ["Current Location: ", detail.current_airport_id]
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("td", {
-          children: ["Cargo Type: ", detail.contract_type_id === 1 ? 'Cargo' : 'Passenger']
+          children: ["Cargo Type: ", detail.cargo_type_id === 1 ? 'Cargo' : 'Passenger']
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("td", {
-          children: ["Cargo: ", detail.cargo_qty.toLocaleString(navigator.language), " ", detail.contract_type_id === 1 ? 'lbs' : '', " ", detail.cargo]
+          children: ["Cargo: ", detail.cargo_qty.toLocaleString(navigator.language), " ", detail.cargo_type_id === 1 ? 'lbs' : '', " ", detail.cargo]
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("td", {
           children: ["Value: $", detail.contract_value]
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("td", {

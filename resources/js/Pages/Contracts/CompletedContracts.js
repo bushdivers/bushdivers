@@ -50,7 +50,7 @@ const CompletedContracts = ({ contracts }) => {
               {contract.cargo.map((cargo) => (
                 <tr key={cargo.id}>
                   <td>{cargo.id}</td>
-                  <td>{cargo.contract_type_id === 1 ? <span>Cargo</span> : <span>Passengers</span>}</td>
+                  <td>{cargo.cargo_type_id === 1 ? <span>Cargo</span> : <span>Passengers</span>}</td>
                   <td>{cargo.cargo}</td>
                   <td>{cargo.cargo_qty.toLocaleString(navigator.language)}</td>
                   <td> {dayjs(cargo.completed_at).format('DD/MM/YYYY')}</td>
