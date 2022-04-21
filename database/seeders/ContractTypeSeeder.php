@@ -16,9 +16,8 @@ class ContractTypeSeeder extends Seeder
     public function run()
     {
         DB::table('contract_types')->insert([
-            ['id' => 1, 'cargo_type' => 'Cargo', 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()],
-            ['id' => 2, 'cargo_type' => 'Passenger', 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()],
-            ['id' => 3, 'cargo_type' => 'Generic', 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()]
+            ['id' => 1, 'contract_type' => 'General', 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()],
+            ['id' => 2, 'contract_type' => 'VIP', 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()]
         ]);
     }
 }

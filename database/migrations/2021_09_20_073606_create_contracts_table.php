@@ -15,6 +15,7 @@ class CreateContractsTable extends Migration
     {
         Schema::create('contracts', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('contract_type_id');
             $table->string('dep_airport_id');
             $table->string('arr_airport_id');
             $table->decimal('distance');

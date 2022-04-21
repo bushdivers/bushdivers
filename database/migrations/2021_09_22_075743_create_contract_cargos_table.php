@@ -16,7 +16,7 @@ class CreateContractCargosTable extends Migration
         Schema::create('contract_cargos', function (Blueprint $table) {
             $table->id();
             $table->foreignId('contract_id');
-            $table->foreignId('contract_type_id');
+            $table->foreignId('cargo_type_id');
             $table->string('dep_airport_id')->nullable();
             $table->string('arr_airport_id')->nullable();
             $table->string('current_airport_id');

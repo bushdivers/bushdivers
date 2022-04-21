@@ -14,11 +14,6 @@ class ContractCargo extends Model
         return $this->belongsTo(Contract::class);
     }
 
-    public function type()
-    {
-        return $this->belongsTo(ContractType::class);
-    }
-
     public function currentAirport()
     {
         return $this->belongsTo(Airport::class, 'current_airport_id', 'identifier');
