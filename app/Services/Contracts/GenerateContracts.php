@@ -13,44 +13,21 @@ use Illuminate\Support\Facades\Log;
 
 class GenerateContracts
 {
-    protected FindAirportsWithinDistance $findAirportsWithinDistance;
     protected GenerateContractDetails $generateContractDetails;
-    protected CreatePolygon $createPolygon;
-    protected IsPointInPolygon $isPointInPolygon;
-    protected CalcDistanceBetweenPoints $calcDistanceBetweenPoints;
 
-    public function __construct(
-        FindAirportsWithinDistance $findAirportsWithinDistance,
-        GenerateContractDetails $generateContractDetails,
-        CreatePolygon $createPolygon,
-        IsPointInPolygon $isPointInPolygon,
-        CalcDistanceBetweenPoints $calcDistanceBetweenPoints
-    )
+    public function __construct(GenerateContractDetails $generateContractDetails)
     {
-        $this->findAirportsWithinDistance = $findAirportsWithinDistance;
         $this->generateContractDetails = $generateContractDetails;
-        $this->createPolygon = $createPolygon;
-        $this->isPointInPolygon = $isPointInPolygon;
-        $this->calcDistanceBetweenPoints = $calcDistanceBetweenPoints;
     }
 
     public function execute($airport, $numberToGenerate)
     {
         try {
             // divide number by 3 (n)
-//            $qtyPerRange = round($number / 3);
 
             $shortQty = ($numberToGenerate / 100) * ContractConsts::PERC_SHORT;
             $medQty = ($numberToGenerate / 100) * ContractConsts::PERC_MED;
             $longQty = ($numberToGenerate / 100) * ContractConsts::PERC_LONG;
-
-            $polyShort = $this->createPolygon->execute($airport->lat, $airport->lon, 50);
-            $polyMed = $this->createPolygon->execute($airport->lat, $airport->lon, 150);
-            $polyLong = $this->createPolygon->execute($airport->lat, $airport->lon, 250);
-//
-//            $shortAirports = [];
-//            $medAirports = [];
-//            $longAirports = [];
 
             // get airports
             //$airports = Airport::all();
@@ -113,24 +90,29 @@ class GenerateContracts
             // pick (n) random airports in each category
             $shortAirports = collect($shortA);
             if ($shortAirports->count() <= $shortQty && $shortAirports->count() > 0) {
-                $this->generateContractDetails->execute($airport, $shortAirports);
+                $shortContracts = $this->generateContractDetails->execute($airport, $shortAirports);
             } elseif (count($shortAirports) > 0) {
-                $this->generateContractDetails->execute($airport, $shortAirports->random($shortQty));
+                $shortContracts = $this->generateContractDetails->execute($airport, $shortAirports->random($shortQty));
             }
 
             $medAirports = collect($medA);
             if ($medAirports->count() <= $medQty && $medAirports->count() > 0) {
-                $this->generateContractDetails->execute($airport, $medAirports);
+                $medContracts = $this->generateContractDetails->execute($airport, $medAirports);
             } elseif ($medAirports->count() > 0) {
-                $this->generateContractDetails->execute($airport, $medAirports->random($medQty));
+                $medContracts = $this->generateContractDetails->execute($airport, $medAirports->random($medQty));
             }
 
             $longAirports = collect($longA);
             if ($longAirports->count() <= $longQty && $longAirports->count() > 0) {
-                $this->generateContractDetails->execute($airport, $longAirports);
+                $longContracts = $this->generateContractDetails->execute($airport, $longAirports);
             } elseif ($longAirports->count() > 0) {
-                $this->generateContractDetails->execute($airport, $longAirports->random($longQty));
+                $longContracts = $this->generateContractDetails->execute($airport, $longAirports->random($longQty));
             }
+
+            $c = collect($shortContracts);
+            $merged = $c->merge($medContracts);
+            $merged = $merged->merge($longContracts);
+            return $merged;
         }
         catch (\Exception $e) {
             Log::channel('single')->debug($e->getMessage(), ['where' => 'Contract base generation']);

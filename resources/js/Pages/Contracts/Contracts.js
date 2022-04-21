@@ -122,7 +122,7 @@ const Contracts = ({ contracts, airport }) => {
 
   return (
     <div className="relative">
-      <ContractMap departure={selectedAirport} destination={selectedContract.arr_airport} size="full" mapStyle={auth.user.map_style} />
+      <ContractMap departure={selectedAirport} destination={selectedContract.destination} size="full" mapStyle={auth.user.map_style} />
         <div className="absolute z-30 top-4 left-4 py-2 px-4 bg-white w-1/2 md:w-1/3 opacity-90 shadow rounded">
           <div className="flex flex-col md:flex-row justify-start items-baseline">
             <div>
@@ -167,7 +167,7 @@ const Contracts = ({ contracts, airport }) => {
                 </Tooltip>
                 <Tooltip direction="bottom" content="Destination">
                   <div className="text-sm text-gray-800 font-bold">
-                    {contract.arr_airport_id}
+                    {contract.destination.identifier}
                   </div>
                 </Tooltip>
                 <Tooltip direction="left" content="Accept contract">
@@ -178,22 +178,16 @@ const Contracts = ({ contracts, airport }) => {
               </div>
               <div className="px-4 py-2 flex justify-between">
                 <div className="flex items-center space-x-4">
-                  <Tooltip direction="right" content="Number of cargo items">
-                  <div className="mx-1 flex items-center space-x-1">
-                    <FontAwesomeIcon icon={faBoxArchive} />
-                    <span>{contract.cargo.length}</span>
-                  </div>
-                  </Tooltip>
                   <Tooltip direction="bottom" content="Total cargo">
                   <div className="mx-1 flex items-center space-x-1">
                     <FontAwesomeIcon icon={faSuitcase} />
-                    <span>{contract.payload ? <>{contract.payload}</> : <>0</>} lbs</span>
+                    <span>{contract.cargo_type === 1 ? <>{contract.cargo_qty}</> : <>0</>} lbs</span>
                   </div>
                   </Tooltip>
                   <Tooltip direction="bottom" content="Total pax">
                   <div className="mx-1 flex items-center space-x-1">
                     <FontAwesomeIcon icon={faUserGroup} />
-                    <span>{contract.pax ? <>{contract.pax}</> : <>0</>}</span>
+                    <span>{contract.cargo_type === 2 ? <>{contract.cargo_qty}</> : <>0</>}</span>
                   </div>
                   </Tooltip>
                   <Tooltip direction="bottom" content="Distance">
@@ -215,43 +209,28 @@ const Contracts = ({ contracts, airport }) => {
                   </Tooltip>
                 </div>
               </div>
-              <div className="flex justify-start pl-4 py-1">
-                <Tooltip direction="right" content="Show cargo details">
-                <button className="btn btn-light flex justify-center items-center text-center" onClick={() => toggleDetail(contract.id)}>
-                  {showDetail && showDetailId === contract.id ? <FontAwesomeIcon icon={faMinus} /> : <FontAwesomeIcon icon={faPlus} />}
-                </button>
-                </Tooltip>
-              </div>
-              {showDetail && showDetailId === contract.id && (
               <div className="flex justify-between px-4 py-2">
                 <div className="mt-1 text-xs">
-                  {contracts && contract.cargo.map((c) => (
-                    <div key="c.id" className="flex justify-between items-center cursor-pointer">
+                    <div className="flex justify-between items-center cursor-pointer">
                       <div className="flex justify-between items-center text-sm">
-                        <Tooltip direction="right" content="Current location">
-                        <div className="flex items-baseline space-x-1 mr-4">
-                          <FontAwesomeIcon icon={faLocationDot} />
-                          <div className="">{c.current_airport_id}</div>
-                        </div>
-                        </Tooltip>
                         <div className="flex items-center space-x-1 mr-4">
                           <Tooltip direction="top" content="Origin">
                           <div className="mr-1 flex items-center space-x-1">
                             <FontAwesomeIcon icon={faPlaneDeparture} />
-                            <span>{c.dep_airport_id}</span>
+                            <span>{contract.departure}</span>
                           </div>
                           </Tooltip>
                           <Tooltip direction="top" content="Destination">
                           <div className="mr-2 flex items-center space-x-1">
                             <FontAwesomeIcon icon={faPlaneArrival} />
-                            <span>{c.arr_airport_id}</span>
+                            <span>{contract.destination.identifier}</span>
                           </div>
                           </Tooltip>
                         </div>
                         <Tooltip direction="top" content="Cargo">
                         <div className="mr-2 flex items-center space-x-1">
-                          <div className="mr-1">{c.cargo_qty} {c.cargo_type_id === 1 ? 'lbs' : ''}</div>
-                          <div className="mr-2">{c.cargo}</div>
+                          <div className="mr-1">{contract.cargo_qty} {contract.cargo_type === 1 ? 'lbs' : ''}</div>
+                          <div className="mr-2">{contract.cargo}</div>
                         </div>
                         </Tooltip>
                         <Tooltip direction="left" content="Heading">
@@ -261,15 +240,12 @@ const Contracts = ({ contracts, airport }) => {
                         </Tooltip>
                       </div>
                     </div>
-                  ))}
                 </div>
               </div>
-              )}
             </div>
           ))}
         </div>
       )}
-      {/*</div>*/}
     </div>
   )
 }

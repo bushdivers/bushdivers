@@ -28,16 +28,8 @@ class AuthenticateUserController extends Controller
         ) {
             $request->session()->regenerate();
 
-            if (Auth::user()->intro_seen) {
-                return redirect()->intended('dashboard');
-            } else {
-                $user = User::find(Auth::user()->id);
-                $user->intro_seen = true;
-                $user->save();
-                return redirect()->route('intro');
-            }
+            return redirect()->intended('dashboard');
         }
-
         return redirect()->back()->with([
             'error' => 'The provided credentials do not match our records.',
         ]);

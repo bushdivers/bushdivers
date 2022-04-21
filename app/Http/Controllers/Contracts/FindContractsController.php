@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Contracts;
 
 use App\Http\Controllers\Controller;
 use App\Models\Airport;
+use App\Services\Contracts\GenerateContracts;
 use App\Services\Contracts\GetContractsFromCriteria;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -11,11 +12,12 @@ use Inertia\Response;
 
 class FindContractsController extends Controller
 {
-    protected GetContractsFromCriteria $getContractsFromCriteria;
+    protected GenerateContracts $generateContracts;
 
-    public function __construct(GetContractsFromCriteria $getContractsFromCriteria)
+    public function __construct(GenerateContracts $generateContracts)
     {
-        $this->getContractsFromCriteria = $getContractsFromCriteria;
+        $this->generateContracts = $generateContracts;
+        // $this->getContractsFromCriteria = $getContractsFromCriteria;
     }
 
     /**
@@ -26,20 +28,16 @@ class FindContractsController extends Controller
      */
     public function __invoke(Request $request): Response
     {
-//        $criteria = [
-//            'icao' => $request->icao,
-//            'distance' => $request->distance,
-//            'cargo' => $request->cargo,
-//            'pax' => $request->pax
-//        ];
-
+        // TODO: Update to generate contracts on fly
         $airport = Airport::where('identifier', $request->icao)->first();
         if (!$airport) {
             return Inertia::render('Contracts/Contracts')->with(['error' => 'Airport not found']);
         }
 
-        $contracts = $this->getContractsFromCriteria->execute($request->icao, $request->sort);
-
+        // generate contracts on the fly
+        $numToGenerate = $airport->is_hub ? 12 : 6;
+        $contracts = $this->generateContracts->execute($airport, $numToGenerate);
+        // $contracts = $this->getContractsFromCriteria->execute($request->icao, $request->sort);
         return Inertia::render('Contracts/Contracts', ['contracts' => $contracts, 'airport' => $airport]);
     }
 }
