@@ -25,7 +25,7 @@ class CalculateContractValueTest extends TestCase
     {
         $value = $this->calcContractValue->execute(1, 200, 100);
         $cargoPay = 200 * ContractValueTypes::CARGO_VALUE;
-        $distancePay = (100/50) * 200;
+        $distancePay = (100/50) * ContractValueTypes::DISTANCE_VALUE;
         $expected = $cargoPay + $distancePay;
         $this->assertEquals($expected, $value);
     }

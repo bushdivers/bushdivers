@@ -56,7 +56,7 @@ class GenerateContractDetailsTest extends TestCase
     public function test_contract_generates_successfully()
     {
         $airports = collect([$this->airport1, $this->airport2]);
-        $contracts = $this->generateContractDetails->execute($this->origin, $airports);
+        $contracts = $this->generateContractDetails->execute($this->origin, $airports, 'small');
         $this->assertArrayHasKey('cargo', $contracts[1]);
     }
 }
