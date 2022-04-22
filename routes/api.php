@@ -28,6 +28,8 @@ Route::post('/cargo/split', \App\Http\Controllers\Dispatch\SplitCargoController:
     ->name('cargo.split');
 Route::get('/resources/categories', \App\Http\Controllers\Admin\Resources\GetCategoriesController::class)
     ->name('resources.categories');
+Route::post('/contracts/bid', \App\Http\Controllers\Contracts\BidForContractController::class)
+    ->name('contracts.bid');
 
 
 

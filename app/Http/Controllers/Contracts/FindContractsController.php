@@ -44,7 +44,7 @@ class FindContractsController extends Controller
             Cache::put($key, $contracts, now()->addSeconds(20));
         }
 
-        return Inertia::render('Contracts/Contracts', ['contracts' => $contracts, 'airport' => $airport]);
+        return Inertia::render('Contracts/Contracts', ['searchedContracts' => $contracts, 'airport' => $airport]);
     }
 
     protected function buildCacheKey(string $icao, string $distance, string $size): string

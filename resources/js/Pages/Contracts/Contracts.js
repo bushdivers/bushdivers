@@ -19,6 +19,8 @@ import {
   faUserGroup
 } from '@fortawesome/free-solid-svg-icons'
 import { formatNumber } from '../../Helpers/general.helpers'
+import axios from 'axios'
+import { toast } from 'react-hot-toast'
 
 const EmptyData = (props) => {
   return (
@@ -38,8 +40,9 @@ const AirportToolTip = (props) => {
   )
 }
 
-const Contracts = ({ contracts, airport }) => {
+const Contracts = ({ searchedContracts, airport }) => {
   const { auth } = usePage().props
+  const [contracts, setContracts] = useState(searchedContracts)
   const [selectedAirport, setSelectedAirport] = useState('')
   const [title, setTitle] = useState('Contracts')
   // const [icao, setIcao] = useState('')
@@ -48,31 +51,20 @@ const Contracts = ({ contracts, airport }) => {
     flightLength: 'short',
     aircraftSize: 'small'
   })
-  // const [searchIcao, setSearchIcao] = useState(auth.user.current_airport_id)
-  const [sort, setSort] = useState('heading')
-  const [showSort, setShowSort] = useState(false)
-  // const [contracts, setContracts] = useState([])
   const [selectedContract, setSelectedContract] = useState({})
   const [error, setError] = useState(null)
-  const [showDetail, setShowDetail] = useState(false)
-  const [showDetailId, setShowDetailId] = useState(0)
   const [showCustom, setShowCustom] = useState(false)
   const [showContracts, setShowContracts] = useState(false)
 
   useEffect(() => {
-    if (contracts && airport) {
+    if (searchedContracts && airport) {
       setTitle(`Contracts - ${airport.name} (${airport.identifier})`)
       setSelectedAirport(airport)
+      setContracts(searchedContracts)
     } else {
       setTitle('Contracts')
     }
-  }, [contracts])
-
-  useEffect(async () => {
-    if (contracts.length > 0) {
-      await handleSearch()
-    }
-  }, [sort])
+  }, [searchedContracts])
 
   function handleChange (e) {
     const key = e.target.id
@@ -104,35 +96,38 @@ const Contracts = ({ contracts, airport }) => {
     setSelectedContract(contract)
   }
 
-  const bidForContract = (contract) => {
+  const bidForContract = async (contract) => {
     const data = {
-      id: contract.id,
-      icao: searchForm.searchIcao,
-      sort: sort
+      contract: contract,
+      icao: searchForm.searchIcao
     }
-    Inertia.post('/contracts/bid', data)
-  }
+    const bid = axios.post('/api/contracts/bid', data)
+    await toast.promise(bid, {
+      loading: '...Bidding on contract',
+      success: 'Contract won!',
+      error: 'Issue processing bid'
+    }, { position: 'top-right'})
 
-  const toggleDetail = (id) => {
-    setShowDetail(!showDetail)
-    setShowDetailId(id)
-  }
+    const newContracts = contracts.filter(c => c.id !== contract.id)
+    setContracts(newContracts)
 
-  const toggleSort = () => {
-    setShowSort(!showSort)
-    setShowCustom(false)
+    // toast.loading('...Bidding on contract')
+    // const data = {
+    //   contract: contract,
+    //   icao: searchForm.searchIcao
+    // }
+    // const res = await axios.post('/api/contracts/bid', data)
+    // if (res.status === 201) {
+    //   toast.success('Contract won!')
+    //   const newContracts = contracts.filter(c => c.id !== contract.id)
+    //   setContracts(newContracts)
+    // } else {
+    //   toast.error('Issue processing contract bid')
+    // }
   }
 
   const toggleCustom = () => {
     setShowCustom(!showCustom)
-    setShowSort(false)
-  }
-
-  const handleSort = (s) => {
-    setShowSort(false)
-    if (contracts.length > 0) {
-      setSort(s)
-    }
   }
 
   return (
@@ -165,11 +160,6 @@ const Contracts = ({ contracts, airport }) => {
                 <button onClick={() => toggleCustom()} className="btn btn-secondary ml-2">Custom</button>
               </Tooltip>
             </div>
-            {/*<div>*/}
-            {/*  <Tooltip direction="top" content="Sort contract list">*/}
-            {/*    <button onClick={() => toggleSort()} className="btn btn-light ml-2"><FontAwesomeIcon icon={faArrowDownShortWide} /></button>*/}
-            {/*  </Tooltip>*/}
-            {/*</div>*/}
           </div>
           {error && <span className="text-sm text-red-500">{error}</span>}
         </div>
@@ -178,7 +168,7 @@ const Contracts = ({ contracts, airport }) => {
           <CustomContract departureIcao={searchForm.searchIcao} hideSection={() => setShowCustom(false)} />
         </div>
       )}
-      {showContracts && (<div className="absolute z-30 top-32 left-4 bottom-4 bg-white w-1/2 md:w-1/3 opacity-90 shadow rounded h-auto overflow-y-auto mb-2">
+      {showContracts && contracts && (<div className="absolute z-30 top-32 left-4 bottom-4 bg-white w-1/2 md:w-1/3 opacity-90 shadow rounded h-auto overflow-y-auto mb-2">
           {contracts && contracts.map((contract) => (
             <div key={contract.id} onClick={() => updateSelectedContract(contract)} className={`${contract.id === selectedContract.id ? 'bg-orange-200 hover:bg-orange-100' : ''} border-t-2 text-sm cursor-pointer z-40`}>
               <div className="px-4 py-2 flex justify-between items-center">

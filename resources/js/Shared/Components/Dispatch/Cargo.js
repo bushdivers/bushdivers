@@ -32,8 +32,6 @@ const Cargo = (props) => {
                 <tr>
                   <td></td>
                   <th>Split</th>
-                  {/* <td></td> */}
-                  <th>Contract</th>
                   <th>Current</th>
                   <th>Arrival</th>
                   <th>Distance</th>
@@ -46,9 +44,7 @@ const Cargo = (props) => {
                 {props.cargo.map((detail) => (
                   <tr key={detail.id} className={props.selectedCargo.some(s => s.id === detail.id) ? 'bg-orange-200 hover:bg-orange-100' : ''}>
                     <td><input id="sel" checked={props.selectedCargo.some(s => s.id === detail.id)} onChange={() => props.handleCargoSelect(detail)} type="checkbox" className="form-checkbox rounded border-gray-300 text-orange-500 shadow-sm focus:border-orange-300 focus:ring focus:ring-offset-0 focus:ring-orange-200 focus:ring-opacity-50" /></td>
-                    {/* <td><button onClick={() => toggleShowSplit} className="btn btn-secondary btn-small">Split</button></td> */}
                     <td><button className="btn btn-secondary btn-small" onClick={() => props.splitCargo(detail)}>Split</button></td>
-                    <td>{detail.id}</td>
                     <td>{detail.current_airport_id}</td>
                     <td>{detail.contract.arr_airport_id} {detail.contract.arr_airport.longest_runway_surface === 'W' && <span className="material-icons md-18">anchor</span>}</td>
                     <td>{detail.contract.distance.toLocaleString(navigator.language)} nm</td>

@@ -5,7 +5,10 @@ namespace App\Http\Controllers\Contracts;
 use App\Http\Controllers\Controller;
 use App\Models\Airport;
 use App\Models\Contract;
-use App\Services\Contracts\GetContractsFromCriteria;
+use App\Models\ContractInfo;
+use App\Services\Contracts\StoreContract;
+use Carbon\Carbon;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -13,11 +16,11 @@ use Inertia\Response;
 
 class BidForContractController extends Controller
 {
-    protected GetContractsFromCriteria $getContractsFromCriteria;
+    protected StoreContract $storeContract;
 
-    public function __construct(GetContractsFromCriteria $getContractsFromCriteria)
+    public function __construct(StoreContract $storeContract)
     {
-        $this->getContractsFromCriteria = $getContractsFromCriteria;
+        $this->storeContract = $storeContract;
     }
 
     /**
@@ -26,24 +29,23 @@ class BidForContractController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function __invoke(Request $request): Response
+    public function __invoke(Request $request): JsonResponse
     {
-        $contract = Contract::find($request->id);
+        $cargo = ['name' => $request->contract['cargo'], 'type' => $request->contract['cargo_type'], 'qty' => $request->contract['cargo_qty']];
 
-        // set contract to not available
-        $contract->is_available = false;
-        $contract->save();
+        $data = new ContractInfo();
+        $data->setStart($request->contract['departure']);
+        $data->setDest($request->contract['destination']['identifier']);
+        $data->setDistance($request->contract['distance']);
+        $data->setHeading($request->contract['heading']);
+        $data->setCargo($cargo);
+        $data->setValue($request->contract['contract_value']);
+        $data->setCustom(false);
+        $expiry = Carbon::parse($request->contract['expires_at']);
+        $this->storeContract->execute($data, $expiry);
 
-//        $criteria = [
-//            'icao' => $request->icao,
-//            'distance' => $request->distance,
-//            'cargo' => $request->cargo,
-//            'pax' => $request->pax
-//        ];
+        return \response()->json(['message' => 'Contract saved!'], 201);
 
-        $contracts = $this->getContractsFromCriteria->execute($request->icao, $request->sort);
-        $airport = Airport::where('identifier', $request->icao)->first();
-
-        return Inertia::render('Contracts/Contracts', ['contracts' => $contracts, 'airport' => $airport])->with(['success' => 'Contract accepted successfully']);
+        // return Inertia::render('Contracts/Contracts', ['contracts' => $contracts, 'airport' => $airport])->with(['success' => 'Contract accepted successfully']);
     }
 }
