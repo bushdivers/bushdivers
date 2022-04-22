@@ -1,10 +1,12 @@
 import React from 'react'
 import NoContent from '../../Elements/NoContent'
+import { faArrowUp, faTicket } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const EmptyData = (props) => {
   return (
     <>
-      <i className="material-icons md-48">airplane_ticket</i>
+      <FontAwesomeIcon icon={faTicket} />
       <div>There are no available {props.content}</div>
     </>
   )
@@ -30,8 +32,6 @@ const Cargo = (props) => {
                 <tr>
                   <td></td>
                   <th>Split</th>
-                  {/* <td></td> */}
-                  <th>Contract</th>
                   <th>Current</th>
                   <th>Arrival</th>
                   <th>Distance</th>
@@ -44,9 +44,7 @@ const Cargo = (props) => {
                 {props.cargo.map((detail) => (
                   <tr key={detail.id} className={props.selectedCargo.some(s => s.id === detail.id) ? 'bg-orange-200 hover:bg-orange-100' : ''}>
                     <td><input id="sel" checked={props.selectedCargo.some(s => s.id === detail.id)} onChange={() => props.handleCargoSelect(detail)} type="checkbox" className="form-checkbox rounded border-gray-300 text-orange-500 shadow-sm focus:border-orange-300 focus:ring focus:ring-offset-0 focus:ring-orange-200 focus:ring-opacity-50" /></td>
-                    {/* <td><button onClick={() => toggleShowSplit} className="btn btn-secondary btn-small">Split</button></td> */}
                     <td><button className="btn btn-secondary btn-small" onClick={() => props.splitCargo(detail)}>Split</button></td>
-                    <td>{detail.id}</td>
                     <td>{detail.current_airport_id}</td>
                     <td>{detail.contract.arr_airport_id} {detail.contract.arr_airport.longest_runway_surface === 'W' && <span className="material-icons md-18">anchor</span>}</td>
                     <td>{detail.contract.distance.toLocaleString(navigator.language)} nm</td>
@@ -56,13 +54,13 @@ const Cargo = (props) => {
                           <span className="mr-2">{detail.contract.heading}</span>
                         </div>
                         <div className="w-1/2 flex">
-                          <span style={{ transform: `rotate(${detail.contract.heading}deg)` }}><i className="material-icons md-18 text-gray-800">north</i></span>
+                          <span style={{ transform: `rotate(${detail.contract.heading}deg)` }}><FontAwesomeIcon icon={faArrowUp} className="text-gray-800" /></span>
                         </div>
                       </div>
                     </td>
-                    <td>{detail.contract_type_id === 1 ? 'Cargo' : 'Passenger'}</td>
+                    <td>{detail.cargo_type_id === 1 ? 'Cargo' : 'Passenger'}</td>
                     <td>
-                      {detail.contract_type_id === 1
+                      {detail.cargo_type_id === 1
                         ? <div><span>{detail.cargo_qty.toLocaleString(navigator.language)} lbs</span> <span className="text-xs">{detail.cargo}</span></div>
                         : <div><span>{detail.cargo_qty}</span> <span className="text-xs">{detail.cargo}</span></div>
                       }

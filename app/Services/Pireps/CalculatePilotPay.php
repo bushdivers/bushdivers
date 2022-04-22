@@ -21,12 +21,6 @@ class CalculatePilotPay
             $cargo = ContractCargo::find($pc->contract_cargo_id);
             $contract = Contract::find($cargo->contract_id);
             if ($contract->is_completed) {
-                $pay += $contract->contract_value;
-
-                // update users balance
-                $user->account_balance += $pay;
-                $user->save();
-
                 // add line to user account
                 DB::table('user_accounts')->insert([
                     'user_id' => $user->id,

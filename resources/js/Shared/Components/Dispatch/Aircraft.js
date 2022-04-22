@@ -3,11 +3,13 @@ import NoContent from '../../Elements/NoContent'
 import { Link, usePage } from '@inertiajs/inertia-react'
 import Tooltip from '../../Elements/Tooltip'
 import AircraftCondition from '../Fleet/AircraftCondition'
+import { faTicket } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const EmptyData = (props) => {
   return (
     <>
-      <i className="material-icons md-48">airplane_ticket</i>
+      <FontAwesomeIcon icon={faTicket} />
       <div>There are no available {props.content}</div>
     </>
   )

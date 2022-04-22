@@ -1,15 +1,16 @@
 import React, { useState } from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import PageTitle from '../../Shared/Navigation/PageTitle'
 import NoContent from '../../Shared/Elements/NoContent'
 import { format } from 'date-fns'
 import Pagination from '../../Shared/Elements/Pagination'
 import { Inertia } from '@inertiajs/inertia'
 import AppLayout from '../../Shared/AppLayout'
+import { faCheck } from '@fortawesome/free-solid-svg-icons'
 
 const EmptyData = () => {
   return (
     <>
-      <i className="material-icons md-48">airplane_landing</i>
       <div>There are no pirep entries</div>
     </>
   )
@@ -99,7 +100,7 @@ const Pireps = ({ pireps }) => {
                     </td>
                     <td>{format(new Date(entry.submitted_at), 'dd LLL yyyy')}</td>
                     <td>
-                      {entry.state === 5 && <span onClick={() => approvePirep(entry)} className="p-1 hover:rounded hover:shadow material-icons">check</span>}
+                      {entry.state === 5 && <FontAwesomeIcon icon={faCheck} onClick={() => approvePirep(entry)} className="p-1 hover:rounded hover:shadow" />}
                     </td>
                   </tr>
                 ))}

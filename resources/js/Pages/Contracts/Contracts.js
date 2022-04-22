@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import NoContent from '../../Shared/Elements/NoContent'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Tooltip from '../../Shared/Elements/Tooltip'
 import { Link, usePage } from '@inertiajs/inertia-react'
 import dayjs, { convertMinuteDecimalToHoursAndMinutes } from '../../Helpers/date.helpers'
@@ -9,6 +10,17 @@ import CargoDetails from '../../Shared/Components/Contracts/CargoDetails'
 import CustomContract from '../../Shared/Components/Contracts/CustomContract'
 import AppLayout from '../../Shared/AppLayout'
 import StatBlock from '../../Shared/Elements/StatBlock'
+import {
+  faArrowDownShortWide, faArrowUp,
+  faBoxArchive,
+  faCheck,
+  faCompass, faDollarSign, faLocationDot, faMinus, faPlaneArrival, faPlaneDeparture, faPlus,
+  faSuitcase,
+  faUserGroup
+} from '@fortawesome/free-solid-svg-icons'
+import { formatNumber } from '../../Helpers/general.helpers'
+import axios from 'axios'
+import { toast } from 'react-hot-toast'
 
 const EmptyData = (props) => {
   return (
@@ -28,48 +40,52 @@ const AirportToolTip = (props) => {
   )
 }
 
-const Contracts = ({ contracts, airport }) => {
+const Contracts = ({ searchedContracts, airport }) => {
   const { auth } = usePage().props
+  const [contracts, setContracts] = useState(searchedContracts)
   const [selectedAirport, setSelectedAirport] = useState('')
   const [title, setTitle] = useState('Contracts')
   // const [icao, setIcao] = useState('')
-  const [searchIcao, setSearchIcao] = useState(auth.user.current_airport_id)
-  const [sort, setSort] = useState('heading')
-  const [showSort, setShowSort] = useState(false)
-  // const [contracts, setContracts] = useState([])
+  const [searchForm, setSearchForm] = useState({
+    searchIcao: auth.user.current_airport_id,
+    flightLength: 'short',
+    aircraftSize: 'small'
+  })
   const [selectedContract, setSelectedContract] = useState({})
   const [error, setError] = useState(null)
-  const [showDetail, setShowDetail] = useState(false)
-  const [showDetailId, setShowDetailId] = useState(0)
   const [showCustom, setShowCustom] = useState(false)
   const [showContracts, setShowContracts] = useState(false)
 
   useEffect(() => {
-    if (contracts && airport) {
+    if (searchedContracts && airport) {
       setTitle(`Contracts - ${airport.name} (${airport.identifier})`)
       setSelectedAirport(airport)
+      setContracts(searchedContracts)
     } else {
       setTitle('Contracts')
     }
-  }, [contracts])
-
-  useEffect(async () => {
-    if (contracts.length > 0) {
-      await handleSearch()
-    }
-  }, [sort])
+  }, [searchedContracts])
 
   function handleChange (e) {
-    setSearchIcao(e.target.value)
+    const key = e.target.id
+    const value = e.target.value
+    setSearchForm(values => ({
+      ...values,
+      [key]: value
+    }))
   }
 
   const handleSearch = async () => {
     setError(null)
     setSelectedContract('')
     setShowCustom(false)
-    if (searchIcao.length > 0) {
+    if (searchForm.searchIcao.length > 0) {
       // Call api to find contracts
-      Inertia.post('/contracts', { icao: searchIcao, sort: sort })
+      Inertia.post('/contracts', {
+        icao: searchForm.searchIcao,
+        flightLength: searchForm.flightLength,
+        aircraftSize: searchForm.aircraftSize
+      })
       setShowContracts(true)
     } else {
       setError('Please enter an ICAO')
@@ -80,54 +96,68 @@ const Contracts = ({ contracts, airport }) => {
     setSelectedContract(contract)
   }
 
-  const bidForContract = (contract) => {
+  const bidForContract = async (contract) => {
     const data = {
-      id: contract.id,
-      icao: searchIcao,
-      sort: sort
+      contract: contract,
+      icao: searchForm.searchIcao
     }
-    Inertia.post('/contracts/bid', data)
-  }
+    const bid = axios.post('/api/contracts/bid', data)
+    await toast.promise(bid, {
+      loading: '...Bidding on contract',
+      success: 'Contract won!',
+      error: 'Issue processing bid'
+    }, { position: 'top-right'})
 
-  const toggleDetail = (id) => {
-    setShowDetail(!showDetail)
-    setShowDetailId(id)
-  }
+    const newContracts = contracts.filter(c => c.id !== contract.id)
+    setContracts(newContracts)
 
-  const toggleSort = () => {
-    setShowSort(!showSort)
-    setShowCustom(false)
+    // toast.loading('...Bidding on contract')
+    // const data = {
+    //   contract: contract,
+    //   icao: searchForm.searchIcao
+    // }
+    // const res = await axios.post('/api/contracts/bid', data)
+    // if (res.status === 201) {
+    //   toast.success('Contract won!')
+    //   const newContracts = contracts.filter(c => c.id !== contract.id)
+    //   setContracts(newContracts)
+    // } else {
+    //   toast.error('Issue processing contract bid')
+    // }
   }
 
   const toggleCustom = () => {
     setShowCustom(!showCustom)
-    setShowSort(false)
-  }
-
-  const handleSort = (s) => {
-    setShowSort(false)
-    if (contracts.length > 0) {
-      setSort(s)
-    }
   }
 
   return (
     <div className="relative">
-      <ContractMap departure={selectedAirport} destination={selectedContract.arr_airport} size="full" mapStyle={auth.user.map_style} />
+      <ContractMap departure={selectedAirport} destination={selectedContract.destination} size="full" mapStyle={auth.user.map_style} />
         <div className="absolute z-30 top-4 left-4 py-2 px-4 bg-white w-1/2 md:w-1/3 opacity-90 shadow rounded">
-          <div className="flex flex-col md:flex-row justify-start items-baseline">
+          <div className="flex flex-col md:flex-row justify-start items-baseline space-x-1">
+            <input id="searchIcao" type="text" placeholder="search ICAO" className="form-input form md:w-1/3" value={searchForm.searchIcao} onChange={handleChange} />
             <div>
-              <input id="icao" type="text" placeholder="search ICAO" className="form-input form" value={searchIcao} onChange={handleChange} />
+              <select id="flightLength" value={searchForm.flightLength} onChange={handleChange}
+                      className="border border-gray-300 text-gray-900 text-sm rounded focus:ring-orange-500 focus:border-orange-500 block w-full p-2.5">
+                <option value="short">&#60; 60nm</option>
+                <option value="medium">60-150nm</option>
+                <option value="long">&#62; 150nm</option>
+              </select>
             </div>
-            <div><button onClick={() => handleSearch()} className="btn btn-secondary ml-2">Find</button></div>
+            <div>
+              <select id="aircraftSize" value={searchForm.aircraftSize} onChange={handleChange}
+                      className="border border-gray-300 text-gray-900 text-sm rounded focus:ring-orange-500 focus:border-orange-500 block w-full p-2.5">
+                <option value="small">Small Aircraft</option>
+                <option value="medium">Medium Aircraft</option>
+                <option value="large">Large Aircraft</option>
+              </select>
+            </div>
+          </div>
+          <div className="flex flex-col md:flex-row justify-end items-baseline mt-2">
+            <div><button onClick={() => handleSearch()} className="btn btn-secondary">Find</button></div>
             <div>
               <Tooltip direction="top" content="Create custom contract">
                 <button onClick={() => toggleCustom()} className="btn btn-secondary ml-2">Custom</button>
-              </Tooltip>
-            </div>
-            <div>
-              <Tooltip direction="top" content="Sort contract list">
-                <button onClick={() => toggleSort()} className="btn btn-light ml-2"><i className="material-icons md-16">sort</i></button>
               </Tooltip>
             </div>
           </div>
@@ -135,19 +165,10 @@ const Contracts = ({ contracts, airport }) => {
         </div>
       {showCustom && (
         <div className="absolute z-30 top-4 left-1/3 ml-8 py-2 px-4 bg-white w-1/2 md:w-1/3 opacity-90 shadow rounded">
-          <CustomContract departureIcao={searchIcao} hideSection={() => setShowCustom(false)} />
+          <CustomContract departureIcao={searchForm.searchIcao} hideSection={() => setShowCustom(false)} />
         </div>
       )}
-      {showSort && (
-        <div className="absolute z-30 top-4 left-1/3 ml-8 bg-white w-1/2 md:w-1/5 opacity-90 shadow rounded">
-          <div onClick={() => handleSort('heading')} className="border-b-2 border-gray-200 rounded-t py-2 hover:bg-orange-200 cursor-pointer"><span className="px-2">Heading (asc)</span></div>
-          <div onClick={() => handleSort('distance')} className="border-b-2 border-gray-200 py-2 hover:bg-orange-200 cursor-pointer"><span className="px-2">Distance (asc)</span></div>
-          <div onClick={() => handleSort('contract_value')} className="border-b-2 border-gray-200 py-2 hover:bg-orange-200 cursor-pointer"><span className="px-2">Value (desc)</span></div>
-          <div onClick={() => handleSort('payload')} className="border-b-2 border-gray-200 py-2 hover:bg-orange-200 cursor-pointer"><span className="px-2">Payload (desc)</span></div>
-          <div onClick={() => handleSort('pax')} className="rounded-b py-2 hover:bg-orange-200 cursor-pointer"><span className="px-2">Pax (desc)</span></div>
-        </div>
-      )}
-      {showContracts && (<div className="absolute z-30 top-20 left-4 bottom-4 bg-white w-1/2 md:w-1/3 opacity-90 shadow rounded h-auto overflow-y-auto mb-2">
+      {showContracts && contracts && (<div className="absolute z-30 top-32 left-4 bottom-4 bg-white w-1/2 md:w-1/3 opacity-90 shadow rounded h-auto overflow-y-auto mb-2">
           {contracts && contracts.map((contract) => (
             <div key={contract.id} onClick={() => updateSelectedContract(contract)} className={`${contract.id === selectedContract.id ? 'bg-orange-200 hover:bg-orange-100' : ''} border-t-2 text-sm cursor-pointer z-40`}>
               <div className="px-4 py-2 flex justify-between items-center">
@@ -158,109 +179,85 @@ const Contracts = ({ contracts, airport }) => {
                 </Tooltip>
                 <Tooltip direction="bottom" content="Destination">
                   <div className="text-sm text-gray-800 font-bold">
-                    {contract.arr_airport_id}
+                    {contract.destination.identifier}
                   </div>
                 </Tooltip>
                 <Tooltip direction="left" content="Accept contract">
                 <button onClick={() => bidForContract(contract)} className="btn btn-secondary btn-small">
-                  <i className="material-icons md-16">check</i>
+                  <FontAwesomeIcon icon={faCheck} />
                 </button>
                 </Tooltip>
               </div>
               <div className="px-4 py-2 flex justify-between">
                 <div className="flex items-center space-x-4">
-                  <Tooltip direction="right" content="Number of cargo items">
-                  <div className="mx-1 flex items-center">
-                    <i className="material-icons md-16 mr-1">inventory</i>
-                    <span>{contract.cargo.length}</span>
-                  </div>
-                  </Tooltip>
                   <Tooltip direction="bottom" content="Total cargo">
-                  <div className="mx-1 flex items-center">
-                    <i className="material-icons md-16 mr-1">work</i>
-                    <span>{contract.payload ? <>{contract.payload}</> : <>0</>} lbs</span>
+                  <div className="mx-1 flex items-center space-x-1">
+                    <FontAwesomeIcon icon={faSuitcase} />
+                    <span>{contract.cargo_type === 1 ? <>{formatNumber(contract.cargo_qty)}</> : <>0</>} lbs</span>
                   </div>
                   </Tooltip>
                   <Tooltip direction="bottom" content="Total pax">
-                  <div className="mx-1 flex items-center">
-                    <i className="material-icons md-16 mr-1">people</i>
-                    <span>{contract.pax ? <>{contract.pax}</> : <>0</>}</span>
+                  <div className="mx-1 flex items-center space-x-1">
+                    <FontAwesomeIcon icon={faUserGroup} />
+                    <span>{contract.cargo_type === 2 ? <>{contract.cargo_qty}</> : <>0</>}</span>
                   </div>
                   </Tooltip>
                   <Tooltip direction="bottom" content="Distance">
-                  <div className="mx-1 flex items-center">
-                    <i className="material-icons md-16 mr-1">explore</i>
+                  <div className="mx-1 flex items-center space-x-1">
+                    <FontAwesomeIcon icon={faCompass} />
                     <span>{contract.distance} nm</span>
                   </div>
                   </Tooltip>
                   <Tooltip direction="bottom" content="Heading">
-                  <div className="mx-1 flex items-center">
-                    <span style={{ transform: `rotate(${contract.heading}deg)` }}><i className="material-icons md-16 text-gray-800">north</i></span>
+                  <div className="mx-1 flex items-center space-x-1">
+                    <span style={{ transform: `rotate(${contract.heading}deg)` }}><FontAwesomeIcon icon={faArrowUp} className="text-gray-700" /></span>
                   </div>
                   </Tooltip>
                   <Tooltip direction="left" content="Contract value">
-                  <div className="mx-1 flex items-center">
-                    <i className="material-icons md-16 mr-1">currency_bitcoin</i>
-                    <span>${contract.contract_value}</span>
+                  <div className="mx-1 flex items-center space-x-1">
+                    <FontAwesomeIcon icon={faDollarSign} />
+                    <span>{formatNumber(contract.contract_value)}</span>
                   </div>
                   </Tooltip>
                 </div>
               </div>
-              <div className="flex justify-start pl-4 py-1">
-                <Tooltip direction="right" content="Show cargo details">
-                <button className="btn btn-light flex justify-center items-center text-center" onClick={() => toggleDetail(contract.id)}>
-                  {showDetail && showDetailId === contract.id ? <i className="material-icons md-16">remove</i> : <i className="material-icons md-16">add</i>}
-                </button>
-                </Tooltip>
-              </div>
-              {showDetail && showDetailId === contract.id && (
               <div className="flex justify-between px-4 py-2">
                 <div className="mt-1 text-xs">
-                  {contracts && contract.cargo.map((c) => (
-                    <div key="c.id" className="flex justify-between items-center cursor-pointer">
+                    <div className="flex justify-between items-center cursor-pointer">
                       <div className="flex justify-between items-center text-sm">
-                        <Tooltip direction="right" content="Current location">
-                        <div className="flex items-baseline space-x-1 mr-4">
-                          <i className="material-icons md-16">location_on</i>
-                          <div className="">{c.current_airport_id}</div>
-                        </div>
-                        </Tooltip>
                         <div className="flex items-center space-x-1 mr-4">
                           <Tooltip direction="top" content="Origin">
-                          <div className="mr-1 flex items-center">
-                            <i className="material-icons md-16 mr-1">flight_takeoff</i>
-                            {c.dep_airport_id}
+                          <div className="mr-1 flex items-center space-x-1">
+                            <FontAwesomeIcon icon={faPlaneDeparture} />
+                            <span>{contract.departure}</span>
                           </div>
                           </Tooltip>
                           <Tooltip direction="top" content="Destination">
-                          <div className="mr-2 flex items-center">
-                            <i className="material-icons md-16 mr-1">flight_land</i>
-                            {c.arr_airport_id}
+                          <div className="mr-2 flex items-center space-x-1">
+                            <FontAwesomeIcon icon={faPlaneArrival} />
+                            <span>{contract.destination.identifier}</span>
                           </div>
                           </Tooltip>
                         </div>
                         <Tooltip direction="top" content="Cargo">
                         <div className="mr-2 flex items-center space-x-1">
-                          <div className="mr-1">{c.cargo_qty} {c.contract_type_id === 1 ? 'lbs' : ''}</div>
-                          <div className="mr-2">{c.cargo}</div>
+                          <div className="mr-1">{formatNumber(contract.cargo_qty)} {contract.cargo_type === 1 ? 'lbs' : ''}</div>
+                          <div className="mr-2">{contract.cargo}</div>
                         </div>
                         </Tooltip>
                         <Tooltip direction="left" content="Heading">
                         <div className="flex items-center space-x-1">
-                          <span style={{ transform: `rotate(${contract.heading}deg)` }}><i className="material-icons md-16 text-gray-800">north</i></span>
+                          <span style={{ transform: `rotate(${contract.heading}deg)` }}><FontAwesomeIcon icon={faArrowUp} className="text-gray-700" /></span>
                         </div>
                         </Tooltip>
                       </div>
                     </div>
-                  ))}
                 </div>
               </div>
-              )}
             </div>
           ))}
         </div>
       )}
-      {/*</div>*/}
     </div>
   )
 }

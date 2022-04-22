@@ -95,7 +95,10 @@ class ShowDispatchController extends Controller
                 $q->where('is_completed', false)
                     ->where('is_available', false)
                     ->where('user_id', null);
-            })->get();
+            })
+            ->orderBy('heading')
+            ->orderBy('arr_airport_id')
+            ->get();
 //        dd(json_encode($bd));
         $personal = ContractCargo::with('currentAirport', 'contract', 'contract.depAirport', 'contract.arrAirport')
             ->where('current_airport_id', $currentLocation)
@@ -103,7 +106,10 @@ class ShowDispatchController extends Controller
             ->whereHas('contract', function ($q) use ($userId) {
                 $q->where('user_id', $userId)
                     ->where('is_completed', false);
-            })->get();
+            })
+            ->orderBy('heading')
+            ->orderBy('arr_airport_id')
+            ->get();
 
         return collect($bd)->merge($personal);
     }

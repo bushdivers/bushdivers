@@ -1,9 +1,11 @@
 import React from 'react'
 import dayjs, { convertMinuteDecimalToHoursAndMinutes } from '../../Helpers/date.helpers'
 import { Link } from '@inertiajs/inertia-react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import CrewMap from '../../Shared/Components/Crew/CrewMap'
 import AppLayout from '../../Shared/AppLayout'
 import StatBlock from '../../Shared/Elements/StatBlock'
+import { faPlaneArrival, faPlaneUp } from '@fortawesome/free-solid-svg-icons'
 
 const Dashboard = ({ lastFlight, user, locations }) => {
   console.log(lastFlight)
@@ -14,7 +16,7 @@ const Dashboard = ({ lastFlight, user, locations }) => {
         <div>
           <div className="text-lg flex flex-col md:flex-row items-start md:items-center justify-between mb-2">
             <div className="flex items-center">
-              <i className="material-icons mr-2 md-36">flight_land</i> Last Flight
+              <FontAwesomeIcon icon={faPlaneArrival} className="mr-2 md-36" /> Last Flight
             </div>
             {lastFlight && <span className="ml-2"><Link className="link" href={`/logbook/${lastFlight.id}`}>{dayjs(lastFlight.submitted_at).format('ddd DD MMM YYYY')}</Link></span>}
           </div>
@@ -34,7 +36,7 @@ const Dashboard = ({ lastFlight, user, locations }) => {
                 {dayjs.utc(lastFlight.submitted_at).fromNow()} - {dayjs(lastFlight.submitted_at).format('ddd DD MMM YYYY')}
               </div>
               <div className="mt-2 text-sm flex items-center">
-                <i className="material-icons md-18">local_airport</i>
+                <FontAwesomeIcon icon={faPlaneUp} />
                 { lastFlight.is_rental
                   ? <span>{lastFlight.rental.fleet.type} - {lastFlight.rental.registration}</span>
                   : <Link className="link ml-2" href={`/aircraft/${lastFlight.aircraft.id}`}>{lastFlight.aircraft.fleet.type} - {lastFlight.aircraft.registration}</Link>

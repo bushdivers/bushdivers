@@ -42,9 +42,9 @@ class CalcCargoHandlingFee
         $weight = 0;
         foreach ($pc as $c) {
             $cargo = ContractCargo::find($c->contract_cargo_id);
-            if ($cargo->contract_type_id == ContractType::Cargo) {
+            if ($cargo->cargo_type_id == ContractType::Cargo) {
                 $weight += $cargo->cargo_qty;
-            } else if ($cargo->contract_type_id == ContractType::Passenger) {
+            } else if ($cargo->cargo_type_id == ContractType::Passenger) {
                 $weight = $cargo->cargo_qty * WeightConsts::PERSON_WEIGHT;
             }
         }

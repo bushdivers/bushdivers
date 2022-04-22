@@ -40,23 +40,9 @@ class CancelContractController extends Controller
             return redirect()->back()->with(['error' => 'It is not possible to cancel this contract']);
         }
 
-        // set contract to not available
-        if ($contract->user_id !== null) {
-            ContractCargo::where('contract_id', $contract->id)->delete();
-            Contract::where('id', $request->id)->delete();
-        } else {
-            $contract->is_available = true;
-            $contract->save();
-
-            foreach ($contractCargo as $cc) {
-                $cc->user_id = null;
-                $cc->is_available = true;
-                $cc->save();
-            }
-        }
-
-
-
+        // delete contract to not available
+        ContractCargo::where('contract_id', $contract->id)->delete();
+        $contract->delete();
 
         $user = User::find(Auth::user()->id);
         if ($user->points >= 1) {

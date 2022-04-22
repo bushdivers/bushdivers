@@ -1,8 +1,10 @@
 import React, { Fragment } from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Disclosure } from '@headlessui/react'
 import { Link } from '@inertiajs/inertia-react'
 import PublicLeftNav from './NavBarSections/PublicLeftNav'
 import PublicRightNav from './NavBarSections/PublicRightNav'
+import { faBurger, faClose } from '@fortawesome/free-solid-svg-icons'
 
 export default function NavBar () {
   return (
@@ -17,10 +19,10 @@ export default function NavBar () {
                   <span className="sr-only">Open main menu</span>
                   {open
                     ? (
-                      <div className="block h-6 w-6" aria-hidden="true"><i className="material-icons">close</i></div>
+                      <div className="block h-6 w-6" aria-hidden="true"><FontAwesomeIcon icon={faClose} /></div>
                       )
                     : (
-                      <div className="block h-6 w-6" aria-hidden="true"><i className="material-icons">menu</i></div>
+                      <div className="block h-6 w-6" aria-hidden="true"><FontAwesomeIcon icon={faBurger} /></div>
                       )}
                 </Disclosure.Button>
               </div>

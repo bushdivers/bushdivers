@@ -108,8 +108,8 @@ const AirportDetail = ({ airport, metar, aircraft }) => {
           {airport.longest_runway_length && (
             <div className="rounded shadow p-4 mt-2 bg-white mx-2">
               <div className="flex items-center">
-                <i className="material-icons mr-2">add_road</i>
-                <span>{renderRunwayText(airport.longest_runway_surface)} {airport.longest_runway_length.toLocaleString(navigator.language)}ft x {airport.longest_runway_width}ft</span>
+                RWY
+                <span className="ml-2">{renderRunwayText(airport.longest_runway_surface)} {airport.longest_runway_length.toLocaleString(navigator.language)}ft x {airport.longest_runway_width}ft</span>
               </div>
             </div>
           )}

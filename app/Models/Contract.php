@@ -26,6 +26,11 @@ class Contract extends Model
         return $this->hasMany(ContractCargo::class);
     }
 
+    public function type()
+    {
+        return $this->belongsTo(ContractType::class);
+    }
+
     public function depAirport()
     {
         return $this->belongsTo(Airport::class, 'dep_airport_id', 'identifier');

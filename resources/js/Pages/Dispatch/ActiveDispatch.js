@@ -3,6 +3,8 @@ import DispatchSummary from '../../Shared/Components/Dispatch/DispatchSummary'
 import { Inertia } from '@inertiajs/inertia'
 import AppLayout from '../../Shared/AppLayout'
 import { Link } from '@inertiajs/inertia-react'
+import { faArrowUp } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const ActiveDispatch = ({ cargo, aircraft, cargoWeight, fuelWeight, passengerCount, pirep }) => {
   const personWeight = 170.00
@@ -48,13 +50,13 @@ const ActiveDispatch = ({ cargo, aircraft, cargoWeight, fuelWeight, passengerCou
                         <span className="mr-2">{detail.contract.heading}</span>
                       </div>
                       <div className="w-1/2 flex">
-                        <span style={{ transform: `rotate(${detail.contract.heading}deg)` }}><i className="material-icons md-18 text-gray-800">north</i></span>
+                        <span style={{ transform: `rotate(${detail.contract.heading}deg)` }}><FontAwesomeIcon icon={faArrowUp} className="text-gray-800" /></span>
                       </div>
                     </div>
                   </td>
-                  <td>{detail.contract_type_id === 1 ? 'Cargo' : 'Passenger'}</td>
+                  <td>{detail.cargo_type_id === 1 ? 'Cargo' : 'Passenger'}</td>
                   <td>
-                    {detail.contract_type_id === 1
+                    {detail.cargo_type_id === 1
                       ? <div><span>{detail.cargo_qty} lbs</span> <span className="text-xs">{detail.cargo}</span></div>
                       : <div><span>{detail.cargo_qty}</span> <span className="text-xs">{detail.cargo}</span></div>
                     }

@@ -11,8 +11,9 @@
     },
     "devDependencies": {
         "@pmmmwh/react-refresh-webpack-plugin": "^0.5.0-rc.0",
-        "autoprefixer": "^10.3.1",
-        "axios": "^0.21",
+        "@tailwindcss/forms": "^0.5.0",
+        "autoprefixer": "^10.4.4",
+        "axios": "^0.26.1",
         "eslint": "^7.32.0",
         "eslint-config-standard": "^16.0.3",
         "eslint-plugin-import": "^2.24.0",
@@ -21,24 +22,28 @@
         "eslint-plugin-react": "^7.24.0",
         "laravel-mix": "^6.0.6",
         "lodash": "^4.17.19",
-        "postcss": "^8.3.6",
-        "react-refresh": "^0.10.0",
-        "tailwindcss": "^2.2.7"
+        "postcss": "^8.4.12",
+        "react-refresh": "^0.12.0",
+        "tailwindcss": "^3.0.24"
     },
     "dependencies": {
         "@babel/plugin-syntax-dynamic-import": "^7.8.3",
         "@babel/preset-react": "^7.14.5",
+        "@fortawesome/fontawesome-svg-core": "^6.1.1",
+        "@fortawesome/free-brands-svg-icons": "^6.1.1",
+        "@fortawesome/free-solid-svg-icons": "^6.1.1",
+        "@fortawesome/react-fontawesome": "^0.1.18",
         "@headlessui/react": "^1.4.0",
-        "@inertiajs/inertia": "^0.10.1",
-        "@inertiajs/inertia-react": "^0.7.1",
+        "@inertiajs/inertia": "^0.11.0",
+        "@inertiajs/inertia-react": "^0.8.0",
         "@inertiajs/progress": "^0.2.6",
-        "@tailwindcss/forms": "^0.3.3",
         "chart.js": "^3.5.1",
         "date-fns": "^2.23.0",
         "dayjs": "^1.10.7",
-        "maplibre-gl": "^1.15.2",
+        "maplibre-gl": "^1.15.3",
         "react": "^17.0.2",
         "react-chartjs-2": "^3.0.4",
-        "react-dom": "^17.0.2"
+        "react-dom": "^17.0.2",
+        "react-hot-toast": "^2.2.0"
     }
 }

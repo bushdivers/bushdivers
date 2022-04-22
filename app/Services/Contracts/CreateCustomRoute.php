@@ -3,9 +3,11 @@
 namespace App\Services\Contracts;
 
 use App\Models\Airport;
+use App\Models\ContractInfo;
 use App\Models\Enums\ContractType;
 use App\Services\Airports\CalcBearingBetweenPoints;
 use App\Services\Airports\CalcDistanceBetweenPoints;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class CreateCustomRoute
@@ -48,7 +50,18 @@ class CreateCustomRoute
             $value = $this->calcContractValue->execute($cargo['type'], $cargo['qty'], $distance);
 
             // add contract
-            $this->storeContract->execute($dep, $arr, $distance, $heading, $cargo, $value, true, $userId);
+
+            $data = new ContractInfo();
+            $data->setStart($dep);
+            $data->setDest($arr);
+            $data->setDistance($distance);
+            $data->setHeading($heading);
+            $data->setCargo($cargo);
+            $data->setValue($value);
+            $data->setCustom(true);
+            $data->setUserId($userId);
+
+            $this->storeContract->execute($data, Carbon::now()->addDays(rand(1,8)));
         } catch (ModelNotFoundException $e) {
             throw new ModelNotFoundException();
         }

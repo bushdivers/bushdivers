@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import PageTitle from '../../Shared/Navigation/PageTitle'
 import NoContent from '../../Shared/Elements/NoContent'
 import Tooltip from '../../Shared/Elements/Tooltip'
@@ -7,6 +8,7 @@ import dayjs from '../../Helpers/date.helpers'
 import CargoDetails from '../../Shared/Components/Contracts/CargoDetails'
 import FleetAircraft from '../../Shared/Components/Admin/FleetAircraft'
 import AppLayout from '../../Shared/AppLayout'
+import { faClose, faPen } from '@fortawesome/free-solid-svg-icons'
 
 const EmptyData = (props) => {
   return (
@@ -64,10 +66,10 @@ const FleetList = ({ fleet }) => {
                       <td>
                         <div className="flex items-center">
                             <Link href={`/admin/fleet/edit/${f.id}`} className="btn btn-secondary flex items-center mr-2">
-                              <i className="material-icons md-18">edit</i>
+                              <FontAwesomeIcon icon={faPen} />
                             </Link>
                             <Link href={`/admin/fleet/delete/${f.id}`} className="btn btn-light flex items-center mr-2">
-                              <i className="material-icons md-18">close</i>
+                              <FontAwesomeIcon icon={faClose} />
                             </Link>
                         </div>
                       </td>

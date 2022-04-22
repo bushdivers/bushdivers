@@ -15,12 +15,13 @@ class CreateRentalsTable extends Migration
     {
         Schema::create('rentals', function (Blueprint $table) {
             $table->id();
-            $table->string('registration');
+            $table->string('registration')->unique();
             $table->foreignId('user_id');
             $table->foreignId('fleet_id');
             $table->string('current_airport_id');
             $table->string('rental_airport_id');
             $table->boolean('is_active')->default(true);
+            $table->decimal('fuel_onboard')->default(0.00);
             $table->timestamps();
         });
     }

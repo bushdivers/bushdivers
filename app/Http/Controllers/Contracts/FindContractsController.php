@@ -4,18 +4,21 @@ namespace App\Http\Controllers\Contracts;
 
 use App\Http\Controllers\Controller;
 use App\Models\Airport;
+use App\Services\Contracts\GenerateContracts;
 use App\Services\Contracts\GetContractsFromCriteria;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class FindContractsController extends Controller
 {
-    protected GetContractsFromCriteria $getContractsFromCriteria;
+    protected GenerateContracts $generateContracts;
 
-    public function __construct(GetContractsFromCriteria $getContractsFromCriteria)
+    public function __construct(GenerateContracts $generateContracts)
     {
-        $this->getContractsFromCriteria = $getContractsFromCriteria;
+        $this->generateContracts = $generateContracts;
+        // $this->getContractsFromCriteria = $getContractsFromCriteria;
     }
 
     /**
@@ -26,20 +29,26 @@ class FindContractsController extends Controller
      */
     public function __invoke(Request $request): Response
     {
-//        $criteria = [
-//            'icao' => $request->icao,
-//            'distance' => $request->distance,
-//            'cargo' => $request->cargo,
-//            'pax' => $request->pax
-//        ];
-
         $airport = Airport::where('identifier', $request->icao)->first();
         if (!$airport) {
             return Inertia::render('Contracts/Contracts')->with(['error' => 'Airport not found']);
         }
 
-        $contracts = $this->getContractsFromCriteria->execute($request->icao, $request->sort);
+        $key = $this->buildCacheKey($request->icao, $request->flightLength, $request->aircraftSize);
 
-        return Inertia::render('Contracts/Contracts', ['contracts' => $contracts, 'airport' => $airport]);
+        if (Cache::has($key)) {
+            $contracts = Cache::get($key);
+        } else {
+            $numToGenerate = $airport->is_hub ? 12 : 6;
+            $contracts = $this->generateContracts->execute($airport, $numToGenerate, $request->flightLength, $request->aircraftSize);
+            Cache::put($key, $contracts, now()->addSeconds(20));
+        }
+
+        return Inertia::render('Contracts/Contracts', ['searchedContracts' => $contracts, 'airport' => $airport]);
+    }
+
+    protected function buildCacheKey(string $icao, string $distance, string $size): string
+    {
+        return $icao.'-'.$distance.'-'.$size;
     }
 }

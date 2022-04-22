@@ -1,8 +1,10 @@
 import React from 'react'
 import { Link } from '@inertiajs/inertia-react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Tooltip from '../../Shared/Elements/Tooltip'
 import { convertMinuteDecimalToHoursAndMinutes } from '../../Helpers/date.helpers'
 import AppLayout from '../../Shared/AppLayout'
+import { faPatreon } from '@fortawesome/free-brands-svg-icons'
 
 const Roster = ({ roster }) => {
   return (
@@ -31,8 +33,15 @@ const Roster = ({ roster }) => {
                   </Tooltip>
                 </td>
                 <td>
-                  <span>{user.pilot_id}</span><br/>
-                  <span className="text-xs">{user.private_name}</span>
+                  <div className="flex justify-start items-center space-x-2">
+                    <div className="text-xl text-red-300">
+                      {user.is_supporter && <FontAwesomeIcon icon={faPatreon} />}
+                    </div>
+                    <div>
+                      <span>{user.pilot_id}</span><br/>
+                      <span className="text-xs">{user.private_name}</span>
+                    </div>
+                  </div>
                 </td>
                 <td>
                   <Link href={`/airports/${user.current_airport_id}`} className="text-xs">{user.current_airport_id}</Link><br/>

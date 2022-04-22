@@ -1,4 +1,5 @@
 import React from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import StatCard from '../../Shared/Elements/StatCard'
 import { convertMinuteDecimalToHoursAndMinutes } from '../../Helpers/date.helpers'
 import AircraftMap from '../../Shared/Components/Fleet/AircraftMap'
@@ -7,6 +8,7 @@ import { Inertia } from '@inertiajs/inertia'
 import dayjs from 'dayjs'
 import AppLayout from '../../Shared/AppLayout'
 import AircraftCondition from '../../Shared/Components/Fleet/AircraftCondition'
+import { faScrewdriverWrench } from '@fortawesome/free-solid-svg-icons'
 
 const Aircraft = ({ aircraft, maintenanceStatus, pireps }) => {
   const { auth } = usePage().props
@@ -133,7 +135,7 @@ const Aircraft = ({ aircraft, maintenanceStatus, pireps }) => {
     <div className="p-4">
       <div className="flex justify-start items-center">
         <h1>{`${aircraft.registration} - ${aircraft.fleet.manufacturer} ${aircraft.fleet.name} (${aircraft.fleet.type})`}</h1>
-        {aircraft.maintenance_status && !aircraft.is_rental && <span className="ml-2 text-orange-500"><i className="material-icons">engineering</i></span>}
+        {aircraft.maintenance_status && !aircraft.is_rental && <span className="ml-2 text-orange-500"><FontAwesomeIcon icon={faScrewdriverWrench} /></span>}
         {aircraft.is_rental ? <span className="ml-2 bg-orange-500 text-white p-1 rounded text-xs">Rental</span> : <></>}
         {aircraft.owner_id > 0 && aircraft.owner_id === auth.user.id ? <span className="ml-2 bg-orange-500 text-white p-1 rounded text-xs">Private Plane - Owner</span> : aircraft.owner_id > 0 ? <span className="ml-2 bg-orange-500 text-white p-1 rounded text-xs">Private Plane</span> : <></>}
       </div>

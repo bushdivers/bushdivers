@@ -26,7 +26,7 @@ class SplitCargoController extends Controller
         // create new row with new figures and update existing row
         $newCargo = new ContractCargo();
         $newCargo->contract_id = $cargo->contract_id;
-        $newCargo->contract_type_id = $cargo->contract_type_id;
+        $newCargo->cargo_type_id = $cargo->cargo_type_id;
         $newCargo->current_airport_id = $cargo->current_airport_id;
         $newCargo->dep_airport_id = $cargo->dep_airport_id;
         $newCargo->arr_airport_id = $cargo->arr_airport_id;

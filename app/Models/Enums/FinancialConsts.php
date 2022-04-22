@@ -6,7 +6,7 @@ class FinancialConsts
 {
     // public const CompanyPay = 50;
     public const PilotPay = 50;
-    public const PrivatePilotPay = 80;
+    public const PrivatePilotPay = 70;
     public const CancelPenalty = 10;
     public const WelcomeBonus = 200;
     public const HubBonus = 800;

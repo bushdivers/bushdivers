@@ -5,6 +5,7 @@ import FlashMessage from './Elements/FlashMessage'
 import AppFooter from './Navigation/AppFooter'
 import Header from './Layout/Header'
 import SideBar from './Layout/SideBar'
+import { Toaster } from 'react-hot-toast'
 
 export default function AppLayout ({ children, title, heading }) {
   const { flash } = usePage().props
@@ -16,6 +17,7 @@ export default function AppLayout ({ children, title, heading }) {
 
   return (
         <div className="flex flex-row min-h-screen bg-gray-100 text-gray-800">
+          <Toaster toastOptions={{ style: { marginTop: '4rem'}}} />
           <Head title={title} />
           <SideBar isNavVisible={isNavVisible} setNavState={toggleNavBar} />
           <main className="main flex flex-col flex-grow -ml-64 lg:ml-0 transition-all duration-150 ease-in z-10">
@@ -25,13 +27,7 @@ export default function AppLayout ({ children, title, heading }) {
               {flash.success && <FlashMessage type="success" message={flash.success} />}
               {children}
             </div>
-            {/*<AppFooter />*/}
           </main>
-          {/*<a rel="noreferrer" target="_blank" href="https://www.patreon.com/bushdivers?fan_landing=true">*/}
-          {/*  <div className="ribbon ribbon-bottom ribbon-right ribbon-sticky">*/}
-          {/*    <div className="text-xs">Donate</div>*/}
-          {/*  </div>*/}
-          {/*</a>*/}
         </div>
   )
 }
