@@ -28,6 +28,7 @@ class ShowMyAircraftController extends Controller
         // get my credit agreements
         $agreements = FinanceAgreement::with('aircraft')
             ->where('user_id', Auth::user()->id)
+            ->where('is_cancelled', false)
             ->orderBy('is_active', 'desc')
             ->orderBy('is_paid')
             ->get();

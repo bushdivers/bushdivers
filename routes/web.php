@@ -113,7 +113,8 @@ Route::middleware('auth')->group(function () {
         ->name('marketplace.new.purchase');
     Route::post('/marketplace/finance', \App\Http\Controllers\MarketPlace\FinanceNewController::class)
         ->name('marketplace.new.finance');
-
+    Route::post('/marketplace/finance/cancel/{id}', \App\Http\Controllers\MarketPlace\CancelFinanceController::class)
+        ->name('marketplace.cancel.finance');
     Route::get('/my-aircraft', \App\Http\Controllers\Aircraft\ShowMyAircraftController::class)
         ->name('aircraft.mine');
 
