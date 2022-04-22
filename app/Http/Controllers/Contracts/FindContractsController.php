@@ -36,7 +36,7 @@ class FindContractsController extends Controller
 
         // generate contracts on the fly
         $numToGenerate = $airport->is_hub ? 12 : 6;
-        $contracts = $this->generateContracts->execute($airport, $numToGenerate);
+        $contracts = $this->generateContracts->execute($airport, $numToGenerate, $request->flightLength, $request->aircraftSize);
         // $contracts = $this->getContractsFromCriteria->execute($request->icao, $request->sort);
         return Inertia::render('Contracts/Contracts', ['contracts' => $contracts, 'airport' => $airport]);
     }

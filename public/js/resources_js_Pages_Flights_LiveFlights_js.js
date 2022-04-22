@@ -17052,6 +17052,7 @@ var convertMinuteDecimalToHoursAndMinutes = function convertMinuteDecimalToHours
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "formatNumber": () => (/* binding */ formatNumber),
 /* harmony export */   "parseMapStyle": () => (/* binding */ parseMapStyle)
 /* harmony export */ });
 var parseMapStyle = function parseMapStyle(mapStyle) {
@@ -17071,6 +17072,10 @@ var parseMapStyle = function parseMapStyle(mapStyle) {
     default:
       return 'mapbox://styles/mapbox/dark-v10';
   }
+};
+var formatNumber = function formatNumber(n) {
+  var nf = Intl.NumberFormat('en-US');
+  return nf.format(Math.round(n));
 };
 
 /***/ }),

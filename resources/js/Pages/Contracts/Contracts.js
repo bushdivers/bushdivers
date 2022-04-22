@@ -18,6 +18,7 @@ import {
   faSuitcase,
   faUserGroup
 } from '@fortawesome/free-solid-svg-icons'
+import { formatNumber } from '../../Helpers/general.helpers'
 
 const EmptyData = (props) => {
   return (
@@ -42,7 +43,12 @@ const Contracts = ({ contracts, airport }) => {
   const [selectedAirport, setSelectedAirport] = useState('')
   const [title, setTitle] = useState('Contracts')
   // const [icao, setIcao] = useState('')
-  const [searchIcao, setSearchIcao] = useState(auth.user.current_airport_id)
+  const [searchForm, setSearchForm] = useState({
+    searchIcao: auth.user.current_airport_id,
+    flightLength: 'short',
+    aircraftSize: 'small'
+  })
+  // const [searchIcao, setSearchIcao] = useState(auth.user.current_airport_id)
   const [sort, setSort] = useState('heading')
   const [showSort, setShowSort] = useState(false)
   // const [contracts, setContracts] = useState([])
@@ -69,16 +75,25 @@ const Contracts = ({ contracts, airport }) => {
   }, [sort])
 
   function handleChange (e) {
-    setSearchIcao(e.target.value)
+    const key = e.target.id
+    const value = e.target.value
+    setSearchForm(values => ({
+      ...values,
+      [key]: value
+    }))
   }
 
   const handleSearch = async () => {
     setError(null)
     setSelectedContract('')
     setShowCustom(false)
-    if (searchIcao.length > 0) {
+    if (searchForm.searchIcao.length > 0) {
       // Call api to find contracts
-      Inertia.post('/contracts', { icao: searchIcao, sort: sort })
+      Inertia.post('/contracts', {
+        icao: searchForm.searchIcao,
+        flightLength: searchForm.flightLength,
+        aircraftSize: searchForm.aircraftSize
+      })
       setShowContracts(true)
     } else {
       setError('Please enter an ICAO')
@@ -92,7 +107,7 @@ const Contracts = ({ contracts, airport }) => {
   const bidForContract = (contract) => {
     const data = {
       id: contract.id,
-      icao: searchIcao,
+      icao: searchForm.searchIcao,
       sort: sort
     }
     Inertia.post('/contracts/bid', data)
@@ -124,39 +139,46 @@ const Contracts = ({ contracts, airport }) => {
     <div className="relative">
       <ContractMap departure={selectedAirport} destination={selectedContract.destination} size="full" mapStyle={auth.user.map_style} />
         <div className="absolute z-30 top-4 left-4 py-2 px-4 bg-white w-1/2 md:w-1/3 opacity-90 shadow rounded">
-          <div className="flex flex-col md:flex-row justify-start items-baseline">
+          <div className="flex flex-col md:flex-row justify-start items-baseline space-x-1">
+            <input id="searchIcao" type="text" placeholder="search ICAO" className="form-input form md:w-1/3" value={searchForm.searchIcao} onChange={handleChange} />
             <div>
-              <input id="icao" type="text" placeholder="search ICAO" className="form-input form" value={searchIcao} onChange={handleChange} />
+              <select id="flightLength" value={searchForm.flightLength} onChange={handleChange}
+                      className="border border-gray-300 text-gray-900 text-sm rounded focus:ring-orange-500 focus:border-orange-500 block w-full p-2.5">
+                <option value="short">&#60; 60nm</option>
+                <option value="medium">60-150nm</option>
+                <option value="long">&#62; 150nm</option>
+              </select>
             </div>
-            <div><button onClick={() => handleSearch()} className="btn btn-secondary ml-2">Find</button></div>
+            <div>
+              <select id="aircraftSize" value={searchForm.aircraftSize} onChange={handleChange}
+                      className="border border-gray-300 text-gray-900 text-sm rounded focus:ring-orange-500 focus:border-orange-500 block w-full p-2.5">
+                <option value="small">Small Aircraft</option>
+                <option value="medium">Medium Aircraft</option>
+                <option value="large">Large Aircraft</option>
+              </select>
+            </div>
+          </div>
+          <div className="flex flex-col md:flex-row justify-end items-baseline mt-2">
+            <div><button onClick={() => handleSearch()} className="btn btn-secondary">Find</button></div>
             <div>
               <Tooltip direction="top" content="Create custom contract">
                 <button onClick={() => toggleCustom()} className="btn btn-secondary ml-2">Custom</button>
               </Tooltip>
             </div>
-            <div>
-              <Tooltip direction="top" content="Sort contract list">
-                <button onClick={() => toggleSort()} className="btn btn-light ml-2"><FontAwesomeIcon icon={faArrowDownShortWide} /></button>
-              </Tooltip>
-            </div>
+            {/*<div>*/}
+            {/*  <Tooltip direction="top" content="Sort contract list">*/}
+            {/*    <button onClick={() => toggleSort()} className="btn btn-light ml-2"><FontAwesomeIcon icon={faArrowDownShortWide} /></button>*/}
+            {/*  </Tooltip>*/}
+            {/*</div>*/}
           </div>
           {error && <span className="text-sm text-red-500">{error}</span>}
         </div>
       {showCustom && (
         <div className="absolute z-30 top-4 left-1/3 ml-8 py-2 px-4 bg-white w-1/2 md:w-1/3 opacity-90 shadow rounded">
-          <CustomContract departureIcao={searchIcao} hideSection={() => setShowCustom(false)} />
+          <CustomContract departureIcao={searchForm.searchIcao} hideSection={() => setShowCustom(false)} />
         </div>
       )}
-      {showSort && (
-        <div className="absolute z-30 top-4 left-1/3 ml-8 bg-white w-1/2 md:w-1/5 opacity-90 shadow rounded">
-          <div onClick={() => handleSort('heading')} className="border-b-2 border-gray-200 rounded-t py-2 hover:bg-orange-200 cursor-pointer"><span className="px-2">Heading (asc)</span></div>
-          <div onClick={() => handleSort('distance')} className="border-b-2 border-gray-200 py-2 hover:bg-orange-200 cursor-pointer"><span className="px-2">Distance (asc)</span></div>
-          <div onClick={() => handleSort('contract_value')} className="border-b-2 border-gray-200 py-2 hover:bg-orange-200 cursor-pointer"><span className="px-2">Value (desc)</span></div>
-          <div onClick={() => handleSort('payload')} className="border-b-2 border-gray-200 py-2 hover:bg-orange-200 cursor-pointer"><span className="px-2">Payload (desc)</span></div>
-          <div onClick={() => handleSort('pax')} className="rounded-b py-2 hover:bg-orange-200 cursor-pointer"><span className="px-2">Pax (desc)</span></div>
-        </div>
-      )}
-      {showContracts && (<div className="absolute z-30 top-20 left-4 bottom-4 bg-white w-1/2 md:w-1/3 opacity-90 shadow rounded h-auto overflow-y-auto mb-2">
+      {showContracts && (<div className="absolute z-30 top-32 left-4 bottom-4 bg-white w-1/2 md:w-1/3 opacity-90 shadow rounded h-auto overflow-y-auto mb-2">
           {contracts && contracts.map((contract) => (
             <div key={contract.id} onClick={() => updateSelectedContract(contract)} className={`${contract.id === selectedContract.id ? 'bg-orange-200 hover:bg-orange-100' : ''} border-t-2 text-sm cursor-pointer z-40`}>
               <div className="px-4 py-2 flex justify-between items-center">
@@ -181,7 +203,7 @@ const Contracts = ({ contracts, airport }) => {
                   <Tooltip direction="bottom" content="Total cargo">
                   <div className="mx-1 flex items-center space-x-1">
                     <FontAwesomeIcon icon={faSuitcase} />
-                    <span>{contract.cargo_type === 1 ? <>{contract.cargo_qty}</> : <>0</>} lbs</span>
+                    <span>{contract.cargo_type === 1 ? <>{formatNumber(contract.cargo_qty)}</> : <>0</>} lbs</span>
                   </div>
                   </Tooltip>
                   <Tooltip direction="bottom" content="Total pax">
@@ -204,7 +226,7 @@ const Contracts = ({ contracts, airport }) => {
                   <Tooltip direction="left" content="Contract value">
                   <div className="mx-1 flex items-center space-x-1">
                     <FontAwesomeIcon icon={faDollarSign} />
-                    <span>${contract.contract_value}</span>
+                    <span>{formatNumber(contract.contract_value)}</span>
                   </div>
                   </Tooltip>
                 </div>
@@ -229,7 +251,7 @@ const Contracts = ({ contracts, airport }) => {
                         </div>
                         <Tooltip direction="top" content="Cargo">
                         <div className="mr-2 flex items-center space-x-1">
-                          <div className="mr-1">{contract.cargo_qty} {contract.cargo_type === 1 ? 'lbs' : ''}</div>
+                          <div className="mr-1">{formatNumber(contract.cargo_qty)} {contract.cargo_type === 1 ? 'lbs' : ''}</div>
                           <div className="mr-2">{contract.cargo}</div>
                         </div>
                         </Tooltip>

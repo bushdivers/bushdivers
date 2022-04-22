@@ -12,3 +12,8 @@ export const parseMapStyle = (mapStyle) => {
       return 'mapbox://styles/mapbox/dark-v10'
   }
 }
+
+export const formatNumber = (n) => {
+  const nf = Intl.NumberFormat('en-US')
+  return nf.format(Math.round(n))
+}
