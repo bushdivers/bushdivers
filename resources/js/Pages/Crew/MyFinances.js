@@ -29,6 +29,8 @@ const MyFinances = ({ accounts, balance }) => {
         return 'Monthly Aircraft Ownership cost'
       case 12:
         return 'Aircraft Purchase'
+      case 13:
+        return 'Aircraft Sale'
       default:
         return 'Other'
     }

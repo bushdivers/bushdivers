@@ -14932,6 +14932,9 @@ var MyFinances = function MyFinances(_ref) {
       case 12:
         return 'Aircraft Purchase';
 
+      case 13:
+        return 'Aircraft Sale';
+
       default:
         return 'Other';
     }
