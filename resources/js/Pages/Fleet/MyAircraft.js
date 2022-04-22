@@ -4,8 +4,15 @@ import AircraftCondition from '../../Shared/Components/Fleet/AircraftCondition'
 import { Link } from '@inertiajs/inertia-react'
 import { faCheckCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { Inertia } from '@inertiajs/inertia'
 
 const MyAircraft = ({ aircraft, rentals, agreements }) => {
+  const handleCancel = (agreement) => {
+    if (window.confirm(`Cancelling will relinquish ownership and access to ${agreement.aircraft.registration} and will incur a penalty of: $${agreement.monthly_payments}. Do you wish to continue?`)) {
+      Inertia.post(`/marketplace/finance/cancel/${agreement.id}`)
+    }
+  }
+
   return (
     <div className="p-4 flex space-x-4">
       <div className="w-1/2 space-y-4">
@@ -74,7 +81,7 @@ const MyAircraft = ({ aircraft, rentals, agreements }) => {
           <div key={ag.id} className={`p-4 rounded shadow mb-2 ${ag.is_paid || !ag.is_active ? 'bg-gray-200 text-gray-500' : 'bg-white'}`}>
             <div className="flex justify-between items-center">
               <h1>Agreement #{ag.id}</h1>
-              {ag.is_paid ? <FontAwesomeIcon icon={faCheckCircle} className="text-green-500" /> : !ag.is_active ? <FontAwesomeIcon icon={faTimesCircle} className="text-red-500"/> : <></>}
+              {ag.is_paid ? <FontAwesomeIcon icon={faCheckCircle} className="text-green-500" /> : !ag.is_active ? <FontAwesomeIcon icon={faTimesCircle} className="text-red-500"/> : <><button onClick={() => handleCancel(ag)} className="btn btn-secondary btn-small">Cancel</button></>}
             </div>
             <h2>{ag.aircraft.registration}</h2>
             <div className="flex justify-between items-center mt-2">
