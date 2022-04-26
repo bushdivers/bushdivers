@@ -30,7 +30,8 @@ Route::get('/resources/categories', \App\Http\Controllers\Admin\Resources\GetCat
     ->name('resources.categories');
 Route::post('/contracts/bid', \App\Http\Controllers\Contracts\BidForContractController::class)
     ->name('contracts.bid');
-
+Route::get('/aircraft/price/{id}', \App\Http\Controllers\MarketPlace\GetAircraftPriceController::class)
+    ->name('aircraft.price');
 
 
 Route::middleware('auth:sanctum')->group(function () {

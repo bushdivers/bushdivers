@@ -37,9 +37,17 @@ class CollectFinancePayments
         }
 
         // update paid status
-        FinanceAgreement::where('is_paid', false)
+        $paidAgreements = FinanceAgreement::where('is_paid', false)
             ->where('amount_remaining', 0)
-            ->update(['is_paid' => true]);
+            ->get();
+
+        foreach ($paidAgreements as $p) {
+            $p->is_paid = true;
+            $p->save();
+            $aircraft = Aircraft::find($p->aircraft_id);
+            $aircraft->is_financed = false;
+            $aircraft->save();
+        }
 
         // reclaim aircraft for defaulted
         $defaulted = FinanceAgreement::where('is_paid', false)

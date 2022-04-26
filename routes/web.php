@@ -117,6 +117,8 @@ Route::middleware('auth')->group(function () {
         ->name('marketplace.cancel.finance');
     Route::get('/my-aircraft', \App\Http\Controllers\Aircraft\ShowMyAircraftController::class)
         ->name('aircraft.mine');
+    Route::post('/marketplace/sell/{id}', \App\Http\Controllers\MarketPlace\SellAircraftController::class)
+        ->name('marketplace.sell');
 
 
     // Flights

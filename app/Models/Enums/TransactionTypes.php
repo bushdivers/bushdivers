@@ -16,4 +16,5 @@ class TransactionTypes
     public const AircraftMaintenanceFee = 10;
     public const MonthlyOwnership = 11;
     public const AircraftPurchase = 12;
+    public const AircraftSale = 13;
 }

@@ -5,11 +5,25 @@ import { Link } from '@inertiajs/inertia-react'
 import { faCheckCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Inertia } from '@inertiajs/inertia'
+import axios from 'axios'
 
 const MyAircraft = ({ aircraft, rentals, agreements }) => {
   const handleCancel = (agreement) => {
     if (window.confirm(`Cancelling will relinquish ownership and access to ${agreement.aircraft.registration} and will incur a penalty of: $${agreement.monthly_payments}. Do you wish to continue?`)) {
       Inertia.post(`/marketplace/finance/cancel/${agreement.id}`)
+    }
+  }
+
+  const handleSale = async (ac) => {
+    if (ac.is_financed) {
+      window.alert(`You cannot sell ${ac.registration} as there is still outstanding finance`)
+      return
+    }
+    const res = await axios.get(`/api/aircraft/price/${ac.id}`)
+    if (res.status === 200) {
+      if (window.confirm(`Are you sure you want to sell your aircraft ${ac.registration} for $${res.data.price}?`)) {
+        Inertia.post(`/marketplace/sell/${ac.id}`)
+      }
     }
   }
 
@@ -30,6 +44,7 @@ const MyAircraft = ({ aircraft, rentals, agreements }) => {
               <th>Home</th>
               <th>Hours</th>
               <th>Condition</th>
+              <th></th>
             </tr>
             </thead>
             <tbody>
@@ -41,6 +56,7 @@ const MyAircraft = ({ aircraft, rentals, agreements }) => {
                 <td>{ac.hub_id}</td>
                 <td>{ac.flight_time_mins}</td>
                 <td><AircraftCondition aircraftCondition={ac.wear} /></td>
+                <td><button onClick={() => handleSale(ac)} className="btn btn-small btn-secondary">Sell</button></td>
               </tr>
             ))}
             </tbody>
