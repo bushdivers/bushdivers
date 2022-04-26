@@ -111,6 +111,8 @@ Route::middleware('auth')->group(function () {
         ->name('marketplace.new');
     Route::post('/marketplace/purchase', \App\Http\Controllers\MarketPlace\PurchaseNewController::class)
         ->name('marketplace.new.purchase');
+    Route::get('/marketplace/used/{fleet}', \App\Http\Controllers\MarketPlace\ShowUsedAircraftController::class)
+        ->name('marketplace.used');
     Route::post('/marketplace/finance', \App\Http\Controllers\MarketPlace\FinanceNewController::class)
         ->name('marketplace.new.finance');
     Route::post('/marketplace/finance/cancel/{id}', \App\Http\Controllers\MarketPlace\CancelFinanceController::class)

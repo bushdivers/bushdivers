@@ -1,3 +1,5 @@
+import haversineDistance from 'haversine-distance'
+
 export const parseMapStyle = (mapStyle) => {
   switch (mapStyle) {
     case 'dark':
@@ -16,4 +18,9 @@ export const parseMapStyle = (mapStyle) => {
 export const formatNumber = (n) => {
   const nf = Intl.NumberFormat('en-US')
   return nf.format(Math.round(n))
+}
+
+export const getDistance = (lat1, lon1, lat2, lon2) => {
+  const distanceM = haversineDistance({ latitude: lat1, longitude: lon1 }, { latitude: lat2, longitude: lon2 })
+  return Math.round(distanceM / 1852)
 }

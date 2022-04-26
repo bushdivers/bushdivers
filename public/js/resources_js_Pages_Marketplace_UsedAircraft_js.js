@@ -1,4 +1,4 @@
-(self["webpackChunk"] = self["webpackChunk"] || []).push([["resources_js_Pages_Marketplace_Aircraft_js"],{
+(self["webpackChunk"] = self["webpackChunk"] || []).push([["resources_js_Pages_Marketplace_UsedAircraft_js"],{
 
 /***/ "./node_modules/@fortawesome/fontawesome-svg-core/index.es.js":
 /*!********************************************************************!*\
@@ -14869,10 +14869,61 @@ var convertMinuteDecimalToHoursAndMinutes = function convertMinuteDecimalToHours
 
 /***/ }),
 
-/***/ "./resources/js/Pages/Marketplace/Aircraft.js":
-/*!****************************************************!*\
-  !*** ./resources/js/Pages/Marketplace/Aircraft.js ***!
-  \****************************************************/
+/***/ "./resources/js/Helpers/general.helpers.js":
+/*!*************************************************!*\
+  !*** ./resources/js/Helpers/general.helpers.js ***!
+  \*************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "formatNumber": () => (/* binding */ formatNumber),
+/* harmony export */   "getDistance": () => (/* binding */ getDistance),
+/* harmony export */   "parseMapStyle": () => (/* binding */ parseMapStyle)
+/* harmony export */ });
+/* harmony import */ var haversine_distance__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! haversine-distance */ "./node_modules/haversine-distance/index.js");
+/* harmony import */ var haversine_distance__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(haversine_distance__WEBPACK_IMPORTED_MODULE_0__);
+
+var parseMapStyle = function parseMapStyle(mapStyle) {
+  switch (mapStyle) {
+    case 'dark':
+      return 'mapbox://styles/mapbox/dark-v10';
+
+    case 'light':
+      return 'mapbox://styles/mapbox/light-v10';
+
+    case 'street':
+      return 'mapbox://styles/mapbox/streets-v11';
+
+    case 'satellite':
+      return 'mapbox://styles/mapbox/satellite-streets-v11';
+
+    default:
+      return 'mapbox://styles/mapbox/dark-v10';
+  }
+};
+var formatNumber = function formatNumber(n) {
+  var nf = Intl.NumberFormat('en-US');
+  return nf.format(Math.round(n));
+};
+var getDistance = function getDistance(lat1, lon1, lat2, lon2) {
+  var distanceM = haversine_distance__WEBPACK_IMPORTED_MODULE_0___default()({
+    latitude: lat1,
+    longitude: lon1
+  }, {
+    latitude: lat2,
+    longitude: lon2
+  });
+  return Math.round(distanceM / 1852);
+};
+
+/***/ }),
+
+/***/ "./resources/js/Pages/Marketplace/UsedAircraft.js":
+/*!********************************************************!*\
+  !*** ./resources/js/Pages/Marketplace/UsedAircraft.js ***!
+  \********************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -14882,7 +14933,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var _Shared_AppLayout__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../Shared/AppLayout */ "./resources/js/Shared/AppLayout.js");
-/* harmony import */ var _inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @inertiajs/inertia-react */ "./node_modules/@inertiajs/inertia-react/dist/index.js");
+/* harmony import */ var _Helpers_general_helpers__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../Helpers/general.helpers */ "./resources/js/Helpers/general.helpers.js");
 /* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 
 
@@ -14890,97 +14941,34 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var Aircraft = function Aircraft(_ref) {
-  var fleet = _ref.fleet,
-      manufacturer = _ref.manufacturer;
-
-  var buyFinance = function buyFinance(fleet) {
-    window.alert('Finance!');
-  };
-
+var UsedAircraft = function UsedAircraft(_ref) {
+  var aircraft = _ref.aircraft,
+      currentLocation = _ref.currentLocation,
+      fleet = _ref.fleet;
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
     className: "p-4",
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("p", {
-      children: ["Please select a ", manufacturer, " aircraft type:"]
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("h1", {
+      children: [fleet.manufacturer, " ", fleet.name, " - ", fleet.type]
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
-      className: "flex flex-wrap justify-start",
-      children: fleet && fleet.map(function (f) {
+      className: "rounded bg-white shadow p-4",
+      children: aircraft && aircraft.map(function (ac) {
         return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-          className: "bg-white m-4 rounded shadow cursor-pointer w-1/4",
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
-            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("img", {
-              src: f.rental_image,
-              className: "rounded-t w-full"
-            })
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-            className: "p-4",
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
-              className: "text-lg",
-              children: f.name
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-              className: "my-1",
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("p", {
-                children: "Price Range:"
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-                children: ["New: $", f.new_price]
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-                children: ["Used: $", f.used_low_price, " - $", f.used_high_price]
-              })]
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-              className: "flex flex-col text-sm",
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("span", {
-                children: ["Powerplants: ", f.number_of_engines, " x ", f.powerplants]
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("span", {
-                children: ["Fuel Type: ", fleet.fuel_type === 1 ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("span", {
-                  children: "Avgas"
-                }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("span", {
-                  children: "Jet Fuel"
-                })]
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("span", {
-                children: ["Fuel Capacity: ", f.fuel_capacity, " gal"]
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("span", {
-                children: ["ZFW: ", f.zfw, " lbs"]
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("span", {
-                children: ["MTOW: ", f.mtow, " lbs"]
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("span", {
-                children: ["Cargo Capacity: ", f.cargo_capacity, " lbs"]
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("span", {
-                children: ["PAX Capacity: ", f.pax_capacity]
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("span", {
-                children: ["Service Ceiling: ", f.service_ceiling, " ft"]
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("span", {
-                children: ["Range: ", f.range, " nm"]
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("span", {
-                children: ["Cruise Speed: ", f.cruise_speed, " KIAS"]
-              })]
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-              className: "mt-2 flex justify-between",
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_2__.Link, {
-                href: "/marketplace/new/".concat(f.id),
-                className: "btn btn-secondary",
-                children: "Purchase New"
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_2__.Link, {
-                href: "/marketplace/used/".concat(f.id),
-                className: "btn btn-primary",
-                children: "Purchase Used"
-              })]
-            })]
-          })]
-        }, f.id);
+          children: [ac.registration, " - ", ac.current_airport_id, (0,_Helpers_general_helpers__WEBPACK_IMPORTED_MODULE_2__.getDistance)(currentLocation.lat, currentLocation.lon, ac.location.lat, ac.location.lon), "nm"]
+        }, ac.id);
       })
     })]
   });
 };
 
-Aircraft.layout = function (page) {
+UsedAircraft.layout = function (page) {
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_Shared_AppLayout__WEBPACK_IMPORTED_MODULE_1__["default"], {
     children: page,
-    title: "Marketplace - Aircraft",
-    heading: "Marketplace - Aircraft"
+    title: "Marketplace - Used Aircraft",
+    heading: "Marketplace - Used Aircraft"
   });
 };
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Aircraft);
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (UsedAircraft);
 
 /***/ }),
 
@@ -15688,6 +15676,43 @@ var NavSection = function NavSection(_ref) {
 /***/ (function(module) {
 
 !function(t,i){ true?module.exports=i():0}(this,(function(){"use strict";var t="minute",i=/[+-]\d\d(?::?\d\d)?/g,e=/([+-]|\d\d)/g;return function(s,f,n){var u=f.prototype;n.utc=function(t){var i={date:t,utc:!0,args:arguments};return new f(i)},u.utc=function(i){var e=n(this.toDate(),{locale:this.$L,utc:!0});return i?e.add(this.utcOffset(),t):e},u.local=function(){return n(this.toDate(),{locale:this.$L,utc:!1})};var o=u.parse;u.parse=function(t){t.utc&&(this.$u=!0),this.$utils().u(t.$offset)||(this.$offset=t.$offset),o.call(this,t)};var r=u.init;u.init=function(){if(this.$u){var t=this.$d;this.$y=t.getUTCFullYear(),this.$M=t.getUTCMonth(),this.$D=t.getUTCDate(),this.$W=t.getUTCDay(),this.$H=t.getUTCHours(),this.$m=t.getUTCMinutes(),this.$s=t.getUTCSeconds(),this.$ms=t.getUTCMilliseconds()}else r.call(this)};var a=u.utcOffset;u.utcOffset=function(s,f){var n=this.$utils().u;if(n(s))return this.$u?0:n(this.$offset)?a.call(this):this.$offset;if("string"==typeof s&&(s=function(t){void 0===t&&(t="");var s=t.match(i);if(!s)return null;var f=(""+s[0]).match(e)||["-",0,0],n=f[0],u=60*+f[1]+ +f[2];return 0===u?0:"+"===n?u:-u}(s),null===s))return this;var u=Math.abs(s)<=16?60*s:s,o=this;if(f)return o.$offset=u,o.$u=0===s,o;if(0!==s){var r=this.$u?this.toDate().getTimezoneOffset():-1*this.utcOffset();(o=this.local().add(u+r,t)).$offset=u,o.$x.$localOffset=r}else o=this.utc();return o};var h=u.format;u.format=function(t){var i=t||(this.$u?"YYYY-MM-DDTHH:mm:ss[Z]":"");return h.call(this,i)},u.valueOf=function(){var t=this.$utils().u(this.$offset)?0:this.$offset+(this.$x.$localOffset||(new Date).getTimezoneOffset());return this.$d.valueOf()-6e4*t},u.isUTC=function(){return!!this.$u},u.toISOString=function(){return this.toDate().toISOString()},u.toString=function(){return this.toDate().toUTCString()};var l=u.toDate;u.toDate=function(t){return"s"===t&&this.$offset?n(this.format("YYYY-MM-DD HH:mm:ss:SSS")).toDate():l.call(this)};var c=u.diff;u.diff=function(t,i,e){if(t&&this.$u===t.$u)return c.call(this,t,i,e);var s=this.local(),f=n(t).local();return c.call(s,f,i,e)}}}));
+
+/***/ }),
+
+/***/ "./node_modules/haversine-distance/index.js":
+/*!**************************************************!*\
+  !*** ./node_modules/haversine-distance/index.js ***!
+  \**************************************************/
+/***/ ((module) => {
+
+const asin = Math.asin
+const cos = Math.cos
+const sin = Math.sin
+const sqrt = Math.sqrt
+const PI = Math.PI
+
+// equatorial mean radius of Earth (in meters)
+const R = 6378137
+
+function squared (x) { return x * x }
+function toRad (x) { return x * PI / 180.0 }
+function hav (x) {
+  return squared(sin(x / 2))
+}
+
+// hav(theta) = hav(bLat - aLat) + cos(aLat) * cos(bLat) * hav(bLon - aLon)
+function haversineDistance (a, b) {
+  const aLat = toRad(Array.isArray(a) ? a[1] : a.latitude || a.lat)
+  const bLat = toRad(Array.isArray(b) ? b[1] : b.latitude || b.lat)
+  const aLng = toRad(Array.isArray(a) ? a[0] : a.longitude || a.lng || a.lon)
+  const bLng = toRad(Array.isArray(b) ? b[0] : b.longitude || b.lng || b.lon)
+
+  const ht = hav(bLat - aLat) + cos(aLat) * cos(bLat) * hav(bLng - aLng)
+  return 2 * R * asin(sqrt(ht))
+}
+
+module.exports = haversineDistance
+
 
 /***/ }),
 

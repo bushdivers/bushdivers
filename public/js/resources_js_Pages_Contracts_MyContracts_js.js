@@ -14879,8 +14879,12 @@ var convertMinuteDecimalToHoursAndMinutes = function convertMinuteDecimalToHours
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "formatNumber": () => (/* binding */ formatNumber),
+/* harmony export */   "getDistance": () => (/* binding */ getDistance),
 /* harmony export */   "parseMapStyle": () => (/* binding */ parseMapStyle)
 /* harmony export */ });
+/* harmony import */ var haversine_distance__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! haversine-distance */ "./node_modules/haversine-distance/index.js");
+/* harmony import */ var haversine_distance__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(haversine_distance__WEBPACK_IMPORTED_MODULE_0__);
+
 var parseMapStyle = function parseMapStyle(mapStyle) {
   switch (mapStyle) {
     case 'dark':
@@ -14902,6 +14906,16 @@ var parseMapStyle = function parseMapStyle(mapStyle) {
 var formatNumber = function formatNumber(n) {
   var nf = Intl.NumberFormat('en-US');
   return nf.format(Math.round(n));
+};
+var getDistance = function getDistance(lat1, lon1, lat2, lon2) {
+  var distanceM = haversine_distance__WEBPACK_IMPORTED_MODULE_0___default()({
+    latitude: lat1,
+    longitude: lon1
+  }, {
+    latitude: lat2,
+    longitude: lon2
+  });
+  return Math.round(distanceM / 1852);
 };
 
 /***/ }),
@@ -16268,6 +16282,43 @@ var NavSection = function NavSection(_ref) {
 /***/ (function(module) {
 
 !function(t,i){ true?module.exports=i():0}(this,(function(){"use strict";var t="minute",i=/[+-]\d\d(?::?\d\d)?/g,e=/([+-]|\d\d)/g;return function(s,f,n){var u=f.prototype;n.utc=function(t){var i={date:t,utc:!0,args:arguments};return new f(i)},u.utc=function(i){var e=n(this.toDate(),{locale:this.$L,utc:!0});return i?e.add(this.utcOffset(),t):e},u.local=function(){return n(this.toDate(),{locale:this.$L,utc:!1})};var o=u.parse;u.parse=function(t){t.utc&&(this.$u=!0),this.$utils().u(t.$offset)||(this.$offset=t.$offset),o.call(this,t)};var r=u.init;u.init=function(){if(this.$u){var t=this.$d;this.$y=t.getUTCFullYear(),this.$M=t.getUTCMonth(),this.$D=t.getUTCDate(),this.$W=t.getUTCDay(),this.$H=t.getUTCHours(),this.$m=t.getUTCMinutes(),this.$s=t.getUTCSeconds(),this.$ms=t.getUTCMilliseconds()}else r.call(this)};var a=u.utcOffset;u.utcOffset=function(s,f){var n=this.$utils().u;if(n(s))return this.$u?0:n(this.$offset)?a.call(this):this.$offset;if("string"==typeof s&&(s=function(t){void 0===t&&(t="");var s=t.match(i);if(!s)return null;var f=(""+s[0]).match(e)||["-",0,0],n=f[0],u=60*+f[1]+ +f[2];return 0===u?0:"+"===n?u:-u}(s),null===s))return this;var u=Math.abs(s)<=16?60*s:s,o=this;if(f)return o.$offset=u,o.$u=0===s,o;if(0!==s){var r=this.$u?this.toDate().getTimezoneOffset():-1*this.utcOffset();(o=this.local().add(u+r,t)).$offset=u,o.$x.$localOffset=r}else o=this.utc();return o};var h=u.format;u.format=function(t){var i=t||(this.$u?"YYYY-MM-DDTHH:mm:ss[Z]":"");return h.call(this,i)},u.valueOf=function(){var t=this.$utils().u(this.$offset)?0:this.$offset+(this.$x.$localOffset||(new Date).getTimezoneOffset());return this.$d.valueOf()-6e4*t},u.isUTC=function(){return!!this.$u},u.toISOString=function(){return this.toDate().toISOString()},u.toString=function(){return this.toDate().toUTCString()};var l=u.toDate;u.toDate=function(t){return"s"===t&&this.$offset?n(this.format("YYYY-MM-DD HH:mm:ss:SSS")).toDate():l.call(this)};var c=u.diff;u.diff=function(t,i,e){if(t&&this.$u===t.$u)return c.call(this,t,i,e);var s=this.local(),f=n(t).local();return c.call(s,f,i,e)}}}));
+
+/***/ }),
+
+/***/ "./node_modules/haversine-distance/index.js":
+/*!**************************************************!*\
+  !*** ./node_modules/haversine-distance/index.js ***!
+  \**************************************************/
+/***/ ((module) => {
+
+const asin = Math.asin
+const cos = Math.cos
+const sin = Math.sin
+const sqrt = Math.sqrt
+const PI = Math.PI
+
+// equatorial mean radius of Earth (in meters)
+const R = 6378137
+
+function squared (x) { return x * x }
+function toRad (x) { return x * PI / 180.0 }
+function hav (x) {
+  return squared(sin(x / 2))
+}
+
+// hav(theta) = hav(bLat - aLat) + cos(aLat) * cos(bLat) * hav(bLon - aLon)
+function haversineDistance (a, b) {
+  const aLat = toRad(Array.isArray(a) ? a[1] : a.latitude || a.lat)
+  const bLat = toRad(Array.isArray(b) ? b[1] : b.latitude || b.lat)
+  const aLng = toRad(Array.isArray(a) ? a[0] : a.longitude || a.lng || a.lon)
+  const bLng = toRad(Array.isArray(b) ? b[0] : b.longitude || b.lng || b.lon)
+
+  const ht = hav(bLat - aLat) + cos(aLat) * cos(bLat) * hav(bLng - aLng)
+  return 2 * R * asin(sqrt(ht))
+}
+
+module.exports = haversineDistance
+
 
 /***/ }),
 
