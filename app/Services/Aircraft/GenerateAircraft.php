@@ -109,11 +109,11 @@ class GenerateAircraft
 
         $multiplier = $engineMultiplier + $acMultiplier;
         if ($multiplier < 1) {
-            $price = rand(($fleet->used_low_price - 10000), (($fleet->used_low_price + 10000))) - $fleet->used_low_price;
+            $price = rand(($fleet->used_low_price - 10000), (($fleet->used_low_price + 10000)));
         } elseif ($multiplier < 2 && $multiplier >= 1) {
-            $price = rand(($fleet->used_low_price + 15000), (($fleet->used_low_price + 50000))) - $fleet->used_low_price;
+            $price = rand(($fleet->used_low_price + 15000), (($fleet->used_low_price + 50000)));
         } else {
-            $price = rand(($fleet->used_high_price - 30000), ($fleet->used_high_price + 15000)) - $fleet->used_high_price;
+            $price = rand(($fleet->used_high_price - 30000), ($fleet->used_high_price + 15000));
         }
 
         $ac->sale_price = $price;
@@ -124,21 +124,14 @@ class GenerateAircraft
     {
         $valid = false;
         $reg = '';
-        if ($country == 'PG' || $country == 'ID') {
-            $min = 1;
-            $max = 99;
-        } else {
-            $min = 1;
-            $max = 999;
-        }
 
         while ($valid == false) {
             if ($country == 'PG' || $country == 'ID') {
-                $num = mt_rand(1, 99);
+                $num = mt_rand(1, 999);
                 $num = str_pad($num, 2, 0, STR_PAD_LEFT);
                 $reg = 'P2-'.$num;
-            } else {
-                $num = mt_rand(1, 999);
+            } elseif ($country == 'US') {
+                $num = mt_rand(1, 9999);
                 $num = str_pad($num, 3, 0, STR_PAD_LEFT);
                 $reg = 'N'.$num;
             }
