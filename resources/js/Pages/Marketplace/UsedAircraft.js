@@ -1,17 +1,56 @@
 import React from 'react'
 import AppLayout from '../../Shared/AppLayout'
 import { getDistance } from '../../Helpers/general.helpers'
+import { convertMinuteDecimalToHoursAndMinutes } from '../../Helpers/date.helpers'
+import dayjs from 'dayjs'
+import AircraftCondition from '../../Shared/Components/Fleet/AircraftCondition'
+import { formatNumber } from 'chart.js/helpers'
 
 const UsedAircraft = ({ aircraft, currentLocation, fleet }) => {
   return (
     <div className="p-4">
       <h1>{fleet.manufacturer} {fleet.name} - {fleet.type}</h1>
-      <div className="rounded bg-white shadow p-4">
+      <div className="rounded bg-white shadow">
+        <table className="table-condensed table-auto">
+          <thead>
+          <tr className="">
+            <th>Registration</th>
+            <th>Location</th>
+            <th>Distance</th>
+            <th>Condition</th>
+            <th>Airframe</th>
+            <th>Last Inspection</th>
+            <th>Engines (hrs)</th>
+            <th>Price</th>
+            <th></th>
+          </tr>
+          </thead>
+          <tbody>
         {aircraft && aircraft.map((ac) => (
-          <div key={ac.id}>{ac.registration} - {ac.current_airport_id}
-            {getDistance(currentLocation.lat, currentLocation.lon, ac.location.lat, ac.location.lon)}nm
-          </div>
+          <tr key={ac.id}>
+            <td>{ac.registration}</td>
+            <td>
+              {ac.current_airport_id} <br/>
+              <span className="text-sm">{ac.location.name}</span>
+            </td>
+            <td>{getDistance(currentLocation.lat, currentLocation.lon, ac.location.lat, ac.location.lon)}nm</td>
+            <td><AircraftCondition aircraftCondition={ac.total_condition} /></td>
+            <td>{(ac.flight_time_mins / 60).toFixed(2)}</td>
+            <td>{dayjs(ac.last_inspected_at).format('DD/MM/YYYY')}</td>
+            <td>
+              {ac.engines.map((e) => (
+                <>
+                  <span>Until TBO: {((ac.fleet.tbo_mins / 60) - (e.mins_since_tbo / 60)).toFixed(2)}</span><br />
+                  <span>Until 100hr {(100 - (e.mins_since_100hr / 60)).toFixed(2)}</span>
+                </>
+              ))}
+            </td>
+            <td>${formatNumber(ac.sale_price)}</td>
+            <td><button className="btn btn-secondary btn-small">Buy</button></td>
+          </tr>
         ))}
+          </tbody>
+        </table>
       </div>
     </div>
   )

@@ -53,11 +53,11 @@ class ShowUsedAircraftController extends Controller
 
         $allAirports = collect($airports);
         $allAirports = $allAirports->pluck('identifier');
-        $aircraft = Aircraft::with('location', 'fleet')
+        $aircraft = Aircraft::with('location', 'fleet', 'engines')
             ->where('owner_id', null)
             ->where('fleet_id', $fleet)
             ->whereIn('current_airport_id', $allAirports)
-            ->orderBy('current_airport_id')
+            ->orderBy('sale_price')
             ->get();
 
         $fleetDetail = Fleet::find($fleet);
