@@ -24,9 +24,7 @@ class PurchaseAircraftRequest extends FormRequest
     public function rules()
     {
         return [
-            'reg' => 'required|unique:aircraft,registration',
-            'deliveryIcao' => 'required',
-            'hub' => 'required'
+
         ];
     }
 }

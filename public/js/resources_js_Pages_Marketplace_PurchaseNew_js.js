@@ -17045,7 +17045,7 @@ var convertMinuteDecimalToHoursAndMinutes = function convertMinuteDecimalToHours
 
 /***/ "./resources/js/Pages/Marketplace/PurchaseNew.js":
 /*!*******************************************************!*\
-  !*** ./resources/js/Pages/Marketplace/PurchaseNew.js ***!
+  !*** ./resources/js/Pages/Marketplace/Purchase.js ***!
   \*******************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 

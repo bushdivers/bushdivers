@@ -1,12 +1,16 @@
 import React from 'react'
 import AppLayout from '../../Shared/AppLayout'
 import { getDistance } from '../../Helpers/general.helpers'
-import { convertMinuteDecimalToHoursAndMinutes } from '../../Helpers/date.helpers'
 import dayjs from 'dayjs'
 import AircraftCondition from '../../Shared/Components/Fleet/AircraftCondition'
 import { formatNumber } from 'chart.js/helpers'
+import { Inertia } from '@inertiajs/inertia'
 
 const UsedAircraft = ({ aircraft, currentLocation, fleet }) => {
+  const handlePurchase = (ac) => {
+    Inertia.get(`/marketplace/purchase/used/${ac.id}`)
+  }
+
   return (
     <div className="p-4">
       <h1>{fleet.manufacturer} {fleet.name} - {fleet.type}</h1>
@@ -46,7 +50,7 @@ const UsedAircraft = ({ aircraft, currentLocation, fleet }) => {
               ))}
             </td>
             <td>${formatNumber(ac.sale_price)}</td>
-            <td><button className="btn btn-secondary btn-small">Purchase</button></td>
+            <td><button onClick={() => handlePurchase(ac)} className="btn btn-secondary btn-small">Purchase</button></td>
           </tr>
         ))}
           </tbody>
