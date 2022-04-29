@@ -46,7 +46,7 @@ const UsedAircraft = ({ aircraft, currentLocation, fleet }) => {
               ))}
             </td>
             <td>${formatNumber(ac.sale_price)}</td>
-            <td><button className="btn btn-secondary btn-small">Buy</button></td>
+            <td><button className="btn btn-secondary btn-small">Purchase</button></td>
           </tr>
         ))}
           </tbody>

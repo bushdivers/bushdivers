@@ -70,13 +70,16 @@ class GenerateAircraft
         $currentAirport = $airports->random(1);
         $reg = $this->findAvailableReg($locale);
         $randInspection = rand(20,350);
+        $airframeTime = rand(2000, 120000);
+        $tboTime = $airframeTime > $fleet->tbo_mins ? rand(1200, $fleet->tbo_time) : $airframeTime;
+        $checkTime = $airframeTime < 6000 ? $airframeTime : rand(100, 4000);
 
         $ac = new Aircraft();
         $ac->fleet_id = $fleet->id;
         $ac->current_airport_id = $currentAirport[0]->identifier;
         $ac->hub_id = $currentAirport[0]->identifier;
         $ac->registration = $reg;
-        $ac->flight_time_mins = rand(6000, 120000);
+        $ac->flight_time_mins = $airframeTime;
         $ac->state = 1;
         $ac->status = 1;
         $ac->owner_id = null;
@@ -88,8 +91,8 @@ class GenerateAircraft
             $engine = new AircraftEngine();
             $engine->aircraft_id = $ac->id;
             $engine->engine_no = $e;
-            $engine->mins_since_tbo = rand(30000, 100000);
-            $engine->mins_since_100hr = rand(900, 5000);
+            $engine->mins_since_tbo = $tboTime;
+            $engine->mins_since_100hr = $checkTime;
             $engine->wear = rand(40, 95);
             $engine->save();
 
