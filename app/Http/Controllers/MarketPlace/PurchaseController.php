@@ -58,6 +58,15 @@ class PurchaseController extends Controller
             $aircraft = $this->createAircraft->execute($request->all(), Auth::user()->id);
         } else {
             $aircraft = Aircraft::find($request->id);
+
+            if ($request->reg != $aircraft->registration) {
+                $aircraftCount = Aircraft::where('registration', $request->reg)
+                    ->count();
+                if ($aircraftCount > 0) {
+                    return redirect()->back()->with(['error' => 'Aircraft registration already exists']);
+                }
+            }
+
             $aircraft->owner_id = Auth::user()->id;
             $aircraft->hub_id = $request->hub;
             $aircraft->registration = $request->reg;
