@@ -32,7 +32,7 @@ class CreateAircraftTest extends TestCase
     {
         $fleet = Fleet::factory()->create();
         $data = [
-            'fleetId' => $fleet->id,
+            'id' => $fleet->id,
             'deliveryIcao' => 'AYMR',
             'reg' => 'G-RWW',
             'hub' => 'EGBS'
@@ -47,7 +47,7 @@ class CreateAircraftTest extends TestCase
     {
         $fleet = Fleet::factory()->create();
         $data = [
-            'fleetId' => $fleet->id,
+            'id' => $fleet->id,
             'deliveryIcao' => 'AYMR',
             'reg' => 'G-RWW',
             'hub' => 'EGBS'
@@ -65,7 +65,7 @@ class CreateAircraftTest extends TestCase
             'number_of_engines' => 2
         ]);
         $data = [
-            'fleetId' => $fleet->id,
+            'id' => $fleet->id,
             'deliveryIcao' => 'AYMR',
             'reg' => 'G-RWW',
             'hub' => 'EGBS'
