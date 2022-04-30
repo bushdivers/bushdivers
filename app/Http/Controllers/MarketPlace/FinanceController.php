@@ -8,6 +8,7 @@ use App\Models\Aircraft;
 use App\Models\Enums\TransactionTypes;
 use App\Models\FinanceAgreement;
 use App\Services\Aircraft\CreateAircraft;
+use App\Services\Aircraft\GenerateAircraft;
 use App\Services\Finance\AddUserTransaction;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -17,11 +18,13 @@ class FinanceController extends Controller
 {
     protected CreateAircraft $createAircraft;
     protected AddUserTransaction $addUserTransaction;
+    protected GenerateAircraft $generateAircraft;
 
-    public function __construct(CreateAircraft $createAircraft, AddUserTransaction $addUserTransaction)
+    public function __construct(CreateAircraft $createAircraft, AddUserTransaction $addUserTransaction, GenerateAircraft $generateAircraft)
     {
         $this->createAircraft = $createAircraft;
         $this->addUserTransaction = $addUserTransaction;
+        $this->generateAircraft = $generateAircraft;
     }
 
     /**
@@ -68,6 +71,8 @@ class FinanceController extends Controller
             $aircraft->hub_id = $request->hub;
             $aircraft->registration = $request->reg;
             $aircraft->save();
+
+            $this->generateAircraft->generateSpecific($aircraft->fleet_id, $aircraft->current_airport_id);
         }
 
         //create credit record

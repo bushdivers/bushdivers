@@ -9,6 +9,7 @@ use App\Models\AircraftEngine;
 use App\Models\Enums\TransactionTypes;
 use App\Models\Fleet;
 use App\Services\Aircraft\CreateAircraft;
+use App\Services\Aircraft\GenerateAircraft;
 use App\Services\Finance\AddUserTransaction;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
@@ -21,11 +22,13 @@ class PurchaseController extends Controller
 {
     protected CreateAircraft $createAircraft;
     protected AddUserTransaction $addUserTransaction;
+    protected GenerateAircraft $generateAircraft;
 
-    public function __construct(AddUserTransaction $addUserTransaction, CreateAircraft $createAircraft)
+    public function __construct(AddUserTransaction $addUserTransaction, CreateAircraft $createAircraft, GenerateAircraft $generateAircraft)
     {
         $this->addUserTransaction = $addUserTransaction;
         $this->createAircraft = $createAircraft;
+        $this->generateAircraft = $generateAircraft;
     }
 
     /**
@@ -71,6 +74,8 @@ class PurchaseController extends Controller
             $aircraft->hub_id = $request->hub;
             $aircraft->registration = $request->reg;
             $aircraft->save();
+
+            $this->generateAircraft->generateSpecific($aircraft->fleet_id, $aircraft->current_airport_id);
         }
         return redirect()->to('/aircraft/'.$aircraft->id)->with(['success' => 'Aircraft purchased']);
     }

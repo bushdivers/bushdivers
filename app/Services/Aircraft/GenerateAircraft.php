@@ -62,12 +62,22 @@ class GenerateAircraft
 
     public function generateSpecific($type, $location)
     {
+        $fleet = Fleet::find($type);
+        $airport = Airport::where('identifier', $location)->first();
 
+        $this->generateAircraftDetails($fleet, $airport, $airport->country, 'replace');
     }
 
-    protected function generateAircraftDetails($fleet, $airports, $locale)
+    protected function generateAircraftDetails($fleet, $airports, $locale, $type = null)
     {
-        $currentAirport = $airports->random(1);
+        if ($type == 'replace') {
+            $currentAirport = $airports;
+            $identifier = $airports->identifier;
+        } else {
+            $currentAirport = $airports->random(1);
+            $identifier = $currentAirport[0]->identifier;
+        }
+
         $reg = $this->findAvailableReg($locale);
         $randInspection = rand(20,350);
         $airframeTime = rand(2000, 120000);
@@ -76,8 +86,8 @@ class GenerateAircraft
 
         $ac = new Aircraft();
         $ac->fleet_id = $fleet->id;
-        $ac->current_airport_id = $currentAirport[0]->identifier;
-        $ac->hub_id = $currentAirport[0]->identifier;
+        $ac->current_airport_id = $identifier;
+        $ac->hub_id = $identifier;
         $ac->registration = $reg;
         $ac->flight_time_mins = $airframeTime;
         $ac->state = 1;
