@@ -24,7 +24,10 @@ class ShowMyAircraftController extends Controller
         // get my aircraft
         $aircraft = Aircraft::with('fleet')->where('owner_id', Auth::user()->id)->get();
         // get my rentals
-        $rentals = Rental::with('fleet')->where('user_id', Auth::user()->id)->get();
+        $rentals = Rental::with('fleet')
+            ->where('user_id', Auth::user()->id)
+            ->where('is_active', true)
+            ->get();
         // get my credit agreements
         $agreements = FinanceAgreement::with('aircraft')
             ->where('user_id', Auth::user()->id)
