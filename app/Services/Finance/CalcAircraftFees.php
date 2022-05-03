@@ -37,14 +37,11 @@ class CalcAircraftFees
             $aircraft = Aircraft::with('fleet')
                 ->where('status', AircraftStatus::ACTIVE)
                 ->where('fleet_id', $f->id)
+                ->where('owner_id', 0)
                 ->get();
             foreach ($aircraft as $a) {
-                if ($a->owner_id == 0) {
-                    $this->addAirlineTransaction->execute(AirlineTransactionTypes::AircraftRentalFee, $smallRental->fee_amount, 'Rental: '.$a->registration);
-                    $this->addAirlineTransaction->execute(AirlineTransactionTypes::AircraftStorageFees, $smallParking->fee_amount, 'Parking: '.$a->registration);
-                } else {
-                    $this->addUserTransaction->execute($a->owner_id, TransactionTypes::MonthlyOwnership, $smallRental->fee_amount);
-                }
+                $this->addAirlineTransaction->execute(AirlineTransactionTypes::AircraftRentalFee, $smallRental->fee_amount, 'Rental: '.$a->registration);
+                $this->addAirlineTransaction->execute(AirlineTransactionTypes::AircraftStorageFees, $smallParking->fee_amount, 'Parking: '.$a->registration);
             }
         }
         // medium
@@ -59,14 +56,11 @@ class CalcAircraftFees
             $aircraft = Aircraft::with('fleet')
                 ->where('fleet_id', $f->id)
                 ->where('status', AircraftStatus::ACTIVE)
+                ->where('owner_id', 0)
                 ->get();
             foreach ($aircraft as $a) {
-                if ($a->owner_id == 0) {
-                    $this->addAirlineTransaction->execute(AirlineTransactionTypes::AircraftRentalFee, $mediumRental->fee_amount, 'Rental: '.$a->registration);
-                    $this->addAirlineTransaction->execute(AirlineTransactionTypes::AircraftStorageFees, $mediumParking->fee_amount, 'Parking: '.$a->registration);
-                } else {
-                    $this->addUserTransaction->execute($a->owner_id, TransactionTypes::MonthlyOwnership, $mediumRental->fee_amount);
-                }
+                $this->addAirlineTransaction->execute(AirlineTransactionTypes::AircraftRentalFee, $mediumRental->fee_amount, 'Rental: '.$a->registration);
+                $this->addAirlineTransaction->execute(AirlineTransactionTypes::AircraftStorageFees, $mediumParking->fee_amount, 'Parking: '.$a->registration);
             }
         }
         // large
@@ -81,14 +75,11 @@ class CalcAircraftFees
             $aircraft = Aircraft::with('fleet')
                 ->where('fleet_id', $f->id)
                 ->where('status', AircraftStatus::ACTIVE)
+                ->where('owner_id', 0)
                 ->get();
             foreach ($aircraft as $a) {
-                if ($a->owner_id == 0) {
-                    $this->addAirlineTransaction->execute(AirlineTransactionTypes::AircraftRentalFee, $largeRental->fee_amount, 'Rental: '.$a->registration);
-                    $this->addAirlineTransaction->execute(AirlineTransactionTypes::AircraftStorageFees, $largeParking->fee_amount, 'Parking: '.$a->registration);
-                } else {
-                    $this->addUserTransaction->execute($a->owner_id, TransactionTypes::MonthlyOwnership, $mediumRental->fee_amount);
-                }
+                $this->addAirlineTransaction->execute(AirlineTransactionTypes::AircraftRentalFee, $largeRental->fee_amount, 'Rental: '.$a->registration);
+                $this->addAirlineTransaction->execute(AirlineTransactionTypes::AircraftStorageFees, $largeParking->fee_amount, 'Parking: '.$a->registration);
             }
 
         }
