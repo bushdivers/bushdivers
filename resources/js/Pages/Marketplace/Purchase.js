@@ -66,8 +66,8 @@ const Purchase = ({ aircraft, purchaseType }) => {
 
   const handleRegChange = (e) => {
     setRegError(null)
-    if (e.target.value.length > 6) {
-      setRegError('Registration cannot be more than 6 characters')
+    if (e.target.value.length > 8) {
+      setRegError('Registration cannot be more than 8 characters')
       return
     }
     setReg(e.target.value)

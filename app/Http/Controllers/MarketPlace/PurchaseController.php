@@ -43,7 +43,7 @@ class PurchaseController extends Controller
             $request->validate([
                 'purchaseType' => 'required',
                 'hub' => 'required',
-                'reg' => 'required|max:6|unique:aircraft,registration',
+                'reg' => 'required|max:8|unique:aircraft,registration',
             ]);
         } else {
             $request->validate([

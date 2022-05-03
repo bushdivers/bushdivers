@@ -17274,6 +17274,13 @@ var Purchase = function Purchase(_ref) {
   };
 
   var handleRegChange = function handleRegChange(e) {
+    setRegError(null);
+
+    if (e.target.value.length > 8) {
+      setRegError('Registration cannot be more than 8 characters');
+      return;
+    }
+
     setReg(e.target.value);
   };
 
