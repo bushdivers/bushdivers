@@ -11,6 +11,7 @@ import CustomContract from '../../Shared/Components/Contracts/CustomContract'
 import AppLayout from '../../Shared/AppLayout'
 import StatBlock from '../../Shared/Elements/StatBlock'
 import {
+  faAnchor,
   faArrowDownShortWide, faArrowUp,
   faBoxArchive,
   faCheck,
@@ -179,7 +180,7 @@ const Contracts = ({ searchedContracts, airport }) => {
                 </Tooltip>
                 <Tooltip direction="bottom" content="Destination">
                   <div className="text-sm text-gray-800 font-bold">
-                    {contract.destination.identifier}
+                    {contract.destination.identifier} {contract.destination.longest_runway_surface === 'W' ? <FontAwesomeIcon icon={faAnchor} /> : <></>}
                   </div>
                 </Tooltip>
                 <Tooltip direction="left" content="Accept contract">

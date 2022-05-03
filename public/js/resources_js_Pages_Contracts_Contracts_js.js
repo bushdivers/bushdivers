@@ -17461,9 +17461,11 @@ var Contracts = function Contracts(_ref) {
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)(_Shared_Elements_Tooltip__WEBPACK_IMPORTED_MODULE_4__["default"], {
               direction: "bottom",
               content: "Destination",
-              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("div", {
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsxs)("div", {
                 className: "text-sm text-gray-800 font-bold",
-                children: contract.destination.identifier
+                children: [contract.destination.identifier, " ", contract.destination.longest_runway_surface === 'W' ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_3__.FontAwesomeIcon, {
+                  icon: _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_17__.faAnchor
+                }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.Fragment, {})]
               })
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)(_Shared_Elements_Tooltip__WEBPACK_IMPORTED_MODULE_4__["default"], {
               direction: "left",

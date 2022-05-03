@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import AirportMap from '../../Shared/Components/Airport/AirportMap'
 import { Link, usePage } from '@inertiajs/inertia-react'
 import AppLayout from '../../Shared/AppLayout'
+import { faAnchor, faCloudSun } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const AirportDetail = ({ airport, metar, aircraft }) => {
   const { auth } = usePage().props
@@ -81,7 +83,7 @@ const AirportDetail = ({ airport, metar, aircraft }) => {
             <div className="flex justify-between overflow-x-auto">
               <div className="flex flex-col items-center my-2 mx-4">
                 <div className="text-sm">ICAO</div>
-                <div className="text-xl">{airport.identifier} {airport.longest_runway_surface === 'W' && <span className="material-icons md-18">anchor</span>}</div>
+                <div className="text-xl">{airport.identifier} {airport.longest_runway_surface === 'W' && <FontAwesomeIcon icon={faAnchor} />}</div>
               </div>
               <div className="flex flex-col items-center my-2 mx-4">
                 <div className="text-sm">Size</div>
@@ -118,8 +120,8 @@ const AirportDetail = ({ airport, metar, aircraft }) => {
               {metar
                 ? (
                   <>
-                    <i className="material-icons mr-2">light_mode</i>
-                    <span>{metar}</span>
+                    <FontAwesomeIcon icon={faCloudSun} />
+                    <span className="ml-2">{metar}</span>
                   </>
                   )
                 : <div>No METAR available</div>
