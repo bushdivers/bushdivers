@@ -12,10 +12,10 @@ class CreateAircraft
 {
     public function execute($data, $userId): Aircraft
     {
-        $fleet = Fleet::find($data['fleetId']);
+        $fleet = Fleet::find($data['id']);
         // create aircraft
         $aircraft = new Aircraft();
-        $aircraft->fleet_id = $data['fleetId'];
+        $aircraft->fleet_id = $data['id'];
         $aircraft->current_airport_id = $data['deliveryIcao'];
         $aircraft->registration = $data['reg'];
         $aircraft->state = 1;

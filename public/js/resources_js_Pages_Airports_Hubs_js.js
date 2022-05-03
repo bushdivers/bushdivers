@@ -14843,8 +14843,12 @@ var convertCurry = convert.bind(null, react__WEBPACK_IMPORTED_MODULE_1__.createE
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "formatNumber": () => (/* binding */ formatNumber),
+/* harmony export */   "getDistance": () => (/* binding */ getDistance),
 /* harmony export */   "parseMapStyle": () => (/* binding */ parseMapStyle)
 /* harmony export */ });
+/* harmony import */ var haversine_distance__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! haversine-distance */ "./node_modules/haversine-distance/index.js");
+/* harmony import */ var haversine_distance__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(haversine_distance__WEBPACK_IMPORTED_MODULE_0__);
+
 var parseMapStyle = function parseMapStyle(mapStyle) {
   switch (mapStyle) {
     case 'dark':
@@ -14866,6 +14870,16 @@ var parseMapStyle = function parseMapStyle(mapStyle) {
 var formatNumber = function formatNumber(n) {
   var nf = Intl.NumberFormat('en-US');
   return nf.format(Math.round(n));
+};
+var getDistance = function getDistance(lat1, lon1, lat2, lon2) {
+  var distanceM = haversine_distance__WEBPACK_IMPORTED_MODULE_0___default()({
+    latitude: lat1,
+    longitude: lon1
+  }, {
+    latitude: lat2,
+    longitude: lon2
+  });
+  return Math.round(distanceM / 1852);
 };
 
 /***/ }),
@@ -15430,6 +15444,43 @@ function PageTitle(_ref) {
     children: title
   });
 }
+
+/***/ }),
+
+/***/ "./node_modules/haversine-distance/index.js":
+/*!**************************************************!*\
+  !*** ./node_modules/haversine-distance/index.js ***!
+  \**************************************************/
+/***/ ((module) => {
+
+const asin = Math.asin
+const cos = Math.cos
+const sin = Math.sin
+const sqrt = Math.sqrt
+const PI = Math.PI
+
+// equatorial mean radius of Earth (in meters)
+const R = 6378137
+
+function squared (x) { return x * x }
+function toRad (x) { return x * PI / 180.0 }
+function hav (x) {
+  return squared(sin(x / 2))
+}
+
+// hav(theta) = hav(bLat - aLat) + cos(aLat) * cos(bLat) * hav(bLon - aLon)
+function haversineDistance (a, b) {
+  const aLat = toRad(Array.isArray(a) ? a[1] : a.latitude || a.lat)
+  const bLat = toRad(Array.isArray(b) ? b[1] : b.latitude || b.lat)
+  const aLng = toRad(Array.isArray(a) ? a[0] : a.longitude || a.lng || a.lon)
+  const bLng = toRad(Array.isArray(b) ? b[0] : b.longitude || b.lng || b.lon)
+
+  const ht = hav(bLat - aLat) + cos(aLat) * cos(bLat) * hav(bLng - aLng)
+  return 2 * R * asin(sqrt(ht))
+}
+
+module.exports = haversineDistance
+
 
 /***/ }),
 

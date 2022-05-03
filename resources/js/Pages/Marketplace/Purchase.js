@@ -4,20 +4,20 @@ import { usePage } from '@inertiajs/inertia-react'
 import axios from 'axios'
 import { Inertia } from '@inertiajs/inertia'
 
-const PurchaseNew = ({ fleet }) => {
+const Purchase = ({ aircraft, purchaseType }) => {
   const { auth, errors } = usePage().props
   const [deliver, setDeliver] = useState(false)
   const [price, setPrice] = useState(0.00)
   const [error, setError] = useState(null)
   const [airport, setAirport] = useState(null)
   const [icao, setIcao] = useState('')
-  const [deliveryLocation, setDeliveryLocation] = useState(fleet.hq)
+  const [deliveryLocation, setDeliveryLocation] = useState(aircraft.hq)
   const [distance, setDistance] = useState(null)
   const [hub, setHub] = useState(null)
   const [hubError, setHubError] = useState(null)
-  const [reg, setReg] = useState(null)
+  const [reg, setReg] = useState(purchaseType === 'new' ? null : aircraft.registration)
   const [regError, setRegError] = useState(null)
-  const [deposit, setDeposit] = useState(0.2 * fleet.new_price)
+  const [deposit, setDeposit] = useState(purchaseType === 'new' ? 0.2 * aircraft.new_price : 0.2 * aircraft.sale_price)
   const [term, setTerm] = useState(3)
   const [financeAmount, setFinanceAmount] = useState(0)
   const [monthlyPayments, setMonthlyPayments] = useState(0)
@@ -25,6 +25,7 @@ const PurchaseNew = ({ fleet }) => {
   const [financeCost, setFinanceCost] = useState(0)
   const [purchaseMethod, setPurchaseMethod] = useState('buy')
   const [calculated, setCalculated] = useState(false)
+  const [basePrice, setBasePrice] = useState(purchaseType === 'new' ? aircraft.new_price : aircraft.sale_price)
 
   const handleDeliveryChange = (e) => {
     setDeliver(e.target.checked)
@@ -45,7 +46,7 @@ const PurchaseNew = ({ fleet }) => {
         setAirport(`${response.data.airport.identifier} - ${response.data.airport.name}`)
         setDeliveryLocation(response.data.airport.identifier)
         setError(null)
-        const priceResp = await axios.get(`/api/jumpseat/cost/${fleet.hq}/${response.data.airport.identifier}`)
+        const priceResp = await axios.get(`/api/jumpseat/cost/${aircraft.hq}/${response.data.airport.identifier}`)
         if (priceResp.status === 200) {
           const p = (priceResp.data.cost * 10)
           setPrice(parseFloat(p))
@@ -97,7 +98,7 @@ const PurchaseNew = ({ fleet }) => {
       window.alert('Term must be between 3 and 24 months, please calculate again')
       return
     }
-    const subTotal = parseFloat(fleet.new_price) + parseFloat(price)
+    const subTotal = purchaseType === 'new' ? parseFloat(aircraft.new_price) + parseFloat(price) : parseFloat(aircraft.sale_price) + parseFloat(price)
     // subtotal less deposit = principal
     const principal = subTotal - deposit
     const termInYears = term / 12
@@ -126,7 +127,7 @@ const PurchaseNew = ({ fleet }) => {
       return
     }
 
-    const total = pMethod === 'buy' ? parseFloat(fleet.new_price) + parseFloat(price) : deposit
+    const total = pMethod === 'buy' ? purchaseType === 'new' ? parseFloat(aircraft.new_price) + parseFloat(price) : parseFloat(aircraft.sale_price) + parseFloat(price) : deposit
 
     if (total > auth.user.balance) {
       window.alert('You do not have sufficient funds')
@@ -136,10 +137,11 @@ const PurchaseNew = ({ fleet }) => {
     if (pMethod === 'buy') {
       const data = {
         total,
-        fleetId: fleet.id,
-        deliveryIcao: deliveryLocation,
+        id: aircraft.id,
+        deliveryIcao: purchaseType === 'new' ? deliveryLocation : null,
         hub,
-        reg
+        reg,
+        purchaseType
       }
       Inertia.post('/marketplace/purchase', data)
     } else if (pMethod === 'finance') {
@@ -148,14 +150,15 @@ const PurchaseNew = ({ fleet }) => {
         return
       }
       const data = {
-        fleetId: fleet.id,
-        deliveryIcao: deliveryLocation,
+        id: aircraft.id,
+        deliveryIcao: purchaseType === 'new' ? deliveryLocation : null,
         hub,
         reg,
         deposit,
         financeAmount,
         term,
-        monthlyPayments
+        monthlyPayments,
+        purchaseType
       }
       Inertia.post('/marketplace/finance', data)
     }
@@ -163,27 +166,33 @@ const PurchaseNew = ({ fleet }) => {
 
   return (
     <div className="p-4">
-      <div className="text-lg">Purchase New - {fleet.manufacturer} {fleet.name} {purchaseMethod === 'finance' ? <span>- On Finance</span> : <></>}</div>
+      {purchaseType === 'new'
+        ? <div className="text-lg">Purchase New - {aircraft.manufacturer} {aircraft.name} {purchaseMethod === 'finance' ? <span>- On Finance</span> : <></>}</div>
+        : <div className="text-lg">Purchase Used - {aircraft.registration} - {aircraft.fleet.manufacturer} {aircraft.fleet.name} ({aircraft.current_airport_id}) {purchaseMethod === 'finance' ? <span>- On Finance</span> : <></>}</div>
+      }
       <div className="mt-2 bg-white rounded shadow p-4">
         <div className="text-lg mb-2">Invoice</div>
-        <div className="flex justify-start items-center space-x-2">
-          <label htmlFor="delivery" className="inline-flex items-center">
-            <input id="delivery" checked={deliver} onChange={handleDeliveryChange} type="checkbox" className="form-checkbox rounded border-gray-300 text-orange-500 shadow-sm focus:border-orange-300 focus:ring focus:ring-offset-0 focus:ring-orange-200 focus:ring-opacity-50" />
-            <span className="text-gray-700 ml-2">Deliver?</span>
-          </label>
-          {deliver && (
-            <div className="flex justify-start items-center">
-              <input id="dep" placeholder="Deliver to ICAO" type="text" className="form-input form" value={icao} onChange={handleChange} />
-            </div>
-          )}
-          {airport &&
+        {purchaseType === 'new' && (
+          <>
+          <div className="flex justify-start items-center space-x-2">
+            <label htmlFor="delivery" className="inline-flex items-center">
+              <input id="delivery" checked={deliver} onChange={handleDeliveryChange} type="checkbox" className="form-checkbox rounded border-gray-300 text-orange-500 shadow-sm focus:border-orange-300 focus:ring focus:ring-offset-0 focus:ring-orange-200 focus:ring-opacity-50" />
+              <span className="text-gray-700 ml-2">Deliver?</span>
+            </label>
+            {deliver && (
+              <div className="flex justify-start items-center">
+                <input id="dep" placeholder="Deliver to ICAO" type="text" className="form-input form" value={icao} onChange={handleChange} />
+              </div>
+            )}
+            {airport &&
             <div className="text-sm mt-1">{airport}</div>
-          }
-          {error && <div className="text-sm text-red-500 mt-1">{error}</div>}
-        </div>
-        {!deliver && <div className="mt-2">Deliver to {fleet.hq}</div>}
-        {deliver && airport && <div className="mt-2">Deliver from: {fleet.hq} to: {airport}</div>}
-
+            }
+            {error && <div className="text-sm text-red-500 mt-1">{error}</div>}
+          </div>
+          {!deliver && <div className="mt-2">Deliver to {aircraft.hq}</div>}
+          {deliver && airport && <div className="mt-2">Deliver from: {aircraft.hq} to: {airport}</div>}
+          </>
+        )}
         <div className="w-1/4">
           <div className="mt-2">
             <label htmlFor="hub"><span className="text-gray-700">Home Hub (ICAO)</span></label>
@@ -198,9 +207,9 @@ const PurchaseNew = ({ fleet }) => {
         </div>
 
         <div className="my-4">
-          <div className="flex justify-between"><span>Base Price</span><span>${fleet.new_price}</span></div>
+          <div className="flex justify-between"><span>Base Price</span><span>${basePrice}</span></div>
           <div className="flex justify-between"><span>Delivery</span><span>${price.toFixed(2)}</span></div>
-          <div className="flex justify-between"><span>Total</span><span>${(parseFloat(fleet.new_price) + parseFloat(price)).toFixed(2)}</span></div>
+          <div className="flex justify-between"><span>Total</span><span>${(parseFloat(basePrice) + parseFloat(price)).toFixed(2)}</span></div>
         </div>
 
         <label htmlFor="method" className="inline-flex items-center">
@@ -247,6 +256,6 @@ const PurchaseNew = ({ fleet }) => {
   )
 }
 
-PurchaseNew.layout = page => <AppLayout children={page} title="Marketplace - Invoice" heading="Marketplace - Invoice" />
+Purchase.layout = page => <AppLayout children={page} title="Marketplace - Invoice" heading="Marketplace - Invoice" />
 
-export default PurchaseNew
+export default Purchase

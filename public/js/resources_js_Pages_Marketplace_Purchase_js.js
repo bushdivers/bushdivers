@@ -1,4 +1,4 @@
-(self["webpackChunk"] = self["webpackChunk"] || []).push([["resources_js_Pages_Marketplace_PurchaseNew_js"],{
+(self["webpackChunk"] = self["webpackChunk"] || []).push([["resources_js_Pages_Marketplace_Purchase_js"],{
 
 /***/ "./node_modules/@babel/runtime/regenerator/index.js":
 /*!**********************************************************!*\
@@ -17043,10 +17043,10 @@ var convertMinuteDecimalToHoursAndMinutes = function convertMinuteDecimalToHours
 
 /***/ }),
 
-/***/ "./resources/js/Pages/Marketplace/PurchaseNew.js":
-/*!*******************************************************!*\
+/***/ "./resources/js/Pages/Marketplace/Purchase.js":
+/*!****************************************************!*\
   !*** ./resources/js/Pages/Marketplace/Purchase.js ***!
-  \*******************************************************/
+  \****************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -17090,8 +17090,9 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
-var PurchaseNew = function PurchaseNew(_ref) {
-  var fleet = _ref.fleet;
+var Purchase = function Purchase(_ref) {
+  var aircraft = _ref.aircraft,
+      purchaseType = _ref.purchaseType;
   var _usePage$props = (0,_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_3__.usePage)().props,
       auth = _usePage$props.auth,
       errors = _usePage$props.errors;
@@ -17121,7 +17122,7 @@ var PurchaseNew = function PurchaseNew(_ref) {
       icao = _useState10[0],
       setIcao = _useState10[1];
 
-  var _useState11 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(fleet.hq),
+  var _useState11 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(aircraft.hq),
       _useState12 = _slicedToArray(_useState11, 2),
       deliveryLocation = _useState12[0],
       setDeliveryLocation = _useState12[1];
@@ -17141,7 +17142,7 @@ var PurchaseNew = function PurchaseNew(_ref) {
       hubError = _useState18[0],
       setHubError = _useState18[1];
 
-  var _useState19 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(null),
+  var _useState19 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(purchaseType === 'new' ? null : aircraft.registration),
       _useState20 = _slicedToArray(_useState19, 2),
       reg = _useState20[0],
       setReg = _useState20[1];
@@ -17151,7 +17152,7 @@ var PurchaseNew = function PurchaseNew(_ref) {
       regError = _useState22[0],
       setRegError = _useState22[1];
 
-  var _useState23 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(0.2 * fleet.new_price),
+  var _useState23 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(purchaseType === 'new' ? 0.2 * aircraft.new_price : 0.2 * aircraft.sale_price),
       _useState24 = _slicedToArray(_useState23, 2),
       deposit = _useState24[0],
       setDeposit = _useState24[1];
@@ -17190,6 +17191,11 @@ var PurchaseNew = function PurchaseNew(_ref) {
       _useState38 = _slicedToArray(_useState37, 2),
       calculated = _useState38[0],
       setCalculated = _useState38[1];
+
+  var _useState39 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(purchaseType === 'new' ? aircraft.new_price : aircraft.sale_price),
+      _useState40 = _slicedToArray(_useState39, 2),
+      basePrice = _useState40[0],
+      setBasePrice = _useState40[1];
 
   var handleDeliveryChange = function handleDeliveryChange(e) {
     setDeliver(e.target.checked);
@@ -17231,7 +17237,7 @@ var PurchaseNew = function PurchaseNew(_ref) {
               setDeliveryLocation(response.data.airport.identifier);
               setError(null);
               _context.next = 13;
-              return axios__WEBPACK_IMPORTED_MODULE_4___default().get("/api/jumpseat/cost/".concat(fleet.hq, "/").concat(response.data.airport.identifier));
+              return axios__WEBPACK_IMPORTED_MODULE_4___default().get("/api/jumpseat/cost/".concat(aircraft.hq, "/").concat(response.data.airport.identifier));
 
             case 13:
               priceResp = _context.sent;
@@ -17303,7 +17309,7 @@ var PurchaseNew = function PurchaseNew(_ref) {
       return;
     }
 
-    var subTotal = parseFloat(fleet.new_price) + parseFloat(price); // subtotal less deposit = principal
+    var subTotal = purchaseType === 'new' ? parseFloat(aircraft.new_price) + parseFloat(price) : parseFloat(aircraft.sale_price) + parseFloat(price); // subtotal less deposit = principal
 
     var principal = subTotal - deposit;
     var termInYears = term / 12;
@@ -17333,7 +17339,7 @@ var PurchaseNew = function PurchaseNew(_ref) {
       return;
     }
 
-    var total = pMethod === 'buy' ? parseFloat(fleet.new_price) + parseFloat(price) : deposit;
+    var total = pMethod === 'buy' ? purchaseType === 'new' ? parseFloat(aircraft.new_price) + parseFloat(price) : parseFloat(aircraft.sale_price) + parseFloat(price) : deposit;
 
     if (total > auth.user.balance) {
       window.alert('You do not have sufficient funds');
@@ -17343,10 +17349,11 @@ var PurchaseNew = function PurchaseNew(_ref) {
     if (pMethod === 'buy') {
       var data = {
         total: total,
-        fleetId: fleet.id,
-        deliveryIcao: deliveryLocation,
+        id: aircraft.id,
+        deliveryIcao: purchaseType === 'new' ? deliveryLocation : null,
         hub: hub,
-        reg: reg
+        reg: reg,
+        purchaseType: purchaseType
       };
       _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_5__.Inertia.post('/marketplace/purchase', data);
     } else if (pMethod === 'finance') {
@@ -17356,14 +17363,15 @@ var PurchaseNew = function PurchaseNew(_ref) {
       }
 
       var _data = {
-        fleetId: fleet.id,
-        deliveryIcao: deliveryLocation,
+        id: aircraft.id,
+        deliveryIcao: purchaseType === 'new' ? deliveryLocation : null,
         hub: hub,
         reg: reg,
         deposit: deposit,
         financeAmount: financeAmount,
         term: term,
-        monthlyPayments: monthlyPayments
+        monthlyPayments: monthlyPayments,
+        purchaseType: purchaseType
       };
       _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_5__.Inertia.post('/marketplace/finance', _data);
     }
@@ -17371,9 +17379,14 @@ var PurchaseNew = function PurchaseNew(_ref) {
 
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
     className: "p-4",
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+    children: [purchaseType === 'new' ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
       className: "text-lg",
-      children: ["Purchase New - ", fleet.manufacturer, " ", fleet.name, " ", purchaseMethod === 'finance' ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("span", {
+      children: ["Purchase New - ", aircraft.manufacturer, " ", aircraft.name, " ", purchaseMethod === 'finance' ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("span", {
+        children: "- On Finance"
+      }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.Fragment, {})]
+    }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+      className: "text-lg",
+      children: ["Purchase Used - ", aircraft.registration, " - ", aircraft.fleet.manufacturer, " ", aircraft.fleet.name, " (", aircraft.current_airport_id, ") ", purchaseMethod === 'finance' ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("span", {
         children: "- On Finance"
       }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.Fragment, {})]
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
@@ -17381,44 +17394,46 @@ var PurchaseNew = function PurchaseNew(_ref) {
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
         className: "text-lg mb-2",
         children: "Invoice"
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
-        className: "flex justify-start items-center space-x-2",
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("label", {
-          htmlFor: "delivery",
-          className: "inline-flex items-center",
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("input", {
-            id: "delivery",
-            checked: deliver,
-            onChange: handleDeliveryChange,
-            type: "checkbox",
-            className: "form-checkbox rounded border-gray-300 text-orange-500 shadow-sm focus:border-orange-300 focus:ring focus:ring-offset-0 focus:ring-orange-200 focus:ring-opacity-50"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("span", {
-            className: "text-gray-700 ml-2",
-            children: "Deliver?"
+      }), purchaseType === 'new' && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.Fragment, {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+          className: "flex justify-start items-center space-x-2",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("label", {
+            htmlFor: "delivery",
+            className: "inline-flex items-center",
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("input", {
+              id: "delivery",
+              checked: deliver,
+              onChange: handleDeliveryChange,
+              type: "checkbox",
+              className: "form-checkbox rounded border-gray-300 text-orange-500 shadow-sm focus:border-orange-300 focus:ring focus:ring-offset-0 focus:ring-orange-200 focus:ring-opacity-50"
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("span", {
+              className: "text-gray-700 ml-2",
+              children: "Deliver?"
+            })]
+          }), deliver && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+            className: "flex justify-start items-center",
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("input", {
+              id: "dep",
+              placeholder: "Deliver to ICAO",
+              type: "text",
+              className: "form-input form",
+              value: icao,
+              onChange: handleChange
+            })
+          }), airport && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+            className: "text-sm mt-1",
+            children: airport
+          }), error && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+            className: "text-sm text-red-500 mt-1",
+            children: error
           })]
-        }), deliver && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
-          className: "flex justify-start items-center",
-          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("input", {
-            id: "dep",
-            placeholder: "Deliver to ICAO",
-            type: "text",
-            className: "form-input form",
-            value: icao,
-            onChange: handleChange
-          })
-        }), airport && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
-          className: "text-sm mt-1",
-          children: airport
-        }), error && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
-          className: "text-sm text-red-500 mt-1",
-          children: error
+        }), !deliver && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+          className: "mt-2",
+          children: ["Deliver to ", aircraft.hq]
+        }), deliver && airport && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+          className: "mt-2",
+          children: ["Deliver from: ", aircraft.hq, " to: ", airport]
         })]
-      }), !deliver && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
-        className: "mt-2",
-        children: ["Deliver to ", fleet.hq]
-      }), deliver && airport && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
-        className: "mt-2",
-        children: ["Deliver from: ", fleet.hq, " to: ", airport]
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
         className: "w-1/4",
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
@@ -17465,7 +17480,7 @@ var PurchaseNew = function PurchaseNew(_ref) {
           children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("span", {
             children: "Base Price"
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("span", {
-            children: ["$", fleet.new_price]
+            children: ["$", basePrice]
           })]
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
           className: "flex justify-between",
@@ -17479,7 +17494,7 @@ var PurchaseNew = function PurchaseNew(_ref) {
           children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("span", {
             children: "Total"
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("span", {
-            children: ["$", (parseFloat(fleet.new_price) + parseFloat(price)).toFixed(2)]
+            children: ["$", (parseFloat(basePrice) + parseFloat(price)).toFixed(2)]
           })]
         })]
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("label", {
@@ -17598,7 +17613,7 @@ var PurchaseNew = function PurchaseNew(_ref) {
   });
 };
 
-PurchaseNew.layout = function (page) {
+Purchase.layout = function (page) {
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_Shared_AppLayout__WEBPACK_IMPORTED_MODULE_2__["default"], {
     children: page,
     title: "Marketplace - Invoice",
@@ -17606,7 +17621,7 @@ PurchaseNew.layout = function (page) {
   });
 };
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (PurchaseNew);
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Purchase);
 
 /***/ }),
 

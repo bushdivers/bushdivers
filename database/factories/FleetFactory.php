@@ -41,7 +41,11 @@ class FleetFactory extends Factory
             'cruise_speed' => 175,
             'image_url' => '',
             'rental_size' => 1,
-            'is_rental' => false
+            'tbo_mins' => 120000,
+            'new_price' => 2000000,
+            'used_low_price' => 600000,
+            'used_high_price' => 1000000,
+            'hq' => 'KBEC'
         ];
     }
 }

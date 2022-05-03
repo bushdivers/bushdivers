@@ -38397,13 +38397,21 @@ var map = {
 		"./resources/js/Pages/Marketplace/Manufacturers.js",
 		"resources_js_Pages_Marketplace_Manufacturers_js"
 	],
-	"./Marketplace/PurchaseNew": [
-		"./resources/js/Pages/Marketplace/PurchaseNew.js",
-		"resources_js_Pages_Marketplace_PurchaseNew_js"
+	"./Marketplace/Purchase": [
+		"./resources/js/Pages/Marketplace/Purchase.js",
+		"resources_js_Pages_Marketplace_Purchase_js"
 	],
-	"./Marketplace/PurchaseNew.js": [
-		"./resources/js/Pages/Marketplace/PurchaseNew.js",
-		"resources_js_Pages_Marketplace_PurchaseNew_js"
+	"./Marketplace/Purchase.js": [
+		"./resources/js/Pages/Marketplace/Purchase.js",
+		"resources_js_Pages_Marketplace_Purchase_js"
+	],
+	"./Marketplace/UsedAircraft": [
+		"./resources/js/Pages/Marketplace/UsedAircraft.js",
+		"resources_js_Pages_Marketplace_UsedAircraft_js"
+	],
+	"./Marketplace/UsedAircraft.js": [
+		"./resources/js/Pages/Marketplace/UsedAircraft.js",
+		"resources_js_Pages_Marketplace_UsedAircraft_js"
 	],
 	"./Pireps/Submission": [
 		"./resources/js/Pages/Pireps/Submission.js",
@@ -38570,7 +38578,7 @@ module.exports = JSON.parse('{"name":"axios","version":"0.21.4","description":"P
 /******/ 		// This function allow to reference async chunks
 /******/ 		__webpack_require__.u = (chunkId) => {
 /******/ 			// return url for filenames not based on template
-/******/ 			if ({"resources_js_Pages_Admin_AircraftCreate_js":1,"resources_js_Pages_Admin_FleetCreate_js":1,"resources_js_Pages_Admin_FleetEdit_js":1,"resources_js_Pages_Admin_FleetList_js":1,"resources_js_Pages_Admin_Pireps_js":1,"resources_js_Pages_Admin_Resources_js":1,"resources_js_Pages_Admin_Users_js":1,"resources_js_Pages_Airports_AirportDetail_js":1,"resources_js_Pages_Airports_Hubs_js":1,"resources_js_Pages_Auth_Login_js":1,"resources_js_Pages_Auth_Register_js":1,"resources_js_Pages_Auth_RequestPassword_js":1,"resources_js_Pages_Auth_ResetPassword_js":1,"resources_js_Pages_Contracts_CompletedContracts_js":1,"resources_js_Pages_Contracts_Contracts_js":1,"resources_js_Pages_Contracts_MyContracts_js":1,"resources_js_Pages_Crew_Dashboard_js":1,"resources_js_Pages_Crew_Intro_js":1,"resources_js_Pages_Crew_Jumpseat_js":1,"resources_js_Pages_Crew_Logbook_js":1,"resources_js_Pages_Crew_LogbookDetail_js":1,"resources_js_Pages_Crew_MyFinances_js":1,"resources_js_Pages_Crew_Profile_js":1,"resources_js_Pages_Crew_Roster_js":1,"resources_js_Pages_Dispatch_ActiveDispatch_js":1,"resources_js_Pages_Dispatch_Dispatch_js":1,"resources_js_Pages_Fleet_Aircraft_js":1,"resources_js_Pages_Fleet_FleetDetails_js":1,"resources_js_Pages_Fleet_FleetList_js":1,"resources_js_Pages_Fleet_MyAircraft_js":1,"resources_js_Pages_Flights_LiveFlights_js":1,"resources_js_Pages_General_CompanyFinances_js":1,"resources_js_Pages_General_Privacy_js":1,"resources_js_Pages_General_Ranks_js":1,"resources_js_Pages_General_Resources_js":1,"resources_js_Pages_General_Staff_js":1,"resources_js_Pages_General_Supporters_js":1,"resources_js_Pages_Home_js":1,"resources_js_Pages_Marketplace_Aircraft_js":1,"resources_js_Pages_Marketplace_Manufacturers_js":1,"resources_js_Pages_Marketplace_PurchaseNew_js":1,"resources_js_Pages_Pireps_Submission_js":1,"resources_js_Pages_Rentals_RentalList_js":1}[chunkId]) return "js/" + chunkId + ".js";
+/******/ 			if ({"resources_js_Pages_Admin_AircraftCreate_js":1,"resources_js_Pages_Admin_FleetCreate_js":1,"resources_js_Pages_Admin_FleetEdit_js":1,"resources_js_Pages_Admin_FleetList_js":1,"resources_js_Pages_Admin_Pireps_js":1,"resources_js_Pages_Admin_Resources_js":1,"resources_js_Pages_Admin_Users_js":1,"resources_js_Pages_Airports_AirportDetail_js":1,"resources_js_Pages_Airports_Hubs_js":1,"resources_js_Pages_Auth_Login_js":1,"resources_js_Pages_Auth_Register_js":1,"resources_js_Pages_Auth_RequestPassword_js":1,"resources_js_Pages_Auth_ResetPassword_js":1,"resources_js_Pages_Contracts_CompletedContracts_js":1,"resources_js_Pages_Contracts_Contracts_js":1,"resources_js_Pages_Contracts_MyContracts_js":1,"resources_js_Pages_Crew_Dashboard_js":1,"resources_js_Pages_Crew_Intro_js":1,"resources_js_Pages_Crew_Jumpseat_js":1,"resources_js_Pages_Crew_Logbook_js":1,"resources_js_Pages_Crew_LogbookDetail_js":1,"resources_js_Pages_Crew_MyFinances_js":1,"resources_js_Pages_Crew_Profile_js":1,"resources_js_Pages_Crew_Roster_js":1,"resources_js_Pages_Dispatch_ActiveDispatch_js":1,"resources_js_Pages_Dispatch_Dispatch_js":1,"resources_js_Pages_Fleet_Aircraft_js":1,"resources_js_Pages_Fleet_FleetDetails_js":1,"resources_js_Pages_Fleet_FleetList_js":1,"resources_js_Pages_Fleet_MyAircraft_js":1,"resources_js_Pages_Flights_LiveFlights_js":1,"resources_js_Pages_General_CompanyFinances_js":1,"resources_js_Pages_General_Privacy_js":1,"resources_js_Pages_General_Ranks_js":1,"resources_js_Pages_General_Resources_js":1,"resources_js_Pages_General_Staff_js":1,"resources_js_Pages_General_Supporters_js":1,"resources_js_Pages_Home_js":1,"resources_js_Pages_Marketplace_Aircraft_js":1,"resources_js_Pages_Marketplace_Manufacturers_js":1,"resources_js_Pages_Marketplace_Purchase_js":1,"resources_js_Pages_Marketplace_UsedAircraft_js":1,"resources_js_Pages_Pireps_Submission_js":1,"resources_js_Pages_Rentals_RentalList_js":1}[chunkId]) return "js/" + chunkId + ".js";
 /******/ 			// return url for filenames based on template
 /******/ 			return undefined;
 /******/ 		};
