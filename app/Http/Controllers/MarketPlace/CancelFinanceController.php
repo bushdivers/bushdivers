@@ -7,6 +7,7 @@ use App\Models\Aircraft;
 use App\Models\AircraftEngine;
 use App\Models\Enums\TransactionTypes;
 use App\Models\FinanceAgreement;
+use App\Models\Fleet;
 use App\Services\Finance\AddUserTransaction;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
@@ -37,7 +38,15 @@ class CancelFinanceController extends Controller
         $ag->save();
 
         $ac = Aircraft::find($ag->aircraft_id);
+        $fleet = Fleet::find($ac->fleet_id);
+        if ($ac->flight_time_mins > $fleet->tbo_mins) {
+            $price = $fleet->used_low_price;
+        } else {
+            $price = $fleet->used_high_price;
+        }
+
         $ac->owner_id = null;
+        $ac->sale_price = $price;
         $ac->save();
 
         $this->addUserTransaction->execute(Auth::user()->id, TransactionTypes::MonthlyOwnership, -$ag->monthly_payments);
