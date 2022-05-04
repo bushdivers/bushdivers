@@ -174,9 +174,9 @@ const Contracts = ({ searchedContracts, airport }) => {
             <div key={contract.id} onClick={() => updateSelectedContract(contract)} className={`${contract.id === selectedContract.id ? 'bg-orange-200 hover:bg-orange-100' : ''} border-t-2 text-sm cursor-pointer z-40`}>
               <div className="px-4 py-2 flex justify-between items-center">
                 <Tooltip direction="right" content="Expiry date">
-                <div className="text-xs text-gray-700">
-                  {dayjs(contract.expires_at).format('DD/MM/YYYY HH:mm')}
-                </div>
+                {/*<div className="text-xs text-gray-700">*/}
+                {/*  {dayjs(contract.expires_at).format('DD/MM/YYYY HH:mm')}*/}
+                {/*</div>*/}
                 </Tooltip>
                 <Tooltip direction="bottom" content="Destination">
                   <div className="text-sm text-gray-800 font-bold">
