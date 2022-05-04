@@ -109,10 +109,10 @@ Route::middleware('auth')->group(function () {
         ->name('marketplace.manufacture');
     Route::get('/marketplace/purchase/new/{fleet}', \App\Http\Controllers\MarketPlace\ShowPurchaseNewController::class)
         ->name('marketplace.new');
-    Route::get('/marketplace/purchase/used/{id}', \App\Http\Controllers\MarketPlace\ShowPurchaseUsedController::class)
-        ->name('marketplace.used');
-    Route::get('/marketplace/list/used/{fleet}', \App\Http\Controllers\MarketPlace\ShowUsedAircraftController::class)
-        ->name('marketplace.list.used');
+//    Route::get('/marketplace/purchase/used/{id}', \App\Http\Controllers\MarketPlace\ShowPurchaseUsedController::class)
+//        ->name('marketplace.used');
+//    Route::get('/marketplace/list/used/{fleet}', \App\Http\Controllers\MarketPlace\ShowUsedAircraftController::class)
+//        ->name('marketplace.list.used');
     Route::post('/marketplace/purchase', \App\Http\Controllers\MarketPlace\PurchaseController::class)
         ->name('marketplace.purchase');
     Route::post('/marketplace/finance', \App\Http\Controllers\MarketPlace\FinanceController::class)
