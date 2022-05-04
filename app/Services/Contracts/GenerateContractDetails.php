@@ -57,7 +57,7 @@ class GenerateContractDetails
                     $contract = [
                         'id' => $origin->identifier.'-'.$airport->identifier,
                         'departure' => $origin->identifier,
-                        'destination' => $airport,
+                        'destination' => $airport->identifier,
                         'cargo' => $cargo['name'],
                         'cargo_type' => $cargo['type'],
                         'cargo_qty' => $cargo['qty'],
