@@ -17304,7 +17304,7 @@ var Dispatch = function Dispatch(_ref) {
               break;
 
             case 16:
-              window.alert("New cargo amount must be less than total cargo: ".concat(cargo.cargo_qty));
+              window.alert("New cargo amount must be less than the total cargo: ".concat(cargo.cargo_qty));
 
             case 17:
               _context2.next = 20;

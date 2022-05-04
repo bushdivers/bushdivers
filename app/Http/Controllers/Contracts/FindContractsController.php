@@ -49,6 +49,6 @@ class FindContractsController extends Controller
 
     protected function buildCacheKey(string $icao, string $distance, string $size): string
     {
-        return $icao.'-'.$distance.'-'.$size;
+        return mb_convert_encoding($icao.'-'.$distance.'-'.$size, 'UTF-8', 'UTF-8');
     }
 }

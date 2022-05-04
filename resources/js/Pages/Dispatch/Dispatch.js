@@ -88,7 +88,7 @@ const Dispatch = ({ cargo, aircraft }) => {
           window.alert('Issue splitting cargo')
         }
       } else {
-        window.alert(`New cargo amount must be less than total cargo: ${cargo.cargo_qty}`)
+        window.alert(`New cargo amount must be less than the total cargo: ${cargo.cargo_qty}`)
       }
     } else {
       window.alert('Cargo split has been cancelled')

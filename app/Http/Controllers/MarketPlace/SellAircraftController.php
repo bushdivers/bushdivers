@@ -36,7 +36,7 @@ class SellAircraftController extends Controller
         } else {
             $price = $fleet->used_high_price;
         }
-
+        $ac->sale_price = $price;
         $ac->owner_id = null;
         $ac->save();
 

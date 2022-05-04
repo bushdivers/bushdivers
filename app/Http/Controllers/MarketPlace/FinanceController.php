@@ -55,7 +55,7 @@ class FinanceController extends Controller
 
         if ($request->purchaseType == 'new') {
             //create aircraft and engine(s)
-            $aircraft = $this->createAircraft->execute($request->all(), Auth::user()->id);
+            $aircraft = $this->createAircraft->execute($request->all(), Auth::user()->id, true);
         } else {
             $aircraft = Aircraft::find($request->id);
 
@@ -68,6 +68,7 @@ class FinanceController extends Controller
             }
 
             $aircraft->owner_id = Auth::user()->id;
+            $aircraft->is_financed = true;
             $aircraft->hub_id = $request->hub;
             $aircraft->registration = $request->reg;
             $aircraft->save();

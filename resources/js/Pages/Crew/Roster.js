@@ -35,7 +35,7 @@ const Roster = ({ roster }) => {
                 <td>
                   <div className="flex justify-start items-center space-x-2">
                     <div className="text-xl text-red-300">
-                      {user.is_supporter && <FontAwesomeIcon icon={faPatreon} />}
+                      {user.is_supporter ? <FontAwesomeIcon icon={faPatreon} /> : <></>}
                     </div>
                     <div>
                       <span>{user.pilot_id}</span><br/>
