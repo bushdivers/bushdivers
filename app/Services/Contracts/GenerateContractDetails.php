@@ -63,8 +63,8 @@ class GenerateContractDetails
                         'cargo_qty' => $cargo['qty'],
                         'distance' => $distance,
                         'heading' => $heading,
-                        'contract_value' => $contractValue
-                        //'expires_at' => $expiry
+                        'contract_value' => $contractValue,
+                        'expires_at' => $expiry
                     ];
                     $contracts[] = $contract;
                 }
