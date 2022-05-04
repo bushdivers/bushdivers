@@ -29,8 +29,7 @@ class FindContractsController extends Controller
      */
     public function __invoke(Request $request): Response
     {
-        $icao = mb_convert_encoding($request->icao, "UTF-8", "auto");
-        $airport = Airport::where('identifier', $icao)->first();
+        $airport = Airport::where('identifier', $request->icao)->first();
         if (!$airport) {
             return Inertia::render('Contracts/Contracts')->with(['error' => 'Airport not found']);
         }
