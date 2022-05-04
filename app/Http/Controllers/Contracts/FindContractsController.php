@@ -41,7 +41,7 @@ class FindContractsController extends Controller
         } else {
             $numToGenerate = $airport->is_hub ? 12 : 6;
             $contracts = $this->generateContracts->execute($airport, $numToGenerate, $request->flightLength, $request->aircraftSize);
-            Cache::put($key, $contracts, now()->addSeconds(120));
+//            Cache::put($key, $contracts, now()->addSeconds(120));
         }
 
         return Inertia::render('Contracts/Contracts', ['searchedContracts' => $contracts, 'airport' => $airport]);
