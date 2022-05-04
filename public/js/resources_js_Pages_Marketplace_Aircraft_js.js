@@ -14893,11 +14893,6 @@ __webpack_require__.r(__webpack_exports__);
 var Aircraft = function Aircraft(_ref) {
   var fleet = _ref.fleet,
       manufacturer = _ref.manufacturer;
-
-  var buyFinance = function buyFinance(fleet) {
-    window.alert('Finance!');
-  };
-
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
     className: "p-4",
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("p", {
@@ -14953,17 +14948,13 @@ var Aircraft = function Aircraft(_ref) {
               }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("span", {
                 children: ["Cruise Speed: ", f.cruise_speed, " KIAS"]
               })]
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
               className: "mt-2 flex justify-between",
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_2__.Link, {
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_2__.Link, {
                 href: "/marketplace/purchase/new/".concat(f.id),
                 className: "btn btn-secondary",
                 children: "Purchase New"
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_2__.Link, {
-                href: "/marketplace/list/used/".concat(f.id),
-                className: "btn btn-primary",
-                children: "Purchase Used"
-              })]
+              })
             })]
           })]
         }, f.id);

@@ -17453,11 +17453,7 @@ var Contracts = function Contracts(_ref) {
             className: "px-4 py-2 flex justify-between items-center",
             children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)(_Shared_Elements_Tooltip__WEBPACK_IMPORTED_MODULE_4__["default"], {
               direction: "right",
-              content: "Expiry date",
-              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("div", {
-                className: "text-xs text-gray-700",
-                children: (0,_Helpers_date_helpers__WEBPACK_IMPORTED_MODULE_6__["default"])(contract.expires_at).format('DD/MM/YYYY HH:mm')
-              })
+              content: "Expiry date"
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)(_Shared_Elements_Tooltip__WEBPACK_IMPORTED_MODULE_4__["default"], {
               direction: "bottom",
               content: "Destination",

@@ -3,10 +3,6 @@ import AppLayout from '../../Shared/AppLayout'
 import { Link } from '@inertiajs/inertia-react'
 
 const Aircraft = ({ fleet, manufacturer }) => {
-  const buyFinance = (fleet) => {
-    window.alert('Finance!')
-  }
-
   return (
     <div className="p-4">
       <p>Please select a {manufacturer} aircraft type:</p>
