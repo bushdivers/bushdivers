@@ -40,6 +40,6 @@ class GenerateContractCargo
             // random qty pax = 1-20
             $qty = rand($minPax, $maxPax);
         }
-        return ['name' => mb_convert_encoding($cargo->text, 'UTF-8'), 'type' => $cargo->type, 'qty' => $qty];
+        return ['name' => $cargo->text, 'type' => $cargo->type, 'qty' => $qty];
     }
 }
