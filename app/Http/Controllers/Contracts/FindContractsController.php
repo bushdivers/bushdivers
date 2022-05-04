@@ -43,7 +43,6 @@ class FindContractsController extends Controller
             $contracts = $this->generateContracts->execute($airport, $numToGenerate, $request->flightLength, $request->aircraftSize);
 //            Cache::put($key, $contracts, now()->addSeconds(120));
         }
-        dd($contracts);
 
         return Inertia::render('Contracts/Contracts', ['searchedContracts' => $contracts, 'airport' => $airport]);
     }
