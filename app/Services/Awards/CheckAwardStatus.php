@@ -27,7 +27,7 @@ class CheckAwardStatus
             $awardAchieved = $currentAwards->contains('award_id', $award->id);
             switch ($award->type) {
                 case AwardType::HOURS:
-                    if ($user->flights_time >= $award->value && !$awardAchieved) {
+                    if ($user->flights_time / 60 >= $award->value && !$awardAchieved) {
                         $this->addAwardToUser->execute($userId, $award->id);
                     }
                     break;
