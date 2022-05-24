@@ -43,7 +43,7 @@ const SideBar = ({ isNavVisible, setNavState }) => {
       </div>
       <div className="sidebar-content px-4 py-2">
         <ul className="flex flex-col w-full">
-          <NavItem link="/dashboard" icon={faHouse} text="Dashboard" />
+          <NavItem link="/dashboard" icon={faHouse} text="Crew Page" />
           <NavItem link="/live-flights" icon={faPaperPlane} text="Live Flights" />
           <NavItem link="/airports" icon={faCartFlatbedSuitcase} text="Airports" />
           <NavSection name="HQ" />
