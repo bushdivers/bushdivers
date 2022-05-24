@@ -31,7 +31,7 @@ const SideBar = ({ isNavVisible, setNavState }) => {
     <aside className={`${isNavVisible ? 'block' : 'hidden'} lg:block overflow-auto sidebar fixed top-0 bottom-0 min-h-screen w-64 lg:shadow transform md:translate-x-0 transition-transform duration-150 ease-in bg-white border-r-2 border-orange-500 z-20`}>
       <div className="sidebar-header flex items-center justify-between px-8 py-4">
         <div className="inline-flex items-center">
-          <Link href="/" className="inline-flex flex-row items-center">
+          <Link href="/" className="inline-flex flex-row items-center justify-center">
             <img
               className="h-10 w-auto"
               src="https://res.cloudinary.com/dji0yvkef/image/upload/v1628691598/BDLogo.png"
