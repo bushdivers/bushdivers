@@ -76,9 +76,9 @@ class ProcessPirepFinancials
                             $pilotPay = (FinancialConsts::PilotPay / 100) * $ccargo->contract_value;
                         }
 
-                        if (Carbon::now()->greaterThan($c->expires_at)) {
-                            $pilotPay = round($pilotPay - ($pp * FinancialConsts::ExpiryMultiplier),2);
-                        }
+//                        if (Carbon::now()->greaterThan($c->expires_at)) {
+//                            $pilotPay = round($pilotPay - ($pp * FinancialConsts::ExpiryMultiplier),2);
+//                        }
 
                         $this->addUserTransaction->execute($ccargo->user_id, TransactionTypes::FlightPay, $pilotPay, $ccargo->completed_pirep);
                     }
