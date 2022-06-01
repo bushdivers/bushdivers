@@ -23,14 +23,16 @@ class ShowActiveContractsController extends Controller
             ->where('is_completed', false)
             ->where('is_available', false)
             ->where('user_id', Auth::user()->id)
-            ->orderBy('expires_at', 'asc')
+            ->orderBy('dep_airport_id', 'asc')
+            ->orderBy('distance', 'asc')
             ->get();
 
         $contracts = Contract::with('depAirport', 'arrAirport', 'cargo', 'cargo.currentAirport')
             ->where('is_completed', false)
             ->where('is_available', false)
             ->where('user_id', null)
-            ->orderBy('expires_at', 'asc')
+            ->orderBy('dep_airport_id', 'asc')
+            ->orderBy('distance', 'asc')
             ->get();
 
         return Inertia::render('Contracts/MyContracts', ['contracts' => $contracts, 'custom' => $customContracts]);
