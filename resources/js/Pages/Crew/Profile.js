@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import ApiKey from '../../Shared/Components/Crew/ApiKey'
 import { convertMinuteDecimalToHoursAndMinutes } from '../../Helpers/date.helpers'
 import AppLayout from '../../Shared/AppLayout'
-import { faAward } from '@fortawesome/free-solid-svg-icons'
+import { faAward, faCircleCheck } from '@fortawesome/free-solid-svg-icons'
 
 const Profile = ({ profile, hubs, rank, nextRank, awards }) => {
   const { errors } = usePage().props
@@ -95,8 +95,8 @@ const Profile = ({ profile, hubs, rank, nextRank, awards }) => {
                   <div className="flex items-center"><img width="60" src={nextRank.image} /> <span className="ml-2 text-sm">{nextRank.name}</span></div>
                   <div className="text-sm flex">
                     <div className="mr-2">
-                      Hours: {profile.flights_time >= (nextRank.hours * 60) ? <i className="material-icons text-green-500">check_circle</i> : <span>{convertMinuteDecimalToHoursAndMinutes((nextRank.hours * 60) - profile.flights_time)}</span>}<br/>
-                      Points: {profile.points >= nextRank.points ? <i className="material-icons text-green-500">check_circle</i> : <span>{nextRank.points - profile.points}</span>}
+                      Hours: {profile.flights_time >= (nextRank.hours * 60) ? <FontAwesomeIcon className="text-green-500" icon={faCircleCheck} /> : <span>{convertMinuteDecimalToHoursAndMinutes((nextRank.hours * 60) - profile.flights_time)}</span>}<br/>
+                      Points: {profile.points >= nextRank.points ? <FontAwesomeIcon className="text-green-500" icon={faCircleCheck} /> : <span>{nextRank.points - profile.points}</span>}
                     </div>
                   </div>
                   <div className="">

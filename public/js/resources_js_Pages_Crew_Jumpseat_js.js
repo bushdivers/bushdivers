@@ -17721,7 +17721,7 @@ var SideBar = function SideBar(_ref) {
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_Navigation_NavItem__WEBPACK_IMPORTED_MODULE_3__["default"], {
           link: "/dashboard",
           icon: _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_6__.faHouse,
-          text: "Dashboard"
+          text: "Crew Page"
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_Navigation_NavItem__WEBPACK_IMPORTED_MODULE_3__["default"], {
           link: "/live-flights",
           icon: _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_6__.faPaperPlane,

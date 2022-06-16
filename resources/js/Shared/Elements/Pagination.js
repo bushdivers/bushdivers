@@ -1,5 +1,7 @@
 import React from 'react'
 import { Link } from '@inertiajs/inertia-react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons'
 
 const Pagination = props => {
   return (
@@ -32,12 +34,12 @@ const Pagination = props => {
               <Link href={props.pages.prev_page_url}
                  className="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
                 <span className="sr-only">Previous</span>
-                <i className="material-icons md-18 hover:no-underline">chevron_left</i>
+                <FontAwesomeIcon icon={faChevronLeft} />
               </Link>
               <Link href={props.pages.next_page_url}
                  className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
                 <span className="sr-only">Next</span>
-                <i className="material-icons md-18 hover:no-underline">chevron_right</i>
+                <FontAwesomeIcon icon={faChevronRight} />
               </Link>
             </nav>
           )}
