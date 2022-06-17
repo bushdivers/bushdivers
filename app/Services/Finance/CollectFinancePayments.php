@@ -20,7 +20,7 @@ class CollectFinancePayments
     public function execute()
     {
         // get all unpaid agreements
-        $agreements = FinanceAgreement::where('is_paid', false)->where('amount_remaining', '>', 0)->get();
+        $agreements = FinanceAgreement::where('is_paid', false)->where('amount_remaining', '>', 0)->where('is_cancelled', false)->get();
         // loop through and check user's balance
         foreach ($agreements as $agreement) {
             $user = User::find($agreement->user_id);
