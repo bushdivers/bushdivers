@@ -3,7 +3,6 @@ import AppLayout from '../../Shared/AppLayout'
 import { Inertia } from '@inertiajs/inertia'
 
 const Manufacturers = ({ manufacturers }) => {
-
   const selectManufacturer = (manufacturer) => {
     Inertia.get(`marketplace/${manufacturer}`)
   }
@@ -13,8 +12,10 @@ const Manufacturers = ({ manufacturers }) => {
       <p>Select a manufacturer:</p>
       <div className="flex flex-wrap justify-start mt-4">
         {manufacturers && manufacturers.map((man) => (
-          <div onClick={() => selectManufacturer(man.manufacturer)} key={man.manufacturer} className="bg-white rounded shadow p-4 m-2 w-1/4 cursor-pointer">
-            <div className="text-lg">{man.manufacturer}</div>
+          <div onClick={() => selectManufacturer(man.id)} key={man.id} className="bg-white rounded shadow p-2 m-2 w-1/4 cursor-pointer flex items-center align-center justify-center">
+            <div className="">
+              <img src={man.logo_url} width="200"/>
+            </div>
           </div>
         ))}
       </div>

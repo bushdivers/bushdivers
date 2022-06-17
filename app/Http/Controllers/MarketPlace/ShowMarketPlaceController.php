@@ -4,6 +4,7 @@ namespace App\Http\Controllers\MarketPlace;
 
 use App\Http\Controllers\Controller;
 use App\Models\Fleet;
+use App\Models\Manufacturer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
@@ -20,10 +21,7 @@ class ShowMarketPlaceController extends Controller
     public function __invoke(Request $request): Response
     {
 //        $fleet = Fleet::all();
-        $manufacturers = DB::table('fleets')
-            ->select('manufacturer')
-            ->distinct()
-            ->get();
+        $manufacturers = Manufacturer::orderBy('name')->get();
         return Inertia::render('Marketplace/Manufacturers', ['manufacturers' => $manufacturers]);
     }
 }

@@ -14906,14 +14906,17 @@ var Manufacturers = function Manufacturers(_ref) {
       children: manufacturers && manufacturers.map(function (man) {
         return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
           onClick: function onClick() {
-            return selectManufacturer(man.manufacturer);
+            return selectManufacturer(man.id);
           },
-          className: "bg-white rounded shadow p-4 m-2 w-1/4 cursor-pointer",
+          className: "bg-white rounded shadow p-2 m-2 w-1/4 cursor-pointer flex items-center align-center justify-center",
           children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
-            className: "text-lg",
-            children: man.manufacturer
+            className: "",
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("img", {
+              src: man.logo_url,
+              width: "200"
+            })
           })
-        }, man.manufacturer);
+        }, man.id);
       })
     })]
   });

@@ -2,10 +2,10 @@ import React from 'react'
 import AppLayout from '../../Shared/AppLayout'
 import { Link } from '@inertiajs/inertia-react'
 
-const Aircraft = ({ fleet, manufacturer }) => {
+const Aircraft = ({ fleet }) => {
   return (
     <div className="p-4">
-      <p>Please select a {manufacturer} aircraft type:</p>
+      <p>Please select an aircraft type:</p>
       <div className="flex flex-wrap justify-start">
       {fleet && fleet.map((f) => (
         <div key={f.id} className="bg-white m-4 rounded shadow cursor-pointer w-1/4">

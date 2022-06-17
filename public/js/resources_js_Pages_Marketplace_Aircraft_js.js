@@ -14891,12 +14891,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var Aircraft = function Aircraft(_ref) {
-  var fleet = _ref.fleet,
-      manufacturer = _ref.manufacturer;
+  var fleet = _ref.fleet;
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
     className: "p-4",
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("p", {
-      children: ["Please select a ", manufacturer, " aircraft type:"]
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("p", {
+      children: "Please select an aircraft type:"
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
       className: "flex flex-wrap justify-start",
       children: fleet && fleet.map(function (f) {
