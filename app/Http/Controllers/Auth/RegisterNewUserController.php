@@ -14,6 +14,7 @@ use App\Services\Finance\AddAirlineTransaction;
 use App\Services\Finance\AddUserTransaction;
 use App\Services\User\CreateApiToken;
 use App\Services\User\CreateUser;
+use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -76,7 +77,9 @@ class RegisterNewUserController extends Controller
                     'name' => $request->name,
                     'email' => $request->email,
                     'password' => Hash::make('password'),
-                    'api_token' => Uuid::uuid4()
+                    'api_token' => Uuid::uuid4(),
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now()
                 ]);
             }
         } catch (\Exception) {
