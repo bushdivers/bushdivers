@@ -18,7 +18,9 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Ramsey\Uuid\Uuid;
 
 class RegisterNewUserController extends Controller
 {
@@ -65,6 +67,21 @@ class RegisterNewUserController extends Controller
         // send email
         $body = MailTypes::register($user);
         $this->sendEmail->execute($body);
+
+        try {
+            $akuser = DB::connection('mysql_ak')->table('users')->where('email', $request->email)->count();
+            if ($akuser < 1) {
+                DB::connection('mysql_ak')->table('users')->insert([
+                    'rank_id' => 1,
+                    'name' => $request->name,
+                    'email' => $request->email,
+                    'password' => Hash::make('password'),
+                    'api_token' => Uuid::uuid4()
+                ]);
+            }
+        } catch (\Exception) {
+            //
+        }
 
         $credentials = $request->only('email', 'password');
         if (Auth::attempt($credentials)) {
