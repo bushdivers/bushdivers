@@ -28,7 +28,7 @@ class CollectFinancePayments
                 $agreement->missed_payments = $agreement->missed_payments + 1;
                 $agreement->save();
             } else {
-                $this->addUserTransaction->execute($user->id, TransactionTypes::AircraftPurchase, $agreement->monthly_payments);
+                $this->addUserTransaction->execute($user->id, TransactionTypes::AircraftPurchase, -$agreement->monthly_payments);
                 $agreement->amount_remaining = $agreement->amount_remaining - $agreement->monthly_payments;
                 $agreement->term_remaining = $agreement->term_remaining - 1;
                 $agreement->last_payment_at = Carbon::now();
