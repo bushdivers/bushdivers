@@ -76,7 +76,7 @@ class RegisterNewUserController extends Controller
                     'rank_id' => 1,
                     'name' => $request->name,
                     'email' => $request->email,
-                    'password' => Hash::make('password'),
+                    'password' => $user->password,
                     'api_token' => Uuid::uuid4(),
                     'created_at' => Carbon::now(),
                     'updated_at' => Carbon::now()
