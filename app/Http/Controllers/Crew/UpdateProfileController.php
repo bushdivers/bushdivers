@@ -41,22 +41,22 @@ class UpdateProfileController extends Controller
             $pw = Hash::make($request->password);
             $user->password = $pw;
 
-            $this->updateAkPassword($pw, $user->email);
+//            $this->updateAkPassword($pw, $user->email);
         }
         $user->save();
 
         return redirect()->back()->with(['success' => 'Profile updated']);
     }
 
-    protected function updateAkPassword($password, $email)
-    {
-        try {
-            DB::connection('mysql_ak')->table('users')->where('email', $email)->update([
-                'password' => $password,
-                'updated_at' => Carbon::now()
-            ]);
-        } catch (\Exception) {
-
-        }
-    }
+//    protected function updateAkPassword($password, $email)
+//    {
+//        try {
+//            DB::connection('mysql_ak')->table('users')->where('email', $email)->update([
+//                'password' => $password,
+//                'updated_at' => Carbon::now()
+//            ]);
+//        } catch (\Exception) {
+//
+//        }
+//    }
 }

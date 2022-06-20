@@ -69,22 +69,22 @@ class RegisterNewUserController extends Controller
         $body = MailTypes::register($user);
         $this->sendEmail->execute($body);
 
-        try {
-            $akuser = DB::connection('mysql_ak')->table('users')->where('email', $request->email)->count();
-            if ($akuser < 1) {
-                DB::connection('mysql_ak')->table('users')->insert([
-                    'rank_id' => 1,
-                    'name' => $request->name,
-                    'email' => $request->email,
-                    'password' => $user->password,
-                    'api_token' => Uuid::uuid4(),
-                    'created_at' => Carbon::now(),
-                    'updated_at' => Carbon::now()
-                ]);
-            }
-        } catch (\Exception) {
-            //
-        }
+//        try {
+//            $akuser = DB::connection('mysql_ak')->table('users')->where('email', $request->email)->count();
+//            if ($akuser < 1) {
+//                DB::connection('mysql_ak')->table('users')->insert([
+//                    'rank_id' => 1,
+//                    'name' => $request->name,
+//                    'email' => $request->email,
+//                    'password' => $user->password,
+//                    'api_token' => Uuid::uuid4(),
+//                    'created_at' => Carbon::now(),
+//                    'updated_at' => Carbon::now()
+//                ]);
+//            }
+//        } catch (\Exception) {
+//            //
+//        }
 
         $credentials = $request->only('email', 'password');
         if (Auth::attempt($credentials)) {

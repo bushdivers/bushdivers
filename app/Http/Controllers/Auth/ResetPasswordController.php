@@ -38,14 +38,14 @@ class ResetPasswordController extends Controller
         $user->reset_token = null;
         $user->save();
 
-        try {
-            DB::connection('mysql_ak')->table('users')->where('email', $user->email)->update([
-                'password' => $pw,
-                'updated_at' => Carbon::now()
-            ]);
-        } catch (\Exception) {
-
-        }
+//        try {
+//            DB::connection('mysql_ak')->table('users')->where('email', $user->email)->update([
+//                'password' => $pw,
+//                'updated_at' => Carbon::now()
+//            ]);
+//        } catch (\Exception) {
+//
+//        }
 
         // send email
         $body = MailTypes::passwordReset($user);
