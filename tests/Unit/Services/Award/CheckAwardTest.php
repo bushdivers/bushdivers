@@ -28,7 +28,7 @@ class CheckAwardTest extends TestCase
         $this->user = User::factory()->create([
             'rank_id' => 1,
             'flights' => 50,
-            'flights_time' => 50,
+            'flights_time' => 60,
             'created_at' => Carbon::now()->addYears(-2)
         ]);
 

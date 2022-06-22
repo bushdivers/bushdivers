@@ -12,6 +12,7 @@ use App\Models\Flight;
 use App\Models\FlightLog;
 use App\Models\Pirep;
 use App\Models\PirepCargo;
+use App\Models\Rental;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -216,5 +217,35 @@ class GetDispatchedBookingsTest extends TestCase
 
         $response = $this->getJson('/api/dispatch');
         $response->assertStatus(204);
+    }
+
+    public function test_returns_bookings_for_rental_aircraft()
+    {
+        $rental = Rental::factory()->create([
+            'current_airport_id' => $this->contract->dep_airport_id,
+            'user_id' => $this->user->id,
+            'fleet_id' => $this->fleet->id
+        ]);
+        $this->pirep = Pirep::factory()->create([
+            'user_id' => $this->user->id,
+            'destination_airport_id' => $this->contract->arr_airport_id,
+            'departure_airport_id' => $this->contract->dep_airport_id,
+            'aircraft_id' => $rental->id,
+            'is_rental' => true
+        ]);
+
+        $this->pirepCargo = PirepCargo::factory()->create([
+            'pirep_id' => $this->pirep->id,
+            'contract_cargo_id' => $this->contractCargo->id
+        ]);
+
+        Sanctum::actingAs(
+            $this->user,
+            ['*']
+        );
+
+        $response = $this->getJson('/api/dispatch');
+        $response->assertStatus(200);
+        $response->assertJsonFragment(['departure_airport_id' => $this->pirep->departure_airport_id]);
     }
 }
