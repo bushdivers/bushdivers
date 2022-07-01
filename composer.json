@@ -11,7 +11,7 @@
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "inertiajs/inertia-laravel": "^0.5.4",
-        "laravel/framework": "^9.0",
+        "laravel/framework": "^9.19",
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
         "mailjet/mailjet-apiv3-php": "^1.5",
