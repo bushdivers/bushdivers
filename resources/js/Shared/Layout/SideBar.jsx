@@ -53,7 +53,7 @@ const SideBar = ({ isNavVisible, setNavState }) => {
           <NavItem link="/resources" icon={faDownload} text="Resources" />
           <NavSection name="Contracts" />
           <NavItem link="/available-contracts" icon={faClipboardUser} text="Contracts" numeric={auth.user.current_bids} />
-          <NavItem link="/contracts" icon={faClipboardQuestion} text="Search" />
+          <NavItem link="/contracts" icon={faClipboardQuestion} text="Contract Search" />
           <NavItem link="/completed-contracts" icon={faClipboardCheck} text="Completed" />
           <NavItem link="/dispatch" icon={faClipboard} text="Flight Dispatch" />
           <NavSection name="Pilot Area" />
