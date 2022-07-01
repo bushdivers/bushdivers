@@ -12,7 +12,7 @@ InertiaProgress.init()
 createInertiaApp({
   resolve: name => resolvePageComponent(`./Pages/${name}.jsx`, import.meta.glob('./Pages/**/*.jsx')),
   title: title => `${title} - Bush Divers`,
-  setup({ el, App, props }) {
+  setup ({ el, App, props }) {
     render(<App {...props} />, el)
   }
 })
