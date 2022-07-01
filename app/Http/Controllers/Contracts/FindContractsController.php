@@ -39,7 +39,11 @@ class FindContractsController extends Controller
         if (Cache::has($key)) {
             $contracts = Cache::get($key);
         } else {
-            $numToGenerate = $airport->is_hub ? 12 : 6;
+            if ($airport->is_hub) {
+                $numToGenerate = 25;
+            } else {
+                $numToGenerate = $airport->size >= 3 ? 12 : 5;
+            }
             $contracts = $this->generateContracts->execute($airport, $numToGenerate, $request->flightLength, $request->aircraftSize);
             Cache::put($key, $contracts, now()->addSeconds(120));
         }
