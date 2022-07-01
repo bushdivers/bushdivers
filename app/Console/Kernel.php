@@ -3,6 +3,7 @@
 namespace App\Console;
 
 use App\Models\Enums\FinancialConsts;
+use App\Services\Contracts\CheckForExpiry;
 use App\Services\Contracts\ExpiryContractCheck;
 use App\Services\Contracts\FindAirportsInNeedOfContracts;
 use App\Services\Contracts\FindHubsInNeedOfContracts;
@@ -26,6 +27,7 @@ class Kernel extends ConsoleKernel
     protected RemoveMultiplePireps $removeMultiplePireps;
     protected CalcMonthlyFees $calcMonthlyFees;
     protected CollectFinancePayments $collectFinancePayments;
+    protected CheckForExpiry $checkForExpiry;
 
     public function __construct(
         Application $app,
@@ -35,6 +37,7 @@ class Kernel extends ConsoleKernel
         RemoveMultiplePireps $removeMultiplePireps,
         CalcMonthlyFees $calcMonthlyFees,
         CollectFinancePayments $collectFinancePayments,
+        CheckForExpiry $checkForExpiry
     )
     {
         parent::__construct($app, $events);
@@ -43,6 +46,7 @@ class Kernel extends ConsoleKernel
         $this->removeMultiplePireps = $removeMultiplePireps;
         $this->calcMonthlyFees = $calcMonthlyFees;
         $this->collectFinancePayments = $collectFinancePayments;
+        $this->checkForExpiry = $checkForExpiry;
     }
 
     /**
@@ -68,6 +72,10 @@ class Kernel extends ConsoleKernel
             $inactivePireps = $this->findInactivePireps->execute();
             $this->removeMultiplePireps->execute($inactivePireps);
         })->hourly();
+
+        $schedule->call(function () {
+            $this->checkForExpiry->execute();
+        })->twiceDaily();
 
         $schedule->call(function () {
             $this->checkRentalDailyFee->execute();
