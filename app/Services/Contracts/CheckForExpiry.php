@@ -29,6 +29,7 @@ class CheckForExpiry
             ->get();
 
         foreach ($contracts as $contract) {
+            $inProgress = 0;
             // check for completed cargo
             foreach ($contract->cargo as $cargo) {
                 if ($cargo->is_completed) {
@@ -40,9 +41,15 @@ class CheckForExpiry
                     $this->addAirlineTransaction->execute(AirlineTransactionTypes::ContractExpenditure, $pilotPay, 'Pilot Pay: '. $contract->id, $cargo->completed_pirep);
                     $this->addUserTransaction->execute($cargo->user_id, TransactionTypes::FlightPay, $pilotPay, $cargo->completed_pirep);
                 }
+
+                if ($cargo->active_pirep != null) {
+                    $inProgress = 1;
+                }
             }
             // close contract
-            $this->closeContract->execute($contract->id);
+            if (!$inProgress) {
+                $this->closeContract->execute($contract->id);
+            }
         }
     }
 }

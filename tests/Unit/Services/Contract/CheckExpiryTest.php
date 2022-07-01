@@ -9,6 +9,7 @@ use App\Services\Contracts\CheckForExpiry;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Ramsey\Uuid\Uuid;
 use Tests\TestCase;
 
 class CheckExpiryTest extends TestCase
@@ -50,6 +51,8 @@ class CheckExpiryTest extends TestCase
         $this->assertDatabaseHas('account_ledgers', [
             'total' => $cargo->contract_value
         ]);
+
+        $cargo->refresh();
     }
 
     public function test_contract_without_cargo_is_not_paid()
@@ -71,5 +74,26 @@ class CheckExpiryTest extends TestCase
             'user_id' => $this->user->id,
             'total' => 175
         ]);
+        $cargo->refresh();
+        $this->assertEquals(false, $cargo->is_available);
     }
+
+    public function test_in_progress_cargo_is_not_closed()
+    {
+        $contract = Contract::factory()->create([
+            'is_available' => false,
+            'expires_at' => Carbon::now()->subDays(10)
+        ]);
+        $cargo = ContractCargo::factory()->create([
+            'contract_id' => $contract->id,
+            'is_completed' => false,
+            'is_available' => true,
+            'active_pirep' => Uuid::uuid4()
+        ]);
+        $this->checkForExpiry->execute();
+        $cargo->refresh();
+        $this->assertEquals(true, $cargo->is_available);
+    }
+
+
 }
