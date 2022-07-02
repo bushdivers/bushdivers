@@ -23,7 +23,8 @@ class DatabaseSeeder extends Seeder
             RankSeeder::class,
             FleetSeeder::class,
             AircraftSeeder::class,
-            AirportSeeder::class
+            AirportSeeder::class,
+            ResourceCategorySeeder::class
         ]);
 
     }

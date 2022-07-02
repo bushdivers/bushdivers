@@ -32,6 +32,8 @@ Route::post('/contracts/bid', \App\Http\Controllers\Contracts\BidForContractCont
     ->name('contracts.bid');
 Route::get('/aircraft/price/{id}', \App\Http\Controllers\MarketPlace\GetAircraftPriceController::class)
     ->name('aircraft.price');
+Route::get('/resources', \App\Http\Controllers\Resources\GetResources::class)
+    ->name('resources');
 
 
 Route::middleware('auth:sanctum')->group(function () {
