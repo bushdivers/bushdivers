@@ -37,4 +37,31 @@ class GetResourcesTest extends TestCase
         $response->assertStatus(200);
         $response->assertJsonCount(0, 'resources');
     }
+
+    public function test_resources_dependencies_returned()
+    {
+        DB::table('resource_categories')->insert([
+            'id' => 1,
+            'category' => 'Misc'
+        ]);
+
+        $dependencies = [
+            [
+                'filename' => 'terrain-png',
+                'title' => 'Terrain',
+                'mandatory' => true,
+                'url' => null
+            ]
+        ];
+
+        $dependencies = json_encode($dependencies);
+
+        DB::table('resources')->insert([
+            ['category_id' => 1, 'title' => 'Test', 'url' => 'www.test.com', 'dependencies' => $dependencies]
+        ]);
+
+        $response = $this->getJson('/api/resources');
+        $response->assertStatus(200);
+        $response->assertJsonStructure(['resources' => [['dependencies']]]);
+    }
 }
