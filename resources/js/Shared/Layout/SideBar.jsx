@@ -50,7 +50,8 @@ const SideBar = ({ isNavVisible, setNavState }) => {
           <NavItem link="/roster" icon={faUsers} text="Roster" />
           <NavItem link="/fleet-aircraft" icon={faPlaneUp} text="Fleet" />
           <NavItem link="/finances" icon={faCoins} text="Finances" />
-          <NavItem link="/resources" icon={faDownload} text="Resources" />
+          <NavItem link="https://storage.googleapis.com/bush-divers.appspot.com/BushTracker.zip" icon={faDownload} text="Bush Tracker" nativeLink={true} />
+          {auth.user.user_roles.includes('resource_manager') && <NavItem link="/resources" icon={faDownload} text="Resources" />}
           <NavSection name="Contracts" />
           <NavItem link="/available-contracts" icon={faClipboardUser} text="Contracts" numeric={auth.user.current_bids} />
           <NavItem link="/contracts" icon={faClipboardQuestion} text="Contract Search" />
