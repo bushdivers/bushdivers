@@ -80,7 +80,7 @@ const ResourceDependencies = ({ dependencies, updateDependencies }) => {
         <button onClick={() => setShowForm(true)} className="btn btn-light"><FontAwesomeIcon icon={faPlus} /></button>
       </div>
       <div>
-        {dependencies.map((dependency) => (
+        {dependencies && dependencies.map((dependency) => (
           <div key={dependency.package} className="bg-orange-50 rounded shadow p-2 my-2">
             <div className="flex justify-between items-center">
               <div>

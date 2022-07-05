@@ -82,6 +82,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/resources', \App\Http\Controllers\Resources\ShowResourcesController::class)
         ->name('resources');
+    Route::post('/resources', \App\Http\Controllers\Resources\AddResourceController::class)
+        ->name('resources.add');
 
     Route::get('/fleet-aircraft', \App\Http\Controllers\Fleet\ShowFleetAircraftController::class)
         ->name('fleet.aircraft');

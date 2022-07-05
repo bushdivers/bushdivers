@@ -1,18 +1,18 @@
 import React, { useState } from 'react'
-import { usePage } from '@inertiajs/inertia-react'
 import ResourceDependencies from '../Admin/Resources/ResourceDependencies'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTimesCircle, faUpload } from '@fortawesome/free-solid-svg-icons'
 import Uploader from '../../Elements/Uploader'
 import AWS from 'aws-sdk'
 import ProgressBar from '../../Elements/ProgressBar'
+import { Inertia } from '@inertiajs/inertia'
 
 const S3_BUCKET = 'bushdivers-resource'
 const REGION = 'us-east-1'
 
 AWS.config.update({
-  accessKeyId: 'AKIAWL3LM72CFHLMGBHR',
-  secretAccessKey: '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'
+  accessKeyId: import.meta.env.VITE_AWS_KEY,
+  secretAccessKey: import.meta.env.VITE_AWS_SECRET
 })
 
 const myBucket = new AWS.S3({
@@ -21,7 +21,7 @@ const myBucket = new AWS.S3({
 })
 
 const NewResource = ({ categories }) => {
-  const { errors } = usePage().props
+  const [errors, setErrors] = useState([])
   const [values, setValues] = useState({
     categoryId: 1,
     title: '',
@@ -31,9 +31,12 @@ const NewResource = ({ categories }) => {
     package: ''
   })
   const [dependencies, setDependencies] = useState([])
-  const [url, setUrl] = useState('')
   const [selectedFile, setSelectedFile] = useState(null)
   const [progress, setProgress] = useState(0)
+
+  // useEffect(() => {
+  //   clearForm()
+  // }, [])
 
   function updateDependencies (dep, action) {
     console.log(dep)
@@ -64,9 +67,36 @@ const NewResource = ({ categories }) => {
     setSelectedFile(files[0])
   }
 
-  const handleSubmit = async () => {
-    await uploadToS3(selectedFile)
-    // clearForm()
+  async function validateForm () {
+    const tempErrors = {}
+    let formIsValid = true
+    // title
+    if (!values.title) {
+      formIsValid = false
+      tempErrors.title = 'Title is required'
+    }
+    // package
+    if (!values.package) {
+      formIsValid = false
+      tempErrors.package = 'Package name is required'
+    }
+    // desc
+    if (!values.desc) {
+      formIsValid = false
+      tempErrors.desc = 'Description is required'
+    }
+    // version
+    if (!/[0-9]+\.[0-9]+\.[0-9]+/.test(values.version)) {
+      formIsValid = false
+      tempErrors.version = 'Version is required in 0.0.0 format'
+    }
+    // author
+    if (!values.author) {
+      formIsValid = false
+      tempErrors.author = 'Author display name is required'
+    }
+    setErrors(tempErrors)
+    return formIsValid
   }
 
   async function uploadToS3 (file) {
@@ -77,8 +107,22 @@ const NewResource = ({ categories }) => {
           setProgress(Math.round((evt.loaded / evt.total) * 100))
         })
         .promise()
-      setUrl(data.Location)
-      console.log(data.Location)
+      return data
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  const handleSubmit = async () => {
+    try {
+      const status = await validateForm()
+      if (status) {
+        const res = await uploadToS3(selectedFile)
+        const size = { size: selectedFile.size }
+        const data = { data: values, size, url: res.Location, dependencies }
+        await Inertia.post('/resources', data)
+        await clearForm()
+      }
     } catch (e) {
       console.log(e)
     }
@@ -91,10 +135,11 @@ const NewResource = ({ categories }) => {
       desc: '',
       version: '',
       author: '',
-      url: '',
       package: ''
     })
     setDependencies([])
+    setSelectedFile(null)
+    setProgress(0)
   }
 
   return (
@@ -152,14 +197,7 @@ const NewResource = ({ categories }) => {
           {selectedFile && (
             <>
               <div className="flex justify-between items-center">
-                {url === ''
-                  ? (
-                    <span className="text-gray-700 text-sm">{selectedFile.name}</span>
-                    )
-                  : (
-                    <a href={url} className="link">{selectedFile.name}</a>
-                    )
-                }
+                <div><span className="text-gray-700 text-sm">{selectedFile.name}</span> <span className="text-gray-700 text-sm">{((selectedFile.size / 1024) / 1024).toFixed(2)}mb</span></div>
                 <FontAwesomeIcon onClick={() => setSelectedFile(null)} className="p-2 cursor-pointer" icon={faTimesCircle} />
               </div>
               {progress > 0 && (
