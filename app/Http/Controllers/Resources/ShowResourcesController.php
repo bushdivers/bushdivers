@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\General;
+namespace App\Http\Controllers\Resources;
 
 use App\Http\Controllers\Controller;
 use App\Models\ResourceCategory;
@@ -18,7 +18,7 @@ class ShowResourcesController extends Controller
      */
     public function __invoke(Request $request): Response
     {
-        $categories = ResourceCategory::with('resources')->get();
+        $categories = ResourceCategory::orderBy('category')->get();
         return Inertia::render('General/Resources', ['categories' => $categories]);
     }
 }

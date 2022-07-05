@@ -5,7 +5,6 @@ import LayoutAuth from '../../Shared/LayoutAuth'
 
 const Login = () => {
   const { errors } = usePage().props
-  console.log(errors)
   const [values, setValues] = useState({
     email: '',
     password: '',

@@ -51,7 +51,7 @@ const SideBar = ({ isNavVisible, setNavState }) => {
           <NavItem link="/fleet-aircraft" icon={faPlaneUp} text="Fleet" />
           <NavItem link="/finances" icon={faCoins} text="Finances" />
           <NavItem link="https://storage.googleapis.com/bush-divers.appspot.com/BushTracker.zip" icon={faDownload} text="Bush Tracker" nativeLink={true} />
-          {auth.user.user_roles.includes('resource_manager') && <NavItem link="/resources" icon={faDownload} text="Resources" />}
+          {auth.user.user_roles.includes('resource_manager') ? <NavItem link="/resources" icon={faDownload} text="Resources" /> : <></>}
           <NavSection name="Contracts" />
           <NavItem link="/available-contracts" icon={faClipboardUser} text="Contracts" numeric={auth.user.current_bids} />
           <NavItem link="/contracts" icon={faClipboardQuestion} text="Contract Search" />
@@ -63,18 +63,18 @@ const SideBar = ({ isNavVisible, setNavState }) => {
           <NavItem link="/jumpseat" icon={faTicket} text="Jumpseat" />
           <NavItem link="/my-aircraft" icon={faPlaneDeparture} text="My Aircraft" />
           <NavItem link="/logout" icon={faRightToBracket} text="Sign Out" />
-          {auth.user.is_admin
-            ? (
-              <>
-                <NavSection name="Admin" />
-                <NavItem link="/admin/pireps" icon={faFileLines} text="Pireps" />
-                <NavItem link="/admin/fleet" icon={faPlaneUp} text="Fleet" />
-                <NavItem link="/admin/users" icon={faUsers} text="Users" />
-                <NavItem link="/admin/resources" icon={faDownload} text="Resources" />
-              </>
-              )
-            : <></>
-          }
+          {/*{auth.user.is_admin*/}
+          {/*  ? (*/}
+          {/*    <>*/}
+          {/*      <NavSection name="Admin" />*/}
+          {/*      <NavItem link="/admin/pireps" icon={faFileLines} text="Pireps" />*/}
+          {/*      <NavItem link="/admin/fleet" icon={faPlaneUp} text="Fleet" />*/}
+          {/*      <NavItem link="/admin/users" icon={faUsers} text="Users" />*/}
+          {/*      <NavItem link="/admin/resources" icon={faDownload} text="Resources" />*/}
+          {/*    </>*/}
+          {/*    )*/}
+          {/*  : <></>*/}
+          {/*}*/}
         </ul>
       </div>
     </aside>

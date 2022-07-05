@@ -7,7 +7,7 @@ use App\Models\Resource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
-class GetResources extends Controller
+class GetResourcesController extends Controller
 {
     /**
      * Handle the incoming request.
@@ -17,7 +17,7 @@ class GetResources extends Controller
      */
     public function __invoke(Request $request): JsonResponse
     {
-        $resources = Resource::with('category')->get();
+        $resources = Resource::with('category')->where('is_approved', true)->get();
         return response()->json(['resources' => $resources]);
     }
 }
