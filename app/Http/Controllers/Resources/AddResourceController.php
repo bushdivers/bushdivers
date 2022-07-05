@@ -26,7 +26,7 @@ class AddResourceController extends Controller
         $resource->version = $request->data['version'];
         $resource->filename = $request->data['package'];
         $resource->author = $request->data['author'];
-        $resource->file_size = $request->size['size'];
+        $resource->file_size = $request->size;
         $resource->user_id = Auth::user()->id;
 
         if ($request->dependencies) {

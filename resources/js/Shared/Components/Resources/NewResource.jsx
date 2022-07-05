@@ -118,8 +118,7 @@ const NewResource = ({ categories }) => {
       const status = await validateForm()
       if (status) {
         const res = await uploadToS3(selectedFile)
-        const size = { size: selectedFile.size }
-        const data = { data: values, size, url: res.Location, dependencies }
+        const data = { data: values, size: selectedFile.size, url: res.Location, dependencies }
         await Inertia.post('/resources', data)
         await clearForm()
       }
