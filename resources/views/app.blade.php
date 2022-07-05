@@ -8,6 +8,9 @@
     @routes
     @viteReactRefresh
     @vite('resources/js/app.jsx')
+    <script>
+        window.global = window
+    </script>
 </head>
 <body class="bg-gray-50">
     @inertia

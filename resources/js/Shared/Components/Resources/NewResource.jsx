@@ -1,7 +1,24 @@
 import React, { useState } from 'react'
 import { usePage } from '@inertiajs/inertia-react'
 import ResourceDependencies from '../Admin/Resources/ResourceDependencies'
-// import { Inertia } from '@inertiajs/inertia'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTimesCircle, faUpload } from '@fortawesome/free-solid-svg-icons'
+import Uploader from '../../Elements/Uploader'
+import AWS from 'aws-sdk'
+import ProgressBar from '../../Elements/ProgressBar'
+
+const S3_BUCKET = 'bushdivers-resource'
+const REGION = 'us-east-1'
+
+AWS.config.update({
+  accessKeyId: 'AKIAWL3LM72CFHLMGBHR',
+  secretAccessKey: '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'
+})
+
+const myBucket = new AWS.S3({
+  params: { Bucket: S3_BUCKET },
+  region: REGION
+})
 
 const NewResource = ({ categories }) => {
   const { errors } = usePage().props
@@ -11,9 +28,12 @@ const NewResource = ({ categories }) => {
     desc: '',
     version: '',
     author: '',
-    url: ''
+    package: ''
   })
   const [dependencies, setDependencies] = useState([])
+  const [url, setUrl] = useState('')
+  const [selectedFile, setSelectedFile] = useState(null)
+  const [progress, setProgress] = useState(0)
 
   function updateDependencies (dep, action) {
     console.log(dep)
@@ -40,9 +60,28 @@ const NewResource = ({ categories }) => {
     }))
   }
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
+  function handleFile ({ target: { files } }) {
+    setSelectedFile(files[0])
+  }
+
+  const handleSubmit = async () => {
+    await uploadToS3(selectedFile)
     // clearForm()
+  }
+
+  async function uploadToS3 (file) {
+    const params = { Body: file, Bucket: S3_BUCKET, Key: file.name, ACL: 'public-read' }
+    try {
+      const data = await myBucket.upload(params)
+        .on('httpUploadProgress', (evt) => {
+          setProgress(Math.round((evt.loaded / evt.total) * 100))
+        })
+        .promise()
+      setUrl(data.Location)
+      console.log(data.Location)
+    } catch (e) {
+      console.log(e)
+    }
   }
 
   const clearForm = () => {
@@ -53,7 +92,7 @@ const NewResource = ({ categories }) => {
       version: '',
       author: '',
       url: '',
-      dependencies: null
+      package: ''
     })
     setDependencies([])
   }
@@ -61,7 +100,6 @@ const NewResource = ({ categories }) => {
   return (
     <div>
       <h2 className="text-xl">Submit New Resource</h2>
-      <form onSubmit={handleSubmit}>
         <div className="my-2">
           <label htmlFor="categoryId" className="block"><span className="text-gray-700">Category</span></label>
           <select id="categoryId" value={values.categoryId} onChange={handleChange} className="form-select form">
@@ -72,9 +110,14 @@ const NewResource = ({ categories }) => {
           {errors.categoryId && <div className="text-sm text-red-500">{errors.categoryId}</div>}
         </div>
         <div className="my-2">
-          <label htmlFor="title" className="block"><span className="text-gray-700">Package Title</span></label>
+          <label htmlFor="title" className="block"><span className="text-gray-700">Resource Title</span></label>
           <input id="title" value={values.title} onChange={handleChange} type="text" className="form-input form" />
           {errors.title && <div className="text-sm text-red-500">{errors.title}</div>}
+        </div>
+        <div className="my-2">
+          <label htmlFor="package" className="block"><span className="text-gray-700">Package Name</span></label>
+          <input id="package" value={values.package} onChange={handleChange} type="text" className="form-input form" />
+          {errors.package && <div className="text-sm text-red-500">{errors.package}</div>}
         </div>
         <div className="my-2">
           <label htmlFor="desc" className="block"><span className="text-gray-700">Package Description</span></label>
@@ -94,13 +137,42 @@ const NewResource = ({ categories }) => {
         <hr />
         <div className="my-2">
           <h3 className="text-lg">Upload file</h3>
+          {selectedFile === null && (
+            <div className="my-2">
+              <Uploader onChange={handleFile} accept=".zip">
+                <div className="cursor-pointer bg-orange-50 py-8 text-orange-500 border-orange-500 border border-dashed px-2 rounded-lg w-full flex items-center justify-center">
+                  <div className="flex flex-col">
+                    <FontAwesomeIcon className="text-2xl" icon={faUpload} />
+                    <span className="mt-2">Add a file</span>
+                  </div>
+                </div>
+              </Uploader>
+            </div>
+          )}
+          {selectedFile && (
+            <>
+              <div className="flex justify-between items-center">
+                {url === ''
+                  ? (
+                    <span className="text-gray-700 text-sm">{selectedFile.name}</span>
+                    )
+                  : (
+                    <a href={url} className="link">{selectedFile.name}</a>
+                    )
+                }
+                <FontAwesomeIcon onClick={() => setSelectedFile(null)} className="p-2 cursor-pointer" icon={faTimesCircle} />
+              </div>
+              {progress > 0 && (
+                <ProgressBar progress={progress} />
+              )}
+            </>
+          )}
         </div>
         <hr />
         <ResourceDependencies dependencies={dependencies} updateDependencies={updateDependencies} />
         <div className="flex justify-end mt-4">
-          <button className="btn btn-secondary">Submit Resource</button>
+          <button onClick={() => handleSubmit()} className="btn btn-secondary">Submit Resource</button>
         </div>
-      </form>
     </div>
   )
 }
