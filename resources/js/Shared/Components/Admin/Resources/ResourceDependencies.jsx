@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus, faTimesCircle } from '@fortawesome/free-solid-svg-icons'
+import Label from '../../../Elements/Forms/Label'
 
 const ResourceDependencies = ({ dependencies, updateDependencies }) => {
   // const [dependencies, setDependencies] = useState([])
@@ -97,17 +98,17 @@ const ResourceDependencies = ({ dependencies, updateDependencies }) => {
       {showForm && (
         <>
           <div className="my-2">
-            <label htmlFor="title" className="block"><span className="text-gray-700">Dependency Title</span></label>
+            <Label relatedInput="title" isRequired={true} helpText="This is the display name of the dependency" labelText="Dependency Title" />
             <input id="title" value={currentDependency.title} onChange={handleDependencyChange} type="text" className="form-input form" />
             {errors.title && <div className="text-sm text-red-500">{errors.title}</div>}
           </div>
           <div className="my-2">
-            <label htmlFor="package" className="block"><span className="text-gray-700">Dependency Package Name</span></label>
+            <Label relatedInput="package" isRequired={true} helpText="This is the MSFS package name for the dependency i.e daves-crooked-library" labelText="Package Name" />
             <input id="package" value={currentDependency.package} onChange={handleDependencyChange} type="text" className="form-input form" />
             {errors.package && <div className="text-sm text-red-500">{errors.package}</div>}
           </div>
           <div className="my-2">
-            <label htmlFor="url" className="block"><span className="text-gray-700">Dependency URL (if external)</span></label>
+            <Label relatedInput="url" isRequired={false} helpText="This should be the url to the dependency, if it is not a Bush Divers package" labelText="Dependency URL (if external)" />
             <input id="url" value={currentDependency.url} onChange={handleDependencyChange} type="text" className="form-input form" />
           </div>
           <div className="my-2">

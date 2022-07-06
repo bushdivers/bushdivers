@@ -6,6 +6,7 @@ import Uploader from '../../Elements/Uploader'
 import AWS from 'aws-sdk'
 import ProgressBar from '../../Elements/ProgressBar'
 import { Inertia } from '@inertiajs/inertia'
+import Label from '../../Elements/Forms/Label'
 
 const S3_BUCKET = 'bushdivers-resource'
 const REGION = 'us-east-1'
@@ -145,7 +146,7 @@ const NewResource = ({ categories }) => {
     <div>
       <h2 className="text-xl">Submit New Resource</h2>
         <div className="my-2">
-          <label htmlFor="categoryId" className="block"><span className="text-gray-700">Category</span></label>
+          <Label relatedInput="categoryId" isRequired={true} helpText="Select the type of addon this is" labelText="Category" />
           <select id="categoryId" value={values.categoryId} onChange={handleChange} className="form-select form">
             {categories.map((cat) => (
               <option key={cat.id} value={cat.id}>{cat.category}</option>
@@ -154,27 +155,27 @@ const NewResource = ({ categories }) => {
           {errors.categoryId && <div className="text-sm text-red-500">{errors.categoryId}</div>}
         </div>
         <div className="my-2">
-          <label htmlFor="title" className="block"><span className="text-gray-700">Resource Title</span></label>
+          <Label relatedInput="title" isRequired={true} helpText="This should be the display name of the addon" labelText="Title" />
           <input id="title" value={values.title} onChange={handleChange} type="text" className="form-input form" />
           {errors.title && <div className="text-sm text-red-500">{errors.title}</div>}
         </div>
         <div className="my-2">
-          <label htmlFor="package" className="block"><span className="text-gray-700">Package Name</span></label>
-          <input id="package" value={values.package} onChange={handleChange} type="text" className="form-input form" />
-          {errors.package && <div className="text-sm text-red-500">{errors.package}</div>}
-        </div>
-        <div className="my-2">
-          <label htmlFor="desc" className="block"><span className="text-gray-700">Package Description</span></label>
+          <Label relatedInput="desc" isRequired={true} helpText="This should be a description of the addon" labelText="Description" />
           <textarea id="desc" value={values.desc} onChange={handleChange} className="form-input form" />
           {errors.desc && <div className="text-sm text-red-500">{errors.desc}</div>}
         </div>
         <div className="my-2">
-          <label htmlFor="version" className="block"><span className="text-gray-700">Package Version</span></label>
+          <Label relatedInput="package" isRequired={true} helpText="This should be the actual name of the MSFS package i.e. png-airstrip-fixes" labelText="Package Name" />
+          <input id="package" value={values.package} onChange={handleChange} type="text" className="form-input form" />
+          {errors.package && <div className="text-sm text-red-500">{errors.package}</div>}
+        </div>
+        <div className="my-2">
+          <Label relatedInput="version" isRequired={true} helpText="This is the version number of the package in the format 0.0.0" labelText="Package Version" />
           <input id="version" value={values.version} onChange={handleChange} type="text" className="form-input form" />
           {errors.version && <div className="text-sm text-red-500">{errors.version}</div>}
         </div>
         <div className="mt-2 mb-4">
-          <label htmlFor="author" className="block"><span className="text-gray-700">Author Display Name</span></label>
+          <Label relatedInput="author" isRequired={true} helpText="This is how the name of the author of the package should be displayed" labelText="Author Display Name" />
           <input id="author" value={values.author} onChange={handleChange} type="text" className="form-input form" />
           {errors.author && <div className="text-sm text-red-500">{errors.author}</div>}
         </div>
