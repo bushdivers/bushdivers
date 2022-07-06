@@ -19,9 +19,8 @@ class ShowResourcesController extends Controller
      */
     public function __invoke(Request $request): Response
     {
-        $resources = Resource::with('category')->where('is_approved', false)->get();
+        $resources = Resource::with('category', 'user')->where('is_approved', false)->get();
         $categories = ResourceCategory::all();
-
         return Inertia::render('Admin/Resources', ['resources' => $resources, 'categories' => $categories]);
     }
 }

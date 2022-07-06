@@ -186,5 +186,9 @@ Route::middleware('auth')->group(function () {
             ->name('admin.resources');
         Route::post('/admin/categories', \App\Http\Controllers\Admin\Resources\AddResourceCategoryController::class)
             ->name('admin.categories.add');
+        Route::post('/admin/resources/approve/{id}', \App\Http\Controllers\Admin\Resources\ApproveResourceController::class)
+            ->name('admin.resources.approve');
+        Route::post('/admin/resources/reject/{id}', \App\Http\Controllers\Admin\Resources\RejectResourceController::class)
+            ->name('admin.resources.reject');
     });
 });

@@ -5,6 +5,7 @@ import NewCategory from '../../Shared/Components/Admin/Resources/NewCategory'
 import { Inertia } from '@inertiajs/inertia'
 import { faClose, faPencil, faTimes } from '@fortawesome/free-solid-svg-icons'
 import axios from 'axios'
+import ResourceApprovals from '../../Shared/Components/Admin/Resources/ResourceApprovals'
 
 const Resources = ({ resources, categories }) => {
   const [showNewCat, setShowNewCat] = useState(false)
@@ -38,7 +39,7 @@ const Resources = ({ resources, categories }) => {
       <NewCategory showNewCat={showNewCat} updateShowCat={setShowNewCat} />
       <div className="flex justify-between mt-4">
         <div className="w-2/3 bg-white p-4 mr-2 shadow rounded">
-          Resources for Approval
+          <ResourceApprovals resources={resources} />
         </div>
         <div className="w-1/3 bg-white p-4 ml-2 shadow rounded">
           <h2>Categories</h2>
