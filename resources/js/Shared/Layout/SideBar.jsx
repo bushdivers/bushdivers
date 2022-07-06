@@ -63,18 +63,18 @@ const SideBar = ({ isNavVisible, setNavState }) => {
           <NavItem link="/jumpseat" icon={faTicket} text="Jumpseat" />
           <NavItem link="/my-aircraft" icon={faPlaneDeparture} text="My Aircraft" />
           <NavItem link="/logout" icon={faRightToBracket} text="Sign Out" />
-          {/*{auth.user.is_admin*/}
-          {/*  ? (*/}
-          {/*    <>*/}
-          {/*      <NavSection name="Admin" />*/}
-          {/*      <NavItem link="/admin/pireps" icon={faFileLines} text="Pireps" />*/}
-          {/*      <NavItem link="/admin/fleet" icon={faPlaneUp} text="Fleet" />*/}
-          {/*      <NavItem link="/admin/users" icon={faUsers} text="Users" />*/}
-          {/*      <NavItem link="/admin/resources" icon={faDownload} text="Resources" />*/}
-          {/*    </>*/}
-          {/*    )*/}
-          {/*  : <></>*/}
-          {/*}*/}
+          {auth.user.is_admin
+            ? (
+              <>
+                <NavSection name="Admin" />
+                <NavItem link="/admin/pireps" icon={faFileLines} text="Pireps" />
+                {/*<NavItem link="/admin/fleet" icon={faPlaneUp} text="Fleet" />*/}
+                {/*<NavItem link="/admin/users" icon={faUsers} text="Users" />*/}
+                <NavItem link="/admin/resources" icon={faDownload} text="Resources" />
+              </>
+              )
+            : <></>
+          }
         </ul>
       </div>
     </aside>

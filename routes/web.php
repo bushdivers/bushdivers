@@ -186,11 +186,5 @@ Route::middleware('auth')->group(function () {
             ->name('admin.resources');
         Route::post('/admin/categories', \App\Http\Controllers\Admin\Resources\AddResourceCategoryController::class)
             ->name('admin.categories.add');
-        Route::post('/admin/resources', \App\Http\Controllers\Admin\Resources\AddResourcesController::class)
-            ->name('admin.resources.add');
-        Route::delete('/admin/resources/{id}', \App\Http\Controllers\Admin\Resources\RemoveResourcesController::class)
-            ->name('admin.resources.delete');
-        Route::patch('/admin/resources/{id}', \App\Http\Controllers\Admin\Resources\EditResourcesController::class)
-            ->name('admin.resources.edit');
     });
 });

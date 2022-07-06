@@ -34,6 +34,8 @@ Route::get('/aircraft/price/{id}', \App\Http\Controllers\MarketPlace\GetAircraft
     ->name('aircraft.price');
 Route::get('/resources', \App\Http\Controllers\Resources\GetResourcesController::class)
     ->name('resources');
+Route::put('/admin/categories', \App\Http\Controllers\Admin\Resources\EditResourceCategoryController::class)
+    ->name('admin.categories.edit');
 
 
 Route::middleware('auth:sanctum')->group(function () {
