@@ -77,9 +77,9 @@ const NewResource = ({ categories }) => {
       tempErrors.title = 'Title is required'
     }
     // package
-    if (!values.package) {
+    if (!/^[a-z0-9]+((\-[a-z0-9]+){1,})?$/.test(values.package)) {
       formIsValid = false
-      tempErrors.package = 'Package name is required'
+      tempErrors.package = 'Package name is required in kebab case i.e package-name-here'
     }
     // desc
     if (!values.desc) {
@@ -165,7 +165,7 @@ const NewResource = ({ categories }) => {
           {errors.desc && <div className="text-sm text-red-500">{errors.desc}</div>}
         </div>
         <div className="my-2">
-          <Label relatedInput="package" isRequired={true} helpText="This should be the actual name of the MSFS package i.e. png-airstrip-fixes" labelText="Package Name" />
+          <Label relatedInput="package" isRequired={true} helpText="This should be the actual name of the MSFS package in kebab case i.e. png-airstrip-fixes" labelText="Package Name" />
           <input id="package" value={values.package} onChange={handleChange} type="text" className="form-input form" />
           {errors.package && <div className="text-sm text-red-500">{errors.package}</div>}
         </div>
