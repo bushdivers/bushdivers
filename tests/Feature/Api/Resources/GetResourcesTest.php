@@ -22,13 +22,13 @@ class GetResourcesTest extends TestCase
             'category' => 'Misc'
         ]);
         DB::table('resources')->insert([
-            ['category_id' => 1, 'title' => 'Test', 'url' => 'www.test.com'],
-            ['category_id' => 1, 'title' => 'Test2', 'url' => 'www.test2.com']
+            ['category_id' => 1, 'title' => 'Test', 'url' => 'www.test.com', 'is_approved' => false],
+            ['category_id' => 1, 'title' => 'Test2', 'url' => 'www.test2.com', 'is_approved' => true]
         ]);
 
         $response = $this->getJson('/api/resources');
         $response->assertStatus(200);
-        $response->assertJsonCount(2, 'resources');
+        $response->assertJsonCount(1, 'resources');
     }
 
     public function test_resources_returns_empty_successfully()
@@ -57,7 +57,7 @@ class GetResourcesTest extends TestCase
         $dependencies = json_encode($dependencies);
 
         DB::table('resources')->insert([
-            ['category_id' => 1, 'title' => 'Test', 'url' => 'www.test.com', 'dependencies' => $dependencies]
+            ['category_id' => 1, 'title' => 'Test', 'url' => 'www.test.com', 'is_approved' => true, 'dependencies' => $dependencies]
         ]);
 
         $response = $this->getJson('/api/resources');
