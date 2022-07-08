@@ -33,7 +33,7 @@ Route::post('/contracts/bid', \App\Http\Controllers\Contracts\BidForContractCont
 Route::get('/aircraft/price/{id}', \App\Http\Controllers\MarketPlace\GetAircraftPriceController::class)
     ->name('aircraft.price');
 Route::get('/resources', \App\Http\Controllers\Resources\GetResourcesController::class)
-    ->name('resources');
+    ->name('api.resources');
 Route::put('/admin/categories', \App\Http\Controllers\Admin\Resources\EditResourceCategoryController::class)
     ->name('admin.categories.edit');
 
