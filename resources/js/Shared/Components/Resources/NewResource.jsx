@@ -3,7 +3,8 @@ import ResourceDependencies from '../Admin/Resources/ResourceDependencies'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTimesCircle, faUpload } from '@fortawesome/free-solid-svg-icons'
 import Uploader from '../../Elements/Uploader'
-import AWS from 'aws-sdk'
+import S3 from 'aws-sdk/clients/s3'
+import AWS from 'aws-sdk/global'
 import ProgressBar from '../../Elements/ProgressBar'
 import { Inertia } from '@inertiajs/inertia'
 import Label from '../../Elements/Forms/Label'
@@ -16,7 +17,7 @@ AWS.config.update({
   secretAccessKey: import.meta.env.VITE_AWS_SECRET
 })
 
-const myBucket = new AWS.S3({
+const myBucket = new S3({
   params: { Bucket: S3_BUCKET },
   region: REGION
 })
