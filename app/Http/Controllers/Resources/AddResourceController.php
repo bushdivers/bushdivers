@@ -7,6 +7,7 @@ use App\Models\Resource;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class AddResourceController extends Controller
 {
@@ -18,26 +19,35 @@ class AddResourceController extends Controller
      */
     public function __invoke(Request $request): RedirectResponse
     {
-        if ($request->type === 'new') {
-            $this->createResource($request);
+        $file = $request->file('file');
+        $filSize = $file->getSize();
+        $fileName = $file->getClientOriginalName();
+        // upload file
+        $request->file('file')->storeAs('', $fileName, 's3');
+        $res = Storage::disk('s3')->url($fileName);
+
+        $resourse = Resource::find($request->id);
+
+        if ($resourse) {
+            $this->updateResource($request, $filSize, $res, $resourse);
         } else {
-            $this->updateResource($request);
+            $this->createResource($request, $filSize, $res);
         }
 
-        return redirect()->to('/resources')->with(['success' => 'Resource created']);
+        return redirect()->back()->with(['success' => 'Resource created']);
     }
 
-    protected function createResource($request)
+    protected function createResource($request, $size, $path)
     {
         $resource = new Resource();
-        $resource->category_id = $request->data['categoryId'];
-        $resource->title = $request->data['title'];
-        $resource->url = $request->url;
-        $resource->description = $request->data['desc'];
-        $resource->version = $request->data['version'];
-        $resource->filename = $request->data['package'];
-        $resource->author = $request->data['author'];
-        $resource->file_size = $request->size;
+        $resource->category_id = $request->categoryId;
+        $resource->title = $request->title;
+        $resource->url = $path;
+        $resource->description = $request->desc;
+        $resource->version = $request->version;
+        $resource->filename = $request->package;
+        $resource->author = $request->author;
+        $resource->file_size = $size;
         $resource->user_id = Auth::user()->id;
 
         if ($request->dependencies) {
@@ -57,17 +67,16 @@ class AddResourceController extends Controller
         $resource->save();
     }
 
-    protected function updateResource($request)
+    protected function updateResource($request, $size, $path, $resource)
     {
-        $resource = Resource::find($request->id);
-        $resource->category_id = $request->data['categoryId'];
-        $resource->title = $request->data['title'];
-        $resource->url = $request->url;
-        $resource->description = $request->data['desc'];
-        $resource->version = $request->data['version'];
-        $resource->filename = $request->data['package'];
-        $resource->author = $request->data['author'];
-        $resource->file_size = $request->size;
+        $resource->category_id = $request->categoryId;
+        $resource->title = $request->title;
+        $resource->url = $path;
+        $resource->description = $request->desc;
+        $resource->version = $request->version;
+        $resource->filename = $request->package;
+        $resource->author = $request->author;
+        $resource->file_size = $size;
         $resource->user_id = Auth::user()->id;
 
         if ($request->dependencies) {

@@ -78,7 +78,7 @@ const ResourceDependencies = ({ dependencies, updateDependencies }) => {
     <div className="my-2">
       <div className="flex justify-between">
         <h3 className="text-lg">Dependencies</h3>
-        <button onClick={() => setShowForm(true)} className="btn btn-light"><FontAwesomeIcon icon={faPlus} /></button>
+        <button type="button" onClick={() => setShowForm(true)} className="btn btn-light"><FontAwesomeIcon icon={faPlus} /></button>
       </div>
       <div>
         {dependencies && dependencies.map((dependency) => (
@@ -118,8 +118,8 @@ const ResourceDependencies = ({ dependencies, updateDependencies }) => {
             </label>
           </div>
           <div className="mt-4">
-            <button onClick={() => addDependency()} className="btn btn-secondary">Add Dependency</button>
-            <button onClick={() => cancel()} className="ml-2 btn btn-light">Cancel</button>
+            <button type="button" onClick={() => addDependency()} className="btn btn-secondary">Add Dependency</button>
+            <button type="button" onClick={() => cancel()} className="ml-2 btn btn-light">Cancel</button>
           </div>
         </>
       )}

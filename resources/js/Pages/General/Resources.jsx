@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import AppLayout from '../../Shared/AppLayout'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircleExclamation } from '@fortawesome/free-solid-svg-icons'
@@ -7,9 +7,13 @@ import ExistingResources from '../../Shared/Components/Resources/ExistingResourc
 
 const Resources = ({ categories, resources }) => {
   const [selectedResource, setSelectedResource] = useState(null)
+  const [clearForm, setClearForm] = useState(false)
+
+  useEffect(() => {
+    setClearForm(true)
+  }, [])
 
   function handleSelectedResource (r) {
-    console.log('updated')
     setSelectedResource(r)
   }
 
@@ -20,7 +24,7 @@ const Resources = ({ categories, resources }) => {
       </div>
       <div className="flex justify-between items-start mt-4">
         <div className="w-2/3 bg-white rounded shadow p-4 mr-2">
-          <NewResource categories={categories} selectedResource={selectedResource} />
+          <NewResource categories={categories} selectedResource={selectedResource} shouldClearForm={clearForm} />
         </div>
         <div className="w-1/3 bg-white rounded shadow p-4 ml-2">
           <ExistingResources resources={resources} selectResource={handleSelectedResource} />
