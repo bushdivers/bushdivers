@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import ResourceDependencies from '../Admin/Resources/ResourceDependencies'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTimesCircle, faUpload } from '@fortawesome/free-solid-svg-icons'
@@ -21,7 +21,7 @@ const myBucket = new AWS.S3({
   region: REGION
 })
 
-const NewResource = ({ categories }) => {
+const NewResource = ({ categories, selectedResource }) => {
   const [errors, setErrors] = useState([])
   const [values, setValues] = useState({
     categoryId: 1,
@@ -34,10 +34,26 @@ const NewResource = ({ categories }) => {
   const [dependencies, setDependencies] = useState([])
   const [selectedFile, setSelectedFile] = useState(null)
   const [progress, setProgress] = useState(0)
+  const [formAction, setFormAction] = useState('new')
 
-  // useEffect(() => {
-  //   clearForm()
-  // }, [])
+  useEffect(() => {
+    if (selectedResource !== null) {
+      setFormAction('edit')
+    } else {
+      setFormAction('new')
+    }
+
+    setValues({
+      categoryId: selectedResource !== null ? selectedResource.category_id : 1,
+      title: selectedResource !== null ? selectedResource.title : '',
+      desc: selectedResource !== null ? selectedResource.description : '',
+      version: selectedResource !== null ? selectedResource.version : '',
+      author: selectedResource !== null ? selectedResource.author : '',
+      package: selectedResource !== null ? selectedResource.filename : ''
+    })
+
+    setDependencies(selectedResource !== null && selectedResource.dependencies !== null ? selectedResource.dependencies : [])
+  }, [selectedResource])
 
   function updateDependencies (dep, action) {
     console.log(dep)
@@ -49,7 +65,7 @@ const NewResource = ({ categories }) => {
         break
       case 'remove':
         // eslint-disable-next-line no-case-declarations
-        const newDep = dependencies.filter(d => d.package !== dep.package)
+        const newDep = dependencies.filter(d => d.filename !== dep.filename)
         setDependencies(newDep)
         break
     }
@@ -119,7 +135,8 @@ const NewResource = ({ categories }) => {
       const status = await validateForm()
       if (status) {
         const res = await uploadToS3(selectedFile)
-        const data = { data: values, size: selectedFile.size, url: res.Location, dependencies }
+        const resourceId = selectedResource !== null ? selectedResource.id : null
+        const data = { data: values, size: selectedFile.size, url: res.Location, dependencies, type: formAction, id: resourceId }
         await Inertia.post('/resources', data)
         await clearForm()
       }

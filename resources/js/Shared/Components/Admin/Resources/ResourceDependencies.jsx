@@ -7,14 +7,14 @@ const ResourceDependencies = ({ dependencies, updateDependencies }) => {
   // const [dependencies, setDependencies] = useState([])
   const [currentDependency, setCurrentDependency] = useState({
     title: '',
-    package: '',
+    filename: '',
     mandatory: true,
     url: ''
   })
   const [showForm, setShowForm] = useState(false)
   const [errors, setErrors] = useState({
     title: '',
-    package: ''
+    filename: ''
   })
 
   function addDependency () {
@@ -26,14 +26,14 @@ const ResourceDependencies = ({ dependencies, updateDependencies }) => {
       titleError = 'Please add a title'
       hasErrors = true
     }
-    if (!/^[a-z0-9]+((\-[a-z0-9]+){1,})?$/.test(currentDependency.package)) {
+    if (!/^[a-z0-9]+((\-[a-z0-9]+){1,})?$/.test(currentDependency.filename)) {
       packageError = 'Please specify the package name in kebab case i.e package-name'
       hasErrors = true
     }
     if (hasErrors) {
       setErrors({
         title: titleError,
-        package: packageError
+        filename: packageError
       })
       return
     }
@@ -41,14 +41,14 @@ const ResourceDependencies = ({ dependencies, updateDependencies }) => {
     updateDependencies(currentDependency, 'add')
     setCurrentDependency({
       title: '',
-      package: '',
+      filename: '',
       url: '',
       mandatory: true
     })
     setShowForm(false)
     setErrors({
       title: '',
-      package: ''
+      filename: ''
     })
   }
 
@@ -57,7 +57,7 @@ const ResourceDependencies = ({ dependencies, updateDependencies }) => {
     setShowForm(false)
     setErrors({
       title: '',
-      package: ''
+      filename: ''
     })
   }
 
@@ -82,7 +82,7 @@ const ResourceDependencies = ({ dependencies, updateDependencies }) => {
       </div>
       <div>
         {dependencies && dependencies.map((dependency) => (
-          <div key={dependency.package} className="bg-orange-50 rounded shadow p-2 my-2">
+          <div key={dependency.filename} className="bg-orange-50 rounded shadow p-2 my-2">
             <div className="flex justify-between items-center">
               <div>
                 {dependency.title}
@@ -103,9 +103,9 @@ const ResourceDependencies = ({ dependencies, updateDependencies }) => {
             {errors.title && <div className="text-sm text-red-500">{errors.title}</div>}
           </div>
           <div className="my-2">
-            <Label relatedInput="package" isRequired={true} helpText="This is the MSFS package name for the dependency i.e daves-crooked-library" labelText="Package Name" />
-            <input id="package" value={currentDependency.package} onChange={handleDependencyChange} type="text" className="form-input form" />
-            {errors.package && <div className="text-sm text-red-500">{errors.package}</div>}
+            <Label relatedInput="filename" isRequired={true} helpText="This is the MSFS package name for the dependency i.e daves-crooked-library" labelText="Package Name" />
+            <input id="filename" value={currentDependency.filename} onChange={handleDependencyChange} type="text" className="form-input form" />
+            {errors.filename && <div className="text-sm text-red-500">{errors.filename}</div>}
           </div>
           <div className="my-2">
             <Label relatedInput="url" isRequired={false} helpText="This should be the url to the dependency, if it is not a Bush Divers package" labelText="Dependency URL (if external)" />
