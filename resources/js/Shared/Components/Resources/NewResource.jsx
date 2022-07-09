@@ -72,9 +72,9 @@ const NewResource = ({ categories, selectedResource, shouldClearForm }) => {
       tempErrors.title = 'Title is required'
     }
     // package
-    if (!/^[a-z0-9]+((\-[a-z0-9]+){1,})?$/.test(data.package)) {
+    if (!/^\S*$/.test(data.package)) {
       formIsValid = false
-      tempErrors.package = 'Package name is required in kebab case i.e package-name-here'
+      tempErrors.package = 'Package name is required without spaces package-name-here'
     }
     // desc
     if (!data.desc) {
@@ -137,7 +137,7 @@ const NewResource = ({ categories, selectedResource, shouldClearForm }) => {
           {errors.desc && <div className="text-sm text-red-500">{errors.desc}</div>}
         </div>
         <div className="my-2">
-          <Label relatedInput="package" isRequired={true} helpText="This should be the actual name of the MSFS package in kebab case i.e. png-airstrip-fixes" labelText="Package Name" />
+          <Label relatedInput="package" isRequired={true} helpText="This should be the actual name of the MSFS package without spaces i.e. png-airstrip-fixes" labelText="Package Name" />
           <input id="package" value={data.package} onChange={e => setData('package', e.target.value)} type="text" className="form-input form" />
           {errors.package && <div className="text-sm text-red-500">{errors.package}</div>}
         </div>

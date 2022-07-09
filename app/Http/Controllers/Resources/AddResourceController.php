@@ -19,25 +19,29 @@ class AddResourceController extends Controller
      */
     public function __invoke(Request $request): RedirectResponse
     {
-        $file = $request->file('file');
-        $filSize = $file->getSize();
-        $fileName = $file->getClientOriginalName();
-        // upload file
-        $request->file('file')->storeAs('', $fileName, 's3');
-        $res = Storage::disk('s3')->url($fileName);
+        $fileSize = null;
+        $res = null;
+        if ($file = $request->file('file')) {
+            $fileSize = $file->getSize();
+            $fileName = $file->getClientOriginalName();
+            // upload file
+            $request->file('file')->storeAs('', $fileName, 's3');
+            $res = Storage::disk('s3')->url($fileName);
+        }
 
-        $resourse = Resource::find($request->id);
 
-        if ($resourse) {
-            $this->updateResource($request, $filSize, $res, $resourse);
+        $resource = Resource::find($request->id);
+
+        if ($resource) {
+            $this->updateResource($request, $resource, $fileSize, $res);
         } else {
-            $this->createResource($request, $filSize, $res);
+            $this->createResource($request, $fileSize, $res);
         }
 
         return redirect()->back()->with(['success' => 'Resource created']);
     }
 
-    protected function createResource($request, $size, $path)
+    protected function createResource($request, $size = null, $path = null)
     {
         $resource = new Resource();
         $resource->category_id = $request->categoryId;
@@ -67,16 +71,16 @@ class AddResourceController extends Controller
         $resource->save();
     }
 
-    protected function updateResource($request, $size, $path, $resource)
+    protected function updateResource($request, $resource, $size = null, $path = null)
     {
         $resource->category_id = $request->categoryId;
         $resource->title = $request->title;
-        $resource->url = $path;
+        if ($path != null) $resource->url = $path;
         $resource->description = $request->desc;
         $resource->version = $request->version;
         $resource->filename = $request->package;
         $resource->author = $request->author;
-        $resource->file_size = $size;
+        if ($size != null) $resource->file_size = $size;
         $resource->user_id = Auth::user()->id;
 
         if ($request->dependencies) {

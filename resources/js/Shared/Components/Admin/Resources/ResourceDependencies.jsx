@@ -26,8 +26,8 @@ const ResourceDependencies = ({ dependencies, updateDependencies }) => {
       titleError = 'Please add a title'
       hasErrors = true
     }
-    if (!/^[a-z0-9]+((\-[a-z0-9]+){1,})?$/.test(currentDependency.filename)) {
-      packageError = 'Please specify the package name in kebab case i.e package-name'
+    if (!/^\S*$/.test(currentDependency.filename)) {
+      packageError = 'Please specify the package name without spaces i.e package-name'
       hasErrors = true
     }
     if (hasErrors) {
