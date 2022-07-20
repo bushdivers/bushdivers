@@ -55,10 +55,15 @@ class ShowDashboardController extends Controller
             ->distinct()
             ->get();
 
+        $distance = Pirep::where('user_id', Auth::user()->id)
+            ->where('state', PirepState::ACCEPTED)
+            ->sum('distance');
+
         return Inertia::render('Crew/Dashboard', [
             'user' => $user,
             'lastFlight' => $lastFlight,
             'locations' => $locations,
+            'distance' => $distance
         ]);
     }
 }
