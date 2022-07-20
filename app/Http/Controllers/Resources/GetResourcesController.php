@@ -17,7 +17,11 @@ class GetResourcesController extends Controller
      */
     public function __invoke(Request $request): JsonResponse
     {
-        $resources = Resource::with('category')->where('is_approved', true)->get();
+        $resources = Resource::with('category')
+            ->where('is_approved', true)
+            ->orderBy('category_id')
+            ->orderBy('title')
+            ->get();
         return response()->json(['resources' => $resources]);
     }
 }
