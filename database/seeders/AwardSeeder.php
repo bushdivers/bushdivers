@@ -27,7 +27,16 @@ class AwardSeeder extends Seeder
             ['id' => 9, 'name' => '200 Hours', 'type' => AwardType::HOURS, 'value' => 200, 'image' => 'https://res.cloudinary.com/dji0yvkef/image/upload/v1651833876/BDVA/Awards/Hours200_bua9ya.png'],
             ['id' => 10, 'name' => '500 Flights', 'type' => AwardType::FLIGHTS, 'value' => 500, 'image' => 'https://res.cloudinary.com/dji0yvkef/image/upload/v1651833875/BDVA/Awards/Flights500_smyz6r.png'],
             ['id' => 11, 'name' => '500 Hours', 'type' => AwardType::HOURS, 'value' => 500, 'image' => 'https://res.cloudinary.com/dji0yvkef/image/upload/v1651833876/BDVA/Awards/Hours500_rtcrkw.png'],
-            ['id' => 12, 'name' => 'Patreon', 'type' => AwardType::BOOLEAN, 'value' => 1, 'image' => 'https://res.cloudinary.com/dpwytlrc2/image/upload/v1630673958/VA/awards/patreon.png']
+            ['id' => 12, 'name' => 'Patreon', 'type' => AwardType::BOOLEAN, 'value' => 1, 'image' => 'https://res.cloudinary.com/dpwytlrc2/image/upload/v1630673958/VA/awards/patreon.png'],
+            ['id' => 13, 'name' => '50 Airports', 'type' => AwardType::AIRPORTS, 'value' => 50, 'image' => 'https://res.cloudinary.com/dji0yvkef/image/upload/v1658314799/BDVA/Awards/Airports50_tibw5b.png'],
+            ['id' => 14, 'name' => '100 Airports', 'type' => AwardType::AIRPORTS, 'value' => 100, 'image' => 'https://res.cloudinary.com/dji0yvkef/image/upload/v1658314799/BDVA/Awards/Airports100_waslg4.png'],
+            ['id' => 15, 'name' => '200 Airports', 'type' => AwardType::AIRPORTS, 'value' => 200, 'image' => 'https://res.cloudinary.com/dji0yvkef/image/upload/v1658314800/BDVA/Awards/Airports200_ya7vyu.png'],
+            ['id' => 16, 'name' => '500 Airports', 'type' => AwardType::AIRPORTS, 'value' => 500, 'image' => 'https://res.cloudinary.com/dji0yvkef/image/upload/v1658314799/BDVA/Awards/Airports500_kuzbdz.png'],
+            ['id' => 17, 'name' => '500 nm', 'type' => AwardType::DISTANCE, 'value' => 500, 'image' => 'https://res.cloudinary.com/dji0yvkef/image/upload/v1658314800/BDVA/Awards/Distance500_q9lbki.png'],
+            ['id' => 18, 'name' => '1000 nm', 'type' => AwardType::DISTANCE, 'value' => 1000, 'image' => 'https://res.cloudinary.com/dji0yvkef/image/upload/v1658314800/BDVA/Awards/Distance1000_aqkj7x.png'],
+            ['id' => 19, 'name' => '2000 nm', 'type' => AwardType::DISTANCE, 'value' => 2000, 'image' => 'https://res.cloudinary.com/dji0yvkef/image/upload/v1658314800/BDVA/Awards/Distance2000_vihjxl.png'],
+            ['id' => 20, 'name' => '10000 nm', 'type' => AwardType::DISTANCE, 'value' => 10000, 'image' => 'https://res.cloudinary.com/dji0yvkef/image/upload/v1658314800/BDVA/Awards/Distance10000_pbabny.png']
+//            ['id' => 21, 'name' => 'All Hubs', 'type' => AwardType::HUB, 'value' => 1, 'image' => 'https://res.cloudinary.com/dji0yvkef/image/upload/v1658314800/BDVA/Awards/Hub_lnouzb.png'],
         ]);
     }
 }

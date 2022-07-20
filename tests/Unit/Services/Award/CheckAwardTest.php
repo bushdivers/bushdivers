@@ -2,6 +2,8 @@
 
 namespace Tests\Unit\Services\Award;
 
+use App\Models\Enums\PirepState;
+use App\Models\Pirep;
 use App\Models\User;
 use App\Services\Awards\AddAwardToUser;
 use App\Services\Awards\CheckAwardStatus;
@@ -84,5 +86,42 @@ class CheckAwardTest extends TestCase
         $this->assertEquals(1, $awards->count());
     }
 
+//    public function test_airport_award_is_added()
+//    {
+//
+//        Pirep::factory()->count(52)->create([
+//            'destination_airport_id' => $this->generateRandomICAO(),
+//            'user_id' => $this->user->id,
+//            'state' => PirepState::ACCEPTED
+//        ]);
+//        $this->checkAwardStatus->execute($this->user->id);
+//        $awards = DB::table('award_user')->where('award_id', 13)->where('user_id', $this->user->id)->get();
+//        $this->assertEquals(1, $awards->count());;
+//    }
 
+    public function test_distance_award_is_added()
+    {
+        Pirep::factory()->create([
+            'distance' => 600,
+            'user_id' => $this->user->id,
+            'state' => PirepState::ACCEPTED
+        ]);
+        $this->checkAwardStatus->execute($this->user->id);
+        $awards = DB::table('award_user')->where('award_id', 17)->where('user_id', $this->user->id)->get();
+        $this->assertEquals(1, $awards->count());;
+    }
+
+    protected function generateRandomICAO(): string
+    {
+        $n = 4;
+        $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $randomString = '';
+
+        for ($i = 0; $i < $n; $i++) {
+            $index = rand(0, strlen($characters) - 1);
+            $randomString .= $characters[$index];
+        }
+
+        return $randomString;
+    }
 }

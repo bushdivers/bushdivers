@@ -4,6 +4,8 @@ namespace App\Services\Awards;
 
 use App\Models\Award;
 use App\Models\Enums\AwardType;
+use App\Models\Enums\PirepState;
+use App\Models\Pirep;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -38,6 +40,24 @@ class CheckAwardStatus
                     break;
                 case AwardType::FLIGHTS:
                     if ($user->flights >= $award->value && !$awardAchieved) {
+                        $this->addAwardToUser->execute($userId, $award->id);
+                    }
+                    break;
+                case AwardType::DISTANCE:
+                    $distance = Pirep::where('user_id', $userId)
+                        ->where('state', PirepState::ACCEPTED)
+                        ->sum('distance');
+                    if ($distance > $award->value && !$awardAchieved) {
+                        $this->addAwardToUser->execute($userId, $award->id);
+                    }
+                    break;
+                case AwardType::AIRPORTS:
+                    $airports = DB::table('pireps')
+                        ->where('user_id', $userId)
+                        ->where('state', PirepState::ACCEPTED)
+                        ->distinct()
+                        ->count('destination_airport_id');
+                    if ($airports > $award->value && !$awardAchieved) {
                         $this->addAwardToUser->execute($userId, $award->id);
                     }
                     break;
