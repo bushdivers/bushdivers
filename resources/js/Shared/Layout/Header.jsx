@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Link, usePage } from '@inertiajs/inertia-react'
 import dayjs from '../../Helpers/date.helpers'
 import Tooltip from '../Elements/Tooltip'
-import { faBurger } from '@fortawesome/free-solid-svg-icons'
+import { faBell, faBurger } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const Header = ({ heading, setNavState }) => {
@@ -52,6 +52,11 @@ const Header = ({ heading, setNavState }) => {
                   {auth.user.current_airport_id}
                 </Link>
                 </Tooltip>
+              </div>
+              <div className="mx-1">
+                <a href="https://bush-divers.releasenotes.io" target="_blank" className="rn-badge" rel="noreferrer">
+                  <FontAwesomeIcon icon={faBell} />
+                </a>
               </div>
             </div>
           </div>
