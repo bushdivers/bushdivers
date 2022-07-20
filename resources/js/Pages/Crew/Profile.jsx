@@ -128,7 +128,7 @@ const Profile = ({ profile, hubs, rank, nextRank, awards }) => {
           </div>
           <div className="rounded shadow p-4 mt-4 bg-white">
             <div>Map Style</div>
-            <div className="mt-2 flex flex-wrap">
+            <div className="my-2 flex flex-wrap">
               <div className="mx-2 flex flex-col items-start">
                 <label className="inline-flex items-center">
                   <input type="radio" className="form-radio" name="accountType" value="dark" checked={mapStyle === 'dark'} onChange={handleMapChange} />
@@ -156,6 +156,13 @@ const Profile = ({ profile, hubs, rank, nextRank, awards }) => {
                   <span className="mx-2 cursor-pointer">Satellite</span>
                 </label>
                 <img src="https://res.cloudinary.com/dji0yvkef/image/upload/c_scale,w_150/v1647292892/BDVA/maps/satellite_rcdhkd.png" />
+              </div>
+              <div className="mx-2 flex flex-col items-start">
+                <label className="inline-flex items-center">
+                  <input type="radio" className="form-radio" name="accountType" value="terrain" checked={mapStyle === 'terrain'} onChange={handleMapChange} />
+                  <span className="mx-2 cursor-pointer">Terrain (outdoor)</span>
+                </label>
+                <img src="https://res.cloudinary.com/dji0yvkef/image/upload/c_scale,w_150/v1658312019/BDVA/maps/terrain_khjw8s.png" />
               </div>
             </div>
             <Button onClick={handleUpdateMap} appearance="primary">Update</Button>
