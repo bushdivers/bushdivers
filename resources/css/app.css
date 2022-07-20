@@ -42,23 +42,22 @@ h1 {
     @apply rounded px-2 py-1;
 }
 .btn-primary {
-    @apply bg-gray-800 text-white;
-}
-.btn-primary:hover {
-    @apply bg-gray-700;
-}
-.btn-primary:focus {
-    @apply bg-gray-900;
-}
-
-.btn-secondary {
     @apply bg-orange-500 text-white;
 }
-.btn-secondary:hover {
+.btn-primary:hover {
     @apply bg-orange-400;
 }
-.btn-secondary:focus {
+.btn-primary:focus {
     @apply bg-orange-500;
+}
+.btn-secondary {
+    @apply bg-gray-800 text-white;
+}
+.btn-secondary:hover {
+    @apply bg-gray-700;
+}
+.btn-secondary:focus {
+    @apply bg-gray-900;
 }
 
 .btn-light {
