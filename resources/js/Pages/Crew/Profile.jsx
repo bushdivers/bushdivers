@@ -6,6 +6,7 @@ import ApiKey from '../../Shared/Components/Crew/ApiKey'
 import { convertMinuteDecimalToHoursAndMinutes } from '../../Helpers/date.helpers'
 import AppLayout from '../../Shared/AppLayout'
 import { faAward, faCircleCheck } from '@fortawesome/free-solid-svg-icons'
+import { Button } from '../../Components/Button'
 
 const Profile = ({ profile, hubs, rank, nextRank, awards }) => {
   const { errors } = usePage().props
@@ -25,6 +26,7 @@ const Profile = ({ profile, hubs, rank, nextRank, awards }) => {
   }
 
   function handleUpdateMap () {
+    console.log('map updated')
     Inertia.put('/settings/map', { map_style: mapStyle })
   }
 
@@ -156,7 +158,8 @@ const Profile = ({ profile, hubs, rank, nextRank, awards }) => {
                 <img src="https://res.cloudinary.com/dji0yvkef/image/upload/c_scale,w_150/v1647292892/BDVA/maps/satellite_rcdhkd.png" />
               </div>
             </div>
-            <button onClick={handleUpdateMap} className="btn btn-secondary ml-2 mt-2">Update</button>
+            {/*<button onClick={handleUpdateMap} className="btn btn-secondary ml-2 mt-2">Update</button>*/}
+            <Button onClick={handleUpdateMap} appearance="primary">Update</Button>
           </div>
         </div>
       </div>
