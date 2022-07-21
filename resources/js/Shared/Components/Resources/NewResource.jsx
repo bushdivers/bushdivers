@@ -6,6 +6,7 @@ import Uploader from '../../Elements/Uploader'
 import ProgressBar from '../../Elements/ProgressBar'
 import Label from '../../Elements/Forms/Label'
 import { useForm } from '@inertiajs/inertia-react'
+import { ZipReader, TextWriter, BlobReader } from '@zip.js/zip.js'
 
 const NewResource = ({ categories, selectedResource, shouldClearForm }) => {
   const { data, setData, post, progress, reset, processing } = useForm({
@@ -20,8 +21,11 @@ const NewResource = ({ categories, selectedResource, shouldClearForm }) => {
     id: null
   })
   const [errors, setErrors] = useState([])
+  const [formIsValid, setFormIsValid] = useState(true)
   const [dependencies, setDependencies] = useState([])
   const [selectedFile, setSelectedFile] = useState(null)
+  const [packageName, setPackageName] = useState('')
+  const [packageVersion, setPackageVersion] = useState('')
 
   useEffect(async () => {
     await setData({
@@ -35,13 +39,21 @@ const NewResource = ({ categories, selectedResource, shouldClearForm }) => {
       dependencies: selectedResource !== null && selectedResource.dependencies !== null ? selectedResource.dependencies : null,
       id: selectedResource !== null ? selectedResource.id : null
     })
-
+    setSelectedFile(null)
     setDependencies(selectedResource !== null && selectedResource.dependencies !== null ? selectedResource.dependencies : [])
   }, [selectedResource])
 
   useEffect(() => {
     setData('dependencies', dependencies)
   }, [dependencies])
+
+  useEffect(() => {
+    if (packageVersion.length) setData('version', packageVersion)
+  }, [packageVersion])
+
+  useEffect(() => {
+    if (packageName.length) setData('package', packageName)
+  }, [packageName])
 
   function updateDependencies (dep, action) {
     switch (action) {
@@ -58,37 +70,76 @@ const NewResource = ({ categories, selectedResource, shouldClearForm }) => {
     }
   }
 
-  function handleFile ({ target: { files } }) {
-    setSelectedFile(files[0])
-    setData('file', files[0])
+  async function handleFile ({ target: { files } }) {
+    const reader = new ZipReader(new BlobReader(files[0]))
+    const entries = await reader.getEntries()
+    if (entries.length) {
+      // get initial directory name
+      const pName = await processPackageName(entries[0].filename)
+      console.log(pName)
+      const version = await processPackageVersion(entries)
+      console.log(version)
+
+      if (pName !== '') {
+        setSelectedFile(files[0])
+        setData('file', files[0])
+      }
+    }
+    await reader.close()
+  }
+
+  async function processPackageVersion (entries) {
+    // loop through files to find the manifest.json file
+    for (let i = 0; i < entries.length; i++) {
+      if (entries[i].filename.includes('manifest.json')) {
+        const text = await entries[i].getData(
+          new TextWriter()
+        )
+        const manifest = JSON.parse(text)
+        await setPackageVersion(manifest.package_version)
+        return manifest.package_version
+      }
+    }
+  }
+
+  async function processPackageName (fileName) {
+    const derivedPackageName = fileName.substring(0, fileName.indexOf('/'))
+    console.log(data.package)
+    console.log(derivedPackageName)
+    if (data.package && derivedPackageName !== data.package) {
+      setErrors({ ...errors, package: 'Package Name in new zip file does not match existing package - please update the zip to match the existing package name' })
+      setFormIsValid(false)
+      return ''
+    }
+    await setPackageName(derivedPackageName)
+    return derivedPackageName
   }
 
   async function validateForm () {
     const tempErrors = {}
-    let formIsValid = true
     // title
     if (!data.title) {
-      formIsValid = false
+      setFormIsValid(false)
       tempErrors.title = 'Title is required'
     }
-    // package
-    if (!/^\S*$/.test(data.package)) {
-      formIsValid = false
-      tempErrors.package = 'Package name is required without spaces package-name-here'
+    // // package
+    if (!data.package) {
+      setFormIsValid(false)
+      tempErrors.package = 'Package name is required'
     }
     // desc
     if (!data.desc) {
-      formIsValid = false
+      setFormIsValid(false)
       tempErrors.desc = 'Description is required'
     }
-    // version
-    if (!/[0-9]+\.[0-9]+\.[0-9]+/.test(data.version)) {
-      formIsValid = false
-      tempErrors.version = 'Version is required in 0.0.0 format'
+    // // version
+    if (!data.version) {
+      setFormIsValid(false)
+      tempErrors.version = 'Version is required'
     }
     // author
     if (!data.author) {
-      formIsValid = false
+      setFormIsValid(false)
       tempErrors.author = 'Author display name is required'
     }
     setErrors(tempErrors)
@@ -137,13 +188,13 @@ const NewResource = ({ categories, selectedResource, shouldClearForm }) => {
           {errors.desc && <div className="text-sm text-red-500">{errors.desc}</div>}
         </div>
         <div className="my-2">
-          <Label relatedInput="package" isRequired={true} helpText="This should be the actual name of the MSFS package without spaces i.e. png-airstrip-fixes" labelText="Package Name" />
-          <input id="package" value={data.package} onChange={e => setData('package', e.target.value)} type="text" className="form-input form" />
+          <Label relatedInput="package" isRequired={false} helpText="This will be retrieved from the folder name in the zip file" labelText="Package Name" />
+          <input id="package" value={data.package} type="text" disabled={true} className="form-input form bg-gray-100" />
           {errors.package && <div className="text-sm text-red-500">{errors.package}</div>}
         </div>
         <div className="my-2">
-          <Label relatedInput="version" isRequired={true} helpText="This is the version number of the package in the format 0.0.0" labelText="Package Version" />
-          <input id="version" value={data.version} onChange={e => setData('version', e.target.value)} type="text" className="form-input form" />
+          <Label relatedInput="version" isRequired={false} helpText="This will be retrieved from the manifest.json file in the zip file" labelText="Package Version" />
+          <input id="version" value={data.version} disabled={true} type="text" className="form-input form bg-gray-100" />
           {errors.version && <div className="text-sm text-red-500">{errors.version}</div>}
         </div>
         <div className="mt-2 mb-4">
