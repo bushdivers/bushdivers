@@ -20,7 +20,7 @@ class AddResourceController extends Controller
     public function __invoke(Request $request): RedirectResponse
     {
         $resource = Resource::find($request->id);
-        if ($resource->filename != $request->package) {
+        if ($resource && $resource->filename != $request->package) {
             return redirect()->back()->with(['error' => 'The package name in the new file does not match the existing package name']);
         }
 
