@@ -19,6 +19,11 @@ class AddResourceController extends Controller
      */
     public function __invoke(Request $request): RedirectResponse
     {
+        $resource = Resource::find($request->id);
+        if ($resource->filename != $request->package) {
+            return redirect()->back()->with(['error' => 'The package name in the new file does not match the existing package name']);
+        }
+
         $fileSize = null;
         $res = null;
         if ($file = $request->file('file')) {
@@ -28,9 +33,6 @@ class AddResourceController extends Controller
             $request->file('file')->storeAs('', $fileName, 's3');
             $res = Storage::disk('s3')->url($fileName);
         }
-
-
-        $resource = Resource::find($request->id);
 
         if ($resource) {
             $this->updateResource($request, $resource, $fileSize, $res);

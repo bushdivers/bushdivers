@@ -21,7 +21,6 @@ const NewResource = ({ categories, selectedResource, shouldClearForm }) => {
     id: null
   })
   const [errors, setErrors] = useState([])
-  const [formIsValid, setFormIsValid] = useState(true)
   const [dependencies, setDependencies] = useState([])
   const [selectedFile, setSelectedFile] = useState(null)
   const [packageName, setPackageName] = useState('')
@@ -71,6 +70,8 @@ const NewResource = ({ categories, selectedResource, shouldClearForm }) => {
   }
 
   async function handleFile ({ target: { files } }) {
+    setSelectedFile(files[0])
+    setData('file', files[0])
     const reader = new ZipReader(new BlobReader(files[0]))
     const entries = await reader.getEntries()
     if (entries.length) {
@@ -80,10 +81,10 @@ const NewResource = ({ categories, selectedResource, shouldClearForm }) => {
       const version = await processPackageVersion(entries)
       console.log(version)
 
-      if (pName !== '') {
-        setSelectedFile(files[0])
-        setData('file', files[0])
-      }
+      // if (pName !== '') {
+      //   setSelectedFile(files[0])
+      //   setData('file', files[0])
+      // }
     }
     await reader.close()
   }
@@ -106,40 +107,40 @@ const NewResource = ({ categories, selectedResource, shouldClearForm }) => {
     const derivedPackageName = fileName.substring(0, fileName.indexOf('/'))
     console.log(data.package)
     console.log(derivedPackageName)
-    if (data.package && derivedPackageName !== data.package) {
-      setErrors({ ...errors, package: 'Package Name in new zip file does not match existing package - please update the zip to match the existing package name' })
-      setFormIsValid(false)
-      return ''
-    }
+    // if (data.package && derivedPackageName !== data.package) {
+    //   setErrors({ ...errors, package: 'Package Name in new zip file does not match existing package - please update the zip to match the existing package name' })
+    //   return ''
+    // }
     await setPackageName(derivedPackageName)
     return derivedPackageName
   }
 
   async function validateForm () {
     const tempErrors = {}
+    let formIsValid = true
     // title
     if (!data.title) {
-      setFormIsValid(false)
+      formIsValid = false
       tempErrors.title = 'Title is required'
     }
     // // package
     if (!data.package) {
-      setFormIsValid(false)
+      formIsValid = false
       tempErrors.package = 'Package name is required'
     }
     // desc
     if (!data.desc) {
-      setFormIsValid(false)
+      formIsValid = false
       tempErrors.desc = 'Description is required'
     }
     // // version
     if (!data.version) {
-      setFormIsValid(false)
+      formIsValid = false
       tempErrors.version = 'Version is required'
     }
     // author
     if (!data.author) {
-      setFormIsValid(false)
+      formIsValid = false
       tempErrors.author = 'Author display name is required'
     }
     setErrors(tempErrors)
