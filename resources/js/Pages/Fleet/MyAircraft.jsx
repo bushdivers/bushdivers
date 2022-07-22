@@ -6,6 +6,7 @@ import { faCheckCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Inertia } from '@inertiajs/inertia'
 import axios from 'axios'
+import { convertMinuteDecimalToHoursAndMinutes } from '../../Helpers/date.helpers'
 
 const MyAircraft = ({ aircraft, rentals, agreements }) => {
   const handleCancel = (agreement) => {
@@ -54,7 +55,7 @@ const MyAircraft = ({ aircraft, rentals, agreements }) => {
                 <td>{ac.fleet.type}</td>
                 <td>{ac.current_airport_id}</td>
                 <td>{ac.hub_id}</td>
-                <td>{ac.flight_time_mins}</td>
+                <td>{convertMinuteDecimalToHoursAndMinutes(ac.flight_time_mins)}</td>
                 <td><AircraftCondition aircraftCondition={ac.wear} /></td>
                 <td><button onClick={() => handleSale(ac)} className="btn btn-small btn-secondary">Sell</button></td>
               </tr>
