@@ -115,9 +115,9 @@ const Profile = ({ profile, hubs, rank, nextRank, awards }) => {
             </div>
             {!awards.length
               ? <div className="mt-1 text-sm text-center">No awards yet. <Link href="/ranks#awards">Earn some!</Link></div>
-              : <div className="mt-4 flex flex-col md:flex-row justify-start">
+              : <div className="mt-4 flex flex-col md:flex-row flex-wrap justify-center items-center">
                 {awards && awards.map((award) => (
-                  <div className="mx-2 flex flex-col justify-center content-center items-center my-1"
+                  <div className="mx-2 my-1 w-1/6 flex flex-col items-center"
                        key={award.id}>
                     <img height="100" width="100" src={award.image}/>
                     <div className="mt-1 text-sm text-center">{award.name}</div>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Crew;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -18,10 +19,20 @@ class ShowPilotRosterController extends Controller
      */
     public function __invoke(Request $request): Response
     {
-        $users = User::with('rank', 'location')
-            ->where('is_active', true)
-            ->get();
+        $sortBy = $request->sortBy != null ? $request->sortBy : 'id';
+        $direction = $request->direction != null ? $request->direction : 'asc';
 
-        return Inertia::render('Crew/Roster', ['roster' => $users]);
+        $users = Cache::get('roster', function () {
+            return User::with('rank', 'location')
+                ->where('is_active', true)
+                ->orderBy('id')
+                ->get();
+        });
+
+
+
+        return Inertia::render('Crew/Roster', ['roster' => $users->sortBy([
+            [$sortBy, $direction]
+        ])]);
     }
 }

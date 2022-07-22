@@ -107,7 +107,7 @@ class User extends Authenticatable
 
     public function awards()
     {
-        return $this->belongsToMany(Award::class, 'award_user');
+        return $this->belongsToMany(Award::class, 'award_user')->orderBy('awards.type')->orderBy('awards.value');
     }
 
     public function location()
