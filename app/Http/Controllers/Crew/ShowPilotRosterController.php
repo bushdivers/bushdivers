@@ -22,14 +22,15 @@ class ShowPilotRosterController extends Controller
         $sortBy = $request->sortBy != null ? $request->sortBy : 'id';
         $direction = $request->direction != null ? $request->direction : 'asc';
 
-        $users = Cache::get('roster', function () {
-            return User::with('rank', 'location')
+        if (Cache::has('roster')) {
+            $users = Cache::get('roster');
+        } else {
+            $users = User::with('rank', 'location')
                 ->where('is_active', true)
                 ->orderBy('id')
                 ->get();
-        });
-
-
+            Cache::put('roster', $users, now()->addMinutes(60));
+        }
 
         return Inertia::render('Crew/Roster', ['roster' => $users->sortBy([
             [$sortBy, $direction]
