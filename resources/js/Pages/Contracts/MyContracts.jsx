@@ -9,6 +9,7 @@ import CargoDetails from '../../Shared/Components/Contracts/CargoDetails'
 import MyContractMap from '../../Shared/Components/Contracts/MyContractMap'
 import AppLayout from '../../Shared/AppLayout'
 import { faAnchor, faArrowUp, faTicket, faXmark } from '@fortawesome/free-solid-svg-icons'
+import CommunityContracts from '../../Shared/Components/Contracts/CommunityContracts'
 
 const EmptyData = (props) => {
   return (
@@ -28,7 +29,7 @@ const AirportToolTip = (props) => {
   )
 }
 
-const MyContracts = ({ contracts, custom }) => {
+const MyContracts = ({ contracts, custom, community }) => {
   const { auth } = usePage().props
   const [selectedContract, setSelectedContract] = useState('')
   const [showDetail, setShowDetail] = useState(false)
@@ -133,6 +134,9 @@ const MyContracts = ({ contracts, custom }) => {
               // )
             }
           </div>
+
+          <CommunityContracts contracts={community} selectedContract={selectedContract} showDetail={showDetail} toggleDetail={setShowDetail} updateSelectedContract={updateSelectedContract} />
+
           <h2>Available Contracts</h2>
           <div className="rounded shadow bg-white overflow-x-auto mt-4">
             {!contracts && <NoContent content={<EmptyData text="No available contracts" />} />}

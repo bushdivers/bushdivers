@@ -30,11 +30,21 @@ class ShowActiveContractsController extends Controller
         $contracts = Contract::with('depAirport', 'arrAirport', 'cargo', 'cargo.currentAirport')
             ->where('is_completed', false)
             ->where('is_available', false)
+            ->where('contract_type_id', 1)
             ->where('user_id', null)
             ->orderBy('dep_airport_id', 'asc')
             ->orderBy('heading', 'asc')
             ->get();
 
-        return Inertia::render('Contracts/MyContracts', ['contracts' => $contracts, 'custom' => $customContracts]);
+        $community = Contract::with('depAirport', 'arrAirport', 'cargo', 'cargo.currentAirport')
+            ->where('is_completed', false)
+            ->where('is_available', false)
+            ->where('contract_type_id', 3)
+            ->where('user_id', null)
+            ->orderBy('dep_airport_id', 'asc')
+            ->orderBy('heading', 'asc')
+            ->get();
+
+        return Inertia::render('Contracts/MyContracts', ['contracts' => $contracts, 'custom' => $customContracts, 'community' => $community]);
     }
 }
