@@ -74,7 +74,7 @@ const Dispatch = ({ cargo, aircraft }) => {
     }
     const amount = window.prompt('Enter quantity to split (this will create a new cargo entry with that amount)')
     if (amount) {
-      if (amount < cargo.cargo_qty) {
+      if (amount < cargo.cargo_qty && amount % 1 === 0) {
         // make api call
         const data = {
           id: cargo.id,
@@ -88,7 +88,7 @@ const Dispatch = ({ cargo, aircraft }) => {
           window.alert('Issue splitting cargo')
         }
       } else {
-        window.alert(`New cargo amount must be less than the total cargo: ${cargo.cargo_qty}`)
+        window.alert(`Either you are trying to split a person in half, or new cargo amount must be less than the total cargo: ${cargo.cargo_qty}`)
       }
     } else {
       window.alert('Cargo split has been cancelled')
