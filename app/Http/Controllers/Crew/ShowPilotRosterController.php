@@ -29,7 +29,7 @@ class ShowPilotRosterController extends Controller
                 ->where('is_active', true)
                 ->orderBy('id')
                 ->get();
-            Cache::put('roster', $users, now()->addMinutes(60));
+            Cache::put('roster', $users, now()->addMinutes(720));
         }
 
         return Inertia::render('Crew/Roster', ['roster' => $users->sortBy([
