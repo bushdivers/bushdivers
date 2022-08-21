@@ -19,7 +19,7 @@ const LogbookSecondary = ({ pirep }) => {
         </div>
         <div className="flex flex-col items-center my-2 mx-4">
           <div className="text-sm">Points</div>
-          <div className="text-xl">{pirep.score.toLocaleString(navigator.language)}</div>
+          <div className="text-xl">{pirep.score?.toLocaleString(navigator.language) ?? '-'}</div>
         </div>
       </div>
     </div>
