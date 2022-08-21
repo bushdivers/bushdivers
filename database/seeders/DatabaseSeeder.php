@@ -24,7 +24,9 @@ class DatabaseSeeder extends Seeder
             FleetSeeder::class,
             AircraftSeeder::class,
             AirportSeeder::class,
-            ResourceCategorySeeder::class
+            ResourceCategorySeeder::class,
+            AirlineFeeSeeder::class,
+            RoleSeeder::class
         ]);
 
     }
