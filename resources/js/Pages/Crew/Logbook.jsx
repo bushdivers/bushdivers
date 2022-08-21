@@ -44,7 +44,7 @@ const Logbook = ({ logbook }) => {
                 <tbody>
                 {logbook.data.map((entry) => (
                   <tr key={entry.id}>
-                    <td className="text-orange-500 hover:underline" onClick={() => loadPirep(entry)}>
+                    <td className="text-orange-500 hover:underline cursor-pointer" onClick={() => loadPirep(entry)}>
                       View Pirep
                       {entry.state === 5 && <span className="bg-orange-500 px-2 ml-2 text-white text-sm rounded">Review</span>}
                     </td>
