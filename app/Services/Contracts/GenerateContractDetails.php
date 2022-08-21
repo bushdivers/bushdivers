@@ -73,5 +73,7 @@ class GenerateContractDetails
         } catch (\Exception $e) {
             Log::channel('single')->debug($e->getMessage(), ['where' => 'Contract details generation']);
         }
+
+        return [];
     }
 }
