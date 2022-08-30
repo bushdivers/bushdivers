@@ -43,7 +43,6 @@ const Aircraft = ({ aircraft, maintenanceStatus, pireps }) => {
   }
 
   const checkAircraftAtHub = (aircraft) => {
-    if (aircraft.owner_id === auth.user.id) return true
     if (aircraft.location.is_hub || aircraft.location.size >= 3) return true
   }
 

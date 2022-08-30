@@ -55,7 +55,10 @@ class PerformMaintenanceController extends Controller
     public function __invoke(Request $request): RedirectResponse
     {
         $engine = null;
-        $aircraft = Aircraft::find($request->aircraft);
+        $aircraft = Aircraft::with('location')->find($request->aircraft);
+
+        if ($aircraft->location->size < 3) return redirect()->back()->with(['error' => 'You cannot perform maintenance at this location']);
+
         if ($request->engine) {
             $engine = AircraftEngine::find($request->engine);
         }
