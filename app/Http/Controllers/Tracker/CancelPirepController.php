@@ -23,7 +23,10 @@ class CancelPirepController extends Controller
     {
         try {
             $pirep = Pirep::where('user_id', Auth::user()->id)
-                ->where('state', '<>', PirepState::ACCEPTED)
+                ->where(function ($q) {
+                    $q->where('state', PirepState::DISPATCH)
+                      ->orWhere('state', PirepState::IN_PROGRESS);
+                })
                 ->first();
 
             $pirep->state = PirepState::DISPATCH;

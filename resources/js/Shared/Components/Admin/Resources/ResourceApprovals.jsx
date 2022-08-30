@@ -49,7 +49,7 @@ const ResourceApprovals = ({ resources }) => {
               <td><a className="link" href={r.url}>{r.title}</a></td>
               <td>{r.filename}</td>
               <td>{r.version}</td>
-              <td>{r.user.name}</td>
+              <td>{r.user?.name}</td>
               <td>{r.author}</td>
               <td>
                 {r.dependencies && r.dependencies.length > 0 ? <>{r.dependencies.length}</> : 0}
