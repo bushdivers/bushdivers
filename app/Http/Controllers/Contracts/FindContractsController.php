@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Airport;
 use App\Services\Contracts\GenerateContracts;
 use App\Services\Contracts\GetContractsFromCriteria;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Inertia\Inertia;
@@ -45,7 +46,7 @@ class FindContractsController extends Controller
                 $numToGenerate = $airport->size >= 3 ? 12 : 5;
             }
             $contracts = $this->generateContracts->execute($airport, $numToGenerate, $request->flightLength, $request->aircraftSize);
-            Cache::put($key, $contracts, now()->addSeconds(120));
+            Cache::put($key, $contracts, Carbon::now()->secondsUntilEndOfDay());
         }
 
         return Inertia::render('Contracts/Contracts', ['searchedContracts' => $contracts, 'airport' => $airport]);
