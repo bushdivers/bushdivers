@@ -29,6 +29,10 @@ class CreateCustomRouteController extends Controller
      */
     public function __invoke(CustomRouteRequest $request): RedirectResponse
     {
+        if (strtoupper($request->departure) == strtoupper($request->arrival)) {
+            return redirect()->back()->with(['error' => 'The departure and arrival must be different']);
+        }
+
         $existingCustom = Contract::where('user_id', Auth::user()->id)
             ->where('is_completed', false)
             ->count();
@@ -39,7 +43,6 @@ class CreateCustomRouteController extends Controller
 
         try {
             $this->createCustomRoute->execute(strtoupper($request->departure), strtoupper($request->arrival), Auth::user()->id);
-
             return redirect()->back()->with(['success' => 'Custom route created and added to "My Contracts"']);
         } catch (ModelNotFoundException $exception) {
             return redirect()->back()->with(['error' => 'Airport not found']);

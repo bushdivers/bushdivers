@@ -16,6 +16,10 @@ const CustomContract = ({ departureIcao, hideSection }) => {
 
   const handleCreate = async () => {
     if (dep && arr) {
+      if (dep === arr) {
+        setError('Departure and arrival cannot be the same')
+        return
+      }
       await Inertia.post('/contracts/custom', { departure: dep, arrival: arr })
       hideSection()
     } else {
