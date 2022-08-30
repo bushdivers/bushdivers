@@ -10,7 +10,7 @@ use Carbon\Carbon;
 
 class StoreContract
 {
-    public function execute(ContractInfo $data, $expiry)
+    public function execute(ContractInfo $data, $expiry, $userId = null)
     {
         $cargo = $data->getCargo();
         $contract = new Contract();

@@ -41,7 +41,7 @@ const AirportToolTip = (props) => {
   )
 }
 
-const Contracts = ({ searchedContracts, airport }) => {
+const Contracts = ({ searchedContracts, airport, cacheKey }) => {
   const { auth } = usePage().props
   const [contracts, setContracts] = useState(searchedContracts)
   const [selectedAirport, setSelectedAirport] = useState('')
@@ -98,18 +98,20 @@ const Contracts = ({ searchedContracts, airport }) => {
   }
 
   const bidForContract = async (contract) => {
+    const newContracts = contracts.filter(c => c.id !== contract.id)
     const data = {
       contract: contract,
-      icao: searchForm.searchIcao
+      icao: searchForm.searchIcao,
+      userId: auth.user.id,
+      contracts: newContracts,
+      cacheKey
     }
     const bid = axios.post('/api/contracts/bid', data)
     await toast.promise(bid, {
       loading: '...Bidding on contract',
       success: 'Contract won!',
       error: 'Issue processing bid'
-    }, { position: 'top-right'})
-
-    const newContracts = contracts.filter(c => c.id !== contract.id)
+    }, { position: 'top-right' })
     setContracts(newContracts)
 
     // toast.loading('...Bidding on contract')
