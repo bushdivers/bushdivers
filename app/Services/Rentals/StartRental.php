@@ -55,22 +55,23 @@ class StartRental
         $valid = false;
         $reg = '';
         if ($country == 'PG' || $country == 'ID') {
-            $min = 1;
-            $max = 99;
+           $qty = 3;
         } else {
-            $min = 1;
-            $max = 999;
+            $qty = 4;
         }
 
         while ($valid == false) {
+            $num = [];
             if ($country == 'PG' || $country == 'ID') {
-                $num = mt_rand(1, 99);
-                $num = str_pad($num, 2, 0, STR_PAD_LEFT);
-                $reg = 'P2-R'.$num;
+                for ($i = 0; $i < $qty; $i++) {
+                    $num[$i] = mt_rand(0, 9);
+                }
+                $reg = 'P2-R'.$num[0].$num[1].$num[2];
             } else {
-                $num = mt_rand(1, 999);
-                $num = str_pad($num, 3, 0, STR_PAD_LEFT);
-                $reg = 'N'.$num.'R';
+                for ($i = 0; $i < $qty; $i++) {
+                    $num[$i] = mt_rand(0, 9);
+                }
+                $reg = 'N'.$num[0].$num[1].$num[2].$num[3].'R';
             }
 
             $rental = Rental::where('registration', $reg)
