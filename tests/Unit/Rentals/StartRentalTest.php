@@ -88,14 +88,14 @@ class StartRentalTest extends TestCase
         $this->startRental->execute($this->fleet->id, $this->user->id, 'PAMX');
         $rental = Rental::where('user_id', $this->user->id)->first();
 
-        $this->assertMatchesRegularExpression('/([N])([0-9]){3}([R])/', $rental->registration);
+        $this->assertMatchesRegularExpression('/([N])([0-9]){4}([R])/', $rental->registration);
     }
 
     public function test_registration_generated_png()
     {
         $this->startRental->execute($this->fleet->id, $this->user->id, 'AYMR');
         $rental = Rental::where('user_id', $this->user->id)->first();
-        $this->assertMatchesRegularExpression('/([P])([2])([\-])([R])([0-9]){2}/', $rental->registration);
+        $this->assertMatchesRegularExpression('/([P])([2])([\-])([R])([0-9]){3}/', $rental->registration);
     }
 
     public function test_account_transaction_added()
