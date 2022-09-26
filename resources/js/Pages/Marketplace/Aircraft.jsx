@@ -19,7 +19,7 @@ const Aircraft = ({ fleet }) => {
             </div>
             <div className="flex flex-col text-sm">
               <span>Powerplants: {f.number_of_engines} x {f.powerplants}</span>
-              <span>Fuel Type: {fleet.fuel_type === 1 ? <span>Avgas</span> : <span>Jet Fuel</span>}</span>
+              <span>Fuel Type: {f.fuel_type === 1 ? <span>Avgas</span> : <span>Jet Fuel</span>}</span>
               <span>Fuel Capacity: {f.fuel_capacity} gal</span>
               <span>ZFW: {f.zfw} lbs</span>
               <span>MTOW: {f.mtow} lbs</span>

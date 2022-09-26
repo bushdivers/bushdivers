@@ -10,7 +10,7 @@ const Footer = () => {
         <div>
           &copy; Bush Divers {date}
         </div>
-        <div>
+        <div className="space-x-1">
           <Link className="mr-4" href="/privacy">Privacy Policy</Link>
           <Link href="/supporters">Supporters</Link>
         </div>
