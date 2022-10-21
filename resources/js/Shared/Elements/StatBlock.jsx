@@ -6,7 +6,7 @@ const StatBlock = ({ width, data, text }) => {
       <div className="text-2xl font-bold">
         {data}
       </div>
-      <div className="text-gray-800">
+      <div>
         {text}
       </div>
     </div>

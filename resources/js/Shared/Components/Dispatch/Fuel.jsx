@@ -1,9 +1,10 @@
 import React from 'react'
+import Card from '../../Elements/Card'
 
 const Fuel = (props) => {
   return (
-    <div className="shadow rounded p-4 mt-2 mr-2 bg-white">
-      <div className="text-xl">Select Fuel</div>
+    <div className="mt-2 mr-2">
+      <Card title="Select Fuel">
       {props.selectedAircraft && (
         <div>
           <div>Useable Fuel (gal): {props.selectedAircraft.fleet.fuel_capacity}</div>
@@ -16,6 +17,7 @@ const Fuel = (props) => {
           </div>
         </div>
       )}
+      </Card>
     </div>
   )
 }

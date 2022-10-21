@@ -16,10 +16,10 @@ const AircraftCondition = ({ aircraftCondition }) => {
 
   return (
     <div className="flex justify-between items-center space-x-2">
-      <div className="w-full bg-gray-200 rounded h-2.5">
+      <div className="w-full bg-gray-200 bg-gray-700 rounded h-2.5">
         <div className={`${conditionColour(aircraftCondition)} h-2.5 rounded`} style={conditionStyle(aircraftCondition)}></div>
       </div>
-      <div className="text-sm font-medium text-gray-800">{aircraftCondition}%</div>
+      <div className="text-sm font-medium">{aircraftCondition}%</div>
     </div>
   )
 }

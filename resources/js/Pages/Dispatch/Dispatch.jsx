@@ -9,6 +9,7 @@ import Cargo from '../../Shared/Components/Dispatch/Cargo'
 import Aircraft from '../../Shared/Components/Dispatch/Aircraft'
 import { Inertia } from '@inertiajs/inertia'
 import AppLayout from '../../Shared/AppLayout'
+import Card from '../../Shared/Elements/Card'
 
 const Dispatch = ({ cargo, aircraft }) => {
   const { auth } = usePage().props
@@ -179,7 +180,7 @@ const Dispatch = ({ cargo, aircraft }) => {
 
   return (
     <div className="p-4">
-      <h1>{`Dispatch - ${auth.user.current_airport_id}`}</h1>
+      <h2>{`Dispatch - ${auth.user.current_airport_id}`}</h2>
       <div className="flex flex-col md:flex-row justify-between mt-4">
         <div className="md:w-1/2">
           <Aircraft aircraft={aircraft} selectedAircraft={selectedAircraft} handleAircraftSelect={handleAircraftSelect} />
@@ -188,7 +189,7 @@ const Dispatch = ({ cargo, aircraft }) => {
           <Fuel selectedAircraft={selectedAircraft} fuel={fuel} handleUpdateFuel={handleUpdateFuel} error={error} />
         </div>
         <div className="md:w-1/2 mt-2">
-          <div className="shadow rounded p-4 md:ml-2 bg-white">
+          <div className="md:ml-2">
             <DispatchSummary
               selectedAircraft={selectedAircraft}
               selectedCargo={selectedCargo}
@@ -201,7 +202,7 @@ const Dispatch = ({ cargo, aircraft }) => {
               deadHead={deadHead}
             />
             <div className="mt-2 text-right">
-              <button onClick={() => handleSubmitDispatch()} className="btn btn-secondary">File Dispatch</button><br />
+              <button onClick={() => handleSubmitDispatch()} className="btn btn-primary">File Dispatch</button><br />
               {submitError && <div className="text-red-500 text-xs">{submitError}</div>}
             </div>
           </div>

@@ -31,15 +31,15 @@ const CustomContract = ({ departureIcao, hideSection }) => {
     <div className="flex items-end">
       {error && <div className="text-sm text-red-500 mt-1">{error}</div>}
       <div className="inline-block mx-2">
-        <label htmlFor="icao"><span className="text-gray-700">Departure Airport (ICAO)</span></label>
+        <label htmlFor="icao"><span>Departure Airport (ICAO)</span></label>
         <input id="icao" type="text" className="form-input form" value={dep} onChange={handleChangeDep} />
       </div>
       <div className="inline-block mx-2">
-        <label htmlFor="icao"><span className="text-gray-700">Arrival Airport (ICAO)</span></label>
+        <label htmlFor="icao"><span>Arrival Airport (ICAO)</span></label>
         <input id="icao" type="text" className="form-input form" value={arr} onChange={handleChangeArr} />
       </div>
       <div className="inline-block mx-2">
-        <button onClick={() => handleCreate()} className="btn btn-secondary">Create</button>
+        <button onClick={() => handleCreate()} className="btn btn-primary">Create</button>
       </div>
     </div>
   )

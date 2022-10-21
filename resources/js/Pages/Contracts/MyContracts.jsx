@@ -10,6 +10,7 @@ import MyContractMap from '../../Shared/Components/Contracts/MyContractMap'
 import AppLayout from '../../Shared/AppLayout'
 import { faAnchor, faArrowUp, faTicket, faXmark } from '@fortawesome/free-solid-svg-icons'
 import CommunityContracts from '../../Shared/Components/Contracts/CommunityContracts'
+import Card from '../../Shared/Elements/Card'
 
 const EmptyData = (props) => {
   return (
@@ -56,8 +57,9 @@ const MyContracts = ({ contracts, custom, community }) => {
     <div className="p-4">
       <div className="flex flex-col lg:flex-row justify-between mt-4">
         <div className="lg:w-2/3 lg:mr-2">
-          <h2>My Contracts</h2>
-          <div className="rounded shadow bg-white overflow-x-auto my-4">
+          <h3>My Contracts</h3>
+          <div className="overflow-x-auto my-4">
+            <Card>
             {!custom && <NoContent content={<EmptyData text="No custom contracts" />} />}
             {custom && custom.length > 0 &&
             // (
@@ -81,7 +83,7 @@ const MyContracts = ({ contracts, custom, community }) => {
                 <tbody className="cursor-pointer">
                 {custom && custom.map((contract) => (
                   <>
-                    <tr key={contract.id} onClick={() => updateSelectedContract(contract)} className={contract.id === selectedContract.id ? 'bg-orange-200 hover:bg-orange-100' : ''}>
+                    <tr key={contract.id} onClick={() => updateSelectedContract(contract)} className={contract.id === selectedContract.id ? 'bbg-orange-200 hover:bg-orange-100 dark:bg-gray-700 dark:hover:bg-gray-600 cursor-pointer' : ''}>
                       <td>
                         <Tooltip content={<AirportToolTip airport={contract.dep_airport} />} direction="top">
                           <Link href={`/airports/${contract.dep_airport_id}`}>{contract.dep_airport_id}</Link> {contract.dep_airport.longest_runway_surface === 'W' && <FontAwesomeIcon icon={faAnchor} />}
@@ -133,18 +135,20 @@ const MyContracts = ({ contracts, custom, community }) => {
             </div>
               // )
             }
+            </Card>
           </div>
 
-          <CommunityContracts contracts={community} selectedContract={selectedContract} showDetail={showDetail} toggleDetail={setShowDetail} updateSelectedContract={updateSelectedContract} />
+          {/*<CommunityContracts contracts={community} selectedContract={selectedContract} showDetail={showDetail} toggleDetail={setShowDetail} updateSelectedContract={updateSelectedContract} />*/}
 
-          <h2>Available Contracts</h2>
-          <div className="rounded shadow bg-white overflow-x-auto mt-4">
+          <h3>Available Contracts</h3>
+          <div className="overflow-x-auto mt-4">
+            <Card>
             {!contracts && <NoContent content={<EmptyData text="No available contracts" />} />}
             {contracts && contracts.length > 0 &&
             // (
                 <div>
                   <div>
-                    <button onClick={toggleDetail} className="btn btn-secondary m-2">Toggle Cargo Details</button>
+                    <button onClick={toggleDetail} className="btn btn-secondary mb-2">Toggle Cargo Details</button>
                   </div>
                   <table className="table-condensed table-auto">
                     <thead>
@@ -162,7 +166,7 @@ const MyContracts = ({ contracts, custom, community }) => {
                     <tbody className="cursor-pointer">
                     {contracts && contracts.map((contract) => (
                       <>
-                      <tr key={contract.id} onClick={() => updateSelectedContract(contract)} className={contract.id === selectedContract.id ? 'bg-orange-200 hover:bg-orange-100 cursor-pointer' : 'cursor-pointer'}>
+                      <tr key={contract.id} onClick={() => updateSelectedContract(contract)} className={contract.id === selectedContract.id ? 'bg-orange-200 hover:bg-orange-100 dark:bg-gray-700 dark:hover:bg-gray-600 cursor-pointer' : 'cursor-pointer'}>
                         <td>
                            <Tooltip content={<AirportToolTip airport={contract.dep_airport} />} direction="top">
                              <Link href={`/airports/${contract.dep_airport_id}`}>{contract.dep_airport_id}</Link> {contract.dep_airport.longest_runway_surface === 'W' && <FontAwesomeIcon icon={faAnchor} />}
@@ -220,10 +224,11 @@ const MyContracts = ({ contracts, custom, community }) => {
                 </div>
               // )
             }
+            </Card>
           </div>
         </div>
         <div className="lg:w-1/3 lg:ml-2 mt-2 lg:mt-0">
-          { contracts && contracts.length > 0 && <div className="rounded shadow bg-white p-4">
+          { contracts && contracts.length > 0 && <div className="rounded shadow">
             <MyContractMap data={selectedContract} size="large" mapStyle={auth.user.map_style} />
           </div>}
         </div>

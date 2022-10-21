@@ -44,7 +44,7 @@ ul.disc {
 }
 
 .form {
-    @apply mt-1 block w-full shadow-sm border-gray-300 rounded-lg
+    @apply mt-1 block w-full shadow-sm border-gray-300 dark:border-gray-700 rounded-lg border text-sm focus:ring-orange-500 focus:border-orange-500 block w-full p-2.5 bg-white dark:bg-gray-800;
 }
 .form:focus {
     @apply ring-orange-500 border-orange-500 border;
@@ -66,14 +66,14 @@ ul.disc {
     @apply ring-orange-300 dark:ring-orange-800;
 }
 
-.btn-light {
+.btn-secondary {
     @apply bg-gray-200 text-gray-800 dark:text-gray-200 dark:bg-gray-900;
 }
-.btn-light:hover {
-    @apply bg-gray-100 dark:bg-gray-800;
+.btn-secondary:hover {
+    @apply bg-gray-100 dark:bg-gray-700;
 }
-.btn-light:focus {
-    @apply ring-gray-50 dark:ring-gray-700;
+.btn-secondary:focus {
+    @apply ring-gray-50 dark:ring-gray-600;
 }
 
 .btn-small {
@@ -82,28 +82,28 @@ ul.disc {
 
 
 .table {
-    @apply min-w-full divide-y divide-gray-200;
+    @apply min-w-full rounded-lg divide-y dark:divide-gray-700;
 }
 .table-condensed {
-    @apply min-w-full divide-y divide-gray-200 text-sm;
+    @apply min-w-full text-sm divide-y dark:divide-gray-700;
 }
 .table thead {
-    @apply bg-gray-50;
+    @apply bg-gray-50 dark:bg-gray-800 divide-y dark:divide-gray-700;
 }
 .table-condensed thead {
-    @apply bg-gray-50;
+    @apply bg-gray-50 dark:bg-gray-800 divide-y dark:divide-gray-700;
 }
 .table th {
-    @apply px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider;
+    @apply px-6 py-3 text-left text-xs font-medium uppercase tracking-wider;
 }
 .table-condensed th {
-    @apply px-2 py-1 text-left text-xs font-medium text-gray-500 uppercase tracking-wider;
+    @apply px-2 py-1 text-left text-xs font-medium uppercase tracking-wider;
 }
 .table tbody {
-    @apply bg-white divide-y divide-gray-200;
+    @apply bg-white dark:bg-gray-800 divide-y dark:divide-gray-700;
 }
 .table-condensed tbody {
-    @apply bg-white divide-y divide-gray-200;
+    @apply bg-white dark:bg-gray-800 divide-y dark:divide-gray-700;
 }
 .table td {
     @apply px-6 py-4;
@@ -113,10 +113,10 @@ ul.disc {
 }
 
 .table tbody>tr:hover {
-    @apply bg-gray-50;
+    @apply bg-gray-50 dark:bg-gray-700;
 }
 .table-condensed tbody>tr:hover {
-    @apply bg-gray-50;
+    @apply bg-gray-50 dark:bg-gray-700;
 }
 
 :root {

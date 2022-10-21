@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { Link, useRemember } from '@inertiajs/inertia-react'
+import { Link } from '@inertiajs/inertia-react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Tooltip from '../../Shared/Elements/Tooltip'
 import { convertMinuteDecimalToHoursAndMinutes } from '../../Helpers/date.helpers'
 import AppLayout from '../../Shared/AppLayout'
 import { faPatreon } from '@fortawesome/free-brands-svg-icons'
-import Pagination from '../../Shared/Elements/Pagination'
 import { Inertia } from '@inertiajs/inertia'
+import Card from '../../Shared/Elements/Card'
 
 const Roster = ({ roster }) => {
   const [sortBy, setSortBy] = useState('id')
@@ -42,7 +42,7 @@ const Roster = ({ roster }) => {
       <div className="flex justify-end space-x-2">
         <div className="w-1/6">
           <select id="sort" value={sortBy} onChange={handleSortChange}
-                  className="border border-gray-300 text-gray-900 text-sm rounded focus:ring-orange-500 focus:border-orange-500 block w-full p-2.5">
+                  className="border border-gray-300 dark:bg-gray-900 text-sm rounded focus:ring-orange-500 focus:border-orange-500 block w-full p-2.5">
             <option value="id">Pilot Id</option>
             <option value="rank_id">Rank</option>
             <option value="flights">Flights</option>
@@ -51,13 +51,14 @@ const Roster = ({ roster }) => {
         </div>
         <div className="w-1/8">
           <select id="direction" value={sortDirection} onChange={handleDirectionChange}
-                  className="border border-gray-300 text-gray-900 text-sm rounded focus:ring-orange-500 focus:border-orange-500 block w-full p-2.5">
+                  className="border border-gray-300 dark:bg-gray-900 text-sm rounded focus:ring-orange-500 focus:border-orange-500 block w-full p-2.5">
             <option value="asc">asc</option>
             <option value="desc">desc</option>
           </select>
         </div>
       </div>
-      <div className="rounded shadow bg-white mt-4 overflow-x-auto">
+      <div className="mt-4">
+      <Card compact="true" className="mt-4 overflow-x-auto">
         <div>
           <table className="table table-auto">
             <thead>
@@ -113,6 +114,7 @@ const Roster = ({ roster }) => {
             </tbody>
           </table>
         </div>
+      </Card>
       </div>
     </div>
   )

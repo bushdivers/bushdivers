@@ -5,13 +5,15 @@ import Pagination from '../../Shared/Elements/Pagination'
 import AppLayout from '../../Shared/AppLayout'
 import { faPlaneDeparture, faPlaneArrival } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import Card from '../../Shared/Elements/Card'
 
 const CompletedContracts = ({ contracts }) => {
   return (
     <div className="p-4">
       <div className="mt-1">
         {contracts && contracts.data.map((contract) => (
-          <div key={contract.id} className="mt-1 shadow rounded bg-white py-4 px-8 overflow-x-auto">
+          <div key={contract.id} className="mt-1 overflow-x-auto">
+            <Card>
             <div className="flex justify-between items-center">
               <div className="flex flex-col items-center content-center">
                 <FontAwesomeIcon icon={faPlaneDeparture} />
@@ -58,10 +60,11 @@ const CompletedContracts = ({ contracts }) => {
               ))}
               </tbody>
             </table>
+            </Card>
           </div>
         ))}
       </div>
-      <div className="mt-2 shadow rounded">
+      <div className="mt-2">
         <Pagination pages={contracts} />
       </div>
     </div>

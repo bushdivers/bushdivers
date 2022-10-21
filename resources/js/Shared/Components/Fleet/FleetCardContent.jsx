@@ -27,7 +27,7 @@ const FleetCardContent = ({ fleet }) => {
       <div className="flex flex-col md:flex-row items-start justify-between">
         <div className="flex flex-col">
           <div className="md:ml-3">
-            <div className="text-2xl">{fleet.type} - {fleet.manufacturer} {fleet.name}</div>
+            <h3>{fleet.type} - {fleet.manufacturer} {fleet.name}</h3>
             <p>{fleet.aircraft.length} aircraft in fleet</p>
           </div>
           <img className="rounded w-full md:w-auto" src={fleet.image_url} />

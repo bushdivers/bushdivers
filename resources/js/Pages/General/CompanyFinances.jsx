@@ -1,6 +1,7 @@
 import React from 'react'
 import Pagination from '../../Shared/Elements/Pagination'
 import AppLayout from '../../Shared/AppLayout'
+import Card from '../../Shared/Elements/Card'
 
 const CompanyFinances = ({ accounts, balance, aircraftStorage, aircraftOps, hubs }) => {
   const renderTransactionType = (transactionType) => {
@@ -32,20 +33,23 @@ const CompanyFinances = ({ accounts, balance, aircraftStorage, aircraftOps, hubs
     <div className="p-4">
       <div className="flex flex-col md:flex-row md:justify-between">
         <div className="md:w-1/2 md:mx-2">
-          <div className="bg-white shadow rounded p-4 mt-2">
-            <div className="text-xl">Account Balance</div>
-            <div className="text-2xl">${balance.toFixed(2)}</div>
-          </div>
+          <Card title="Account Balance">
+            <h3>${balance.toFixed(2)}</h3>
+          </Card>
           {accounts && accounts.data.map((entry) => (
-            <div key={entry.id} className="bg-white shadow rounded p-4 mt-2 flex justify-between">
-              <div>
-                ${entry.total} <br />
-                <span className="text-sm">
-                {renderTransactionType(entry.transaction_type)}
-              </span>
-              </div>
-              <div>memo: {entry.memo}</div>
-              <div>{entry.created_at}</div>
+            <div key={entry.id} className="my-2">
+              <Card>
+                <div className="flex justify-between">
+                  <div>
+                    ${entry.total} <br />
+                    <span className="text-sm">
+                  {renderTransactionType(entry.transaction_type)}
+                </span>
+                  </div>
+                  <div>memo: {entry.memo}</div>
+                  <div>{entry.created_at}</div>
+                </div>
+              </Card>
             </div>
           ))}
           <div className="mt-2">
@@ -53,21 +57,21 @@ const CompanyFinances = ({ accounts, balance, aircraftStorage, aircraftOps, hubs
           </div>
         </div>
         <div className="md:w-1/2 md:mx-2">
-          <div className="bg-white shadow rounded p-4 mt-2">
-            <div className="text-xl mb-2">Monthly Costs</div>
-            <div className="my-1">
-              <span className="text-lg my-1">Aircraft Operations: </span> <br/>
+          <Card>
+            <h3>Monthly Costs</h3>
+            <div className="my-2">
+              <h4>Aircraft Operations</h4>
               <span className="text-xl">${aircraftOps}</span>
             </div>
-            <div className="my-1">
-              <span className="text-lg my-1">Aircraft Storage: </span> <br/>
+            <div className="my-2">
+              <h4>Aircraft Storage</h4>
               <span className="text-xl">${aircraftStorage}</span>
             </div>
-            <div className="my-1">
-              <span className="text-lg my-1">Hub Rentals: </span> <br/>
+            <div className="my-2">
+              <h4>Hub Rentals</h4>
               <span className="text-xl">${hubs}</span>
             </div>
-          </div>
+          </Card>
         </div>
       </div>
     </div>

@@ -3,10 +3,12 @@ import maplibre from 'maplibre-gl'
 import { useInterval } from '../../../Helpers/useInterval'
 import axios from 'axios'
 import { parseMapStyle } from '../../../Helpers/general.helpers'
+import { useFlags } from 'flagsmith/react'
 
 const accessToken = 'pk.eyJ1IjoicnVzc2VsbHd3ZXN0IiwiYSI6ImNrc29vZm5paDEweGIzMnA3MXAzYTFuMDQifQ.7veU-ARmzYClHDFsVQvT5g'
 
 const LiveFlightMap = ({ size, updateFlightCount, mapStyle }) => {
+  const flags = useFlags(['new_layout'])
   const mapContainer = useRef(null)
   const map = useRef(null)
   const markers = useRef([])
@@ -65,20 +67,23 @@ const LiveFlightMap = ({ size, updateFlightCount, mapStyle }) => {
     })
   }
 
-  useEffect(async () => {
-    if (map.current) return
-    map.current = new maplibre.Map({
-      container: mapContainer.current,
-      style: parseMapStyle(mapStyle),
-      // center: [143.23070, -6.36188],
-      center: [165.272614, 29.530900],
-      zoom: 2,
-      accessToken
-    })
+  useEffect(() => {
+    async function asyncSetup () {
+      if (map.current) return
+      map.current = new maplibre.Map({
+        container: mapContainer.current,
+        style: parseMapStyle(mapStyle),
+        // center: [143.23070, -6.36188],
+        center: [165.272614, 29.530900],
+        zoom: 2,
+        accessToken
+      })
 
-    await map.current.on('load', function () {
-      loadMarkers()
-    })
+      await map.current.on('load', function () {
+        loadMarkers()
+      })
+    }
+    asyncSetup()
   }, [])
 
   // useEffect(() => {
@@ -87,7 +92,7 @@ const LiveFlightMap = ({ size, updateFlightCount, mapStyle }) => {
 
   return (
     <>
-      <div ref={mapContainer} className={('map-container-' + size)} />
+      <div ref={mapContainer} className={`map-container-${size} ${flags.new_layout.enabled && 'rounded-lg'}`} />
     </>
   )
 }

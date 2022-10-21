@@ -2,6 +2,7 @@ import React from 'react'
 import NoContent from '../../Elements/NoContent'
 import { faArrowUp, faTicket } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import Card from '../../Elements/Card'
 
 const EmptyData = (props) => {
   return (
@@ -14,11 +15,11 @@ const EmptyData = (props) => {
 
 const Cargo = (props) => {
   return (
-    <div className="shadow rounded p-4 mt-2 mr-2 bg-white">
-      <div className="mb-2 text-xl">Select Cargo</div>
+    <div className="mt-2 mr-2">
+      <Card title="Select Cargo">
       <div className="my-2">
         <label htmlFor="deadHead" className="inline-flex items-center">
-          <input id="deadHead" checked={props.deadHead} onChange={props.handleDeadHead} type="checkbox" className="form-checkbox rounded border-gray-300 text-orange-500 shadow-sm focus:border-orange-300 focus:ring focus:ring-offset-0 focus:ring-orange-200 focus:ring-opacity-50" />
+          <input id="deadHead" checked={props.deadHead} onChange={props.handleDeadHead} type="checkbox" className="form-checkbox rounded border-gray-300 dark:bg-gray-700 text-orange-500 shadow-sm focus:border-orange-300 focus:ring focus:ring-offset-0 focus:ring-orange-200 focus:ring-opacity-50" />
           <span className="text-gray-700 ml-2">Deadhead - Run empty</span>
         </label>
       </div>
@@ -42,8 +43,8 @@ const Cargo = (props) => {
                 </thead>
                 <tbody>
                 {props.cargo.map((detail) => (
-                  <tr key={detail.id} className={props.selectedCargo.some(s => s.id === detail.id) ? 'bg-orange-200 hover:bg-orange-100' : ''}>
-                    <td><input id="sel" checked={props.selectedCargo.some(s => s.id === detail.id)} onChange={() => props.handleCargoSelect(detail)} type="checkbox" className="form-checkbox rounded border-gray-300 text-orange-500 shadow-sm focus:border-orange-300 focus:ring focus:ring-offset-0 focus:ring-orange-200 focus:ring-opacity-50" /></td>
+                  <tr key={detail.id} className={props.selectedCargo.some(s => s.id === detail.id) ? 'bg-orange-200 hover:bg-orange-100 dark:bg-gray-700 dark:hover:bg-gray-600' : ''}>
+                    <td><input id="sel" checked={props.selectedCargo.some(s => s.id === detail.id)} onChange={() => props.handleCargoSelect(detail)} type="checkbox" className="form-checkbox rounded border-gray-300 dark:bg-gray-700 text-orange-500 shadow-sm focus:border-orange-300 focus:ring focus:ring-offset-0 focus:ring-orange-200 focus:ring-opacity-50" /></td>
                     <td><button className="btn btn-secondary btn-small" onClick={() => props.splitCargo(detail)}>Split</button></td>
                     <td>{detail.current_airport_id}</td>
                     <td>{detail.contract.arr_airport_id} {detail.contract.arr_airport.longest_runway_surface === 'W' && <span className="material-icons md-18">anchor</span>}</td>
@@ -54,7 +55,7 @@ const Cargo = (props) => {
                           <span className="mr-2">{detail.contract.heading}</span>
                         </div>
                         <div className="w-1/2 flex">
-                          <span style={{ transform: `rotate(${detail.contract.heading}deg)` }}><FontAwesomeIcon icon={faArrowUp} className="text-gray-800" /></span>
+                          <span style={{ transform: `rotate(${detail.contract.heading}deg)` }}><FontAwesomeIcon icon={faArrowUp} /></span>
                         </div>
                       </div>
                     </td>
@@ -73,6 +74,7 @@ const Cargo = (props) => {
             )
           )
       }
+      </Card>
     </div>
   )
 }

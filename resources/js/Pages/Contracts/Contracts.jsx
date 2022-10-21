@@ -32,14 +32,14 @@ const EmptyData = (props) => {
   )
 }
 
-const AirportToolTip = (props) => {
-  return (
-    <>
-      <div>Altitude: {props.airport.altitude}ft</div>
-      <div>Longest Runway: {props.airport.longest_runway_surface} - {props.airport.longest_runway_length.toLocaleString(navigator.language)}ft x {props.airport.longest_runway_width}ft</div>
-    </>
-  )
-}
+// const AirportToolTip = (props) => {
+//   return (
+//     <>
+//       <div>Altitude: {props.airport.altitude}ft</div>
+//       <div>Longest Runway: {props.airport.longest_runway_surface} - {props.airport.longest_runway_length.toLocaleString(navigator.language)}ft x {props.airport.longest_runway_width}ft</div>
+//     </>
+//   )
+// }
 
 const Contracts = ({ searchedContracts, airport, cacheKey }) => {
   const { auth } = usePage().props
@@ -136,12 +136,12 @@ const Contracts = ({ searchedContracts, airport, cacheKey }) => {
   return (
     <div className="relative">
       <ContractMap departure={selectedAirport} destination={selectedContract.destination} size="full" mapStyle={auth.user.map_style} />
-        <div className="absolute z-30 top-4 left-4 py-2 px-4 bg-white w-1/2 md:w-1/3 opacity-90 shadow rounded">
+        <div className="absolute z-10 top-4 left-4 py-2 px-4 bg-white dark:bg-gray-800 w-1/2 md:w-1/3 opacity-90 shadow rounded">
           <div className="flex flex-col md:flex-row justify-start items-baseline space-x-1">
             <input id="searchIcao" type="text" placeholder="search ICAO" className="form-input form md:w-1/3" value={searchForm.searchIcao} onChange={handleChange} />
             <div>
               <select id="flightLength" value={searchForm.flightLength} onChange={handleChange}
-                      className="border border-gray-300 text-gray-900 text-sm rounded focus:ring-orange-500 focus:border-orange-500 block w-full p-2.5">
+                      className="form">
                 <option value="short">&#60; 60nm</option>
                 <option value="medium">60-150nm</option>
                 <option value="long">&#62; 150nm</option>
@@ -149,7 +149,7 @@ const Contracts = ({ searchedContracts, airport, cacheKey }) => {
             </div>
             <div>
               <select id="aircraftSize" value={searchForm.aircraftSize} onChange={handleChange}
-                      className="border border-gray-300 text-gray-900 text-sm rounded focus:ring-orange-500 focus:border-orange-500 block w-full p-2.5">
+                      className="form">
                 <option value="small">Small Aircraft</option>
                 <option value="medium">Medium Aircraft</option>
                 <option value="large">Large Aircraft</option>
@@ -157,7 +157,7 @@ const Contracts = ({ searchedContracts, airport, cacheKey }) => {
             </div>
           </div>
           <div className="flex flex-col md:flex-row justify-end items-baseline mt-2">
-            <div><button onClick={() => handleSearch()} className="btn btn-secondary">Find</button></div>
+            <div><button onClick={() => handleSearch()} className="btn btn-primary">Find</button></div>
             <div>
               <Tooltip direction="top" content="Create custom contract">
                 <button onClick={() => toggleCustom()} className="btn btn-secondary ml-2">Custom</button>
@@ -167,21 +167,21 @@ const Contracts = ({ searchedContracts, airport, cacheKey }) => {
           {error && <span className="text-sm text-red-500">{error}</span>}
         </div>
       {showCustom && (
-        <div className="absolute z-30 top-4 left-1/3 ml-8 py-2 px-4 bg-white w-1/2 md:w-1/3 opacity-90 shadow rounded">
+        <div className="absolute z-10 top-4 left-1/3 ml-8 py-2 px-4 bg-white dark:bg-gray-800 w-1/2 md:w-1/3 opacity-90 shadow rounded">
           <CustomContract departureIcao={searchForm.searchIcao} hideSection={() => setShowCustom(false)} />
         </div>
       )}
-      {showContracts && contracts && (<div className="absolute z-30 top-32 left-4 bottom-4 bg-white w-1/2 md:w-1/3 opacity-90 shadow rounded h-auto overflow-y-auto mb-2">
+      {showContracts && contracts && (<div className="absolute z-10 top-32 left-4 bottom-4 bg-white dark:bg-gray-800 w-1/2 md:w-1/3 opacity-90 shadow rounded h-auto overflow-y-auto mb-2">
           {contracts && contracts.map((contract) => (
-            <div key={contract.id} onClick={() => updateSelectedContract(contract)} className={`${contract.id === selectedContract.id ? 'bg-orange-200 hover:bg-orange-100' : ''} border-t-2 text-sm cursor-pointer z-40`}>
+            <div key={contract.id} onClick={() => updateSelectedContract(contract)} className={`${contract.id === selectedContract.id ? 'bg-orange-200 hover:bg-orange-100 dark:bg-gray-600' : ''} border-t-2 text-sm cursor-pointer z-10`}>
               <div className="px-4 py-2 flex justify-between items-center">
                 <Tooltip direction="right" content="Expiry date">
-                <div className="text-xs text-gray-700">
+                <div className="text-xs">
                   {dayjs(contract.expires_at).format('DD/MM/YYYY HH:mm')}
                 </div>
                 </Tooltip>
                 <Tooltip direction="bottom" content="Destination">
-                  <div className="text-sm text-gray-800 font-bold">
+                  <div className="text-sm font-bold">
                     {contract.destination.identifier} {contract.destination.longest_runway_surface === 'W' ? <FontAwesomeIcon icon={faAnchor} /> : <></>}
                   </div>
                 </Tooltip>
@@ -213,7 +213,7 @@ const Contracts = ({ searchedContracts, airport, cacheKey }) => {
                   </Tooltip>
                   <Tooltip direction="bottom" content="Heading">
                   <div className="mx-1 flex items-center space-x-1">
-                    <span style={{ transform: `rotate(${contract.heading}deg)` }}><FontAwesomeIcon icon={faArrowUp} className="text-gray-700" /></span>
+                    <span style={{ transform: `rotate(${contract.heading}deg)` }}><FontAwesomeIcon icon={faArrowUp} /></span>
                   </div>
                   </Tooltip>
                   <Tooltip direction="left" content="Contract value">
@@ -250,7 +250,7 @@ const Contracts = ({ searchedContracts, airport, cacheKey }) => {
                         </Tooltip>
                         <Tooltip direction="left" content="Heading">
                         <div className="flex items-center space-x-1">
-                          <span style={{ transform: `rotate(${contract.heading}deg)` }}><FontAwesomeIcon icon={faArrowUp} className="text-gray-700" /></span>
+                          <span style={{ transform: `rotate(${contract.heading}deg)` }}><FontAwesomeIcon icon={faArrowUp} /></span>
                         </div>
                         </Tooltip>
                       </div>
