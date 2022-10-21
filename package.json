@@ -41,9 +41,9 @@
         "dayjs": "^1.10.7",
         "haversine-distance": "^1.2.1",
         "maplibre-gl": "^1.15.3",
-        "react": "^17.0.2",
+        "react": "^18.2.0",
         "react-chartjs-2": "^3.0.4",
-        "react-dom": "^17.0.2",
+        "react-dom": "^18.2.0",
         "react-hot-toast": "^2.2.0",
         "yup": "^0.32.11"
     }

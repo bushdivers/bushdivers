@@ -36,7 +36,6 @@ class AwardSeeder extends Seeder
             ['id' => 18, 'name' => '1000 nm', 'type' => AwardType::DISTANCE, 'value' => 1000, 'image' => 'https://res.cloudinary.com/dji0yvkef/image/upload/v1658314800/BDVA/Awards/Distance1000_aqkj7x.png'],
             ['id' => 19, 'name' => '2000 nm', 'type' => AwardType::DISTANCE, 'value' => 2000, 'image' => 'https://res.cloudinary.com/dji0yvkef/image/upload/v1658314800/BDVA/Awards/Distance2000_vihjxl.png'],
             ['id' => 20, 'name' => '10000 nm', 'type' => AwardType::DISTANCE, 'value' => 10000, 'image' => 'https://res.cloudinary.com/dji0yvkef/image/upload/v1658314800/BDVA/Awards/Distance10000_pbabny.png']
-//            ['id' => 21, 'name' => 'All Hubs', 'type' => AwardType::HUB, 'value' => 1, 'image' => 'https://res.cloudinary.com/dji0yvkef/image/upload/v1658314800/BDVA/Awards/Hub_lnouzb.png'],
         ]);
     }
 }
