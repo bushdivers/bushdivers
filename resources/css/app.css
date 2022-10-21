@@ -2,8 +2,33 @@
 @tailwind components;
 @tailwind utilities;
 
+
 body {
-    font-family: 'Nunito', sans-serif;
+    @apply bg-gray-200 text-gray-800 dark:bg-gray-800 dark:text-gray-200 font-light text-gray-500 dark:text-gray-400;
+}
+
+h1 {
+    @apply mb-4 font-extrabold tracking-tight leading-none text-4xl text-gray-800 dark:text-gray-200;
+}
+
+h2 {
+    @apply text-3xl font-extrabold text-gray-800 dark:text-gray-200;
+}
+
+h3 {
+    @apply text-2xl font-bold text-gray-800 dark:text-gray-200;
+}
+
+h4 {
+    @apply text-xl font-bold text-gray-800 dark:text-gray-200;
+}
+
+p {
+    @apply font-light text-gray-500 dark:text-gray-400;
+}
+
+.standout {
+    @apply font-medium text-3xl;
 }
 
 .link {
@@ -18,58 +43,43 @@ ul.disc {
     @apply list-disc list-inside;
 }
 
-h1 {
-    @apply text-lg;
-}
-
-.nav-link {
-    @apply text-gray-700 px-3 py-2 rounded-md text-sm font-medium;
-}
-.nav-link.mobile {
-    @apply text-gray-700 block px-3 py-2 rounded-md text-base font-medium
-}
-.nav-link:hover {
-    @apply bg-gray-50 text-gray-700;
-}
-
 .form {
-    @apply mt-1 block w-full shadow-sm border-gray-300 rounded-md
+    @apply mt-1 block w-full shadow-sm border-gray-300 rounded-lg
 }
 .form:focus {
     @apply ring-orange-500 border-orange-500 border;
 }
+
 .btn {
-    @apply rounded px-2 py-1;
+    @apply font-medium rounded-lg text-sm px-5 py-2.5;
+}
+.btn:focus {
+    @apply ring-4 outline-none;
 }
 .btn-primary {
-    @apply bg-orange-500 text-white;
+    @apply bg-orange-500 text-gray-800;
 }
 .btn-primary:hover {
     @apply bg-orange-400;
 }
 .btn-primary:focus {
-    @apply bg-orange-500;
-}
-.btn-secondary {
-    @apply bg-gray-800 text-white;
-}
-.btn-secondary:hover {
-    @apply bg-gray-700;
-}
-.btn-secondary:focus {
-    @apply bg-gray-900;
+    @apply ring-orange-300 dark:ring-orange-800;
 }
 
 .btn-light {
-    @apply bg-gray-100 text-gray-900;
+    @apply bg-gray-200 text-gray-800 dark:text-gray-200 dark:bg-gray-900;
 }
 .btn-light:hover {
-    @apply bg-gray-200;
+    @apply bg-gray-100 dark:bg-gray-800;
+}
+.btn-light:focus {
+    @apply ring-gray-50 dark:ring-gray-700;
 }
 
 .btn-small {
-    @apply text-xs;
+    @apply py-2 px-3 text-xs;
 }
+
 
 .table {
     @apply min-w-full divide-y divide-gray-200;
@@ -108,6 +118,7 @@ h1 {
 .table-condensed tbody>tr:hover {
     @apply bg-gray-50;
 }
+
 :root {
     --tooltip-text-color: white;
     --tooltip-background-color: black;
@@ -194,22 +205,6 @@ h1 {
     border-left-color: var(--tooltip-background-color);
 }
 
-.map-container-small {
-    height: 400px;
-}
-
-.map-container-large {
-    height: 600px;
-}
-
-.map-container-xl {
-    height: calc(100vh - 200px);
-}
-
-.map-container-full {
-    height: calc(100vh - 4rem);
-}
-
 * {
     scrollbar-width: thin;
     scrollbar-color: #A1A1AA #F4F4F5;
@@ -230,22 +225,18 @@ h1 {
     border: 1px solid #F4F4F5;
 }
 
-.ribbon {
-    width: 200px;
-    padding: 16px;
-    z-index: 20;
-    @apply absolute text-center text-white bg-orange-500 cursor-pointer;
+.map-container-small {
+    height: 400px;
 }
 
-.ribbon-sticky {
-    position: fixed;
+.map-container-large {
+    height: 600px;
 }
 
-.ribbon-top    { top: 25px; }
-.ribbon-bottom { bottom: 25px; }
-.ribbon-left   { left: -50px; }
-.ribbon-right  { right: -50px; }
+.map-container-xl {
+    height: calc(100vh - 200px);
+}
 
-.ribbon-bottom.ribbon-right {
-    transform: rotate(-45deg);
+.map-container-full {
+    height: calc(100vh - 4rem);
 }

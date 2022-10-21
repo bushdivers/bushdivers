@@ -21,10 +21,10 @@ const Header = ({ heading, setNavState }) => {
   }
 
   return (
-      <header className="flex flex-row justify-between items-center header fixed bg-white shadow left-0 lg:left-64 right-0 py-4 px-4 z-20">
+      <header className="bg-white flex flex-row justify-between items-center header fixed shadow left-0 lg:left-64 right-0 py-4 px-4 z-20">
         <div className="flex items-center">
           <div className="lg:hidden mr-3 cursor-pointer" onClick={setNavState}><FontAwesomeIcon icon={faBurger} /></div>
-          <h1>{heading}</h1>
+          <h2>{heading}</h2>
         </div>
         <div className="flex items-center">
           <div className="mr-1 md:mr-4">
@@ -77,4 +77,3 @@ const Header = ({ heading, setNavState }) => {
 }
 
 export default Header
-
