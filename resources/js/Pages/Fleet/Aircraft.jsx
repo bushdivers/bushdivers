@@ -9,6 +9,8 @@ import dayjs from 'dayjs'
 import AppLayout from '../../Shared/AppLayout'
 import AircraftCondition from '../../Shared/Components/Fleet/AircraftCondition'
 import { faScrewdriverWrench } from '@fortawesome/free-solid-svg-icons'
+import Badge from '../../Shared/Elements/Badge'
+import Card from '../../Shared/Elements/Card'
 
 const Aircraft = ({ aircraft, maintenanceStatus, pireps }) => {
   const { auth } = usePage().props
@@ -132,11 +134,11 @@ const Aircraft = ({ aircraft, maintenanceStatus, pireps }) => {
 
   return (
     <div className="p-4">
-      <div className="flex justify-start items-center">
-        <h1>{`${aircraft.registration} - ${aircraft.fleet.manufacturer} ${aircraft.fleet.name} (${aircraft.fleet.type})`}</h1>
+      <div className="flex justify-start items-center mb-2">
+        <h2>{`${aircraft.registration} - ${aircraft.fleet.manufacturer} ${aircraft.fleet.name} (${aircraft.fleet.type})`}</h2>
         {aircraft.maintenance_status && !aircraft.is_rental && <span className="ml-2 text-orange-500"><FontAwesomeIcon icon={faScrewdriverWrench} /></span>}
-        {aircraft.is_rental ? <span className="ml-2 bg-orange-500 text-white p-1 rounded text-xs">Rental</span> : <></>}
-        {aircraft.owner_id > 0 && aircraft.owner_id === auth.user.id ? <span className="ml-2 bg-orange-500 text-white p-1 rounded text-xs">Private Plane - Owner</span> : aircraft.owner_id > 0 ? <span className="ml-2 bg-orange-500 text-white p-1 rounded text-xs">Private Plane</span> : <></>}
+        {aircraft.is_rental ? <span className="ml-2"><Badge color="primary" label="Rental" /></span> : <></>}
+        {aircraft.owner_id > 0 && aircraft.owner_id === auth.user.id ? <span className="ml-2"><Badge color="primary" label="Private Plane - Owner" /></span> : aircraft.owner_id > 0 ? <span className="ml-2 bg-orange-500 text-white p-1 rounded text-xs">Private Plane</span> : <></>}
       </div>
       {maintenanceStatus['100hr'] || maintenanceStatus.annual || maintenanceStatus.tbo
         ? (
@@ -182,9 +184,9 @@ const Aircraft = ({ aircraft, maintenanceStatus, pireps }) => {
             </div>
           </div>
           { !aircraft.is_rental && (
-            <div className="bg-white p-4 rounded shadow overflow-x-auto my-2">
+            <div className="overflow-x-auto my-2">
+              <Card title="Maintenance">
               <div className="flex justify-between">
-                <div className="text-lg mb-2">Maintenance</div>
                 {shouldShowMaintenance() &&
                 (
                   <div className="flex justify-between space-x-1">
@@ -195,7 +197,7 @@ const Aircraft = ({ aircraft, maintenanceStatus, pireps }) => {
                 }
               </div>
               <div className="mt-2 my-4">
-                <div>Airframe Condition</div>
+                <h4>Airframe Condition</h4>
                 <AircraftCondition aircraftCondition={aircraft.wear} />
               </div>
             <table className="table table-auto table-condensed">
@@ -231,11 +233,12 @@ const Aircraft = ({ aircraft, maintenanceStatus, pireps }) => {
               ))}
               </tbody>
             </table>
+            </Card>
            </div>
           )}
           {!aircraft.is_rental && (
-          <div className="bg-white p-4 rounded shadow overflow-x-auto">
-            <div className="text-lg mb-2">Maintenance Logs</div>
+          <div className="overflow-x-auto">
+            <Card title="Maintenance Logs">
             <table className="table table-auto table-condensed">
               <thead>
               <tr>
@@ -254,10 +257,11 @@ const Aircraft = ({ aircraft, maintenanceStatus, pireps }) => {
               ))}
               </tbody>
             </table>
+            </Card>
           </div>
           )}
-          <div className="bg-white p-4 rounded shadow overflow-x-auto mt-2">
-            <div className="text-lg mb-2">Flights</div>
+          <div className="overflow-x-auto mt-2">
+            <Card title="Flights">
             <table className="table table-auto table-condensed">
               <thead>
               <tr>
@@ -280,11 +284,14 @@ const Aircraft = ({ aircraft, maintenanceStatus, pireps }) => {
               ))}
               </tbody>
             </table>
+            </Card>
           </div>
         </div>
         <div className="md:w-1/2 mx-1">
-          <div className="bg-white p-4 rounded shadow overflow-x-auto">
+          <div className="overflow-x-auto">
+            <Card compact="true">
              <AircraftMap aircraft={aircraft} size="large" mapStyle={auth.user.map_style} />
+            </Card>
           </div>
         </div>
       </div>

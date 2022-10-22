@@ -12,7 +12,7 @@ const Dashboard = ({ lastFlight, user, locations, distance }) => {
   return (
     <div className="relative">
       <CrewMap size="full" locations={locations && locations.length > 0 ? locations : []} mapStyle={user.map_style} />
-      <div className="absolute z-30 bg-white w-1/2 md:w-1/3 h-auto opacity-90 top-4 left-4 p-4 rounded shadow">
+      <div className="absolute z-10 bg-white dark:bg-gray-800 w-1/2 md:w-1/3 h-auto opacity-90 top-4 left-4 p-4 rounded shadow">
         <div>
           <div className="text-lg flex flex-col md:flex-row items-start md:items-center justify-between mb-2">
             <div className="flex items-center">

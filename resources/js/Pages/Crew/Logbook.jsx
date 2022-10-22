@@ -6,6 +6,8 @@ import { format } from 'date-fns'
 import { Inertia } from '@inertiajs/inertia'
 import Pagination from '../../Shared/Elements/Pagination'
 import AppLayout from '../../Shared/AppLayout'
+import Badge from '../../Shared/Elements/Badge'
+import Card from '../../Shared/Elements/Card'
 
 const EmptyData = () => {
   return (
@@ -24,7 +26,8 @@ const Logbook = ({ logbook }) => {
   return (
     <div className="p-4">
       <p className="text-sm mb-1">{logbook.length > 0 && <span>Total pireps: {logbook.length} </span> } </p>
-      <div className="bg-white rounded shadow overflow-x-auto">
+      <div className="overflow-x-auto">
+        <Card compact="true">
         {logbook.length === 0
           ? <NoContent content={<EmptyData />} />
           : (
@@ -44,9 +47,9 @@ const Logbook = ({ logbook }) => {
                 <tbody>
                 {logbook.data.map((entry) => (
                   <tr key={entry.id}>
-                    <td className="text-orange-500 hover:underline cursor-pointer" onClick={() => loadPirep(entry)}>
-                      View Pirep
-                      {entry.state === 5 && <span className="bg-orange-500 px-2 ml-2 text-white text-sm rounded">Review</span>}
+                    <td className="text-orange-500 cursor-pointer" onClick={() => loadPirep(entry)}>
+                      <span className="hover:underline">View Pirep</span>
+                      {entry.state === 5 && <span className="px-2 ml-2"><Badge label="Review" color="primary" /></span>}
                     </td>
                     <td>
                       {entry.departure_airport_id}<br/>
@@ -64,10 +67,11 @@ const Logbook = ({ logbook }) => {
                 ))}
                 </tbody>
               </table>
-              <Pagination pages={logbook} />
             </div>
             )
         }
+        </Card>
+        <div className="mt-2"><Pagination pages={logbook} /></div>
       </div>
     </div>
   )

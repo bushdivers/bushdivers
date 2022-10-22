@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Inertia } from '@inertiajs/inertia'
 import axios from 'axios'
 import { convertMinuteDecimalToHoursAndMinutes } from '../../Helpers/date.helpers'
+import Card from '../../Shared/Elements/Card'
 
 const MyAircraft = ({ aircraft, rentals, agreements }) => {
   const handleCancel = (agreement) => {
@@ -31,9 +32,9 @@ const MyAircraft = ({ aircraft, rentals, agreements }) => {
   return (
     <div className="p-4 flex space-x-4">
       <div className="w-1/2 space-y-4">
-        <div className="bg-white rounded shadow px-2 overflow-x-auto">
+        <div className="overflow-x-auto">
+          <Card title="My Aircraft">
           <div className="flex justify-between items-baseline mt-2">
-            <h1>My Aircraft</h1>
             <Link href="/marketplace"><button className="btn btn-primary btn-small">Go To Marketplace</button></Link>
           </div>
           <table className="table table-auto table-condensed my-2">
@@ -62,10 +63,11 @@ const MyAircraft = ({ aircraft, rentals, agreements }) => {
             ))}
             </tbody>
           </table>
+          </Card>
         </div>
-        <div className="bg-white rounded shadow px-2 overflow-x-auto">
+        <div className="overflow-x-auto">
+          <Card title="My Rentals">
           <div className="flex justify-between items-baseline mt-2">
-            <h1>My Rentals</h1>
             <Link href="/rentals"><button className="btn btn-primary btn-small">Go To Rentals</button></Link>
           </div>
           <table className="table table-auto table-condensed my-2">
@@ -90,17 +92,18 @@ const MyAircraft = ({ aircraft, rentals, agreements }) => {
             ))}
             </tbody>
           </table>
+          </Card>
         </div>
       </div>
       <div className="w-1/2">
-        {agreements.length === 0 && <div className="bg-white rounded shadow p-4 text-center">No Current Finance Agreements</div>}
+        {agreements.length === 0 && <div className="text-center">No Current Finance Agreements</div>}
         {agreements && agreements.map((ag) => (
-          <div key={ag.id} className={`p-4 rounded shadow mb-2 ${ag.is_paid || !ag.is_active ? 'bg-gray-200 text-gray-500' : 'bg-white'}`}>
+          <div key={ag.id} className={`p-4 rounded shadow mb-2 ${ag.is_paid || !ag.is_active ? 'bg-gray-200 dark:bg-gray-700' : 'bg-white dark:bg-gray-800'}`}>
             <div className="flex justify-between items-center">
-              <h1>Agreement #{ag.id}</h1>
+              <h2>Agreement #{ag.id}</h2>
               {ag.is_paid ? <FontAwesomeIcon icon={faCheckCircle} className="text-green-500" /> : !ag.is_active ? <FontAwesomeIcon icon={faTimesCircle} className="text-red-500"/> : <><button onClick={() => handleCancel(ag)} className="btn btn-secondary btn-small">Cancel</button></>}
             </div>
-            <h2>{ag.aircraft.registration}</h2>
+            <h3>{ag.aircraft.registration}</h3>
             <div className="flex justify-between items-center mt-2">
               <div>
                 <span className="text-lg">Deposit</span> <br />

@@ -1,8 +1,10 @@
 import React from 'react'
+import Card from '../../Elements/Card'
 
 const PirepCargo = (props) => {
   return (
-    <div className="rounded shadow mt-2 bg-white mx-2 overflow-x-auto">
+    <div className="mt-2 mx-2 overflow-x-auto">
+      <Card compact="true">
       <table className="table table-auto table-condensed">
         <thead>
         <tr>
@@ -34,6 +36,7 @@ const PirepCargo = (props) => {
         ))}
         </tbody>
       </table>
+      </Card>
     </div>
   )
 }

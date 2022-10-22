@@ -3,6 +3,7 @@ import AppLayout from '../../Shared/AppLayout'
 import { usePage } from '@inertiajs/inertia-react'
 import axios from 'axios'
 import { Inertia } from '@inertiajs/inertia'
+import Card from '../../Shared/Elements/Card'
 
 const Purchase = ({ aircraft, purchaseType }) => {
   const { auth, errors } = usePage().props
@@ -175,14 +176,14 @@ const Purchase = ({ aircraft, purchaseType }) => {
         ? <div className="text-lg">Purchase New - {aircraft.manufacturer} {aircraft.name} {purchaseMethod === 'finance' ? <span>- On Finance</span> : <></>}</div>
         : <div className="text-lg">Purchase Used - {aircraft.registration} - {aircraft.fleet.manufacturer} {aircraft.fleet.name} ({aircraft.current_airport_id}) {purchaseMethod === 'finance' ? <span>- On Finance</span> : <></>}</div>
       }
-      <div className="mt-2 bg-white rounded shadow p-4">
-        <div className="text-lg mb-2">Invoice</div>
+      <div className="mt-2">
+        <Card title="Invoice">
         {purchaseType === 'new' && (
           <>
           <div className="flex justify-start items-center space-x-2">
             <label htmlFor="delivery" className="inline-flex items-center">
               <input id="delivery" checked={deliver} onChange={handleDeliveryChange} type="checkbox" className="form-checkbox rounded border-gray-300 text-orange-500 shadow-sm focus:border-orange-300 focus:ring focus:ring-offset-0 focus:ring-orange-200 focus:ring-opacity-50" />
-              <span className="text-gray-700 ml-2">Deliver?</span>
+              <span className="ml-2">Deliver?</span>
             </label>
             {deliver && (
               <div className="flex justify-start items-center">
@@ -200,12 +201,12 @@ const Purchase = ({ aircraft, purchaseType }) => {
         )}
         <div className="w-1/4">
           <div className="mt-2">
-            <label htmlFor="hub"><span className="text-gray-700">Home Hub (ICAO)</span></label>
+            <label htmlFor="hub"><span>Home Hub (ICAO)</span></label>
             <input id="hub" type="text" className="form-input form" value={hub} onChange={handleHubChange} />
             {hubError && <span className="text-sm text-red-500">{hubError}</span>}
           </div>
           <div className="mt-2">
-            <label htmlFor="reg"><span className="text-gray-700">Registration</span></label>
+            <label htmlFor="reg"><span>Registration</span></label>
             <input id="reg" type="text" className="form-input form" value={reg} onChange={handleRegChange} />
             {regError && <span className="text-sm text-red-500">{regError}</span>}
           </div>
@@ -219,7 +220,7 @@ const Purchase = ({ aircraft, purchaseType }) => {
 
         <label htmlFor="method" className="inline-flex items-center">
           <input id="method" checked={purchaseMethod === 'finance'} onChange={handlePurchaseMethodChange} type="checkbox" className="form-checkbox rounded border-gray-300 text-orange-500 shadow-sm focus:border-orange-300 focus:ring focus:ring-offset-0 focus:ring-orange-200 focus:ring-opacity-50" />
-          <span className="text-gray-700 ml-2">Finance purchase?</span>
+          <span className="ml-2">Finance purchase?</span>
         </label>
 
         {purchaseMethod === 'finance'
@@ -228,11 +229,11 @@ const Purchase = ({ aircraft, purchaseType }) => {
               <div className="text-lg">Finance Details</div>
               <div className="w-1/4">
                 <div className="mt-2">
-                  <label htmlFor="deposit"><span className="text-gray-700">Deposit amount</span></label>
+                  <label htmlFor="deposit"><span>Deposit amount</span></label>
                   <input id="deposit" type="text" className="form-input form" value={deposit} onChange={handleDepositChange} />
                 </div>
                 <div className="mt-2">
-                  <label htmlFor="term"><span className="text-gray-700">Term (months) - min: 3; max: 24</span></label>
+                  <label htmlFor="term"><span>Term (months) - min: 3; max: 24</span></label>
                   <input id="term" type="text" className="form-input form" value={term} onChange={handleTermChange} />
                 </div>
                 <button onClick={calculate} className="btn btn-primary mt-2">Calculate</button>
@@ -256,6 +257,7 @@ const Purchase = ({ aircraft, purchaseType }) => {
             )
         }
         {errors.reg && <span className="text-sm text-red-500 my-2">The aircraft registration has already exists</span>}
+        </Card>
       </div>
     </div>
   )

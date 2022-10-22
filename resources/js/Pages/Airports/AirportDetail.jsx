@@ -4,6 +4,7 @@ import { Link, usePage } from '@inertiajs/inertia-react'
 import AppLayout from '../../Shared/AppLayout'
 import { faAnchor, faCloudSun } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import Card from '../../Shared/Elements/Card'
 
 const AirportDetail = ({ airport, metar, aircraft }) => {
   const { auth } = usePage().props
@@ -68,18 +69,12 @@ const AirportDetail = ({ airport, metar, aircraft }) => {
   }
   return (
     <div className="p-4">
-      <div className="w-1/6 mb-2 flex items-center">
-        <input id="airport" type="text" placeholder="ICAO" className="form-input form inline-block" value={icao} onChange={handleAirportChange} />
-        <Link href={`/airports/${icao}`} className="ml-2 btn btn-secondary">Go</Link>
-      </div>
-      { !airport
-        ? <h1>Airport Search</h1>
-        : <h1>{airport.name} - {airport.identifier}</h1>
-      }
+      <h2>{airport.name} - {airport.identifier}</h2>
       { airport && (
       <div className="flex flex-col lg:flex-row justify-between">
         <div className="lg:w-1/2">
-          <div className="rounded shadow p-1 lg:p-4 mt-2 bg-white mx-2">
+          <div className="mt-2 mx-2">
+            <Card>
             <div className="flex justify-between overflow-x-auto">
               <div className="flex flex-col items-center my-2 mx-4">
                 <div className="text-sm">ICAO</div>
@@ -106,17 +101,21 @@ const AirportDetail = ({ airport, metar, aircraft }) => {
                 <div className="text-xl">{airport.altitude.toLocaleString(navigator.language)}ft</div>
               </div>
             </div>
+            </Card>
           </div>
           {airport.longest_runway_length && (
-            <div className="rounded shadow p-4 mt-2 bg-white mx-2">
+            <div className="mt-2 mx-2">
+              <Card>
               <div className="flex items-center">
                 RWY
                 <span className="ml-2">{renderRunwayText(airport.longest_runway_surface)} {airport.longest_runway_length.toLocaleString(navigator.language)}ft x {airport.longest_runway_width}ft</span>
               </div>
+              </Card>
             </div>
           )}
-          <div className="rounded shadow p-4 mt-2 bg-white mx-2">
-            <div className="flex items-center">
+          <div className="mt-2 mx-2">
+              <Card>
+                <div className="flex items-center">
               {metar
                 ? (
                   <>
@@ -126,11 +125,11 @@ const AirportDetail = ({ airport, metar, aircraft }) => {
                   )
                 : <div>No METAR available</div>
               }
-
-            </div>
+                </div>
+              </Card>
           </div>
-          <div className="rounded shadow p-4 mt-2 bg-white mx-2 overflow-x-auto">
-            <div className="text-lg">Available Aircraft</div>
+          <div className="mt-2 mx-2 overflow-x-auto">
+            <Card title="Available Aircraft">
             <table className="mt-2 table table-auto table-condensed">
               <thead>
               <tr>
@@ -153,9 +152,10 @@ const AirportDetail = ({ airport, metar, aircraft }) => {
               ))}
               </tbody>
             </table>
+            </Card>
           </div>
         </div>
-        <div className="lg:w-1/2 rounded shadow p-4 mt-2 bg-white mx-2">
+        <div className="lg:w-1/2 mt-2 mx-2">
           <AirportMap airport={airport} size="large" mapStyle={auth.user.map_style} />
         </div>
       </div>

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link, usePage } from '@inertiajs/inertia-react'
-import Tooltip from '../../Elements/Tooltip'
+import Avatar from '../../Elements/Avatar'
 
 const PublicRightNav = (props) => {
   const { auth } = usePage().props
@@ -11,16 +11,12 @@ const PublicRightNav = (props) => {
           ? (
             <div className="flex items-center">
               <div><Link className="link mr-2" href="/dashboard">Return to App</Link></div>
-              <div className="flex items-center mx-2">
-                <img width="60" className="mr-3" src={auth.user.rank.image} />
-                <Tooltip content="Profile" direction="left">
-                  <Link href="/profile">
+              <div className="mr-2 flex items-center space-x-2">
+                <Avatar name={auth.user.name} />
                 <span className="flex flex-col">
-                  <span className="font-semibold text-orange-500 tracking-wide leading-none">{auth.user.name}</span>
-                  <span className="text-gray-500 text-xs leading-none mt-1">{auth.user.pilot_id} {auth.user.rank.name}</span>
-                </span>
-                  </Link>
-                </Tooltip>
+                <span className="font-semibold text-orange-500 tracking-wide leading-none">{auth.user.pilot_id}</span>
+                <span className="text-xs leading-none mt-1">{auth.user.rank.name}</span>
+              </span>
               </div>
             </div>
             )

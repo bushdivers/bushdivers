@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Inertia } from '@inertiajs/inertia'
 import axios from 'axios'
 import AppLayout from '../../Shared/AppLayout'
+import Card from '../../Shared/Elements/Card'
 
 const Jumpseat = ({ user, spent, balance }) => {
   const [airport, setAirport] = useState('')
@@ -57,15 +58,16 @@ const Jumpseat = ({ user, spent, balance }) => {
 
   return (
     <div className="p-4">
-      <div className="flex flex-col lg:flex-row justify-between">
-        <div className="lg:w-1/2 rounded shadow p-4 mx-2 mt-4 bg-white">
+      <div className="flex flex-col lg:flex-row justify-start">
+        <div className="lg:w-1/2 mx-2 mt-4">
+          <Card>
           <div className="flex justify-between">
             <div className="w-1/2">
               <div>Current Location:</div>
               <div className="text-lg">{user.location.identifier} - {user.location.name}</div>
             </div>
             <div className="md:w-1/2">
-              <label htmlFor="dep"><span className="text-gray-700">Transfer to (ICAO)</span></label>
+              <label htmlFor="dep"><span>Transfer to (ICAO)</span></label>
               <input id="dep" type="text" className="form-input form" value={icao} onChange={handleChange} />
               {error && <div className="text-sm text-red-500 mt-1">{error}</div>}
               {airport && <div className="text-sm mt-1">{airport}</div>}
@@ -91,18 +93,23 @@ const Jumpseat = ({ user, spent, balance }) => {
           <div className="flex justify-end mt-12">
             <button className="btn btn-primary" onClick={() => processJumpseat()}>Purchase Ticket</button>
           </div>
+          </Card>
         </div>
-        <div className="lg:w-1/4 rounded shadow p-4 mx-2 mt-4 bg-white flex justify-center items-center">
+        <div className="lg:w-1/4 mx-2 mt-4 flex items-start">
+          <Card>
           <div className="flex flex-col text-center">
             <div>Current Balance</div>
             <div className="text-xl mt-2">${balance.toLocaleString(navigator.language)}</div>
           </div>
+          </Card>
         </div>
-        <div className="lg:w-1/4 rounded shadow p-4 mx-2 mt-4 bg-white flex justify-center items-center">
+        <div className="lg:w-1/4mx-2 mt-4 flex items-start">
+          <Card>
           <div className="flex flex-col text-center">
             <div>Spent on Jumpseats</div>
             <div className="text-xl mt-2">${spent.toLocaleString(navigator.language)}</div>
           </div>
+          </Card>
         </div>
       </div>
     </div>

@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Link, usePage } from '@inertiajs/inertia-react'
 import ThemeSwitcher from '../Elements/ThemeSwitcher'
 import Avatar from '../Elements/Avatar'
+import { Inertia } from '@inertiajs/inertia'
 
 const AppBar = () => {
   const { auth } = usePage().props
@@ -9,6 +10,7 @@ const AppBar = () => {
   const [showHQ, setShowHQ] = useState(false)
   const [showDispatch, setShowDispatch] = useState(false)
   const [showCrew, setShowCrew] = useState(false)
+  const [icao, setIcao] = useState('')
 
   function toggleMenu (menu) {
     switch (menu) {
@@ -28,6 +30,10 @@ const AppBar = () => {
         setShowHQ(false)
         break
     }
+  }
+
+  function searchAirport (airport) {
+    Inertia.get(`/airports/${airport}`)
   }
 
   return (
@@ -99,6 +105,10 @@ const AppBar = () => {
               </button>
             </li>
           </ul>
+          <div className="flex justify-center items-center">
+            <input id="airport" type="text" placeholder="Search Airport ICAO" className="form-input form inline-block" value={icao} onChange={(e) => setIcao(e.target.value)} />
+            <button onClick={() => searchAirport(icao)} className="ml-2 btn btn-primary">Go</button>
+          </div>
         </div>
       </div>
       {/* HQ Menu */}
@@ -227,6 +237,12 @@ const AppBar = () => {
             </li>
           </ul>
           <ul>
+            <li>
+              <Link onClick={() => setShowCrew(false)} href="/profile" className="block p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700">
+                <div className="font-semibold">Profile</div>
+                <span className="text-sm font-light text-gray-500 dark:text-gray-400">View and edit your profile</span>
+              </Link>
+            </li>
             <li>
               <Link onClick={() => setShowCrew(false)} href="/logout" className="block p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700">
                 <div className="font-semibold">Sign Out</div>

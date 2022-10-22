@@ -18,7 +18,7 @@ createInertiaApp({
     const root = createRoot(el)
     root.render(<FlagsmithProvider
       options={{
-        environmentID: '9itAnsvrW7SPzqsbmgzVLg'
+        environmentID: import.meta.env.VITE_FLAGSMITH
       }}
       flagsmith={flagsmith}
       >

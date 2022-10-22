@@ -5,6 +5,7 @@ import AppLayout from '../../Shared/AppLayout'
 import { Link } from '@inertiajs/inertia-react'
 import { faArrowUp } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import Card from '../../Shared/Elements/Card'
 
 const ActiveDispatch = ({ cargo, aircraft, cargoWeight, fuelWeight, passengerCount, pirep }) => {
   const personWeight = 170.00
@@ -22,8 +23,8 @@ const ActiveDispatch = ({ cargo, aircraft, cargoWeight, fuelWeight, passengerCou
       {pirep.state === 2 && <div><span className="text-orange-500">Current flight in progress</span></div>}
       <div className="flex flex-col md:flex-row justify-between">
         <div className="md:mr-2 md:w-1/2">
-          <div className="bg-white rounded shadow mt-4 p-4">
-            <div className="mb-2 text-xl">Selected Cargo</div>
+          <div className="mt-4">
+            <Card title="Selected Cargo">
             <div className="overflow-x-auto">
             <table className="table table-auto table-condensed">
               <thead>
@@ -50,7 +51,7 @@ const ActiveDispatch = ({ cargo, aircraft, cargoWeight, fuelWeight, passengerCou
                         <span className="mr-2">{detail.contract.heading}</span>
                       </div>
                       <div className="w-1/2 flex">
-                        <span style={{ transform: `rotate(${detail.contract.heading}deg)` }}><FontAwesomeIcon icon={faArrowUp} className="text-gray-800" /></span>
+                        <span style={{ transform: `rotate(${detail.contract.heading}deg)` }}><FontAwesomeIcon icon={faArrowUp} /></span>
                       </div>
                     </div>
                   </td>
@@ -66,10 +67,11 @@ const ActiveDispatch = ({ cargo, aircraft, cargoWeight, fuelWeight, passengerCou
               </tbody>
             </table>
             </div>
+            </Card>
           </div>
         </div>
         <div className="md:ml-2 md:w-1/2">
-          <div className="bg-white rounded shadow mt-4 p-4">
+          <div className="mt-4">
             <DispatchSummary
               selectedAircraft={aircraft}
               selectedCargo={cargo}
@@ -80,7 +82,7 @@ const ActiveDispatch = ({ cargo, aircraft, cargoWeight, fuelWeight, passengerCou
               pirep={pirep}
               deadHead={pirep.is_empty}
             />
-            <div className="text-right"><button onClick={handleCancel} className="btn btn-primary">Cancel Dispatch</button></div>
+            <div className="text-right mt-2"><button onClick={handleCancel} className="btn btn-primary">Cancel Dispatch</button></div>
           </div>
         </div>
       </div>

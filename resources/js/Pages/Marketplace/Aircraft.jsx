@@ -1,6 +1,7 @@
 import React from 'react'
 import AppLayout from '../../Shared/AppLayout'
 import { Link } from '@inertiajs/inertia-react'
+import Card from '../../Shared/Elements/Card'
 
 const Aircraft = ({ fleet }) => {
   return (
@@ -8,7 +9,8 @@ const Aircraft = ({ fleet }) => {
       <p>Please select an aircraft type:</p>
       <div className="flex flex-wrap justify-start">
       {fleet && fleet.map((f) => (
-        <div key={f.id} className="bg-white m-4 rounded shadow cursor-pointer w-1/4">
+        <div key={f.id} className="m-4 cursor-pointer w-1/4">
+          <Card>
           <div><img src={f.rental_image} className="rounded-t w-full" /></div>
           <div className="p-4">
             <div className="text-lg">{f.name}</div>
@@ -34,6 +36,7 @@ const Aircraft = ({ fleet }) => {
               {/*<Link href={`/marketplace/list/used/${f.id}`} className="btn btn-primary">Purchase Used</Link>*/}
             </div>
           </div>
+          </Card>
         </div>
       ))}
       </div>

@@ -1,8 +1,10 @@
 import React from 'react'
+import Card from '../../Elements/Card'
 
 const Points = (props) => {
   return (
-    <div className="rounded shadow p-4 mt-2 bg-white mx-2">
+    <div className="mt-2 mx-2">
+      <Card>
       <div className="text-lg">Points Awarded</div>
       {props.points.length > 0 &&
       <div className="flex justify-between items-center">
@@ -14,6 +16,7 @@ const Points = (props) => {
         ))}
       </div>
       }
+      </Card>
     </div>
   )
 }

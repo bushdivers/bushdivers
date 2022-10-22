@@ -1,4 +1,5 @@
 import React from 'react'
+import Card from '../../Elements/Card'
 
 const PirepFinancials = (props) => {
   const renderCompanyTransactionType = (transaction) => {
@@ -36,8 +37,8 @@ const PirepFinancials = (props) => {
   }
 
   return (
-    <div className="bg-white rounded shadow p-4 my-2 mx-2 overflow-x-auto">
-      <div className="text-lg">Company Financials</div>
+    <div className="my-2 mx-2 overflow-x-auto">
+      <Card title="Pirep Financials">
       <table className="table table-condensed table-auto">
         <thead>
         <tr>
@@ -57,7 +58,7 @@ const PirepFinancials = (props) => {
       <div className="text-right">
         <div>Total: <span className={props.companyTotal < 0 ? 'text-red-500' : undefined}>${props.companyTotal.toLocaleString(navigator.language)}</span></div>
       </div>
-      <div className="text-lg mt-2">Pilot Financials</div>
+        <div className="mt-2"><h3>Pilot Financials</h3></div>
       <table className="table table-condensed table-auto">
         <thead>
         <tr>
@@ -77,6 +78,7 @@ const PirepFinancials = (props) => {
       <div className="text-right">
         <div>Total: <span className={props.pilotTotal < 0 ? 'text-red-500' : undefined}>${props.pilotTotal.toLocaleString(navigator.language)}</span></div>
       </div>
+      </Card>
     </div>
   )
 }

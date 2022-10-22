@@ -4,10 +4,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { convertMinuteDecimalToHoursAndMinutes } from '../../../Helpers/date.helpers'
 import { Link } from '@inertiajs/inertia-react'
 import { faPlaneDeparture, faPlaneArrival } from '@fortawesome/free-solid-svg-icons'
+import Card from '../../Elements/Card'
 
 const LogbookPrimary = ({ pirep }) => {
   return (
-    <div className="rounded shadow p-4 mt-2 bg-white mx-2">
+    <div className="mt-2 mx-2">
+      <Card>
       <div className="flex justify-between items-center">
         <div className="flex flex-col items-center my-2 mx-4">
           <div className="text-sm"><FontAwesomeIcon icon={faPlaneDeparture} /></div>
@@ -26,6 +28,7 @@ const LogbookPrimary = ({ pirep }) => {
           <div className="text-xl">{pirep.is_rental ? <span>{pirep.rental.registration} ({pirep.rental.fleet.type})</span> : <Link href={`/aircraft/${pirep.aircraft.id}`}>{pirep.aircraft.registration} ({pirep.aircraft.fleet.type})</Link>}</div>
         </div>
       </div>
+      </Card>
     </div>
   )
 }

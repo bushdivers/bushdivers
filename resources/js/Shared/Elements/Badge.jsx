@@ -8,6 +8,8 @@ function renderColor (color) {
       return 'bg-gray-100 text-gray-800 dark:bg-gray-200 dark:text-gray-800'
     case 'danger':
       return 'bg-red-100 text-red-800 dark:bg-red-200 dark:text-red-800'
+    case 'green':
+      return 'bg-green-100 text-green-800 dark:bg-green-200 dark:text-green-800'
     default:
       return 'bg-orange-100 text-orange-800 dark:bg-orange-200 dark:text-orange-800'
   }

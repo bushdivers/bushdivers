@@ -5,7 +5,7 @@ import axios from 'axios'
 import { parseMapStyle } from '../../../Helpers/general.helpers'
 import { useFlags } from 'flagsmith/react'
 
-const accessToken = 'pk.eyJ1IjoicnVzc2VsbHd3ZXN0IiwiYSI6ImNrc29vZm5paDEweGIzMnA3MXAzYTFuMDQifQ.7veU-ARmzYClHDFsVQvT5g'
+const accessToken = import.meta.env.VITE_MAPBOX_TOKEN
 
 const LiveFlightMap = ({ size, updateFlightCount, mapStyle }) => {
   const flags = useFlags(['new_layout'])

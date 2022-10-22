@@ -44,9 +44,6 @@ export default function NavBar () {
                   </Link>
                   <span className="hidden lg:block ml-3">Bush Divers</span>
                 </div>
-                <div className="hidden sm:block sm:ml-6">
-                  <PublicLeftNav />
-                </div>
               </div>
               <div className="hidden sm:block sm:ml-6">
                 <PublicRightNav />
@@ -54,7 +51,6 @@ export default function NavBar () {
             </div>
           </div>
           <Disclosure.Panel className="sm:hidden">
-            <PublicLeftNav mobile={true} />
             <PublicRightNav mobile={true} />
           </Disclosure.Panel>
         </>

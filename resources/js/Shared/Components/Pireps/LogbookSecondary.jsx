@@ -1,9 +1,11 @@
 import React from 'react'
 import { convertMinuteDecimalToHoursAndMinutes } from '../../../Helpers/date.helpers'
+import Card from '../../Elements/Card'
 
 const LogbookSecondary = ({ pirep }) => {
   return (
-    <div className="rounded shadow p-4 mt-2 bg-white mx-2">
+    <div className="mt-2 mx-2">
+      <Card>
       <div className="flex justify-between items-center">
         <div className="flex flex-col items-center my-2 mx-4">
           <div className="text-sm">Fuel used</div>
@@ -22,6 +24,7 @@ const LogbookSecondary = ({ pirep }) => {
           <div className="text-xl">{pirep.score?.toLocaleString(navigator.language) ?? '-'}</div>
         </div>
       </div>
+      </Card>
     </div>
   )
 }

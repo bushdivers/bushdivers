@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { Line } from 'react-chartjs-2'
 import { format } from 'date-fns'
+import Card from '../../Elements/Card'
 
 const PirepChart = (props) => {
   const altitude = []
@@ -39,11 +40,10 @@ const PirepChart = (props) => {
       }
     ]
   }
-
-
   return (
-
-    <Line data={data} />
+    <Card compact="true">
+      <Line data={data} />
+    </Card>
   )
 }
 

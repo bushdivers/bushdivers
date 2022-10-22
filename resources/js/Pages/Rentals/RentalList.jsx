@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Link, usePage } from '@inertiajs/inertia-react'
 import { Inertia } from '@inertiajs/inertia'
 import AppLayout from '../../Shared/AppLayout'
+import Card from '../../Shared/Elements/Card'
 
 const RentalList = ({ aircraft, myRentals, currentAirport }) => {
   const { auth } = usePage().props
@@ -51,8 +52,9 @@ const RentalList = ({ aircraft, myRentals, currentAirport }) => {
   return (
     <div className="p-4">
       <div>
-        <h2 className="text-xl my-2">My Rentals</h2>
-        <div className="bg-white rounded shadow overflow-x-auto">
+        <h2>My Rentals</h2>
+        <div className="overflow-x-auto my-2">
+          <Card compact="true">
           <table className="table table-auto table-condensed">
             <thead>
             <tr>
@@ -77,10 +79,11 @@ const RentalList = ({ aircraft, myRentals, currentAirport }) => {
             ))}
             </tbody>
           </table>
+          </Card>
         </div>
       </div>
       <div className="mt-4">
-        <h2 className="text-xl my-2">
+        <h2 className="my-2">
           {currentAirport.is_hub
             ? <span>Aircraft Available for Rental - {auth.user.current_airport_id}</span>
             : <span>{auth.user.current_airport_id} - <span className="text-sm text-red-500">You must be at a hub to rent aircraft</span></span>
@@ -88,7 +91,8 @@ const RentalList = ({ aircraft, myRentals, currentAirport }) => {
         </h2>
           <div className="flex flex-wrap justify-start mt-2">
             {aircraft && aircraft.map((ac) => (
-              <div key={ac.id} className="bg-white w-1/4 mx-4 rounded shadow my-2">
+              <div key={ac.id} className="w-1/4 mx-4 my-2">
+                <Card>
                 <img className="rounded-t" src={ac.rental_image} />
                 <div className="p-3">
                   <div className="text-xl">{ac.type} {ac.manufacturer} - {ac.name}</div>
@@ -103,6 +107,7 @@ const RentalList = ({ aircraft, myRentals, currentAirport }) => {
                   </div>
                   {renderRentalButton(ac)}
                 </div>
+                </Card>
               </div>
             ))}
           </div>

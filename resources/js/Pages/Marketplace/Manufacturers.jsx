@@ -1,6 +1,7 @@
 import React from 'react'
 import AppLayout from '../../Shared/AppLayout'
 import { Inertia } from '@inertiajs/inertia'
+import Card from '../../Shared/Elements/Card'
 
 const Manufacturers = ({ manufacturers }) => {
   const selectManufacturer = (manufacturer) => {
@@ -12,10 +13,10 @@ const Manufacturers = ({ manufacturers }) => {
       <p>Select a manufacturer:</p>
       <div className="flex flex-wrap justify-start mt-4">
         {manufacturers && manufacturers.map((man) => (
-          <div onClick={() => selectManufacturer(man.id)} key={man.id} className="bg-white rounded shadow p-2 m-2 w-1/4 cursor-pointer flex items-center align-center justify-center">
-            <div className="">
+          <div onClick={() => selectManufacturer(man.id)} key={man.id} className="m-2 w-1/4 cursor-pointer flex items-center align-center justify-center">
+            <Card>
               <img src={man.logo_url} width="200"/>
-            </div>
+            </Card>
           </div>
         ))}
       </div>
