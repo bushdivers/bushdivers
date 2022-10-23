@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Head, usePage } from '@inertiajs/inertia-react'
+import { Head, Link, usePage } from '@inertiajs/inertia-react'
 import FlashMessage from './Elements/FlashMessage'
 import Header from './Layout/Header'
 import SideBar from './Layout/SideBar'
@@ -7,8 +7,8 @@ import { Toaster } from 'react-hot-toast'
 import { useFlags } from 'flagsmith/react'
 import AppBar from './Layout/AppBar'
 
-
 export default function AppLayout ({ children, title, heading }) {
+  const { auth } = usePage().props
   const flags = useFlags(['new_layout'])
   const { flash } = usePage().props
   const [isNavVisible, setIsNavVisible] = useState(false)
@@ -27,7 +27,14 @@ export default function AppLayout ({ children, title, heading }) {
           <div className="mt-20 container mx-auto">
             {flash.error && <FlashMessage type="error" message={flash.error} />}
             {flash.success && <FlashMessage type="success" message={flash.success} />}
-            <h1>{heading}</h1>
+            <div className="flex items-center justify-between">
+              <h1>{heading}</h1>
+              <div className="mr-2 flex items-center space-x-4">
+                <span className="hidden md:flex">${auth.user.balance}</span>
+                <span className="hidden md:flex">{auth.user.points} XP</span>
+                <span className="md:hidden">Current Location:</span><span className="link"><Link href={`/airport/${auth.user.current_airport_id}`}>{auth.user.current_airport_id}</Link></span>
+              </div>
+            </div>
             <div className="mt-4">{children}</div>
           </div>
         </>
