@@ -32,12 +32,13 @@ const MyAircraft = ({ aircraft, rentals, agreements }) => {
   return (
     <div className="p-4 flex space-x-4">
       <div className="w-1/2 space-y-4">
-        <div className="overflow-x-auto">
+        <div>
           <Card title="My Aircraft">
           <div className="flex justify-between items-baseline mt-2">
-            <Link href="/marketplace"><button className="btn btn-primary btn-small">Go To Marketplace</button></Link>
+            <Link href="/marketplace"><button className="btn btn-primary btn-sm">Go To Marketplace</button></Link>
           </div>
-          <table className="table table-auto table-condensed my-2">
+            <div className="overflow-x-auto">
+          <table className="table table-compact w-full my-2">
             <thead>
             <tr>
               <th>Registration</th>
@@ -58,19 +59,21 @@ const MyAircraft = ({ aircraft, rentals, agreements }) => {
                 <td>{ac.hub_id}</td>
                 <td>{convertMinuteDecimalToHoursAndMinutes(ac.flight_time_mins)}</td>
                 <td><AircraftCondition aircraftCondition={ac.wear} /></td>
-                <td><button onClick={() => handleSale(ac)} className="btn btn-small btn-secondary">Sell</button></td>
+                <td><button onClick={() => handleSale(ac)} className="btn btn-xs btn-secondary">Sell</button></td>
               </tr>
             ))}
             </tbody>
           </table>
+            </div>
           </Card>
         </div>
-        <div className="overflow-x-auto">
+        <div>
           <Card title="My Rentals">
           <div className="flex justify-between items-baseline mt-2">
-            <Link href="/rentals"><button className="btn btn-primary btn-small">Go To Rentals</button></Link>
+            <Link href="/rentals"><button className="btn btn-primary btn-sm">Go To Rentals</button></Link>
           </div>
-          <table className="table table-auto table-condensed my-2">
+            <div className="overflow-x-auto">
+          <table className="table table-compact w-full my-2">
             <thead>
             <tr>
               <th>Registration</th>
@@ -92,15 +95,16 @@ const MyAircraft = ({ aircraft, rentals, agreements }) => {
             ))}
             </tbody>
           </table>
+            </div>
           </Card>
         </div>
       </div>
       <div className="w-1/2">
         {agreements.length === 0 && <div className="text-center">No Current Finance Agreements</div>}
         {agreements && agreements.map((ag) => (
-          <div key={ag.id} className={`p-4 rounded shadow mb-2 ${ag.is_paid || !ag.is_active ? 'bg-gray-200 dark:bg-gray-700' : 'bg-white dark:bg-gray-800'}`}>
+          <div key={ag.id} className={`p-4 rounded shadow mb-2 ${ag.is_paid || !ag.is_active ? 'bg-base-200 text-base' : 'bg-neutral'}`}>
             <div className="flex justify-between items-center">
-              <h2>Agreement #{ag.id}</h2>
+              <h2 className={`${ag.is_paid || !ag.is_active ? 'line-through' : ''}`}>Agreement #{ag.id}</h2>
               {ag.is_paid ? <FontAwesomeIcon icon={faCheckCircle} className="text-green-500" /> : !ag.is_active ? <FontAwesomeIcon icon={faTimesCircle} className="text-red-500"/> : <><button onClick={() => handleCancel(ag)} className="btn btn-secondary btn-small">Cancel</button></>}
             </div>
             <h3>{ag.aircraft.registration}</h3>

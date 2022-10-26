@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Inertia } from '@inertiajs/inertia'
+import TextInput from '../../Elements/Forms/TextInput'
 
 const CustomContract = ({ departureIcao, hideSection }) => {
   const [error, setError] = useState(null)
@@ -28,17 +29,11 @@ const CustomContract = ({ departureIcao, hideSection }) => {
   }
 
   return (
-    <div className="flex items-end">
+    <div className="flex items-end space-x-2">
       {error && <div className="text-sm text-red-500 mt-1">{error}</div>}
-      <div className="inline-block mx-2">
-        <label htmlFor="icao"><span>Departure Airport (ICAO)</span></label>
-        <input id="icao" type="text" className="form-input form" value={dep} onChange={handleChangeDep} />
-      </div>
-      <div className="inline-block mx-2">
-        <label htmlFor="icao"><span>Arrival Airport (ICAO)</span></label>
-        <input id="icao" type="text" className="form-input form" value={arr} onChange={handleChangeArr} />
-      </div>
-      <div className="inline-block mx-2">
+      <TextInput inline id="icaoDep" value={dep} type="text" onChange={handleChangeDep} placeHolder="Departure ICAO" label="Departure (ICAO)" />
+      <TextInput inline id="icaoArr" value={arr} type="text" onChange={handleChangeArr} placeHolder="Arrival ICAO" label="Arrival (ICAO)" />
+      <div className="inline-block">
         <button onClick={() => handleCreate()} className="btn btn-primary">Create</button>
       </div>
     </div>

@@ -1,5 +1,6 @@
 import React from 'react'
 import Card from '../../Elements/Card'
+import TextInput from '../../Elements/Forms/TextInput'
 
 const Fuel = (props) => {
   return (
@@ -10,10 +11,9 @@ const Fuel = (props) => {
           <div>Useable Fuel (gal): {props.selectedAircraft.fleet.fuel_capacity}</div>
           <div>
             Current Fuel (gal):
-            <div className="w-1/4">
-              <input id="fuel" type="text" className="form-input form" value={props.fuel} onChange={props.handleUpdateFuel} />
+            <div className="w-full lg:w-1/4">
+              <TextInput id="fuel" type="text" value={props.fuel} onChange={props.handleUpdateFuel} error={props.error} />
             </div>
-            {props.error && <span className="text-sm text-red-500">{props.error}</span>}
           </div>
         </div>
       )}

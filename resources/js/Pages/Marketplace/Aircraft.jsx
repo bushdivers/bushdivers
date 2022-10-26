@@ -5,7 +5,7 @@ import Card from '../../Shared/Elements/Card'
 
 const Aircraft = ({ fleet }) => {
   return (
-    <div className="p-4">
+    <div>
       <p>Please select an aircraft type:</p>
       <div className="flex flex-wrap justify-start">
       {fleet && fleet.map((f) => (

@@ -57,17 +57,16 @@ const MyContracts = ({ contracts, custom, community }) => {
     <div className="p-4">
       <div className="flex flex-col lg:flex-row justify-between mt-4">
         <div className="lg:w-2/3 lg:mr-2">
-          <h3>My Contracts</h3>
-          <div className="overflow-x-auto my-4">
-            <Card>
+          <div className="mb-2">
+            <Card title="My Contracts">
             {!custom && <NoContent content={<EmptyData text="No custom contracts" />} />}
             {custom && custom.length > 0 &&
             // (
-            <div>
-              <div>
-                <button onClick={toggleDetail} className="btn btn-secondary m-2">Toggle Cargo Details</button>
+            <div className="overflow-x-auto">
+              <div className="text-right">
+                <button onClick={toggleDetail} className="btn btn-secondary my-2">Toggle Cargo Details</button>
               </div>
-              <table className="table-condensed table-auto">
+              <table className="table table-compact w-full overflow-x-auto">
                 <thead>
                 <tr className="">
                   <th>Departure</th>
@@ -83,7 +82,7 @@ const MyContracts = ({ contracts, custom, community }) => {
                 <tbody className="cursor-pointer">
                 {custom && custom.map((contract) => (
                   <>
-                    <tr key={contract.id} onClick={() => updateSelectedContract(contract)} className={contract.id === selectedContract.id ? 'bbg-orange-200 hover:bg-orange-100 dark:bg-gray-700 dark:hover:bg-gray-600 cursor-pointer' : ''}>
+                    <tr key={contract.id} onClick={() => updateSelectedContract(contract)} className={contract.id === selectedContract.id ? 'bg-secondary cursor-pointer' : ''}>
                       <td>
                         <Tooltip content={<AirportToolTip airport={contract.dep_airport} />} direction="top">
                           <Link href={`/airports/${contract.dep_airport_id}`}>{contract.dep_airport_id}</Link> {contract.dep_airport.longest_runway_surface === 'W' && <FontAwesomeIcon icon={faAnchor} />}
@@ -103,7 +102,7 @@ const MyContracts = ({ contracts, custom, community }) => {
                             <span className="mr-2">{contract.heading}</span>
                           </div>
                           <div className="w-1/2 flex">
-                            <span style={{ transform: `rotate(${contract.heading}deg)` }}><FontAwesomeIcon icon={faArrowUp} className="text-gray-700" /></span>
+                            <span style={{ transform: `rotate(${contract.heading}deg)` }}><FontAwesomeIcon icon={faArrowUp} className="text-secondary" /></span>
                           </div>
                         </div>
                       </td>
@@ -117,7 +116,7 @@ const MyContracts = ({ contracts, custom, community }) => {
                         ))}
                       </td>
                       {/* <td>${contract.contract_value.toLocaleString()}</td> */}
-                      <td>${parseFloat(contract.cargo.map(detail => detail.contract_value).reduce((total, num) => total + Math.fround(num), 0)).toFixed(2)}<br/></td>
+                      <td>${parseFloat(contract.cargo.map(detail => detail.contract_value).reduce((total, num) => total + Math.fround(num), 0)).toFixed(2).toLocaleString()}<br/></td>
                       <td>
                         {dayjs(contract.expires_at).format('DD/MM/YYYY HH:mm')}
                       </td>
@@ -139,18 +138,16 @@ const MyContracts = ({ contracts, custom, community }) => {
           </div>
 
           {/*<CommunityContracts contracts={community} selectedContract={selectedContract} showDetail={showDetail} toggleDetail={setShowDetail} updateSelectedContract={updateSelectedContract} />*/}
-
-          <h3>Available Contracts</h3>
-          <div className="overflow-x-auto mt-4">
-            <Card>
+          <div className="mt-2">
+            <Card title="Available Contracts">
             {!contracts && <NoContent content={<EmptyData text="No available contracts" />} />}
             {contracts && contracts.length > 0 &&
             // (
-                <div>
-                  <div>
+                <div className="overflow-x-auto">
+                  <div className="text-right">
                     <button onClick={toggleDetail} className="btn btn-secondary mb-2">Toggle Cargo Details</button>
                   </div>
-                  <table className="table-condensed table-auto">
+                  <table className="table table-compact w-full">
                     <thead>
                     <tr className="">
                       <th>Departure</th>
@@ -166,7 +163,7 @@ const MyContracts = ({ contracts, custom, community }) => {
                     <tbody className="cursor-pointer">
                     {contracts && contracts.map((contract) => (
                       <>
-                      <tr key={contract.id} onClick={() => updateSelectedContract(contract)} className={contract.id === selectedContract.id ? 'bg-orange-200 hover:bg-orange-100 dark:bg-gray-700 dark:hover:bg-gray-600 cursor-pointer' : 'cursor-pointer'}>
+                      <tr key={contract.id} onClick={() => updateSelectedContract(contract)} className={contract.id === selectedContract.id ? 'bg-secondary cursor-pointer' : 'cursor-pointer'}>
                         <td>
                            <Tooltip content={<AirportToolTip airport={contract.dep_airport} />} direction="top">
                              <Link href={`/airports/${contract.dep_airport_id}`}>{contract.dep_airport_id}</Link> {contract.dep_airport.longest_runway_surface === 'W' && <FontAwesomeIcon icon={faAnchor} />}
@@ -186,7 +183,7 @@ const MyContracts = ({ contracts, custom, community }) => {
                               <span className="mr-2">{contract.heading}</span>
                             </div>
                             <div className="w-1/2 flex">
-                              <span style={{ transform: `rotate(${contract.heading}deg)` }}><FontAwesomeIcon icon={faArrowUp} className="text-gray-700" /></span>
+                              <span style={{ transform: `rotate(${contract.heading}deg)` }}><FontAwesomeIcon icon={faArrowUp} className="text-secondary" /></span>
                             </div>
                           </div>
                         </td>
@@ -228,9 +225,10 @@ const MyContracts = ({ contracts, custom, community }) => {
           </div>
         </div>
         <div className="lg:w-1/3 lg:ml-2 mt-2 lg:mt-0">
-          { contracts && contracts.length > 0 && <div className="rounded shadow">
+          { contracts && contracts.length > 0 &&
+            <Card>
             <MyContractMap data={selectedContract} size="large" mapStyle={auth.user.map_style} />
-          </div>}
+            </Card>}
         </div>
       </div>
     </div>

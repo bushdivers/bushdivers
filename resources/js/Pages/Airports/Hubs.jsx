@@ -7,11 +7,9 @@ import Card from '../../Shared/Elements/Card'
 const Hubs = ({ hubs }) => {
   const { auth } = usePage().props
   return (
-    <>
-      <Card compact="true">
-        <HubMap hubs={hubs} size="xl" mapStyle={auth.user.map_style} />
-      </Card>
-    </>
+    <Card>
+      <HubMap hubs={hubs} size="xl" mapStyle={auth.user.map_style} />
+    </Card>
   )
 }
 

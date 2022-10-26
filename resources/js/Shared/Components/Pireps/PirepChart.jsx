@@ -41,7 +41,7 @@ const PirepChart = (props) => {
     ]
   }
   return (
-    <Card compact="true">
+    <Card title="Flight Data">
       <Line data={data} />
     </Card>
   )

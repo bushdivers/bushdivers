@@ -10,8 +10,8 @@ const ThemeContextWrapper = ({ children }) => {
   }
 
   useEffect(() => {
-    if (theme === 'light') document.documentElement.classList.remove('dark')
-    else document.documentElement.classList.add('dark')
+    if (theme === 'light') document.getElementById('html').setAttribute('data-theme', 'light') // document.documentElement.classList.remove('dark')
+    else document.getElementById('html').setAttribute('data-theme', 'dark') // document.documentElement.classList.add('dark')
   }, [theme])
 
   return <ThemeContext.Provider value={{ currentTheme: theme, changeCurrentTheme }}>{children}</ThemeContext.Provider>

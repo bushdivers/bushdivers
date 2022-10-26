@@ -1,47 +1,58 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import NavBar from '../Shared/Navigation/NavBar'
-import { Head } from '@inertiajs/inertia-react'
+import { Head, usePage } from '@inertiajs/inertia-react'
 import Footer from '../Shared/Navigation/Footer'
 import { convertMinuteDecimalToHoursAndMinutes } from '../Helpers/date.helpers'
+import { Inertia } from '@inertiajs/inertia'
 
 const Home = ({ stats }) => {
+  const { auth } = usePage().props
+
+  useEffect(() => {
+    if (auth.user) Inertia.get('/dashboard')
+  })
+
   return (
     <main className="flex flex-col h-screen">
       <Head title="Bush Divers Virtual Airline" />
       <NavBar />
-      <div className="w-full m-0 bg-white py-12 px-4">
+      <div className="w-full m-0 bg-white py-12 px-4 mt-8">
         <div className="flex md:justify-center items-center flex-col">
           <img
-            className="block h-32 w-auto w-0"
+            className="block h-32 w-auto"
             src="https://res.cloudinary.com/dji0yvkef/image/upload/v1628691598/BDLogo.png"
             alt="Workflow"
           />
-          <div className="text-3xl pb-4">
-            Welcome to Bush Divers VA<br/>
-            Bush flying in and around Papua New Guinea and Alaska
+          <div className="hero-content text-center">
+            <div className="max-w-md">
+              <h1>Welcome to Bush Divers VA</h1>
+              <h3>Bush flying in and around Papua New Guinea and Alaska</h3>
+            </div>
           </div>
         </div>
       </div>
-      <div className="p-4 mt-4 flex flex-col md:flex-row md:justify-between">
-        <div className="bg-white rounded shadow p-4 md:w-1/4 my-1 mx-2">
-          <div className="text-gray-600 text-xl">Total Flights</div>
-          <div className="text-4xl">{stats.flights}</div>
-        </div>
-        <div className="bg-white rounded shadow p-4 md:w-1/5 my-1 mx-2">
-          <div className="text-gray-600 text-xl">Total Hours</div>
-          <div className="text-4xl">{convertMinuteDecimalToHoursAndMinutes(stats.hours)}</div>
-        </div>
-        <div className="bg-white rounded shadow p-4 md:w-1/5 my-1 mx-2">
-          <div className="text-gray-600 text-xl">Total Pilots</div>
-          <div className="text-4xl">{stats.pilots}</div>
-        </div>
-        <div className="bg-white rounded shadow p-4 md:w-1/5 my-1 mx-2">
-          <div className="text-gray-600 text-xl">Regions</div>
-          <div className="text-4xl">2</div>
-        </div>
-        <div className="bg-white rounded shadow p-4 md:w-1/5 my-1 mx-2">
-          <div className="text-gray-600 text-xl">Hubs</div>
-          <div className="text-4xl">{stats.hubs}</div>
+      <div className="p-4 flex flex-col md:flex-row md:justify-center">
+        <div className="stats shadow">
+          <div className="stat bg-neutral">
+            <div className="stat-title">Total Flights</div>
+            <div className="stat-value">89,400</div>
+          </div>
+          <div className="stat bg-neutral">
+            <div className="stat-title">Total Hours</div>
+            <div className="stat-value">89,400</div>
+          </div>
+          <div className="stat bg-neutral">
+            <div className="stat-title">Total Pilots</div>
+            <div className="stat-value">89,400</div>
+          </div>
+          <div className="stat bg-neutral">
+            <div className="stat-title">Regions</div>
+            <div className="stat-value">2</div>
+          </div>
+          <div className="stat bg-neutral">
+            <div className="stat-title">Hubs</div>
+            <div className="stat-value">89,400</div>
+          </div>
         </div>
       </div>
       <div className="w-full p-4" style={{ backgroundImage: 'url(img/bg-2.jpg)' }}>

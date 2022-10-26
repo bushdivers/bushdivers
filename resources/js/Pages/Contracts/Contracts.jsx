@@ -1,45 +1,25 @@
 import React, { useEffect, useState } from 'react'
-import NoContent from '../../Shared/Elements/NoContent'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Tooltip from '../../Shared/Elements/Tooltip'
-import { Link, usePage } from '@inertiajs/inertia-react'
-import dayjs, { convertMinuteDecimalToHoursAndMinutes } from '../../Helpers/date.helpers'
+import { usePage } from '@inertiajs/inertia-react'
+import dayjs from '../../Helpers/date.helpers'
 import ContractMap from '../../Shared/Components/Contracts/ContractMap'
 import { Inertia } from '@inertiajs/inertia'
-import CargoDetails from '../../Shared/Components/Contracts/CargoDetails'
 import CustomContract from '../../Shared/Components/Contracts/CustomContract'
 import AppLayout from '../../Shared/AppLayout'
-import StatBlock from '../../Shared/Elements/StatBlock'
 import {
   faAnchor,
-  faArrowDownShortWide, faArrowUp,
-  faBoxArchive,
+  faArrowUp,
   faCheck,
-  faCompass, faDollarSign, faLocationDot, faMinus, faPlaneArrival, faPlaneDeparture, faPlus,
+  faCompass, faDollarSign, faPlaneArrival, faPlaneDeparture,
   faSuitcase,
   faUserGroup
 } from '@fortawesome/free-solid-svg-icons'
 import { formatNumber } from '../../Helpers/general.helpers'
 import axios from 'axios'
 import { toast } from 'react-hot-toast'
-
-const EmptyData = (props) => {
-  return (
-    <>
-      <i className="material-icons md-48">airplane_ticket</i>
-      <div>{props.airport ? 'There are no contracts for this airport' : 'Please enter an airport'}</div>
-    </>
-  )
-}
-
-// const AirportToolTip = (props) => {
-//   return (
-//     <>
-//       <div>Altitude: {props.airport.altitude}ft</div>
-//       <div>Longest Runway: {props.airport.longest_runway_surface} - {props.airport.longest_runway_length.toLocaleString(navigator.language)}ft x {props.airport.longest_runway_width}ft</div>
-//     </>
-//   )
-// }
+import TextInput from '../../Shared/Elements/Forms/TextInput'
+import Select from '../../Shared/Elements/Forms/Select'
 
 const Contracts = ({ searchedContracts, airport, cacheKey }) => {
   const { auth } = usePage().props
@@ -136,25 +116,19 @@ const Contracts = ({ searchedContracts, airport, cacheKey }) => {
   return (
     <div className="relative">
       <ContractMap departure={selectedAirport} destination={selectedContract.destination} size="full" mapStyle={auth.user.map_style} />
-        <div className="absolute z-10 top-4 left-4 py-2 px-4 bg-white dark:bg-gray-800 w-1/2 md:w-1/3 opacity-90 shadow rounded">
-          <div className="flex flex-col md:flex-row justify-start items-baseline space-x-1">
-            <input id="searchIcao" type="text" placeholder="search ICAO" className="form-input form md:w-1/3" value={searchForm.searchIcao} onChange={handleChange} />
-            <div>
-              <select id="flightLength" value={searchForm.flightLength} onChange={handleChange}
-                      className="form">
-                <option value="short">&#60; 60nm</option>
-                <option value="medium">60-150nm</option>
-                <option value="long">&#62; 150nm</option>
-              </select>
-            </div>
-            <div>
-              <select id="aircraftSize" value={searchForm.aircraftSize} onChange={handleChange}
-                      className="form">
-                <option value="small">Small Aircraft</option>
-                <option value="medium">Medium Aircraft</option>
-                <option value="large">Large Aircraft</option>
-              </select>
-            </div>
+        <div className="absolute z-10 top-4 left-4 py-2 px-4 bg-neutral w-auto md:w-1/3 opacity-90 shadow rounded">
+          <div className="flex flex-col md:flex-row justify-start items-center space-x-1">
+            <TextInput inline id="searchIcao" type="text" placeHolder="ICAO" value={searchForm.searchIcao} onChange={handleChange} />
+              <Select id="flightLength" value={searchForm.flightLength} onChange={handleChange} options={[
+                { value: 'short', text: '< 60nm' },
+                { value: 'medium', text: '60-150nm' },
+                { value: 'long', text: '> 150nm' }
+              ]} />
+              <Select id="aircraftSize" value={searchForm.aircraftSize} onChange={handleChange} options={[
+                { value: 'small', text: 'Small Aircraft' },
+                { value: 'medium', text: 'Medium Aircraft' },
+                { value: 'large', text: 'Large Aircraft' }
+              ]} />
           </div>
           <div className="flex flex-col md:flex-row justify-end items-baseline mt-2">
             <div><button onClick={() => handleSearch()} className="btn btn-primary">Find</button></div>
@@ -167,13 +141,13 @@ const Contracts = ({ searchedContracts, airport, cacheKey }) => {
           {error && <span className="text-sm text-red-500">{error}</span>}
         </div>
       {showCustom && (
-        <div className="absolute z-10 top-4 left-1/3 ml-8 py-2 px-4 bg-white dark:bg-gray-800 w-1/2 md:w-1/3 opacity-90 shadow rounded">
+        <div className="absolute z-10 top-4 left-1/3 ml-8 py-2 px-4 bg-neutral w-1/2 md:w-1/3 opacity-90 shadow rounded">
           <CustomContract departureIcao={searchForm.searchIcao} hideSection={() => setShowCustom(false)} />
         </div>
       )}
-      {showContracts && contracts && (<div className="absolute z-10 top-32 left-4 bottom-4 bg-white dark:bg-gray-800 w-1/2 md:w-1/3 opacity-90 shadow rounded h-auto overflow-y-auto mb-2">
+      {showContracts && contracts && (<div className="absolute z-10 top-40 left-4 bottom-4 bg-neutral w-1/2 md:w-1/3 opacity-90 shadow rounded h-auto overflow-y-auto">
           {contracts && contracts.map((contract) => (
-            <div key={contract.id} onClick={() => updateSelectedContract(contract)} className={`${contract.id === selectedContract.id ? 'bg-orange-200 hover:bg-orange-100 dark:bg-gray-600' : ''} border-t-2 text-sm cursor-pointer z-10`}>
+            <div key={contract.id} onClick={() => updateSelectedContract(contract)} className={`${contract.id === selectedContract.id ? 'bg-secondary text-base-100 dark:bg-gray-600' : ''} text-sm cursor-pointer z-10`}>
               <div className="px-4 py-2 flex justify-between items-center">
                 <Tooltip direction="right" content="Expiry date">
                 <div className="text-xs">

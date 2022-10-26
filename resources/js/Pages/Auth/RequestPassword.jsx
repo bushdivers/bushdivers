@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Inertia } from '@inertiajs/inertia'
 import { usePage } from '@inertiajs/inertia-react'
 import LayoutAuth from '../../Shared/LayoutAuth'
+import TextInput from '../../Shared/Elements/Forms/TextInput'
 
 const RequestPassword = () => {
   const { errors } = usePage().props
@@ -30,12 +31,8 @@ const RequestPassword = () => {
       <div className="rounded-md shadow-sm bg-white p-4 w-96 m-2">
         <p className="text-center text-2xl mb-2">Request new password</p>
         <form onSubmit={handleSubmit}>
-          <div className="my-2">
-            <label htmlFor="email" className="block"><span className="text-gray-700">Email</span></label>
-            <input id="email" value={values.email} onChange={handleChange} type="email" className="form-input form" />
-            {errors.email && <div className="text-sm text-red-500">{errors.email}</div>}
-          </div>
-          <button className="btn btn-primary w-full">Request password</button>
+          <TextInput id="email" label="Email" value={values.email} type="email" onChange={handleChange} placeHolder="john@doe.com" error={errors?.email} />
+          <button className="btn btn-primary w-full mt-2">Request password</button>
         </form>
       </div>
     </div>

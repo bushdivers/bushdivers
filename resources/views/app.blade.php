@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html id="html" lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
@@ -21,7 +21,7 @@
         window.global = window
     </script>
 </head>
-<body class="bg-gray-50">
+<body>
     @inertia
 </body>
 </html>

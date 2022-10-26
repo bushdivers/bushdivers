@@ -5,6 +5,7 @@ import Header from './Layout/Header'
 import SideBar from './Layout/SideBar'
 import { Toaster } from 'react-hot-toast'
 import { useFlags } from 'flagsmith/react'
+// import OldAppBar from './Layout/OldAppBar'
 import AppBar from './Layout/AppBar'
 
 export default function AppLayout ({ children, title, heading }) {
@@ -30,9 +31,9 @@ export default function AppLayout ({ children, title, heading }) {
             <div className="flex items-center justify-between">
               <h1>{heading}</h1>
               <div className="mr-2 flex items-center space-x-4">
-                <span className="hidden md:flex">${auth.user.balance}</span>
+                <span className="hidden md:flex">${parseFloat(auth.user.balance).toLocaleString()}</span>
                 <span className="hidden md:flex">{auth.user.points} XP</span>
-                <span className="md:hidden">Current Location:</span><span className="link"><Link href={`/airport/${auth.user.current_airport_id}`}>{auth.user.current_airport_id}</Link></span>
+                <span className="md:hidden">Current Location:</span><span className="link link-primary"><Link href={`/airport/${auth.user.current_airport_id}`}>{auth.user.current_airport_id}</Link></span>
               </div>
             </div>
             <div className="mt-4">{children}</div>

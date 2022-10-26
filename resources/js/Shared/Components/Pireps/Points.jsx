@@ -4,8 +4,7 @@ import Card from '../../Elements/Card'
 const Points = (props) => {
   return (
     <div className="mt-2 mx-2">
-      <Card>
-      <div className="text-lg">Points Awarded</div>
+      <Card title="Points Awarded">
       {props.points.length > 0 &&
       <div className="flex justify-between items-center">
         {props.points.map((point) => (

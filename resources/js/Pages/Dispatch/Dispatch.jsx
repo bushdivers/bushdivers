@@ -179,7 +179,7 @@ const Dispatch = ({ cargo, aircraft }) => {
   }
 
   return (
-    <div className="p-4">
+    <div>
       <h2>{`Dispatch - ${auth.user.current_airport_id}`}</h2>
       <div className="flex flex-col md:flex-row justify-between mt-4">
         <div className="md:w-1/2">
@@ -203,7 +203,7 @@ const Dispatch = ({ cargo, aircraft }) => {
             />
             <div className="mt-2 text-right">
               <button onClick={() => handleSubmitDispatch()} className="btn btn-primary">File Dispatch</button><br />
-              {submitError && <div className="text-red-500 text-xs">{submitError}</div>}
+              {submitError && <div className="text-error text-xs">{submitError}</div>}
             </div>
           </div>
         </div>

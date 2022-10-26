@@ -6,7 +6,7 @@ import Card from './Card'
 
 const Pagination = props => {
   return (
-    <Card className="flex items-center justify-between">
+    <Card>
       <div className="flex-1 flex justify-between sm:hidden">
         <a href="#"
            className="btn btn-secondary">

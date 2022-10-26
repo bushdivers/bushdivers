@@ -4,6 +4,8 @@ import { usePage } from '@inertiajs/inertia-react'
 import axios from 'axios'
 import { Inertia } from '@inertiajs/inertia'
 import Card from '../../Shared/Elements/Card'
+import CheckBox from '../../Shared/Elements/Forms/CheckBox'
+import TextInput from '../../Shared/Elements/Forms/TextInput'
 
 const Purchase = ({ aircraft, purchaseType }) => {
   const { auth, errors } = usePage().props
@@ -171,7 +173,7 @@ const Purchase = ({ aircraft, purchaseType }) => {
   }
 
   return (
-    <div className="p-4">
+    <div>
       {purchaseType === 'new'
         ? <div className="text-lg">Purchase New - {aircraft.manufacturer} {aircraft.name} {purchaseMethod === 'finance' ? <span>- On Finance</span> : <></>}</div>
         : <div className="text-lg">Purchase Used - {aircraft.registration} - {aircraft.fleet.manufacturer} {aircraft.fleet.name} ({aircraft.current_airport_id}) {purchaseMethod === 'finance' ? <span>- On Finance</span> : <></>}</div>
@@ -181,41 +183,30 @@ const Purchase = ({ aircraft, purchaseType }) => {
         {purchaseType === 'new' && (
           <>
           <div className="flex justify-start items-center space-x-2">
-            <label htmlFor="delivery" className="inline-flex items-center">
-              <input id="delivery" checked={deliver} onChange={handleDeliveryChange} type="checkbox" className="form-checkbox rounded border-gray-300 text-orange-500 shadow-sm focus:border-orange-300 focus:ring focus:ring-offset-0 focus:ring-orange-200 focus:ring-opacity-50" />
-              <span className="ml-2">Deliver?</span>
-            </label>
+            <CheckBox id="delivery" checked={deliver} onChange={handleDeliveryChange} label="Deliver?" />
             {deliver && (
               <div className="flex justify-start items-center">
-                <input id="dep" placeholder="Deliver to ICAO" type="text" className="form-input form" value={icao} onChange={handleChange} />
+                <TextInput id="dep" placeHolder="Deliver to ICAO" type="text" value={icao} onChange={handleChange} inline />
               </div>
             )}
             {airport &&
             <div className="text-sm mt-1">{airport}</div>
             }
-            {error && <div className="text-sm text-red-500 mt-1">{error}</div>}
+            {error && <div className="text-sm text-error mt-1">{error}</div>}
           </div>
           {!deliver && <div className="mt-2">Deliver to {aircraft.hq}</div>}
           {deliver && airport && <div className="mt-2">Deliver from: {aircraft.hq} to: {airport}</div>}
           </>
         )}
         <div className="w-1/4">
-          <div className="mt-2">
-            <label htmlFor="hub"><span>Home Hub (ICAO)</span></label>
-            <input id="hub" type="text" className="form-input form" value={hub} onChange={handleHubChange} />
-            {hubError && <span className="text-sm text-red-500">{hubError}</span>}
-          </div>
-          <div className="mt-2">
-            <label htmlFor="reg"><span>Registration</span></label>
-            <input id="reg" type="text" className="form-input form" value={reg} onChange={handleRegChange} />
-            {regError && <span className="text-sm text-red-500">{regError}</span>}
-          </div>
+          <TextInput id="hub" type="text" value={hub} onChange={handleHubChange} error={hubError} label="Home Hub (ICAO)" />
+          <TextInput id="reg" type="text" value={reg} onChange={handleRegChange} placeHolder="N1234A" error={regError} label="Registration" />
         </div>
 
         <div className="my-4">
           <div className="flex justify-between"><span>Base Price</span><span>${basePrice}</span></div>
           <div className="flex justify-between"><span>Delivery</span><span>${price.toFixed(2)}</span></div>
-          <div className="flex justify-between"><span>Total</span><span>${(parseFloat(basePrice) + parseFloat(price)).toFixed(2)}</span></div>
+          <div className="flex justify-between"><span>Total</span><span>${(parseFloat(basePrice) + parseFloat(price)).toFixed(2).toLocaleString()}</span></div>
         </div>
 
         <label htmlFor="method" className="inline-flex items-center">
@@ -226,17 +217,11 @@ const Purchase = ({ aircraft, purchaseType }) => {
         {purchaseMethod === 'finance'
           ? (
             <div className="mt-4">
-              <div className="text-lg">Finance Details</div>
+              <h2 className="card-title">Finance Details</h2>
               <div className="w-1/4">
-                <div className="mt-2">
-                  <label htmlFor="deposit"><span>Deposit amount</span></label>
-                  <input id="deposit" type="text" className="form-input form" value={deposit} onChange={handleDepositChange} />
-                </div>
-                <div className="mt-2">
-                  <label htmlFor="term"><span>Term (months) - min: 3; max: 24</span></label>
-                  <input id="term" type="text" className="form-input form" value={term} onChange={handleTermChange} />
-                </div>
-                <button onClick={calculate} className="btn btn-primary mt-2">Calculate</button>
+                <TextInput id="deposit" label="Deposit Amount" type="text" value={deposit} onChange={handleDepositChange} />
+                <TextInput id="term" label="Term (months) - min: 3; max: 24" type="text" value={term} onChange={handleTermChange} />
+                <button onClick={calculate} className="btn btn-secondary mt-2">Calculate</button>
               </div>
               <div className="mt-2">
                 <div className="flex justify-between"><span>Deposit (due now)</span><span>{deposit > 0 ? `$${(deposit)}` : '-'}</span></div>
@@ -246,17 +231,17 @@ const Purchase = ({ aircraft, purchaseType }) => {
               </div>
               <div className="mt-4 flex justify-between">
                 <div className="text-sm italic">Terms: Payments made on 1st of each month; More than two missed payments will result on aircraft being reclaimed.</div>
-                <button onClick={() => purchase('finance')} className="btn btn-secondary">Confirm Finance</button>
+                <button onClick={() => purchase('finance')} className="btn btn-primary">Confirm Finance</button>
               </div>
             </div>
             )
           : (
             <div className="mt-4 flex justify-end">
-              <button onClick={() => purchase('buy')} className="btn btn-secondary">Purchase</button>
+              <button onClick={() => purchase('buy')} className="btn btn-primary">Purchase</button>
             </div>
             )
         }
-        {errors.reg && <span className="text-sm text-red-500 my-2">The aircraft registration has already exists</span>}
+        {errors.reg && <span className="text-sm text-error my-2">The aircraft registration has already exists</span>}
         </Card>
       </div>
     </div>

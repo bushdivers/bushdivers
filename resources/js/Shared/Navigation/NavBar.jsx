@@ -1,60 +1,33 @@
-import React, { Fragment } from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Disclosure } from '@headlessui/react'
-import { Link } from '@inertiajs/inertia-react'
-import PublicLeftNav from './NavBarSections/PublicLeftNav'
-import PublicRightNav from './NavBarSections/PublicRightNav'
-import { faBurger, faClose } from '@fortawesome/free-solid-svg-icons'
+import React from 'react'
+import { Link, usePage } from '@inertiajs/inertia-react'
 
 export default function NavBar () {
+  const { auth } = usePage().props
   return (
-    <Disclosure as="nav" className="bg-white border-b-2 border-orange-500 shadow-sm z-10">
-      {({ open }) => (
-        <>
-          <div className="px-2 sm:px-6 lg:px-8">
-            <div className="relative flex items-center justify-between h-16">
-              <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
-                {/* Mobile menu button */}
-                <Disclosure.Button className="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:bg-gray-50">
-                  <span className="sr-only">Open main menu</span>
-                  {open
-                    ? (
-                      <div className="block h-6 w-6" aria-hidden="true"><FontAwesomeIcon icon={faClose} /></div>
-                      )
-                    : (
-                      <div className="block h-6 w-6" aria-hidden="true"><FontAwesomeIcon icon={faBurger} /></div>
-                      )}
-                </Disclosure.Button>
-              </div>
-              <div className="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
-                <div className="flex-shrink-0 flex items-center">
-                  <Link href="/">
-                    <img
-                      className="block lg:hidden h-9 w-auto"
-                      src="https://res.cloudinary.com/dji0yvkef/image/upload/v1628691598/BDLogo.png"
-                      alt="Workflow"
-                    />
-                  </Link>
-                  <Link href="/">
-                    <img
-                      className="hidden lg:block h-9 w-auto"
-                      src="https://res.cloudinary.com/dji0yvkef/image/upload/v1628691598/BDLogo.png"
-                      alt="Workflow"
-                    />
-                  </Link>
-                  <span className="hidden lg:block ml-3">Bush Divers</span>
-                </div>
-              </div>
-              <div className="hidden sm:block sm:ml-6">
-                <PublicRightNav />
-              </div>
-            </div>
-          </div>
-          <Disclosure.Panel className="sm:hidden">
-            <PublicRightNav mobile={true} />
-          </Disclosure.Panel>
-        </>
-      )}
-    </Disclosure>
+    <div className="navbar bg-neutral fixed w-full top-0 z-20 border-b">
+      <div className="navbar-start">
+        <div className="dropdown">
+          <label tabIndex={0} className="btn btn-ghost lg:hidden">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" /></svg>
+          </label>
+          <ul tabIndex={0} className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-neutral rounded-box w-52">
+            <a className="btn btn-primary mt-2">Crew Login</a>
+            <a className="btn btn-secondary mt-2">Get started</a>
+          </ul>
+        </div>
+        <a className="btn btn-ghost normal-case text-xl">
+          <img src="https://res.cloudinary.com/dji0yvkef/image/upload/v1628691598/BDLogo.png" className="mr-3 h-6 sm:h-9" alt="Bush Divers Logo" />
+          <h4>Bush Divers</h4>
+        </a>
+      </div>
+      <div className="navbar-end">
+        {!auth.user && (
+          <>
+            <Link href="/login" className="btn btn-primary hidden lg:flex mr-2">Crew Login</Link>
+            <Link href="/register" className="btn btn-secondary hidden lg:flex">Get started</Link>
+          </>
+        )}
+      </div>
+    </div>
   )
 }

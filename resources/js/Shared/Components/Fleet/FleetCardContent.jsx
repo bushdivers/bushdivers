@@ -35,46 +35,46 @@ const FleetCardContent = ({ fleet }) => {
         <div className="ml-2">
           <div className="flex flex-col md:flex-row mt-2 md:mt-0">
             <div className="md:mr-8">
-              <span className="text-md font-bold text-gray-600">Powerplants: </span><br/>
+              <span className="text-md font-bold text-base">Powerplants: </span><br/>
               <span>{fleet.number_of_engines}x {fleet.powerplants}</span>
             </div>
             <div className="md:mr-8">
-              <span className="text-md font-bold text-gray-600">Fuel Type: </span><br/>
+              <span className="text-md font-bold text-base">Fuel Type: </span><br/>
               <span>{fleet.fuel_type === 1 ? <span>Avgas</span> : <span>Jet Fuel</span>}</span>
             </div>
             <div className="mr-8">
-              <span className="text-md font-bold text-gray-600">Fuel Capacity: </span><br/>
+              <span className="text-md font-bold text-base">Fuel Capacity: </span><br/>
               <span>{fleet.fuel_capacity.toLocaleString(navigator.language)} gal</span>
             </div>
           </div>
           <div className="flex flex-col md:flex-row mt-4">
             <div className="mr-8">
-              <span className="text-md font-bold text-gray-600">Service Ceiling: </span><br/>
+              <span className="text-md font-bold text-base">Service Ceiling: </span><br/>
               <span>{fleet.service_ceiling.toLocaleString(navigator.language)} ft</span>
             </div>
             <div className="mr-8">
-              <span className="text-md font-bold text-gray-600">Max Range: </span><br/>
+              <span className="text-md font-bold text-base">Max Range: </span><br/>
               <span>{fleet.range.toLocaleString(navigator.language)} nm</span>
             </div>
             <div className="mr-8">
-              <span className="text-md font-bold text-gray-600">Max Cruise Speed: </span><br/>
+              <span className="text-md font-bold text-base">Max Cruise Speed: </span><br/>
               <span>{fleet.cruise_speed.toLocaleString(navigator.language)} kts</span>
             </div>
             <div className="mr-8">
-              <span className="text-md font-bold text-gray-600">PAX Capacity: </span><br/>
+              <span className="text-md font-bold text-base">PAX Capacity: </span><br/>
               <span>{fleet.pax_capacity}</span>
             </div>
             <div className="mr-8">
-              <span className="text-md font-bold text-gray-600">Cargo Capacity: </span><br/>
+              <span className="text-md font-bold text-base">Cargo Capacity: </span><br/>
               <span>{fleet.cargo_capacity.toLocaleString(navigator.language)} lbs</span>
             </div>
           </div>
         </div>
       </div>
       { auth.user && (
-        <div className="mt-3 overflow-x-auto">
+        <div className="mt-4 overflow-x-auto">
           {fleet.aircraft.length > 0 &&
-          <table className="table table-auto">
+          <table className="table table-compact w-full">
             <thead>
             <tr>
               <th scope="col">Registration</th>
@@ -97,7 +97,7 @@ const FleetCardContent = ({ fleet }) => {
                 <td>
                   <AircraftCondition aircraftCondition={aircraft.total_condition} />
                 </td>
-                {shouldShowMaintenance() && <td><Link href={`/aircraft/${aircraft.id}`} className="btn btn-secondary btn-small">Maintenance</Link></td>}
+                {shouldShowMaintenance() && <td><Link href={`/aircraft/${aircraft.id}`} className="btn btn-secondary btn-xs">Maintenance</Link></td>}
               </tr>
             ))}
             </tbody>

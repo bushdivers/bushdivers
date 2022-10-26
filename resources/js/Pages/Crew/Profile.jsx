@@ -8,6 +8,8 @@ import AppLayout from '../../Shared/AppLayout'
 import { faAward, faCircleCheck } from '@fortawesome/free-solid-svg-icons'
 import { Button } from '../../Components/Button'
 import Card from '../../Shared/Elements/Card'
+import TextInput from '../../Shared/Elements/Forms/TextInput'
+import CheckBox from '../../Shared/Elements/Forms/CheckBox'
 
 const Profile = ({ profile, hubs, rank, nextRank, awards }) => {
   const { errors } = usePage().props
@@ -46,43 +48,19 @@ const Profile = ({ profile, hubs, rank, nextRank, awards }) => {
   }
 
   return (
-    <div className="p-4">
+    <div>
       <div className="flex flex-col md:flex-row justify-between md:items-start">
         <div className="mt-4 md:w-1/2">
           <Card>
           <form onSubmit={handleSubmit}>
-            <div className="my-2">
-              <label htmlFor="email" className="block"><span>Email</span></label>
-              <input id="email" value={values.email} onChange={handleChange} type="email" className="form-input form" />
-              {errors.email && <div className="text-sm text-red-500">{errors.email}</div>}
-            </div>
-            <div className="my-2">
-              <label htmlFor="name" className="block"><span>Name</span></label>
-              <input id="name" value={values.name} onChange={handleChange} type="text" className="form-input form" />
-              {errors.name && <div className="text-sm text-red-500">{errors.name}</div>}
-            </div>
-            <div className="my-2">
-              <label htmlFor="password" className="block"><span>Password</span></label>
-              <input id="password" value={values.password} onChange={handleChange} type="password" className="form-input form" />
-              {errors.password && <div className="text-sm text-red-500">{errors.password}</div>}
-            </div>
-            <div className="my-2">
-              <label htmlFor="msfs_username" className="block"><span>MSFS username</span></label>
-              <input id="msfs_username" value={values.msfs_username} onChange={handleChange} type="text" className="form-input form" />
-            </div>
-            <div className="my-2">
-              <label htmlFor="volanta_username" className="block"><span>Volanta username</span></label>
-              <input id="volanta_username" value={values.volanta_username} onChange={handleChange} type="text" className="form-input form" />
-            </div>
-            <div className="my-2">
-              <label htmlFor="discord_username" className="block"><span>Discord username</span></label>
-              <input id="discord_username" value={values.discord_username} onChange={handleChange} type="text" className="form-input form" />
-            </div>
-            <div className="my-2">
-              <label htmlFor="opt_in" className="inline-flex items-center">
-                <input id="opt_in" checked={values.opt_in} onChange={handleChange} type="checkbox" className="form-checkbox rounded border-gray-300 text-orange-500 shadow-sm focus:border-orange-300 focus:ring focus:ring-offset-0 focus:ring-orange-200 focus:ring-opacity-50" />
-                <span className="ml-2">Opt in to notification emails</span>
-              </label>
+            <TextInput id="email" type="email" value={values.email} label="Email" error={errors?.email} onChange={handleChange} />
+            <TextInput id="name" type="text" value={values.name} label="Name" error={errors?.name} onChange={handleChange} />
+            <TextInput id="password" type="password" value={values.password} label="Password" error={errors?.password} onChange={handleChange} />
+            <TextInput id="msfs_username" type="text" value={values.msfs_username} label="MSFS Username" error={errors?.msfs_username} onChange={handleChange} />
+            <TextInput id="volanta_username" type="text" value={values.volanta_username} label="Volanta Username" error={errors?.volanta_username} onChange={handleChange} />
+            <TextInput id="discord_username" type="text" value={values.discord_username} label="Discord Username" error={errors?.discord_username} onChange={handleChange} />
+            <div className="mt-2">
+            <CheckBox id="opt_in" label="Opt in to notification emails" value={values.opt_in} onChange={handleChange} />
             </div>
             <div className="text-right"><button className="btn btn-primary">Update profile</button></div>
           </form>

@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react'
 import maplibre from 'maplibre-gl'
 import { parseMapStyle } from '../../../Helpers/general.helpers'
+import Card from '../../Elements/Card'
 
 const accessToken = import.meta.env.VITE_MAPBOX_TOKEN
 
@@ -119,7 +120,9 @@ const PirepMap = (props) => {
   }, [props.pirep])
 
   return (
+    <Card title="Route">
       <div ref={mapContainer} className={`map-container-${props.size} rounded`} />
+    </Card>
   )
 }
 

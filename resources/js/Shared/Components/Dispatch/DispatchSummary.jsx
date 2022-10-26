@@ -16,9 +16,9 @@ const DispatchSummary = (props) => {
       <div className="mt-2">
         <div className="text-lg mb-1">Payload:</div>
         {props.deadHead ? <span className="italic">Deadhead flight - no cargo</span> : <span></span>}
-        <div>Pilot & payload weight (inc. fuel): {props.selectedAircraft && <span className={props.selectedAircraft && (props.personWeight + props.fuelWeight + props.cargoWeight) > (props.selectedAircraft.fleet.mtow - props.selectedAircraft.fleet.zfw) ? 'text-red-500' : ''}>{(props.personWeight + props.fuelWeight + props.cargoWeight).toFixed(2)} lbs / {(props.selectedAircraft.fleet.mtow - props.selectedAircraft.fleet.zfw)} lbs</span>}</div>
-        <div>Cargo payload: {props.selectedAircraft && <span className={props.selectedAircraft && props.cargoWeight > props.selectedAircraft.fleet.cargo_capacity ? 'text-red-500' : ''}>{props.cargoWeight} lbs / {props.selectedAircraft.fleet.cargo_capacity} lbs</span>}</div>
-        <div>Passenger count: {props.selectedAircraft && <span className={props.selectedAircraft && props.passengerCount > props.selectedAircraft.fleet.pax_capacity ? 'text-red-500' : ''}>{props.passengerCount} / {props.selectedAircraft.fleet.pax_capacity}</span>}</div>
+        <div>Pilot & payload weight (inc. fuel): {props.selectedAircraft && <span className={props.selectedAircraft && (props.personWeight + props.fuelWeight + props.cargoWeight) > (props.selectedAircraft.fleet.mtow - props.selectedAircraft.fleet.zfw) ? 'text-error' : ''}>{(props.personWeight + props.fuelWeight + props.cargoWeight).toFixed(2)} lbs / {(props.selectedAircraft.fleet.mtow - props.selectedAircraft.fleet.zfw)} lbs</span>}</div>
+        <div>Cargo payload: {props.selectedAircraft && <span className={props.selectedAircraft && props.cargoWeight > props.selectedAircraft.fleet.cargo_capacity ? 'text-error' : ''}>{props.cargoWeight} lbs / {props.selectedAircraft.fleet.cargo_capacity} lbs</span>}</div>
+        <div>Passenger count: {props.selectedAircraft && <span className={props.selectedAircraft && props.passengerCount > props.selectedAircraft.fleet.pax_capacity ? 'text-error' : ''}>{props.passengerCount} / {props.selectedAircraft.fleet.pax_capacity}</span>}</div>
         <div className="mt-1">Fuel: {props.pirep ? <span>{props.pirep.planned_fuel} gal | {props.fuelWeight.toFixed(2)} lbs</span> : <span>{props.fuel} gal | {props.fuelWeight.toFixed(2)} lbs</span>}</div>
       </div>
     </Card>

@@ -16,10 +16,10 @@ const LogbookDetail = ({ pirep, points, logs, cargo, pilotFinancials, companyFin
   const { auth } = usePage().props
   const submittedDate = format(new Date(pirep.submitted_at), 'do MMMM yyyy kk:mm')
   return (
-    <div className="p-4">
+    <div>
       <h2>{`Pilot Report - ${pirep.id}`}</h2>
       {submittedDate} {auth.user.is_admin ? <span>{pirep.pilot.pilot_id} - {pirep.pilot.private_name}</span> : ''}
-      {pirep.state === 5 ? <span className="ml-2"><Badge color="primary" label="Review" /></span> : <span className="ml-2"><Badge color="green" label="Completed" /></span>}
+      {pirep.state === 5 ? <span className="ml-2"><Badge color="primary" label="Review" /></span> : <span className="ml-2"><Badge color="success" label="Completed" /></span>}
       <div className="flex flex-col md:flex-row justify-between">
         <div className="md:w-1/2">
           <LogbookPrimary pirep={pirep} />

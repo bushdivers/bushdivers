@@ -34,14 +34,14 @@ const CompanyFinances = ({ accounts, balance, aircraftStorage, aircraftOps, hubs
       <div className="flex flex-col md:flex-row md:justify-between">
         <div className="md:w-1/2 md:mx-2">
           <Card title="Account Balance">
-            <h3>${balance.toFixed(2)}</h3>
+            <h3>${parseFloat(balance).toLocaleString()}</h3>
           </Card>
           {accounts && accounts.data.map((entry) => (
             <div key={entry.id} className="my-2">
               <Card>
                 <div className="flex justify-between">
                   <div>
-                    ${entry.total} <br />
+                    ${parseFloat(entry.total).toFixed(2).toLocaleString()} <br />
                     <span className="text-sm">
                   {renderTransactionType(entry.transaction_type)}
                 </span>
@@ -61,15 +61,15 @@ const CompanyFinances = ({ accounts, balance, aircraftStorage, aircraftOps, hubs
             <h3>Monthly Costs</h3>
             <div className="my-2">
               <h4>Aircraft Operations</h4>
-              <span className="text-xl">${aircraftOps}</span>
+              <span className="text-xl">${parseFloat(aircraftOps).toLocaleString()}</span>
             </div>
             <div className="my-2">
               <h4>Aircraft Storage</h4>
-              <span className="text-xl">${aircraftStorage}</span>
+              <span className="text-xl">${parseFloat(aircraftStorage).toLocaleString()}</span>
             </div>
             <div className="my-2">
               <h4>Hub Rentals</h4>
-              <span className="text-xl">${hubs}</span>
+              <span className="text-xl">${parseFloat(hubs).toLocaleString()}</span>
             </div>
           </Card>
         </div>

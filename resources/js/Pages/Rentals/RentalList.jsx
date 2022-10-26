@@ -52,10 +52,10 @@ const RentalList = ({ aircraft, myRentals, currentAirport }) => {
   return (
     <div className="p-4">
       <div>
-        <h2>My Rentals</h2>
-        <div className="overflow-x-auto my-2">
-          <Card compact="true">
-          <table className="table table-auto table-condensed">
+        <div className="my-2">
+          <Card title="My Rentals">
+            <div className="overflow-x-auto">
+          <table className="table table-compact w-full">
             <thead>
             <tr>
               <th>Registration</th>
@@ -74,21 +74,22 @@ const RentalList = ({ aircraft, myRentals, currentAirport }) => {
                 <td><Link href={`airports/${ac.current_airport_id}`}>{ac.current_airport_id}</Link></td>
                 <td><Link href={`airports/${ac.rental_airport_id}`}>{ac.rental_airport_id}</Link></td>
                 <td>${ac.fleet.rental_cost}</td>
-                <td><span className="text-orange-500" onClick={() => handleCancel(ac)}>End rental</span></td>
+                <td><button className="btn btn-secondary btn-xs" onClick={() => handleCancel(ac)}>End rental</button></td>
               </tr>
             ))}
             </tbody>
           </table>
+            </div>
           </Card>
         </div>
       </div>
       <div className="mt-4">
-        <h2 className="my-2">
+        <h3 className="my-2">
           {currentAirport.is_hub
             ? <span>Aircraft Available for Rental - {auth.user.current_airport_id}</span>
             : <span>{auth.user.current_airport_id} - <span className="text-sm text-red-500">You must be at a hub to rent aircraft</span></span>
           }
-        </h2>
+        </h3>
           <div className="flex flex-wrap justify-start mt-2">
             {aircraft && aircraft.map((ac) => (
               <div key={ac.id} className="w-1/4 mx-4 my-2">

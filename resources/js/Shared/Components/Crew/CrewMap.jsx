@@ -44,7 +44,7 @@ const CrewMap = (props) => {
 
   return (
     <>
-      <div ref={mapContainer} className={`map-container-${props.size} relative overflow-hidden`} />
+      <div ref={mapContainer} className={`map-container-${props.size} rounded relative overflow-hidden`} />
     </>
   )
 }

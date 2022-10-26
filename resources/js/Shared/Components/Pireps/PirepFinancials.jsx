@@ -37,9 +37,11 @@ const PirepFinancials = (props) => {
   }
 
   return (
-    <div className="my-2 mx-2 overflow-x-auto">
+    <div className="my-2 mx-2">
+      <div className="mb-2">
       <Card title="Pirep Financials">
-      <table className="table table-condensed table-auto">
+        <div className="overflow-x-auto">
+      <table className="table table-compact w-full">
         <thead>
         <tr>
           <th>Transaction</th>
@@ -58,8 +60,12 @@ const PirepFinancials = (props) => {
       <div className="text-right">
         <div>Total: <span className={props.companyTotal < 0 ? 'text-red-500' : undefined}>${props.companyTotal.toLocaleString(navigator.language)}</span></div>
       </div>
-        <div className="mt-2"><h3>Pilot Financials</h3></div>
-      <table className="table table-condensed table-auto">
+        </div>
+      </Card>
+      </div>
+      <Card title="Pilot Financials">
+        <div className="overflow-x-auto">
+      <table className="table table-compact w-full">
         <thead>
         <tr>
           <th>Transaction</th>
@@ -75,6 +81,7 @@ const PirepFinancials = (props) => {
         ))}
         </tbody>
       </table>
+        </div>
       <div className="text-right">
         <div>Total: <span className={props.pilotTotal < 0 ? 'text-red-500' : undefined}>${props.pilotTotal.toLocaleString(navigator.language)}</span></div>
       </div>

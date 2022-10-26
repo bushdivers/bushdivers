@@ -37,7 +37,7 @@ const LandingMap = (props) => {
 
   return (
     <>
-      <div ref={mapContainer} className={('map-container-' + props.size)} />
+      <div ref={mapContainer} className={`map-container-${props.size} rounded`} />
     </>
   )
 }

@@ -3,6 +3,7 @@ import { Inertia } from '@inertiajs/inertia'
 import axios from 'axios'
 import AppLayout from '../../Shared/AppLayout'
 import Card from '../../Shared/Elements/Card'
+import TextInput from '../../Shared/Elements/Forms/TextInput'
 
 const Jumpseat = ({ user, spent, balance }) => {
   const [airport, setAirport] = useState('')
@@ -67,9 +68,7 @@ const Jumpseat = ({ user, spent, balance }) => {
               <div className="text-lg">{user.location.identifier} - {user.location.name}</div>
             </div>
             <div className="md:w-1/2">
-              <label htmlFor="dep"><span>Transfer to (ICAO)</span></label>
-              <input id="dep" type="text" className="form-input form" value={icao} onChange={handleChange} />
-              {error && <div className="text-sm text-red-500 mt-1">{error}</div>}
+              <TextInput id="dep" label="Transfer to (ICAO)" error={error} placeHolder="Enter ICAO" type="text" onChange={handleChange} value={icao} />
               {airport && <div className="text-sm mt-1">{airport}</div>}
             </div>
           </div>
@@ -77,14 +76,14 @@ const Jumpseat = ({ user, spent, balance }) => {
             {distance && (
               <div className="w-1/2 mx-4 text-center">
                 <div>Distance</div>
-                <div>{distance.toLocaleString(navigator.language)} nm</div>
+                <div>{distance.toLocaleString()} nm</div>
               </div>
             )}
             {price >= 0
               ? (
                   <div className="w-1/2 mx-4 text-center">
                     <div>Price</div>
-                    <div>${price.toLocaleString(navigator.language)}</div>
+                    <div>${price.toLocaleString()}</div>
                   </div>
                 )
               : <></>
@@ -96,18 +95,16 @@ const Jumpseat = ({ user, spent, balance }) => {
           </Card>
         </div>
         <div className="lg:w-1/4 mx-2 mt-4 flex items-start">
-          <Card>
+          <Card title="Current Balance">
           <div className="flex flex-col text-center">
-            <div>Current Balance</div>
-            <div className="text-xl mt-2">${balance.toLocaleString(navigator.language)}</div>
+            <div className="text-xl mt-2">${parseFloat(balance).toLocaleString()}</div>
           </div>
           </Card>
         </div>
         <div className="lg:w-1/4mx-2 mt-4 flex items-start">
-          <Card>
+          <Card title="Spent on Jumpseat">
           <div className="flex flex-col text-center">
-            <div>Spent on Jumpseats</div>
-            <div className="text-xl mt-2">${spent.toLocaleString(navigator.language)}</div>
+            <div className="text-xl mt-2">${parseFloat(spent).toLocaleString()}</div>
           </div>
           </Card>
         </div>

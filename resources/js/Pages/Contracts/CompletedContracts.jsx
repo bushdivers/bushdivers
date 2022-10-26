@@ -12,7 +12,7 @@ const CompletedContracts = ({ contracts }) => {
     <div className="p-4">
       <div className="mt-1">
         {contracts && contracts.data.map((contract) => (
-          <div key={contract.id} className="mt-1 overflow-x-auto">
+          <div key={contract.id} className="mt-1">
             <Card>
             <div className="flex justify-between items-center">
               <div className="flex flex-col items-center content-center">
@@ -31,14 +31,14 @@ const CompletedContracts = ({ contracts }) => {
               </div>
               <div className="flex flex-col items-center content-center">
                 <div>Contract Value</div>
-                ${parseFloat(contract.cargo.map(detail => detail.contract_value).reduce((total, num) => total + Math.fround(num), 0)).toFixed(2)}
+                ${parseFloat(contract.cargo.map(detail => detail.contract_value).reduce((total, num) => total + Math.fround(num), 0)).toFixed(2).toLocaleString()}
               </div>
               <div className="flex flex-col items-center content-center">
                 <div>Completed Date</div>
                 {dayjs(contract.completed_at).format('DD/MM/YYYY')}
               </div>
             </div>
-            <table className="table-condensed table-auto mt-2">
+            <table className="table table-compact w-full mt-4">
               <thead>
               <tr className="">
                 <th>Id</th>

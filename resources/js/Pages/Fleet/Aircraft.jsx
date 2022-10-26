@@ -133,7 +133,7 @@ const Aircraft = ({ aircraft, maintenanceStatus, pireps }) => {
   }
 
   return (
-    <div className="p-4">
+    <div>
       <div className="flex justify-start items-center mb-2">
         <h2>{`${aircraft.registration} - ${aircraft.fleet.manufacturer} ${aircraft.fleet.name} (${aircraft.fleet.type})`}</h2>
         {aircraft.maintenance_status && !aircraft.is_rental && <span className="ml-2 text-orange-500"><FontAwesomeIcon icon={faScrewdriverWrench} /></span>}
@@ -184,23 +184,24 @@ const Aircraft = ({ aircraft, maintenanceStatus, pireps }) => {
             </div>
           </div>
           { !aircraft.is_rental && (
-            <div className="overflow-x-auto my-2">
+            <div className="my-2">
               <Card title="Maintenance">
               <div className="flex justify-between">
                 {shouldShowMaintenance() &&
                 (
                   <div className="flex justify-between space-x-1">
-                    <button className="btn btn-secondary btn-small my-1" onClick={() => handleGeneralMaintenance(aircraft, 4)}>General Maintenance</button>
-                    <button className="btn btn-secondary my-1 btn-small" onClick={() => handleAnnual(aircraft)}>Annual Inspection</button>
+                    <button className="btn btn-secondary btn-sm my-1" onClick={() => handleGeneralMaintenance(aircraft, 4)}>General Maintenance</button>
+                    <button className="btn btn-secondary my-1 btn-sm" onClick={() => handleAnnual(aircraft)}>Annual Inspection</button>
                   </div>
                 )
                 }
               </div>
               <div className="mt-2 my-4">
-                <h4>Airframe Condition</h4>
+                <p>Airframe Condition</p>
                 <AircraftCondition aircraftCondition={aircraft.wear} />
               </div>
-            <table className="table table-auto table-condensed">
+                <div className="overflow-x-auto">
+            <table className="table table-compact w-full">
               <thead>
               <tr>
                 <th>Engine #</th>
@@ -216,30 +217,32 @@ const Aircraft = ({ aircraft, maintenanceStatus, pireps }) => {
                   <td>{engine.engine_no}</td>
                   <td>
                     {(engine.mins_since_100hr / 60).toFixed(2)}
-                    {shouldShowMaintenance() && <button className="btn btn-secondary ml-2 btn-small" onClick={() => handle100hr(aircraft, engine.id)}>100 hr</button>}
+                    {shouldShowMaintenance() && <button className="btn btn-secondary ml-2 btn-xs" onClick={() => handle100hr(aircraft, engine.id)}>100 hr</button>}
                   </td>
                   <td>
                     {(engine.mins_since_tbo / 60).toFixed(2)}
-                    {shouldShowMaintenance() && <button className="btn btn-secondary ml-2 btn-small" onClick={() => handleTBO(aircraft, engine.id)}>TBO</button>}
+                    {shouldShowMaintenance() && <button className="btn btn-secondary ml-2 btn-xs" onClick={() => handleTBO(aircraft, engine.id)}>TBO</button>}
                   </td>
                   <td>
                     <AircraftCondition aircraftCondition={engine.wear} />
                   </td>
                   {shouldShowMaintenance() &&
                     <td>
-                      <button onClick={() => handleGeneralMaintenance(aircraft, 5, engine.id)} className="btn btn-secondary btn-small">Engine Maintenance</button>
+                      <button onClick={() => handleGeneralMaintenance(aircraft, 5, engine.id)} className="btn btn-secondary btn-xs">Engine Maintenance</button>
                     </td>}
                 </tr>
               ))}
               </tbody>
             </table>
+                </div>
             </Card>
            </div>
           )}
           {!aircraft.is_rental && (
-          <div className="overflow-x-auto">
+          <div>
             <Card title="Maintenance Logs">
-            <table className="table table-auto table-condensed">
+              <div className="overflow-x-auto">
+            <table className="table table-compact w-full">
               <thead>
               <tr>
                 <th>Type</th>
@@ -257,12 +260,14 @@ const Aircraft = ({ aircraft, maintenanceStatus, pireps }) => {
               ))}
               </tbody>
             </table>
+              </div>
             </Card>
           </div>
           )}
-          <div className="overflow-x-auto mt-2">
+          <div className="mt-2">
             <Card title="Flights">
-            <table className="table table-auto table-condensed">
+              <div className="overflow-x-auto">
+            <table className="table table-compact w-full">
               <thead>
               <tr>
                 <th>Date</th>
@@ -284,12 +289,13 @@ const Aircraft = ({ aircraft, maintenanceStatus, pireps }) => {
               ))}
               </tbody>
             </table>
+              </div>
             </Card>
           </div>
         </div>
         <div className="md:w-1/2 mx-1">
-          <div className="overflow-x-auto">
-            <Card compact="true">
+          <div>
+            <Card>
              <AircraftMap aircraft={aircraft} size="large" mapStyle={auth.user.map_style} />
             </Card>
           </div>

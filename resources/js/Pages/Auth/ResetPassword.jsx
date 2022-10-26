@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Inertia } from '@inertiajs/inertia'
 import { usePage } from '@inertiajs/inertia-react'
 import LayoutAuth from '../../Shared/LayoutAuth'
+import TextInput from '../../Shared/Elements/Forms/TextInput'
 
 const ResetPassword = ({ token }) => {
   const { errors } = usePage().props
@@ -31,12 +32,8 @@ const ResetPassword = ({ token }) => {
       <div className="rounded-md shadow-sm bg-white p-4 w-96 m-2">
         <p className="text-center text-2xl mb-2">Reset Password</p>
         <form onSubmit={handleSubmit}>
-          <div className="my-2">
-            <label htmlFor="password" className="block"><span className="text-gray-700">Password</span></label>
-            <input id="password" value={values.password} onChange={handleChange} type="password" className="form-input form" />
-            {errors.password && <div className="text-sm text-red-500">{errors.password}</div>}
-          </div>
-          <button className="btn btn-primary w-full">Reset password</button>
+          <TextInput id="password" label="Password" type="password" placeHolder="Enter new password" value={values.password} onChange={handleChange} error={errors?.password} />
+          <button className="btn btn-primary w-full mt-2">Reset password</button>
         </form>
       </div>
     </div>

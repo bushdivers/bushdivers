@@ -3,6 +3,7 @@ import { usePage } from '@inertiajs/inertia-react'
 import { Inertia } from '@inertiajs/inertia'
 import AppLayout from '../../Shared/AppLayout'
 import Card from '../../Shared/Elements/Card'
+import TextInput from '../../Shared/Elements/Forms/TextInput'
 
 const Submission = () => {
   const { errors } = usePage().props
@@ -34,27 +35,11 @@ const Submission = () => {
         <Card>
         <div className="w-1/2">
           <form onSubmit={handleSubmit}>
-            <div className="my-2">
-              <label htmlFor="pirep_id" className="block"><span>Pirep Id</span><span className="text-sm ml-2">(Can be found on dispatch page)</span></label>
-              <input id="pirep_id" value={values.pirep_id} onChange={handleChange} type="text" className="form-input form" />
-              {errors.pirep_id && <div className="text-sm text-red-500">{errors.pirep_id}</div>}
-            </div>
-            <div className="my-2">
-              <label htmlFor="fuel_used" className="block"><span>Fuel Used (Gal)</span></label>
-              <input id="fuel_used" value={values.fuel_used} onChange={handleChange} type="text" className="form-input form" />
-              {errors.fuel_used && <div className="text-sm text-red-500">{errors.fuel_used}</div>}
-            </div>
-            <div className="my-2">
-              <label htmlFor="distance" className="block"><span>Distance Flown (nm)</span></label>
-              <input id="distance" value={values.distance} onChange={handleChange} type="text" className="form-input form" />
-              {errors.distance && <div className="text-sm text-red-500">{errors.distance}</div>}
-            </div>
-            <div className="my-2">
-              <label htmlFor="flight_time_mins" className="block"><span>Flight Time (minutes)</span></label>
-              <input id="flight_time_mins" value={values.flight_time_mins} onChange={handleChange} type="text" className="form-input form" />
-              {errors.flight_time_mins && <div className="text-sm text-red-500">{errors.flight_time_mins}</div>}
-            </div>
-            <button className="btn btn-primary">Submit Pirep for Review</button>
+            <TextInput id="pirep_id" value={values.pirep_id} type="text" label="Pirep Id" onChange={handleChange} error={errors?.pirep_id} />
+            <TextInput id="fuel_used" value={values.fuel_used} type="text" label="Fuel Used (gal)" onChange={handleChange} error={errors?.fuel_used} />
+            <TextInput id="distance" value={values.distance} type="text" label="Distance (nm)" onChange={handleChange} error={errors?.distance} />
+            <TextInput id="flight_time_mins" value={values.flight_time_mins} type="text" label="Flight Time (mins)" onChange={handleChange} error={errors?.flight_time_mins} />
+            <button className="btn btn-primary mt-2">Submit Pirep for Review</button>
           </form>
         </div>
         </Card>

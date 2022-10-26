@@ -9,8 +9,10 @@ const Avatar = ({ name }) => {
   }, [name])
 
   return (
-    <div className="flex items-center justify-center bg-gray-600 rounded-full w-10 h-10" data-testid="avatar">
-      <span className="text-lg text-gray-100">{initials}</span>
+    <div className="avatar placeholder">
+      <div className="bg-neutral-focus text-neutral-content rounded-full w-8">
+        <span>{initials}</span>
+      </div>
     </div>
   )
 }

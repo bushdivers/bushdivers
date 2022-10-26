@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import axios from 'axios'
 import Card from '../../Elements/Card'
+import TextInput from '../../Elements/Forms/TextInput'
 
 const Destination = (props) => {
   const [airportError, setAirportError] = useState(null)
@@ -33,13 +34,13 @@ const Destination = (props) => {
 
   return (
     <div className="mt-2 mr-2">
-      <Card title="Detination (ICAO)">
-      <div className="w-1/4">
-        <input id="icao" type="text" className="form-input form" value={icao} onChange={handleDestinationChange} />
-      </div>
+      <Card title="Destination (ICAO)">
+        <div className="w-full lg:w-1/4">
+        <TextInput id="icao" type="text" value={icao} onChange={handleDestinationChange} />
+        </div>
       {airport && <div className="text-sm mt-1">{airport}</div>}
       {distance && <span className="text-sm">Distance: {distance.toLocaleString(navigator.language)}nm</span>}
-      {airportError && <div className="text-sm text-red-500 mt-1">{airportError}</div>}
+      {airportError && <div className="text-sm text-error mt-1">{airportError}</div>}
       </Card>
     </div>
   )

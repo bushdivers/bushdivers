@@ -24,15 +24,15 @@ const Logbook = ({ logbook }) => {
   }
 
   return (
-    <div className="p-4">
+    <div>
       <p className="text-sm mb-1">{logbook.length > 0 && <span>Total pireps: {logbook.length} </span> } </p>
-      <div className="overflow-x-auto">
-        <Card compact="true">
+      <div>
+        <Card>
         {logbook.length === 0
           ? <NoContent content={<EmptyData />} />
           : (
-            <div>
-              <table className="table table-auto">
+            <div className="overflow-x-auto">
+              <table className="table w-full">
                 <thead>
                 <tr>
                   <th></th>
@@ -47,7 +47,7 @@ const Logbook = ({ logbook }) => {
                 <tbody>
                 {logbook.data.map((entry) => (
                   <tr key={entry.id}>
-                    <td className="text-orange-500 cursor-pointer" onClick={() => loadPirep(entry)}>
+                    <td className="text-primary cursor-pointer" onClick={() => loadPirep(entry)}>
                       <span className="hover:underline">View Pirep</span>
                       {entry.state === 5 && <span className="px-2 ml-2"><Badge label="Review" color="primary" /></span>}
                     </td>

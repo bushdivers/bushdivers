@@ -3,9 +3,10 @@ import Card from '../../Elements/Card'
 
 const PirepCargo = (props) => {
   return (
-    <div className="mt-2 mx-2 overflow-x-auto">
-      <Card compact="true">
-      <table className="table table-auto table-condensed">
+    <div className="mt-2 mx-2">
+      <Card title="Cargo">
+        <div className="overflow-x-auto">
+      <table className="table table-compact w-full">
         <thead>
         <tr>
           <th>Contract</th>
@@ -36,6 +37,7 @@ const PirepCargo = (props) => {
         ))}
         </tbody>
       </table>
+        </div>
       </Card>
     </div>
   )

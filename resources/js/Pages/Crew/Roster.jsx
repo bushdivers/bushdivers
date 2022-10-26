@@ -7,6 +7,7 @@ import AppLayout from '../../Shared/AppLayout'
 import { faPatreon } from '@fortawesome/free-brands-svg-icons'
 import { Inertia } from '@inertiajs/inertia'
 import Card from '../../Shared/Elements/Card'
+import Select from '../../Shared/Elements/Forms/Select'
 
 const Roster = ({ roster }) => {
   const [sortBy, setSortBy] = useState('id')
@@ -38,29 +39,27 @@ const Roster = ({ roster }) => {
   }
 
   return (
-    <div className="p-4">
+    <div>
       <div className="flex justify-end space-x-2">
-        <div className="w-1/6">
-          <select id="sort" value={sortBy} onChange={handleSortChange}
-                  className="border border-gray-300 dark:bg-gray-900 text-sm rounded focus:ring-orange-500 focus:border-orange-500 block w-full p-2.5">
-            <option value="id">Pilot Id</option>
-            <option value="rank_id">Rank</option>
-            <option value="flights">Flights</option>
-            <option value="flights_time">Flight Time</option>
-          </select>
+        <div className="w-auto">
+          <Select id="sort" value={sortBy} onChange={handleSortChange} options={[
+            { value: 'id', text: 'Pilot Id' },
+            { value: 'rank_id', text: 'Rank' },
+            { value: 'flights', text: 'Flights' },
+            { value: 'flights_time', text: 'Flight Time' }
+          ]} />
         </div>
-        <div className="w-1/8">
-          <select id="direction" value={sortDirection} onChange={handleDirectionChange}
-                  className="border border-gray-300 dark:bg-gray-900 text-sm rounded focus:ring-orange-500 focus:border-orange-500 block w-full p-2.5">
-            <option value="asc">asc</option>
-            <option value="desc">desc</option>
-          </select>
+        <div className="w-auto">
+          <Select id="direction" value={sortDirection} onChange={handleDirectionChange} options={[
+            { value: 'asc', text: 'Asc' },
+            { value: 'desc', text: 'Desc' }
+          ]} />
         </div>
       </div>
       <div className="mt-4">
-      <Card compact="true" className="mt-4 overflow-x-auto">
-        <div>
-          <table className="table table-auto">
+      <Card>
+        <div className="overflow-x-auto">
+          <table className="table w-full">
             <thead>
             <tr>
               <th>Rank</th>
@@ -83,7 +82,7 @@ const Roster = ({ roster }) => {
                 </td>
                 <td>
                   <div className="flex justify-start items-center space-x-2">
-                    <div className="text-xl text-red-300">
+                    <div className="text-xl text-error">
                       {user.is_supporter ? <FontAwesomeIcon icon={faPatreon} /> : <></>}
                     </div>
                     <div>

@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import { Inertia } from '@inertiajs/inertia'
 import { Link, usePage } from '@inertiajs/inertia-react'
 import LayoutAuth from '../../Shared/LayoutAuth'
+import TextInput from '../../Shared/Elements/Forms/TextInput'
+import CheckBox from '../../Shared/Elements/Forms/CheckBox'
 
 const Login = () => {
   const { errors } = usePage().props
@@ -31,29 +33,18 @@ const Login = () => {
       <div className="rounded-md shadow-sm bg-white p-4 w-96 m-2">
         <p className="text-center text-2xl mb-2">Login</p>
         <form onSubmit={handleSubmit}>
-          <div className="my-2">
-            <label htmlFor="email" className="block"><span className="text-gray-700">Email</span></label>
-            <input id="email" value={values.email} onChange={handleChange} type="email" className="form-input form" />
-            {errors.email && <div className="text-sm text-red-500">{errors.email}</div>}
-          </div>
-          <div className="my-2">
-            <label htmlFor="password" className="block"><span className="text-gray-700">Password</span></label>
-            <input id="password" value={values.password} onChange={handleChange} type="password" className="form-input form" />
-            {errors.password && <div className="text-sm text-red-500">{errors.password}</div>}
-          </div>
-          <div className="my-2">
-            <label htmlFor="remember" className="w-1/2 inline-flex items-center">
-              <input id="remember" checked={values.remember} onChange={handleChange} type="checkbox" className="form-checkbox rounded border-gray-300 text-orange-500 shadow-sm focus:border-orange-300 focus:ring focus:ring-offset-0 focus:ring-orange-200 focus:ring-opacity-50" />
-              <span className="text-gray-700 ml-2">Remember me</span>
-            </label>
+          <TextInput value={values.email} type="email" id="email" label="Email" placeHolder="Email" onChange={handleChange} error={errors?.email} />
+          <TextInput value={values.password} type="password" id="password" label="Password" placeHolder="Password" onChange={handleChange} error={errors?.password} />
+          <div className="my-2 flex items-center justify-between">
+            <CheckBox id="remember" value={values.remember} label="Remember me" onChange={handleChange} />
             <div className="w-1/2 inline-flex justify-end align-text-bottom">
-              <Link href="/password" className="text-gray-700">Forgotten password?</Link>
+              <Link href="/password" className="link-primary">Forgotten password?</Link>
             </div>
           </div>
           <button className="btn btn-primary w-full">Login</button>
         </form>
         <div className="mt-2">
-          <Link href="/register">New to Bush Divers?</Link>
+          <Link className="link-primary" href="/register">New to Bush Divers?</Link>
         </div>
       </div>
     </div>

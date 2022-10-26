@@ -1,32 +1,9 @@
-import React, { useState } from 'react'
+import React from 'react'
 
-export default function Tooltip (props) {
-  let timeout
-  const [active, setActive] = useState(false)
-
-  const showTip = () => {
-    timeout = setTimeout(() => {
-      setActive(true)
-    }, 400)
-  }
-
-  const hideTip = () => {
-    clearInterval(timeout)
-    setActive(false)
-  }
-
+export default function Tooltip ({ direction, content, children }) {
   return (
-    <div
-      className="inline-block relative"
-      onMouseEnter={showTip}
-      onMouseLeave={hideTip}
-    >
-      {props.children}
-      {active && (
-        <div className={`tooltip ${props.direction || 'top'}`}>
-          {props.content}
-        </div>
-      )}
+    <div className={`tooltip tooltip-${direction} tooltip-secondary`} data-tip={content}>
+      {children}
     </div>
   )
 }

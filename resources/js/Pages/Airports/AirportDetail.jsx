@@ -74,7 +74,7 @@ const AirportDetail = ({ airport, metar, aircraft }) => {
       <div className="flex flex-col lg:flex-row justify-between">
         <div className="lg:w-1/2">
           <div className="mt-2 mx-2">
-            <Card>
+            <Card title="Airport Info">
             <div className="flex justify-between overflow-x-auto">
               <div className="flex flex-col items-center my-2 mx-4">
                 <div className="text-sm">ICAO</div>
@@ -105,22 +105,20 @@ const AirportDetail = ({ airport, metar, aircraft }) => {
           </div>
           {airport.longest_runway_length && (
             <div className="mt-2 mx-2">
-              <Card>
+              <Card title="Runway Info">
               <div className="flex items-center">
-                RWY
-                <span className="ml-2">{renderRunwayText(airport.longest_runway_surface)} {airport.longest_runway_length.toLocaleString(navigator.language)}ft x {airport.longest_runway_width}ft</span>
+                <span>{renderRunwayText(airport.longest_runway_surface)} {airport.longest_runway_length.toLocaleString(navigator.language)}ft x {airport.longest_runway_width}ft</span>
               </div>
               </Card>
             </div>
           )}
           <div className="mt-2 mx-2">
-              <Card>
+              <Card title="METAR">
                 <div className="flex items-center">
               {metar
                 ? (
                   <>
-                    <FontAwesomeIcon icon={faCloudSun} />
-                    <span className="ml-2">{metar}</span>
+                    <span>{metar}</span>
                   </>
                   )
                 : <div>No METAR available</div>
@@ -128,9 +126,9 @@ const AirportDetail = ({ airport, metar, aircraft }) => {
                 </div>
               </Card>
           </div>
-          <div className="mt-2 mx-2 overflow-x-auto">
+          <div className="mt-2 mx-2">
             <Card title="Available Aircraft">
-            <table className="mt-2 table table-auto table-condensed">
+            <table className="table table-compact w-full overflow-x-auto">
               <thead>
               <tr>
                 <th>Registration</th>
@@ -156,7 +154,9 @@ const AirportDetail = ({ airport, metar, aircraft }) => {
           </div>
         </div>
         <div className="lg:w-1/2 mt-2 mx-2">
-          <AirportMap airport={airport} size="large" mapStyle={auth.user.map_style} />
+          <Card>
+            <AirportMap airport={airport} size="large" mapStyle={auth.user.map_style} />
+          </Card>
         </div>
       </div>
       )}

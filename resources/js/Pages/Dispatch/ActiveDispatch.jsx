@@ -18,15 +18,15 @@ const ActiveDispatch = ({ cargo, aircraft, cargoWeight, fuelWeight, passengerCou
   }
 
   return (
-    <div className="p-4">
+    <div>
       <div>{pirep.id} <Link className="ml-2" href="/pireps/submit"><button className="btn btn-secondary">Submit Manual Pirep</button></Link></div>
-      {pirep.state === 2 && <div><span className="text-orange-500">Current flight in progress</span></div>}
+      {pirep.state === 2 && <div><span className="text-primary">Current flight in progress</span></div>}
       <div className="flex flex-col md:flex-row justify-between">
         <div className="md:mr-2 md:w-1/2">
           <div className="mt-4">
             <Card title="Selected Cargo">
             <div className="overflow-x-auto">
-            <table className="table table-auto table-condensed">
+            <table className="table table-compact w-full">
               <thead>
               <tr>
                 <th>Contract</th>

@@ -25,8 +25,8 @@ const Aircraft = (props) => {
       {props.aircraft.length === 0
         ? <NoContent content={<EmptyData content="Aircraft" />} />
         : (
-          <div>
-            <table className="table table-auto table-condensed">
+          <div className="overflow-x-auto">
+            <table className="table table-compact w-full">
               <thead>
               <tr>
                 <th>Registration</th>
@@ -37,7 +37,7 @@ const Aircraft = (props) => {
               </thead>
               <tbody className="cursor-pointer">
               {props.aircraft.map((ac) => (
-                <tr key={ac.id} onClick={() => props.handleAircraftSelect(ac)} className={props.selectedAircraft.registration === ac.registration ? 'bg-orange-200 hover:bg-orange-100 dark:bg-gray-700 dark:hover:bg-gray-600 cursor-pointer' : 'cursor-pointer'}>
+                <tr key={ac.id} onClick={() => props.handleAircraftSelect(ac)} className={props.selectedAircraft.registration === ac.registration ? 'text-primary cursor-pointer' : 'cursor-pointer'}>
                   <td>
                     <Tooltip content={`Hub: ${ac.hub_id}`} direction="right">
                       {ac.hub_id && <Link href={`/aircraft/${ac.id}`}>{ac.registration}</Link>}

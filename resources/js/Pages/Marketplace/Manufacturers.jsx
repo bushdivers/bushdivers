@@ -14,7 +14,7 @@ const Manufacturers = ({ manufacturers }) => {
       <div className="flex flex-wrap justify-start mt-4">
         {manufacturers && manufacturers.map((man) => (
           <div onClick={() => selectManufacturer(man.id)} key={man.id} className="m-2 w-1/4 cursor-pointer flex items-center align-center justify-center">
-            <Card>
+            <Card center>
               <img src={man.logo_url} width="200"/>
             </Card>
           </div>
