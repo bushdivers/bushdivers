@@ -33,7 +33,7 @@ export default function AppLayout ({ children, title, heading }) {
               <div className="mr-2 flex items-center space-x-4">
                 <span className="hidden md:flex">${parseFloat(auth.user.balance).toLocaleString()}</span>
                 <span className="hidden md:flex">{auth.user.points} XP</span>
-                <span className="md:hidden">Current Location:</span><span className="link link-primary"><Link href={`/airport/${auth.user.current_airport_id}`}>{auth.user.current_airport_id}</Link></span>
+                <span className="md:hidden">Current Location:</span><span className="link link-primary"><Link href={`/airports/${auth.user.current_airport_id}`}>{auth.user.current_airport_id}</Link></span>
               </div>
             </div>
             <div className="mt-4">{children}</div>
