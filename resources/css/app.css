@@ -224,6 +224,10 @@ h4 {
     border: 1px solid #F4F4F5;
 }
 
+.mapboxgl-popup {
+    @apply text-gray-800;
+}
+
 .map-container-small {
     height: 400px;
 }

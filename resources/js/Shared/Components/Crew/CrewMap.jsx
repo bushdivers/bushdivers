@@ -26,9 +26,10 @@ const CrewMap = (props) => {
         props.locations.forEach((location) => {
           const locationLonLat = [location.lon, location.lat]
           console.log(locationLonLat)
-          const locationPopup = new maplibre.Popup({ offset: 25 }).setText(
-            location.identifier + ' ' + location.name
-          )
+          const locationPopup = new maplibre.Popup({ offset: 25 }).setText(`${location.identifier} ${location.name}`)
+          //   .setHtml(
+          //   `<h3>${location.identifier} ${location.name}</h3>`
+          // )
 
           const ap = new maplibre.Marker({
             color: '#F97316',
