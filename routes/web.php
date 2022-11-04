@@ -79,6 +79,7 @@ Route::middleware('auth')->group(function () {
         ->name('jumpseat.process');
     Route::get('/my-finances', \App\Http\Controllers\Crew\ShowUserFinancesController::class)
         ->name('crew.finances');
+    Route::get('/loans', \App\Http\Controllers\Loans\GetLoansController::class);
 
     Route::get('/resources', \App\Http\Controllers\Resources\ShowResourcesController::class)
         ->name('resources');
