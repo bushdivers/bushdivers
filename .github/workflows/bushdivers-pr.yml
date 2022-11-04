@@ -35,6 +35,7 @@ jobs:
         run: npm run lint
 
   front-end-build:
+    needs: front-end-checks
     runs-on: ubuntu-latest
     steps:
       - uses: actions/setup-node@v2-beta

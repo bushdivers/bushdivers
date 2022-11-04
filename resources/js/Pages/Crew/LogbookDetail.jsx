@@ -4,7 +4,7 @@ import PirepMap from '../../Shared/Components/Pireps/PirepMap'
 import Points from '../../Shared/Components/Pireps/Points'
 import LogbookPrimary from '../../Shared/Components/Pireps/LogbookPrimary'
 import LogbookSecondary from '../../Shared/Components/Pireps/LogbookSecondary'
-import PirepChart from '../../Shared/Components/Pireps/PirepChart'
+// import PirepChart from '../../Shared/Components/Pireps/PirepChart'
 import PirepCargo from '../../Shared/Components/Pireps/PirepCargo'
 import LandingSummary from '../../Shared/Components/Pireps/LandingSummary'
 import { usePage } from '@inertiajs/inertia-react'
@@ -26,9 +26,9 @@ const LogbookDetail = ({ pirep, points, logs, cargo, pilotFinancials, companyFin
           <LogbookSecondary pirep={pirep} />
           <Points points={points} />
           <PirepCargo cargo={cargo} />
-          <div className="mt-2 mx-2">
-            <PirepChart data={logs} />
-          </div>
+          {/* <div className="mt-2 mx-2"> */}
+          {/*  <PirepChart data={logs} /> */}
+          {/* </div> */}
           <PirepFinancials company={companyFinancials} pilot={pilotFinancials} companyTotal={companyTotal} pilotTotal={pilotTotal} />
         </div>
         <div className="md:w-1/2">
