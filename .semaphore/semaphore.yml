@@ -14,9 +14,7 @@ blocks:
         - name: ESLint
           commands:
             - checkout
-            - cache restore
             - npm install
-            - cache store
             - npm run lint
   - name: Backend Tests
     task:
