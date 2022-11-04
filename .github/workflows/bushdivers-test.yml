@@ -31,18 +31,10 @@ jobs:
         with:
           node-version: '16.16'
       - uses: actions/checkout@v2
-      - name: Eslint
-        run: npm run lint
-
-  front-end-build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/setup-node@v2-beta
-        with:
-          node-version: '16.16'
-      - uses: actions/checkout@v2
       - name: Install Dependencies
         run: npm ci
+      - name: Eslint
+        run: npm run lint
       - name: Check it builds
         run: npm run build
 
