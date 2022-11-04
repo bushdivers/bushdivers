@@ -35,15 +35,11 @@ const Home = ({ stats }) => {
         <div className="stats shadow">
           <div className="stat bg-neutral">
             <div className="stat-title">Total Flights</div>
-            <div className="stat-value">89,400</div>
-          </div>
-          <div className="stat bg-neutral">
-            <div className="stat-title">Total Hours</div>
-            <div className="stat-value">89,400</div>
+            <div className="stat-value">{stats?.flights}</div>
           </div>
           <div className="stat bg-neutral">
             <div className="stat-title">Total Pilots</div>
-            <div className="stat-value">89,400</div>
+            <div className="stat-value">{stats?.pilots}</div>
           </div>
           <div className="stat bg-neutral">
             <div className="stat-title">Regions</div>
@@ -51,7 +47,7 @@ const Home = ({ stats }) => {
           </div>
           <div className="stat bg-neutral">
             <div className="stat-title">Hubs</div>
-            <div className="stat-value">89,400</div>
+            <div className="stat-value">{stats?.hubs}</div>
           </div>
         </div>
       </div>
