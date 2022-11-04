@@ -31,7 +31,7 @@ const CrewMap = (props) => {
           //   `<h3>${location.identifier} ${location.name}</h3>`
           // )
 
-          const ap = new maplibre.Marker({
+          new maplibre.Marker({
             color: '#F97316',
             scale: 0.5
           })

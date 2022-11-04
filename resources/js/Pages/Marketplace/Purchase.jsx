@@ -15,7 +15,7 @@ const Purchase = ({ aircraft, purchaseType }) => {
   const [airport, setAirport] = useState(null)
   const [icao, setIcao] = useState('')
   const [deliveryLocation, setDeliveryLocation] = useState(aircraft.hq)
-  const [distance, setDistance] = useState(null)
+  // const [distance, setDistance] = useState(null)
   const [hub, setHub] = useState(null)
   const [hubError, setHubError] = useState(null)
   const [reg, setReg] = useState(purchaseType === 'new' ? null : aircraft.registration)
@@ -24,11 +24,11 @@ const Purchase = ({ aircraft, purchaseType }) => {
   const [term, setTerm] = useState(3)
   const [financeAmount, setFinanceAmount] = useState(0)
   const [monthlyPayments, setMonthlyPayments] = useState(0)
-  const [showFinanceCalc, setShowFinanceCalc] = useState(false)
+  // const [showFinanceCalc, setShowFinanceCalc] = useState(false)
   const [financeCost, setFinanceCost] = useState(0)
   const [purchaseMethod, setPurchaseMethod] = useState('buy')
   const [calculated, setCalculated] = useState(false)
-  const [basePrice, setBasePrice] = useState(purchaseType === 'new' ? aircraft.new_price : aircraft.sale_price)
+  const [basePrice] = useState(purchaseType === 'new' ? aircraft.new_price : aircraft.sale_price)
 
   const handleDeliveryChange = (e) => {
     setDeliver(e.target.checked)
@@ -53,7 +53,7 @@ const Purchase = ({ aircraft, purchaseType }) => {
         if (priceResp.status === 200) {
           const p = (priceResp.data.cost * 10)
           setPrice(parseFloat(p))
-          setDistance(priceResp.data.distance)
+          // setDistance(priceResp.data.distance)
         } else {
           setError('Cannot calculate price')
         }
@@ -118,7 +118,7 @@ const Purchase = ({ aircraft, purchaseType }) => {
     setFinanceCost(interest)
     setFinanceAmount(amount)
     setMonthlyPayments(monthly)
-    setShowFinanceCalc(true)
+    // setShowFinanceCalc(true)
   }
 
   const purchase = (pMethod) => {

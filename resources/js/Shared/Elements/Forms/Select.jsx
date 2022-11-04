@@ -11,4 +11,3 @@ const Select = ({ id, value, onChange, options }) => {
 }
 
 export default Select
-

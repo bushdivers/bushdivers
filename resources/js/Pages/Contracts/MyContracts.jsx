@@ -9,7 +9,6 @@ import CargoDetails from '../../Shared/Components/Contracts/CargoDetails'
 import MyContractMap from '../../Shared/Components/Contracts/MyContractMap'
 import AppLayout from '../../Shared/AppLayout'
 import { faAnchor, faArrowUp, faTicket, faXmark } from '@fortawesome/free-solid-svg-icons'
-import CommunityContracts from '../../Shared/Components/Contracts/CommunityContracts'
 import Card from '../../Shared/Elements/Card'
 
 const EmptyData = (props) => {
@@ -137,7 +136,7 @@ const MyContracts = ({ contracts, custom, community }) => {
             </Card>
           </div>
 
-          {/*<CommunityContracts contracts={community} selectedContract={selectedContract} showDetail={showDetail} toggleDetail={setShowDetail} updateSelectedContract={updateSelectedContract} />*/}
+          {/* <CommunityContracts contracts={community} selectedContract={selectedContract} showDetail={showDetail} toggleDetail={setShowDetail} updateSelectedContract={updateSelectedContract} /> */}
           <div className="mt-2">
             <Card title="Available Contracts">
             {!contracts && <NoContent content={<EmptyData text="No available contracts" />} />}

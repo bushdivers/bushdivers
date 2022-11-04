@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Line } from 'react-chartjs-2'
 import { format } from 'date-fns'
 import Card from '../../Elements/Card'

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Link, usePage } from '@inertiajs/inertia-react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import NavItem from '../Navigation/NavItem'
@@ -68,8 +68,6 @@ const SideBar = ({ isNavVisible, setNavState }) => {
               <>
                 <NavSection name="Admin" />
                 <NavItem link="/admin/pireps" icon={faFileLines} text="Pireps" />
-                {/*<NavItem link="/admin/fleet" icon={faPlaneUp} text="Fleet" />*/}
-                {/*<NavItem link="/admin/users" icon={faUsers} text="Users" />*/}
                 <NavItem link="/admin/resources" icon={faDownload} text="Resources" />
               </>
               )

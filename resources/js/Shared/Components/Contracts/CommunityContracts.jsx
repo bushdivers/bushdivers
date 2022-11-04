@@ -3,7 +3,7 @@ import NoContent from '../../Elements/NoContent'
 import Tooltip from '../../Elements/Tooltip'
 import { Link } from '@inertiajs/inertia-react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faAnchor, faArrowUp, faTicket, faXmark } from '@fortawesome/free-solid-svg-icons'
+import { faAnchor, faArrowUp, faTicket } from '@fortawesome/free-solid-svg-icons'
 import dayjs from '../../../Helpers/date.helpers'
 import CargoDetails from './CargoDetails'
 

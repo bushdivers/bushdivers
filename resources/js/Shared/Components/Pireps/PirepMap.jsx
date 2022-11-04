@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react'
+import React, { useRef, useEffect } from 'react'
 import maplibre from 'maplibre-gl'
 import { parseMapStyle } from '../../../Helpers/general.helpers'
 import Card from '../../Elements/Card'
@@ -8,7 +8,6 @@ const accessToken = import.meta.env.VITE_MAPBOX_TOKEN
 const PirepMap = (props) => {
   const mapContainer = useRef(null)
   const map = useRef(null)
-  const [flight, setFlight] = useState({})
 
   useEffect(() => {
     if (map.current) return
@@ -37,14 +36,14 @@ const PirepMap = (props) => {
       const arrLngLat = [props.pirep.arr_airport.lon, props.pirep.arr_airport.lat]
 
       map.current.on('load', function () {
-        const dep = new maplibre.Marker({
+        new maplibre.Marker({
           color: '#22C55E'
         })
           .setLngLat(depLngLat)
           .setPopup(depPopup)
           .addTo(map.current)
 
-        const arr = new maplibre.Marker({
+        new maplibre.Marker({
           color: '#F97316'
         })
           .setLngLat(arrLngLat)

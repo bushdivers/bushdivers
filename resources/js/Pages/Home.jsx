@@ -2,7 +2,6 @@ import React, { useEffect } from 'react'
 import NavBar from '../Shared/Navigation/NavBar'
 import { Head, usePage } from '@inertiajs/inertia-react'
 import Footer from '../Shared/Navigation/Footer'
-import { convertMinuteDecimalToHoursAndMinutes } from '../Helpers/date.helpers'
 import { Inertia } from '@inertiajs/inertia'
 
 const Home = ({ stats }) => {

@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-// import NoContent from '../../Shared/Elements/NoContent'
 import axios from 'axios'
 import { usePage } from '@inertiajs/inertia-react'
 import DispatchSummary from '../../Shared/Components/Dispatch/DispatchSummary'
@@ -9,7 +8,6 @@ import Cargo from '../../Shared/Components/Dispatch/Cargo'
 import Aircraft from '../../Shared/Components/Dispatch/Aircraft'
 import { Inertia } from '@inertiajs/inertia'
 import AppLayout from '../../Shared/AppLayout'
-import Card from '../../Shared/Elements/Card'
 
 const Dispatch = ({ cargo, aircraft }) => {
   const { auth } = usePage().props

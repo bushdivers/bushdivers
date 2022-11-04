@@ -1,7 +1,6 @@
 import React from 'react'
 import { format } from 'date-fns'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { convertMinuteDecimalToHoursAndMinutes } from '../../../Helpers/date.helpers'
 import { Link } from '@inertiajs/inertia-react'
 import { faPlaneDeparture, faPlaneArrival } from '@fortawesome/free-solid-svg-icons'
 import Card from '../../Elements/Card'

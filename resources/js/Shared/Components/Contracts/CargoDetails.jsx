@@ -1,6 +1,6 @@
 import React from 'react'
 import Tooltip from '../../Elements/Tooltip'
-import { faAnchor, faCheckCircle, faFileArrowDown } from '@fortawesome/free-solid-svg-icons'
+import { faCheckCircle, faFileArrowDown } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const CargoDetails = (props) => {

@@ -33,7 +33,7 @@ const Aircraft = ({ fleet }) => {
             </div>
             <div className="mt-2 flex justify-between">
               <Link href={`/marketplace/purchase/new/${f.id}`} className="btn btn-secondary">Purchase New</Link>
-              {/*<Link href={`/marketplace/list/used/${f.id}`} className="btn btn-primary">Purchase Used</Link>*/}
+              {/* <Link href={`/marketplace/list/used/${f.id}`} className="btn btn-primary">Purchase Used</Link> */}
             </div>
           </div>
           </Card>

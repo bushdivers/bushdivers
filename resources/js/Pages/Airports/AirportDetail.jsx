@@ -1,18 +1,13 @@
-import React, { useState } from 'react'
+import React from 'react'
 import AirportMap from '../../Shared/Components/Airport/AirportMap'
 import { Link, usePage } from '@inertiajs/inertia-react'
 import AppLayout from '../../Shared/AppLayout'
-import { faAnchor, faCloudSun } from '@fortawesome/free-solid-svg-icons'
+import { faAnchor } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Card from '../../Shared/Elements/Card'
 
 const AirportDetail = ({ airport, metar, aircraft }) => {
   const { auth } = usePage().props
-  const [icao, setIcao] = useState()
-
-  const handleAirportChange = (e) => {
-    setIcao(e.target.value)
-  }
 
   const renderAircraftStatus = (status) => {
     switch (status) {

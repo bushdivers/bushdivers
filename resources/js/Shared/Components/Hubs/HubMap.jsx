@@ -33,7 +33,7 @@ const HubMap = (props) => {
             <b>Longest Runway Length:</b> ${hub.longest_runway_length}ft
          `)
 
-          const ap = new maplibre.Marker({
+          new maplibre.Marker({
             color: '#F97316'
           })
             .setLngLat(hubLonLat)

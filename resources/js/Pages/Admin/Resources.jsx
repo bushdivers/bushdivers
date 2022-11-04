@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import AppLayout from '../../Shared/AppLayout'
 import NewCategory from '../../Shared/Components/Admin/Resources/NewCategory'
 import { Inertia } from '@inertiajs/inertia'
-import { faClose, faPencil, faTimes } from '@fortawesome/free-solid-svg-icons'
+import { faPencil } from '@fortawesome/free-solid-svg-icons'
 import axios from 'axios'
 import ResourceApprovals from '../../Shared/Components/Admin/Resources/ResourceApprovals'
 

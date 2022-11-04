@@ -1,5 +1,5 @@
 import React from 'react'
-import { Head, Link, usePage } from '@inertiajs/inertia-react'
+import { Head, usePage } from '@inertiajs/inertia-react'
 import NavBar from './Navigation/NavBar'
 import Footer from './Navigation/Footer'
 import FlashMessage from './Elements/FlashMessage'

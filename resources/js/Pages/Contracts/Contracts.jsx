@@ -25,8 +25,6 @@ const Contracts = ({ searchedContracts, airport, cacheKey }) => {
   const { auth } = usePage().props
   const [contracts, setContracts] = useState(searchedContracts)
   const [selectedAirport, setSelectedAirport] = useState('')
-  const [title, setTitle] = useState('Contracts')
-  // const [icao, setIcao] = useState('')
   const [searchForm, setSearchForm] = useState({
     searchIcao: auth.user.current_airport_id,
     flightLength: 'short',
@@ -39,11 +37,8 @@ const Contracts = ({ searchedContracts, airport, cacheKey }) => {
 
   useEffect(() => {
     if (searchedContracts && airport) {
-      setTitle(`Contracts - ${airport.name} (${airport.identifier})`)
       setSelectedAirport(airport)
       setContracts(searchedContracts)
-    } else {
-      setTitle('Contracts')
     }
   }, [searchedContracts])
 

@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react'
+import React, { useRef, useEffect } from 'react'
 import maplibre from 'maplibre-gl'
 import { parseMapStyle } from '../../../Helpers/general.helpers'
 
@@ -26,7 +26,7 @@ const LandingMap = (props) => {
       const landingLngLat = [props.pirep.landing_lon, props.pirep.landing_lat]
 
       map.current.on('load', function () {
-        const landing = new maplibre.Marker({
+        new maplibre.Marker({
           color: '#22C55E'
         })
           .setLngLat(landingLngLat)

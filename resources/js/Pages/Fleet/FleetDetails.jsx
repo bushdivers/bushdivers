@@ -2,14 +2,13 @@ import React from 'react'
 import AppLayout from '../../Shared/AppLayout'
 import Card from '../../Shared/Elements/Card'
 import FleetCardContent from '../../Shared/Components/Fleet/FleetCardContent'
-import { usePage } from '@inertiajs/inertia-react'
 
 const FleetDetails = ({ fleet }) => {
   return (
     <div className="p-4">
       {fleet && fleet.map((f) => (
-        <div className="my-4">
-        <Card key={f.id}>
+        <div key={f.id} className="my-4">
+        <Card>
           <FleetCardContent fleet={f} />
         </Card>
         </div>

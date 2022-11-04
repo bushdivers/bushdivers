@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Uploader = ({ children, value, onChange, disabled, accept}) => {
+const Uploader = ({ children, value, onChange, disabled, accept }) => {
   return (
     <label htmlFor="uploader">
       <input

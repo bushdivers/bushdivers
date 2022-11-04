@@ -32,7 +32,7 @@ const FleetMap = (props) => {
             <b>Location:</b> ${a.current_airport_id} - ${a.location.name}
          `)
 
-          const ap = new maplibre.Marker({
+          new maplibre.Marker({
             color: '#F97316'
           })
             .setLngLat(hubLonLat)
