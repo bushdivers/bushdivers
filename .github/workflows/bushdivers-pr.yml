@@ -6,10 +6,8 @@ on:
       - '**'
 
 jobs:
-  laravel-tests:
-
+  backend-tests:
     runs-on: ubuntu-latest
-
     steps:
       - uses: shivammathur/setup-php@15c43e89cdef867065b0213be354c2841860869e
         with:
@@ -24,7 +22,26 @@ jobs:
       - name: Directory Permissions
         run: chmod -R 777 storage bootstrap/cache
       - name: Execute tests (Unit and Feature tests) via PHPUnit
-#        env:
-#          DB_CONNECTION: sqlite
-#          DB_DATABASE: database/database.sqlite
         run: vendor/bin/phpunit
+
+  front-end-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-node@v2-beta
+        with:
+          node-version: '16.16'
+      - uses: actions/checkout@v2
+      - name: Eslint
+        run: npm run lint
+
+  front-end-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-node@v2-beta
+        with:
+          node-version: '16.16'
+      - uses: actions/checkout@v2
+      - name: Install Dependencies
+        run: npm ci
+      - name: Check it builds
+        run: npm run build
