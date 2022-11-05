@@ -1,0 +1,49 @@
+version: v1.0
+name: Bush Divers Integration Pipeline
+agent:
+  machine:
+    type: e1-standard-2
+    os_image: ubuntu2004
+blocks:
+  - name: Front End Checks
+    task:
+      jobs:
+        - name: Lint
+          commands:
+            - checkout
+            - cache restore
+            - npm ci
+            - cache store
+            - npm run lint
+        - name: Build
+          commands:
+            - checkout
+            - cache restore
+            - npm ci
+            - cache store
+            - npm run build
+  - name: Backend Tests
+    task:
+      jobs:
+        - name: Unit Tests
+          commands:
+            - checkout
+            - cache restore
+            - composer install
+            - cache store
+            - cp .env.example .env
+            - 'php artisan key:generate'
+            - mkdir -p database
+            - touch database/database.sqlite
+            - ./vendor/bin/phpunit --testsuite Unit
+        - name: Feature Tests
+          commands:
+            - checkout
+            - cache restore
+            - composer install
+            - cache store
+            - cp .env.example .env
+            - 'php artisan key:generate'
+            - mkdir -p database
+            - touch database/database.sqlite
+            - ./vendor/bin/phpunit --testsuite Feature
