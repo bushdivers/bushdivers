@@ -3,7 +3,7 @@
     "scripts": {
         "dev": "vite",
         "build": "vite build",
-        "lint": "npx eslint resources/js/**"
+        "lint": "npx eslint resources/js/ --ext .js,.jsx"
     },
     "devDependencies": {
         "@pmmmwh/react-refresh-webpack-plugin": "^0.5.0-rc.0",
