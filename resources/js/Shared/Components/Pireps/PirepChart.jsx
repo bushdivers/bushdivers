@@ -1,6 +1,4 @@
 import React, { useEffect } from 'react'
-import 'chart.js/auto'
-import { Line } from 'react-chartjs-2'
 import { format } from 'date-fns'
 import Card from '../../Elements/Card'
 
