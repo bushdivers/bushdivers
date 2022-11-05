@@ -3,7 +3,6 @@ import AppLayout from '../../Shared/AppLayout'
 import { getDistance } from '../../Helpers/general.helpers'
 import dayjs from 'dayjs'
 import AircraftCondition from '../../Shared/Components/Fleet/AircraftCondition'
-import { formatNumber } from 'chart.js/helpers'
 import { Inertia } from '@inertiajs/inertia'
 
 const UsedAircraft = ({ aircraft, currentLocation, fleet }) => {
@@ -49,7 +48,7 @@ const UsedAircraft = ({ aircraft, currentLocation, fleet }) => {
                 </>
               ))}
             </td>
-            <td>${formatNumber(ac.sale_price)}</td>
+            <td>${parseFloat(ac.sale_price).toLocaleString()}</td>
             <td><button onClick={() => handlePurchase(ac)} className="btn btn-secondary btn-small">Purchase</button></td>
           </tr>
         ))}
