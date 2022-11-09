@@ -6,8 +6,10 @@ use App\Models\Aircraft;
 use App\Models\Enums\TransactionTypes;
 use App\Models\FinanceAgreement;
 use App\Models\Fleet;
+use App\Models\Loan;
 use App\Models\User;
 use App\Services\Finance\CollectFinancePayments;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
@@ -18,9 +20,7 @@ class CollectFinanceTest extends TestCase
     use RefreshDatabase;
 
     protected CollectFinancePayments $collectFinancePayments;
-    protected Model $financeAgreement;
-    protected Model $aircraft;
-    protected Model $fleet;
+    protected Model $loan;
     protected Model $user;
 
     protected function setUp(): void
@@ -29,14 +29,9 @@ class CollectFinanceTest extends TestCase
 
         $this->collectFinancePayments = $this->app->make(CollectFinancePayments::class);
         $this->user = User::factory()->create();
-        $this->fleet = Fleet::factory()->create();
-        $this->aircraft = Aircraft::factory()->create([
-            'owner_id' => $this->user->id,
-            'fleet_id' => $this->fleet->id
-        ]);
-        $this->financeAgreement = FinanceAgreement::factory()->create([
+        $this->loan = Loan::factory()->create([
             'user_id' => $this->user->id,
-            'aircraft_id' => $this->aircraft->id
+            'next_payment_at' => Carbon::now()
         ]);
     }
 
@@ -50,13 +45,19 @@ class CollectFinanceTest extends TestCase
         DB::table('user_accounts')->insert([
             'user_id' => $this->user->id,
             'type' => TransactionTypes::Bonus,
-            'total' => 100000
+            'total' => 1000
         ]);
         $this->collectFinancePayments->execute();
-        $this->financeAgreement->refresh();
-        $this->assertEquals(900, $this->financeAgreement->amount_remaining);
-        $this->assertEquals(9, $this->financeAgreement->term_remaining);
-        $this->assertEquals(0, $this->financeAgreement->missed_payments);
+        $this->loan->refresh();
+        $this->assertEquals(900, $this->loan->total_remaining);
+        $this->assertEquals(9, $this->loan->term_remaining);
+        $this->assertEquals(0, $this->loan->missed_payments);
+
+        $this->assertDatabaseHas('user_accounts', [
+            'user_id' => $this->user->id,
+            'type' => TransactionTypes::Loan,
+            'total' => -100
+        ]);
     }
 
     public function test_finance_missed()
@@ -67,9 +68,9 @@ class CollectFinanceTest extends TestCase
             'total' => 10
         ]);
         $this->collectFinancePayments->execute();
-        $this->financeAgreement->refresh();
-        $this->assertEquals(1000, $this->financeAgreement->amount_remaining);
-        $this->assertEquals(1, $this->financeAgreement->missed_payments);
+        $this->loan->refresh();
+        $this->assertEquals(1000, $this->loan->total_remaining);
+        $this->assertEquals(1, $this->loan->missed_payments);
     }
 
     public function test_finance_completed()
@@ -80,52 +81,46 @@ class CollectFinanceTest extends TestCase
             'total' => 1000
         ]);
 
-        $aircraft = Aircraft::factory()->create([
-            'owner_id' => $this->user->id,
-            'fleet_id' => $this->fleet->id,
-            'registration' => 'G-RWW'
-        ]);
-
-        $finance = FinanceAgreement::factory()->create([
+        $finance = Loan::factory()->create([
             'user_id' => $this->user->id,
-            'aircraft_id' => $aircraft->id,
-            'amount_remaining' => 100,
+            'loan_amount' => 1000,
+            'total_interest' => 100,
+            'total_remaining' => 100,
+            'term_months' => 10,
             'term_remaining' => 1,
-            'monthly_payments' => 100
+            'monthly_payment' => 100,
+            'missed_payments' => 0,
+            'next_payment_at' => Carbon::now()
         ]);
         $this->collectFinancePayments->execute();
         $finance->refresh();
-        $this->assertEquals(0, $finance->amount_remaining);
+        $this->assertEquals(0, $finance->total_remaining);
         $this->assertEquals(0, $finance->term_remaining);
         $this->assertEquals(true, $finance->is_paid);
     }
 
-    public function test_aircraft_reclaimed()
+    public function test_nothing_to_collect()
     {
         DB::table('user_accounts')->insert([
             'user_id' => $this->user->id,
             'type' => TransactionTypes::Bonus,
-            'total' => 90
+            'total' => 1000
         ]);
 
-        $aircraft = Aircraft::factory()->create([
-            'owner_id' => $this->user->id,
-            'fleet_id' => $this->fleet->id,
-            'registration' => 'G-RWW'
-        ]);
-
-        $finance = FinanceAgreement::factory()->create([
+        $finance = Loan::factory()->create([
             'user_id' => $this->user->id,
-            'aircraft_id' => $aircraft->id,
-            'amount_remaining' => 100,
-            'term_remaining' => 3,
-            'monthly_payments' => 100,
-            'missed_payments' => 3
+            'loan_amount' => 1000,
+            'total_interest' => 100,
+            'total_remaining' => 1100,
+            'term_months' => 10,
+            'term_remaining' => 10,
+            'monthly_payment' => 100,
+            'missed_payments' => 0,
+            'next_payment_at' => Carbon::now()->addMonths(3)
         ]);
         $this->collectFinancePayments->execute();
         $finance->refresh();
-        $aircraft->refresh();
-        $this->assertEquals(0, $finance->is_active);
-        $this->assertEquals(null, $aircraft->owner_id);
+        $this->assertEquals(1100, $finance->total_remaining);
+        $this->assertEquals(10, $finance->term_remaining);
     }
 }

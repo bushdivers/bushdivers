@@ -7,6 +7,7 @@ use App\Http\Requests\LoanRequest;
 use App\Models\Enums\TransactionTypes;
 use App\Models\Loan;
 use App\Services\Finance\AddUserTransaction;
+use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 
@@ -28,6 +29,7 @@ class ApplyForLoanController extends Controller
         $loan->term_months = $request->term;
         $loan->term_remaining = $request->term;
         $loan->monthly_payment = $request->payment;
+        $loan->next_payment_at = Carbon::now()->addMonth();
         $loan->missed_payments = 0;
         $loan->save();
 

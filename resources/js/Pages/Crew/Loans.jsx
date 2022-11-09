@@ -123,7 +123,7 @@ const Loans = ({ loanValue, currentLoans }) => {
                 </div>
                 <div>
                   <div className="stat-title">Next Payment</div>
-                  <div className="text-2xl">{loan.last_payment_at ? dayjs(loan.last_payment_at).add(1, 'month').format('DD MMMM YYYY').toString() : dayjs(loan.created_at).add(1, 'month').format('DD MMMM YYYY').toString()}</div>
+                  <div className="text-2xl">{dayjs(loan.next_payment_at).format('DD MMMM YYYY').toString()}</div>
                   <div className="stat-desc">Date of next payment</div>
                 </div>
               </div>

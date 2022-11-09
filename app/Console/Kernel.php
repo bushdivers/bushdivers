@@ -89,7 +89,7 @@ class Kernel extends ConsoleKernel
         // finance payments
         $schedule->call(function () {
            $this->collectFinancePayments->execute();
-        })->monthly();
+        })->daily();
     }
 
     /**
