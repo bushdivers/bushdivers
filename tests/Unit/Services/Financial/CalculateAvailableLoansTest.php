@@ -20,10 +20,16 @@ class CalculateAvailableLoansTest extends TestCase
      *
      * @return void
      */
+    public function test_returns_loan_with_no_existing_loans_value()
+    {
+        $loan = $this->calculateAvailableLoans->execute(200, 200, 0, false);
+        $this->assertEquals(1200, $loan);
+    }
+
     public function test_returns_loan_value()
     {
         $loan = $this->calculateAvailableLoans->execute(200, 200, 100, false);
-        $this->assertEquals(900, $loan);
+        $this->assertEquals(600, $loan);
     }
 
     public function test_returns_zero_for_negative_equity()
