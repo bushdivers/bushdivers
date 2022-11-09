@@ -4,8 +4,9 @@ import Card from '../../Shared/Elements/Card'
 import TextInput from '../../Shared/Elements/Forms/TextInput'
 import Range from '../../Shared/Elements/Forms/Range'
 import { Inertia } from '@inertiajs/inertia'
+import dayjs from 'dayjs'
 
-const Loans = ({ loanValue }) => {
+const Loans = ({ loanValue, currentLoans }) => {
   const [loanAmount, setLoanAmount] = useState(0.00)
   const [months, setMonths] = useState(2)
   const [interest, setInterest] = useState(0)
@@ -57,8 +58,8 @@ const Loans = ({ loanValue }) => {
 
   return (
     <div>
-      <div className="flex justify-between space-x-4">
-        <div className="w-1/2">
+      <div className="lg:flex lg:justify-between lg:space-x-4 space-y-2 lg:space-y-0">
+        <div className="w-full lg:w-1/2">
           <Card title="Calculate Your Loan">
             <p>Maximum loan amount available to you: <span className="text-lg">${parseFloat(loanValue).toLocaleString()}</span></p>
             <TextInput id="loanAmount" type="text" value={loanAmount} label="Amount to borrow" error={errors?.loanAmount} onChange={handleLoanAmountChange} />
@@ -77,7 +78,7 @@ const Loans = ({ loanValue }) => {
             </Range>
           </Card>
         </div>
-        <div className="w-1/2">
+        <div className="w-full lg:w-1/2">
           <Card title="Your Monthly Loan">
             <h1>${parseFloat(payment).toLocaleString(navigator.language, { maximumFractionDigits: 0 })}</h1>
             <div className="flex justify-start mt-6 space-x-4">
@@ -103,6 +104,32 @@ const Loans = ({ loanValue }) => {
             {applyError && <span className="text-sm text-error">{applyError}</span>}
           </Card>
         </div>
+      </div>
+      <div className="w-full mt-4">
+        <h2>Current Loans</h2>
+        {currentLoans && currentLoans.map((loan) => (
+          <div key={loan.id} className="mt-2">
+            <Card title={`Loan #${loan.id}`}>
+              <div className="flex justify-start space-x-6">
+                <div>
+                  <div className="stat-title">Monthly Payment</div>
+                  <div className="text-2xl">${parseFloat(loan.monthly_payment).toLocaleString(navigator.language)}</div>
+                  <div className="stat-desc">The monthly loan payment</div>
+                </div>
+                <div>
+                  <div className="stat-title">Total Remaining</div>
+                  <div className="text-2xl">${parseFloat(loan.total_remaining).toLocaleString(navigator.language)}</div>
+                  <div className="stat-desc">The total loan remaining</div>
+                </div>
+                <div>
+                  <div className="stat-title">Next Payment</div>
+                  <div className="text-2xl">{loan.last_payment_at ? dayjs(loan.last_payment_at).add(1, 'month').format('DD MMMM YYYY').toString() : dayjs(loan.created_at).add(1, 'month').format('DD MMMM YYYY').toString()}</div>
+                  <div className="stat-desc">Date of next payment</div>
+                </div>
+              </div>
+            </Card>
+          </div>
+        ))}
       </div>
     </div>
   )
