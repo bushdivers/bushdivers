@@ -3,15 +3,28 @@ import AppLayout from '../../Shared/AppLayout'
 import Card from '../../Shared/Elements/Card'
 import TextInput from '../../Shared/Elements/Forms/TextInput'
 import Range from '../../Shared/Elements/Forms/Range'
+import { Inertia } from '@inertiajs/inertia'
 
 const Loans = ({ loanValue }) => {
   const [loanAmount, setLoanAmount] = useState(0.00)
   const [months, setMonths] = useState(2)
   const [interest, setInterest] = useState(0)
+  const [payment, setPayment] = useState(0)
   const [total, setTotal] = useState(0)
   const [errors, setErrors] = useState({
     loanAmount: null
   })
+  const [applyError, setApplyError] = useState(null)
+
+  useEffect(() => {
+    const interest = (loanAmount * 8.00 * months) / (100 * 12)
+    setInterest(parseFloat(interest))
+    setTotal(parseFloat(parseFloat(loanAmount) + parseFloat(interest)))
+  }, [months, loanAmount])
+
+  useEffect(() => {
+    setPayment(total / months)
+  }, [total])
 
   function handleLoanAmountChange (e) {
     setErrors({ loanAmount: null })
@@ -24,14 +37,23 @@ const Loans = ({ loanValue }) => {
   }
 
   function handleTermChange (e) {
-    setMonths(e.target.value)
+    setMonths(parseInt(e.target.value))
   }
 
-  useEffect(() => {
-    const interest = (loanAmount * 8.00 * months) / (100 * 12)
-    setInterest(parseFloat(interest).toLocaleString(navigator.language, { maximumFractionDigits: 0 }))
-    setTotal(parseFloat(parseFloat(loanAmount) + parseFloat(interest)).toLocaleString(navigator.language, { maximumFractionDigits: 0 }))
-  }, [months, loanAmount])
+  function applyForLoan () {
+    setApplyError(null)
+    if (loanAmount > 0) {
+      Inertia.post('/loans', {
+        loanAmount,
+        total,
+        payment,
+        term: months,
+        interest
+      })
+    } else {
+      setApplyError('Please specify a loan amount')
+    }
+  }
 
   return (
     <div>
@@ -57,11 +79,11 @@ const Loans = ({ loanValue }) => {
         </div>
         <div className="w-1/2">
           <Card title="Your Monthly Loan">
-            <h1>${loanAmount > 0 ? <span>{parseFloat(loanAmount).toLocaleString()}</span> : <span>0</span> }</h1>
+            <h1>${parseFloat(payment).toLocaleString(navigator.language, { maximumFractionDigits: 0 })}</h1>
             <div className="flex justify-start mt-6 space-x-4">
               <div>
                 <div className="stat-title">Loan Amount</div>
-                <div className="text-2xl">${loanAmount > 0 ? <span>{parseFloat(loanAmount).toLocaleString()}</span> : <span>0</span> }</div>
+                <div className="text-2xl">${loanAmount > 0 ? <span>{loanAmount.toLocaleString(navigator.language, { maximumFractionDigits: 0 })}</span> : <span>0</span> }</div>
                 <div className="stat-desc">The amount to borrow</div>
               </div>
               <div>
@@ -71,12 +93,14 @@ const Loans = ({ loanValue }) => {
               </div>
               <div>
                 <div className="stat-title">Total Cost of Loan</div>
-                <div className="text-2xl">${total}</div>
+                <div className="text-2xl">${total.toLocaleString(navigator.language, { maximumFractionDigits: 0 })}</div>
                 <div className="stat-desc">The loan amount plus interest</div>
               </div>
             </div>
-            <div></div>
-            <button className="btn btn-primary mt-2">Apply for Loan</button>
+            <div className="flex justify-end mt-4">
+              <button onClick={() => applyForLoan()} className="btn btn-primary">Apply for Loan</button>
+            </div>
+            {applyError && <span className="text-sm text-error">{applyError}</span>}
           </Card>
         </div>
       </div>

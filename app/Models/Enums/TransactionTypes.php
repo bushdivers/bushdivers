@@ -17,4 +17,5 @@ class TransactionTypes
     public const MonthlyOwnership = 11;
     public const AircraftPurchase = 12;
     public const AircraftSale = 13;
+    public const Loan = 14;
 }

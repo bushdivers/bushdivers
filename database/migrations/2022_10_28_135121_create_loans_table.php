@@ -21,6 +21,7 @@ return new class extends Migration
             $table->decimal('total_remaining');
             $table->integer('term_months');
             $table->integer('term_remaining');
+            $table->decimal('monthly_payment');
             $table->integer('missed_payments');
             $table->dateTime('last_payment_at')->nullable();
             $table->boolean('is_paid')->default(false);

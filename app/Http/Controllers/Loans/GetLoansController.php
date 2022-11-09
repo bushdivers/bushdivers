@@ -40,9 +40,10 @@ class GetLoansController extends Controller
         foreach ($aircraft as $ac) {
             $aircraftTotal += $ac->fleet->used_low_price;
         }
-        $existingLoans = Loan::where('user_id', Auth::user()->id)->sum('total_remaining');
-        $loanAvailable = $this->calculateAvailableLoans->execute($currentBalance, $aircraftTotal, $existingLoans);
+        $existingLoans = Loan::where('user_id', Auth::user()->id)->where('is_paid', false)->get();
+        $existingLoanValue = $existingLoans->sum('total_remaining');
+        $loanAvailable = $this->calculateAvailableLoans->execute($currentBalance, $aircraftTotal, $existingLoanValue);
 
-        return Inertia::render('Crew/Loans', ['loanValue' => $loanAvailable]);
+        return Inertia::render('Crew/Loans', ['loanValue' => $loanAvailable, 'currentLoans' => $existingLoans]);
     }
 }
