@@ -42,7 +42,7 @@ class GetLoansController extends Controller
         }
         $existingLoans = Loan::where('user_id', Auth::user()->id)->where('is_paid', false)->get();
         $existingLoanValue = $existingLoans->sum('total_remaining');
-        $loanAvailable = $this->calculateAvailableLoans->execute($currentBalance, $aircraftTotal, $existingLoanValue);
+        $loanAvailable = $this->calculateAvailableLoans->execute($currentBalance, $aircraftTotal, $existingLoanValue, Auth::user()->is_defaulted);
 
         return Inertia::render('Crew/Loans', ['loanValue' => $loanAvailable, 'currentLoans' => $existingLoans]);
     }

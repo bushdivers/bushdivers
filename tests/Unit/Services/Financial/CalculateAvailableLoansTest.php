@@ -22,13 +22,19 @@ class CalculateAvailableLoansTest extends TestCase
      */
     public function test_returns_loan_value()
     {
-        $loan = $this->calculateAvailableLoans->execute(200, 200, 100);
+        $loan = $this->calculateAvailableLoans->execute(200, 200, 100, false);
         $this->assertEquals(900, $loan);
     }
 
     public function test_returns_zero_for_negative_equity()
     {
-        $loan = $this->calculateAvailableLoans->execute(200, 200, 500);
+        $loan = $this->calculateAvailableLoans->execute(200, 200, 500, false);
         $this->assertEquals(0, $loan);
+    }
+
+    public function test_returns_lower_value_due_to_default()
+    {
+        $loan = $this->calculateAvailableLoans->execute(200, 200, 100, true);
+        $this->assertEquals(300, $loan);
     }
 }

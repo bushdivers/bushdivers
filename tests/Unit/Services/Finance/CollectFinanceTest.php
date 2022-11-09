@@ -123,4 +123,34 @@ class CollectFinanceTest extends TestCase
         $this->assertEquals(1100, $finance->total_remaining);
         $this->assertEquals(10, $finance->term_remaining);
     }
+
+    public function test_defaulted()
+    {
+        DB::table('user_accounts')->insert([
+            'user_id' => $this->user->id,
+            'type' => TransactionTypes::Bonus,
+            'total' => 10
+        ]);
+
+        $finance = Loan::factory()->create([
+            'user_id' => $this->user->id,
+            'loan_amount' => 1000,
+            'total_interest' => 100,
+            'total_remaining' => 1100,
+            'term_months' => 10,
+            'term_remaining' => 10,
+            'monthly_payment' => 100,
+            'missed_payments' => 3,
+            'next_payment_at' => Carbon::now()
+        ]);
+
+        $this->collectFinancePayments->execute();
+        $finance->refresh();
+        $this->assertEquals(4, $finance->missed_payments);
+
+        $this->assertDatabaseHas('users', [
+            'id' => $this->user->id,
+            'is_defaulted' => true
+        ]);
+    }
 }

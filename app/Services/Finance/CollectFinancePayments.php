@@ -29,6 +29,10 @@ class CollectFinancePayments
             if (Carbon::parse($loan->next_payment_at)->between($startDate, $endDate)) {
                 if ($loan->monthly_payment > $user->balance) {
                     $loan->missed_payments = $loan->missed_payments + 1;
+                    if ($loan->missed_payments > 3) {
+                        $user->is_defaulted = true;
+                        $user->save();
+                    }
                     $loan->save();
                 } else {
                     $this->addUserTransaction->execute($user->id, TransactionTypes::Loan, -$loan->monthly_payment);
