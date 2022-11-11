@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 
 class CreateAircraft
 {
-    public function execute($data, $userId, $isFianance = false): Aircraft
+    public function execute($data, $userId): Aircraft
     {
         $fleet = Fleet::find($data['id']);
         // create aircraft
@@ -22,7 +22,6 @@ class CreateAircraft
         $aircraft->status = 1;
         $aircraft->hub_id = $data['hub'];
         $aircraft->last_inspected_at = Carbon::now();
-        $aircraft->is_financed = $isFianance;
         $aircraft->owner_id = $userId;
         $aircraft->save();
 

@@ -20,21 +20,14 @@ const Purchase = ({ aircraft, purchaseType }) => {
   const [hubError, setHubError] = useState(null)
   const [reg, setReg] = useState(purchaseType === 'new' ? null : aircraft.registration)
   const [regError, setRegError] = useState(null)
-  const [deposit, setDeposit] = useState(purchaseType === 'new' ? 0.2 * aircraft.new_price : 0.2 * aircraft.sale_price)
-  const [term, setTerm] = useState(3)
-  const [financeAmount, setFinanceAmount] = useState(0)
-  const [monthlyPayments, setMonthlyPayments] = useState(0)
   // const [showFinanceCalc, setShowFinanceCalc] = useState(false)
-  const [financeCost, setFinanceCost] = useState(0)
-  const [purchaseMethod, setPurchaseMethod] = useState('buy')
-  const [calculated, setCalculated] = useState(false)
   const [basePrice] = useState(purchaseType === 'new' ? aircraft.new_price : aircraft.sale_price)
 
   const handleDeliveryChange = (e) => {
     setDeliver(e.target.checked)
     setError(null)
     setAirport(null)
-    setDeliveryLocation(null)
+    setDeliveryLocation(aircraft.hq)
     setIcao('')
     if (!e.target.checked) setPrice(0.00)
   }
@@ -76,52 +69,7 @@ const Purchase = ({ aircraft, purchaseType }) => {
     setReg(e.target.value)
   }
 
-  const handlePurchaseMethodChange = (e) => {
-    const method = e.target.checked ? 'finance' : 'buy'
-    setPurchaseMethod(method)
-  }
-
-  const handleDepositChange = (e) => {
-    if (typeof e.target.value === 'string') {
-      setDeposit(e.target.value === '' ? 0 : parseFloat(e.target.value))
-    } else {
-      setDeposit(e.target.value)
-    }
-  }
-
-  const handleTermChange = (e) => {
-    if (typeof e.target.value === 'string') {
-      setTerm(parseFloat(e.target.value))
-    } else {
-      setTerm(e.target.value)
-    }
-  }
-
-  const calculate = () => {
-    if (typeof deposit !== 'number') {
-      setDeposit(0)
-    }
-    if (parseInt(term) < 3 || parseInt(term) > 24) {
-      setTerm(3)
-      window.alert('Term must be between 3 and 24 months, please calculate again')
-      return
-    }
-    const subTotal = purchaseType === 'new' ? parseFloat(aircraft.new_price) + parseFloat(price) : parseFloat(aircraft.sale_price) + parseFloat(price)
-    // subtotal less deposit = principal
-    const principal = subTotal - deposit
-    const termInYears = term / 12
-    const interestRate = 8 / 100
-    const interest = (principal * interestRate * termInYears)
-    const amount = (principal + interest).toFixed(2)
-    const monthly = (amount / term).toFixed(2)
-    setCalculated(true)
-    setFinanceCost(interest)
-    setFinanceAmount(amount)
-    setMonthlyPayments(monthly)
-    // setShowFinanceCalc(true)
-  }
-
-  const purchase = (pMethod) => {
+  const purchase = () => {
     setError(null)
     setHubError(null)
     setRegError(null)
@@ -135,49 +83,26 @@ const Purchase = ({ aircraft, purchaseType }) => {
       return
     }
 
-    const total = pMethod === 'buy' ? purchaseType === 'new' ? parseFloat(aircraft.new_price) + parseFloat(price) : parseFloat(aircraft.sale_price) + parseFloat(price) : deposit
+    const total = parseFloat(aircraft.new_price) + parseFloat(price)
 
     if (total > auth.user.balance) {
       window.alert('You do not have sufficient funds')
       return
     }
-
-    if (pMethod === 'buy') {
-      const data = {
-        total,
-        id: aircraft.id,
-        deliveryIcao: purchaseType === 'new' ? deliveryLocation : null,
-        hub,
-        reg,
-        purchaseType
-      }
-      Inertia.post('/marketplace/purchase', data)
-    } else if (pMethod === 'finance') {
-      if (!calculated) {
-        window.alert('You need to calculate a finance agreement')
-        return
-      }
-      const data = {
-        id: aircraft.id,
-        deliveryIcao: purchaseType === 'new' ? deliveryLocation : null,
-        hub,
-        reg,
-        deposit,
-        financeAmount,
-        term,
-        monthlyPayments,
-        purchaseType
-      }
-      Inertia.post('/marketplace/finance', data)
+    const data = {
+      total,
+      id: aircraft.id,
+      deliveryIcao: purchaseType === 'new' ? deliveryLocation : aircraft.hq,
+      hub,
+      reg,
+      purchaseType
     }
+    Inertia.post('/marketplace/purchase', data)
   }
 
   return (
     <div>
-      {purchaseType === 'new'
-        ? <div className="text-lg">Purchase New - {aircraft.manufacturer} {aircraft.name} {purchaseMethod === 'finance' ? <span>- On Finance</span> : <></>}</div>
-        : <div className="text-lg">Purchase Used - {aircraft.registration} - {aircraft.fleet.manufacturer} {aircraft.fleet.name} ({aircraft.current_airport_id}) {purchaseMethod === 'finance' ? <span>- On Finance</span> : <></>}</div>
-      }
+      <div className="text-lg">Purchase New - {aircraft.manufacturer} {aircraft.name}</div>
       <div className="mt-2">
         <Card title="Invoice">
         {purchaseType === 'new' && (
@@ -208,39 +133,7 @@ const Purchase = ({ aircraft, purchaseType }) => {
           <div className="flex justify-between"><span>Delivery</span><span>${price.toFixed(2)}</span></div>
           <div className="flex justify-between"><span>Total</span><span>${(parseFloat(basePrice) + parseFloat(price)).toFixed(2).toLocaleString()}</span></div>
         </div>
-
-        <label htmlFor="method" className="inline-flex items-center">
-          <input id="method" checked={purchaseMethod === 'finance'} onChange={handlePurchaseMethodChange} type="checkbox" className="form-checkbox rounded border-gray-300 text-orange-500 shadow-sm focus:border-orange-300 focus:ring focus:ring-offset-0 focus:ring-orange-200 focus:ring-opacity-50" />
-          <span className="ml-2">Finance purchase?</span>
-        </label>
-
-        {purchaseMethod === 'finance'
-          ? (
-            <div className="mt-4">
-              <h2 className="card-title">Finance Details</h2>
-              <div className="w-1/4">
-                <TextInput id="deposit" label="Deposit Amount" type="text" value={deposit} onChange={handleDepositChange} />
-                <TextInput id="term" label="Term (months) - min: 3; max: 24" type="text" value={term} onChange={handleTermChange} />
-                <button onClick={calculate} className="btn btn-secondary mt-2">Calculate</button>
-              </div>
-              <div className="mt-2">
-                <div className="flex justify-between"><span>Deposit (due now)</span><span>{deposit > 0 ? `$${(deposit)}` : '-'}</span></div>
-                <div className="flex justify-between"><span>Monthly Payments</span><span>${monthlyPayments}</span></div>
-                <div className="flex justify-between"><span>Total Amount Payable</span><span>${financeAmount}</span></div>
-                <div className="flex justify-between"><span>Cost of Finance (interest @ 8%)</span><span>${(financeCost).toFixed(2)}</span></div>
-              </div>
-              <div className="mt-4 flex justify-between">
-                <div className="text-sm italic">Terms: Payments made on 1st of each month; More than two missed payments will result on aircraft being reclaimed.</div>
-                <button onClick={() => purchase('finance')} className="btn btn-primary">Confirm Finance</button>
-              </div>
-            </div>
-            )
-          : (
-            <div className="mt-4 flex justify-end">
-              <button onClick={() => purchase('buy')} className="btn btn-primary">Purchase</button>
-            </div>
-            )
-        }
+          <button onClick={() => purchase()} className="btn btn-primary">Purchase</button>
         {errors.reg && <span className="text-sm text-error my-2">The aircraft registration has already exists</span>}
         </Card>
       </div>

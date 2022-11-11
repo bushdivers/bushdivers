@@ -9,18 +9,8 @@ import axios from 'axios'
 import { convertMinuteDecimalToHoursAndMinutes } from '../../Helpers/date.helpers'
 import Card from '../../Shared/Elements/Card'
 
-const MyAircraft = ({ aircraft, rentals, agreements }) => {
-  const handleCancel = (agreement) => {
-    if (window.confirm(`Cancelling will relinquish ownership and access to ${agreement.aircraft.registration} and will incur a penalty of: $${agreement.monthly_payments}. Do you wish to continue?`)) {
-      Inertia.post(`/marketplace/finance/cancel/${agreement.id}`)
-    }
-  }
-
+const MyAircraft = ({ aircraft, rentals }) => {
   const handleSale = async (ac) => {
-    if (ac.is_financed) {
-      window.alert(`You cannot sell ${ac.registration} as there is still outstanding finance`)
-      return
-    }
     const res = await axios.get(`/api/aircraft/price/${ac.id}`)
     if (res.status === 200) {
       if (window.confirm(`Are you sure you want to sell your aircraft ${ac.registration} for $${res.data.price}?`)) {
@@ -31,7 +21,7 @@ const MyAircraft = ({ aircraft, rentals, agreements }) => {
 
   return (
     <div className="p-4 flex space-x-4">
-      <div className="w-1/2 space-y-4">
+      <div className="w-full space-y-4">
         <div>
           <Card title="My Aircraft">
           <div className="flex justify-between items-baseline mt-2">
@@ -98,46 +88,6 @@ const MyAircraft = ({ aircraft, rentals, agreements }) => {
             </div>
           </Card>
         </div>
-      </div>
-      <div className="w-1/2">
-        {agreements.length === 0 && <div className="text-center">No Current Finance Agreements</div>}
-        {agreements && agreements.map((ag) => (
-          <div key={ag.id} className={`p-4 rounded shadow mb-2 ${ag.is_paid || !ag.is_active ? 'bg-base-200 text-base' : 'bg-neutral'}`}>
-            <div className="flex justify-between items-center">
-              <h2 className={`${ag.is_paid || !ag.is_active ? 'line-through' : ''}`}>Agreement #{ag.id}</h2>
-              {ag.is_paid ? <FontAwesomeIcon icon={faCheckCircle} className="text-green-500" /> : !ag.is_active ? <FontAwesomeIcon icon={faTimesCircle} className="text-red-500"/> : <><button onClick={() => handleCancel(ag)} className="btn btn-secondary btn-small">Cancel</button></>}
-            </div>
-            <h3>{ag.aircraft.registration}</h3>
-            <div className="flex justify-between items-center mt-2">
-              <div>
-                <span className="text-lg">Deposit</span> <br />
-                ${ag.deposit}
-              </div>
-              <div>
-                <span className="text-lg">Total Finance</span> <br />
-                ${ag.finance_amount}
-              </div>
-              <div>
-                <span className="text-lg">Length</span> <br/>
-                {ag.term_remaining} / {ag.term_months} months
-              </div>
-            </div>
-            <div className="flex justify-between items-center mt-2">
-              <div>
-                <span className="text-lg">Monthly Repayments</span> <br/>
-                ${ag.monthly_payments}
-              </div>
-              <div>
-                <span className="text-lg">Amount Remaining</span> <br />
-                ${ag.amount_remaining}
-              </div>
-              <div>
-                <span className="text-lg">Missed Payments</span> <br/>
-                {ag.missed_payments}
-              </div>
-            </div>
-          </div>
-        ))}
       </div>
     </div>
   )
