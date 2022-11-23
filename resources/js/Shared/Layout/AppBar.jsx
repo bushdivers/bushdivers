@@ -14,7 +14,7 @@ const MenuItems = ({ mobile }) => {
       <li><Link href="/dispatch">Flight Dispatch</Link></li>
       <li tabIndex={0}>
         <a className="justify-between">
-          HQ
+          Bush Divers HQ
           {mobile ? <FontAwesomeIcon icon={faChevronRight} /> : <FontAwesomeIcon icon={faChevronDown} /> }
         </a>
         <ul className="p-2 bg-neutral">
