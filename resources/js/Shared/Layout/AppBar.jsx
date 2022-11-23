@@ -23,7 +23,7 @@ const MenuItems = ({ mobile }) => {
           <li><Link href="/hubs">Hubs</Link></li>
           <li><Link href="#">Airline Stats - Coming soon</Link></li>
           <li><Link href="/finances">Finances</Link></li>
-          <li><a href="https://storage.googleapis.com/bush-divers.appspot.com/BushTracker.zip">Bush Tracker</a></li>
+          <li><a href="https://bushdivers-resource.s3.amazonaws.com/bush-tracker/BushTracker.zip">Bush Tracker</a></li>
         </ul>
       </li>
       <li tabIndex={0}>
