@@ -20,23 +20,9 @@ class GenerateContracts
         $this->generateContractDetails = $generateContractDetails;
     }
 
-    public function execute($airport, $numberToGenerate, $flightLength, $aircraftSize)
+    public function execute($airport, $numberToGenerate)
     {
         try {
-            switch ($flightLength) {
-                case 'short':
-                    $minLength = 1;
-                    $maxLength = 60;
-                    break;
-                case 'medium':
-                    $minLength = 61;
-                    $maxLength = 200;
-                    break;
-                case 'long':
-                    $minLength = 201;
-                    $maxLength = 600;
-                    break;
-            }
             // get airports
             //$airports = Airport::all();
             $airports = DB::select(DB::raw(
@@ -54,16 +40,16 @@ class GenerateContracts
                               BETWEEN $airport->lon - (300 / (69 * COS(RADIANS($airport->lat))))
                               AND $airport->lon + (300 / (69* COS(RADIANS($airport->lat))))
                         ) r
-                        WHERE distance BETWEEN $minLength AND $maxLength
+                        WHERE distance BETWEEN 15 AND 350
                         ORDER BY distance ASC"
             ));
 
             // pick (n) random airports in each category
             $allAirports = collect($airports);
             if ($allAirports->count() <= $numberToGenerate && $allAirports->count() > 0) {
-                return $this->generateContractDetails->execute($airport, $allAirports, $aircraftSize);
+                return $this->generateContractDetails->execute($airport, $allAirports);
             } elseif (count($allAirports) > 0) {
-                return $this->generateContractDetails->execute($airport, $allAirports->random($numberToGenerate), $aircraftSize);
+                return $this->generateContractDetails->execute($airport, $allAirports->random($numberToGenerate));
             }
         }
         catch (\Exception $e) {

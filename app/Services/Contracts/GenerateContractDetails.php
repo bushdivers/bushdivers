@@ -9,14 +9,14 @@ use Illuminate\Support\Facades\Log;
 
 class GenerateContractDetails
 {
-//    protected StoreContract $storeContract;
+//    protected StoreContracts $storeContract;
     protected GenerateContractCargo $generateContractCargo;
     protected CalcContractValue $calcContractValue;
     protected CalcDistanceBetweenPoints $calcDistanceBetweenPoints;
     protected CalcBearingBetweenPoints $calcBearingBetweenPoints;
 
     public function __construct(
-//        StoreContract $storeContract,
+//        StoreContracts $storeContract,
         GenerateContractCargo $generateContractCargo,
         CalcContractValue $calcContractValue,
         CalcDistanceBetweenPoints $calcDistanceBetweenPoints,
@@ -30,14 +30,14 @@ class GenerateContractDetails
         $this->calcBearingBetweenPoints = $calcBearingBetweenPoints;
     }
 
-    public function execute($origin, $airports, $aircraftSize): array
+    public function execute($origin, $airports): array
     {
         try {
             $contracts = [];
             foreach ($airports as $airport) {
                 if ($origin->identifier != $airport->identifier) {
                     // generate cargo
-                    $cargo = $this->generateContractCargo->execute($aircraftSize);
+                    $cargo = $this->generateContractCargo->execute();
                     // get distance and heading
                     $distance = $this->calcDistanceBetweenPoints->execute($origin->lat, $origin->lon, $airport->lat, $airport->lon);
                     $heading = $this->calcBearingBetweenPoints->execute($origin->lat, $origin->lon, $airport->lat, $airport->lon, $airport->magnetic_variance);
@@ -57,7 +57,7 @@ class GenerateContractDetails
                     $contract = [
                         'id' => $origin->identifier.'-'.$airport->identifier,
                         'departure' => $origin->identifier,
-                        'destination' => $airport,
+                        'destination' => $airport->identifier,
                         'cargo' => $cargo['name'],
                         'cargo_type' => $cargo['type'],
                         'cargo_qty' => $cargo['qty'],

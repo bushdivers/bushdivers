@@ -12,13 +12,13 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class CreateCustomRoute
 {
-    protected StoreContract $storeContract;
+    protected StoreContracts $storeContract;
     protected CalcDistanceBetweenPoints $calcDistanceBetweenPoints;
     protected CalcBearingBetweenPoints $calcBearingBetweenPoints;
     protected CalcContractValue $calcContractValue;
 
     public function __construct(
-        StoreContract $storeContract,
+        StoreContracts $storeContract,
         CalcDistanceBetweenPoints $calcDistanceBetweenPoints,
         CalcBearingBetweenPoints $calcBearingBetweenPoints,
         CalcContractValue $calcContractValue

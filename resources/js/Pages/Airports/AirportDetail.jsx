@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import AppLayout from '../../Shared/AppLayout'
 import AirportInfo from '../../Shared/Components/Airport/AirportInfo'
 import AirportAircraft from '../../Shared/Components/Airport/AirportAircraft'
+import AirportContracts from '../../Shared/Components/Airport/AirportContracts'
 
 
 const AirportDetail = ({ airport, metar, aircraft }) => {
@@ -20,7 +21,7 @@ const AirportDetail = ({ airport, metar, aircraft }) => {
         component = <AirportInfo airport={airport} metar={metar} />
         break
       case 'contracts':
-        component = <div>Contracts</div>
+        component = <AirportContracts />
         break
       case 'aircraft':
         component = <AirportAircraft aircraft={aircraft} />

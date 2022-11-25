@@ -6,30 +6,12 @@ use Illuminate\Support\Facades\DB;
 
 class GenerateContractCargo
 {
-    public function execute($aircraftSize): array
+    public function execute(): array
     {
-        switch ($aircraftSize) {
-            case 'small':
-                $minCargo = 100;
-                $maxCargo = 1000;
-                $minPax = 1;
-                $maxPax = 4;
-                break;
-            case 'medium':
-                $minCargo = 1500;
-                $maxCargo = 5000;
-                $minPax = 4;
-                $maxPax = 12;
-                break;
-            case 'large':
-                $minCargo = 8000;
-                $maxCargo = 30000;
-                $minPax = 15;
-                $maxPax = 30;
-                break;
-        }
-
-
+        $minCargo = 350;
+        $maxCargo = 20000;
+        $minPax = 1;
+        $maxPax = 26;
         $qty = 0;
         $types = DB::table('cargo_types')->get();
         $cargo = $types->random();

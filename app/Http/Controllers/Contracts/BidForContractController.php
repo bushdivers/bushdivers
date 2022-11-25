@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Airport;
 use App\Models\Contract;
 use App\Models\ContractInfo;
-use App\Services\Contracts\StoreContract;
+use App\Services\Contracts\StoreContracts;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -17,9 +17,9 @@ use Inertia\Response;
 
 class BidForContractController extends Controller
 {
-    protected StoreContract $storeContract;
+    protected StoreContracts $storeContract;
 
-    public function __construct(StoreContract $storeContract)
+    public function __construct(StoreContracts $storeContract)
     {
         $this->storeContract = $storeContract;
     }
