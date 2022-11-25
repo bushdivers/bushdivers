@@ -80,7 +80,10 @@ const Loans = ({ loanValue, currentLoans }) => {
         </div>
         <div className="w-full lg:w-1/2">
           <Card title="Your Monthly Loan">
-            <h1>${parseFloat(payment).toLocaleString(navigator.language, { maximumFractionDigits: 0 })}</h1>
+            <div className="flex justify-between">
+              <div className="text-4xl">${parseFloat(payment).toLocaleString(navigator.language, { maximumFractionDigits: 0 })}</div>
+              <img className="h-32" src="https://res.cloudinary.com/dji0yvkef/image/upload/v1669234939/BDVA/Hornbill_Financing_logo2_vgcqdc.png" alt="hornbilfinance" />
+            </div>
             <div className="flex justify-start mt-6 space-x-4">
               <div>
                 <div className="stat-title">Loan Amount</div>
