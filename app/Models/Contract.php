@@ -21,11 +21,6 @@ class Contract extends Model
         'days_updated'
     ];
 
-    public function cargo()
-    {
-        return $this->hasMany(ContractCargo::class);
-    }
-
     public function type()
     {
         return $this->belongsTo(ContractType::class);

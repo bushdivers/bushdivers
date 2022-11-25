@@ -18,6 +18,6 @@ class PirepCargo extends Model
 
     public function cargo()
     {
-        return $this->belongsTo(ContractCargo::class);
+        return $this->belongsTo(Contract::class);
     }
 }
