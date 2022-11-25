@@ -63,7 +63,7 @@ class ShowAirportController extends Controller
         if (Cache::has($icao.'-contracts')) {
             $contracts = Cache::get($icao.'-contracts');
         } else {
-            $contracts = Contract::with(['depAirport', 'arrAirport'])->where('dep_airport_id', $icao)->get();
+            $contracts = $this->getContracts($icao);
             if ($contracts->count() < 5) {
                 if ($airport->is_hub) {
                     $numToGenerate = 25;
@@ -72,11 +72,19 @@ class ShowAirportController extends Controller
                 }
                 $newContracts = $this->generateContracts->execute($airport, $numToGenerate);
                 $this->storeContracts->execute($newContracts);
-                $contracts = Contract::with(['depAirport', 'arrAirport'])->where('dep_airport_id', $icao)->get();
+                $contracts = $this->getContracts($icao);
             }
             Cache::put($icao.'-contracts', $contracts);
         }
 
         return Inertia::render('Airports/AirportDetail', ['airport' => $airport, 'metar' => $metar, 'aircraft' => $aircraft, 'contracts' => $contracts]);
+    }
+
+    protected function getContracts(string $icao)
+    {
+        return Contract::with(['depAirport', 'arrAirport'])
+            ->where('dep_airport_id', $icao)
+            ->where('is_available', true)
+            ->get();
     }
 }

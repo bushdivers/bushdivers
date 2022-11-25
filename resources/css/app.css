@@ -243,3 +243,9 @@ h4 {
 .map-container-full {
     height: calc(100vh - 10rem);
 }
+
+.table-wrp  {
+    max-height: 60vh;
+    overflow-y: auto;
+    display:block;
+}

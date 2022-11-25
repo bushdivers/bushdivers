@@ -32,23 +32,12 @@ class BidForContractController extends Controller
      */
     public function __invoke(Request $request): JsonResponse
     {
-        $cargo = ['name' => $request->contract['cargo'], 'type' => $request->contract['cargo_type'], 'qty' => $request->contract['cargo_qty']];
+        $contract = Contract::find($request->id);
+        $contract->user_id = $request->userId;
+        $contract->is_available = false;
+        $contract->save();
 
-        $data = new ContractInfo();
-        $data->setStart($request->contract['departure']);
-        $data->setDest($request->contract['destination']['identifier']);
-        $data->setDistance($request->contract['distance']);
-        $data->setHeading($request->contract['heading']);
-        $data->setCargo($cargo);
-        $data->setValue($request->contract['contract_value']);
-        $data->setCustom(false);
-        $expiry = Carbon::parse($request->contract['expires_at']);
-        $this->storeContract->execute($data, $expiry, $request->userId);
-
-        if (Cache::has($request->cacheKey)) {
-            Cache::forget($request->cacheKey);
-            Cache::put($request->cacheKey, $request->contracts, Carbon::now()->secondsUntilEndOfDay());
-        }
+        Cache::forget($contract->dep_airport_id.'-contracts');
 
         return \response()->json(['message' => 'Contract saved!'], 201);
 

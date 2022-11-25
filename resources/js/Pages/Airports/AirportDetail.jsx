@@ -5,7 +5,7 @@ import AirportAircraft from '../../Shared/Components/Airport/AirportAircraft'
 import AirportContracts from '../../Shared/Components/Airport/AirportContracts'
 
 
-const AirportDetail = ({ airport, metar, aircraft }) => {
+const AirportDetail = ({ airport, metar, aircraft, contracts }) => {
   const [activeTab, setActiveTab] = useState('airport')
 
   function handleTabChange (e) {
@@ -21,7 +21,7 @@ const AirportDetail = ({ airport, metar, aircraft }) => {
         component = <AirportInfo airport={airport} metar={metar} />
         break
       case 'contracts':
-        component = <AirportContracts />
+        component = <AirportContracts contracts={contracts} />
         break
       case 'aircraft':
         component = <AirportAircraft aircraft={aircraft} />
