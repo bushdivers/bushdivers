@@ -33,7 +33,6 @@ const MenuItems = ({ mobile }) => {
         </a>
         <ul className="p-2 bg-neutral">
           <li><Link href="/available-contracts">Available Contracts</Link></li>
-          <li><Link href="/contracts">Find Contracts</Link></li>
           <li><Link href="/completed-contracts">Completed Contracts</Link></li>
         </ul>
       </li>

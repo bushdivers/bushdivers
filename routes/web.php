@@ -132,10 +132,6 @@ Route::middleware('auth')->group(function () {
         ->name('dispatch.create');
     Route::post('/dispatch/cancel', \App\Http\Controllers\Dispatch\CancelDispatchController::class)
         ->name('dispatch.cancel');
-    Route::get('/contracts', \App\Http\Controllers\Contracts\ShowContractsPageController::class)
-        ->name('contracts');
-    Route::post('/contracts', \App\Http\Controllers\Contracts\FindContractsController::class)
-        ->name('contracts.search');
 //    Route::post('/contracts/bid', \App\Http\Controllers\Contracts\BidForContractController::class)
 //        ->name('contracts.bid');
     Route::post('/contracts/custom', \App\Http\Controllers\Contracts\CreateCustomRouteController::class)
