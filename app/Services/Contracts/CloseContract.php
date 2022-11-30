@@ -9,12 +9,6 @@ class CloseContract
 {
     public function execute($contractId)
     {
-        $contract = Contract::find($contractId);
-        ContractCargo::where('contract_id', $contractId)->update([
-            'is_available' => false
-        ]);
-        $contract->is_available = 0;
-        $contract->user_id = null;
-        $contract->save();
+        Contract::destroy($contractId);
     }
 }

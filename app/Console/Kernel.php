@@ -4,10 +4,6 @@ namespace App\Console;
 
 use App\Models\Enums\FinancialConsts;
 use App\Services\Contracts\CheckForExpiry;
-use App\Services\Contracts\ExpiryContractCheck;
-use App\Services\Contracts\FindAirportsInNeedOfContracts;
-use App\Services\Contracts\FindHubsInNeedOfContracts;
-use App\Services\Contracts\RemoveStaleContracts;
 use App\Services\Finance\CalcMonthlyFees;
 use App\Services\Finance\CollectFinancePayments;
 use App\Services\Pireps\FindInactivePireps;
