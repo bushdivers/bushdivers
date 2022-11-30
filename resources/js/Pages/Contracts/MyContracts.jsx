@@ -31,14 +31,26 @@ const MyContracts = ({ contracts }) => {
     setSelectedContract(contract)
   }
 
-  async function addToFlight (id) {
+  async function addToFlight (contract) {
+    const qty = window.prompt('How much cargo do you want to assign?', contract.cargo_qty)
+    if (qty < 1 || (qty % 1) !== 0) {
+      window.alert('You must choose a whole number more than 0')
+      return
+    }
+
+    if (qty > contract.cargo_qty) {
+      window.alert('You must choose a whole number no more than original cargo')
+      return
+    }
+
     const data = {
-      id,
+      id: contract.id,
+      qty,
       userId: auth.user.id,
       action: 'assign'
     }
-    const bid = axios.post('/api/contracts/assign', data)
-    await toast.promise(bid, {
+    const assign = axios.post('/api/contracts/assign', data)
+    await toast.promise(assign, {
       loading: '...Assigning contract',
       success: 'Contract added!',
       error: 'Issue assigning contract'
@@ -85,7 +97,7 @@ const MyContracts = ({ contracts }) => {
                   <td>{formatDistanceToNowStrict(new Date(contract.expires_at))}</td>
                   <td>
                     {contract.user_id === null
-                      ? (<button onClick={() => addToFlight(contract.id)} className="btn btn-secondary btn-xs"><FontAwesomeIcon icon={faCheck} /></button>)
+                      ? (<button onClick={() => addToFlight(contract)} className="btn btn-secondary btn-xs"><FontAwesomeIcon icon={faCheck} /></button>)
                       : (<span>Assigned</span>)
                     }
                   </td>

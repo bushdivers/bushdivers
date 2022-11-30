@@ -28,13 +28,13 @@ class AssignContractTest extends TestCase
      */
     public function test_returns_success_response()
     {
-        $response = $this->postJson('/api/contracts/assign', ['id' => $this->contract->id, 'action' => 'assign', 'userId' => $this->user->id]);
+        $response = $this->postJson('/api/contracts/assign', ['id' => $this->contract->id, 'action' => 'assign', 'userId' => $this->user->id, 'qty' => $this->contract->cargo_qty]);
         $response->assertStatus(200);
     }
 
     public function test_contract_assigned()
     {
-        $response = $this->postJson('/api/contracts/assign', ['id' => $this->contract->id, 'action' => 'assign', 'userId' => $this->user->id]);
+        $response = $this->postJson('/api/contracts/assign', ['id' => $this->contract->id, 'action' => 'assign', 'userId' => $this->user->id, 'qty' => $this->contract->cargo_qty]);
         $this->contract->refresh();
         $this->assertEquals($this->user->id, $this->contract->user_id);
     }
@@ -44,5 +44,28 @@ class AssignContractTest extends TestCase
         $response = $this->postJson('/api/contracts/assign', ['id' => $this->contract->id, 'action' => 'cancel']);
         $this->contract->refresh();
         $this->assertEquals(null, $this->contract->user_id);
+    }
+
+    public function test_contract_split()
+    {
+        $response = $this->postJson('/api/contracts/assign', ['id' => $this->contract->id, 'action' => 'assign', 'userId' => $this->user->id, 'qty' => 50]);
+        $response->assertStatus(200);
+    }
+
+    public function test_contract_split_creates_new_contract()
+    {
+        $response = $this->postJson('/api/contracts/assign', ['id' => $this->contract->id, 'action' => 'assign', 'userId' => $this->user->id, 'qty' => 60]);
+        $this->assertDatabaseHas('contracts', [
+            'cargo_qty' => 40,
+            'user_id' => null
+        ]);
+    }
+
+    public function test_contract_split_updates_contract()
+    {
+        $response = $this->postJson('/api/contracts/assign', ['id' => $this->contract->id, 'action' => 'assign', 'userId' => $this->user->id, 'qty' => 60]);
+        $this->contract->refresh();
+        $this->assertEquals(60, $this->contract->cargo_qty);
+        $this->assertEquals($this->user->id, $this->contract->user_id);
     }
 }
