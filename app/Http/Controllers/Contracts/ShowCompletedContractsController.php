@@ -19,7 +19,7 @@ class ShowCompletedContractsController extends Controller
      */
     public function __invoke(Request $request): Response
     {
-        $contracts = Contract::with('depAirport', 'arrAirport', 'cargo')
+        $contracts = Contract::with('depAirport', 'arrAirport')
             ->where('is_completed', true)
             ->orderBy('completed_at', 'desc')
             ->paginate(10);

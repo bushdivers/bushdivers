@@ -30,36 +30,22 @@ const CompletedContracts = ({ contracts }) => {
                 {contract.distance.toLocaleString(navigator.language)}nm
               </div>
               <div className="flex flex-col items-center content-center">
+                <div>Cargo</div>
+                <div className="flex justify-start space-x-1">
+                  <span></span>
+                  <span>{contract.cargo_qty} {contract.cargo_type === 1 ? <span>lbs</span> : <span>PAX</span>}</span>
+                  <span>{contract.cargo}</span>
+                </div>
+              </div>
+              <div className="flex flex-col items-center content-center">
                 <div>Contract Value</div>
-                ${parseFloat(contract.cargo.map(detail => detail.contract_value).reduce((total, num) => total + Math.fround(num), 0)).toFixed(2).toLocaleString()}
+                ${parseFloat(contract.contract_value).toLocaleString()}
               </div>
               <div className="flex flex-col items-center content-center">
                 <div>Completed Date</div>
                 {dayjs(contract.completed_at).format('DD/MM/YYYY')}
               </div>
             </div>
-            <table className="table table-compact w-full mt-4">
-              <thead>
-              <tr className="">
-                <th>Id</th>
-                <th>Type</th>
-                <th>Cargo</th>
-                <th>Qty</th>
-                <td>Completed Date</td>
-              </tr>
-              </thead>
-              <tbody>
-              {contract.cargo.map((cargo) => (
-                <tr key={cargo.id}>
-                  <td>{cargo.id}</td>
-                  <td>{cargo.cargo_type_id === 1 ? <span>Cargo</span> : <span>Passengers</span>}</td>
-                  <td>{cargo.cargo}</td>
-                  <td>{cargo.cargo_qty.toLocaleString(navigator.language)}</td>
-                  <td> {dayjs(cargo.completed_at).format('DD/MM/YYYY')}</td>
-                </tr>
-              ))}
-              </tbody>
-            </table>
             </Card>
           </div>
         ))}
