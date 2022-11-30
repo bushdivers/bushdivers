@@ -37,13 +37,13 @@ const MyContracts = ({ contracts }) => {
       userId: auth.user.id,
       action: 'assign'
     }
-    const bid = axios.post('/api/contracts/bid', data)
+    const bid = axios.post('/api/contracts/assign', data)
     await toast.promise(bid, {
       loading: '...Assigning contract',
       success: 'Contract added!',
       error: 'Issue assigning contract'
     }, { position: 'top-right' })
-    Inertia.reload({ only: ['contracts'] })
+    Inertia.reload()
   }
 
   return (
