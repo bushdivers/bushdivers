@@ -32,8 +32,7 @@ class BidForContractController extends Controller
      */
     public function __invoke(Request $request): JsonResponse
     {
-        $contract = Contract::find($request->id);
-        $contract->user_id = $request->userId;
+        $contract = Contract::findOrFail($request->id);
         $contract->is_available = false;
         $contract->save();
 
