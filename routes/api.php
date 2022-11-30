@@ -24,8 +24,6 @@ Route::get('/flights/distance/{from}/{to}', \App\Http\Controllers\Dispatch\GetFl
     ->name('flights.distance');
 Route::get('/liveflights', \App\Http\Controllers\Pireps\GetLiveFlightsController::class)
     ->name('flights.live');
-Route::post('/cargo/split', \App\Http\Controllers\Dispatch\SplitCargoController::class)
-    ->name('cargo.split');
 Route::get('/resources/categories', \App\Http\Controllers\Admin\Resources\GetCategoriesController::class)
     ->name('resources.categories');
 Route::post('/contracts/bid', \App\Http\Controllers\Contracts\BidForContractController::class)
