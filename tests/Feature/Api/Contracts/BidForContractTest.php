@@ -27,7 +27,7 @@ class BidForContractTest extends TestCase
     public function test_returns_success_response()
     {
         $response = $this->postJson('/api/contracts/bid', ['id' => $this->contract->id]);
-        $response->assertStatus(201);
+        $response->assertStatus(200);
     }
 
     public function test_contract_made_unavailable()

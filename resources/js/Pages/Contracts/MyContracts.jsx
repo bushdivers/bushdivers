@@ -7,36 +7,43 @@ import AppLayout from '../../Shared/AppLayout'
 import { faAnchor, faArrowUp, faCheck } from '@fortawesome/free-solid-svg-icons'
 import Card from '../../Shared/Elements/Card'
 import { formatDistanceToNowStrict } from 'date-fns'
+import axios from 'axios'
+import toast from 'react-hot-toast'
+
+function renderCargo (contract) {
+  let cargoType
+  switch (contract.cargo_type) {
+    case 1:
+      cargoType = ' lbs'
+      break
+    case 2:
+      cargoType = ''
+      break
+  }
+  return `${contract.cargo_qty}${cargoType} ${contract.cargo}`
+}
 
 const MyContracts = ({ contracts }) => {
   const { auth } = usePage().props
   const [selectedContract, setSelectedContract] = useState('')
 
-  const updateSelectedContract = (contract) => {
+  function updateSelectedContract (contract) {
     setSelectedContract(contract)
   }
 
-  function renderCargo (contract) {
-    let cargoType
-    switch (contract.cargo_type) {
-      case 1:
-        cargoType = ' lbs'
-        break
-      case 2:
-        cargoType = ''
-        break
+  async function addToFlight (id) {
+    const data = {
+      id,
+      userId: auth.user.id,
+      action: 'assign'
     }
-    return `${contract.cargo_qty}${cargoType} ${contract.cargo}`
-  }
-
-  function cancelBid (contract) {
-    const res = window.confirm('Are you sure you want to cancel this contract? You will lose XP.')
-    if (res) {
-      const data = {
-        id: contract
-      }
-      Inertia.post('/contracts/cancel', data)
-    }
+    const bid = axios.post('/api/contracts/bid', data)
+    await toast.promise(bid, {
+      loading: '...Assigning contract',
+      success: 'Contract added!',
+      error: 'Issue assigning contract'
+    }, { position: 'top-right' })
+    Inertia.reload({ only: ['contracts'] })
   }
 
   return (
@@ -76,9 +83,12 @@ const MyContracts = ({ contracts }) => {
                   <td>{renderCargo(contract)}</td>
                   <td>${parseFloat(contract.contract_value).toLocaleString()}</td>
                   <td>{formatDistanceToNowStrict(new Date(contract.expires_at))}</td>
-                  <td><button onClick={() => cancelBid(contract.id)} className="btn btn-secondary btn-xs">
-                    <FontAwesomeIcon icon={faCheck} />
-                  </button></td>
+                  <td>
+                    {contract.user_id === null
+                      ? (<button onClick={() => addToFlight(contract.id)} className="btn btn-secondary btn-xs"><FontAwesomeIcon icon={faCheck} /></button>)
+                      : (<span>Assigned</span>)
+                    }
+                  </td>
                 </tr>
               ))}
               </tbody>

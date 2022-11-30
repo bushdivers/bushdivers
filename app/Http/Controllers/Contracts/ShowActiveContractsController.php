@@ -31,7 +31,7 @@ class ShowActiveContractsController extends Controller
             ->where('is_completed', false)
             ->where('is_available', false)
             ->where('contract_type_id', 1)
-            ->where('user_id', null)
+//            ->where('user_id', null)
             ->orderBy('dep_airport_id', 'asc')
             ->orderBy('heading', 'asc')
             ->get();
