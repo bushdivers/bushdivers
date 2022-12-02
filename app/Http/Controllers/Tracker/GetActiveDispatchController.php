@@ -60,9 +60,9 @@ class GetActiveDispatchController extends Controller
         $passengerCount = 0;
         if (!$dispatch->is_empty) {
             $cargo = DB::table('pirep_cargos')
-                ->join('contract_cargos', 'pirep_cargos.contract_cargo_id', '=', 'contract_cargos.id')
+                ->join('contracts', 'pirep_cargos.contract_cargo_id', '=', 'contracts.id')
                 ->where('pirep_cargos.pirep_id', $dispatch->id)
-                ->select('contract_cargos.id', 'contract_cargos.cargo_type_id', 'cargo_qty')
+                ->select('contracts.id', 'contracts.cargo_type', 'cargo_qty')
                 ->get();
 
             $cargoWeight = $this->calcCargoWeight->execute($cargo, false);

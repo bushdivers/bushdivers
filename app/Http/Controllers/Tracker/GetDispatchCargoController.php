@@ -25,9 +25,9 @@ class GetDispatchCargoController extends Controller
             ->first();
 
         $cargo = DB::table('pirep_cargos')
-            ->join('contract_cargos', 'pirep_cargos.contract_cargo_id', '=', 'contract_cargos.id')
+            ->join('contracts', 'pirep_cargos.contract_cargo_id', '=', 'contracts.id')
             ->where('pirep_cargos.pirep_id', $dispatch->id)
-            ->select('contract_cargos.id', 'cargo_type_id as contract_type_id', 'cargo_qty', 'cargo', 'current_airport_id', DB::raw("(CASE WHEN cargo_type_id = '1' THEN 'Cargo' ELSE 'Passengers' END) as contract_type"))
+            ->select('contracts.id', 'cargo_type as contract_type_id', 'cargo_qty', 'cargo', 'current_airport_id', DB::raw("(CASE WHEN cargo_type = '1' THEN 'Cargo' ELSE 'Passengers' END) as contract_type"))
             ->get();
 
         return response()->json($cargo);

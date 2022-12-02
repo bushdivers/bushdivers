@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import axios from 'axios'
 import { usePage } from '@inertiajs/inertia-react'
 import DispatchSummary from '../../Shared/Components/Dispatch/DispatchSummary'
 import Destination from '../../Shared/Components/Dispatch/Destination'
@@ -11,9 +10,9 @@ import AppLayout from '../../Shared/AppLayout'
 
 const Dispatch = ({ cargo, aircraft }) => {
   const { auth } = usePage().props
-  const personWeight = 170.00
-  const avgasWeight = 5.99
-  const jetFuelWeight = 6.79
+  const [personWeight] = useState(170.00)
+  const [avgasWeight] = useState(5.99)
+  const [jetFuelWeight] = useState(6.79)
   const [selectedAircraft, setSelectedAircraft] = useState('')
   const [selectedCargo, setSelectedCargo] = useState([])
   const [fuel, setFuel] = useState(0)
@@ -59,38 +58,6 @@ const Dispatch = ({ cargo, aircraft }) => {
       if (cargo.cargo_type_id === 2) {
         calculatePax('add', cargo)
       }
-    }
-  }
-
-  async function splitCargo (cargo) {
-    if (selectedCargo.length > 0) {
-      window.alert('please un-select any cargo before splitting!')
-      return
-    }
-    if (cargo.cargo_type_id === 2 && cargo.cargo_qty <= 1) {
-      window.alert('You cannot split a passenger in half!')
-      return
-    }
-    const amount = window.prompt('Enter quantity to split (this will create a new cargo entry with that amount)')
-    if (amount) {
-      if (amount < cargo.cargo_qty && amount % 1 === 0) {
-        // make api call
-        const data = {
-          id: cargo.id,
-          qty: amount
-        }
-        const res = await axios.post('/api/cargo/split', data)
-        // reload
-        if (res.status === 201) {
-          Inertia.reload({ only: ['cargo'] })
-        } else {
-          window.alert('Issue splitting cargo')
-        }
-      } else {
-        window.alert(`Either you are trying to split a person in half, or new cargo amount must be less than the total cargo: ${cargo.cargo_qty}`)
-      }
-    } else {
-      window.alert('Cargo split has been cancelled')
     }
   }
 
@@ -182,7 +149,7 @@ const Dispatch = ({ cargo, aircraft }) => {
       <div className="flex flex-col md:flex-row justify-between mt-4">
         <div className="md:w-1/2">
           <Aircraft aircraft={aircraft} selectedAircraft={selectedAircraft} handleAircraftSelect={handleAircraftSelect} />
-          <Cargo cargo={cargo} selectedCargo={selectedCargo} handleCargoSelect={handleCargoSelect} splitCargo={splitCargo} deadHead={deadHead} handleDeadHead={handleDeadHead} />
+          <Cargo cargo={cargo} selectedCargo={selectedCargo} handleCargoSelect={handleCargoSelect} deadHead={deadHead} handleDeadHead={handleDeadHead} />
           <Destination currentAirport={auth.user.current_airport_id} updateDestinationValue={setDestination} />
           <Fuel selectedAircraft={selectedAircraft} fuel={fuel} handleUpdateFuel={handleUpdateFuel} error={error} />
         </div>

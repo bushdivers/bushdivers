@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Dispatch;
 
 use App\Http\Controllers\Controller;
 use App\Models\Aircraft;
+use App\Models\Contract;
 use App\Models\ContractCargo;
 use App\Models\Enums\AircraftState;
 use App\Models\Enums\PirepState;
@@ -38,9 +39,10 @@ class CancelDispatchController extends Controller
             $aircraft->save();
         }
 
-        ContractCargo::where('user_id', Auth::user()->id)
+        Contract::where('user_id', Auth::user()->id)
+            ->where('active_pirep', $request->pirep)
             ->where('is_completed', false)
-            ->update(['is_available' => true, 'user_id' => null, 'active_pirep' => null]);
+            ->update(['active_pirep' => null]);
 
         // remove pirep cargo entries
         PirepCargo::where('pirep_id', $pirep->id)->delete();

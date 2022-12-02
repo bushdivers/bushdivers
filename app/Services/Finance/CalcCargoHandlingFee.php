@@ -5,6 +5,7 @@ namespace App\Services\Finance;
 use App\Models\Aircraft;
 use App\Models\AirlineFees;
 use App\Models\Airport;
+use App\Models\Contract;
 use App\Models\ContractCargo;
 use App\Models\Enums\AirlineTransactionTypes;
 use App\Models\Enums\ContractType;
@@ -41,10 +42,10 @@ class CalcCargoHandlingFee
         $fee = AirlineFees::where('fee_type', AirlineTransactionTypes::GroundHandlingFees)->first();
         $weight = 0;
         foreach ($pc as $c) {
-            $cargo = ContractCargo::find($c->contract_cargo_id);
-            if ($cargo->cargo_type_id == ContractType::Cargo) {
+            $cargo = Contract::find($c->contract_cargo_id);
+            if ($cargo->cargo_type == ContractType::Cargo) {
                 $weight += $cargo->cargo_qty;
-            } else if ($cargo->cargo_type_id == ContractType::Passenger) {
+            } else if ($cargo->cargo_type == ContractType::Passenger) {
                 $weight = $cargo->cargo_qty * WeightConsts::PERSON_WEIGHT;
             }
         }

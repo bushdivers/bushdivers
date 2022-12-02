@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Dispatch;
 
 use App\Http\Controllers\Controller;
 use App\Models\Aircraft;
+use App\Models\Contract;
 use App\Models\ContractCargo;
 use App\Models\Enums\AircraftState;
 use App\Models\Enums\PirepState;
@@ -57,11 +58,11 @@ class CreateDispatchController extends Controller
                 $pirepCargo->pirep_id = $pirep->id;
                 $pirepCargo->save();
 
-                $contractCargo = ContractCargo::find($cargo);
-                $contractCargo->is_available = false;
-                $contractCargo->user_id = Auth::user()->id;
-                $contractCargo->active_pirep = $pirep->id;
-                $contractCargo->save();
+                $contract = Contract::find($cargo);
+                $contract->is_available = false;
+                $contract->user_id = Auth::user()->id;
+                $contract->active_pirep = $pirep->id;
+                $contract->save();
             }
         }
 
