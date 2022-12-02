@@ -9,9 +9,9 @@ class GenerateContractCargo
     public function execute(): array
     {
         $minCargo = 350;
-        $maxCargo = 20000;
+        $maxCargo = 13000;
         $minPax = 1;
-        $maxPax = 26;
+        $maxPax = 14;
         $qty = 0;
         $types = DB::table('cargo_types')->get();
         $cargo = $types->random();

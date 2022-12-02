@@ -86,9 +86,9 @@ const Cargo = (props) => {
                         </div>
                       </div>
                     </td>
-                    <td>{detail.cargo_type_id === 1 ? 'Cargo' : 'Passenger'}</td>
+                    <td>{detail.cargo_type === 1 ? 'Cargo' : 'Passenger'}</td>
                     <td>
-                      {detail.cargo_type_id === 1
+                      {detail.cargo_type === 1
                         ? <div><span>{detail.cargo_qty.toLocaleString(navigator.language)} lbs</span> <span className="text-xs">{detail.cargo}</span></div>
                         : <div><span>{detail.cargo_qty}</span> <span className="text-xs">{detail.cargo}</span></div>
                       }
@@ -134,9 +134,9 @@ const Cargo = (props) => {
                     </div>
                   </div>
                 </td>
-                <td>{detail.cargo_type_id === 1 ? 'Cargo' : 'Passenger'}</td>
+                <td>{detail.cargo_type === 1 ? 'Cargo' : 'Passenger'}</td>
                 <td>
-                  {detail.cargo_type_id === 1
+                  {detail.cargo_type === 1
                     ? <div><span>{detail.cargo_qty.toLocaleString(navigator.language)} lbs</span> <span className="text-xs">{detail.cargo}</span></div>
                     : <div><span>{detail.cargo_qty}</span> <span className="text-xs">{detail.cargo}</span></div>
                   }
