@@ -51,9 +51,9 @@ class CreateCustomRoute
             $value = $this->calcContractValue->execute($cargo['type'], $cargo['qty'], $distance);
 
             // add contract
-            $data = [
-                'departure' => $dep,
-                'destination' => $arr,
+            $data = [[
+                'departure' => $depAirport->identifier,
+                'destination' => $arrAirport->identifier,
                 'distance' => $distance,
                 'heading' => $heading,
                 'contract_value' => $value,
@@ -61,10 +61,10 @@ class CreateCustomRoute
                 'cargo_type' => $cargo['type'],
                 'cargo_qty' => $cargo['qty'],
                 'expires_at' => Carbon::now()->addDays(7)
-            ];
+            ]];
 
 
-            $this->storeContract->execute($data, true, Auth::user()->id);
+            $this->storeContract->execute($data, false, true, Auth::user()->id);
         } catch (ModelNotFoundException $e) {
             throw new ModelNotFoundException();
         }

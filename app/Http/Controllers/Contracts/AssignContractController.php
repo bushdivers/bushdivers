@@ -44,10 +44,15 @@ class AssignContractController extends Controller
 
             $contract->user_id = $request->userId;
         } else {
+            if ($contract->is_custom) {
+                $contract->delete();
+                return \response()->json(['message' => 'Contract updated!']);
+            }
             $contract->user_id = null;
         }
-
         $contract->save();
+
+
 
         return \response()->json(['message' => 'Contract updated!']);
     }

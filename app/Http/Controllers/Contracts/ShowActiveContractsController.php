@@ -30,6 +30,7 @@ class ShowActiveContractsController extends Controller
         $contracts = Contract::with('depAirport', 'arrAirport')
             ->where('is_completed', false)
             ->where('is_available', false)
+            ->where('is_custom', false)
             ->where('contract_type_id', 1)
 //            ->where('user_id', null)
             ->orderBy('dep_airport_id', 'asc')

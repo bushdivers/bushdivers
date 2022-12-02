@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import NoContent from '../../Elements/NoContent'
 import { faArrowUp, faTicket, faTimes } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -7,6 +7,7 @@ import axios from 'axios'
 import toast from 'react-hot-toast'
 import { Inertia } from '@inertiajs/inertia'
 import { usePage } from '@inertiajs/inertia-react'
+import CustomContract from '../Contracts/CustomContract'
 
 const EmptyData = (props) => {
   return (
@@ -19,6 +20,7 @@ const EmptyData = (props) => {
 
 const Cargo = (props) => {
   const { auth } = usePage().props
+  const [showCustom, setShowCustom] = useState(false)
 
   async function removeFromFlight (contract) {
     const data = {
@@ -38,12 +40,16 @@ const Cargo = (props) => {
   return (
     <div className="mt-2 mr-2">
       <Card title="Select Cargo">
-      <div className="my-2">
-        <label htmlFor="deadHead" className="inline-flex items-center">
-          <input id="deadHead" checked={props.deadHead} onChange={props.handleDeadHead} type="checkbox" className="form-checkbox rounded border-gray-300 dark:bg-gray-700 text-orange-500 shadow-sm focus:border-orange-300 focus:ring focus:ring-offset-0 focus:ring-orange-200 focus:ring-opacity-50" />
-          <span className="ml-2">Deadhead - Run empty</span>
-        </label>
-      </div>
+        <div className="flex justify-between">
+          <div className="">
+            <label htmlFor="deadHead" className="inline-flex items-center">
+              <input id="deadHead" checked={props.deadHead} onChange={props.handleDeadHead} type="checkbox" className="form-checkbox rounded border-gray-300 dark:bg-gray-700 text-orange-500 shadow-sm focus:border-orange-300 focus:ring focus:ring-offset-0 focus:ring-orange-200 focus:ring-opacity-50" />
+              <span className="ml-2">Deadhead - Run empty</span>
+            </label>
+          </div>
+          <button onClick={() => setShowCustom(!showCustom)} className="btn btn-secondary btn-sm">{showCustom ? 'Cancel' : 'Create'} Custom Contract</button>
+        </div>
+        {showCustom && (<div className="my-4 flex justify-center"><CustomContract hideSection={() => setShowCustom(false)} /></div>)}
       {props.cargo.cargoAtAirport.length === 0
         ? <NoContent content={<EmptyData content="Cargo" />} />
         : (
@@ -86,6 +92,7 @@ const Cargo = (props) => {
                         ? <div><span>{detail.cargo_qty.toLocaleString(navigator.language)} lbs</span> <span className="text-xs">{detail.cargo}</span></div>
                         : <div><span>{detail.cargo_qty}</span> <span className="text-xs">{detail.cargo}</span></div>
                       }
+                      {detail.is_custom && <span className="badge badge-primary">custom</span>}
                     </td>
                     <td><button onClick={() => removeFromFlight(detail)} className="btn btn-secondary btn-xs"><FontAwesomeIcon icon={faTimes} /></button></td>
                   </tr>
@@ -108,6 +115,7 @@ const Cargo = (props) => {
               <th>Heading</th>
               <th>Type</th>
               <th>Cargo</th>
+              <th></th>
             </tr>
             </thead>
             <tbody>
@@ -133,6 +141,7 @@ const Cargo = (props) => {
                     : <div><span>{detail.cargo_qty}</span> <span className="text-xs">{detail.cargo}</span></div>
                   }
                 </td>
+                <td><button onClick={() => removeFromFlight(detail)} className="btn btn-secondary btn-xs"><FontAwesomeIcon icon={faTimes} /></button></td>
               </tr>
             ))}
             </tbody>

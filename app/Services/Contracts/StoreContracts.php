@@ -31,6 +31,11 @@ class StoreContracts
             } else {
                 $contract->pax = $contractInfo['cargo_qty'];
             }
+            if ($isCustom) {
+                $contract->user_id = $userId;
+                $contract->is_custom = true;
+            }
+
             $contract->save();
         }
     }
