@@ -70,7 +70,7 @@ class ProcessPirepFinancials
                     } else {
                         $pilotPay = (FinancialConsts::PilotPay / 100) * $contract->contract_value;
                     }
-                    $this->addUserTransaction->execute($contract->user_id, TransactionTypes::FlightPay, $pilotPay, $contract->completed_pirep);
+                    $this->addUserTransaction->execute($pirep->user_id, TransactionTypes::FlightPay, $pilotPay, $contract->completed_pirep);
 
                     $contract->is_paid = true;
                     $contract->save();

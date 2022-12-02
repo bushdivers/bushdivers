@@ -64,7 +64,7 @@ class CreateCustomRoute
             ]];
 
 
-            $this->storeContract->execute($data, false, true, Auth::user()->id);
+            $this->storeContract->execute($data, false, true, $userId);
         } catch (ModelNotFoundException $e) {
             throw new ModelNotFoundException();
         }

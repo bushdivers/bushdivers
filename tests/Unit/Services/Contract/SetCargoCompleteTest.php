@@ -16,7 +16,6 @@ class SetCargoCompleteTest extends TestCase
 
     protected UpdateContractCargoProgress $updateContractCargoProgress;
     protected Model $contract;
-    protected Model $contractCargo;
 
     protected function setUp(): void
     {
@@ -30,10 +29,6 @@ class SetCargoCompleteTest extends TestCase
         $this->updateContractCargoProgress = $this->app->make(UpdateContractCargoProgress::class);
 
         $this->contract = Contract::factory()->create();
-        $this->contractCargo = ContractCargo::factory()->create([
-            'contract_id' => $this->contract->id,
-            'current_airport_id' => $this->contract->dep_airport_id
-        ]);
     }
     /**
      * A basic unit test example.
@@ -42,27 +37,27 @@ class SetCargoCompleteTest extends TestCase
      */
     public function test_cargo_is_completed()
     {
-        $this->updateContractCargoProgress->execute($this->contractCargo->id, $this->contract->arr_airport_id);
-        $this->assertDatabaseHas('contract_cargos', [
-            'id' => $this->contractCargo->id,
+        $this->updateContractCargoProgress->execute($this->contract->id, $this->contract->arr_airport_id);
+        $this->assertDatabaseHas('contracts', [
+            'id' => $this->contract->id,
             'is_completed' => true
         ]);
     }
 
     public function test_cargo_is_not_completed_when_at_different_airport()
     {
-        $this->updateContractCargoProgress->execute($this->contractCargo->id, 'KLAX');
-        $this->assertDatabaseHas('contract_cargos', [
-            'id' => $this->contractCargo->id,
+        $this->updateContractCargoProgress->execute($this->contract->id, 'KLAX');
+        $this->assertDatabaseHas('contracts', [
+            'id' => $this->contract->id,
             'is_completed' => false
         ]);
     }
 
     public function test_cargo_location_is_updated()
     {
-        $this->updateContractCargoProgress->execute($this->contractCargo->id, 'AYMR');
-        $this->assertDatabaseHas('contract_cargos', [
-            'id' => $this->contractCargo->id,
+        $this->updateContractCargoProgress->execute($this->contract->id, 'AYMR');
+        $this->assertDatabaseHas('contracts', [
+            'id' => $this->contract->id,
             'current_airport_id' => 'AYMR'
         ]);
     }

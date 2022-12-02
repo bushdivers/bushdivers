@@ -20,7 +20,7 @@ class UpdateContractCargoProgress
             $contractCargo->is_completed = true;
             $contractCargo->completed_pirep = $pirepId;
             $contractCargo->completed_at = Carbon::now();
-            $contractCargo->save();
         }
+        $contractCargo->save();
     }
 }

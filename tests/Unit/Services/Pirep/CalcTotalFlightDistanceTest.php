@@ -23,7 +23,6 @@ class CalcTotalFlightDistanceTest extends TestCase
     protected Model $pirep;
     protected Model $pirepCargo;
     protected Model $contract;
-    protected Model $contractCargo;
     protected Model $airport;
 
     protected function setUp(): void
@@ -32,13 +31,11 @@ class CalcTotalFlightDistanceTest extends TestCase
         $this->calculateTotalFlightDistance = $this->app->make(CalculateTotalFlightDistance::class);
 
         $this->contract = Contract::factory()->create();
-        $this->contractCargo = ContractCargo::factory()->create([
-            'contract_id' => $this->contract->id
-        ]);
+
         $this->pirep = Pirep::factory()->create();
         $this->pirepCargo = PirepCargo::factory()->create([
             'pirep_id' => $this->pirep->id,
-            'contract_cargo_id' => $this->contractCargo->id
+            'contract_cargo_id' => $this->contract->id
         ]);
 
         FlightLog::factory()->create([

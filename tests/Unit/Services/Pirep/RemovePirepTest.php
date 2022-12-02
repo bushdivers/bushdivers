@@ -26,7 +26,6 @@ class RemovePirepTest extends TestCase
     protected Model $pirep;
     protected Model $pirepCargo;
     protected Model $contract;
-    protected Model $contractCargo;
     protected Model $fleet;
     protected Model $aircraft;
     protected Model $booking;
@@ -60,12 +59,10 @@ class RemovePirepTest extends TestCase
         $this->contract = Contract::factory()->create([
             'contract_value' => 250.00,
             'dep_airport_id' => 'AYMR',
-            'arr_airport_id' => 'AYMN'
+            'arr_airport_id' => 'AYMN',
+            'current_airport_id' => 'AYMR'
         ]);
-        $this->contractCargo = ContractCargo::factory()->create([
-            'contract_id' => $this->contract->id,
-            'current_airport_id' => $this->contract->dep_airport_id
-        ]);
+
         $this->pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,
             'destination_airport_id' => $this->contract->arr_airport_id,
@@ -75,7 +72,7 @@ class RemovePirepTest extends TestCase
 
         $this->pirepCargo = PirepCargo::factory()->create([
             'pirep_id' => $this->pirep->id,
-            'contract_cargo_id' => $this->contractCargo->id
+            'contract_cargo_id' => $this->contract->id
         ]);
     }
     /**
@@ -98,8 +95,8 @@ class RemovePirepTest extends TestCase
     public function test_contract_cargo_reset()
     {
         $this->removeSinglePirep->execute($this->pirep->id);
-        $this->assertDatabaseHas('contract_cargos', [
-            'contract_id' => $this->contract->id,
+        $this->assertDatabaseHas('contracts', [
+            'id' => $this->contract->id,
             'is_available' => 1,
             'user_id' => null
         ]);
