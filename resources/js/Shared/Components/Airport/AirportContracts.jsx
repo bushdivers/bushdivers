@@ -66,7 +66,7 @@ const AirportContracts = ({ contracts }) => {
             {contracts && contracts.map((contract) => (
               <tr key={contract.id} onClick={() => updateSelectedContract(contract)} className={`${contract.id === selectedContract.id ? 'active' : ''} cursor-pointer`}>
                 <td><Link href={`/airports/${contract.dep_airport_id}`}>{contract.dep_airport_id}</Link> {contract.dep_airport.longest_runway_surface === 'W' && <FontAwesomeIcon icon={faAnchor} />}</td>
-                <td><Link href={`/airports/${contract.arr_airport_id}`}>{contract.arr_airport_id}</Link> {contract.arr_airport.longest_runway_surface === 'W' && <FontAwesomeIcon icon={faAnchor} />}</td>
+                <td><Link href={`/airports/${contract.arr_airport_id}`}>{contract.arr_airport_id}</Link> {contract.arr_airport.longest_runway_surface === 'W' && <FontAwesomeIcon icon={faAnchor} />} <span>({contract.arr_airport.longest_runway_length} ft)</span></td>
                 <td>{contract.distance}</td>
                 <td>
                   <div className="flex items-center">

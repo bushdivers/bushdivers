@@ -4,7 +4,6 @@ import AirportInfo from '../../Shared/Components/Airport/AirportInfo'
 import AirportAircraft from '../../Shared/Components/Airport/AirportAircraft'
 import AirportContracts from '../../Shared/Components/Airport/AirportContracts'
 
-
 const AirportDetail = ({ airport, metar, aircraft, contracts }) => {
   const [activeTab, setActiveTab] = useState('airport')
 
