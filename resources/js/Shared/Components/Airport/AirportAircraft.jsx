@@ -1,8 +1,10 @@
 import React from 'react'
-import { Link } from '@inertiajs/inertia-react'
+import { Link, usePage } from '@inertiajs/inertia-react'
 import Card from '../../Elements/Card'
+import Badge from '../../Elements/Badge'
 
 const AirportAircraft = ({ aircraft }) => {
+  const { auth } = usePage().props
   const renderAircraftStatus = (status) => {
     switch (status) {
       case 1:
@@ -29,7 +31,7 @@ const AirportAircraft = ({ aircraft }) => {
         <tbody>
         {aircraft && aircraft.map((ac) => (
           <tr key={ac.id}>
-            <td><Link href={`/aircraft/${ac.id}`}>{ac.registration}</Link></td>
+            <td><Link href={`/aircraft/${ac.id}`}>{ac.registration}</Link> {ac.owner_id === auth.user.id && <Badge color="primary" label="Private" />}</td>
             <td>{ac.fleet.manufacturer} {ac.fleet.name} ({ac.fleet.type})</td>
             <td>{ac.hub_id}</td>
             <td>{ac.fuel_onboard.toLocaleString(navigator.language)}</td>

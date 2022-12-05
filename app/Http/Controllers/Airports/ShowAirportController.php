@@ -13,6 +13,7 @@ use App\Services\Contracts\StoreContracts;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -54,11 +55,19 @@ class ShowAirportController extends Controller
         }
 
         $metar = $this->getMetarForAirport->execute($icao);
-        $aircraft = Aircraft::with('fleet')
+        $companyAc = Aircraft::with('fleet')
             ->where('current_airport_id', $icao)
             ->where('owner_id', 0)
             ->where('status', AircraftStatus::ACTIVE)
             ->get();
+
+        $privateAc = Aircraft::with('fleet')
+            ->where('current_airport_id', $icao)
+            ->where('owner_id', Auth::user()->id)
+            ->where('status', AircraftStatus::ACTIVE)
+            ->get();
+
+        $aircraft = $companyAc->merge($privateAc);
 
         // get contracts
         if (Cache::has($icao.'-contracts')) {
