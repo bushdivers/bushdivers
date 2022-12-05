@@ -10,6 +10,7 @@ use App\Models\Enums\AircraftStatus;
 use App\Services\Airports\GetMetarForAirport;
 use App\Services\Contracts\GenerateContracts;
 use App\Services\Contracts\StoreContracts;
+use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -87,6 +88,7 @@ class ShowAirportController extends Controller
         return Contract::with(['depAirport', 'arrAirport'])
             ->where('dep_airport_id', $icao)
             ->where('is_available', true)
+            ->whereRaw('expires_at >= Now()')
             ->get();
     }
 }
