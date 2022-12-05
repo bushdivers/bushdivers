@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Head, Link, usePage } from '@inertiajs/inertia-react'
 import FlashMessage from './Elements/FlashMessage'
 import { Toaster } from 'react-hot-toast'
