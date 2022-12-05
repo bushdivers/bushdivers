@@ -31,7 +31,13 @@ class CollectFinanceTest extends TestCase
         $this->user = User::factory()->create();
         $this->loan = Loan::factory()->create([
             'user_id' => $this->user->id,
-            'next_payment_at' => Carbon::now()
+            'next_payment_at' => Carbon::now(),
+            'loan_amount' => 2000,
+            'total_remaining' => 2200,
+            'monthly_payment' => 220,
+            'term_months' => 10,
+            'term_remaining' => 10,
+            'total_interest' => 200
         ]);
     }
 
@@ -40,7 +46,7 @@ class CollectFinanceTest extends TestCase
      *
      * @return void
      */
-    public function test_finance_updated()
+    public function test_full_loan_payment_collected()
     {
         DB::table('user_accounts')->insert([
             'user_id' => $this->user->id,
@@ -49,9 +55,43 @@ class CollectFinanceTest extends TestCase
         ]);
         $this->collectFinancePayments->execute();
         $this->loan->refresh();
-        $this->assertEquals(900, $this->loan->total_remaining);
+        $this->assertEquals(1980, $this->loan->total_remaining);
         $this->assertEquals(9, $this->loan->term_remaining);
         $this->assertEquals(0, $this->loan->missed_payments);
+        $this->assertEquals(Carbon::now()->addMonth()->endOfDay(), Carbon::parse($this->loan->next_payment_at)->endOfDay());
+
+        $this->assertDatabaseHas('user_accounts', [
+            'user_id' => $this->user->id,
+            'type' => TransactionTypes::Loan,
+            'total' => -220
+        ]);
+    }
+
+    public function test_only_remaining_loan_payment_collected()
+    {
+        DB::table('user_accounts')->insert([
+            'user_id' => $this->user->id,
+            'type' => TransactionTypes::Bonus,
+            'total' => 1000
+        ]);
+
+        $loan = Loan::factory()->create([
+            'user_id' => $this->user->id,
+            'next_payment_at' => Carbon::now(),
+            'loan_amount' => 2000,
+            'total_remaining' => 100,
+            'monthly_payment' => 220,
+            'term_months' => 10,
+            'term_remaining' => 1,
+            'total_interest' => 200
+        ]);
+
+        $this->collectFinancePayments->execute();
+        $loan->refresh();
+        $this->assertEquals(0, $loan->total_remaining);
+        $this->assertEquals(0, $loan->term_remaining);
+        $this->assertEquals(0, $loan->missed_payments);
+        $this->assertEquals(true, $loan->is_paid);
 
         $this->assertDatabaseHas('user_accounts', [
             'user_id' => $this->user->id,
@@ -60,7 +100,7 @@ class CollectFinanceTest extends TestCase
         ]);
     }
 
-    public function test_finance_missed()
+    public function test_finance_missed_due_to_insufficient_funds()
     {
         DB::table('user_accounts')->insert([
             'user_id' => $this->user->id,
@@ -69,7 +109,7 @@ class CollectFinanceTest extends TestCase
         ]);
         $this->collectFinancePayments->execute();
         $this->loan->refresh();
-        $this->assertEquals(1000, $this->loan->total_remaining);
+        $this->assertEquals(2200, $this->loan->total_remaining);
         $this->assertEquals(1, $this->loan->missed_payments);
     }
 

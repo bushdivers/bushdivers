@@ -39,6 +39,7 @@ class ApplyForLoanTest extends TestCase
         $this->assertDatabaseHas('loans', [
             'user_id' => $this->user->id,
             'monthly_payment' => 220,
+            'total_remaining' => $data['loanAmount'] + $data['interest'],
             'term_months' => 10
         ]);
     }
