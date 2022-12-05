@@ -43,15 +43,15 @@ const ActiveDispatch = ({ cargo, aircraft, cargoWeight, fuelWeight, passengerCou
                 <tr key={detail.id}>
                   <td>{detail.id}</td>
                   <td>{detail.current_airport_id}</td>
-                  <td>{detail.contract.arr_airport_id}</td>
-                  <td>{detail.contract.distance} nm</td>
+                  <td>{detail.arr_airport_id}</td>
+                  <td>{detail.distance} nm</td>
                   <td>
                     <div className="flex items-center">
                       <div className="w-1/2">
-                        <span className="mr-2">{detail.contract.heading}</span>
+                        <span className="mr-2">{detail.heading}</span>
                       </div>
                       <div className="w-1/2 flex">
-                        <span style={{ transform: `rotate(${detail.contract.heading}deg)` }}><FontAwesomeIcon icon={faArrowUp} /></span>
+                        <span style={{ transform: `rotate(${detail.heading}deg)` }}><FontAwesomeIcon icon={faArrowUp} /></span>
                       </div>
                     </div>
                   </td>

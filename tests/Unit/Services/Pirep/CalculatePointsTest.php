@@ -31,7 +31,6 @@ class CalculatePointsTest extends TestCase
     protected Model $pirep;
     protected Model $pirepCargo;
     protected Model $contract;
-    protected Model $contractCargo;
     protected Model $fleet;
     protected Model $aircraft;
     protected Model $booking;
@@ -66,11 +65,8 @@ class CalculatePointsTest extends TestCase
         $this->contract = Contract::factory()->create([
             'contract_value' => 250.00,
             'dep_airport_id' => 'AYMN',
-            'arr_airport_id' => 'AYMR'
-        ]);
-        $this->contractCargo = ContractCargo::factory()->create([
-            'contract_id' => $this->contract->id,
-            'current_airport_id' => $this->contract->dep_airport_id
+            'arr_airport_id' => 'AYMR',
+            'current_airport_id' => 'AYMN'
         ]);
         $this->pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,
@@ -82,7 +78,7 @@ class CalculatePointsTest extends TestCase
 
         $this->pirepCargo = PirepCargo::factory()->create([
             'pirep_id' => $this->pirep->id,
-            'contract_cargo_id' => $this->contractCargo->id
+            'contract_cargo_id' => $this->contract->id
         ]);
     }
     /**
@@ -185,11 +181,8 @@ class CalculatePointsTest extends TestCase
         $contract = Contract::factory()->create([
             'contract_value' => 250.00,
             'dep_airport_id' => 'EGLL',
-            'arr_airport_id' => 'EGSS'
-        ]);
-        $contractCargo = ContractCargo::factory()->create([
-            'contract_id' => $contract->id,
-            'current_airport_id' => $contract->dep_airport_id
+            'arr_airport_id' => 'EGSS',
+            'current_airport_id' => 'EGLL',
         ]);
 
         $pirep = Pirep::factory()->create([
@@ -202,7 +195,7 @@ class CalculatePointsTest extends TestCase
 
         $pirepCargo = PirepCargo::factory()->create([
             'pirep_id' => $pirep->id,
-            'contract_cargo_id' => $contractCargo->id
+            'contract_cargo_id' => $contract->id
         ]);
 
         $this->calculatePirepPoints->execute($pirep);

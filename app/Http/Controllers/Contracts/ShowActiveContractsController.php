@@ -19,32 +19,33 @@ class ShowActiveContractsController extends Controller
      */
     public function __invoke(Request $request): Response
     {
-        $customContracts = Contract::with('depAirport', 'arrAirport', 'cargo', 'cargo.currentAirport')
-            ->where('is_completed', false)
-            ->where('is_available', false)
-            ->where('user_id', Auth::user()->id)
-            ->orderBy('dep_airport_id', 'asc')
-            ->orderBy('heading', 'asc')
-            ->get();
+//        $customContracts = Contract::with('depAirport', 'arrAirport')
+//            ->where('is_completed', false)
+//            ->where('is_available', false)
+//            ->where('user_id', Auth::user()->id)
+//            ->orderBy('dep_airport_id', 'asc')
+//            ->orderBy('heading', 'asc')
+//            ->get();
 
-        $contracts = Contract::with('depAirport', 'arrAirport', 'cargo', 'cargo.currentAirport')
+        $contracts = Contract::with('depAirport', 'arrAirport')
             ->where('is_completed', false)
             ->where('is_available', false)
+            ->where('is_custom', false)
             ->where('contract_type_id', 1)
-            ->where('user_id', null)
+//            ->where('user_id', null)
             ->orderBy('dep_airport_id', 'asc')
             ->orderBy('heading', 'asc')
             ->get();
 
-        $community = Contract::with('depAirport', 'arrAirport', 'cargo', 'cargo.currentAirport')
-            ->where('is_completed', false)
-            ->where('is_available', false)
-            ->where('contract_type_id', 3)
-            ->where('user_id', null)
-            ->orderBy('dep_airport_id', 'asc')
-            ->orderBy('heading', 'asc')
-            ->get();
+//        $community = Contract::with('depAirport', 'arrAirport')
+//            ->where('is_completed', false)
+//            ->where('is_available', false)
+//            ->where('contract_type_id', 3)
+//            ->where('user_id', null)
+//            ->orderBy('dep_airport_id', 'asc')
+//            ->orderBy('heading', 'asc')
+//            ->get();
 
-        return Inertia::render('Contracts/MyContracts', ['contracts' => $contracts, 'custom' => $customContracts, 'community' => $community]);
+        return Inertia::render('Contracts/MyContracts', ['contracts' => $contracts]);
     }
 }

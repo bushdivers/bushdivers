@@ -20,7 +20,7 @@ class CalcContractPay
     public function execute($contractId, $pirep = null, $rental = false, $privatePlane = false): float
     {
         $contract = Contract::find($contractId);
-        $companyPay = ContractCargo::where('contract_id', $contractId)->sum('contract_value');
+        $companyPay = $contract->contract_value;
         if (Carbon::now()->greaterThan($contract->expires_at)) {
             $companyPay = round($companyPay - ($companyPay * FinancialConsts::ExpiryMultiplier),2);
         }

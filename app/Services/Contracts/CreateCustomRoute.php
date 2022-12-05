@@ -9,16 +9,17 @@ use App\Services\Airports\CalcBearingBetweenPoints;
 use App\Services\Airports\CalcDistanceBetweenPoints;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Auth;
 
 class CreateCustomRoute
 {
-    protected StoreContract $storeContract;
+    protected StoreContracts $storeContract;
     protected CalcDistanceBetweenPoints $calcDistanceBetweenPoints;
     protected CalcBearingBetweenPoints $calcBearingBetweenPoints;
     protected CalcContractValue $calcContractValue;
 
     public function __construct(
-        StoreContract $storeContract,
+        StoreContracts $storeContract,
         CalcDistanceBetweenPoints $calcDistanceBetweenPoints,
         CalcBearingBetweenPoints $calcBearingBetweenPoints,
         CalcContractValue $calcContractValue
@@ -50,18 +51,20 @@ class CreateCustomRoute
             $value = $this->calcContractValue->execute($cargo['type'], $cargo['qty'], $distance);
 
             // add contract
+            $data = [[
+                'departure' => $depAirport->identifier,
+                'destination' => $arrAirport->identifier,
+                'distance' => $distance,
+                'heading' => $heading,
+                'contract_value' => $value,
+                'cargo' => $cargo['name'],
+                'cargo_type' => $cargo['type'],
+                'cargo_qty' => $cargo['qty'],
+                'expires_at' => Carbon::now()->addDays(7)
+            ]];
 
-            $data = new ContractInfo();
-            $data->setStart($dep);
-            $data->setDest($arr);
-            $data->setDistance($distance);
-            $data->setHeading($heading);
-            $data->setCargo($cargo);
-            $data->setValue($value);
-            $data->setCustom(true);
-            $data->setUserId($userId);
 
-            $this->storeContract->execute($data, Carbon::now()->addDays(rand(1,8)));
+            $this->storeContract->execute($data, false, true, $userId);
         } catch (ModelNotFoundException $e) {
             throw new ModelNotFoundException();
         }

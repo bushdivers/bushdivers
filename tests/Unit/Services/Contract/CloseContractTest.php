@@ -32,17 +32,11 @@ class CloseContractTest extends TestCase
             'is_available' => false,
             'expires_at' => Carbon::now()->subDays(10)
         ]);
-        $cargo = ContractCargo::factory()->create([
-            'contract_id' => $contract->id,
-            'is_completed' => false,
-            'is_available' => true
-        ]);
 
         $this->closeContract->execute($contract->id);
 
-        $contract->refresh();
-        $cargo->refresh();
-        $this->assertEquals(false, $contract->is_available);
-        $this->assertEquals(false, $cargo->is_available);
+        $this->assertDatabaseMissing('contracts', [
+            'id' => $contract->id
+        ]);
     }
 }

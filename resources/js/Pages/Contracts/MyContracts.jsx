@@ -1,234 +1,117 @@
 import React, { useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import NoContent from '../../Shared/Elements/NoContent'
-import Tooltip from '../../Shared/Elements/Tooltip'
 import { Link, usePage } from '@inertiajs/inertia-react'
-import dayjs from '../../Helpers/date.helpers'
 import { Inertia } from '@inertiajs/inertia'
-import CargoDetails from '../../Shared/Components/Contracts/CargoDetails'
 import MyContractMap from '../../Shared/Components/Contracts/MyContractMap'
 import AppLayout from '../../Shared/AppLayout'
-import { faAnchor, faArrowUp, faTicket, faXmark } from '@fortawesome/free-solid-svg-icons'
+import { faAnchor, faArrowUp, faCheck } from '@fortawesome/free-solid-svg-icons'
 import Card from '../../Shared/Elements/Card'
+import { formatDistanceToNowStrict } from 'date-fns'
+import axios from 'axios'
+import toast from 'react-hot-toast'
 
-const EmptyData = (props) => {
-  return (
-    <>
-      <FontAwesomeIcon className="text-xl" icon={faTicket} />
-      <div>{props.text}</div>
-    </>
-  )
+function renderCargo (contract) {
+  let cargoType
+  switch (contract.cargo_type) {
+    case 1:
+      cargoType = ' lbs'
+      break
+    case 2:
+      cargoType = ''
+      break
+  }
+  return `${contract.cargo_qty}${cargoType} ${contract.cargo}`
 }
 
-const AirportToolTip = (props) => {
-  return (
-    <>
-      <div>Altitude: {props.airport.altitude}ft</div>
-      <div>Longest Runway: {props.airport.longest_runway_surface} - {props.airport.longest_runway_length.toLocaleString(navigator.language)}ft x {props.airport.longest_runway_width}ft</div>
-    </>
-  )
-}
-
-const MyContracts = ({ contracts, custom, community }) => {
+const MyContracts = ({ contracts }) => {
   const { auth } = usePage().props
   const [selectedContract, setSelectedContract] = useState('')
-  const [showDetail, setShowDetail] = useState(false)
 
-  const updateSelectedContract = (contract) => {
+  function updateSelectedContract (contract) {
     setSelectedContract(contract)
   }
 
-  const cancelBid = (contract) => {
-    const res = window.confirm('Are you sure you want to cancel this contract? You will lose XP.')
-    if (res) {
-      const data = {
-        id: contract.id
-      }
-      Inertia.post('/contracts/cancel', data)
+  async function addToFlight (contract) {
+    const qty = window.prompt('How much cargo do you want to assign?', contract.cargo_qty)
+    if (qty < 1 || (qty % 1) !== 0) {
+      window.alert('You must choose a whole number more than 0')
+      return
     }
-  }
 
-  const toggleDetail = () => {
-    setShowDetail(!showDetail)
+    if (qty > contract.cargo_qty) {
+      window.alert('You must choose a whole number no more than original cargo')
+      return
+    }
+
+    const data = {
+      id: contract.id,
+      qty,
+      userId: auth.user.id,
+      action: 'assign'
+    }
+    const assign = axios.post('/api/contracts/assign', data)
+    await toast.promise(assign, {
+      loading: '...Assigning contract',
+      success: 'Contract added!',
+      error: 'Issue assigning contract'
+    }, { position: 'top-right' })
+    Inertia.reload()
   }
 
   return (
-    <div className="p-4">
-      <div className="flex flex-col lg:flex-row justify-between mt-4">
-        <div className="lg:w-2/3 lg:mr-2">
-          <div className="mb-2">
-            <Card title="My Contracts">
-            {!custom && <NoContent content={<EmptyData text="No custom contracts" />} />}
-            {custom && custom.length > 0 &&
-            // (
-            <div className="overflow-x-auto">
-              <div className="text-right">
-                <button onClick={toggleDetail} className="btn btn-secondary my-2">Toggle Cargo Details</button>
-              </div>
-              <table className="table table-compact w-full overflow-x-auto">
-                <thead>
-                <tr className="">
-                  <th>Departure</th>
-                  <th>Arrival</th>
-                  <th>Distance</th>
-                  <th>Heading</th>
-                  <th>Total Cargo</th>
-                  <th>Value</th>
-                  <th>Expires</th>
-                  <td>Cancel</td>
+    <div className="flex space-x-2">
+      <div className="w-3/5 max-h-fit">
+        <Card>
+          <div className="table-wrp flex max-h-96">
+            <table className="table h-auto table-compact w-full overflow-x-auto">
+              <thead className="sticky top-0 z-10">
+              <tr>
+                <th>Departure</th>
+                <th>Destination</th>
+                <th>Distance</th>
+                <th>Heading</th>
+                <th>Cargo</th>
+                <th>Value</th>
+                <th>Expires</th>
+                <th></th>
+              </tr>
+              </thead>
+              <tbody className="h-96 overflow-y-auto">
+              {contracts && contracts.map((contract) => (
+                <tr key={contract.id} onClick={() => updateSelectedContract(contract)} className={`${contract.id === selectedContract.id ? 'active' : ''} cursor-pointer`}>
+                  <td><Link href={`/airports/${contract.dep_airport_id}`}>{contract.dep_airport_id}</Link> {contract.dep_airport.longest_runway_surface === 'W' && <FontAwesomeIcon icon={faAnchor} />}</td>
+                  <td><Link href={`/airports/${contract.arr_airport_id}`}>{contract.arr_airport_id}</Link> {contract.arr_airport.longest_runway_surface === 'W' && <FontAwesomeIcon icon={faAnchor} />}</td>
+                  <td>{contract.distance}</td>
+                  <td>
+                    <div className="flex items-center">
+                      <div className="w-1/2">
+                        <span className="mr-2">{contract.heading}</span>
+                      </div>
+                      <div className="w-1/2 flex">
+                        <span style={{ transform: `rotate(${contract.heading}deg)` }}><FontAwesomeIcon icon={faArrowUp} className="text-secondary" /></span>
+                      </div>
+                    </div>
+                  </td>
+                  <td>{renderCargo(contract)}</td>
+                  <td>${parseFloat(contract.contract_value).toLocaleString()}</td>
+                  <td>{formatDistanceToNowStrict(new Date(contract.expires_at))}</td>
+                  <td>
+                    {contract.user_id === null
+                      ? (<button onClick={() => addToFlight(contract)} className="btn btn-secondary btn-xs"><FontAwesomeIcon icon={faCheck} /></button>)
+                      : (<span>Assigned</span>)
+                    }
+                  </td>
                 </tr>
-                </thead>
-                <tbody className="cursor-pointer">
-                {custom && custom.map((contract) => (
-                  <>
-                    <tr key={contract.id} onClick={() => updateSelectedContract(contract)} className={contract.id === selectedContract.id ? 'bg-secondary cursor-pointer' : ''}>
-                      <td>
-                        <Tooltip content={<AirportToolTip airport={contract.dep_airport} />} direction="top">
-                          <Link href={`/airports/${contract.dep_airport_id}`}>{contract.dep_airport_id}</Link> {contract.dep_airport.longest_runway_surface === 'W' && <FontAwesomeIcon icon={faAnchor} />}
-                          <span className="text-xs">{contract.dep_airport.name} </span>
-                        </Tooltip>
-                      </td>
-                      <td>
-                        <Tooltip content={<AirportToolTip airport={contract.arr_airport} />} direction="top">
-                          <Link href={`/airports/${contract.arr_airport_id}`}>{contract.arr_airport_id}</Link> {contract.arr_airport.longest_runway_surface === 'W' && <FontAwesomeIcon icon={faAnchor} />}<br/>
-                          <span className="text-xs">{contract.arr_airport.name}</span>
-                        </Tooltip>
-                      </td>
-                      <td>{contract.distance.toLocaleString(navigator.language)} nm</td>
-                      <td>
-                        <div className="flex items-center">
-                          <div className="w-1/2">
-                            <span className="mr-2">{contract.heading}</span>
-                          </div>
-                          <div className="w-1/2 flex">
-                            <span style={{ transform: `rotate(${contract.heading}deg)` }}><FontAwesomeIcon icon={faArrowUp} className="text-secondary" /></span>
-                          </div>
-                        </div>
-                      </td>
-                      <td>
-                        {contract.cargo.map((detail) => (
-                          <>
-                            <span className="mr-1">{detail.cargo_type_id === 1 ? 'Cargo' : 'Pax'}</span>
-                            <span>{detail.cargo_qty.toLocaleString(navigator.language)} {detail.cargo_type_id === 1 ? 'lbs' : ''} {detail.cargo}</span>
-                            <br/>
-                          </>
-                        ))}
-                      </td>
-                      {/* <td>${contract.contract_value.toLocaleString()}</td> */}
-                      <td>${parseFloat(contract.cargo.map(detail => detail.contract_value).reduce((total, num) => total + Math.fround(num), 0)).toFixed(2).toLocaleString()}<br/></td>
-                      <td>
-                        {dayjs(contract.expires_at).format('DD/MM/YYYY HH:mm')}
-                      </td>
-                      <td>
-                        <button onClick={() => cancelBid(contract)} className="btn btn-secondary flex items-center">
-                          <FontAwesomeIcon icon={faXmark} />
-                        </button>
-                      </td>
-                    </tr>
-                    { showDetail && <CargoDetails contract={contract} />}
-                  </>
-                ))}
-                </tbody>
-              </table>
-            </div>
-              // )
-            }
-            </Card>
+              ))}
+              </tbody>
+            </table>
           </div>
-
-          {/* <CommunityContracts contracts={community} selectedContract={selectedContract} showDetail={showDetail} toggleDetail={setShowDetail} updateSelectedContract={updateSelectedContract} /> */}
-          <div className="mt-2">
-            <Card title="Available Contracts">
-            {!contracts && <NoContent content={<EmptyData text="No available contracts" />} />}
-            {contracts && contracts.length > 0 &&
-            // (
-                <div className="overflow-x-auto">
-                  <div className="text-right">
-                    <button onClick={toggleDetail} className="btn btn-secondary mb-2">Toggle Cargo Details</button>
-                  </div>
-                  <table className="table table-compact w-full">
-                    <thead>
-                    <tr className="">
-                      <th>Departure</th>
-                      <th>Arrival</th>
-                      <th>Distance</th>
-                      <th>Heading</th>
-                      <th>Total Cargo</th>
-                      <th>Value</th>
-                      <th>Expires</th>
-                      {auth.user.is_admin ? <td>Cancel</td> : <></>}
-                    </tr>
-                    </thead>
-                    <tbody className="cursor-pointer">
-                    {contracts && contracts.map((contract) => (
-                      <>
-                      <tr key={contract.id} onClick={() => updateSelectedContract(contract)} className={contract.id === selectedContract.id ? 'bg-secondary cursor-pointer' : 'cursor-pointer'}>
-                        <td>
-                           <Tooltip content={<AirportToolTip airport={contract.dep_airport} />} direction="top">
-                             <Link href={`/airports/${contract.dep_airport_id}`}>{contract.dep_airport_id}</Link> {contract.dep_airport.longest_runway_surface === 'W' && <FontAwesomeIcon icon={faAnchor} />}
-                            <span className="text-xs">{contract.dep_airport.name} </span>
-                           </Tooltip>
-                        </td>
-                        <td>
-                           <Tooltip content={<AirportToolTip airport={contract.arr_airport} />} direction="top">
-                            <Link href={`/airports/${contract.arr_airport_id}`}>{contract.arr_airport_id}</Link> {contract.arr_airport.longest_runway_surface === 'W' && <FontAwesomeIcon icon={faAnchor} />}<br/>
-                            <span className="text-xs">{contract.arr_airport.name}</span>
-                           </Tooltip>
-                        </td>
-                        <td>{contract.distance.toLocaleString(navigator.language)} nm</td>
-                        <td>
-                          <div className="flex items-center">
-                            <div className="w-1/2">
-                              <span className="mr-2">{contract.heading}</span>
-                            </div>
-                            <div className="w-1/2 flex">
-                              <span style={{ transform: `rotate(${contract.heading}deg)` }}><FontAwesomeIcon icon={faArrowUp} className="text-secondary" /></span>
-                            </div>
-                          </div>
-                        </td>
-                        <td>
-                          {contract.cargo.map((detail) => (
-                            <>
-                              <span className="mr-1">{detail.cargo_type_id === 1 ? 'Cargo' : 'Pax'}</span>
-                              <span>{detail.cargo_qty.toLocaleString(navigator.language)} {detail.cargo_type_id === 1 ? 'lbs' : ''} {detail.cargo}</span>
-                              <br/>
-                            </>
-                          ))}
-                        </td>
-                        <td>
-                          ${parseFloat(contract.cargo.map(detail => detail.contract_value).reduce((total, num) => total + Math.fround(num), 0)).toFixed(2)}<br/>
-                        </td>
-                        <td>
-                          {dayjs(contract.expires_at).format('DD/MM/YYYY HH:mm')}
-                        </td>
-                        {auth.user.is_admin
-                          ? (
-                            <td>
-                              <button onClick={() => cancelBid(contract)} className="btn btn-secondary flex items-center">
-                                <FontAwesomeIcon icon={faXmark} />
-                              </button>
-                            </td>
-                            )
-                          : <></>
-                        }
-                      </tr>
-                      { showDetail && <CargoDetails contract={contract} />}
-                      </>
-                    ))}
-                    </tbody>
-                  </table>
-                </div>
-              // )
-            }
-            </Card>
-          </div>
-        </div>
-        <div className="lg:w-1/3 lg:ml-2 mt-2 lg:mt-0">
-          { contracts && contracts.length > 0 &&
-            <Card>
-            <MyContractMap data={selectedContract} size="large" mapStyle={auth.user.map_style} />
-            </Card>}
-        </div>
+        </Card>
+      </div>
+      <div className="w-2/5">
+        <Card>
+          <MyContractMap data={selectedContract} size="large" mapStyle={auth.user.map_style} />
+        </Card>
       </div>
     </div>
   )

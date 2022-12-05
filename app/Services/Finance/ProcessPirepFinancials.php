@@ -50,8 +50,7 @@ class ProcessPirepFinancials
             $this->calcCargoHandlingFee->execute($pirep);
             $cargo = PirepCargo::where('pirep_id', $pirep->id)->get();
             foreach ($cargo as $c) {
-                $contractCargo = ContractCargo::find($c->contract_cargo_id);
-                $contract = Contract::where('id', $contractCargo->contract_id)
+                $contract = Contract::where('id', $c->contract_cargo_id)
                     ->where('is_paid', false)
                     ->where('is_completed', true)
                     ->first();
@@ -64,24 +63,15 @@ class ProcessPirepFinancials
                     }
 
                     $pp = $this->calcContractPay->execute($contract->id, $pirep->id, $pirep->is_rental, $privatePlane);
-                    $cc = ContractCargo::where('contract_id', $contract->id)->get();
                     // $totalCargo = $cc->sum('cargo_qty');
-                    foreach ($cc as $ccargo) {
-                        $c = Contract::find($ccargo->contract_id);
 
-                        // $pilotPayPerc = $ccargo->cargo_qty / $totalCargo;
-                        if ($privatePlane || $pirep->is_rental) {
-                            $pilotPay = (FinancialConsts::PrivatePilotPay / 100) * $ccargo->contract_value;
-                        } else {
-                            $pilotPay = (FinancialConsts::PilotPay / 100) * $ccargo->contract_value;
-                        }
-
-//                        if (Carbon::now()->greaterThan($c->expires_at)) {
-//                            $pilotPay = round($pilotPay - ($pp * FinancialConsts::ExpiryMultiplier),2);
-//                        }
-
-                        $this->addUserTransaction->execute($ccargo->user_id, TransactionTypes::FlightPay, $pilotPay, $ccargo->completed_pirep);
+                    if ($privatePlane || $pirep->is_rental) {
+                        $pilotPay = (FinancialConsts::PrivatePilotPay / 100) * $contract->contract_value;
+                    } else {
+                        $pilotPay = (FinancialConsts::PilotPay / 100) * $contract->contract_value;
                     }
+                    $this->addUserTransaction->execute($pirep->user_id, TransactionTypes::FlightPay, $pilotPay, $contract->completed_pirep);
+
                     $contract->is_paid = true;
                     $contract->save();
                 }

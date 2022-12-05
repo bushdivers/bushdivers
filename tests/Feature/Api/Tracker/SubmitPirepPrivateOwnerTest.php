@@ -6,7 +6,6 @@ use App\Models\Aircraft;
 use App\Models\AirlineFees;
 use App\Models\Airport;
 use App\Models\Contract;
-use App\Models\ContractCargo;
 use App\Models\Enums\AirlineTransactionTypes;
 use App\Models\Enums\FinancialConsts;
 use App\Models\Enums\PointsType;
@@ -69,15 +68,10 @@ class SubmitPirepPrivateOwnerTest extends TestCase
         $this->contract = Contract::factory()->create([
             'contract_value' => 250.00,
             'dep_airport_id' => 'AYMR',
-            'arr_airport_id' => 'AYMN'
-        ]);
-        $this->contractCargo = ContractCargo::factory()->create([
-            'contract_id' => $this->contract->id,
-            'current_airport_id' => $this->contract->dep_airport_id,
-            'dep_airport_id' => 'AYMR',
             'arr_airport_id' => 'AYMN',
-            'user_id' => $this->user->id
+            'current_airport_id' => 'AYMR',
         ]);
+
         $this->pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,
             'destination_airport_id' => $this->contract->arr_airport_id,
@@ -89,7 +83,7 @@ class SubmitPirepPrivateOwnerTest extends TestCase
 
         $this->pirepCargo = PirepCargo::factory()->create([
             'pirep_id' => $this->pirep->id,
-            'contract_cargo_id' => $this->contractCargo->id
+            'contract_cargo_id' => $this->contract->id
         ]);
 
         Airport::factory()->create([
@@ -147,7 +141,7 @@ class SubmitPirepPrivateOwnerTest extends TestCase
             'block_off_time'=> $startTime,
             'block_on_time' => $endTime
         ];
-        $this->withExceptionHandling();
+        $this->withoutExceptionHandling();
         $response = $this->postJson('/api/pirep/submit', $data);
 
         $response->assertStatus(200);
@@ -297,8 +291,8 @@ class SubmitPirepPrivateOwnerTest extends TestCase
 
         $this->postJson('/api/pirep/submit', $data);
 
-        $this->assertDatabaseHas('contract_cargos', [
-            'id' => $this->contractCargo->id,
+        $this->assertDatabaseHas('contracts', [
+            'id' => $this->contract->id,
             'current_airport_id' => $this->pirep->destination_airport_id
         ]);
     }
@@ -311,7 +305,7 @@ class SubmitPirepPrivateOwnerTest extends TestCase
         );
         $startTime = "05/10/2021 01:00:00";
         $endTime = "05/10/2021 01:30:00";
-        $companyPay = $this->contractCargo->contract_value;
+        $companyPay = $this->contract->contract_value;
         $pilotPay = (FinancialConsts::PrivatePilotPay / 100) * $companyPay;
 
         $data = [

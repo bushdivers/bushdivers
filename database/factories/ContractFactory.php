@@ -24,11 +24,16 @@ class ContractFactory extends Factory
     {
         return [
             'dep_airport_id' => 'AYMR',
+            'current_airport_id' => 'AYMR',
             'arr_airport_id' => 'AYMN',
             'contract_type_id' => 1,
             'distance' => 54,
             'heading' => 45,
+            'payload' => 100,
             'contract_value' => 250,
+            'cargo_type' => 1,
+            'cargo' => 'Test',
+            'cargo_qty' => 100,
             'expires_at' => Carbon::now()->addDays(5)
         ];
      }

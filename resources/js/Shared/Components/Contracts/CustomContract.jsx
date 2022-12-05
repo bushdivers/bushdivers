@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
 import { Inertia } from '@inertiajs/inertia'
 import TextInput from '../../Elements/Forms/TextInput'
+import { usePage } from '@inertiajs/inertia-react'
 
-const CustomContract = ({ departureIcao, hideSection }) => {
+const CustomContract = ({ hideSection }) => {
+  const { auth } = usePage().props
   const [error, setError] = useState(null)
-  const [dep, setDep] = useState(departureIcao)
+  const [dep, setDep] = useState(auth.user.current_airport_id)
   const [arr, setArr] = useState('')
 
   const handleChangeDep = (e) => {

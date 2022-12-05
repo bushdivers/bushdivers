@@ -5,10 +5,15 @@ namespace App\Http\Controllers\Airports;
 use App\Http\Controllers\Controller;
 use App\Models\Aircraft;
 use App\Models\Airport;
+use App\Models\Contract;
 use App\Models\Enums\AircraftStatus;
 use App\Services\Airports\GetMetarForAirport;
+use App\Services\Contracts\GenerateContracts;
+use App\Services\Contracts\StoreContracts;
+use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -17,10 +22,14 @@ class ShowAirportController extends Controller
 {
 
     protected GetMetarForAirport $getMetarForAirport;
+    protected GenerateContracts $generateContracts;
+    protected StoreContracts $storeContracts;
 
-    public function __construct(GetMetarForAirport $getMetarForAirport)
+    public function __construct(GetMetarForAirport $getMetarForAirport, GenerateContracts $generateContracts, StoreContracts $storeContracts)
     {
         $this->getMetarForAirport = $getMetarForAirport;
+        $this->generateContracts = $generateContracts;
+        $this->storeContracts = $storeContracts;
     }
 
     /**
@@ -46,11 +55,49 @@ class ShowAirportController extends Controller
         }
 
         $metar = $this->getMetarForAirport->execute($icao);
-        $aircraft = Aircraft::with('fleet')
+        $companyAc = Aircraft::with('fleet')
             ->where('current_airport_id', $icao)
             ->where('owner_id', 0)
             ->where('status', AircraftStatus::ACTIVE)
             ->get();
-        return Inertia::render('Airports/AirportDetail', ['airport' => $airport, 'metar' => $metar, 'aircraft' => $aircraft]);
+
+        $privateAc = Aircraft::with('fleet')
+            ->where('current_airport_id', $icao)
+            ->where('owner_id', Auth::user()->id)
+            ->where('status', AircraftStatus::ACTIVE)
+            ->get();
+
+        $aircraft = $companyAc->merge($privateAc);
+
+        // get contracts
+        if (Cache::has($icao.'-contracts')) {
+            $contracts = Cache::get($icao.'-contracts');
+        } else {
+            $contracts = $this->getContracts($icao);
+            if ($contracts->count() < 15) {
+                if ($airport->is_hub) {
+                    $numToGenerate = 25 - $contracts->count();
+                } else {
+                    $numToGenerate = $airport->size >= 3 ? 18 - $contracts->count() : 9 - $contracts->count();
+                }
+                if ($numToGenerate > 0) {
+                    $newContracts = $this->generateContracts->execute($airport, $numToGenerate);
+                    $this->storeContracts->execute($newContracts);
+                }
+                $contracts = $this->getContracts($icao);
+            }
+            Cache::put($icao.'-contracts', $contracts);
+        }
+
+        return Inertia::render('Airports/AirportDetail', ['airport' => $airport, 'metar' => $metar, 'aircraft' => $aircraft, 'contracts' => $contracts]);
+    }
+
+    protected function getContracts(string $icao)
+    {
+        return Contract::with(['depAirport', 'arrAirport'])
+            ->where('dep_airport_id', $icao)
+            ->where('is_available', true)
+            ->whereRaw('expires_at >= Now()')
+            ->get();
     }
 }

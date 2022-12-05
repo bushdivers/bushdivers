@@ -132,16 +132,10 @@ Route::middleware('auth')->group(function () {
         ->name('dispatch.create');
     Route::post('/dispatch/cancel', \App\Http\Controllers\Dispatch\CancelDispatchController::class)
         ->name('dispatch.cancel');
-    Route::get('/contracts', \App\Http\Controllers\Contracts\ShowContractsPageController::class)
-        ->name('contracts');
-    Route::post('/contracts', \App\Http\Controllers\Contracts\FindContractsController::class)
-        ->name('contracts.search');
 //    Route::post('/contracts/bid', \App\Http\Controllers\Contracts\BidForContractController::class)
 //        ->name('contracts.bid');
     Route::post('/contracts/custom', \App\Http\Controllers\Contracts\CreateCustomRouteController::class)
         ->name('contracts.custom');
-    Route::post('/contracts/cancel', \App\Http\Controllers\Contracts\CancelContractController::class)
-        ->name('contracts.cancel');
     Route::get('/pireps/submit', \App\Http\Controllers\Pireps\ShowPirepSubmissionController::class)
         ->name('pireps.submit');
     Route::post('/pireps/submit', \App\Http\Controllers\Pireps\ProcessPirepSubmissionController::class)

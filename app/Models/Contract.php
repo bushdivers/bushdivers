@@ -21,11 +21,6 @@ class Contract extends Model
         'days_updated'
     ];
 
-    public function cargo()
-    {
-        return $this->hasMany(ContractCargo::class);
-    }
-
     public function type()
     {
         return $this->belongsTo(ContractType::class);
@@ -39,5 +34,10 @@ class Contract extends Model
     public function arrAirport()
     {
         return $this->belongsTo(Airport::class, 'arr_airport_id', 'identifier');
+    }
+
+    public function currentAirport()
+    {
+        return $this->belongsTo(Airport::class, 'current_airport_id', 'identifier');
     }
 }

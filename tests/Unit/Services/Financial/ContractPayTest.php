@@ -29,7 +29,6 @@ class ContractPayTest extends TestCase
     protected CalcContractPay $calcContractPay;
     protected ProcessPirepFinancials $processPirepFinancials;
     protected Model $contract;
-    protected Model $contractCargo;
     protected Model $pirep;
     protected Model $pirepCargo;
     protected Model $fleet;
@@ -56,25 +55,23 @@ class ContractPayTest extends TestCase
             'owner_id' => $this->user->id,
             'registration' => 'N12345'
         ]);
-        $this->contract = Contract::factory()->create([
-            'is_completed' => true,
-            'completed_at' => Carbon::now()
-        ]);
+
         $this->airport = Airport::factory()->create();
+
         $this->pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,
             'destination_airport_id' => $this->airport->identifier
         ]);
-        $this->contractCargo = ContractCargo::factory()->create([
-            'contract_id' => $this->contract->id,
+        $this->contract = Contract::factory()->create([
             'is_completed' => true,
+            'completed_at' => Carbon::now(),
+            'completed_pirep' => $this->pirep->id,
             'user_id' => $this->user->id,
-            'completed_pirep' => $this->pirep->id
         ]);
 
         $this->pirepCargo = PirepCargo::factory()->create([
             'pirep_id' => $this->pirep->id,
-            'contract_cargo_id' => $this->contractCargo->id
+            'contract_cargo_id' => $this->contract->id
         ]);
 
         AirlineFees::factory()->create([
@@ -103,7 +100,7 @@ class ContractPayTest extends TestCase
      */
     public function test_company_pay_is_added_to_ledger()
     {
-        $expectedPay = $this->contractCargo->contract_value;
+        $expectedPay = $this->contract->contract_value;
 
         $p = $this->calcContractPay->execute($this->contract->id);
         $this->assertDatabaseHas('account_ledgers', [
@@ -114,8 +111,8 @@ class ContractPayTest extends TestCase
 
     public function test_pilot_pay_is_returned()
     {
-        $expectedPay = (FinancialConsts::PilotPay / 100) * $this->contractCargo->contract_value;
-        $companyPay = $this->contractCargo->contract_value;
+        $expectedPay = (FinancialConsts::PilotPay / 100) * $this->contract->contract_value;
+        $companyPay = $this->contract->contract_value;
         $pay = $this->calcContractPay->execute($this->contract->id);
         $this->assertEquals($expectedPay, $pay);
         $this->assertEquals($companyPay, $this->contract->contract_value);
@@ -123,8 +120,8 @@ class ContractPayTest extends TestCase
 
     public function test_pilot_pay_is_returned_for_private()
     {
-        $expectedPay = (FinancialConsts::PrivatePilotPay / 100) * $this->contractCargo->contract_value;
-        $companyPay = $this->contractCargo->contract_value;
+        $expectedPay = (FinancialConsts::PrivatePilotPay / 100) * $this->contract->contract_value;
+        $companyPay = $this->contract->contract_value;
         $pay = $this->calcContractPay->execute($this->contract->id, null, false, true);
         $this->assertEquals($expectedPay, $pay);
         $this->assertEquals($companyPay, $this->contract->contract_value);
@@ -132,8 +129,8 @@ class ContractPayTest extends TestCase
 
     public function test_pilot_pay_is_returned_for_rental()
     {
-        $expectedPay = (FinancialConsts::PrivatePilotPay / 100) * $this->contractCargo->contract_value;
-        $companyPay = $this->contractCargo->contract_value;
+        $expectedPay = (FinancialConsts::PrivatePilotPay / 100) * $this->contract->contract_value;
+        $companyPay = $this->contract->contract_value;
         $pay = $this->calcContractPay->execute($this->contract->id, null, true, false);
         $this->assertEquals($expectedPay, $pay);
         $this->assertEquals($companyPay, $this->contract->contract_value);
@@ -141,7 +138,7 @@ class ContractPayTest extends TestCase
 
     public function test_contract_company_pay_is_made_as_part_of_pirep_process()
     {
-        $companyPay = $this->contractCargo->contract_value;
+        $companyPay = $this->contract->contract_value;
 
         $this->processPirepFinancials->execute($this->pirep);
         $this->assertDatabaseHas('account_ledgers', [
@@ -152,7 +149,7 @@ class ContractPayTest extends TestCase
 
     public function test_contract_company_pilot_pay_is_made_as_part_of_pirep_process()
     {
-        $pilotPay = (FinancialConsts::PilotPay / 100) * $this->contractCargo->contract_value;
+        $pilotPay = (FinancialConsts::PilotPay / 100) * $this->contract->contract_value;
 
         $this->processPirepFinancials->execute($this->pirep);
         $this->assertDatabaseHas('account_ledgers', [
@@ -163,7 +160,7 @@ class ContractPayTest extends TestCase
 
     public function test_contract_pilot_pay_is_made_as_part_of_pirep_process()
     {
-        $pilotPay = (FinancialConsts::PilotPay / 100) * $this->contractCargo->contract_value;
+        $pilotPay = (FinancialConsts::PilotPay / 100) * $this->contract->contract_value;
 
         $this->processPirepFinancials->execute($this->pirep);
 
@@ -171,7 +168,7 @@ class ContractPayTest extends TestCase
             'type' => TransactionTypes::FlightPay,
             'total' => $pilotPay,
             'flight_id' => $this->pirep->id,
-            'user_id' => $this->contractCargo->user_id
+            'user_id' => $this->contract->user_id
         ]);
     }
 

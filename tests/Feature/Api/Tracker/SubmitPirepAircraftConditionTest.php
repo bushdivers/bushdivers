@@ -74,13 +74,7 @@ class SubmitPirepAircraftConditionTest extends TestCase
             'dep_airport_id' => 'AYMR',
             'arr_airport_id' => 'AYMN'
         ]);
-        $this->contractCargo = ContractCargo::factory()->create([
-            'contract_id' => $this->contract->id,
-            'current_airport_id' => $this->contract->dep_airport_id,
-            'dep_airport_id' => 'AYMR',
-            'arr_airport_id' => 'AYMN',
-            'user_id' => $this->user->id
-        ]);
+
         $this->pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,
             'destination_airport_id' => $this->contract->arr_airport_id,
@@ -92,7 +86,7 @@ class SubmitPirepAircraftConditionTest extends TestCase
 
         $this->pirepCargo = PirepCargo::factory()->create([
             'pirep_id' => $this->pirep->id,
-            'contract_cargo_id' => $this->contractCargo->id
+            'contract_cargo_id' => $this->contract->id
         ]);
 
         Airport::factory()->create([

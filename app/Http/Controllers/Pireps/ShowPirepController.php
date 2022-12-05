@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Pireps;
 
 use App\Http\Controllers\Controller;
 use App\Models\AccountLedger;
+use App\Models\Contract;
 use App\Models\ContractCargo;
 use App\Models\FlightLog;
 use App\Models\Pirep;
@@ -53,9 +54,7 @@ class ShowPirepController extends Controller
 
         $pc = PirepCargo::where('pirep_id', $pirep)->pluck('contract_cargo_id');
 
-        $cargo = ContractCargo::with('contract')
-            ->whereIn('id', $pc)
-            ->get();
+        $cargo = Contract::whereIn('id', $pc)->get();
         $points = Point::where('pirep_id', $pirep)->where('points', '>', 0)->get();
 
         $logs = FlightLog::where('pirep_id', $pirep)->orderBy('created_at')->get();

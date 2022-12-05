@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Dispatch;
 
 use App\Http\Controllers\Controller;
 use App\Models\Aircraft;
+use App\Models\Contract;
 use App\Models\ContractCargo;
 use App\Models\Enums\AircraftState;
 use App\Models\Enums\AircraftStatus;
@@ -53,8 +54,7 @@ class ShowDispatchController extends Controller
         if ($pirep) {
             $pc = PirepCargo::where('pirep_id', $pirep->id)->pluck('contract_cargo_id');
 
-            $cargo = ContractCargo::with('contract')
-                ->whereIn('id', $pc)
+            $cargo = Contract::whereIn('id', $pc)
                 ->get();
 
 //            $cargo = $this->getCargoForActiveDispatch($pc);
@@ -85,33 +85,24 @@ class ShowDispatchController extends Controller
         return Inertia::render('Dispatch/Dispatch', ['cargo' => $cargo, 'aircraft' => $aircraft]);
     }
 
-    protected function getCargoForDispatch($currentLocation, $userId): Collection
+    protected function getCargoForDispatch($currentLocation, $userId): array
     {
-        $bd = ContractCargo::with('currentAirport', 'contract', 'contract.depAirport', 'contract.arrAirport')
+        $cargoAtAirport = Contract::with('currentAirport', 'depAirport', 'arrAirport')
             ->where('current_airport_id', $currentLocation)
             ->where('is_completed', false)
-            ->where('is_available', true)
-            ->whereHas('contract', function ($q) {
-                $q->where('is_completed', false)
-                    ->where('is_available', false)
-                    ->where('user_id', null);
-            })
-            ->orderBy('heading')
-            ->orderBy('arr_airport_id')
-            ->get();
-//        dd(json_encode($bd));
-        $personal = ContractCargo::with('currentAirport', 'contract', 'contract.depAirport', 'contract.arrAirport')
-            ->where('current_airport_id', $currentLocation)
-            ->where('is_completed', false)
-            ->whereHas('contract', function ($q) use ($userId) {
-                $q->where('user_id', $userId)
-                    ->where('is_completed', false);
-            })
+            ->where('user_id', $userId)
             ->orderBy('heading')
             ->orderBy('arr_airport_id')
             ->get();
 
-        return collect($bd)->merge($personal);
+        $cargoElsewhere = Contract::with('currentAirport', 'depAirport', 'arrAirport')
+            ->where('current_airport_id', '<>', $currentLocation)
+            ->where('is_completed', false)
+            ->where('user_id', $userId)
+            ->orderBy('heading')
+            ->orderBy('arr_airport_id')
+            ->get();
+        return ['cargoAtAirport' => $cargoAtAirport, 'cargoElsewhere' => $cargoElsewhere];
     }
 
     protected function getAircraftForDispatch($currentLocation): Collection

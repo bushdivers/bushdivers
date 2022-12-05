@@ -88,7 +88,7 @@ class SubmitPirepController extends Controller
                 // update cargo and contract
                 $pc = PirepCargo::where('pirep_id', $pirep->id)->get();
                 foreach ($pc as $c) {
-                    $contractCargo = ContractCargo::find($c->contract_cargo_id);
+                    $contractCargo = Contract::find($c->contract_cargo_id);
                     $this->updateContractCargoProgress->execute($contractCargo->id, $pirep->destination_airport_id, $pirep->id);
                 }
             } catch (\Exception $e) {
@@ -137,14 +137,10 @@ class SubmitPirepController extends Controller
             // uncomplete contracts
             $pc = PirepCargo::where('pirep_id', $pirep->id)->get();
             foreach ($pc as $c) {
-                $contractCargo = ContractCargo::find($c->contract_cargo_id);
+                $contractCargo = Contract::find($c->contract_cargo_id);
                 $contractCargo->is_completed = false;
                 $contractCargo->completed_at = null;
                 $contractCargo->save();
-                $contract = Contract::find($contractCargo->contract_id);
-                $contract->is_completed = false;
-                $contract->completed_at = null;
-                $contract->save();
             }
             // remove financials
             AccountLedger::where('pirep_id', $pirep->id)->destroy();

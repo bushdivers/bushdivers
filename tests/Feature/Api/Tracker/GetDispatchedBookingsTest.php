@@ -60,11 +60,6 @@ class GetDispatchedBookingsTest extends TestCase
             'dep_airport_id' => 'AYMR',
             'arr_airport_id' => 'AYMN'
         ]);
-        $this->contractCargo = ContractCargo::factory()->create([
-            'contract_id' => $this->contract->id,
-            'current_airport_id' => $this->contract->dep_airport_id
-        ]);
-
 
         Airport::factory()->create([
             'identifier' => 'AYMR'
@@ -93,7 +88,7 @@ class GetDispatchedBookingsTest extends TestCase
 
         $this->pirepCargo = PirepCargo::factory()->create([
             'pirep_id' => $this->pirep->id,
-            'contract_cargo_id' => $this->contractCargo->id
+            'contract_cargo_id' => $this->contract->id
         ]);
 
         Sanctum::actingAs(
@@ -137,7 +132,7 @@ class GetDispatchedBookingsTest extends TestCase
 
         $this->pirepCargo = PirepCargo::factory()->create([
             'pirep_id' => $this->pirep->id,
-            'contract_cargo_id' => $this->contractCargo->id
+            'contract_cargo_id' => $this->contract->id
         ]);
 
         Sanctum::actingAs(
@@ -161,7 +156,7 @@ class GetDispatchedBookingsTest extends TestCase
 
         $this->pirepCargo = PirepCargo::factory()->create([
             'pirep_id' => $this->pirep->id,
-            'contract_cargo_id' => $this->contractCargo->id
+            'contract_cargo_id' => $this->contract->id
         ]);
 
         Sanctum::actingAs(
@@ -185,17 +180,16 @@ class GetDispatchedBookingsTest extends TestCase
 
         $this->pirepCargo = PirepCargo::factory()->create([
             'pirep_id' => $this->pirep->id,
-            'contract_cargo_id' => $this->contractCargo->id
+            'contract_cargo_id' => $this->contract->id
         ]);
 
-        $contractCargo = ContractCargo::factory()->create([
-            'contract_id' => $this->contract->id,
+        $contract = Contract::factory()->create([
             'current_airport_id' => $this->contract->dep_airport_id
         ]);
 
         $this->pirepCargo = PirepCargo::factory()->create([
             'pirep_id' => $this->pirep->id,
-            'contract_cargo_id' => $contractCargo->id
+            'contract_cargo_id' => $contract->id
         ]);
 
         Sanctum::actingAs(
@@ -236,7 +230,7 @@ class GetDispatchedBookingsTest extends TestCase
 
         $this->pirepCargo = PirepCargo::factory()->create([
             'pirep_id' => $this->pirep->id,
-            'contract_cargo_id' => $this->contractCargo->id
+            'contract_cargo_id' => $this->contract->id
         ]);
 
         Sanctum::actingAs(
