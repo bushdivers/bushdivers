@@ -47,7 +47,7 @@ const Cargo = (props) => {
               <span className="ml-2">Deadhead - Run empty</span>
             </label>
           </div>
-          <button onClick={() => setShowCustom(!showCustom)} className="btn btn-secondary btn-sm">{showCustom ? 'Cancel' : 'Create'} Custom Contract</button>
+          <button onClick={() => setShowCustom(!showCustom)} className="btn btn-secondary btn-sm">{showCustom ? <FontAwesomeIcon icon={faTimes} /> : 'Create Custom Contract'}</button>
         </div>
         {showCustom && (<div className="my-4 flex justify-center"><CustomContract hideSection={() => setShowCustom(false)} /></div>)}
       {props.cargo.cargoAtAirport.length === 0
