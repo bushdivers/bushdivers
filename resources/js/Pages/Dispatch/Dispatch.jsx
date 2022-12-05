@@ -49,13 +49,13 @@ const Dispatch = ({ cargo, aircraft }) => {
     if (selectedCargo.find(sc => sc.id === cargo.id)) {
       await setSelectedCargo(selectedCargo.filter(sc => sc.id !== cargo.id))
       calculateCargoPayload('subtract', cargo)
-      if (cargo.cargo_type_id === 2) {
+      if (cargo.cargo_type === 2) {
         calculatePax('subtract', cargo)
       }
     } else {
       await setSelectedCargo(sc => sc.concat(cargo))
       calculateCargoPayload('add', cargo)
-      if (cargo.cargo_type_id === 2) {
+      if (cargo.cargo_type === 2) {
         calculatePax('add', cargo)
       }
     }
@@ -79,13 +79,13 @@ const Dispatch = ({ cargo, aircraft }) => {
   function calculateCargoPayload (method, cargo) {
     let newTotal = 0
     if (method === 'subtract') {
-      if (cargo.cargo_type_id === 1) {
+      if (cargo.cargo_type === 1) {
         newTotal = cargoWeight - cargo.cargo_qty
       } else {
         newTotal = cargoWeight - (cargo.cargo_qty * personWeight)
       }
     } else if (method === 'add') {
-      if (cargo.cargo_type_id === 1) {
+      if (cargo.cargo_type === 1) {
         newTotal = cargoWeight + cargo.cargo_qty
       } else {
         newTotal = cargoWeight + (cargo.cargo_qty * personWeight)
