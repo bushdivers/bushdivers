@@ -65,11 +65,11 @@ const columns = [
     header: () => <span>Expires</span>
   }),
   columnHelper.accessor('id', {
-    cell: info => <BidAction data={info.getValue()} />
+    cell: info => <BidAction contract={info.getValue()} />
   })
 ]
 
-const BidAction = ({ data }) => {
+const BidAction = ({ contract }) => {
   const { auth } = usePage().props
   async function bidForContract (id) {
     const data = {
@@ -85,7 +85,7 @@ const BidAction = ({ data }) => {
     Inertia.reload({ only: ['contracts'] })
   }
   return (
-    <button onClick={() => bidForContract(data)} className="btn btn-primary btn-xs">
+    <button onClick={() => bidForContract(contract)} className="btn btn-primary btn-xs">
       <FontAwesomeIcon icon={faCheck} />
     </button>
   )
