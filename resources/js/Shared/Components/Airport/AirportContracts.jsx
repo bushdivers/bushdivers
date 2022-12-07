@@ -3,33 +3,74 @@ import { Link, usePage } from '@inertiajs/inertia-react'
 import Card from '../../Elements/Card'
 import MyContractMap from '../Contracts/MyContractMap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faAnchor, faArrowUp, faCheck } from '@fortawesome/free-solid-svg-icons'
+import {
+  faArrowUp,
+  faArrowUpShortWide,
+  faCheck,
+  faArrowDownWideShort
+} from '@fortawesome/free-solid-svg-icons'
 import { formatDistanceToNowStrict } from 'date-fns'
 import axios from 'axios'
 import toast from 'react-hot-toast'
 import { Inertia } from '@inertiajs/inertia'
+import {
+  createColumnHelper,
+  flexRender,
+  getCoreRowModel,
+  getSortedRowModel,
+  useReactTable
+} from '@tanstack/react-table'
 
-const AirportContracts = ({ contracts }) => {
+const columnHelper = createColumnHelper()
+const columns = [
+  columnHelper.accessor('dep_airport_id', {
+    cell: info => <Link href={`/airports/${info.getValue()}`}>{info.getValue()}</Link>,
+    header: () => <span>Dep</span>
+  }),
+  columnHelper.accessor('arr_airport_id', {
+    cell: info => <Link href={`/airports/${info.getValue()}`}>{info.getValue()}</Link>,
+    header: () => <span>Arr</span>
+  }),
+  columnHelper.accessor('distance', {
+    cell: info => info.getValue(),
+    header: () => <span>Dist</span>
+  }),
+  columnHelper.accessor('heading', {
+    cell: info => (
+      <div className="flex items-center">
+        <div className="w-1/2">
+          <span className="mr-2">{info.getValue()}</span>
+        </div>
+        <div className="w-1/2 flex">
+          <span style={{ transform: `rotate(${info.getValue()}deg)` }}><FontAwesomeIcon icon={faArrowUp} className="text-secondary" /></span>
+        </div>
+      </div>
+    ),
+    header: () => <span>Hdg</span>
+  }),
+  columnHelper.accessor('cargo_qty', {
+    cell: info => info.getValue(),
+    header: () => <span>Cargo</span>
+  }),
+  columnHelper.accessor('cargo', {
+    cell: info => info.getValue(),
+    header: () => <span>Cargo Type</span>
+  }),
+  columnHelper.accessor('contract_value', {
+    cell: info => <span>${parseFloat(info.getValue()).toLocaleString()}</span>,
+    header: () => <span>Value</span>
+  }),
+  columnHelper.accessor('expires_at', {
+    cell: info => <span>{formatDistanceToNowStrict(new Date(info.getValue()))}</span>,
+    header: () => <span>Expires</span>
+  }),
+  columnHelper.accessor('id', {
+    cell: info => <BidAction data={info.getValue()} />
+  })
+]
+
+const BidAction = ({ data }) => {
   const { auth } = usePage().props
-  const [selectedContract, setSelectedContract] = useState('')
-
-  const updateSelectedContract = (contract) => {
-    setSelectedContract(contract)
-  }
-
-  function renderCargo (contract) {
-    let cargoType
-    switch (contract.cargo_type) {
-      case 1:
-        cargoType = ' lbs'
-        break
-      case 2:
-        cargoType = ''
-        break
-    }
-    return `${contract.cargo_qty}${cargoType} ${contract.cargo}`
-  }
-
   async function bidForContract (id) {
     const data = {
       id,
@@ -43,52 +84,82 @@ const AirportContracts = ({ contracts }) => {
     }, { position: 'top-right' })
     Inertia.reload({ only: ['contracts'] })
   }
+  return (
+    <button onClick={() => bidForContract(data)} className="btn btn-primary btn-xs">
+      <FontAwesomeIcon icon={faCheck} />
+    </button>
+  )
+}
+
+const AirportContracts = ({ contracts }) => {
+  const { auth } = usePage().props
+  const [selectedContract, setSelectedContract] = useState('')
+  const [sorting, setSorting] = React.useState([])
+
+  const tbl = useReactTable({
+    data: contracts,
+    columns,
+    state: {
+      sorting
+    },
+    onSortingChange: setSorting,
+    getSortedRowModel: getSortedRowModel(),
+    getCoreRowModel: getCoreRowModel()
+  })
+
+  const updateSelectedContract = (contract) => {
+    setSelectedContract(contract)
+  }
 
   return (
     <div className="flex space-x-2">
       <div className="w-3/5 max-h-fit">
         <Card>
-          <div className="table-wrp block max-h-96">
           <table className="table table-compact w-full overflow-x-auto">
-            <thead className="sticky top-0 z-10">
-            <tr>
-              <th>Departure</th>
-              <th>Destination</th>
-              <th>Distance</th>
-              <th>Heading</th>
-              <th>Cargo</th>
-              <th>Value</th>
-              <th>Expires</th>
-              <th></th>
-            </tr>
+            <thead>
+            {tbl.getHeaderGroups().map(headerGroup => (
+              <tr key={headerGroup.id}>
+                {headerGroup.headers.map(header => (
+                  <th key={header.id}>
+                    {header.isPlaceholder
+                      ? null
+                      : (
+                        <div
+                          {...{
+                            className: header.column.getCanSort()
+                              ? 'cursor-pointer select-none'
+                              : '',
+                            onClick: header.column.getToggleSortingHandler()
+                          }}
+                        >
+                          {flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
+                          {{
+                            asc: <span className="ml-2"><FontAwesomeIcon icon={faArrowUpShortWide} /></span>,
+                            desc: <span className="ml-2"><FontAwesomeIcon icon={faArrowDownWideShort} /></span>
+                          }[header.column.getIsSorted()] ?? null}
+                        </div>
+                        )
+                    }
+                  </th>
+                ))}
+              </tr>
+            ))}
             </thead>
-            <tbody className="h-96 overflow-y-auto">
-            {contracts && contracts.map((contract) => (
-              <tr key={contract.id} onClick={() => updateSelectedContract(contract)} className={`${contract.id === selectedContract.id ? 'active' : ''} cursor-pointer`}>
-                <td><Link href={`/airports/${contract.dep_airport_id}`}>{contract.dep_airport_id}</Link> {contract.dep_airport.longest_runway_surface === 'W' && <FontAwesomeIcon icon={faAnchor} />}</td>
-                <td><Link href={`/airports/${contract.arr_airport_id}`}>{contract.arr_airport_id}</Link> {contract.arr_airport.longest_runway_surface === 'W' && <FontAwesomeIcon icon={faAnchor} />} <span>({contract.arr_airport.longest_runway_length} ft)</span></td>
-                <td>{contract.distance}</td>
-                <td>
-                  <div className="flex items-center">
-                    <div className="w-1/2">
-                      <span className="mr-2">{contract.heading}</span>
-                    </div>
-                    <div className="w-1/2 flex">
-                      <span style={{ transform: `rotate(${contract.heading}deg)` }}><FontAwesomeIcon icon={faArrowUp} className="text-secondary" /></span>
-                    </div>
-                  </div>
-                </td>
-                <td>{renderCargo(contract)}</td>
-                <td>${parseFloat(contract.contract_value).toLocaleString()}</td>
-                <td>{formatDistanceToNowStrict(new Date(contract.expires_at))}</td>
-                <td><button onClick={() => bidForContract(contract.id)} className="btn btn-primary btn-xs">
-                  <FontAwesomeIcon icon={faCheck} />
-                </button></td>
+            <tbody>
+            {tbl.getRowModel().rows.map(row => (
+              <tr key={row.id} onClick={() => updateSelectedContract(row.original)} className={`${selectedContract.id === row.original.id ? 'text-primary' : ''}`}>
+                {row.getVisibleCells().map(cell => (
+                  <td key={cell.id}>
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </td>
+                ))}
               </tr>
             ))}
             </tbody>
           </table>
-          </div>
         </Card>
       </div>
       <div className="w-2/5">
