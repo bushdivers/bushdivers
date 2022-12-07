@@ -50,12 +50,12 @@ const columns = [
     header: () => <span>Hdg</span>
   }),
   columnHelper.accessor('cargo_qty', {
-    cell: info => info.getValue(),
-    header: () => <span>Cargo</span>
+    cell: info => <span>{parseFloat(info.getValue()).toLocaleString()}</span>,
+    header: () => <span>Cargo Qty</span>
   }),
-  columnHelper.accessor('cargo', {
-    cell: info => info.getValue(),
-    header: () => <span>Cargo Type</span>
+  columnHelper.accessor(row => `${renderCargo(row)}`, {
+    id: 'cargoName',
+    header: () => <span>Cargo Details</span>
   }),
   columnHelper.accessor('contract_value', {
     cell: info => <span>${parseFloat(info.getValue()).toLocaleString()}</span>,
@@ -70,28 +70,18 @@ const columns = [
   // })
 ]
 
-// const AssignAction = ({ data }) => {
-//   const { auth } = usePage().props
-//
-//   async function bidForContract (id) {
-//     const data = {
-//       id,
-//       userId: auth.user.id
-//     }
-//     const bid = axios.post('/api/contracts/bid', data)
-//     await toast.promise(bid, {
-//       loading: '...Bidding on contract',
-//       success: 'Contract won!',
-//       error: 'Issue processing bid'
-//     }, { position: 'top-right' })
-//     Inertia.reload({ only: ['contracts'] })
-//   }
-//   return (
-//     <button onClick={() => bidForContract(data)} className="btn btn-primary btn-xs">
-//       <FontAwesomeIcon icon={faCheck} />
-//     </button>
-//   )
-// }
+function renderCargo (contract) {
+  let cargoType
+  switch (contract.cargo_type) {
+    case 1:
+      cargoType = ' lbs'
+      break
+    case 2:
+      cargoType = ''
+      break
+  }
+  return `${parseFloat(contract.cargo_qty).toLocaleString()}${cargoType} ${contract.cargo}`
+}
 
 const MyContracts = ({ contracts }) => {
   const { auth } = usePage().props

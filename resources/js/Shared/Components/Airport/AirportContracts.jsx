@@ -49,12 +49,12 @@ const columns = [
     header: () => <span>Hdg</span>
   }),
   columnHelper.accessor('cargo_qty', {
-    cell: info => info.getValue(),
-    header: () => <span>Cargo</span>
+    cell: info => <span>{parseFloat(info.getValue()).toLocaleString()}</span>,
+    header: () => <span>Cargo Qty</span>
   }),
-  columnHelper.accessor('cargo', {
-    cell: info => info.getValue(),
-    header: () => <span>Cargo Type</span>
+  columnHelper.accessor(row => `${renderCargo(row)}`, {
+    id: 'cargoName',
+    header: () => <span>Cargo Details</span>
   }),
   columnHelper.accessor('contract_value', {
     cell: info => <span>${parseFloat(info.getValue()).toLocaleString()}</span>,
@@ -90,6 +90,19 @@ const BidAction = ({ contract }) => {
       <FontAwesomeIcon icon={faCheck} />
     </button>
   )
+}
+
+function renderCargo (contract) {
+  let cargoType
+  switch (contract.cargo_type) {
+    case 1:
+      cargoType = ' lbs'
+      break
+    case 2:
+      cargoType = ''
+      break
+  }
+  return `${parseFloat(contract.cargo_qty).toLocaleString()}${cargoType} ${contract.cargo}`
 }
 
 const AirportContracts = ({ contracts }) => {
