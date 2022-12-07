@@ -15,7 +15,7 @@ export default function AppLayout ({ children, title, heading }) {
         <Toaster toastOptions={{ style: { marginTop: '4rem' } }} />
         <Head><title>{title}</title></Head>
         <AppBar />
-        <div className="mt-20 container mx-auto">
+        <div className="mt-20 mx-8">
           {flash.error && <FlashMessage type="error" message={flash.error} />}
           {flash.success && <FlashMessage type="success" message={flash.success} />}
           <div className="flex items-center justify-between">

@@ -175,7 +175,7 @@ const MyContracts = ({ contracts }) => {
                       }
                     </th>
                   ))}
-                  <th></th>
+                  <th>Assign</th>
                 </tr>
               ))}
               </thead>

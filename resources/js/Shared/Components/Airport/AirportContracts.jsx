@@ -65,7 +65,8 @@ const columns = [
     header: () => <span>Expires</span>
   }),
   columnHelper.accessor('id', {
-    cell: info => <BidAction contract={info.getValue()} />
+    cell: info => <BidAction contract={info.getValue()} />,
+    header: () => <span>Bid</span>
   })
 ]
 
