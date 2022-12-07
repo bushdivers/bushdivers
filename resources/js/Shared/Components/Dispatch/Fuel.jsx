@@ -21,7 +21,7 @@ const Fuel = (props) => {
             Current Fuel (gal):
             <div className="w-full lg:w-1/4">
               <TextInput id="fuel" type="text" value={props.fuel} onChange={props.handleUpdateFuel} error={props.error} />
-              <div className="text-sm">{fuelWeight} lbs <span className="italic">(estimated)</span></div>
+              <div className="text-sm">{parseFloat(fuelWeight).toLocaleString(undefined, { minimumFractionDigits: 2 })} lbs <span className="italic">(estimated)</span></div>
             </div>
           </div>
         </div>
