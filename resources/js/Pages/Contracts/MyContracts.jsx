@@ -134,7 +134,7 @@ const MyContracts = ({ contracts }) => {
     <div className="flex space-x-2">
       <div className="w-3/5 max-h-fit">
         <Card>
-          <div className="">
+          <div className="overflow-x-auto">
             <table className="table table-compact w-full overflow-x-auto">
               <thead>
               {tbl.getHeaderGroups().map(headerGroup => (

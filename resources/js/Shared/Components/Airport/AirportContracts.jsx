@@ -129,6 +129,7 @@ const AirportContracts = ({ contracts }) => {
     <div className="flex space-x-2">
       <div className="w-3/5 max-h-fit">
         <Card>
+          <div className="overflow-x-auto">
           <table className="table table-compact w-full overflow-x-auto">
             <thead>
             {tbl.getHeaderGroups().map(headerGroup => (
@@ -174,6 +175,7 @@ const AirportContracts = ({ contracts }) => {
             ))}
             </tbody>
           </table>
+          </div>
         </Card>
       </div>
       <div className="w-2/5">
