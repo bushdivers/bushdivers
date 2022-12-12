@@ -92,7 +92,7 @@ const Cargo = (props) => {
                         ? <div><span>{detail.cargo_qty.toLocaleString(navigator.language)} lbs</span> <span className="text-xs">{detail.cargo}</span></div>
                         : <div><span>{detail.cargo_qty}</span> <span className="text-xs">{detail.cargo}</span></div>
                       }
-                      {detail.is_custom && <span className="badge badge-primary">custom</span>}
+                      {detail.is_custom ? <span className="badge badge-primary">custom</span> : <></>}
                     </td>
                     <td><button onClick={() => removeFromFlight(detail)} className="btn btn-secondary btn-xs"><FontAwesomeIcon icon={faTimes} /></button></td>
                   </tr>

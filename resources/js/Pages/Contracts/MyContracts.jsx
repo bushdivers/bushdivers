@@ -24,7 +24,7 @@ import {
 
 const columnHelper = createColumnHelper()
 const columns = [
-  columnHelper.accessor('dep_airport_id', {
+  columnHelper.accessor('current_airport_id', {
     cell: info => <Link href={`/airports/${info.getValue()}`}>{info.getValue()}</Link>,
     header: () => <span>Dep</span>
   }),
