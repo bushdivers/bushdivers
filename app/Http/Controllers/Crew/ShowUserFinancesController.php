@@ -19,7 +19,7 @@ class ShowUserFinancesController extends Controller
      */
     public function __invoke(Request $request): Response
     {
-        $accounts = DB::table('user_accounts')->where('user_id', Auth::user()->id)->orderBy('created_at', 'desc')->paginate(10);
+        $accounts = DB::table('user_accounts')->where('user_id', Auth::user()->id)->orderBy('created_at', 'desc')->paginate(15);
         $balance = DB::table('user_accounts')->where('user_id', Auth::user()->id)->get();
 
         return Inertia::render('Crew/MyFinances', ['accounts' => $accounts, 'balance' => $balance->sum('total')]);
