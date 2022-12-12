@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import Card from '../../Elements/Card'
 import TextInput from '../../Elements/Forms/TextInput'
 
 const Fuel = (props) => {
-  const [fuelWeight, setFuelWeight] = useState(null)
-  useEffect(() => {
-    if (props.selectedAircraft) {
-      const weight = props.selectedAircraft.fleet.fuel_type_id === 1 ? props.fuel * 5.99 : props.fuel * 6.79
-      setFuelWeight(weight)
-    }
-  }, [props.fuel])
+  // const [fuelWeight, setFuelWeight] = useState(null)
+  // useEffect(() => {
+  //   if (props.selectedAircraft) {
+  //     const weight = props.selectedAircraft.fleet.fuel_type_id === 1 ? props.fuel * 5.99 : props.fuel * 6.79
+  //     setFuelWeight(weight)
+  //   }
+  // }, [props.fuel])
 
   return (
     <div className="mt-2 mr-2">
@@ -21,7 +21,7 @@ const Fuel = (props) => {
             Current Fuel (gal):
             <div className="w-full lg:w-1/4">
               <TextInput id="fuel" type="text" value={props.fuel} onChange={props.handleUpdateFuel} error={props.error} />
-              <div className="text-sm">{parseFloat(fuelWeight).toLocaleString(undefined, { minimumFractionDigits: 2 })} lbs <span className="italic">(estimated)</span></div>
+              <div className="text-sm">{parseFloat(props.fuelWeight).toLocaleString(undefined, { maximumFractionDigits: 2 })} lbs <span className="italic">(estimated)</span></div>
             </div>
           </div>
         </div>

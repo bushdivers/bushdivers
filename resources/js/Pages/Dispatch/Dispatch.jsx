@@ -151,7 +151,7 @@ const Dispatch = ({ cargo, aircraft }) => {
           <Aircraft aircraft={aircraft} selectedAircraft={selectedAircraft} handleAircraftSelect={handleAircraftSelect} />
           <Cargo cargo={cargo} selectedCargo={selectedCargo} handleCargoSelect={handleCargoSelect} deadHead={deadHead} handleDeadHead={handleDeadHead} />
           <Destination currentAirport={auth.user.current_airport_id} updateDestinationValue={setDestination} />
-          <Fuel selectedAircraft={selectedAircraft} fuel={fuel} handleUpdateFuel={handleUpdateFuel} error={error} />
+          <Fuel selectedAircraft={selectedAircraft} fuel={fuel} fuelWeight={fuelWeight} handleUpdateFuel={handleUpdateFuel} error={error} />
         </div>
         <div className="md:w-1/2 mt-2">
           <div className="md:ml-2">
