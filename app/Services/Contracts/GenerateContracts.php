@@ -22,7 +22,6 @@ class GenerateContracts
 
     public function execute($airport, $numberToGenerate)
     {
-        try {
             // get airports
             //$airports = Airport::all();
             $airports = DB::select(DB::raw(
@@ -46,14 +45,23 @@ class GenerateContracts
 
             // pick (n) random airports in each category
             $allAirports = collect($airports);
-            if ($allAirports->count() <= $numberToGenerate && $allAirports->count() > 0) {
-                return $this->generateContractDetails->execute($airport, $allAirports);
-            } elseif (count($allAirports) > 0) {
-                return $this->generateContractDetails->execute($airport, $allAirports->random($numberToGenerate));
+            $contracts = [];
+            $i = 1;
+            while ($i <= $numberToGenerate) {
+                $destAirport = $allAirports->random(1);
+
+                if ($airport->identifier != $destAirport[0]->identifier) {
+                    $contract = $this->generateContractDetails->execute($airport, $destAirport[0]);
+                    $contracts[] = $contract;
+                }
+                $i++;
             }
-        }
-        catch (\Exception $e) {
-            Log::channel('single')->debug($e->getMessage(), ['where' => 'Contract base generation']);
-        }
+            return $contracts;
+
+//            if ($allAirports->count() <= $numberToGenerate && $allAirports->count() > 0) {
+//                return $this->generateContractDetails->execute($airport, $allAirports);
+//            } elseif (count($allAirports) > 0) {
+//                return $this->generateContractDetails->execute($airport, $allAirports->random($numberToGenerate));
+//            }
     }
 }
