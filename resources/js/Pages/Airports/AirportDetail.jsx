@@ -20,7 +20,7 @@ const AirportDetail = ({ airport, metar, aircraft, contracts }) => {
         component = <AirportInfo airport={airport} metar={metar} />
         break
       case 'contracts':
-        component = <AirportContracts contracts={contracts} />
+        component = <AirportContracts contracts={contracts} airport={airport} />
         break
       case 'aircraft':
         component = <AirportAircraft aircraft={aircraft} />

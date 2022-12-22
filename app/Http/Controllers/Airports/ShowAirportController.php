@@ -100,6 +100,7 @@ class ShowAirportController extends Controller
             ->where('dep_airport_id', $icao)
             ->where('is_available', true)
             ->whereRaw('expires_at >= Now()')
+            ->orderBy('distance')
             ->get();
     }
 }

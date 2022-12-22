@@ -105,7 +105,7 @@ function renderCargo (contract) {
   return `${parseFloat(contract.cargo_qty).toLocaleString()}${cargoType} ${contract.cargo}`
 }
 
-const AirportContracts = ({ contracts }) => {
+const AirportContracts = ({ contracts, airport }) => {
   const { auth } = usePage().props
   const [selectedContract, setSelectedContract] = useState('')
   const [sorting, setSorting] = React.useState([])
@@ -180,7 +180,7 @@ const AirportContracts = ({ contracts }) => {
       </div>
       <div className="w-2/5">
         <Card>
-          <MyContractMap data={selectedContract} size="large" mapStyle={auth.user.map_style} />
+          <MyContractMap data={selectedContract} airport={airport} size="large" mapStyle={auth.user.map_style} />
         </Card>
       </div>
     </div>
