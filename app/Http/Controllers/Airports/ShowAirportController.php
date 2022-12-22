@@ -82,7 +82,9 @@ class ShowAirportController extends Controller
                 }
                 if ($numToGenerate > 0) {
                     $newContracts = $this->generateContracts->execute($airport, $numToGenerate);
-                    $this->storeContracts->execute($newContracts);
+                    if ($newContracts !== null) {
+                        $this->storeContracts->execute($newContracts);
+                    }
                 }
                 $contracts = $this->getContracts($icao);
             }

@@ -45,6 +45,18 @@ class GenerateContracts
 
             // pick (n) random airports in each category
             $allAirports = collect($airports);
+
+            if ($allAirports->count() === 0) {
+                return null;
+            }
+            if ($allAirports->count() === 1) {
+                $numberToGenerate = 4;
+            }
+
+            if ($allAirports->count() < $numberToGenerate && $allAirports->count() > 1) {
+                $numberToGenerate = $numberToGenerate / 2;
+            }
+
             $contracts = [];
             $i = 1;
             while ($i <= $numberToGenerate) {
