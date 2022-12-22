@@ -40,7 +40,7 @@ class GenerateContracts
                               BETWEEN $airport->lon - (300 / (69 * COS(RADIANS($airport->lat))))
                               AND $airport->lon + (300 / (69* COS(RADIANS($airport->lat))))
                         ) r
-                        WHERE distance BETWEEN 15 AND 350
+                        WHERE distance BETWEEN 15 AND 150
                         ORDER BY distance ASC"
             ));
 
