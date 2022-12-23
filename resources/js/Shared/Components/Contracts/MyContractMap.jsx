@@ -16,7 +16,7 @@ const MyContractMap = (props) => {
     map.current = new maplibre.Map({
       container: mapContainer.current,
       style: parseMapStyle(props.mapStyle),
-      center: [props.airport.lon, props.airport.lat],
+      center: [143.23070, -6.36188],
       zoom: 12,
       accessToken
     })
