@@ -56,6 +56,6 @@ const Dashboard = ({ lastFlight, user, locations, distance }) => {
   )
 }
 
-Dashboard.layout = page => <AppLayout children={page} title="Crew Page" heading="My Crew Page" container="false" />
+Dashboard.layout = page => <AppLayout children={page} title="Crew Page" heading="My Crew Page" container="false" fullSize />
 
 export default Dashboard
