@@ -21,6 +21,7 @@ import {
   getSortedRowModel,
   useReactTable
 } from '@tanstack/react-table'
+import AvailableContractsMap from '../../Shared/Components/Contracts/AvailableContractsMap'
 
 const columnHelper = createColumnHelper()
 const columns = [
@@ -34,7 +35,7 @@ const columns = [
   }),
   columnHelper.accessor('distance', {
     cell: info => info.getValue(),
-    header: () => <span>Dist</span>
+    header: () => <span>Dst</span>
   }),
   columnHelper.accessor('heading', {
     cell: info => (
@@ -51,39 +52,40 @@ const columns = [
   }),
   columnHelper.accessor('cargo_qty', {
     cell: info => <span>{parseFloat(info.getValue()).toLocaleString()}</span>,
-    header: () => <span>Cargo Qty</span>
+    header: () => <span>Qty</span>
   }),
-  columnHelper.accessor(row => `${renderCargo(row)}`, {
-    id: 'cargoName',
-    header: () => <span>Cargo Details</span>
-  }),
+  // columnHelper.accessor(row => `${renderCargo(row)}`, {
+  //   id: 'cargoName',
+  //   header: () => <span>Details</span>
+  // }),
   columnHelper.accessor('contract_value', {
     cell: info => <span>${parseFloat(info.getValue()).toLocaleString()}</span>,
-    header: () => <span>Value</span>
+    header: () => <span>$</span>
   }),
   columnHelper.accessor('expires_at', {
     cell: info => <span>{formatDistanceToNowStrict(new Date(info.getValue()))}</span>,
-    header: () => <span>Expires</span>
+    header: () => <span>Exp</span>
   })
   // columnHelper.accessor('id', {
   //   cell: info => <AssignAction data={info.getValue()} />
   // })
 ]
 
-function renderCargo (contract) {
-  let cargoType
-  switch (contract.cargo_type) {
-    case 1:
-      cargoType = ' lbs'
-      break
-    case 2:
-      cargoType = ''
-      break
-  }
-  return `${parseFloat(contract.cargo_qty).toLocaleString()}${cargoType} ${contract.cargo}`
-}
+// function renderCargo (contract) {
+//   let cargoType
+//   switch (contract.cargo_type) {
+//     case 1:
+//       cargoType = ' lbs'
+//       break
+//     case 2:
+//       cargoType = ''
+//       break
+//   }
+//   return `${parseFloat(contract.cargo_qty).toLocaleString()}${cargoType} ${contract.cargo}`
+// }
 
-const MyContracts = ({ contracts }) => {
+const MyContracts = ({ contracts, location }) => {
+  console.log(contracts)
   const { auth } = usePage().props
   const [selectedContract, setSelectedContract] = useState('')
   const [sorting, setSorting] = React.useState([])
@@ -131,12 +133,14 @@ const MyContracts = ({ contracts }) => {
   }
 
   return (
-    <div className="flex space-x-2">
-      <div className="w-3/5 max-h-fit">
-        <Card>
-          <div className="overflow-x-auto">
+    <div className="relative">
+      {/* <MyContractMap data={selectedContract} size="full" mapStyle={auth.user.map_style} /> */}
+      <AvailableContractsMap contracts={contracts} size="full" mapStyle={auth.user.map_style} defaultLocation={location} />
+      <div className="absolute z-10 bg-neutral p-2 w-1/2 md:w-1/3 max-h-96 opacity-85 top-10 left-4 rounded-lg shadow-lg">
+        <h1>Available Contracts</h1>
+        <div className="mt-2 h-80 overflow-y-scroll">
             <table className="table table-compact w-full overflow-x-auto">
-              <thead>
+              <thead className="sticky top-0 z-20">
               {tbl.getHeaderGroups().map(headerGroup => (
                 <tr key={headerGroup.id}>
                   {headerGroup.headers.map(header => (
@@ -191,18 +195,12 @@ const MyContracts = ({ contracts }) => {
               ))}
               </tbody>
             </table>
-          </div>
-        </Card>
-      </div>
-      <div className="w-2/5">
-        <Card>
-          <MyContractMap data={selectedContract} size="large" mapStyle={auth.user.map_style} />
-        </Card>
+        </div>
       </div>
     </div>
   )
 }
 
-MyContracts.layout = page => <AppLayout children={page} title="Available Contracts" heading="Available Contracts" />
+MyContracts.layout = page => <AppLayout children={page} title="Available Contracts" heading="Available Contracts" fullSize />
 
 export default MyContracts

@@ -4,7 +4,7 @@ import { parseMapStyle } from '../../../Helpers/general.helpers'
 
 const accessToken = import.meta.env.VITE_MAPBOX_TOKEN
 
-const MyContractMap = (props) => {
+const MyContractMap = ({ data, size, mapStyle }) => {
   const mapContainer = useRef(null)
   const map = useRef(null)
   const marker = useRef(null)
@@ -15,15 +15,15 @@ const MyContractMap = (props) => {
     if (map.current) return
     map.current = new maplibre.Map({
       container: mapContainer.current,
-      style: parseMapStyle(props.mapStyle),
+      style: parseMapStyle(mapStyle),
       center: [143.23070, -6.36188],
-      zoom: 12,
+      zoom: 10,
       accessToken
     })
   })
 
   useEffect(() => {
-    if (props.data) {
+    if (data) {
       let depLngLat = []
       let arrLngLat = []
 
@@ -33,8 +33,8 @@ const MyContractMap = (props) => {
         setSourceSet(false)
       }
 
-      depLngLat = [props.data.dep_airport.lon, props.data.dep_airport.lat]
-      arrLngLat = [props.data.arr_airport.lon, props.data.arr_airport.lat]
+      depLngLat = [data.dep_airport.lon, data.dep_airport.lat]
+      arrLngLat = [data.arr_airport.lon, data.arr_airport.lat]
 
       if (map.current.isStyleLoaded()) {
         map.current.addSource('route', {
@@ -59,7 +59,7 @@ const MyContractMap = (props) => {
 
         const bounds = [depLngLat, arrLngLat]
         map.current.fitBounds(bounds, {
-          padding: 50
+          padding: 140
         })
 
         setSourceSet(true)
@@ -68,7 +68,7 @@ const MyContractMap = (props) => {
       loadDeparture(depLngLat)
       loadDestination(arrLngLat)
     }
-  }, [props.data])
+  }, [data])
 
   const loadDestination = (arrLngLat) => {
     if (marker.current !== null) {
@@ -76,7 +76,7 @@ const MyContractMap = (props) => {
     }
 
     const arrPopup = new maplibre.Popup({ offset: 25 }).setText(
-      `${props.data.arr_airport.identifier} - ${props.data.arr_airport.name}`
+      `${data.arr_airport.identifier} - ${data.arr_airport.name}`
     )
 
     const des = new maplibre.Marker({
@@ -94,7 +94,7 @@ const MyContractMap = (props) => {
     }
 
     const depPopup = new maplibre.Popup({ offset: 25 }).setText(
-      `${props.data.dep_airport.identifier} - ${props.data.dep_airport.name}`
+      `${data.dep_airport.identifier} - ${data.dep_airport.name}`
     )
 
     const dep = new maplibre.Marker({
@@ -108,7 +108,7 @@ const MyContractMap = (props) => {
 
   return (
     <>
-      <div ref={mapContainer} className={`map-container-${props.size} rounded-lg`} />
+      <div ref={mapContainer} className={`map-container-${size}`} />
     </>
   )
 }
