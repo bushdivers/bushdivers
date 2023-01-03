@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Link, usePage } from '@inertiajs/inertia-react'
 import { Inertia } from '@inertiajs/inertia'
@@ -16,14 +16,18 @@ import AvailableContractsMap from '../../Shared/Components/Contracts/AvailableCo
 import TextInput from '../../Shared/Elements/Forms/TextInput'
 import Card from '../../Shared/Elements/Card'
 import ContractDetail from '../../Shared/Components/Contracts/ContractDetail'
+import MapOptions from '../../Shared/Elements/MapOptions'
+import ThemeContext from '../../Context/ThemeContext'
 
 const MyContracts = ({ contracts, location }) => {
+  const { currentTheme } = useContext(ThemeContext)
   const { auth } = usePage().props
   const [icao, setIcao] = useState('')
   const [showContracts, setShowContracts] = useState(true)
   const [contractDetails, setContractDetails] = useState([])
   const [selectedIcao, setSelectedIcao] = useState('')
   const [filteredContracts, setFilteredContracts] = useState(contracts)
+  const [currentMapStyle, setCurrentMapStyle] = useState('')
 
   useEffect(() => {
     if (selectedIcao !== '') {
@@ -32,6 +36,10 @@ const MyContracts = ({ contracts, location }) => {
       handleSelectedIcao(selectedIcao)
     }
   }, [contracts])
+
+  useEffect(() => {
+    setCurrentMapStyle('')
+  }, [currentTheme])
 
   function handleIcaoUpdate (e) {
     setIcao(e.target.value)
@@ -94,8 +102,8 @@ const MyContracts = ({ contracts, location }) => {
   return (
     <div className="relative">
       {/* <MyContractMap data={selectedContract} size="full" mapStyle={auth.user.map_style} /> */}
-      <AvailableContractsMap contracts={filteredContracts} size="full" mapStyle={auth.user.map_style} defaultLocation={location} handleSelectedIcao={handleSelectedIcao} />
-      <div className="absolute z-10 w-1/2 lg:w-1/4 opacity-90 top-10 left-4 right-4">
+      <AvailableContractsMap contracts={filteredContracts} size="full" updatedMapStyle={currentMapStyle} defaultLocation={location} handleSelectedIcao={handleSelectedIcao} />
+      <div className="absolute z-10 w-1/2 lg:w-1/4 opacity-90 top-10 left-12 right-12">
         <div className="w-full">
           <Card slimline title="Available Contracts">
             <div className="w-full flex items-center justify-between space-x-1">
@@ -105,11 +113,12 @@ const MyContracts = ({ contracts, location }) => {
           </Card>
         </div>
       </div>
-      <div className="absolute z-10 top-10 right-4">
+      <div className="absolute z-10 top-10 right-12">
         <button onClick={() => clearFilters()} className="btn btn-primary">Clear Filters</button>
       </div>
+      <MapOptions updateMap={setCurrentMapStyle} currentStyle={currentMapStyle} />
       {showContracts && contractDetails.length > 0 && (
-        <div className="absolute z-10 bg-neutral px-4 lg:w-2/5 opacity-90 map-data bottom-4 left-4 right-4 rounded-lg shadow-lg">
+        <div className="absolute z-10 bg-neutral px-4 lg:w-2/5 opacity-90 map-data bottom-4 left-12 right-12 rounded-lg shadow-lg">
           <div className="sticky top-0 bg-neutral py-2 flex justify-between items-center mb-2">
             <h4>Contracts to/from {selectedIcao}</h4>
             <span onClick={() => clearContractDetails() } className="cursor-pointer p-2"><FontAwesomeIcon icon={faTimes} /></span>

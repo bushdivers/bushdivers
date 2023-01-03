@@ -28,8 +28,6 @@ export const parseMapStyle = (mapStyle) => {
   }
 }
 
-
-
 export const formatNumber = (n) => {
   const nf = Intl.NumberFormat('en-US')
   return nf.format(Math.round(n))

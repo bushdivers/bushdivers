@@ -1,21 +1,29 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import maplibre from 'maplibre-gl'
 import { parseMapStyle, transformRequest } from '../../../Helpers/general.helpers'
-import Map, { Layer, Marker, Popup, Source } from 'react-map-gl'
+import ThemeContext from '../../../Context/ThemeContext'
+import Map, { Layer, Marker, Source } from 'react-map-gl'
 
 const accessToken = import.meta.env.VITE_MAPBOX_TOKEN
 
-const layerStyle = {
-  id: 'lines',
-  type: 'line',
-  paint: {
-    'line-color': '#F97316',
-    'line-width': 2
-  }
-}
-
-function AvailableContracts ({ contracts, size, mapStyle, defaultLocation, handleSelectedIcao }) {
+function AvailableContracts ({ contracts, size, updatedMapStyle, defaultLocation, handleSelectedIcao }) {
+  const { currentTheme } = useContext(ThemeContext)
   const [routeData, setRouteData] = useState(null)
+  const [map, setMap] = useState(currentTheme)
+
+  useEffect(() => {
+    setMap(currentTheme)
+  }, [currentTheme])
+
+  useEffect(() => {
+    console.log(`Map style ypdated ${updatedMapStyle}`)
+    if (updatedMapStyle === '') {
+      setMap(currentTheme)
+    } else {
+      setMap(updatedMapStyle)
+    }
+  }, [updatedMapStyle])
+
   useEffect(() => {
     const data = []
 
@@ -42,7 +50,7 @@ function AvailableContracts ({ contracts, size, mapStyle, defaultLocation, handl
           latitude: defaultLocation.lat,
           zoom: 5
         }}
-        mapStyle={parseMapStyle(mapStyle)}
+        mapStyle={parseMapStyle(map)}
         transformRequest={transformRequest}
       >
         {contracts && contracts.map((contract) => (
