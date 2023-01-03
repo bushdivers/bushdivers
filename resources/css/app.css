@@ -249,3 +249,17 @@ h4 {
     overflow-y: auto;
     display:block;
 }
+
+.text-1xs {
+    font-size: 0.75rem;
+    line-height: 1rem;
+}
+
+.map-data {
+    max-height: calc(100vh - 18rem);
+}
+
+.map-data-content {
+    max-height: calc(100vh - 23rem);
+    @apply my-2;
+}

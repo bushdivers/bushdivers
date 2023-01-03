@@ -1,108 +1,67 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Link, usePage } from '@inertiajs/inertia-react'
 import { Inertia } from '@inertiajs/inertia'
-import MyContractMap from '../../Shared/Components/Contracts/MyContractMap'
 import AppLayout from '../../Shared/AppLayout'
 import {
   faArrowDownWideShort,
   faArrowUp,
   faArrowUpShortWide,
-  faCheck
+  faCheck,
+  faTimes
 } from '@fortawesome/free-solid-svg-icons'
-import Card from '../../Shared/Elements/Card'
-import { formatDistanceToNowStrict } from 'date-fns'
 import axios from 'axios'
 import toast from 'react-hot-toast'
-import {
-  createColumnHelper,
-  flexRender,
-  getCoreRowModel,
-  getSortedRowModel,
-  useReactTable
-} from '@tanstack/react-table'
 import AvailableContractsMap from '../../Shared/Components/Contracts/AvailableContractsMap'
-
-const columnHelper = createColumnHelper()
-const columns = [
-  columnHelper.accessor('current_airport_id', {
-    cell: info => <Link href={`/airports/${info.getValue()}`}>{info.getValue()}</Link>,
-    header: () => <span>Dep</span>
-  }),
-  columnHelper.accessor('arr_airport_id', {
-    cell: info => <Link href={`/airports/${info.getValue()}`}>{info.getValue()}</Link>,
-    header: () => <span>Arr</span>
-  }),
-  columnHelper.accessor('distance', {
-    cell: info => info.getValue(),
-    header: () => <span>Dst</span>
-  }),
-  columnHelper.accessor('heading', {
-    cell: info => (
-      <div className="flex items-center">
-        <div className="w-1/2">
-          <span className="mr-2">{info.getValue()}</span>
-        </div>
-        <div className="w-1/2 flex">
-          <span style={{ transform: `rotate(${info.getValue()}deg)` }}><FontAwesomeIcon icon={faArrowUp} className="text-secondary" /></span>
-        </div>
-      </div>
-    ),
-    header: () => <span>Hdg</span>
-  }),
-  columnHelper.accessor('cargo_qty', {
-    cell: info => <span>{parseFloat(info.getValue()).toLocaleString()}</span>,
-    header: () => <span>Qty</span>
-  }),
-  // columnHelper.accessor(row => `${renderCargo(row)}`, {
-  //   id: 'cargoName',
-  //   header: () => <span>Details</span>
-  // }),
-  columnHelper.accessor('contract_value', {
-    cell: info => <span>${parseFloat(info.getValue()).toLocaleString()}</span>,
-    header: () => <span>$</span>
-  }),
-  columnHelper.accessor('expires_at', {
-    cell: info => <span>{formatDistanceToNowStrict(new Date(info.getValue()))}</span>,
-    header: () => <span>Exp</span>
-  })
-  // columnHelper.accessor('id', {
-  //   cell: info => <AssignAction data={info.getValue()} />
-  // })
-]
-
-// function renderCargo (contract) {
-//   let cargoType
-//   switch (contract.cargo_type) {
-//     case 1:
-//       cargoType = ' lbs'
-//       break
-//     case 2:
-//       cargoType = ''
-//       break
-//   }
-//   return `${parseFloat(contract.cargo_qty).toLocaleString()}${cargoType} ${contract.cargo}`
-// }
+import TextInput from '../../Shared/Elements/Forms/TextInput'
+import Card from '../../Shared/Elements/Card'
+import ContractDetail from '../../Shared/Components/Contracts/ContractDetail'
 
 const MyContracts = ({ contracts, location }) => {
-  console.log(contracts)
   const { auth } = usePage().props
-  const [selectedContract, setSelectedContract] = useState('')
-  const [sorting, setSorting] = React.useState([])
+  const [icao, setIcao] = useState('')
+  const [showContracts, setShowContracts] = useState(true)
+  const [contractDetails, setContractDetails] = useState([])
+  const [selectedIcao, setSelectedIcao] = useState('')
+  const [filteredContracts, setFilteredContracts] = useState(contracts)
 
-  const tbl = useReactTable({
-    data: contracts,
-    columns,
-    state: {
-      sorting
-    },
-    onSortingChange: setSorting,
-    getSortedRowModel: getSortedRowModel(),
-    getCoreRowModel: getCoreRowModel()
-  })
+  useEffect(() => {
+    if (selectedIcao !== '') {
+      setIcao(selectedIcao)
+      filterContracts()
+      handleSelectedIcao(selectedIcao)
+    }
+  }, [contracts])
 
-  function updateSelectedContract (contract) {
-    setSelectedContract(contract)
+  function handleIcaoUpdate (e) {
+    setIcao(e.target.value)
+  }
+
+  function clearFilters () {
+    setFilteredContracts(contracts)
+    clearContractDetails()
+    setIcao('')
+  }
+
+  function filterContracts () {
+    const newFilter = contracts.filter(c => c.arr_airport.identifier === icao || c.current_airport_id === icao)
+    setFilteredContracts(newFilter)
+    handleSelectedIcao(icao)
+  }
+
+  function handleSelectedIcao (icao) {
+    if (icao) {
+      setSelectedIcao(icao)
+      const contractData = contracts.filter(c => c.arr_airport.identifier === icao || c.current_airport_id === icao)
+      setContractDetails(contractData.sort((a, b) => a.contract_value - b.contract_value))
+      setShowContracts(true)
+    }
+  }
+
+  function clearContractDetails () {
+    setSelectedIcao('')
+    setContractDetails(null)
+    setShowContracts(false)
   }
 
   async function addToFlight (contract) {
@@ -129,74 +88,39 @@ const MyContracts = ({ contracts, location }) => {
       success: 'Contract added!',
       error: 'Issue assigning contract'
     }, { position: 'top-right' })
-    Inertia.reload()
+    Inertia.reload({ contracts })
   }
 
   return (
     <div className="relative">
       {/* <MyContractMap data={selectedContract} size="full" mapStyle={auth.user.map_style} /> */}
-      <AvailableContractsMap contracts={contracts} size="full" mapStyle={auth.user.map_style} defaultLocation={location} />
-      <div className="absolute z-10 bg-neutral p-2 w-1/2 md:w-1/3 max-h-96 opacity-85 top-10 left-4 rounded-lg shadow-lg">
-        <h1>Available Contracts</h1>
-        <div className="mt-2 h-80 overflow-y-scroll">
-            <table className="table table-compact w-full overflow-x-auto">
-              <thead className="sticky top-0 z-20">
-              {tbl.getHeaderGroups().map(headerGroup => (
-                <tr key={headerGroup.id}>
-                  {headerGroup.headers.map(header => (
-                    <th key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : (
-                          <div
-                            {...{
-                              className: header.column.getCanSort()
-                                ? 'cursor-pointer select-none'
-                                : '',
-                              onClick: header.column.getToggleSortingHandler()
-                            }}
-                          >
-                            {flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
-                            )}
-                            {{
-                              asc: <span className="ml-2"><FontAwesomeIcon icon={faArrowUpShortWide} /></span>,
-                              desc: <span className="ml-2"><FontAwesomeIcon icon={faArrowDownWideShort} /></span>
-                            }[header.column.getIsSorted()] ?? null}
-                          </div>
-                          )
-                      }
-                    </th>
-                  ))}
-                  <th>Assign</th>
-                </tr>
-              ))}
-              </thead>
-              <tbody>
-              {tbl.getRowModel().rows.map(row => (
-                <tr key={row.id} onClick={() => updateSelectedContract(row.original)} className={`${selectedContract.id === row.original.id ? 'text-primary' : ''}`}>
-                  {row.getVisibleCells().map(cell => (
-                    <td key={cell.id}>
-                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                    </td>
-                  ))}
-                  <td>
-                    {row.original.user_id === null
-                      ? (
-                        <button onClick={() => addToFlight(row.original)} className="btn btn-primary btn-xs">
-                          <FontAwesomeIcon icon={faCheck} />
-                        </button>
-                        )
-                      : <span>Assigned</span>
-                    }
-                  </td>
-                </tr>
-              ))}
-              </tbody>
-            </table>
+      <AvailableContractsMap contracts={filteredContracts} size="full" mapStyle={auth.user.map_style} defaultLocation={location} handleSelectedIcao={handleSelectedIcao} />
+      <div className="absolute z-10 w-1/2 lg:w-1/4 opacity-90 top-10 left-4 right-4">
+        <div className="w-full">
+          <Card slimline title="Available Contracts">
+            <div className="w-full flex items-center justify-between space-x-1">
+              <TextInput id="icao" value={icao} onChange={handleIcaoUpdate} type="text" placeHolder="Filter ICAO" inline />
+              <button onClick={() => filterContracts()} className="btn btn-primary">Filter</button>
+            </div>
+          </Card>
         </div>
       </div>
+      <div className="absolute z-10 top-10 right-4">
+        <button onClick={() => clearFilters()} className="btn btn-primary">Clear Filters</button>
+      </div>
+      {showContracts && contractDetails.length > 0 && (
+        <div className="absolute z-10 bg-neutral px-4 lg:w-2/5 opacity-90 map-data bottom-4 left-4 right-4 rounded-lg shadow-lg">
+          <div className="sticky top-0 bg-neutral py-2 flex justify-between items-center mb-2">
+            <h4>Contracts to/from {selectedIcao}</h4>
+            <span onClick={() => clearContractDetails() } className="cursor-pointer p-2"><FontAwesomeIcon icon={faTimes} /></span>
+          </div>
+          <div className="map-data-content overflow-y-auto">
+            {contractDetails && contractDetails.map((c) => (
+              <ContractDetail key={c.id} contract={c} addToFlight={addToFlight} />
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   )
 }
