@@ -1,4 +1,15 @@
 import haversineDistance from 'haversine-distance'
+import { isMapboxURL, transformMapboxUrl } from 'maplibregl-mapbox-request-transformer'
+
+export const mapboxToken = import.meta.env.VITE_MAPBOX_TOKEN
+
+export const transformRequest = (url, resourceType) => {
+  if (isMapboxURL(url)) {
+    return transformMapboxUrl(url, resourceType, mapboxToken)
+  }
+  // Do any other transforms you want
+  return { url }
+}
 
 export const parseMapStyle = (mapStyle) => {
   switch (mapStyle) {

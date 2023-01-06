@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Contracts;
 
 use App\Http\Controllers\Controller;
 use App\Models\Contract;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -27,7 +28,7 @@ class ShowActiveContractsController extends Controller
 //            ->orderBy('heading', 'asc')
 //            ->get();
 
-        $contracts = Contract::with('depAirport', 'arrAirport')
+        $contracts = Contract::with('depAirport', 'arrAirport', 'currentAirport')
             ->where('is_completed', false)
             ->where('is_available', false)
             ->where('is_custom', false)
@@ -46,6 +47,9 @@ class ShowActiveContractsController extends Controller
 //            ->orderBy('heading', 'asc')
 //            ->get();
 
-        return Inertia::render('Contracts/MyContracts', ['contracts' => $contracts]);
+        $user = User::find(Auth::user()->id);
+        $location = $user->location;
+
+        return Inertia::render('Contracts/MyContracts', ['contracts' => $contracts, 'location' => $location]);
     }
 }

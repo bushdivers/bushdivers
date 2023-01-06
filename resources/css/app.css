@@ -241,11 +241,25 @@ h4 {
 }
 
 .map-container-full {
-    height: calc(100vh - 10rem);
+    height: calc(100vh - 4rem);
 }
 
 .table-wrp  {
     max-height: 60vh;
     overflow-y: auto;
     display:block;
+}
+
+.text-1xs {
+    font-size: 0.75rem;
+    line-height: 1rem;
+}
+
+.map-data {
+    max-height: calc(100vh - 20rem);
+}
+
+.map-data-content {
+    max-height: calc(100vh - 25rem);
+    @apply my-2;
 }

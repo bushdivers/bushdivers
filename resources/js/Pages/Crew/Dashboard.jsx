@@ -12,7 +12,7 @@ const Dashboard = ({ lastFlight, user, locations, distance }) => {
   return (
     <div className="relative">
       <CrewMap size="full" locations={locations && locations.length > 0 ? locations : []} mapStyle={user.map_style} />
-      <div className="absolute z-10 bg-neutral w-1/2 md:w-1/3 h-auto opacity-90 top-4 left-4 p-4 rounded shadow">
+      <div className="absolute z-10 bg-neutral w-1/2 md:w-1/3 h-auto opacity-90 top-10 left-4 p-4 rounded shadow">
         <div>
           <div className="text-lg flex flex-col md:flex-row items-start md:items-center justify-between mb-2">
             <div className="flex items-center">
@@ -56,6 +56,6 @@ const Dashboard = ({ lastFlight, user, locations, distance }) => {
   )
 }
 
-Dashboard.layout = page => <AppLayout children={page} title="Crew Page" heading="My Crew Page" container="false" />
+Dashboard.layout = page => <AppLayout children={page} title="Crew Page" heading="My Crew Page" container="false" fullSize />
 
 export default Dashboard

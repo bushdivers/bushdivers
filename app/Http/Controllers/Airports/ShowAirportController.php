@@ -96,7 +96,7 @@ class ShowAirportController extends Controller
 
     protected function getContracts(string $icao)
     {
-        return Contract::with(['depAirport', 'arrAirport'])
+        return Contract::with(['depAirport', 'currentAirport', 'arrAirport'])
             ->where('dep_airport_id', $icao)
             ->where('is_available', true)
             ->whereRaw('expires_at >= Now()')

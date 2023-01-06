@@ -22,7 +22,7 @@ module.exports = {
         mytheme: {
           primary: '#f97316',
           secondary: '#4b5563',
-          accent: '#0ea5e9',
+          accent: '#059669',
           neutral: '#fff',
           'primary-content': '#1f2937',
           'base-content': '#1f2937',
@@ -37,7 +37,7 @@ module.exports = {
         dark: {
           primary: '#f97316',
           secondary: '#4b5563',
-          accent: '#0ea5e9',
+          accent: '#059669',
           neutral: '#1f2937',
           'primary-content': '#e5e7eb',
           'neutral-content': '#e5e7eb',
