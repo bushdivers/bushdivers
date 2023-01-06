@@ -50,7 +50,7 @@ class StartRental
         return true;
     }
 
-    protected function findAvailableReg(string $country): string
+    protected function findAvailableReg(?string $country): string
     {
         $valid = false;
         $reg = '';
