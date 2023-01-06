@@ -1,13 +1,9 @@
 import React, { useEffect, useState, useContext } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Link, usePage } from '@inertiajs/inertia-react'
+import { usePage } from '@inertiajs/inertia-react'
 import { Inertia } from '@inertiajs/inertia'
 import AppLayout from '../../Shared/AppLayout'
 import {
-  faArrowDownWideShort,
-  faArrowUp,
-  faArrowUpShortWide,
-  faCheck,
   faTimes
 } from '@fortawesome/free-solid-svg-icons'
 import axios from 'axios'
@@ -31,8 +27,6 @@ const MyContracts = ({ contracts, location }) => {
 
   useEffect(() => {
     if (selectedIcao !== '') {
-      setIcao(selectedIcao)
-      filterContracts()
       handleSelectedIcao(selectedIcao)
     }
   }, [contracts])
@@ -125,7 +119,7 @@ const MyContracts = ({ contracts, location }) => {
           </div>
           <div className="map-data-content overflow-y-auto">
             {contractDetails && contractDetails.map((c) => (
-              <ContractDetail key={c.id} contract={c} addToFlight={addToFlight} />
+              <ContractDetail key={c.id} contract={c} action={addToFlight} />
             ))}
           </div>
         </div>

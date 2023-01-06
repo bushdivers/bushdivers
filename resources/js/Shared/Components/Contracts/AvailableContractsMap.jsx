@@ -6,7 +6,7 @@ import Map, { Layer, Marker, Source } from 'react-map-gl'
 
 const accessToken = import.meta.env.VITE_MAPBOX_TOKEN
 
-function AvailableContracts ({ contracts, size, updatedMapStyle, defaultLocation, handleSelectedIcao }) {
+function AvailableContractsMap ({ contracts, size, updatedMapStyle, defaultLocation, handleSelectedIcao }) {
   const { currentTheme } = useContext(ThemeContext)
   const [routeData, setRouteData] = useState(null)
   const [map, setMap] = useState(currentTheme)
@@ -16,7 +16,6 @@ function AvailableContracts ({ contracts, size, updatedMapStyle, defaultLocation
   }, [currentTheme])
 
   useEffect(() => {
-    console.log(`Map style ypdated ${updatedMapStyle}`)
     if (updatedMapStyle === '') {
       setMap(currentTheme)
     } else {
@@ -83,4 +82,4 @@ function AvailableContracts ({ contracts, size, updatedMapStyle, defaultLocation
   )
 }
 
-export default AvailableContracts
+export default AvailableContractsMap
