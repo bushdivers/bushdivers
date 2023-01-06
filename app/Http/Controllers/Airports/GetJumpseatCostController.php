@@ -27,11 +27,10 @@ class GetJumpseatCostController extends Controller
         $jump = $this->calcCostOfJumpseat->execute($from, $to);
         $cost = $jump['cost'];
         $distance = $jump['distance'];
-        if ($from == 'AYMR' && $to == 'PAMX') {
-            $cost = 0.00;
-        }
 
-        if ($from == 'PAMX' && $to == 'AYMR') {
+        $hubs = ['AYMR', 'PAMX', 'AYMH', 'LSZS'];
+
+        if (in_array($from, $hubs) && in_array($to, $hubs)) {
             $cost = 0.00;
         }
 

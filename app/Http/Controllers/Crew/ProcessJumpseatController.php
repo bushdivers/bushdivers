@@ -36,10 +36,9 @@ class ProcessJumpseatController extends Controller
 
         $isCost = true;
 
-        if (Auth::user()->current_airport_id == 'AYMR' && $request->icao == 'PAMX') {
-            $isCost = false;
-        }
-        if (Auth::user()->current_airport_id == 'PAMX' && $request->icao == 'AYMR') {
+        $hubs = ['AYMR', 'PAMX', 'AYMH', 'LSZS'];
+
+        if (in_array(Auth::user()->current_airport_id, $hubs) && in_array($request->icao, $hubs)) {
             $isCost = false;
         }
 
