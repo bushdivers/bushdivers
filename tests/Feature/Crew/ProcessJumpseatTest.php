@@ -43,7 +43,7 @@ class ProcessJumpseatTest extends TestCase
     {
         $data = [
             'cost' => 2.00,
-            'icao' => 'AYMH'
+            'icao' => 'PANC'
         ];
         $this->actingAs($this->user)->post('/jumpseat', $data);
         $this->assertDatabaseHas('user_accounts', [
