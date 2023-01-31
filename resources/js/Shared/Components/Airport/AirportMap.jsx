@@ -37,7 +37,7 @@ function AirportInfo ({ airport, updateCurrentViews, currentViews }) {
               <span className="w-6 h-6 p-1 flex items-center justify-center rounded-full bg-secondary text-white">{airport.size}</span>
               <span className="text-lg">{airport.altitude}ft</span>
               <span className="text-lg">Lat: {airport.lat} Lon: {airport.lon}</span>
-              {airport.is_hub && <span className="badge badge-accent">hub</span>}
+              {airport.is_hub ? <span className="badge badge-accent">hub</span> : <></>}
             </div>
             <div className="mt-2 flex space-x-1">
               <Tooltip direction="top" content="Metar"><button onClick={() => changeViews('metar')} className={`btn ${currentViews.includes('metar') ? 'btn-primary' : 'btn-secondary'} btn-sm`}><FontAwesomeIcon icon={faCloud} /></button></Tooltip>
@@ -118,7 +118,7 @@ function ContractList ({ icao, contracts, currentViews, selectedContract, update
   )
 }
 
-function AirportMap ({ airport, metar, aircraft, contracts, size, updatedMapStyle }) {
+function AirportMap ({ airport, metar, metarLoading, aircraft, contracts, size, updatedMapStyle }) {
   const [currentViews, setCurrentViews] = useState(['contracts'])
   const { currentTheme } = useContext(ThemeContext)
   const [routeData, setRouteData] = useState(null)
@@ -282,7 +282,7 @@ function AirportMap ({ airport, metar, aircraft, contracts, size, updatedMapStyl
           </Popup>
         )}
         <AirportInfo currentViews={currentViews} updateCurrentViews={updateCurrentViews} airport={airport} />
-        {currentViews.includes('metar') && <AirportMetar metar={metar} isRunwayVisible={currentViews.includes('runway')} />}
+        {currentViews.includes('metar') && <AirportMetar metar={metar} loading={metarLoading} isRunwayVisible={currentViews.includes('runway')} />}
         {currentViews.includes('runway') && <AirportRunway airport={airport} />}
         <ContractList currentViews={currentViews} selectedContract={selectedContract} contracts={filteredContracts} icao={airport.identifier} updateSelectedContract={updateSelectedContract} />
         <div className="absolute z-10 top-10 right-12">
