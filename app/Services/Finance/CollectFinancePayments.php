@@ -20,8 +20,6 @@ class CollectFinancePayments
 
     public function execute()
     {
-        $startDate = Carbon::now()->startOfDay();
-        $endDate = Carbon::now()->endOfDay();
         $loans = Loan::where('is_paid', false)
             ->where('term_remaining', '>', 0)
             ->get();

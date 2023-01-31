@@ -64,28 +64,28 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')->hourly();
         // removed inactive pireps to clear up booked planes
-        $schedule->call(function () {
-            $inactivePireps = $this->findInactivePireps->execute();
-            $this->removeMultiplePireps->execute($inactivePireps);
-        })->hourly();
-
-        $schedule->call(function () {
-            $this->checkForExpiry->execute();
-        })->twiceDaily();
-
-        $schedule->call(function () {
-            $this->checkRentalDailyFee->execute();
-        })->daily();
-
-        // financial calculations
-        $schedule->call(function () {
-            $this->calcMonthlyFees->execute();
-        })->monthly();
-
-        // finance payments
-        $schedule->call(function () {
-           $this->collectFinancePayments->execute();
-        })->daily();
+//        $schedule->call(function () {
+//            $inactivePireps = $this->findInactivePireps->execute();
+//            $this->removeMultiplePireps->execute($inactivePireps);
+//        })->hourly();
+//
+//        $schedule->call(function () {
+//            $this->checkForExpiry->execute();
+//        })->twiceDaily();
+//
+//        $schedule->call(function () {
+//            $this->checkRentalDailyFee->execute();
+//        })->daily();
+//
+//        // financial calculations
+//        $schedule->call(function () {
+//            $this->calcMonthlyFees->execute();
+//        })->monthly();
+//
+//        // finance payments
+//        $schedule->call(function () {
+//           $this->collectFinancePayments->execute();
+//        })->daily();
     }
 
     /**

@@ -96,7 +96,7 @@ class FindInactivePirepsTest extends TestCase
             'destination_airport_id' => $this->contract->arr_airport_id,
             'departure_airport_id' => $this->contract->dep_airport_id,
             'aircraft_id' => $this->aircraft->id,
-            'created_at' => Carbon::now()->subHours(4),
+            'created_at' => Carbon::now()->subHours(12),
             'state' => PirepState::DISPATCH
         ]);
 
