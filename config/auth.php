@@ -114,4 +114,6 @@ return [
 
     'password_timeout' => 10800,
 
+    'scheduler_token' => env('SCHEDULER_TOKEN')
+
 ];

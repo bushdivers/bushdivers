@@ -16,7 +16,8 @@ class SchedulerAuthMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        if ($request->header('X-TOKEN') !== env('SCHEDULER_TOKEN')) {
+        $token = config('auth.scheduler_token');
+        if ($request->header('X-TOKEN') != $token) {
             abort(401);
         }
         return $next($request);
