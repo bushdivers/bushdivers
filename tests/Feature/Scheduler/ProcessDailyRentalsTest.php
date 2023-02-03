@@ -19,5 +19,9 @@ class ProcessDailyRentalsTest extends TestCase
             'X-TOKEN' => env('SCHEDULER_TOKEN')
         ])->postJson('/api/schedule/rentals/charge');
         $response->assertStatus(200);
+        $this->assertDatabaseHas('schedule_logs', [
+            'operation' => 'rentals',
+            'is_success' => true
+        ]);
     }
 }

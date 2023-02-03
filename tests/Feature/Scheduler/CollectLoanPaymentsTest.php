@@ -19,5 +19,9 @@ class CollectLoanPaymentsTest extends TestCase
             'X-TOKEN' => env('SCHEDULER_TOKEN')
         ])->postJson('/api/schedule/finance/loans');
         $response->assertStatus(200);
+        $this->assertDatabaseHas('schedule_logs', [
+            'operation' => 'loan-collection',
+            'is_success' => true
+        ]);
     }
 }

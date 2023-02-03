@@ -19,5 +19,9 @@ class CheckForExpiredContractsTest extends TestCase
             'X-TOKEN' => env('SCHEDULER_TOKEN')
         ])->postJson('/api/schedule/contracts/clean');
         $response->assertStatus(200);
+        $this->assertDatabaseHas('schedule_logs', [
+            'operation' => 'check-expiry',
+            'is_success' => true
+        ]);
     }
 }

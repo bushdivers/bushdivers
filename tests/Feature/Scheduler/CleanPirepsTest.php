@@ -66,6 +66,10 @@ class CleanPirepsTest extends TestCase
             'X-TOKEN' => env('SCHEDULER_TOKEN')
         ])->postJson('/api/schedule/pireps/clean');
         $response->assertStatus(200);
+        $this->assertDatabaseHas('schedule_logs', [
+            'operation' => 'inactive-pireps',
+            'is_success' => true
+        ]);
     }
 
     public function test_call_fails_on_auth()
