@@ -29,6 +29,7 @@ const MyContracts = ({ contracts, location }) => {
     if (selectedIcao !== '') {
       handleSelectedIcao(selectedIcao)
     }
+    setIcao(auth.user.current_airport_id)
   }, [contracts])
 
   useEffect(() => {
