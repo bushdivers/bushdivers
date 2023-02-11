@@ -70,25 +70,20 @@ class ShowAirportController extends Controller
         $aircraft = $companyAc->merge($privateAc);
 
         // get contracts
-        if (Cache::has($icao.'-contracts')) {
-            $contracts = Cache::get($icao.'-contracts');
-        } else {
-            $contracts = $this->getContracts($icao);
-            if ($contracts->count() <= 10) {
-                if ($airport->is_hub) {
-                    $numToGenerate = 25 - $contracts->count();
-                } else {
-                    $numToGenerate = $airport->size >= 3 ? 18 - $contracts->count() : 9 - $contracts->count();
-                }
-                if ($numToGenerate > 0) {
-                    $newContracts = $this->generateContracts->execute($airport, $numToGenerate);
-                    if ($newContracts !== null) {
-                        $this->storeContracts->execute($newContracts);
-                    }
-                }
-                $contracts = $this->getContracts($icao);
+        $contracts = $this->getContracts($icao);
+        if ($contracts->count() <= 10) {
+            if ($airport->is_hub) {
+                $numToGenerate = 25 - $contracts->count();
+            } else {
+                $numToGenerate = $airport->size >= 3 ? 18 - $contracts->count() : 9 - $contracts->count();
             }
-            Cache::put($icao.'-contracts', $contracts);
+            if ($numToGenerate > 0) {
+                $newContracts = $this->generateContracts->execute($airport, $numToGenerate);
+                if ($newContracts !== null) {
+                    $this->storeContracts->execute($newContracts);
+                }
+            }
+            $contracts = $this->getContracts($icao);
         }
 
         return Inertia::render('Airports/AirportDetail', ['airport' => $airport, 'aircraft' => $aircraft, 'contracts' => $contracts]); //'metar' => $metar
