@@ -42,6 +42,7 @@ class ShowAirportController extends Controller
     {
         if (!$icao) return Inertia::render('Airports/AirportDetail');
 
+        $icao = strtoupper($icao);
         if (Cache::has($icao)) {
             $airport = Cache::get($icao);
         } else {
