@@ -21,17 +21,17 @@ class GetMetarTest extends TestCase
      *
      * @return void
      */
-//    public function test_string_returned_for_valid_icao()
-//    {
-//        $metar = $this->getMetarForAirport->execute('EGLL');
-//        $this->assertIsString($metar);
-//        $this->assertNotEmpty($metar);
-//        $this->assertStringContainsString('EGLL', $metar);
-//    }
-//
-//    public function test_empty_string_is_returned_for_invalid_icao()
-//    {
-//        $metar = $this->getMetarForAirport->execute('LLLL');
-//        $this->assertEmpty($metar);
-//    }
+    public function test_string_returned_for_valid_icao()
+    {
+        $metar = $this->getMetarForAirport->execute('EGLL');
+        $this->assertIsString($metar);
+        $this->assertNotEmpty($metar);
+        $this->assertStringContainsString('EGLL', $metar);
+    }
+
+    public function test_empty_string_is_returned_for_invalid_icao()
+    {
+        $metar = $this->getMetarForAirport->execute('LLLL');
+        $this->assertEmpty($metar);
+    }
 }

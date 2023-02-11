@@ -21,14 +21,18 @@ class GetMetarForAirport
             // get metar for icao
             $response = Http::withHeaders([
                 'X-API-KEY' => $this->apiKey
-            ])->get($this->baseMetarUrl.$icao);
+            ])
+                ->timeout(3)
+                ->get($this->baseMetarUrl.$icao);
 
 
             if (!$response->json(['results']) == 1) {
                 // if no metar, get nearest
                 $response = Http::withHeaders([
                     'X-API-KEY' => $this->apiKey
-                ])->get($this->baseMetarUrl.$icao.'/nearest');
+                ])
+                    ->timeout(3)
+                    ->get($this->baseMetarUrl.$icao.'/nearest');
                 return $this->returnMetarAsString($response->json(['data']), $icao);
             }
 

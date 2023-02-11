@@ -55,7 +55,7 @@ class ShowAirportController extends Controller
             return redirect()->back()->with(['error' => 'Airport not found']);
         }
 
-        // $metar = $this->getMetarForAirport->execute($icao);
+        $metar = $this->getMetarForAirport->execute($icao);
         $companyAc = Aircraft::with('fleet')
             ->where('current_airport_id', $icao)
             ->where('owner_id', 0)
@@ -87,7 +87,7 @@ class ShowAirportController extends Controller
             $contracts = $this->getContracts($icao);
         }
 
-        return Inertia::render('Airports/AirportDetail', ['airport' => $airport, 'aircraft' => $aircraft, 'contracts' => $contracts]); //'metar' => $metar
+        return Inertia::render('Airports/AirportDetail', ['airport' => $airport, 'aircraft' => $aircraft, 'contracts' => $contracts, 'metar' => $metar]);
     }
 
     protected function getContracts(string $icao)
