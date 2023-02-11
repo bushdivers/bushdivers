@@ -34,6 +34,7 @@ class CollectFinancePayments
                     $user->is_defaulted = true;
                     $user->save();
                 }
+                $loan->next_payment_at = Carbon::now()->addMonth();
                 $loan->save();
             } else {
                 $this->addUserTransaction->execute($user->id, TransactionTypes::Loan, -$payment);
