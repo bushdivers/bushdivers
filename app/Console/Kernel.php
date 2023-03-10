@@ -14,6 +14,7 @@ use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Illuminate\Support\Facades\Log;
 
 class Kernel extends ConsoleKernel
 {
@@ -67,24 +68,29 @@ class Kernel extends ConsoleKernel
         $schedule->call(function () {
             $inactivePireps = $this->findInactivePireps->execute();
             $this->removeMultiplePireps->execute($inactivePireps);
+            Log::info('Pirep tidy up was called');
         })->hourly();
 
         $schedule->call(function () {
             $this->checkForExpiry->execute();
+            Log::info('Contract expiry was called');
         })->twiceDaily();
 
         $schedule->call(function () {
             $this->checkRentalDailyFee->execute();
+            Log::info('Rentals was called');
         })->daily();
 
         // financial calculations
         $schedule->call(function () {
             $this->calcMonthlyFees->execute();
+            Log::info('Monthly financials was called');
         })->monthly();
 
         // finance payments
         $schedule->call(function () {
            $this->collectFinancePayments->execute();
+            Log::info('Loan repayments was called');
         })->daily();
     }
 
