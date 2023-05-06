@@ -97,13 +97,19 @@ const MyFinances = ({ accounts, balance, loanAvailable }) => {
           </Card>
           <div className="mt-2">
             <Card title="Current Loan">
-              <div className="flex items-center gap-2"><h4>${auth.user.loan > 0.00 ? '-' : ''}{displayNumber(auth.user.loan)}</h4><button onClick={() => handleRepayClick()} className="btn btn-primary btn-sm">Repay</button></div>
+              <div className="flex items-center gap-2">
+                <h4>${auth.user.loan > 0.00 ? '-' : ''}{displayNumber(auth.user.loan)}</h4>
+                {auth.user.loan > 0 && (<button onClick={() => handleRepayClick()} className="btn btn-primary btn-sm">Repay</button>)}
+              </div>
             </Card>
           </div>
         </div>
         <div className="md:w-1/4 md:mx-2">
           <Card title="Available to Borrow">
-            <div className="flex items-center gap-2"><h4>${displayNumber(loanAvailable)}</h4><button onClick={() => handleBorrowClick()} className="btn btn-primary btn-sm">Borrow</button></div>
+            <div className="flex items-center gap-2">
+              <h4>${displayNumber(loanAvailable)}</h4>
+              {loanAvailable >= 1 && (<button onClick={() => handleBorrowClick()} className="btn btn-primary btn-sm">Borrow</button>)}
+            </div>
           </Card>
         </div>
       </div>
