@@ -1,12 +1,11 @@
 import React from 'react'
-import { Head, Link, usePage } from '@inertiajs/inertia-react'
+import { Head, usePage } from '@inertiajs/inertia-react'
 import FlashMessage from './Elements/FlashMessage'
 import { Toaster } from 'react-hot-toast'
 // import OldAppBar from './Layout/OldAppBar'
 import AppBar from './Layout/AppBar'
 
 export default function AppLayout ({ children, title, heading, fullSize = false }) {
-  const { auth } = usePage().props
   const { flash } = usePage().props
 
   function renderAppBar () {
