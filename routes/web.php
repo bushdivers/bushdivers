@@ -77,7 +77,6 @@ Route::middleware('auth')->group(function () {
         ->name('jumpseat.process');
     Route::get('/my-finances', \App\Http\Controllers\Crew\ShowUserFinancesController::class)
         ->name('crew.finances');
-    Route::get('/loans', \App\Http\Controllers\Loans\GetLoansController::class);
     Route::post('/loans', \App\Http\Controllers\Loans\ApplyForLoanController::class);
 
     Route::get('/resources', \App\Http\Controllers\Resources\ShowResourcesController::class)

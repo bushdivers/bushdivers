@@ -46,7 +46,6 @@ const MenuItems = ({ mobile }) => {
           <li><Link href="/logbook">My Logbook</Link></li>
           <li><Link href="/my-aircraft">My Aircraft</Link></li>
           <li><Link href="/my-finances">My Finances</Link></li>
-          <li><Link href="/loans">Loans</Link></li>
           <li><Link href="/jumpseat">Jumpseat</Link></li>
           <li><Link href="/profile">My Profile</Link></li>
           <li><Link href="/logout">Sign Out</Link></li>

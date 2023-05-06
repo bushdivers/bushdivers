@@ -5,7 +5,6 @@ namespace App\Console;
 use App\Models\Enums\FinancialConsts;
 use App\Services\Contracts\CheckForExpiry;
 use App\Services\Finance\CalcMonthlyFees;
-use App\Services\Finance\CollectFinancePayments;
 use App\Services\Pireps\FindInactivePireps;
 use App\Services\Pireps\RemoveMultiplePireps;
 use App\Services\Rentals\CheckRentalDailyFee;
@@ -23,7 +22,6 @@ class Kernel extends ConsoleKernel
     protected FindInactivePireps $findInactivePireps;
     protected RemoveMultiplePireps $removeMultiplePireps;
     protected CalcMonthlyFees $calcMonthlyFees;
-    protected CollectFinancePayments $collectFinancePayments;
     protected CheckForExpiry $checkForExpiry;
 
     public function __construct(
@@ -33,7 +31,6 @@ class Kernel extends ConsoleKernel
         FindInactivePireps $findInactivePireps,
         RemoveMultiplePireps $removeMultiplePireps,
         CalcMonthlyFees $calcMonthlyFees,
-        CollectFinancePayments $collectFinancePayments,
         CheckForExpiry $checkForExpiry
     )
     {
@@ -42,7 +39,6 @@ class Kernel extends ConsoleKernel
         $this->findInactivePireps = $findInactivePireps;
         $this->removeMultiplePireps = $removeMultiplePireps;
         $this->calcMonthlyFees = $calcMonthlyFees;
-        $this->collectFinancePayments = $collectFinancePayments;
         $this->checkForExpiry = $checkForExpiry;
     }
 
@@ -86,12 +82,6 @@ class Kernel extends ConsoleKernel
             $this->calcMonthlyFees->execute();
             Log::info('Monthly financials was called');
         })->monthly();
-
-        // finance payments
-        $schedule->call(function () {
-           $this->collectFinancePayments->execute();
-            Log::info('Loan repayments was called');
-        })->daily();
     }
 
     /**
