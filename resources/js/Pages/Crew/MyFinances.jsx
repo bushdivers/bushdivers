@@ -1,4 +1,7 @@
+import { Inertia } from '@inertiajs/inertia'
+import { usePage } from '@inertiajs/inertia-react'
 import React from 'react'
+import { displayNumber } from '../../Helpers/general.helpers'
 import AppLayout from '../../Shared/AppLayout'
 import Card from '../../Shared/Elements/Card'
 import { format } from 'date-fns'
@@ -37,7 +40,27 @@ const renderTransactionType = (transactionType) => {
   }
 }
 
-const MyFinances = ({ accounts, balance }) => {
+const MyFinances = ({ accounts, balance, loanAvailable }) => {
+  const { auth } = usePage().props
+
+  function handleBorrowClick () {
+    const value = window.prompt('Enter amount to borrow')
+    if (parseFloat(value) > loanAvailable) {
+      window.alert('Amount to borrow must be less than or equal to available amount!')
+    } else {
+      Inertia.post('/loans', { loanAmount: value, transaction: 'borrow' })
+    }
+  }
+
+  function handleRepayClick () {
+    const value = window.prompt('Enter amount to repay')
+    if (parseFloat(value) > auth.user.loan) {
+      window.alert('Amount to repay must be less than or equal to current amount!')
+    } else {
+      Inertia.post('/loans', { loanAmount: value, transaction: 'repay' })
+    }
+  }
+
   return (
     <div>
       <div className="flex flex-col md:flex-row md:justify-between">
@@ -68,9 +91,19 @@ const MyFinances = ({ accounts, balance }) => {
           <Pagination pages={accounts} />
         </div>
       </div>
-        <div className="md:w-1/2 md:mx-2">
+        <div className="md:w-1/4 md:mx-2">
           <Card title="Current Balance">
-            <h4>${balance.toFixed(2)}</h4>
+            <h4>${displayNumber(balance)}</h4>
+          </Card>
+          <div className="mt-2">
+            <Card title="Current Loan">
+              <div className="flex items-center gap-2"><h4>${auth.user.loan > 0.00 ? '-' : ''}{displayNumber(auth.user.loan)}</h4><button onClick={() => handleRepayClick()} className="btn btn-primary btn-sm">Repay</button></div>
+            </Card>
+          </div>
+        </div>
+        <div className="md:w-1/4 md:mx-2">
+          <Card title="Available to Borrow">
+            <div className="flex items-center gap-2"><h4>${displayNumber(loanAvailable)}</h4><button onClick={() => handleBorrowClick()} className="btn btn-primary btn-sm">Borrow</button></div>
           </Card>
         </div>
       </div>

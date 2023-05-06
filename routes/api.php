@@ -54,7 +54,7 @@ Route::middleware('auth.schedule')->group(function () {
     Route::post('/schedule/contracts/clean', \App\Http\Controllers\Scheduler\Contracts\CheckForExpiredContractsController::class);
     Route::post('/schedule/rentals/charge', \App\Http\Controllers\Scheduler\Rentals\ProcessDailyRentalsController::class);
     Route::post('/schedule/finance/fees', \App\Http\Controllers\Scheduler\Finance\ProcessAirlineFeesController::class);
-    Route::post('/schedule/finance/loans', \App\Http\Controllers\Scheduler\Finance\CollectLoanPaymentsController::class);
+//    Route::post('/schedule/finance/loans', \App\Http\Controllers\Scheduler\Finance\CollectLoanPaymentsController::class);
 });
 
 Route::middleware('auth.bot')->group(function () {

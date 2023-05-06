@@ -21,7 +21,8 @@ class ShowUserFinancesController extends Controller
     {
         $accounts = DB::table('user_accounts')->where('user_id', Auth::user()->id)->orderBy('created_at', 'desc')->paginate(15);
         $balance = DB::table('user_accounts')->where('user_id', Auth::user()->id)->get();
+        $loanAvailable = (50000 + (($balance->sum('total') - Auth::user()->loan)* 0.4)) - Auth::user()->loan;
 
-        return Inertia::render('Crew/MyFinances', ['accounts' => $accounts, 'balance' => $balance->sum('total')]);
+        return Inertia::render('Crew/MyFinances', ['accounts' => $accounts, 'balance' => $balance->sum('total'), 'loanAvailable' => $loanAvailable]);
     }
 }

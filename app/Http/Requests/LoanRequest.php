@@ -24,11 +24,7 @@ class LoanRequest extends FormRequest
     public function rules()
     {
         return [
-            'loanAmount' => 'required',
-            'total' => 'required',
-            'payment' => 'required',
-            'term' => 'required',
-            'interest' => 'required'
+            'loanAmount' => 'required'
         ];
     }
 }

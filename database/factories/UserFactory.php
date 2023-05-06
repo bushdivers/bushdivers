@@ -31,7 +31,8 @@ class UserFactory extends Factory
             'current_airport_id' => 'AYMR',
             'toc_accepted' => true,
             'opt_in' => false,
-            'rank_id' => 1
+            'rank_id' => 1,
+            'loan' => 0.00
         ];
     }
 

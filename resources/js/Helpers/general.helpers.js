@@ -28,12 +28,19 @@ export const parseMapStyle = (mapStyle) => {
   }
 }
 
-export const formatNumber = (n) => {
-  const nf = Intl.NumberFormat('en-US')
-  return nf.format(Math.round(n))
-}
+export const capitalize = s => (s && s[0].toUpperCase() + s.slice(1)) || ''
+
+export const displayNumber = (n, decimal = true) => decimal ? parseFloat(n).toLocaleString(undefined, { maximumFractionDigits: 2 }) : parseInt(n).toLocaleString()
 
 export const getDistance = (lat1, lon1, lat2, lon2) => {
   const distanceM = haversineDistance({ latitude: lat1, longitude: lon1 }, { latitude: lat2, longitude: lon2 })
   return Math.round(distanceM / 1852)
+}
+
+export function dynamicSort (property, direction) {
+  const sortOrder = direction === 'asc' ? 1 : -1
+  return function (a, b) {
+    const result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0
+    return result * sortOrder
+  }
 }

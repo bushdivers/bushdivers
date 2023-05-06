@@ -28,19 +28,31 @@ class ApplyForLoanTest extends TestCase
      */
     public function test_apply_for_loan_adds_loan()
     {
+        $this->withExceptionHandling();
         $data = [
-            'loanAmount' => 2000,
-            'total' => 2200,
-            'payment' => 220,
-            'term' => 10,
-            'interest' => 200
+            'loanAmount' => 10,
+            'transaction' => 'borrow'
         ];
         $this->actingAs($this->user)->post('/loans', $data);
-        $this->assertDatabaseHas('loans', [
-            'user_id' => $this->user->id,
-            'monthly_payment' => 220,
-            'total_remaining' => $data['loanAmount'] + $data['interest'],
-            'term_months' => 10
+        $this->assertDatabaseHas('users', [
+            'id' => $this->user->id,
+            'loan' => 10
+        ]);
+    }
+
+    public function test_repay_loan_removes_loan()
+    {
+        $user = User::factory()->create([
+            'loan' => 500.00
+        ]);
+        $data = [
+            'loanAmount' => 400.00,
+            'transaction' => 'repayment'
+        ];
+        $this->actingAs($user)->post('/loans', $data);
+        $this->assertDatabaseHas('users', [
+            'id' => $user->id,
+            'loan' => 100
         ]);
     }
 
@@ -48,15 +60,29 @@ class ApplyForLoanTest extends TestCase
     {
         $data = [
             'loanAmount' => 2000,
-            'total' => 2200,
-            'payment' => 220,
-            'term' => 10,
-            'interest' => 200
+            'transaction' => 'borrow'
         ];
         $this->actingAs($this->user)->post('/loans', $data);
         $this->assertDatabaseHas('user_accounts', [
             'user_id' => $this->user->id,
-            'total' => 2200,
+            'total' => 2000,
+            'type' => TransactionTypes::Loan
+        ]);
+    }
+
+    public function test_repay_loan_adds_user_transaction()
+    {
+        $user = User::factory()->create([
+            'loan' => 500.00
+        ]);
+        $data = [
+            'loanAmount' => 200.00,
+            'transaction' => 'repay'
+        ];
+        $this->actingAs($user)->post('/loans', $data);
+        $this->assertDatabaseHas('user_accounts', [
+            'user_id' => $user->id,
+            'total' => -200.00,
             'type' => TransactionTypes::Loan
         ]);
     }
