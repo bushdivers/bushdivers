@@ -17,6 +17,7 @@ class CreateUser
         $user->toc_accepted = true;
         $user->opt_in = $optin;
         $user->rank_id = 1;
+$user->loan = 0.00;
         $user->save();
 
         return $user;
