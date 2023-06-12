@@ -34,6 +34,6 @@ class ShowPilotRosterController extends Controller
 
         return Inertia::render('Crew/Roster', ['roster' => $users->sortBy([
             [$sortBy, $direction]
-        ])]);
+        ])->values()]);
     }
 }
