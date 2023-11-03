@@ -14,6 +14,8 @@ class RemoveSinglePirep
 
         foreach ($pirepCargo as $cargo) {
             $cc = Contract::find($cargo->contract_cargo_id);
+            if (!$cc)
+                continue; // In case contract already cleaned
             $cc->active_pirep = null;
             $cc->save();
         }
