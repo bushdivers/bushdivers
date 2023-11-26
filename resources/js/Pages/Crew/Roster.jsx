@@ -16,7 +16,6 @@ const Roster = ({ roster }) => {
   useEffect(() => {
     setSortBy(Inertia.restore('sortBy'))
     setSortDirection(Inertia.restore('sortDirection'))
-    console.log(sortBy)
   })
 
   function handleSortChange (e) {

@@ -19,6 +19,7 @@ class ShowUsersController extends Controller
     public function __invoke(Request $request): Response
     {
         $users = User::orderBy('id', 'asc')->paginate(10);
+        $users->makeVisible(['name','email']);
         return Inertia::render('Admin/Users', ['users' => $users]);
     }
 }

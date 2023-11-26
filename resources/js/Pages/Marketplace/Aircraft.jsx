@@ -11,7 +11,7 @@ const Aircraft = ({ fleet }) => {
       {fleet && fleet.map((f) => (
         <div key={f.id} className="m-4 cursor-pointer w-1/4">
           <Card>
-          <div><img src={f.rental_image} className="rounded-t w-full" /></div>
+          {f.rental_image && <div><img src={f.rental_image} className="rounded-t w-full" /></div>}
           <div className="p-4">
             <div className="text-lg">{f.name}</div>
             <div className="my-1">

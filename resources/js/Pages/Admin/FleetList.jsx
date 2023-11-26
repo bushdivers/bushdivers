@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import PageTitle from '../../Shared/Navigation/PageTitle'
 import NoContent from '../../Shared/Elements/NoContent'
 import { Link } from '@inertiajs/inertia-react'
 import FleetAircraft from '../../Shared/Components/Admin/FleetAircraft'
 import AppLayout from '../../Shared/AppLayout'
-import { faClose, faPen } from '@fortawesome/free-solid-svg-icons'
+import { faPen, faPlus, faTrashCan } from '@fortawesome/free-solid-svg-icons'
+import Card from '../../Shared/Elements/Card'
+import { Inertia } from '@inertiajs/inertia'
 
 const EmptyData = (props) => {
   return (
@@ -16,19 +17,25 @@ const EmptyData = (props) => {
   )
 }
 
-const FleetList = ({ fleet }) => {
+const FleetList = ({ fleet, rental }) => {
   const [showDetail, setShowDetail] = useState(false)
 
   const toggleDetail = () => {
     setShowDetail(!showDetail)
   }
 
+  const handleDelete = (id) => {
+    const accept = window.confirm('Are you sure you wish to delete this fleet?')
+    if (!accept) return
+
+    Inertia.delete(`/admin/fleet/delete/${id}`)
+  }
+
   return (
-    <div className="p-4">
-      <PageTitle title="Fleet" />
-      <div className="flex flex-col lg:flex-row justify-between mt-4">
-        <div className="w-full">
-          <div className="rounded shadow bg-white overflow-x-auto mt-4">
+    <div>
+      <div className="flex flex-col md:flex-row md:justify-between">
+        <Card>
+          <div className="overflow-x-auto">
             <div className="flex justify-between">
               {fleet && fleet.length > 0 && <button onClick={toggleDetail} className="btn btn-secondary m-2">Toggle fleet aircraft details</button>}
               <div className="inline m-2">
@@ -40,7 +47,7 @@ const FleetList = ({ fleet }) => {
             {fleet && fleet.length > 0 &&
             // (
             <div>
-              <table className="table-condensed table-auto">
+              <table className="table table-compact w-full">
                 <thead>
                 <tr className="">
                   <th>Id</th>
@@ -48,6 +55,7 @@ const FleetList = ({ fleet }) => {
                   <th>Manufacturer</th>
                   <th>Name</th>
                   <th>Qty</th>
+                  <th>Can Rent</th>
                   <td>Actions</td>
                 </tr>
                 </thead>
@@ -60,14 +68,20 @@ const FleetList = ({ fleet }) => {
                       <td>{f.manufacturer}</td>
                       <td>{f.name}</td>
                       <td>{f.aircraft.length}</td>
+                      <td>{f.is_rental ? 'Yes' : 'No'}</td>
                       <td>
                         <div className="flex items-center">
                             <Link href={`/admin/fleet/edit/${f.id}`} className="btn btn-secondary flex items-center mr-2">
                               <FontAwesomeIcon icon={faPen} />
                             </Link>
-                            <Link href={`/admin/fleet/delete/${f.id}`} className="btn btn-light flex items-center mr-2">
-                              <FontAwesomeIcon icon={faClose} />
+                            <Link href={`/admin/aircraft/create?fleet=${f.id}`} className="btn btn-light flex items-center mr-2">
+                              <FontAwesomeIcon icon={faPlus} />
                             </Link>
+                            {f.aircraft.length === 0 &&
+                              <Link onClick={() => handleDelete(f.id)} className="btn btn-light flex items-center mr-2">
+                                <FontAwesomeIcon icon={faTrashCan} />
+                              </Link>
+                            }
                         </div>
                       </td>
                     </tr>
@@ -80,8 +94,8 @@ const FleetList = ({ fleet }) => {
               // )
             }
           </div>
-        </div>
-    </div>
+          </Card>
+      </div>
     </div>
   )
 }

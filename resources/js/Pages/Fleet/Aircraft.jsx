@@ -114,6 +114,18 @@ const Aircraft = ({ aircraft, maintenanceStatus, pireps }) => {
     Inertia.post('/aircraft/maintenance', data)
   }
 
+  const handleRelocate = (aircraft) => {
+    const dest = window.prompt('Enter ICAO of destination airport', aircraft.hub_id)
+    if (!dest || dest.length < 2) return
+
+    const data = {
+      aircraft: aircraft.id,
+      dest: dest
+    }
+
+    Inertia.post('/aircraft/maintenance/relocate', data)
+  }
+
   const handleGeneralMaintenance = (aircraft, maintenanceType, engine = null) => {
     const res = checkAircraftAtHub(aircraft)
     if (!res) {
@@ -192,6 +204,7 @@ const Aircraft = ({ aircraft, maintenanceStatus, pireps }) => {
                   <div className="flex justify-between space-x-1">
                     <button className="btn btn-secondary btn-sm my-1" onClick={() => handleGeneralMaintenance(aircraft, 4)}>General Maintenance</button>
                     <button className="btn btn-secondary my-1 btn-sm" onClick={() => handleAnnual(aircraft)}>Annual Inspection</button>
+                    <button className="btn btn-secondary my-1 btn-sm" onClick={() => handleRelocate(aircraft)}>Relocate</button>
                   </div>
                 )
                 }

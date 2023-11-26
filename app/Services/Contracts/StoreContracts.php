@@ -13,6 +13,9 @@ class StoreContracts
     public function execute($data, $isAvailable = true, $isCustom = false, $userId = null)
     {
         foreach ($data as $contractInfo) {
+            if (!$contractInfo)
+                continue;
+
             $contract = new Contract();
             $contract->contract_type_id = 1;
             $contract->dep_airport_id = $contractInfo['departure'];

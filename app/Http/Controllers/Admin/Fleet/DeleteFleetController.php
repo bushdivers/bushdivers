@@ -17,7 +17,10 @@ class DeleteFleetController extends Controller
      */
     public function __invoke(Request $request, $id): RedirectResponse
     {
-        $fleet = Fleet::find($id);
+        $fleet = Fleet::withCount('aircraft')->find($id);
+        if ($fleet && $fleet->aircraft_count > 0)
+            return redirect()->back()->with(['error' => 'Unable to delete fleet previously used.']);
+
         $fleet->delete();
 
         return redirect()->back()->with(['success' => 'Fleet removed']);

@@ -7,6 +7,7 @@ use App\Http\Requests\AdminAddFleet;
 use App\Models\Fleet;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class CreateFleetController extends Controller
 {
@@ -37,6 +38,14 @@ class CreateFleetController extends Controller
         $fleet->cruise_speed = $request->cruise;
         $fleet->image_url = '';
         $fleet->size = $request->size;
+
+        $fleet->is_rental = $request->is_rental;
+        $fleet->rental_cost = $request->rental_cost;
+        $fleet->hq = Str::upper($request->hq);
+        $fleet->new_price = $request->new_price;
+        $fleet->used_low_price = $request->used_low_price;
+        $fleet->used_high_price = $request->used_high_price;
+
         $fleet->save();
 
         return redirect()->route('admin.fleet')->with(['success' => 'Fleet added']);

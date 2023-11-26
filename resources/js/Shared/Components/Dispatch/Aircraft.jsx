@@ -3,7 +3,7 @@ import NoContent from '../../Elements/NoContent'
 import { Link, usePage } from '@inertiajs/inertia-react'
 import Tooltip from '../../Elements/Tooltip'
 import AircraftCondition from '../Fleet/AircraftCondition'
-import { faTicket } from '@fortawesome/free-solid-svg-icons'
+import { faScrewdriverWrench, faTicket } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Card from '../../Elements/Card'
 import Badge from '../../Elements/Badge'
@@ -44,7 +44,7 @@ const Aircraft = (props) => {
                       {ac.rental_airport_id && <span>{ac.registration}</span>}
                       {ac.owner_id === auth.user.id ? <span className="mx-2"><Badge color="primary" label="Private" /></span> : <></>}
                       {ac.rental_airport_id && <span className="mx-2"><Badge color="primary" label="Rental" /></span> }
-                      {ac.maintenance_status && <span className="mx-2"><i className="material-icons md-18">engineering</i></span>}
+                      {ac.maintenance_status && <span className="mx-2"><span className="ml-2 text-orange-500"><FontAwesomeIcon icon={faScrewdriverWrench} /></span></span>}
                     </Tooltip>
                   </td>
                   <td>{ac.fleet.manufacturer} {ac.fleet.name} ({ac.fleet.type})</td>

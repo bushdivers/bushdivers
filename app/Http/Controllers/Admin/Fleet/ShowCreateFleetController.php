@@ -17,6 +17,6 @@ class ShowCreateFleetController extends Controller
      */
     public function __invoke(Request $request): Response
     {
-        return Inertia::render('Admin/FleetCreate');
+        return Inertia::render('Admin/FleetEdit', ['manufacturers' => \App\Models\Manufacturer::all()]);
     }
 }

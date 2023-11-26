@@ -13,7 +13,7 @@ use Inertia\Response;
 class ShowResourcesController extends Controller
 {
     /**
-     * Handle the incoming request.
+     * Handle the incoming reques
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response

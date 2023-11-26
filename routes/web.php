@@ -19,6 +19,7 @@ Route::get('/', \App\Http\Controllers\General\ShowHomeController::class)
 Route::get('/privacy', function () {
     return \Inertia\Inertia::render('General/Privacy');
 });
+
 Route::get('/ranks', \App\Http\Controllers\General\ShowRanksController::class)
     ->name('ranks');
 Route::get('/hubs', \App\Http\Controllers\Airports\ShowHubsController::class)
@@ -91,6 +92,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/airports/{icao?}', \App\Http\Controllers\Airports\ShowAirportController::class)
         ->name('airport');
 
+    Route::middleware('role:airport_manager')->group(function () {
+        Route::post('/airports/maintenance/rename', \App\Http\Controllers\Airports\RenameAirportController::class)
+        ->name('airport.rename');
+    });
+
+
     // Aircraft/Fleet
     Route::get('/aircraft/{id}', \App\Http\Controllers\Fleet\ShowAircraftController::class)
         ->name('aircraft');
@@ -100,8 +107,13 @@ Route::middleware('auth')->group(function () {
         ->name('rentals.rent');
     Route::post('/rentals/end/{id}', \App\Http\Controllers\Rentals\EndRentalController::class)
         ->name('rentals.end');
-    Route::post('/aircraft/maintenance', \App\Http\Controllers\Fleet\PerformMaintenanceController::class)
-        ->name('aircraft.maintenance');
+
+    Route::middleware('role:fleet_manager')->group(function () {
+        Route::post('/aircraft/maintenance', \App\Http\Controllers\Fleet\PerformMaintenanceController::class)
+            ->name('aircraft.maintenance');
+        Route::post('/aircraft/maintenance/relocate', \App\Http\Controllers\Fleet\RelocateMaintenanceController::class)
+            ->name('aircraft.relocate');
+    });
 
     // marketplace
     Route::get('/marketplace', \App\Http\Controllers\MarketPlace\ShowMarketPlaceController::class)
@@ -138,21 +150,13 @@ Route::middleware('auth')->group(function () {
     Route::post('/pireps/submit', \App\Http\Controllers\Pireps\ProcessPirepSubmissionController::class)
         ->name('pireps.process');
 
-    Route::middleware('admin')->group(function () {
-        Route::get('/admin/pireps', \App\Http\Controllers\Admin\Pireps\ShowPirepsListController::class)
-            ->name('admin.pireps');
-        Route::get('/admin/users', \App\Http\Controllers\Admin\Users\ShowUsersController::class)
-            ->name('admin.users');
-        Route::get('/admin/users/admin/{userId}', \App\Http\Controllers\Admin\Users\SetAdminController::class)
-            ->name('admin.users.admin');
-        Route::get('/admin/users/active/{userId}', \App\Http\Controllers\Admin\Users\SetStatusController::class)
-            ->name('admin.users.active');
+    Route::middleware('role:fleet_admin')->group(function() {
         Route::get('/admin/fleet', \App\Http\Controllers\Admin\Fleet\ShowFleetListController::class)
             ->name('admin.fleet');
         Route::get('/admin/fleet/create', \App\Http\Controllers\Admin\Fleet\ShowCreateFleetController::class)
             ->name('admin.fleet.create');
         Route::post('/admin/fleet/create', \App\Http\Controllers\Admin\Fleet\CreateFleetController::class)
-            ->name('admin.flee.store');
+            ->name('admin.fleet.store');
         Route::get('/admin/fleet/edit/{id}', \App\Http\Controllers\Admin\Fleet\ShowUpdateFleetController::class)
             ->name('admin.fleet.edit');
         Route::post('/admin/fleet/edit/{id}', \App\Http\Controllers\Admin\Fleet\UpdateFleetController::class)
@@ -165,6 +169,17 @@ Route::middleware('auth')->group(function () {
             ->name('admin.aircraft.store');
         Route::get('/admin/aircraft/delete/{id}', \App\Http\Controllers\Admin\Fleet\DeleteAircraftController::class)
             ->name('admin.aircraft.delete');
+    });
+
+    Route::middleware('admin')->group(function () {
+        Route::get('/admin/pireps', \App\Http\Controllers\Admin\Pireps\ShowPirepsListController::class)
+            ->name('admin.pireps');
+        Route::get('/admin/users', \App\Http\Controllers\Admin\Users\ShowUsersController::class)
+            ->name('admin.users');
+        Route::get('/admin/users/admin/{userId}', \App\Http\Controllers\Admin\Users\SetAdminController::class)
+            ->name('admin.users.admin');
+        Route::get('/admin/users/active/{userId}', \App\Http\Controllers\Admin\Users\SetStatusController::class)
+            ->name('admin.users.active');
         Route::post('/pireps/approve', \App\Http\Controllers\Pireps\ApprovePirepController::class)
             ->name('pireps.approve');
         Route::get('/admin/resources', \App\Http\Controllers\Admin\Resources\ShowResourcesController::class)
@@ -176,4 +191,6 @@ Route::middleware('auth')->group(function () {
         Route::post('/admin/resources/reject/{id}', \App\Http\Controllers\Admin\Resources\RejectResourceController::class)
             ->name('admin.resources.reject');
     });
+
+
 });

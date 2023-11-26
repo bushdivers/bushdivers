@@ -18,7 +18,15 @@ import { usePage } from '@inertiajs/inertia-react'
 
 const accessToken = import.meta.env.VITE_MAPBOX_TOKEN
 
+function renameAirport (airport) {
+  const newIcao = window.prompt('Enter new ICAO code for this airport', airport)
+  if (newIcao.length <= 2) return
+
+  Inertia.post('/airports/maintenance/rename', { airport, newIcao })
+}
+
 function AirportInfo ({ airport, updateCurrentViews, currentViews }) {
+  const { auth } = usePage().props
   const { current: map } = useMap()
   const changeViews = (view) => {
     if (view === 'aircraft' && !currentViews.includes('aircraft')) {
@@ -44,6 +52,7 @@ function AirportInfo ({ airport, updateCurrentViews, currentViews }) {
               <Tooltip direction="top" content="Runway Info"><button onClick={() => changeViews('runway')} className={`btn ${currentViews.includes('runway') ? 'btn-primary' : 'btn-secondary'} btn-sm`}><FontAwesomeIcon icon={faRoad} /></button></Tooltip>
               <Tooltip direction="top" content="Contracts"><button onClick={() => changeViews('contracts')} className={`btn ${currentViews.includes('contracts') ? 'btn-primary' : 'btn-secondary'} btn-sm`}><FontAwesomeIcon icon={faFileSignature} /></button></Tooltip>
               <Tooltip direction="top" content="Aircraft"><button onClick={() => changeViews('aircraft')} className={`btn ${currentViews.includes('aircraft') ? 'btn-primary' : 'btn-secondary'} btn-sm`}><FontAwesomeIcon icon={faPlane} /></button></Tooltip>
+              {auth.user.user_roles.includes('airport_manager') && <button onClick={() => renameAirport(airport.identifier)} className='btn btn-secondary btn-sm'>Rename ICAO</button>}
             </div>
           </Card>
         </div>

@@ -24,6 +24,7 @@ const Users = ({ users }) => {
             <th>Patreon</th>
             <th>Status</th>
             <th>Admin</th>
+            <th>Roles</th>
             <th>Date Joined</th>
           </tr>
           </thead>
@@ -57,6 +58,11 @@ const Users = ({ users }) => {
                       : <FontAwesomeIcon icon={faUserShield} />
                     }
                   </Link>
+                </div>
+              </td>
+              <td>
+                <div className="flex items-center">
+                  {entry.user_roles && entry.user_roles.map((role) => (role + ' '))}
                 </div>
               </td>
               <td>{format(new Date(entry.created_at), 'dd LLL yyyy')}</td>
