@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
-import PageTitle from '../../Shared/Navigation/PageTitle'
 import { usePage } from '@inertiajs/inertia-react'
 import { Inertia } from '@inertiajs/inertia'
 import AppLayout from '../../Shared/AppLayout'
+import Card from '../../Shared/Elements/Card'
 
 const AircraftCreate = ({ fleet, hubs }) => {
   console.log(fleet)
@@ -29,35 +29,40 @@ const AircraftCreate = ({ fleet, hubs }) => {
 
   return (
     <div className="p-4">
-      <PageTitle title="Create Aircraft" />
-      <div className="lg:w-1/2 bg-white mt-2 p-4 rounded shadow">
+      <Card>
+      <div className="lg:w-1/2 mt-2 p-4 rounded shadow">
         <form onSubmit={handleSubmit}>
           <div className="my-2">
-            <label htmlFor="fleet" className="block"><span className="text-gray-700">Fleet type</span></label>
-            <select id="fleet" value={values.fleet} onChange={handleChange} className="form-select form">
+            <label htmlFor="fleet" className="block">Fleet type</label>
+            <select id="fleet" value={values.fleet} onChange={handleChange} className="select">
               {fleet.map((f) => (<option key={f.id} value={f.id}>{f.type}</option>))}
             </select>
             {errors.fleet && <div className="text-sm text-red-500">{errors.fleet}</div>}
           </div>
           <div className="my-2">
-            <label htmlFor="registration" className="block"><span className="text-gray-700">Registration</span></label>
-            <input id="registration" value={values.registration} onChange={handleChange} type="text" className="form-input form" />
+            <label htmlFor="registration" className="block">Registration</label>
+            <input id="registration" value={values.registration} onChange={handleChange} type="text" className="input" />
             {errors.registration && <div className="text-sm text-red-500">{errors.registration}</div>}
           </div>
           <div className="my-2">
-            <label htmlFor="hub" className="block"><span className="text-gray-700">Start location</span></label>
-            <select id="hub" value={values.hub} onChange={handleChange} className="form-select form">
+            <label htmlFor="hub" className="block">Start location</label>
+            <select id="hub" value={values.hub} onChange={handleChange} className="select">
               {hubs.map((hub) => (<option key={hub.identifier} value={hub.identifier}>{hub.identifier}</option>))}
             </select>
             {errors.hub && <div className="text-sm text-red-500">{errors.hub}</div>}
           </div>
+          <div className="my-2">
+            <label htmlFor="cost" className="block">Cost</label>
+            <input id="cost" value={values.cost} onChange={handleChange} type="number" className="input" />
+          </div>
           <button className="btn btn-primary">Create Aircraft</button>
         </form>
       </div>
+      </Card>
     </div>
   )
 }
 
-AircraftCreate.layout = page => <AppLayout children={page} title="Admin - Create Aircraft" heading="Creat New Aircraft" />
+AircraftCreate.layout = page => <AppLayout children={page} title="Admin - Create Aircraft" heading="Create New Aircraft" />
 
 export default AircraftCreate

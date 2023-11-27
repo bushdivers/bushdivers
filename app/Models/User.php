@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Laravel\Sanctum\HasApiTokens;
 
@@ -32,6 +33,10 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'reset_token',
+        'api_token',
+        'email',
+        'name'
     ];
 
     /**
@@ -91,6 +96,11 @@ class User extends Authenticatable
         }
 
         return $r;
+    }
+
+    public function hasRole(string $role): bool
+    {
+        return in_array($role, $this->user_roles);
     }
 
     public function getBalanceAttribute()

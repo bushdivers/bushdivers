@@ -3,6 +3,7 @@
 namespace App\Http;
 
 use App\Http\Middleware\BotAuthMiddleware;
+use App\Http\Middleware\EnsureUserHasRole;
 use App\Http\Middleware\EnsureUserIsAdmin;
 use App\Http\Middleware\InertiaVersionMiddleware;
 use App\Http\Middleware\SchedulerAuthMiddleware;
@@ -69,6 +70,7 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'admin' => EnsureUserIsAdmin::class,
+        'role' => EnsureUserHasRole::class,
         'auth.bot' => BotAuthMiddleware::class,
         'auth.schedule' => SchedulerAuthMiddleware::class,
     ];

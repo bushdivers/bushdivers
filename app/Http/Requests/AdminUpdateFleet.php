@@ -38,7 +38,14 @@ class AdminUpdateFleet extends FormRequest
             'ceiling' => 'required|numeric',
             'range' => 'required|numeric',
             'cruise' => 'required|numeric',
-            'size' => 'required'
+            'size' => 'required',
+
+            'is_rental' => 'required|boolean',
+            'rental_price' => 'exclude_if:is_rental,false|numeric',
+            'hq' => 'exclude_if:is_rental,false|required|exists:airports,identifier',
+            'new_price' => 'exclude_if:is_rental,false|required|numeric|gte:used_high_price',
+            'used_low_price' => 'exclude_if:is_rental,false|required|numeric',
+            'used_high_price' => 'exclude_if:is_rental,false|required|numeric|gte:used_low_price',
         ];
     }
 }

@@ -7,7 +7,7 @@ import { Link, usePage } from '@inertiajs/inertia-react'
 import TextInput from '../Elements/Forms/TextInput'
 import { Inertia } from '@inertiajs/inertia'
 
-const MenuItems = ({ mobile }) => {
+const MenuItems = ({ mobile, admin }) => {
   return (
     <>
       <li><Link href="/live-flights">Live Flights</Link></li>
@@ -51,6 +51,18 @@ const MenuItems = ({ mobile }) => {
           <li><Link href="/logout">Sign Out</Link></li>
         </ul>
       </li>
+      { admin && <li tabIndex={0}>
+        <a className="justify-between">
+          Admin
+          {mobile ? <FontAwesomeIcon icon={faChevronRight} /> : <FontAwesomeIcon icon={faChevronDown} /> }
+        </a>
+        <ul className="p-2 bg-neutral">
+          <li><Link href="/admin/pireps">Pireps</Link></li>
+          <li><Link href="/admin/fleet">Fleet</Link></li>
+          <li><Link href="/admin/users">User</Link></li>
+        </ul>
+      </li>
+      }
     </>
   )
 }
@@ -76,7 +88,7 @@ const AppBar = () => {
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" /></svg>
           </label>
           <ul tabIndex={0} className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-neutral rounded-box w-52">
-            <MenuItems mobile={true} />
+            <MenuItems mobile={true} admin={auth.user.is_admin} />
             <span className="ml-2 flex items-center">
             <TextInput inline id="icao" onChange={handleChange} type="text" placeHolder="ICAO" value={icao} />
             <button onClick={() => redirectToAirport()} className="btn btn-primary btn-sm ml-2">Search</button>
@@ -90,7 +102,7 @@ const AppBar = () => {
       </div>
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal p-0">
-          <MenuItems mobile={false} />
+          <MenuItems mobile={false} admin={auth.user.is_admin} />
           <span className="ml-2 flex items-center">
             <TextInput inline id="icao" onChange={handleChange} type="text" placeHolder="Enter ICAO" value={icao} />
             <button onClick={() => redirectToAirport()} className="btn btn-primary btn-sm ml-2">Search</button>
