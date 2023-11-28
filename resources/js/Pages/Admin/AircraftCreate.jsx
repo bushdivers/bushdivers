@@ -4,11 +4,10 @@ import { Inertia } from '@inertiajs/inertia'
 import AppLayout from '../../Shared/AppLayout'
 import Card from '../../Shared/Elements/Card'
 
-const AircraftCreate = ({ fleet, hubs }) => {
-  console.log(fleet)
+const AircraftCreate = ({ fleet, hubs, fleetId }) => {
   const { errors } = usePage().props
   const [values, setValues] = useState({
-    fleet: 1,
+    fleet: fleetId ?? '1',
     registration: '',
     hub: 'AYMR'
   })

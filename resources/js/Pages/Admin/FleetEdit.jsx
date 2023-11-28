@@ -13,6 +13,7 @@ const FleetEdit = ({ fleet, manufacturers }) => {
     manufacturer_id: fleet?.manufacturer_id ?? '0',
     powerplants: fleet?.powerplants ?? '',
     engines: fleet?.number_of_engines ?? '',
+    tbo_mins: fleet?.tbo_mins ?? '0',
     fuel: fleet?.fuel_type ?? '1',
     zfw: fleet?.zfw ?? '',
     mtow: fleet?.mtow ?? '',
@@ -83,6 +84,11 @@ const FleetEdit = ({ fleet, manufacturers }) => {
                     <option value="1">Avgas (100LL)</option>
                     <option value="2">Jet Fuel</option>
                   </select>
+                </div>
+                <div className="my-2">
+                  <label htmlFor="tbo_mins" className="block"><span>TBO (minutes)</span></label>
+                  <input id="tbo_mins" value={values.tbo_mins} onChange={handleChange} type="text" className="input" />
+                  {errors.tbo_mins && <div className="text-sm text-red-500">{errors.tbo_mins}</div>}
                 </div>
                 <div className="my-2">
                   <label htmlFor="zfw" className="block"><span>Zero fuel weight / empty weight (lbs)</span></label>

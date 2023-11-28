@@ -21,6 +21,6 @@ class ShowAddAircraftController extends Controller
     {
         $fleet = Fleet::all();
         $hubs = Airport::where('is_hub', true)->orderBy('identifier')->get();
-        return Inertia::render('Admin/AircraftCreate', ['fleet' => $fleet, 'hubs' => $hubs]);
+        return Inertia::render('Admin/AircraftCreate', ['fleet' => $fleet, 'hubs' => $hubs, 'fleetId' => $request->fleet ?? 0]);
     }
 }
