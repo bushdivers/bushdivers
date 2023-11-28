@@ -51,17 +51,19 @@ const MenuItems = ({ mobile, admin }) => {
           <li><Link href="/logout">Sign Out</Link></li>
         </ul>
       </li>
-      { admin && <li tabIndex={0}>
-        <a className="justify-between">
-          Admin
-          {mobile ? <FontAwesomeIcon icon={faChevronRight} /> : <FontAwesomeIcon icon={faChevronDown} /> }
-        </a>
-        <ul className="p-2 bg-neutral">
-          <li><Link href="/admin/pireps">Pireps</Link></li>
-          <li><Link href="/admin/fleet">Fleet</Link></li>
-          <li><Link href="/admin/users">User</Link></li>
-        </ul>
-      </li>
+      { admin
+        ? <li tabIndex={0}>
+          <a className="justify-between">
+            Admin
+            {mobile ? <FontAwesomeIcon icon={faChevronRight} /> : <FontAwesomeIcon icon={faChevronDown} /> }
+          </a>
+          <ul className="p-2 bg-neutral">
+            <li><Link href="/admin/pireps">Pireps</Link></li>
+            <li><Link href="/admin/fleet">Fleet</Link></li>
+            <li><Link href="/admin/users">User</Link></li>
+          </ul>
+        </li>
+        : <></>
       }
     </>
   )

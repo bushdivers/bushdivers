@@ -13,7 +13,7 @@ class AdminAddAircraft extends FormRequest
      */
     public function authorize()
     {
-        return $this->user()->is_admin;
+        return $this->user()->hasRole('fleet_admin') || $this->user()->is_admin;
     }
 
     /**

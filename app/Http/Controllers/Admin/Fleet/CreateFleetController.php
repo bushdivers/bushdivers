@@ -38,6 +38,7 @@ class CreateFleetController extends Controller
         $fleet->cruise_speed = $request->cruise;
         $fleet->image_url = '';
         $fleet->size = $request->size;
+        $fleet->tbo_mins = $request->tbo_mins;
 
         $fleet->is_rental = $request->is_rental;
         $fleet->rental_cost = $request->rental_cost;
@@ -45,6 +46,7 @@ class CreateFleetController extends Controller
         $fleet->new_price = $request->new_price;
         $fleet->used_low_price = $request->used_low_price;
         $fleet->used_high_price = $request->used_high_price;
+        $fleet->manufacturer_id = $request->manufacturer_id;
 
         $fleet->save();
 

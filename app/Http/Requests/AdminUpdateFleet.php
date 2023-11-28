@@ -13,7 +13,7 @@ class AdminUpdateFleet extends FormRequest
      */
     public function authorize()
     {
-        return $this->user()->is_admin;
+        return $this->user()->hasRole('fleet_admin') || $this->user()->is_admin;
     }
 
     /**
@@ -29,6 +29,7 @@ class AdminUpdateFleet extends FormRequest
             'manufacturer' => 'required',
             'powerplants' => 'required',
             'engines' => 'required|numeric',
+            'tbo_mins' => 'required|numeric',
             'fuel' => 'required|numeric',
             'zfw' => 'required|numeric',
             'mtow' => 'required|numeric',
@@ -40,12 +41,13 @@ class AdminUpdateFleet extends FormRequest
             'cruise' => 'required|numeric',
             'size' => 'required',
 
+
             'is_rental' => 'required|boolean',
             'rental_price' => 'exclude_if:is_rental,false|numeric',
             'hq' => 'exclude_if:is_rental,false|required|exists:airports,identifier',
             'new_price' => 'exclude_if:is_rental,false|required|numeric|gte:used_high_price',
             'used_low_price' => 'exclude_if:is_rental,false|required|numeric',
-            'used_high_price' => 'exclude_if:is_rental,false|required|numeric|gte:used_low_price',
+            'used_high_price' => 'exclude_if:is_rental,false|required|numeric|gte:used_low_price'
         ];
     }
 }
