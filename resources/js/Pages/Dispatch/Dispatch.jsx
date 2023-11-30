@@ -6,7 +6,7 @@ import Fuel from '../../Shared/Components/Dispatch/Fuel'
 import Cargo from '../../Shared/Components/Dispatch/Cargo'
 import Aircraft from '../../Shared/Components/Dispatch/Aircraft'
 import { Inertia } from '@inertiajs/inertia'
-import AppLayout from '../../Shared/AppLayout'
+import AppLayout from '../../Components/Layout/AppLayout'
 
 const Dispatch = ({ cargo, aircraft }) => {
   const { auth } = usePage().props

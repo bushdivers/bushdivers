@@ -3,10 +3,9 @@ import { createRoot } from 'react-dom/client'
 import { createInertiaApp } from '@inertiajs/inertia-react'
 import { InertiaProgress } from '@inertiajs/progress'
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers'
+import { ChakraProvider } from '@chakra-ui/react'
 import './bootstrap'
 import '../css/app.css'
-import { FlagsmithProvider } from 'flagsmith/react'
-import flagsmith from 'flagsmith'
 import ThemeContextWrapper from './Context/ThemeContextWrapper'
 
 InertiaProgress.init()
@@ -16,15 +15,12 @@ createInertiaApp({
   title: title => `${title} - Bush Divers`,
   setup ({ el, App, props }) {
     const root = createRoot(el)
-    root.render(<FlagsmithProvider
-      options={{
-        environmentID: import.meta.env.VITE_FLAGSMITH
-      }}
-      flagsmith={flagsmith}
-      >
+    root.render(
         <ThemeContextWrapper>
+          <ChakraProvider>
           <App {...props} />
+          </ChakraProvider>
         </ThemeContextWrapper>
-    </FlagsmithProvider>)
+    )
   }
 })
