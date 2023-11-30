@@ -21,8 +21,9 @@ const SideNavContainer = () => {
           pos="sticky"
           top={0}
           w={{ base: 0, md: '72px' }}
+          bg="gray.900"
           borderRight="1px solid"
-          borderColor="gray.100"
+          borderColor="gray.700"
           p={{ base: 0, md: 2 }}
           paddingTop={8}
           height="100vh"
@@ -37,7 +38,7 @@ const SideNavContainer = () => {
             }
           }}
         >
-          <VStack spacing="5" as="nav" display={{ base: 'none', md: 'flex' }}>
+          <VStack spacing="5" as="nav" display="flex">
       <Image src="https://res.cloudinary.com/dji0yvkef/image/upload/v1628691598/BDLogo.png" boxSize={10} /> {/* OR PUT YOUR LOGO HERE */}
       <List spacing={3}>
           {navItems.map((item, index) => <SideNavItem key={index} index={index} item={item} />)}

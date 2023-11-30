@@ -6,21 +6,6 @@
 /*    @apply bg-gray-200 text-gray-800 dark:bg-gray-800 dark:text-gray-200 font-light text-gray-500 dark:text-gray-400;*/
 /*}*/
 
-h1 {
-    @apply mb-4 font-extrabold tracking-tight leading-none text-4xl text-primary-content;
-}
-
-h2 {
-    @apply text-3xl font-extrabold text-primary-content;
-}
-
-h3 {
-    @apply text-2xl font-bold text-primary-content;
-}
-
-h4 {
-    @apply text-xl font-bold text-primary-content;
-}
 
 /*p {*/
 /*    @apply font-light text-gray-500 dark:text-gray-400;*/

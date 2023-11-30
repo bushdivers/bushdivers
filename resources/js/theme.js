@@ -1,18 +1,35 @@
 import { extendTheme, withDefaultColorScheme } from '@chakra-ui/react'
-import { mode } from '@chakra-ui/theme-tools'
+// import { mode } from '@chakra-ui/theme-tools'
 
 export const customTheme = extendTheme(
   withDefaultColorScheme({
     colorScheme: 'orange'
   }),
   {
+    initialColorMode: 'dark',
+    useSystemColorMode: false,
     styles: {
       global: (props) => ({
         body: {
           fontFamily: 'body',
-          color: mode('gray.800', 'whiteAlpha.900')(props),
-          bg: mode('gray.100', 'gray.800')(props),
+          color: 'gray.100',
+          bg: 'gray.800',
           lineHeight: 'base'
+        },
+        table: {
+          color: 'gray.100'
+        },
+        p: {
+          color: 'gray.100'
+        },
+        h1: {
+          color: 'gray.100'
+        },
+        h2: {
+          color: 'gray.100'
+        },
+        h3: {
+          color: 'gray.100'
         }
       })
     }

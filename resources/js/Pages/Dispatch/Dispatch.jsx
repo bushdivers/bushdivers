@@ -6,6 +6,7 @@ import Fuel from '../../Shared/Components/Dispatch/Fuel'
 import Cargo from '../../Shared/Components/Dispatch/Cargo'
 import Aircraft from '../../Shared/Components/Dispatch/Aircraft'
 import { Inertia } from '@inertiajs/inertia'
+import { Heading, Flex, SimpleGrid, Box, Button, Text } from '@chakra-ui/react'
 import AppLayout from '../../Components/Layout/AppLayout'
 
 const Dispatch = ({ cargo, aircraft }) => {
@@ -145,17 +146,17 @@ const Dispatch = ({ cargo, aircraft }) => {
 
   return (
     <div>
-      <h2>{`Dispatch - ${auth.user.current_airport_id}`}</h2>
-      <div className="flex flex-col md:flex-row justify-between mt-4">
-        <div className="md:w-1/2">
-          <Aircraft aircraft={aircraft} selectedAircraft={selectedAircraft} handleAircraftSelect={handleAircraftSelect} />
-          <Cargo cargo={cargo} selectedCargo={selectedCargo} handleCargoSelect={handleCargoSelect} deadHead={deadHead} handleDeadHead={handleDeadHead} />
-          <Destination currentAirport={auth.user.current_airport_id} updateDestinationValue={setDestination} />
-          <Fuel selectedAircraft={selectedAircraft} fuel={fuel} fuelWeight={fuelWeight} handleUpdateFuel={handleUpdateFuel} error={error} />
-        </div>
-        <div className="md:w-1/2 mt-2">
-          <div className="md:ml-2">
-            <DispatchSummary
+      <Heading size="md">{`Dispatch - ${auth.user.current_airport_id}`}</Heading>
+      <Flex justifyContent="space-between" mt={4}>
+        <SimpleGrid columns={2} spacing={10}>
+          <Box>
+            <Aircraft aircraft={aircraft} selectedAircraft={selectedAircraft} handleAircraftSelect={handleAircraftSelect} />
+            <Cargo cargo={cargo} selectedCargo={selectedCargo} handleCargoSelect={handleCargoSelect} deadHead={deadHead} handleDeadHead={handleDeadHead} />
+            <Destination currentAirport={auth.user.current_airport_id} updateDestinationValue={setDestination} />
+            <Fuel selectedAircraft={selectedAircraft} fuel={fuel} fuelWeight={fuelWeight} handleUpdateFuel={handleUpdateFuel} error={error} />
+          </Box>
+          <Box>
+          <DispatchSummary
               selectedAircraft={selectedAircraft}
               selectedCargo={selectedCargo}
               personWeight={personWeight}
@@ -166,13 +167,13 @@ const Dispatch = ({ cargo, aircraft }) => {
               fuel={fuel}
               deadHead={deadHead}
             />
-            <div className="mt-2 text-right">
-              <button onClick={() => handleSubmitDispatch()} className="btn btn-primary">File Dispatch</button><br />
-              {submitError && <div className="text-error text-xs">{submitError}</div>}
-            </div>
-          </div>
-        </div>
-      </div>
+            <Box textAlign="right" mt={2}>
+              <Button onClick={() => handleSubmitDispatch()}>File Dispatch</Button>
+              {submitError && <Text fontSize="xs" mt={2} color="red.300">{submitError}</Text>}
+            </Box>
+          </Box>
+        </SimpleGrid>
+      </Flex>
     </div>
   )
 }

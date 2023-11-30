@@ -15,13 +15,13 @@ export default function AppLayout ({ children, title, heading, fullSize = false 
     <Grid templateAreas={'\'sidebar main\''} templateColumns="auto 1fr">
       <SideNavContainer />
       <GridItem as="main" area="main">
-        <Box className={`${!fullSize ? 'p-8' : ''}`}>
+        <Box className={`${!fullSize ? 'p-6' : ''}`}>
           {flash.error && <FlashMessage type="error" message={flash.error} />}
           {flash.success && <FlashMessage type="success" message={flash.success} />}
           <Flex alignItems="center" justifyContent="space-between">
             {!fullSize
               ? (
-                <Heading size="md">{heading}</Heading>
+                <Heading size="lg">{heading}</Heading>
                 )
               : (
                 <></>
