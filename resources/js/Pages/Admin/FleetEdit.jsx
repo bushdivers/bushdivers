@@ -25,6 +25,7 @@ const FleetEdit = ({ fleet, manufacturers }) => {
     cruise: fleet?.cruise_speed ?? '',
     size: fleet?.size ?? 'S',
 
+    company_fleet: fleet?.company_fleet ?? '0',
     is_rental: fleet?.is_rental ?? '0',
     rental_cost: fleet?.rental_cost ?? '',
     hq: fleet?.hq ?? '',
@@ -142,6 +143,13 @@ const FleetEdit = ({ fleet, manufacturers }) => {
 
             </div>
             <div className="lg:w-1/2 mt-2 p-4 rounded shadow">
+              <div className="my-2">
+                <label htmlFor="company_fleet" className="block"><span>Is company fleet?</span></label>
+                <select id="company_fleet" value={values.company_fleet} onChange={handleChange} className="select">
+                    <option value="0">No</option>
+                    <option value="1">Yes</option>
+                  </select>
+              </div>
               <div className="my-2">
                 <label htmlFor="is_rental" className="block"><span>Can private rent?</span></label>
                 <select id="is_rental" value={values.is_rental} onChange={handleChange} className="select">

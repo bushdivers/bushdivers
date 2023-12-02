@@ -8,6 +8,7 @@ use App\Models\Aircraft;
 use App\Models\Enums\AircraftState;
 use App\Models\Enums\AircraftStatus;
 use App\Models\Enums\AirlineTransactionTypes;
+use App\Services\Aircraft\CreateAircraft;
 use App\Services\Finance\AddAirlineTransaction;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -15,10 +16,12 @@ use Illuminate\Http\Request;
 class AddAircraftController extends Controller
 {
     protected $addAirlineTransaction;
+    protected $createAircraft;
 
-    public function __construct(AddAirlineTransaction $addAirlineTransaction)
+    public function __construct(AddAirlineTransaction $addAirlineTransaction, CreateAircraft $createAircraft)
     {
         $this->addAirlineTransaction = $addAirlineTransaction;
+        $this->createAircraft = $createAircraft;
     }
 
     /**
@@ -35,14 +38,15 @@ class AddAircraftController extends Controller
         if ($price >= 999999.99)
             return redirect()->back()->withInput()->with(['error' => 'Too expensive']);
 
-        $aircraft = new Aircraft();
-        $aircraft->fleet_id = $request->fleet;
-        $aircraft->current_airport_id = $request->hub;
-        $aircraft->hub_id = $request->hub;
-        $aircraft->registration = $request->registration;
-        $aircraft->state = AircraftState::AVAILABLE;
-        $aircraft->status = AircraftStatus::ACTIVE;
-        $aircraft->save();
+        // Remap some fields to match service
+        $data = $request->all();
+        $data['id'] = $data['fleet'];
+        $data['reg'] = $data['registration'];
+
+        $aircraft = $this->createAircraft->execute($data, 0);
+
+        if (!$aircraft)
+            return redirect()->back()->withInput()->with(['error' => 'Failed to create aircraft']);
 
         if ($price > 0.0)
             $this->addAirlineTransaction->execute(

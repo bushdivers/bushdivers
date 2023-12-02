@@ -41,6 +41,7 @@ class AdminAddFleet extends FormRequest
             'cruise' => 'required|numeric',
             'size' => 'required',
 
+            'company_fleet' => 'required|boolean',
             'is_rental' => 'required|boolean',
             'rental_price' => 'exclude_if:is_rental,false|numeric',
             'hq' => 'exclude_if:is_rental,false|required|exists:airports,identifier',

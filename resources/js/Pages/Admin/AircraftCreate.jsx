@@ -7,8 +7,9 @@ import Card from '../../Shared/Elements/Card'
 const AircraftCreate = ({ fleet, hubs, fleetId }) => {
   const { errors } = usePage().props
   const [values, setValues] = useState({
-    fleet: fleetId ?? '1',
+    fleet: fleetId > 0 ? fleetId : '1',
     registration: '',
+    deliveryIcao: '',
     hub: 'AYMR'
   })
 
@@ -44,7 +45,12 @@ const AircraftCreate = ({ fleet, hubs, fleetId }) => {
             {errors.registration && <div className="text-sm text-red-500">{errors.registration}</div>}
           </div>
           <div className="my-2">
-            <label htmlFor="hub" className="block">Start location</label>
+            <label htmlFor="deliveryIcao" className="block">Start location</label>
+            <input id="deliveryIcao" value={values.deliveryIcao} onChange={handleChange} type="text" className="input" />
+            {errors.deliveryIcao && <div className="text-sm text-red-500">{errors.deliveryIcao}</div>}
+          </div>
+          <div className="my-2">
+            <label htmlFor="hub" className="block">Hub location</label>
             <select id="hub" value={values.hub} onChange={handleChange} className="select">
               {hubs.map((hub) => (<option key={hub.identifier} value={hub.identifier}>{hub.identifier}</option>))}
             </select>
