@@ -4,9 +4,11 @@ namespace App\Services\Aircraft;
 
 use App\Models\Aircraft;
 use App\Models\AircraftEngine;
+use App\Models\Enums\AircraftState;
+use App\Models\Enums\AircraftStatus;
 use App\Models\Fleet;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class CreateAircraft
 {
@@ -16,11 +18,11 @@ class CreateAircraft
         // create aircraft
         $aircraft = new Aircraft();
         $aircraft->fleet_id = $data['id'];
-        $aircraft->current_airport_id = $data['deliveryIcao'];
-        $aircraft->registration = $data['reg'];
-        $aircraft->state = 1;
-        $aircraft->status = 1;
-        $aircraft->hub_id = $data['hub'];
+        $aircraft->current_airport_id = Str::upper($data['deliveryIcao']);
+        $aircraft->registration = Str::upper($data['reg']);
+        $aircraft->state = AircraftState::AVAILABLE;
+        $aircraft->status = AircraftStatus::ACTIVE;
+        $aircraft->hub_id = Str::upper($data['hub']);
         $aircraft->last_inspected_at = Carbon::now();
         $aircraft->owner_id = $userId;
         $aircraft->save();
