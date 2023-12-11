@@ -1,9 +1,11 @@
 import React from 'react'
-import { List, Image, VStack, GridItem, Box, Avatar } from '@chakra-ui/react'
+import { List, Image, VStack, GridItem, Box, Avatar, Tooltip, Link } from '@chakra-ui/react'
 import { ClipboardSignature, BookText, Globe2, AreaChart, BadgeDollarSign, Route, Plane } from 'lucide-react'
+import { usePage } from '@inertiajs/inertia-react'
 import SideNavItem from './SideNavItem'
 
 const SideNavContainer = () => {
+  const { auth } = usePage().props
   const navItems = [
     { label: 'Live Map', icon: <Globe2 />, to: '/live-flights' },
     { label: 'Dispatch', icon: <Route />, to: '/dispatch' },
@@ -39,11 +41,13 @@ const SideNavContainer = () => {
           }}
         >
           <VStack spacing="5" as="nav" display="flex">
-      <Image src="https://res.cloudinary.com/dji0yvkef/image/upload/v1628691598/BDLogo.png" boxSize={10} /> {/* OR PUT YOUR LOGO HERE */}
+      <Image src="https://res.cloudinary.com/dji0yvkef/image/upload/v1628691598/BDLogo.png" boxSize={10} />
       <List spacing={3}>
           {navItems.map((item, index) => <SideNavItem key={index} index={index} item={item} />)}
       </List>
-      <Avatar position="fixed" bottom={0} mb={4} name='Kola Tioluwani' src='https://bit.ly/tioluwani-kolawole' />
+      <Tooltip label="Signout" placement="right">
+        <Avatar cursor="pointer" size="sm" position="fixed" bottom={0} mb={4} name={auth.user.name} />
+      </Tooltip>
       </VStack>
           </Box>
     </GridItem>

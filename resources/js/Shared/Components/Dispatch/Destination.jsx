@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import axios from 'axios'
-import Card from '../../Elements/Card'
-import TextInput from '../../Elements/Forms/TextInput'
+import { Card, CardHeader, CardBody, Box, Input, Heading, Text, Flex } from '@chakra-ui/react'
 
 const Destination = (props) => {
   const [airportError, setAirportError] = useState(null)
@@ -33,16 +32,21 @@ const Destination = (props) => {
   }
 
   return (
-    <div className="mt-2 mr-2">
-      <Card title="Destination (ICAO)">
-        <div className="w-full lg:w-1/4">
-        <TextInput id="icao" type="text" value={icao} onChange={handleDestinationChange} />
-        </div>
-      {airport && <div className="text-sm mt-1">{airport}</div>}
-      {distance && <span className="text-sm">Distance: {distance.toLocaleString(navigator.language)}nm</span>}
-      {airportError && <div className="text-sm text-error mt-1">{airportError}</div>}
+    <Box mt={2}>
+      <Card>
+        <CardHeader>
+          <Heading size="md">Destination (ICAO)</Heading>
+        </CardHeader>
+        <CardBody>
+          <Input id="icao" type="text" value={icao} onChange={handleDestinationChange} />
+          <Flex alignItems="center" gap={2}>
+          {airport && <Text color="green.300" size="sm" mt={1}>{airport}</Text>}
+          {distance && <Text color="green.300" size="sm" mt={1}>{distance.toLocaleString(navigator.language)}nm</Text>}
+          </Flex>
+          {airportError && <Text size="sm" color="red.300" mt={1}>{airportError}</Text>}
+        </CardBody>
       </Card>
-    </div>
+    </Box>
   )
 }
 

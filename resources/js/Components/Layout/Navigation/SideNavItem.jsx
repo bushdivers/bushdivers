@@ -9,6 +9,8 @@ const SideNavItem = ({ index, item }) => {
       <Tooltip label={item.label} placement="right">
         <IconButton
           isActive={url === item.to}
+          bg="gray.700"
+          color="gray.300"
           key={index}
           as={Link}
           aria-label={item.label}

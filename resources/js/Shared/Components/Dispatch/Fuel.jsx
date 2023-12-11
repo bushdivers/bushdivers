@@ -1,6 +1,5 @@
 import React from 'react'
-import Card from '../../Elements/Card'
-import TextInput from '../../Elements/Forms/TextInput'
+import { Box, Card, CardHeader, CardBody, Input, Text, Heading, Flex } from '@chakra-ui/react'
 
 const Fuel = (props) => {
   // const [fuelWeight, setFuelWeight] = useState(null)
@@ -12,22 +11,25 @@ const Fuel = (props) => {
   // }, [props.fuel])
 
   return (
-    <div className="mt-2 mr-2">
-      <Card title="Select Fuel">
-      {props.selectedAircraft && (
-        <div>
-          <div>Useable Fuel (gal): {props.selectedAircraft.fleet.fuel_capacity}</div>
-          <div>
-            Current Fuel (gal):
-            <div className="w-full lg:w-1/4">
-              <TextInput id="fuel" type="text" value={props.fuel} onChange={props.handleUpdateFuel} error={props.error} />
-              <div className="text-sm">{parseFloat(props.fuelWeight).toLocaleString(undefined, { maximumFractionDigits: 2 })} lbs <span className="italic">(estimated)</span></div>
-            </div>
-          </div>
-        </div>
-      )}
+    <Box mt={2}>
+      <Card>
+        <CardHeader>
+          <Heading size="md">Fuel</Heading>
+        </CardHeader>
+        <CardBody>
+          {props.selectedAircraft && (
+            <Box>
+              <Text>Useable Fuel (gal): {props.selectedAircraft.fleet.fuel_capacity}</Text>
+              <Box>
+                <Text>Current Fuel (gal):</Text>
+                  <Input id="fuel" type="text" value={props.fuel} onChange={props.handleUpdateFuel} error={props.error} />
+                  <Flex alignItems="center" gap={2}><Text color="green.500">{parseFloat(props.fuelWeight).toLocaleString(undefined, { maximumFractionDigits: 2 })} lbs</Text> <Text>(estimated)</Text></Flex>
+              </Box>
+            </Box>
+          )}
+        </CardBody>
       </Card>
-    </div>
+    </Box>
   )
 }
 

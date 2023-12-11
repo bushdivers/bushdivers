@@ -17,7 +17,7 @@ const EmptyData = (props) => {
 const Aircraft = (props) => {
   const { auth } = usePage().props
   return (
-    <Box mt={2}>
+    <Box>
       <Card>
         <CardHeader>
           <Heading size='md'>Select Aircraft</Heading>
@@ -43,7 +43,7 @@ const Aircraft = (props) => {
                     <Tooltip content={`Hub: ${ac.hub_id}`} direction="right">
                       <Flex alignItems="center">
                         {ac.hub_id && <Link href={`/aircraft/${ac.id}`}>{ac.registration}</Link>}
-                        {ac.maintenance_status && <Box mx={2}><Box color="orange.800"><Icon as={Wrench} /></Box></Box>}
+                        {ac.maintenance_status && <Box mx={2}><Box color="orange.400"><Icon as={Wrench} /></Box></Box>}
                         {ac.rental_airport_id && <span>{ac.registration}</span>}
                         {ac.owner_id === auth.user.id ? <Box mx={2}><Tag>Private</Tag></Box> : <></>}
                         {ac.rental_airport_id && <Box mx={2}><Tag>Rental</Tag></Box> }

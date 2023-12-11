@@ -8,6 +8,9 @@ export const customTheme = extendTheme(
   {
     initialColorMode: 'dark',
     useSystemColorMode: false,
+    defaultProps: {
+      focusBorderColor: 'orange'
+    },
     styles: {
       global: (props) => ({
         body: {
@@ -15,6 +18,10 @@ export const customTheme = extendTheme(
           color: 'gray.100',
           bg: 'gray.800',
           lineHeight: 'base'
+        },
+        input: {
+          color: 'gray.100',
+          focusBorderColor: 'orange'
         },
         table: {
           color: 'gray.100'

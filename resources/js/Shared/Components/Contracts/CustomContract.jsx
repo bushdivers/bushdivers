@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Inertia } from '@inertiajs/inertia'
-import TextInput from '../../Elements/Forms/TextInput'
 import { usePage } from '@inertiajs/inertia-react'
+import { Box, Input, Button, Flex } from '@chakra-ui/react'
 
 const CustomContract = ({ hideSection }) => {
   const { auth } = usePage().props
@@ -31,14 +31,14 @@ const CustomContract = ({ hideSection }) => {
   }
 
   return (
-    <div className="flex items-end space-x-2">
+    <Flex className="flex items-end space-x-2">
       {error && <div className="text-sm text-red-500 mt-1">{error}</div>}
-      <TextInput inline id="icaoDep" value={dep} type="text" onChange={handleChangeDep} placeHolder="Departure ICAO" label="Departure (ICAO)" />
-      <TextInput inline id="icaoArr" value={arr} type="text" onChange={handleChangeArr} placeHolder="Arrival ICAO" label="Arrival (ICAO)" />
-      <div className="inline-block">
-        <button onClick={() => handleCreate()} className="btn btn-primary">Create</button>
-      </div>
-    </div>
+      <Input inline id="icaoDep" value={dep} type="text" onChange={handleChangeDep} placeHolder="Departure ICAO" label="Departure (ICAO)" />
+      <Input inline id="icaoArr" value={arr} type="text" onChange={handleChangeArr} placeHolder="Arrival ICAO" label="Arrival (ICAO)" />
+      <Box className="inline-block">
+        <Button onClick={() => handleCreate()}>Create</Button>
+      </Box>
+    </Flex>
   )
 }
 

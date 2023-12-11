@@ -1,15 +1,14 @@
 import React from 'react'
 import DispatchSummary from '../../Shared/Components/Dispatch/DispatchSummary'
 import { Inertia } from '@inertiajs/inertia'
-import AppLayout from '../../Shared/AppLayout'
+import AppLayout from '../../Components/Layout/AppLayout'
 import { Link } from '@inertiajs/inertia-react'
 import { faArrowUp } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import Card from '../../Shared/Elements/Card'
+import { Card, CardHeader, CardBody, Text, Heading, Box, Button, Flex, Link as ChakraLink, TableContainer, Table, Thead, Th, Tr, Tbody, Td, SimpleGrid } from '@chakra-ui/react'
+import { personWeight } from '../../Helpers/number.helpers'
 
 const ActiveDispatch = ({ cargo, aircraft, cargoWeight, fuelWeight, passengerCount, pirep }) => {
-  const personWeight = 170.00
-
   function handleCancel () {
     const res = window.confirm('You have an active flight, if you cancel now you will lose all progress')
     if (res) {
@@ -18,60 +17,57 @@ const ActiveDispatch = ({ cargo, aircraft, cargoWeight, fuelWeight, passengerCou
   }
 
   return (
-    <div>
-      <div>{pirep.id} <Link className="ml-2" href="/pireps/submit"><button className="btn btn-secondary">Submit Manual Pirep</button></Link></div>
-      {pirep.state === 2 && <div><span className="text-primary">Current flight in progress</span></div>}
-      <div className="flex flex-col md:flex-row justify-between">
-        <div className="md:mr-2 md:w-1/2">
-          <div className="mt-4">
-            <Card title="Selected Cargo">
-            <div className="overflow-x-auto">
-            <table className="table table-compact w-full">
-              <thead>
-              <tr>
-                <th>Contract</th>
-                <th>Current</th>
-                <th>Arrival</th>
-                <th>Distance</th>
-                <th>Heading</th>
-                <th>Type</th>
-                <th>Cargo</th>
-              </tr>
-              </thead>
-              <tbody>
-              {cargo.map((detail) => (
-                <tr key={detail.id}>
-                  <td>{detail.id}</td>
-                  <td>{detail.current_airport_id}</td>
-                  <td>{detail.arr_airport_id}</td>
-                  <td>{detail.distance} nm</td>
-                  <td>
-                    <div className="flex items-center">
-                      <div className="w-1/2">
-                        <span className="mr-2">{detail.heading}</span>
-                      </div>
-                      <div className="w-1/2 flex">
-                        <span style={{ transform: `rotate(${detail.heading}deg)` }}><FontAwesomeIcon icon={faArrowUp} /></span>
-                      </div>
-                    </div>
-                  </td>
-                  <td>{detail.cargo_type_id === 1 ? 'Cargo' : 'Passenger'}</td>
-                  <td>
-                    {detail.cargo_type_id === 1
-                      ? <div><span>{detail.cargo_qty} lbs</span> <span className="text-xs">{detail.cargo}</span></div>
-                      : <div><span>{detail.cargo_qty}</span> <span className="text-xs">{detail.cargo}</span></div>
-                    }
-                  </td>
-                </tr>
-              ))}
-              </tbody>
-            </table>
-            </div>
+    <Box>
+      <Box>{pirep.id} <ChakraLink as={Link} href="/pireps/submit"><Button colorScheme="gray">Submit Manual Pirep</Button></ChakraLink></Box>
+      {pirep.state === 2 && <Box><Text color="green.600">Current flight in progress</Text></Box>}
+      <Flex mt={4} justifyContent="space-between">
+      <SimpleGrid columns={2} spacing={10}>
+          <Box>
+            <Card>
+              <CardHeader><Heading size="sm">Selected Cargo</Heading></CardHeader>
+              <CardBody>
+              <TableContainer>
+                <Table colorScheme='blackAlpha' size="sm" variant="simple">
+                  <Thead>
+                  <Tr>
+                    <Th>Contract</Th>
+                    <Th>Current</Th>
+                    <Th>Arrival</Th>
+                    <Th>Distance</Th>
+                    <Th>Heading</Th>
+                    <Th>Type</Th>
+                    <Th>Cargo</Th>
+                  </Tr>
+                  </Thead>
+                  <Tbody>
+                  {cargo.map((detail) => (
+                    <Tr key={detail.id}>
+                      <Td>{detail.id}</Td>
+                      <Td>{detail.current_airport_id}</Td>
+                      <Td>{detail.arr_airport_id}</Td>
+                      <Td>{detail.distance} nm</Td>
+                      <Td>
+                        <Flex alignItems="center">
+                            <span className="mr-2">{detail.heading}</span>
+                            <span style={{ transform: `rotate(${detail.heading}deg)` }}><FontAwesomeIcon icon={faArrowUp} /></span>
+                        </Flex>
+                      </Td>
+                      <Td>{detail.cargo_type_id === 1 ? 'Cargo' : 'Passenger'}</Td>
+                      <Td>
+                        {detail.cargo_type_id === 1
+                          ? <Flex gap={2}><span>{detail.cargo_qty} lbs</span> <Text size="sm">{detail.cargo}</Text></Flex>
+                          : <Flex gap={2}><span>{detail.cargo_qty}</span> <Text size="sm">{detail.cargo}</Text></Flex>
+                        }
+                      </Td>
+                    </Tr>
+                  ))}
+                  </Tbody>
+                </Table>
+                </TableContainer>
+              </CardBody>
             </Card>
-          </div>
-        </div>
-        <div className="md:ml-2 md:w-1/2">
-          <div className="mt-4">
+          </Box>
+          <Box>
             <DispatchSummary
               selectedAircraft={aircraft}
               selectedCargo={cargo}
@@ -82,11 +78,13 @@ const ActiveDispatch = ({ cargo, aircraft, cargoWeight, fuelWeight, passengerCou
               pirep={pirep}
               deadHead={pirep.is_empty}
             />
-            <div className="text-right mt-2"><button onClick={handleCancel} className="btn btn-primary">Cancel Dispatch</button></div>
-          </div>
-        </div>
-      </div>
-    </div>
+            <Flex justifyContent="right">
+              <Box mt={2}><Button onClick={handleCancel}>Cancel Dispatch</Button></Box>
+            </Flex>
+          </Box>
+          </SimpleGrid>
+      </Flex>
+    </Box>
   )
 }
 
