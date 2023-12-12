@@ -17,7 +17,7 @@ const LandingSummary = ({ pirep, mapStyle }) => {
         </div>
         <div className="flex flex-col items-center my-2 mx-4">
           <div className="text-sm">Landing Bank</div>
-          <div className="text-xl">{pirep.landing_bank}nm</div>
+          <div className="text-xl">{pirep.landing_bank}</div>
         </div>
       </div>
       <LandingMap pirep={pirep} size="small" mapStyle={mapStyle} />
