@@ -1,58 +1,67 @@
 import React from 'react'
 import dayjs, { convertMinuteDecimalToHoursAndMinutes } from '../../Helpers/date.helpers'
 import { Link } from '@inertiajs/inertia-react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import CrewMap from '../../Shared/Components/Crew/CrewMap'
 import AppLayout from '../../Components/Layout/AppLayout'
-import StatBlock from '../../Shared/Elements/StatBlock'
-import { faPlaneArrival, faPlaneUp } from '@fortawesome/free-solid-svg-icons'
-import { Box } from '@chakra-ui/react'
+import { Plane } from 'lucide-react'
+import { Box, Flex, Card, CardHeader, CardBody, Heading, Text, Link as ChakraLink, Icon, Stat, StatNumber, StatLabel } from '@chakra-ui/react'
 
 const Dashboard = ({ lastFlight, user, locations, distance }) => {
-  console.log(lastFlight)
   return (
     <Box position="relative">
       <CrewMap size="full" locations={locations && locations.length > 0 ? locations : []} mapStyle={user.map_style} />
-      <div className="absolute z-10 bg-neutral w-1/2 md:w-1/3 h-auto opacity-90 top-10 left-4 p-4 rounded shadow">
-        <div>
-          <div className="text-lg flex flex-col md:flex-row items-start md:items-center justify-between mb-2">
-            <div className="flex items-center">
-              <FontAwesomeIcon icon={faPlaneArrival} className="mr-2 md-36" /> Last Flight
-            </div>
-            {lastFlight && <span className="ml-2"><Link className="link-primary" href={`/logbook/${lastFlight.id}`}>{dayjs(lastFlight.submitted_at).format('ddd DD MMM YYYY')}</Link></span>}
-          </div>
-          {lastFlight && (
-            <>
-              <div>
-                <div className="mt-2">
-                  <div className="text-lg">{lastFlight.dep_airport.name}</div>
-                  <Link className="link-primary" href={`/airports/${lastFlight.departure_airport_id}`}>{lastFlight.departure_airport_id}</Link>
-                </div>
-                <div className="mt-2">
-                  <div className="text-lg">{lastFlight.arr_airport.name}</div>
-                  <Link className="link-primary" href={`/airports/${lastFlight.destination_airport_id}`}>{lastFlight.destination_airport_id}</Link>
-                </div>
-              </div>
-              <div className="text-sm">
-                {dayjs.utc(lastFlight.submitted_at).fromNow()} - {dayjs(lastFlight.submitted_at).format('ddd DD MMM YYYY')}
-              </div>
-              <div className="mt-2 text-sm flex items-center">
-                <FontAwesomeIcon icon={faPlaneUp} />
-                { lastFlight.is_rental
-                  ? <span>{lastFlight.rental.fleet.type} - {lastFlight.rental.registration}</span>
-                  : <Link className="link-primary ml-2" href={`/aircraft/${lastFlight.aircraft.id}`}>{lastFlight.aircraft.fleet.type} - {lastFlight.aircraft.registration}</Link>
-                }
-              </div>
-            </>
-          )}
-        </div>
-        <div className="mt-4 flex flex-col md:flex-row">
-          <StatBlock width="1/4" data={user.flights.toLocaleString(navigator.language)} text="Flights" />
-          <StatBlock width="1/4" data={user.flights_time > 0 ? convertMinuteDecimalToHoursAndMinutes(user.flights_time) : 0} text="Hours" />
-          <StatBlock width="1/4" data={user.points.toLocaleString(navigator.language)} text="Points" />
-          <StatBlock width="1/4" data={distance} text="Distance (nm)" />
-        </div>
-      </div>
+      <Box position="absolute" zIndex={10} w="400px" top={10} left={4}>
+        <Card>
+          <CardHeader>
+            <Flex justifyContent="space-between" alignItems="center">
+              <Heading size="md">Last Flight</Heading>
+              <Heading size="sm">{lastFlight && <ChakraLink a={Link} color="orange.300" href={`/logbook/${lastFlight.id}`}>{dayjs(lastFlight.submitted_at).format('ddd DD MMM YYYY')}</ChakraLink>}</Heading>
+            </Flex>
+          </CardHeader>
+          <CardBody>
+            {lastFlight && (
+              <Box>
+                <Text fontSize="xs">{dayjs.utc(lastFlight.submitted_at).fromNow()} - {dayjs(lastFlight.submitted_at).format('ddd DD MMM YYYY')}</Text>
+                <Box mt={2}>
+                  <Text fontSize="lg">{lastFlight.dep_airport.name}</Text>
+                  <ChakraLink color="orange.300" as={Link} href={`/airports/${lastFlight.departure_airport_id}`}>{lastFlight.departure_airport_id}</ChakraLink>
+                </Box>
+                <Box mt={2}>
+                  <Text fontSize="lg">{lastFlight.arr_airport.name}</Text>
+                  <ChakraLink color="orange.300" as={Link} href={`/airports/${lastFlight.destination_airport_id}`}>{lastFlight.destination_airport_id}</ChakraLink>
+                </Box>
+                <Flex alignItems="center" mt={2} gap={2}>
+                  <Icon color="white" as={Plane} />
+                  <Box>
+                  { lastFlight.is_rental
+                    ? <Text fontSize="sm">{lastFlight.rental.fleet.type} - {lastFlight.rental.registration}</Text>
+                    : <ChakraLink as={Link} color="orange.300" href={`/aircraft/${lastFlight.aircraft.id}`}>{lastFlight.aircraft.fleet.type} - {lastFlight.aircraft.registration}</ChakraLink>
+                  }
+                  </Box>
+                </Flex>
+              </Box>
+            )}
+            <Flex color="white" alignItems="center" justifyContent="center" my={6}>
+              <Stat>
+                <StatLabel>Flights</StatLabel>
+                <StatNumber>{user.flights.toLocaleString(navigator.language)}</StatNumber>
+              </Stat>
+              <Stat>
+                <StatLabel>Hours</StatLabel>
+                <StatNumber>{user.flights_time > 0 ? convertMinuteDecimalToHoursAndMinutes(user.flights_time) : 0}</StatNumber>
+              </Stat>
+              <Stat>
+                <StatLabel>Points</StatLabel>
+                <StatNumber>{user.points.toLocaleString(navigator.language)}</StatNumber>
+              </Stat>
+              <Stat>
+                <StatLabel>Distance (nm)</StatLabel>
+                <StatNumber>{distance}</StatNumber>
+              </Stat>
+            </Flex>
+          </CardBody>
+        </Card>
+      </Box>
     </Box>
   )
 }

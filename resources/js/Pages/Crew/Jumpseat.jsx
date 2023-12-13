@@ -1,9 +1,8 @@
 import React, { useState } from 'react'
 import { Inertia } from '@inertiajs/inertia'
 import axios from 'axios'
-import AppLayout from '../../Shared/AppLayout'
-import Card from '../../Shared/Elements/Card'
-import TextInput from '../../Shared/Elements/Forms/TextInput'
+import AppLayout from '../../Components/Layout/AppLayout'
+import { Box, Flex, Card, CardHeader, CardBody, SimpleGrid, Heading, Text, Input, FormControl, FormLabel, Button, FormHelperText } from '@chakra-ui/react'
 
 const Jumpseat = ({ user, spent, balance }) => {
   const [airport, setAirport] = useState('')
@@ -58,58 +57,71 @@ const Jumpseat = ({ user, spent, balance }) => {
   }
 
   return (
-    <div className="p-4">
-      <div className="flex flex-col lg:flex-row justify-start">
-        <div className="lg:w-1/2 mx-2 mt-4">
+    <Box>
+      <Flex direction="column">
+        <SimpleGrid mt={4} columns={3} spacing={10}>
+          <Box>
           <Card>
-          <div className="flex justify-between">
-            <div className="w-1/2">
-              <div>Current Location:</div>
-              <div className="text-lg">{user.location.identifier} - {user.location.name}</div>
-            </div>
-            <div className="md:w-1/2">
-              <TextInput id="dep" label="Transfer to (ICAO)" error={error} placeHolder="Enter ICAO" type="text" onChange={handleChange} value={icao} />
-              {airport && <div className="text-sm mt-1">{airport}</div>}
-            </div>
-          </div>
-          <div className="flex mt-4">
-            {distance && (
-              <div className="w-1/2 mx-4 text-center">
-                <div>Distance</div>
-                <div>{distance.toLocaleString()} nm</div>
-              </div>
-            )}
-            {price >= 0
-              ? (
-                  <div className="w-1/2 mx-4 text-center">
-                    <div>Price</div>
-                    <div>${price.toLocaleString()}</div>
-                  </div>
-                )
-              : <></>
-            }
-          </div>
-          <div className="flex justify-end mt-12">
-            <button className="btn btn-primary" onClick={() => processJumpseat()}>Purchase Ticket</button>
-          </div>
+            <CardBody>
+              <SimpleGrid columns={2} spacing={10}>
+                <Box>
+                  <Heading size="sm">Current Location:</Heading>
+                  <Text my={1}>{user.location.identifier} - {user.location.name}</Text>
+                  <FormControl my={2}>
+                  <FormLabel><Text>Destination ICAO</Text></FormLabel>
+                  <Input value={icao} type="text" id="dep" placeholder="Enter ICAO" onChange={handleChange} />
+                  {airport && <FormHelperText>{airport}</FormHelperText>}
+                  {error && <FormHelperText color="red.300">{error}</FormHelperText>}
+                </FormControl>
+                </Box>
+                <Box>
+                  <Flex textAlign="center" direction="column" alignItems="center" gap={4}>
+                    <Box>
+                    {distance && (
+                      <Box>
+                        <Heading size="sm">Distance</Heading>
+                        <Text>{distance.toLocaleString()} nm</Text>
+                      </Box>
+                    )}
+                    </Box>
+                    <Box>
+                    {price >= 0
+                      ? (
+                          <Box>
+                            <Heading size="sm">Price</Heading>
+                            <Text>${price.toLocaleString()}</Text>
+                          </Box>
+                        )
+                      : <></>
+                    }
+                    </Box>
+                    </Flex>
+                </Box>
+              </SimpleGrid>
+            </CardBody>
+            </Card>
+            <Flex justifyContent="end">
+              <Button mt={2} onClick={() => processJumpseat()}>Purchase Ticket</Button>
+            </Flex>
+            </Box>
+            <Box>
+          <Card mb={2}>
+            <CardHeader><Heading size="sm">Current Balance</Heading></CardHeader>
+            <CardBody>
+              <Text fontSize="lg">${parseFloat(balance).toLocaleString()}</Text>
+            </CardBody>
           </Card>
-        </div>
-        <div className="lg:w-1/4 mx-2 mt-4 flex items-start">
-          <Card title="Current Balance">
-          <div className="flex flex-col text-center">
-            <div className="text-xl mt-2">${parseFloat(balance).toLocaleString()}</div>
-          </div>
+          <Card>
+            <CardHeader><Heading size="sm">Spent on Jumpseat</Heading></CardHeader>
+            <CardBody>
+              <Text fontSize="lg">${parseFloat(spent).toLocaleString()}</Text>
+            </CardBody>
           </Card>
-        </div>
-        <div className="lg:w-1/4mx-2 mt-4 flex items-start">
-          <Card title="Spent on Jumpseat">
-          <div className="flex flex-col text-center">
-            <div className="text-xl mt-2">${parseFloat(spent).toLocaleString()}</div>
-          </div>
-          </Card>
-        </div>
-      </div>
-    </div>
+            </Box>
+        </SimpleGrid>
+
+      </Flex>
+    </Box>
   )
 }
 

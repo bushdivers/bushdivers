@@ -75,7 +75,7 @@ const Cargo = (props) => {
                 <Tbody>
                 {props.cargo.cargoAtAirport.map((detail) => (
                   <Tr key={detail.id} color={props.selectedCargo.some(s => s.id === detail.id) ? 'orange.500' : ''}>
-                    <Td><input id="sel" checked={props.selectedCargo.some(s => s.id === detail.id)} onChange={() => props.handleCargoSelect(detail)} type="checkbox" className="form-checkbox rounded border-gray-300 dark:bg-gray-700 text-orange-500 shadow-sm focus:border-orange-300 focus:ring focus:ring-offset-0 focus:ring-orange-200 focus:ring-opacity-50" /></Td>
+                    <Td><Checkbox id="sel" isChecked={props.selectedCargo.some(s => s.id === detail.id)} onChange={() => props.handleCargoSelect(detail)} /></Td>
                     <Td>{detail.current_airport_id}</Td>
                     <Td>{detail.arr_airport_id} {detail.arr_airport.longest_runway_surface === 'W' && <span className="material-icons md-18">anchor</span>}</Td>
                     <Td>{detail.distance.toLocaleString(navigator.language)} nm</Td>

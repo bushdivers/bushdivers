@@ -1,7 +1,7 @@
 import React from 'react'
 import { Inertia } from '@inertiajs/inertia'
 import { List, Image, VStack, GridItem, Box, Avatar, Tooltip, IconButton, ListItem, Flex, Text } from '@chakra-ui/react'
-import { ClipboardSignature, BookText, Globe2, AreaChart, BadgeDollarSign, Route, Plane, UserCog } from 'lucide-react'
+import { ClipboardSignature, BookText, Globe2, AreaChart, BadgeDollarSign, Route, Plane, UserCog, Ticket } from 'lucide-react'
 import { Link, usePage } from '@inertiajs/inertia-react'
 import SideNavItem from './SideNavItem'
 import { displayNumber } from '../../../Helpers/number.helpers'
@@ -55,10 +55,25 @@ const SideNavContainer = () => {
         <Flex direction="column" alignItems="center" gap={3}>
           <ListItem key="stats">
               <Tooltip label={`Cash: $${displayNumber(auth.user.balance)}; Points: ${displayNumber(auth.user.points)}`} placement="right">
-                <Text cursor="pointer">AYMR</Text>
+                <Text cursor="pointer">{auth.user.current_airport_id}</Text>
               </Tooltip>
             </ListItem>
-          <ListItem key="link">
+            <ListItem key="jumpseat">
+            <Tooltip label="Jumpseat" placement="right">
+              <IconButton
+                isActive={url === '/jumpseat'}
+                bg="gray.700"
+                color="gray.300"
+                key="jumpseat"
+                as={Link}
+                aria-label="Jumpseat"
+                borderRadius="xl"
+                icon={<Ticket />}
+                href="/jumpseat"
+              />
+            </Tooltip>
+          </ListItem>
+          <ListItem key="profile">
             <Tooltip label="Profile" placement="right">
               <IconButton
                 isActive={url === '/profile'}
