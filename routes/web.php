@@ -60,8 +60,6 @@ Route::middleware('auth')->group(function () {
     // Crew
     Route::get('/dashboard', \App\Http\Controllers\Crew\ShowDashboardController::class)
         ->name('dashboard');
-    Route::get('/intro', \App\Http\Controllers\Crew\ShowIntroController::class)
-        ->name('intro');
     Route::any('/roster', \App\Http\Controllers\Crew\ShowPilotRosterController::class)
         ->name('roster');
     Route::get('/profile', \App\Http\Controllers\Crew\ShowProfileController::class)

@@ -1,11 +1,13 @@
 import React from 'react'
-import { List, Image, VStack, GridItem, Box, Avatar, Tooltip, Link } from '@chakra-ui/react'
-import { ClipboardSignature, BookText, Globe2, AreaChart, BadgeDollarSign, Route, Plane } from 'lucide-react'
-import { usePage } from '@inertiajs/inertia-react'
+import { Inertia } from '@inertiajs/inertia'
+import { List, Image, VStack, GridItem, Box, Avatar, Tooltip, IconButton, ListItem, Flex, Text } from '@chakra-ui/react'
+import { ClipboardSignature, BookText, Globe2, AreaChart, BadgeDollarSign, Route, Plane, UserCog } from 'lucide-react'
+import { Link, usePage } from '@inertiajs/inertia-react'
 import SideNavItem from './SideNavItem'
+import { displayNumber } from '../../../Helpers/number.helpers'
 
 const SideNavContainer = () => {
-  const { auth } = usePage().props
+  const { auth, url } = usePage().props
   const navItems = [
     { label: 'Live Map', icon: <Globe2 />, to: '/live-flights' },
     { label: 'Dispatch', icon: <Route />, to: '/dispatch' },
@@ -15,6 +17,10 @@ const SideNavContainer = () => {
     { label: 'Finances', icon: <BadgeDollarSign />, to: '/finances' },
     { label: 'Stats', icon: <AreaChart />, to: '/stats' }
   ]
+
+  function logout () {
+    Inertia.get('/logout')
+  }
 
   return (
       <>
@@ -45,9 +51,35 @@ const SideNavContainer = () => {
       <List spacing={3}>
           {navItems.map((item, index) => <SideNavItem key={index} index={index} item={item} />)}
       </List>
-      <Tooltip label="Signout" placement="right">
-        <Avatar cursor="pointer" size="sm" position="fixed" bottom={0} mb={4} name={auth.user.name} />
-      </Tooltip>
+      <List position="fixed" bottom={0} mb={4} spacing={3}>
+        <Flex direction="column" alignItems="center" gap={3}>
+          <ListItem key="stats">
+              <Tooltip label={`Cash: $${displayNumber(auth.user.balance)}; Points: ${displayNumber(auth.user.points)}`} placement="right">
+                <Text cursor="pointer">AYMR</Text>
+              </Tooltip>
+            </ListItem>
+          <ListItem key="link">
+            <Tooltip label="Profile" placement="right">
+              <IconButton
+                isActive={url === '/profile'}
+                bg="gray.700"
+                color="gray.300"
+                key="profile"
+                as={Link}
+                aria-label="Profile"
+                borderRadius="xl"
+                icon={<UserCog />}
+                href="/profile"
+              />
+            </Tooltip>
+          </ListItem>
+          <ListItem key="avatar">
+            <Tooltip label="Signout" placement="right">
+              <Avatar onClick={() => logout()} cursor="pointer" size="sm" name={auth.user.name} />
+            </Tooltip>
+          </ListItem>
+        </Flex>
+      </List>
       </VStack>
           </Box>
     </GridItem>

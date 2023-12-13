@@ -16,7 +16,7 @@ const SideNavItem = ({ index, item }) => {
           aria-label={item.label}
           borderRadius="xl"
           icon={item.icon}
-          to={item.to}
+          href={item.to}
         />
       </Tooltip>
     </ListItem>
