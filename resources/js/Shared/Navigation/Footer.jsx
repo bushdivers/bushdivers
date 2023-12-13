@@ -1,21 +1,22 @@
 import React from 'react'
 import { Link } from '@inertiajs/inertia-react'
+import { Box, Flex, Link as ChakraLink } from '@chakra-ui/react'
 
 const Footer = () => {
   const date = new Date().getFullYear()
 
   return (
-    <footer>
-      <div className="bg-gray-100 flex justify-between p-4">
-        <div>
+    <Box p={6}>
+      <Flex justifyContent="space-between">
+        <Box>
           &copy; Bush Divers {date}
-        </div>
-        <div className="space-x-1">
-          <Link className="mr-4" href="/privacy">Privacy Policy</Link>
-          <Link href="/supporters">Supporters</Link>
-        </div>
-      </div>
-    </footer>
+        </Box>
+        <Flex alignItems="center" gap={2}>
+          <ChakraLink as={Link} href="/privacy">Privacy Policy</ChakraLink>
+          <ChakraLink as={Link} href="/supporters">Supporters</ChakraLink>
+        </Flex>
+      </Flex>
+    </Box>
   )
 }
 

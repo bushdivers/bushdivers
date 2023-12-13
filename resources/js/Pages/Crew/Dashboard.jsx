@@ -3,14 +3,15 @@ import dayjs, { convertMinuteDecimalToHoursAndMinutes } from '../../Helpers/date
 import { Link } from '@inertiajs/inertia-react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import CrewMap from '../../Shared/Components/Crew/CrewMap'
-import AppLayout from '../../Shared/AppLayout'
+import AppLayout from '../../Components/Layout/AppLayout'
 import StatBlock from '../../Shared/Elements/StatBlock'
 import { faPlaneArrival, faPlaneUp } from '@fortawesome/free-solid-svg-icons'
+import { Box } from '@chakra-ui/react'
 
 const Dashboard = ({ lastFlight, user, locations, distance }) => {
   console.log(lastFlight)
   return (
-    <div className="relative">
+    <Box position="relative">
       <CrewMap size="full" locations={locations && locations.length > 0 ? locations : []} mapStyle={user.map_style} />
       <div className="absolute z-10 bg-neutral w-1/2 md:w-1/3 h-auto opacity-90 top-10 left-4 p-4 rounded shadow">
         <div>
@@ -52,7 +53,7 @@ const Dashboard = ({ lastFlight, user, locations, distance }) => {
           <StatBlock width="1/4" data={distance} text="Distance (nm)" />
         </div>
       </div>
-    </div>
+    </Box>
   )
 }
 

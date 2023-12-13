@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import maplibre from 'maplibre-gl'
 import { parseMapStyle, transformRequest } from '../../../Helpers/general.helpers'
 import Map, { Marker, Popup } from 'react-map-gl'
+import { Box } from '@chakra-ui/react'
 
 const accessToken = import.meta.env.VITE_MAPBOX_TOKEN
 
@@ -14,7 +15,7 @@ const CrewMap = (props) => {
 
   return (
     <>
-      <div className={`map-container-${props.size} relative`}>
+      <Box className={'map-container-full relative'}>
         <Map
           mapLib={maplibre}
           mapboxAccessToken={accessToken}
@@ -41,7 +42,7 @@ const CrewMap = (props) => {
             </Popup>
           )}
         </Map>
-      </div>
+      </Box>
     </>
   )
 }

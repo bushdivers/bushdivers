@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Inertia } from '@inertiajs/inertia'
 import { usePage } from '@inertiajs/inertia-react'
 import LayoutAuth from '../../Shared/LayoutAuth'
-import TextInput from '../../Shared/Elements/Forms/TextInput'
+import { Flex, Box, Input, Card, CardHeader, CardBody, Heading, Image, FormControl, FormLabel, Button, FormErrorMessage, Text } from '@chakra-ui/react'
 
 const ResetPassword = ({ token }) => {
   const { errors } = usePage().props
@@ -27,16 +27,20 @@ const ResetPassword = ({ token }) => {
   }
 
   return (
-    <div className="flex flex-col justify-center items-center">
-      <div className="mb-2 mt-8"><img src="https://res.cloudinary.com/dji0yvkef/image/upload/v1628691598/BDLogo.png" height="150" width="150"/></div>
-      <div className="rounded-md shadow-sm bg-white p-4 w-96 m-2">
-        <p className="text-center text-2xl mb-2">Reset Password</p>
-        <form onSubmit={handleSubmit}>
-          <TextInput id="password" label="Password" type="password" placeHolder="Enter new password" value={values.password} onChange={handleChange} error={errors?.password} />
-          <button className="btn btn-primary w-full mt-2">Reset password</button>
-        </form>
-      </div>
-    </div>
+    <Flex direction="column" justifyContent="center" alignItems="center">
+      <Box my={8}><Image src="https://res.cloudinary.com/dji0yvkef/image/upload/v1628691598/BDLogo.png" boxSize={32}/></Box>
+      <Card>
+        <CardHeader><Heading size="lg">Request Password</Heading></CardHeader>
+        <CardBody>
+        <FormControl my={2} isInvalid={errors?.password}>
+          <FormLabel><Text>Password</Text></FormLabel>
+          <Input value={values.password} type="password" id="password" placeHolder="Enter new password" onChange={handleChange} />
+          <FormErrorMessage>{errors?.password}</FormErrorMessage>
+        </FormControl>
+          <Button width="100%" onClick={(e) => handleSubmit(e)}>Reset password</Button>
+        </CardBody>
+      </Card>
+    </Flex>
   )
 }
 

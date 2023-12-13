@@ -2,8 +2,7 @@ import React, { useState } from 'react'
 import { Inertia } from '@inertiajs/inertia'
 import { Link, usePage } from '@inertiajs/inertia-react'
 import LayoutAuth from '../../Shared/LayoutAuth'
-import TextInput from '../../Shared/Elements/Forms/TextInput'
-import CheckBox from '../../Shared/Elements/Forms/CheckBox'
+import { Flex, Box, Input, Card, CardHeader, CardBody, Heading, Link as ChakraLink, Image, FormControl, FormLabel, Button, FormErrorMessage, Text } from '@chakra-ui/react'
 
 const Login = () => {
   const { errors } = usePage().props
@@ -28,26 +27,29 @@ const Login = () => {
   }
 
   return (
-    <div className="flex flex-col justify-center items-center">
-      <div className="mb-2 mt-8"><img src="https://res.cloudinary.com/dji0yvkef/image/upload/v1628691598/BDLogo.png" height="150" width="150"/></div>
-      <div className="rounded-md shadow-sm bg-white p-4 w-96 m-2">
-        <p className="text-center text-2xl mb-2">Login</p>
-        <form onSubmit={handleSubmit}>
-          <TextInput value={values.email} type="email" id="email" label="Email" placeHolder="Email" onChange={handleChange} error={errors?.email} />
-          <TextInput value={values.password} type="password" id="password" label="Password" placeHolder="Password" onChange={handleChange} error={errors?.password} />
-          <div className="my-2 flex items-center justify-between">
-            <CheckBox id="remember" value={values.remember} label="Remember me" onChange={handleChange} />
-            <div className="w-1/2 inline-flex justify-end align-text-bottom">
-              <Link href="/password" className="link-primary">Forgotten password?</Link>
-            </div>
-          </div>
-          <button className="btn btn-primary w-full">Login</button>
-        </form>
-        <div className="mt-2">
-          <Link className="link-primary" href="/register">New to Bush Divers?</Link>
-        </div>
-      </div>
-    </div>
+    <Flex direction="column" justifyContent="center" alignItems="center">
+      <Box my={8}><Image src="https://res.cloudinary.com/dji0yvkef/image/upload/v1628691598/BDLogo.png" boxSize={32}/></Box>
+      <Card>
+        <CardHeader><Heading size="lg">Login</Heading></CardHeader>
+        <CardBody>
+        <FormControl my={2} isInvalid={errors?.email}>
+          <FormLabel><Text>Email address</Text></FormLabel>
+          <Input value={values.email} type="email" id="email" placeHolder="Email" onChange={handleChange} />
+          <FormErrorMessage>{errors?.email}</FormErrorMessage>
+        </FormControl>
+        <FormControl my={2} isInvalid={errors?.password}>
+          <FormLabel><Text>Password</Text></FormLabel>
+          <Input value={values.password} type="password" id="password" placeHolder="Password" onChange={handleChange} />
+          <FormErrorMessage>{errors?.password}</FormErrorMessage>
+        </FormControl>
+          <Flex mb={4} justifyContent="right"><ChakraLink as={Link} href="/password"><Text size="xs">Forgotten password?</Text></ChakraLink></Flex>
+          <Button width="100%" onClick={(e) => handleSubmit(e)}>Login</Button>
+        </CardBody>
+      </Card>
+      <Box className="mt-2">
+          <ChakraLink as={Link} href="/register">New to Bush Divers?</ChakraLink>
+        </Box>
+    </Flex>
   )
 }
 

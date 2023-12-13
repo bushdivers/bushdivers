@@ -117,8 +117,6 @@ const AppBar = () => {
           <span className="hidden md:flex">{auth.user.points} XP</span>
           <span className="link link-primary"><Link href={`/airports/${auth.user.current_airport_id}`}>{auth.user.current_airport_id}</Link></span>
         </div>
-        <ThemeSwitcher />
-        <Avatar name={auth.user.name} />
         <span className="flex flex-col">
           <span className="font-semibold text-primary tracking-wide leading-none">{auth.user.pilot_id}</span>
           <span className="text-xs leading-none mt-1">{auth.user.rank.name}</span>

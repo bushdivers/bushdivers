@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Inertia } from '@inertiajs/inertia'
 import { usePage } from '@inertiajs/inertia-react'
 import LayoutAuth from '../../Shared/LayoutAuth'
-import TextInput from '../../Shared/Elements/Forms/TextInput'
+import { Flex, Box, Input, Card, CardHeader, CardBody, Heading, Image, FormControl, FormLabel, Button, FormErrorMessage, Text } from '@chakra-ui/react'
 
 const RequestPassword = () => {
   const { errors } = usePage().props
@@ -26,16 +26,20 @@ const RequestPassword = () => {
   }
 
   return (
-    <div className="flex flex-col justify-center items-center">
-      <div className="mb-2 mt-8"><img src="https://res.cloudinary.com/dji0yvkef/image/upload/v1628691598/BDLogo.png" height="150" width="150"/></div>
-      <div className="rounded-md shadow-sm bg-white p-4 w-96 m-2">
-        <p className="text-center text-2xl mb-2">Request new password</p>
-        <form onSubmit={handleSubmit}>
-          <TextInput id="email" label="Email" value={values.email} type="email" onChange={handleChange} placeHolder="john@doe.com" error={errors?.email} />
-          <button className="btn btn-primary w-full mt-2">Request password</button>
-        </form>
-      </div>
-    </div>
+    <Flex direction="column" justifyContent="center" alignItems="center">
+      <Box my={8}><Image src="https://res.cloudinary.com/dji0yvkef/image/upload/v1628691598/BDLogo.png" boxSize={32}/></Box>
+      <Card>
+        <CardHeader><Heading size="lg">Request password</Heading></CardHeader>
+        <CardBody>
+        <FormControl my={2} isInvalid={errors?.email}>
+          <FormLabel><Text>Email address</Text></FormLabel>
+          <Input value={values.email} type="email" id="email" placeHolder="Email" onChange={handleChange} />
+          <FormErrorMessage>{errors?.email}</FormErrorMessage>
+        </FormControl>
+          <Button width="100%" onClick={(e) => handleSubmit(e)}>Request password</Button>
+        </CardBody>
+      </Card>
+    </Flex>
   )
 }
 
