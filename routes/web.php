@@ -108,9 +108,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/rentals/end/{id}', \App\Http\Controllers\Rentals\EndRentalController::class)
         ->name('rentals.end');
 
+    // Outside of fleet manager role so pilots can self-service their owned aircraft
+    Route::post('/aircraft/maintenance', \App\Http\Controllers\Fleet\PerformMaintenanceController::class)
+        ->name('aircraft.maintenance');
+
     Route::middleware('role:fleet_manager')->group(function () {
-        Route::post('/aircraft/maintenance', \App\Http\Controllers\Fleet\PerformMaintenanceController::class)
-            ->name('aircraft.maintenance');
         Route::post('/aircraft/maintenance/relocate', \App\Http\Controllers\Fleet\RelocateMaintenanceController::class)
             ->name('aircraft.relocate');
     });
