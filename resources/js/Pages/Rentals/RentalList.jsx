@@ -38,7 +38,7 @@ const RentalList = ({ aircraft, myRentals, currentAirport }) => {
   }
 
   const renderRentalButton = (ac) => {
-    if (currentAirport.is_hub) {
+    if (currentAirport.is_hub || currentAirport.size >= 4) {
       if (ac.rental_size === 1 && currentAirport.size >= 3) {
         return <RentalButton aircraft={ac} />
       } else if (ac.rental_size === 0) {
@@ -85,9 +85,9 @@ const RentalList = ({ aircraft, myRentals, currentAirport }) => {
       </div>
       <div className="mt-4">
         <h3 className="my-2">
-          {currentAirport.is_hub
+          {currentAirport.is_hub || currentAirport.size >= 4
             ? <span>Aircraft Available for Rental - {auth.user.current_airport_id}</span>
-            : <span>{auth.user.current_airport_id} - <span className="text-sm text-red-500">You must be at a hub to rent aircraft</span></span>
+            : <span>{auth.user.current_airport_id} - <span className="text-sm text-red-500">You must be at a hub or large airport to rent aircraft</span></span>
           }
         </h3>
           <div className="flex flex-wrap justify-start mt-2">
