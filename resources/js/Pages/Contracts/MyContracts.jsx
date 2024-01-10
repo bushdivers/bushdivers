@@ -156,7 +156,7 @@ MyContracts.layout = (page) => (
     children={page}
     title="Available Contracts"
     heading="Available Contracts"
-    fullSize
+    isFullSize
   />
 )
 
