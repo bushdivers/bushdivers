@@ -7,8 +7,9 @@ import AppLayout from '../../components/layout/AppLayout'
 const AircraftCreate = ({ fleet, hubs, fleetId }) => {
   const { errors } = usePage().props
   const [values, setValues] = useState({
-    fleet: fleetId ?? '1',
+    fleet: fleetId > 0 ? fleetId : '1',
     registration: '',
+    deliveryIcao: '',
     hub: 'AYMR',
   })
 
@@ -71,8 +72,25 @@ const AircraftCreate = ({ fleet, hubs, fleetId }) => {
                 )}
               </div>
               <div className="my-2">
-                <label htmlFor="hub" className="block">
+                <label htmlFor="deliveryIcao" className="block">
                   Start location
+                </label>
+                <input
+                  id="deliveryIcao"
+                  value={values.deliveryIcao}
+                  onChange={handleChange}
+                  type="text"
+                  className="input"
+                />
+                {errors.deliveryIcao && (
+                  <div className="text-sm text-red-500">
+                    {errors.deliveryIcao}
+                  </div>
+                )}
+              </div>
+              <div className="my-2">
+                <label htmlFor="hub" className="block">
+                  Hub location
                 </label>
                 <select
                   id="hub"

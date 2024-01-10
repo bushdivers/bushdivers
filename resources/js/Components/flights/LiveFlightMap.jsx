@@ -48,7 +48,7 @@ const LiveFlightMap = ({ size, updateFlightCount, mapStyle }) => {
               f.is_rental ? f.rental.registration : f.aircraft.registration
             }<br/>
             <b>Altitude:</b> ${f.current_altitude} ft<br/>
-            <b>Ground Speed:</b> ${f.current_indicated_speed} kts<br/>
+            <b>Ind. Speed:</b> ${f.current_indicated_speed} kts<br/>
             <b>Heading:</b> ${f.current_heading}&#176;<br/>
          `)
       // .setText(

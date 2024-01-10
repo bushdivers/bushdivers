@@ -73,6 +73,7 @@ const FleetList = ({ fleet }) => {
                           <th>Manufacturer</th>
                           <th>Name</th>
                           <th>Qty</th>
+                          <th>VA Fleet</th>
                           <th>Can Rent</th>
                           <td>Actions</td>
                         </tr>
@@ -87,6 +88,7 @@ const FleetList = ({ fleet }) => {
                                 <td>{f.manufacturer}</td>
                                 <td>{f.name}</td>
                                 <td>{f.aircraft.length}</td>
+                                <td>{f.company_fleet ? 'Yes' : 'No'}</td>
                                 <td>{f.is_rental ? 'Yes' : 'No'}</td>
                                 <td>
                                   <div className="flex items-center">
