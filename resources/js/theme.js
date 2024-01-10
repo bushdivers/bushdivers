@@ -1,43 +1,29 @@
 import { extendTheme, withDefaultColorScheme } from '@chakra-ui/react'
-// import { mode } from '@chakra-ui/theme-tools'
+import { mode } from '@chakra-ui/theme-tools'
 
-export const customTheme = extendTheme(
-  withDefaultColorScheme({
-    colorScheme: 'orange'
-  }),
+// 2. Add your color mode config
+// const config = {
+//   initialColorMode: 'light',
+//   useSystemColorMode: false,
+// }
+
+// 3. extend the theme
+const theme = extendTheme(
   {
-    initialColorMode: 'dark',
+    initialColorMode: 'light',
     useSystemColorMode: false,
-    defaultProps: {
-      focusBorderColor: 'orange'
-    },
     styles: {
       global: (props) => ({
         body: {
           fontFamily: 'body',
-          color: 'gray.100',
-          bg: 'gray.800',
-          lineHeight: 'base'
+          color: mode('gray.800', 'whiteAlpha.900')(props),
+          bg: mode('gray.50', 'gray.900')(props),
+          lineHeight: 'base',
         },
-        input: {
-          color: 'gray.100',
-          focusBorderColor: 'orange'
-        },
-        table: {
-          color: 'gray.100'
-        },
-        p: {
-          color: 'gray.100'
-        },
-        h1: {
-          color: 'gray.100'
-        },
-        h2: {
-          color: 'gray.100'
-        },
-        h3: {
-          color: 'gray.100'
-        }
-      })
-    }
-  })
+      }),
+    },
+  },
+  withDefaultColorScheme({ colorScheme: 'orange' })
+)
+
+export default theme

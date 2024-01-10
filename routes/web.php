@@ -22,8 +22,6 @@ Route::get('/privacy', function () {
 
 Route::get('/ranks', \App\Http\Controllers\General\ShowRanksController::class)
     ->name('ranks');
-Route::get('/hubs', \App\Http\Controllers\Airports\ShowHubsController::class)
-    ->name('hubs');
 Route::get('/staff', \App\Http\Controllers\General\ShowStaffController::class)
     ->name('staff');
 Route::get('/supporters', \App\Http\Controllers\General\ShowSupportersController::class)

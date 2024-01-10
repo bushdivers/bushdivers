@@ -1,48 +1,81 @@
+import {
+  Box,
+  Button,
+  Card,
+  CardBody,
+  CardHeader,
+  Flex,
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
+  Heading,
+  Image,
+  Input,
+  Text,
+} from '@chakra-ui/react'
+import { Inertia, usePage } from '@inertiajs/react'
 import React, { useState } from 'react'
-import { Inertia } from '@inertiajs/inertia'
-import { usePage } from '@inertiajs/inertia-react'
-import LayoutAuth from '../../Shared/LayoutAuth'
-import { Flex, Box, Input, Card, CardHeader, CardBody, Heading, Image, FormControl, FormLabel, Button, FormErrorMessage, Text } from '@chakra-ui/react'
+
+import AuthLayout from '../../components/layout/AuthLayout'
 
 const RequestPassword = () => {
   const { errors } = usePage().props
   console.log(errors)
   const [values, setValues] = useState({
-    email: ''
+    email: '',
   })
 
-  function handleChange (e) {
+  function handleChange(e) {
     const key = e.target.id
     const value = e.target.value
-    setValues(values => ({
+    setValues((values) => ({
       ...values,
-      [key]: value
+      [key]: value,
     }))
   }
 
-  function handleSubmit (e) {
+  function handleSubmit(e) {
     e.preventDefault()
     Inertia.post('/password', values)
   }
 
   return (
     <Flex direction="column" justifyContent="center" alignItems="center">
-      <Box my={8}><Image src="https://res.cloudinary.com/dji0yvkef/image/upload/v1628691598/BDLogo.png" boxSize={32}/></Box>
+      <Box my={8}>
+        <Image
+          src="https://res.cloudinary.com/dji0yvkef/image/upload/v1628691598/BDLogo.png"
+          boxSize={32}
+        />
+      </Box>
       <Card>
-        <CardHeader><Heading size="lg">Request password</Heading></CardHeader>
+        <CardHeader>
+          <Heading size="lg">Request password</Heading>
+        </CardHeader>
         <CardBody>
-        <FormControl my={2} isInvalid={errors?.email}>
-          <FormLabel><Text>Email address</Text></FormLabel>
-          <Input value={values.email} type="email" id="email" placeHolder="Email" onChange={handleChange} />
-          <FormErrorMessage>{errors?.email}</FormErrorMessage>
-        </FormControl>
-          <Button width="100%" onClick={(e) => handleSubmit(e)}>Request password</Button>
+          <FormControl my={2} isInvalid={errors?.email}>
+            <FormLabel>
+              <Text>Email address</Text>
+            </FormLabel>
+            <Input
+              value={values.email}
+              type="email"
+              id="email"
+              placeHolder="Email"
+              onChange={handleChange}
+            />
+            <FormErrorMessage>{errors?.email}</FormErrorMessage>
+          </FormControl>
+          <Button width="100%" onClick={(e) => handleSubmit(e)}>
+            Request password
+          </Button>
         </CardBody>
       </Card>
     </Flex>
   )
 }
 
-RequestPassword.layout = page => <LayoutAuth children={page} title="Request Password" />
+RequestPassword.layout = (page) => (
+  <AuthLayout children={page} title="Request Password" />
+)
 
 export default RequestPassword

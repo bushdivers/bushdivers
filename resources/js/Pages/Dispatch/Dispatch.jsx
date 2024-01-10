@@ -1,17 +1,17 @@
+import { Box, Button, Flex, Heading, SimpleGrid, Text } from '@chakra-ui/react'
+import { Inertia, usePage } from '@inertiajs/react'
 import React, { useState } from 'react'
-import { usePage } from '@inertiajs/inertia-react'
-import DispatchSummary from '../../Shared/Components/Dispatch/DispatchSummary'
-import Destination from '../../Shared/Components/Dispatch/Destination'
-import Fuel from '../../Shared/Components/Dispatch/Fuel'
-import Cargo from '../../Shared/Components/Dispatch/Cargo'
-import Aircraft from '../../Shared/Components/Dispatch/Aircraft'
-import { Inertia } from '@inertiajs/inertia'
-import { Heading, Flex, SimpleGrid, Box, Button, Text } from '@chakra-ui/react'
-import AppLayout from '../../Components/Layout/AppLayout'
+
+import Aircraft from '../../components/dispatch/Aircraft'
+import Cargo from '../../components/dispatch/Cargo'
+import Destination from '../../components/dispatch/Destination'
+import DispatchSummary from '../../components/dispatch/DispatchSummary'
+import Fuel from '../../components/dispatch/Fuel'
+import AppLayout from '../../components/layout/AppLayout'
 
 const Dispatch = ({ cargo, aircraft }) => {
   const { auth } = usePage().props
-  const [personWeight] = useState(170.00)
+  const [personWeight] = useState(170.0)
   const [avgasWeight] = useState(5.99)
   const [jetFuelWeight] = useState(6.79)
   const [selectedAircraft, setSelectedAircraft] = useState('')
@@ -25,18 +25,22 @@ const Dispatch = ({ cargo, aircraft }) => {
   const [submitError, setSubmitError] = useState(null)
   const [deadHead, setDeadHead] = useState(false)
 
-  function handleDeadHead () {
+  function handleDeadHead() {
     if (!selectedAircraft.maintenance_status) {
       setDeadHead(!deadHead)
     }
   }
 
-  function handleAircraftSelect (ac) {
+  function handleAircraftSelect(ac) {
     setSubmitError(null)
-    setSelectedAircraft(aircraft.find(a => a.registration === ac.registration))
+    setSelectedAircraft(
+      aircraft.find((a) => a.registration === ac.registration)
+    )
     setFuel(ac.fuel_onboard)
     if (ac.maintenance_status || ac.total_condition <= 25) {
-      window.alert('This aircraft is in need of maintenance, and therefore cannot be used for commercial purposes - please head to nearest size 4+ airport or hub for repairs.')
+      window.alert(
+        'This aircraft is in need of maintenance, and therefore cannot be used for commercial purposes - please head to nearest size 4+ airport or hub for repairs.'
+      )
       setDeadHead(true)
     } else {
       setDeadHead(false)
@@ -44,17 +48,17 @@ const Dispatch = ({ cargo, aircraft }) => {
     calculateFuelWeight(ac, ac.fuel_onboard)
   }
 
-  async function handleCargoSelect (cargo) {
+  async function handleCargoSelect(cargo) {
     console.log(cargo)
     setSubmitError(null)
-    if (selectedCargo.find(sc => sc.id === cargo.id)) {
-      await setSelectedCargo(selectedCargo.filter(sc => sc.id !== cargo.id))
+    if (selectedCargo.find((sc) => sc.id === cargo.id)) {
+      await setSelectedCargo(selectedCargo.filter((sc) => sc.id !== cargo.id))
       calculateCargoPayload('subtract', cargo)
       if (cargo.cargo_type === 2) {
         calculatePax('subtract', cargo)
       }
     } else {
-      await setSelectedCargo(sc => sc.concat(cargo))
+      await setSelectedCargo((sc) => sc.concat(cargo))
       calculateCargoPayload('add', cargo)
       if (cargo.cargo_type === 2) {
         calculatePax('add', cargo)
@@ -62,12 +66,12 @@ const Dispatch = ({ cargo, aircraft }) => {
     }
   }
 
-  function calculateFuelWeight (ac, f) {
+  function calculateFuelWeight(ac, f) {
     const fw = ac.fleet.fuel_type === 1 ? f * avgasWeight : f * jetFuelWeight
     setFuelWeight(fw)
   }
 
-  function calculatePax (method, pax) {
+  function calculatePax(method, pax) {
     let newTotal = 0
     if (method === 'subtract') {
       newTotal = passengerCount - pax.cargo_qty
@@ -77,25 +81,25 @@ const Dispatch = ({ cargo, aircraft }) => {
     setPassengerCount(newTotal)
   }
 
-  function calculateCargoPayload (method, cargo) {
+  function calculateCargoPayload(method, cargo) {
     let newTotal = 0
     if (method === 'subtract') {
       if (cargo.cargo_type === 1) {
         newTotal = cargoWeight - cargo.cargo_qty
       } else {
-        newTotal = cargoWeight - (cargo.cargo_qty * personWeight)
+        newTotal = cargoWeight - cargo.cargo_qty * personWeight
       }
     } else if (method === 'add') {
       if (cargo.cargo_type === 1) {
         newTotal = cargoWeight + cargo.cargo_qty
       } else {
-        newTotal = cargoWeight + (cargo.cargo_qty * personWeight)
+        newTotal = cargoWeight + cargo.cargo_qty * personWeight
       }
     }
     setCargoWeight(newTotal)
   }
 
-  function handleUpdateFuel (e) {
+  function handleUpdateFuel(e) {
     setSubmitError(null)
     setError(null)
     const qty = e.target.value
@@ -108,7 +112,7 @@ const Dispatch = ({ cargo, aircraft }) => {
     calculateFuelWeight(selectedAircraft, qty)
   }
 
-  function sendDispatch () {
+  function sendDispatch() {
     // create dispatch
     const cargo = []
     if (!deadHead) {
@@ -122,25 +126,37 @@ const Dispatch = ({ cargo, aircraft }) => {
       destination,
       fuel,
       cargo,
-      is_empty: deadHead
+      is_empty: deadHead,
     }
     Inertia.post('/dispatch', data)
   }
 
-  function handleSubmitDispatch () {
+  function handleSubmitDispatch() {
     setSubmitError(null)
     if (deadHead && selectedAircraft && fuel > 0 && destination) {
       sendDispatch()
       return
     }
-    if (selectedCargo.length > 0 && selectedAircraft && fuel > 0 && destination) {
-      if (passengerCount > selectedAircraft.fleet.pax_capacity || cargoWeight > selectedAircraft.fleet.cargo_capacity || (personWeight + fuelWeight + cargoWeight) > (selectedAircraft.fleet.mtow - selectedAircraft.fleet.zfw)) {
+    if (
+      selectedCargo.length > 0 &&
+      selectedAircraft &&
+      fuel > 0 &&
+      destination
+    ) {
+      if (
+        passengerCount > selectedAircraft.fleet.pax_capacity ||
+        cargoWeight > selectedAircraft.fleet.cargo_capacity ||
+        personWeight + fuelWeight + cargoWeight >
+          selectedAircraft.fleet.mtow - selectedAircraft.fleet.zfw
+      ) {
         setSubmitError('You are overweight!')
         return
       }
       sendDispatch()
     } else {
-      setSubmitError('Please make sure you have selected an aircraft, cargo, and fuel')
+      setSubmitError(
+        'Please make sure you have selected an aircraft, cargo, and fuel'
+      )
     }
   }
 
@@ -150,13 +166,32 @@ const Dispatch = ({ cargo, aircraft }) => {
       <Flex justifyContent="space-between" mt={4}>
         <SimpleGrid columns={2} spacing={10}>
           <Box>
-            <Aircraft aircraft={aircraft} selectedAircraft={selectedAircraft} handleAircraftSelect={handleAircraftSelect} />
-            <Cargo cargo={cargo} selectedCargo={selectedCargo} handleCargoSelect={handleCargoSelect} deadHead={deadHead} handleDeadHead={handleDeadHead} />
-            <Destination currentAirport={auth.user.current_airport_id} updateDestinationValue={setDestination} />
-            <Fuel selectedAircraft={selectedAircraft} fuel={fuel} fuelWeight={fuelWeight} handleUpdateFuel={handleUpdateFuel} error={error} />
+            <Aircraft
+              aircraft={aircraft}
+              selectedAircraft={selectedAircraft}
+              handleAircraftSelect={handleAircraftSelect}
+            />
+            <Cargo
+              cargo={cargo}
+              selectedCargo={selectedCargo}
+              handleCargoSelect={handleCargoSelect}
+              deadHead={deadHead}
+              handleDeadHead={handleDeadHead}
+            />
+            <Destination
+              currentAirport={auth.user.current_airport_id}
+              updateDestinationValue={setDestination}
+            />
+            <Fuel
+              selectedAircraft={selectedAircraft}
+              fuel={fuel}
+              fuelWeight={fuelWeight}
+              handleUpdateFuel={handleUpdateFuel}
+              error={error}
+            />
           </Box>
           <Box>
-          <DispatchSummary
+            <DispatchSummary
               selectedAircraft={selectedAircraft}
               selectedCargo={selectedCargo}
               personWeight={personWeight}
@@ -168,8 +203,14 @@ const Dispatch = ({ cargo, aircraft }) => {
               deadHead={deadHead}
             />
             <Box textAlign="right" mt={2}>
-              <Button onClick={() => handleSubmitDispatch()}>File Dispatch</Button>
-              {submitError && <Text fontSize="xs" mt={2} color="red.300">{submitError}</Text>}
+              <Button onClick={() => handleSubmitDispatch()}>
+                File Dispatch
+              </Button>
+              {submitError && (
+                <Text fontSize="xs" mt={2} color="red.300">
+                  {submitError}
+                </Text>
+              )}
             </Box>
           </Box>
         </SimpleGrid>
@@ -178,6 +219,8 @@ const Dispatch = ({ cargo, aircraft }) => {
   )
 }
 
-Dispatch.layout = page => <AppLayout children={page} title="Dispatch" heading="Flight Dispatch" />
+Dispatch.layout = (page) => (
+  <AppLayout children={page} title="Dispatch" heading="Flight Dispatch" />
+)
 
 export default Dispatch
