@@ -1,5 +1,5 @@
 import { Box, Card, CardBody, CardHeader } from '@chakra-ui/react'
-import { Inertia, Link, usePage } from '@inertiajs/react'
+import { Link, router, usePage } from '@inertiajs/react'
 import React from 'react'
 
 import AppLayout from '../../components/layout/AppLayout'
@@ -14,7 +14,7 @@ const RentalList = ({ aircraft, myRentals, currentAirport }) => {
       }ph and a returnable deposit of $${ac.rental_cost * 10}`
     )
     if (confirm) {
-      Inertia.post('/rentals', { aircraft: ac.id })
+      router.post('/rentals', { aircraft: ac.id })
     }
   }
 
@@ -32,7 +32,7 @@ const RentalList = ({ aircraft, myRentals, currentAirport }) => {
   }
 
   const returnRental = (ac) => {
-    Inertia.post(`/rentals/end/${ac.id}`)
+    router.post(`/rentals/end/${ac.id}`)
   }
 
   const RentalButton = (props) => {

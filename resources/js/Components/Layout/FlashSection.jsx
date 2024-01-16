@@ -1,7 +1,7 @@
-import { usePage } from '@inertiajs/inertia-react'
+import { usePage } from '@inertiajs/react'
 import React from 'react'
 
-import FlashMessage from '../../Shared/Elements/FlashMessage'
+import FlashMessage from '../elements/FlashMessage'
 
 const FlashSection = () => {
   const { flash } = usePage().props

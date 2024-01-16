@@ -1,7 +1,7 @@
+import { Card, CardBody } from '@chakra-ui/react'
 import { Link, usePage } from '@inertiajs/react'
 import React from 'react'
 
-import Card from '../../components/elements/Card'
 import FleetCardContent from '../../components/fleet/FleetCardContent'
 import AppLayout from '../../components/layout/AppLayout'
 
@@ -23,7 +23,9 @@ const FleetDetails = ({ fleet }) => {
         fleet.map((f) => (
           <div key={f.id} className="my-4">
             <Card>
-              <FleetCardContent fleet={f} />
+              <CardBody>
+                <FleetCardContent fleet={f} />
+              </CardBody>
             </Card>
           </div>
         ))}

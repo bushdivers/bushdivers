@@ -1,8 +1,7 @@
-import { Card, CardBody } from '@chakra-ui/react'
-import { Inertia, Link } from '@inertiajs/react'
+import { Card, CardBody, Select } from '@chakra-ui/react'
+import { Link, router } from '@inertiajs/react'
 import React, { useEffect, useState } from 'react'
 
-import Select from '../../Shared/Elements/Forms/Select'
 import Tooltip from '../../components/elements/Tooltip'
 import AppLayout from '../../components/layout/AppLayout'
 import { convertMinuteDecimalToHoursAndMinutes } from '../../helpers/date.helpers'
@@ -12,26 +11,26 @@ const Roster = ({ roster }) => {
   const [sortDirection, setSortDirection] = useState('asc')
 
   useEffect(() => {
-    setSortBy(Inertia.restore('sortBy'))
-    setSortDirection(Inertia.restore('sortDirection'))
+    setSortBy(router.restore('sortBy'))
+    setSortDirection(router.restore('sortDirection'))
   })
 
   function handleSortChange(e) {
-    Inertia.remember(e.target.value, 'sortBy')
+    router.remember(e.target.value, 'sortBy')
     setSortBy(e.target.value)
     updateRoster()
   }
 
   function handleDirectionChange(e) {
-    Inertia.remember(e.target.value, 'sortDirection')
+    router.remember(e.target.value, 'sortDirection')
     setSortDirection(e.target.value)
     updateRoster()
   }
 
   function updateRoster() {
-    Inertia.post('/roster', {
-      sortBy: Inertia.restore('sortBy'),
-      direction: Inertia.restore('sortDirection'),
+    router.post('/roster', {
+      sortBy: router.restore('sortBy'),
+      direction: router.restore('sortDirection'),
     })
   }
 
@@ -41,26 +40,25 @@ const Roster = ({ roster }) => {
         <div className="w-auto">
           <Select
             id="sort"
-            value={sortBy}
+            placeholder="Select option"
             onChange={handleSortChange}
-            options={[
-              { value: 'id', text: 'Pilot Id' },
-              { value: 'rank_id', text: 'Rank' },
-              { value: 'flights', text: 'Flights' },
-              { value: 'flights_time', text: 'Flight Time' },
-            ]}
-          />
+            value={sortBy}
+          >
+            <option value="id">Pilot Id</option>
+            <option value="rank_id">Rank</option>
+            <option value="flights">Flights</option>
+            <option value="flights_time">Flight Time</option>
+          </Select>
         </div>
         <div className="w-auto">
           <Select
             id="direction"
-            value={sortDirection}
             onChange={handleDirectionChange}
-            options={[
-              { value: 'asc', text: 'Asc' },
-              { value: 'desc', text: 'Desc' },
-            ]}
-          />
+            value={sortDirection}
+          >
+            <option value="asc">Asc</option>
+            <option value="desc">Desc</option>
+          </Select>
         </div>
       </div>
       <div className="mt-4">

@@ -1,5 +1,5 @@
 import { Card, CardBody } from '@chakra-ui/react'
-import { Inertia, usePage } from '@inertiajs/react'
+import { router, usePage } from '@inertiajs/react'
 import React, { useState } from 'react'
 
 import AppLayout from '../../components/layout/AppLayout'
@@ -45,7 +45,7 @@ const FleetEdit = ({ fleet, manufacturers }) => {
 
   function handleSubmit(e) {
     e.preventDefault()
-    Inertia.post(
+    router.post(
       fleet ? `/admin/fleet/edit/${fleet.id}` : '/admin/fleet/create',
       values
     )

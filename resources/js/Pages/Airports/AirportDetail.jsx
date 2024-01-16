@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 
 import AirportMap from '../../components/airport/AirportMap'
-import MapOptions from '../../components/elements/MapOptions'
+// import MapOptions from '../../components/elements/MapOptions'
 import AppLayout from '../../components/layout/AppLayout'
 
 const AirportDetail = ({ airport, aircraft, contracts, metar }) => {
-  const [currentMapStyle, setCurrentMapStyle] = useState('')
+  const [currentMapStyle] = useState('')
 
   return (
     <div className="relative">
@@ -17,10 +17,10 @@ const AirportDetail = ({ airport, aircraft, contracts, metar }) => {
         size="full"
         updatedMapStyle={currentMapStyle}
       />
-      <MapOptions
+      {/* <MapOptions
         updateMap={setCurrentMapStyle}
         currentStyle={currentMapStyle}
-      />
+      /> */}
     </div>
   )
 }

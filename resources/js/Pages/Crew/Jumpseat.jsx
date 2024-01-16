@@ -13,7 +13,7 @@ import {
   SimpleGrid,
   Text,
 } from '@chakra-ui/react'
-import { Inertia } from '@inertiajs/react'
+import { router } from '@inertiajs/react'
 import axios from 'axios'
 import React, { useState } from 'react'
 
@@ -64,7 +64,7 @@ const Jumpseat = ({ user, spent, balance }) => {
       setError('You do not have sufficient funds to transfer here')
       return
     }
-    Inertia.post('/jumpseat', {
+    router.post('/jumpseat', {
       cost: price,
       icao: transfer,
     })

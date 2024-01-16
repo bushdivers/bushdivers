@@ -1,5 +1,5 @@
 import { Card, CardBody } from '@chakra-ui/react'
-import { Inertia, usePage } from '@inertiajs/react'
+import { router, usePage } from '@inertiajs/react'
 import React, { useState } from 'react'
 
 import TextInput from '../../components/elements/forms/TextInput'
@@ -26,7 +26,7 @@ const Submission = () => {
 
   function handleSubmit(e) {
     e.preventDefault()
-    Inertia.post('/pireps/submit', values)
+    router.post('/pireps/submit', values)
   }
 
   return (

@@ -1,11 +1,11 @@
 import { Card, CardBody, Icon } from '@chakra-ui/react'
-import { Inertia, Link } from '@inertiajs/react'
+import { Link, router } from '@inertiajs/react'
 import { Pen, Plus, Trash2 } from 'lucide-react'
 import React, { useState } from 'react'
 
-import AppLayout from '../../Shared/AppLayout'
 import FleetAircraft from '../../components/admin/FleetAircraft'
 import NoContent from '../../components/elements/NoContent'
+import AppLayout from '../../components/layout/AppLayout'
 
 const EmptyData = () => {
   return (
@@ -27,7 +27,7 @@ const FleetList = ({ fleet }) => {
     const accept = window.confirm('Are you sure you wish to delete this fleet?')
     if (!accept) return
 
-    Inertia.delete(`/admin/fleet/delete/${id}`)
+    router.delete(`/admin/fleet/delete/${id}`)
   }
 
   return (

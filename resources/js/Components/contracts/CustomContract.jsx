@@ -1,5 +1,5 @@
 import { Box, Button, Flex, Input } from '@chakra-ui/react'
-import { Inertia, usePage } from '@inertiajs/react'
+import { router, usePage } from '@inertiajs/react'
 import React, { useState } from 'react'
 
 const CustomContract = ({ hideSection }) => {
@@ -22,7 +22,7 @@ const CustomContract = ({ hideSection }) => {
         setError('Departure and arrival cannot be the same')
         return
       }
-      await Inertia.post('/contracts/custom', { departure: dep, arrival: arr })
+      await router.post('/contracts/custom', { departure: dep, arrival: arr })
       hideSection()
     } else {
       setError('Please enter a departure and arrival ICAO')

@@ -9,7 +9,7 @@ import {
   Text,
   useDisclosure,
 } from '@chakra-ui/react'
-import { Head, Link as InertiaLink } from '@inertiajs/inertia-react'
+import { Head, Link as InertiaLink } from '@inertiajs/react'
 import { Menu } from 'lucide-react'
 import React from 'react'
 

@@ -1,5 +1,5 @@
 import { Card, CardBody, CardHeader, Icon } from '@chakra-ui/react'
-import { Inertia, usePage } from '@inertiajs/react'
+import { router, usePage } from '@inertiajs/react'
 import axios from 'axios'
 import { X } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
@@ -86,7 +86,7 @@ const MyContracts = ({ contracts, location }) => {
     }
     await axios.post('/api/contracts/assign', data)
 
-    Inertia.reload({ contracts })
+    router.reload({ contracts })
   }
 
   return (

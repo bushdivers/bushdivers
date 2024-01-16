@@ -6,7 +6,7 @@ import {
   Icon,
   Text,
 } from '@chakra-ui/react'
-import { Link as InertiaLink, usePage } from '@inertiajs/inertia-react'
+import { Link as InertiaLink, usePage } from '@inertiajs/react'
 import React from 'react'
 
 const NavItem = ({ to, icon, text }) => {

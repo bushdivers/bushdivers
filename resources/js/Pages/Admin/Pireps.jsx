@@ -1,5 +1,5 @@
 import { Icon } from '@chakra-ui/react'
-import { Inertia } from '@inertiajs/react'
+import { router } from '@inertiajs/react'
 import { format } from 'date-fns'
 import { Check } from 'lucide-react'
 import React, { useState } from 'react'
@@ -19,7 +19,7 @@ const EmptyData = () => {
 const Pireps = ({ pireps }) => {
   const [pirepId, setPirepId] = useState('')
   function loadPirep(pirep) {
-    Inertia.get(`/logbook/${pirep.id}`)
+    router.get(`/logbook/${pirep.id}`)
   }
 
   const renderPirepState = (state) => {
@@ -42,11 +42,11 @@ const Pireps = ({ pireps }) => {
   }
 
   function handleSearch() {
-    if (pirepId !== '') Inertia.get(`/logbook/${pirepId}`)
+    if (pirepId !== '') router.get(`/logbook/${pirepId}`)
   }
 
   function approvePirep(entry) {
-    Inertia.post('/pireps/approve', { pirep_id: entry.id })
+    router.post('/pireps/approve', { pirep_id: entry.id })
   }
 
   return (

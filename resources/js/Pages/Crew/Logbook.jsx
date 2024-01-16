@@ -1,5 +1,5 @@
 import { Badge, Card, CardBody } from '@chakra-ui/react'
-import { Inertia } from '@inertiajs/react'
+import { router } from '@inertiajs/react'
 import { format } from 'date-fns'
 import React from 'react'
 
@@ -19,7 +19,7 @@ const EmptyData = () => {
 
 const Logbook = ({ logbook }) => {
   function loadPirep(pirep) {
-    Inertia.get(`/logbook/${pirep.id}`)
+    router.get(`/logbook/${pirep.id}`)
   }
 
   return (

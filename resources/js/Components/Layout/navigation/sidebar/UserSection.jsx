@@ -1,5 +1,5 @@
 import { Avatar, Box, Link as ChakraLink, Flex, Text } from '@chakra-ui/react'
-import { Link as InertiaLink } from '@inertiajs/inertia-react'
+import { Link as InertiaLink } from '@inertiajs/react'
 import React from 'react'
 
 import UserStats from '../UserStats'

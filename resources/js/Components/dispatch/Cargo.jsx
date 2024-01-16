@@ -18,13 +18,13 @@ import {
   Thead,
   Tr,
 } from '@chakra-ui/react'
-import { Inertia, usePage } from '@inertiajs/react'
+import { router, usePage } from '@inertiajs/react'
 import axios from 'axios'
 import { Archive, ArrowUp, X } from 'lucide-react'
 import React, { useState } from 'react'
 
-import NoContent from '../../elements/NoContent'
 import CustomContract from '../contracts/CustomContract'
+import NoContent from '../elements/NoContent'
 
 const EmptyData = (props) => {
   return (
@@ -47,7 +47,7 @@ const Cargo = (props) => {
     }
     await axios.post('/api/contracts/assign', data)
 
-    Inertia.reload()
+    router.reload()
   }
 
   return (

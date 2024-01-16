@@ -1,4 +1,4 @@
-import { Inertia } from '@inertiajs/react'
+import { router } from '@inertiajs/react'
 import { format } from 'date-fns'
 import React from 'react'
 
@@ -8,7 +8,7 @@ import { getDistance } from '../../helpers/geo.helpers'
 
 const UsedAircraft = ({ aircraft, currentLocation, fleet }) => {
   const handlePurchase = (ac) => {
-    Inertia.get(`/marketplace/purchase/used/${ac.id}`)
+    router.get(`/marketplace/purchase/used/${ac.id}`)
   }
 
   return (

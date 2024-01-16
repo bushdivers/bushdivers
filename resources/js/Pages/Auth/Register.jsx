@@ -14,7 +14,7 @@ import {
   Input,
   Text,
 } from '@chakra-ui/react'
-import { Inertia, Link, usePage } from '@inertiajs/react'
+import { Link, router, usePage } from '@inertiajs/react'
 import React, { useState } from 'react'
 
 import AuthLayout from '../../components/layout/AuthLayout'
@@ -41,7 +41,7 @@ const Register = () => {
 
   function handleSubmit(e) {
     e.preventDefault()
-    Inertia.post('/register', values)
+    router.post('/register', values)
   }
 
   return (

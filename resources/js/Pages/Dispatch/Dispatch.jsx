@@ -1,5 +1,5 @@
 import { Box, Button, Flex, Heading, SimpleGrid, Text } from '@chakra-ui/react'
-import { Inertia, usePage } from '@inertiajs/react'
+import { router, usePage } from '@inertiajs/react'
 import React, { useState } from 'react'
 
 import Aircraft from '../../components/dispatch/Aircraft'
@@ -128,7 +128,7 @@ const Dispatch = ({ cargo, aircraft }) => {
       cargo,
       is_empty: deadHead,
     }
-    Inertia.post('/dispatch', data)
+    router.post('/dispatch', data)
   }
 
   function handleSubmitDispatch() {

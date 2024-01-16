@@ -1,5 +1,5 @@
 import { Card, CardBody, CardHeader } from '@chakra-ui/react'
-import { Inertia, usePage } from '@inertiajs/react'
+import { router, usePage } from '@inertiajs/react'
 import { format } from 'date-fns'
 import React from 'react'
 
@@ -50,7 +50,7 @@ const MyFinances = ({ accounts, balance, loanAvailable }) => {
         'Amount to borrow must be less than or equal to available amount!'
       )
     } else {
-      Inertia.post('/loans', { loanAmount: value, transaction: 'borrow' })
+      router.post('/loans', { loanAmount: value, transaction: 'borrow' })
     }
   }
 
@@ -61,7 +61,7 @@ const MyFinances = ({ accounts, balance, loanAvailable }) => {
         'Amount to repay must be less than or equal to current amount!'
       )
     } else {
-      Inertia.post('/loans', { loanAmount: value, transaction: 'repay' })
+      router.post('/loans', { loanAmount: value, transaction: 'repay' })
     }
   }
 

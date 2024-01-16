@@ -1,5 +1,5 @@
 import { Card, CardBody, CardHeader } from '@chakra-ui/react'
-import { Inertia, Link } from '@inertiajs/react'
+import { Link, router } from '@inertiajs/react'
 import axios from 'axios'
 import React from 'react'
 
@@ -16,7 +16,7 @@ const MyAircraft = ({ aircraft, rentals }) => {
           `Are you sure you want to sell your aircraft ${ac.registration} for $${res.data.price}?`
         )
       ) {
-        Inertia.post(`/marketplace/sell/${ac.id}`)
+        router.post(`/marketplace/sell/${ac.id}`)
       }
     }
   }

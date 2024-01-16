@@ -1,12 +1,12 @@
 import { Card, CardBody } from '@chakra-ui/react'
-import { Inertia } from '@inertiajs/react'
+import { router } from '@inertiajs/react'
 import React from 'react'
 
 import AppLayout from '../../components/layout/AppLayout'
 
 const Manufacturers = ({ manufacturers }) => {
   const selectManufacturer = (manufacturer) => {
-    Inertia.get(`marketplace/${manufacturer}`)
+    router.get(`marketplace/${manufacturer}`)
   }
 
   return (

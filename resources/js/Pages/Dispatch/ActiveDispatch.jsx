@@ -18,7 +18,7 @@ import {
   Thead,
   Tr,
 } from '@chakra-ui/react'
-import { Inertia, Link } from '@inertiajs/react'
+import { Link, router } from '@inertiajs/react'
 import { ArrowUp } from 'lucide-react'
 import React from 'react'
 
@@ -39,7 +39,7 @@ const ActiveDispatch = ({
       'You have an active flight, if you cancel now you will lose all progress'
     )
     if (res) {
-      Inertia.post('/dispatch/cancel', { pirep: pirep.id })
+      router.post('/dispatch/cancel', { pirep: pirep.id })
     }
   }
 

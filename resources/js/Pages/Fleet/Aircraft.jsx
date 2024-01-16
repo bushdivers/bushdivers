@@ -1,5 +1,5 @@
-import { Badge, Card, CardBody, Icon } from '@chakra-ui/react'
-import { Inertia, usePage } from '@inertiajs/react'
+import { Badge, Card, CardBody, CardHeader, Icon } from '@chakra-ui/react'
+import { router, usePage } from '@inertiajs/react'
 import { format } from 'date-fns'
 import { Wrench } from 'lucide-react'
 import React from 'react'
@@ -74,7 +74,7 @@ const Aircraft = ({ aircraft, maintenanceStatus, pireps }) => {
       type: 2,
       cat: 'Inspection',
     }
-    Inertia.post('/aircraft/maintenance', data)
+    router.post('/aircraft/maintenance', data)
   }
   //
   const handle100hr = (aircraft, engine) => {
@@ -95,7 +95,7 @@ const Aircraft = ({ aircraft, maintenanceStatus, pireps }) => {
       type: 1,
       cat: 'Inspection',
     }
-    Inertia.post('/aircraft/maintenance', data)
+    router.post('/aircraft/maintenance', data)
   }
 
   const handleAnnual = (aircraft) => {
@@ -115,7 +115,7 @@ const Aircraft = ({ aircraft, maintenanceStatus, pireps }) => {
       type: 3,
       cat: 'Inspection',
     }
-    Inertia.post('/aircraft/maintenance', data)
+    router.post('/aircraft/maintenance', data)
   }
 
   const handleRelocate = (aircraft) => {
@@ -130,7 +130,7 @@ const Aircraft = ({ aircraft, maintenanceStatus, pireps }) => {
       dest: dest,
     }
 
-    Inertia.post('/aircraft/maintenance/relocate', data)
+    router.post('/aircraft/maintenance/relocate', data)
   }
 
   const handleGeneralMaintenance = (
@@ -156,7 +156,7 @@ const Aircraft = ({ aircraft, maintenanceStatus, pireps }) => {
       type: maintenanceType,
       cat: 'General',
     }
-    Inertia.post('/aircraft/maintenance', data)
+    router.post('/aircraft/maintenance', data)
   }
 
   return (
@@ -253,175 +253,188 @@ const Aircraft = ({ aircraft, maintenanceStatus, pireps }) => {
           </div>
           {!aircraft.is_rental && (
             <div className="my-2">
-              <Card title="Maintenance">
-                <div className="flex justify-between">
-                  {shouldShowMaintenance() && (
-                    <div className="flex justify-between space-x-1">
-                      <button
-                        className="btn btn-secondary btn-sm my-1"
-                        onClick={() => handleGeneralMaintenance(aircraft, 4)}
-                      >
-                        General Maintenance
-                      </button>
-                      <button
-                        className="btn btn-secondary my-1 btn-sm"
-                        onClick={() => handleAnnual(aircraft)}
-                      >
-                        Annual Inspection
-                      </button>
-                      <button
-                        className="btn btn-secondary my-1 btn-sm"
-                        onClick={() => handleRelocate(aircraft)}
-                      >
-                        Relocate
-                      </button>
-                    </div>
-                  )}
-                </div>
-                <div className="mt-2 my-4">
-                  <p>Airframe Condition</p>
-                  <AircraftCondition aircraftCondition={aircraft.wear} />
-                </div>
-                <div className="overflow-x-auto">
-                  <table className="table table-compact w-full">
-                    <thead>
-                      <tr>
-                        <th>Engine #</th>
-                        <th>Time since 100 hr</th>
-                        <th>Time since TBO</th>
-                        <th>Condition</th>
-                        {shouldShowMaintenance() && <th>Action</th>}
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {aircraft.engines.map((engine) => (
-                        <tr key={engine.id}>
-                          <td>{engine.engine_no}</td>
-                          <td>
-                            {(engine.mins_since_100hr / 60).toFixed(2)}
-                            {shouldShowMaintenance() && (
-                              <button
-                                className="btn btn-secondary ml-2 btn-xs"
-                                onClick={() => handle100hr(aircraft, engine.id)}
-                              >
-                                100 hr
-                              </button>
-                            )}
-                          </td>
-                          <td>
-                            {(engine.mins_since_tbo / 60).toFixed(2)}
-                            {shouldShowMaintenance() && (
-                              <button
-                                className="btn btn-secondary ml-2 btn-xs"
-                                onClick={() => handleTBO(aircraft, engine.id)}
-                              >
-                                TBO
-                              </button>
-                            )}
-                          </td>
-                          <td>
-                            <AircraftCondition
-                              aircraftCondition={engine.wear}
-                            />
-                          </td>
-                          {shouldShowMaintenance() && (
-                            <td>
-                              <button
-                                onClick={() =>
-                                  handleGeneralMaintenance(
-                                    aircraft,
-                                    5,
-                                    engine.id
-                                  )
-                                }
-                                className="btn btn-secondary btn-xs"
-                              >
-                                Engine Maintenance
-                              </button>
-                            </td>
-                          )}
+              <Card>
+                <CardHeader>Maintenance</CardHeader>
+                <CardBody>
+                  <div className="flex justify-between">
+                    {shouldShowMaintenance() && (
+                      <div className="flex justify-between space-x-1">
+                        <button
+                          className="btn btn-secondary btn-sm my-1"
+                          onClick={() => handleGeneralMaintenance(aircraft, 4)}
+                        >
+                          General Maintenance
+                        </button>
+                        <button
+                          className="btn btn-secondary my-1 btn-sm"
+                          onClick={() => handleAnnual(aircraft)}
+                        >
+                          Annual Inspection
+                        </button>
+                        <button
+                          className="btn btn-secondary my-1 btn-sm"
+                          onClick={() => handleRelocate(aircraft)}
+                        >
+                          Relocate
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                  <div className="mt-2 my-4">
+                    <p>Airframe Condition</p>
+                    <AircraftCondition aircraftCondition={aircraft.wear} />
+                  </div>
+                  <div className="overflow-x-auto">
+                    <table className="table table-compact w-full">
+                      <thead>
+                        <tr>
+                          <th>Engine #</th>
+                          <th>Time since 100 hr</th>
+                          <th>Time since TBO</th>
+                          <th>Condition</th>
+                          {shouldShowMaintenance() && <th>Action</th>}
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
+                      </thead>
+                      <tbody>
+                        {aircraft.engines.map((engine) => (
+                          <tr key={engine.id}>
+                            <td>{engine.engine_no}</td>
+                            <td>
+                              {(engine.mins_since_100hr / 60).toFixed(2)}
+                              {shouldShowMaintenance() && (
+                                <button
+                                  className="btn btn-secondary ml-2 btn-xs"
+                                  onClick={() =>
+                                    handle100hr(aircraft, engine.id)
+                                  }
+                                >
+                                  100 hr
+                                </button>
+                              )}
+                            </td>
+                            <td>
+                              {(engine.mins_since_tbo / 60).toFixed(2)}
+                              {shouldShowMaintenance() && (
+                                <button
+                                  className="btn btn-secondary ml-2 btn-xs"
+                                  onClick={() => handleTBO(aircraft, engine.id)}
+                                >
+                                  TBO
+                                </button>
+                              )}
+                            </td>
+                            <td>
+                              <AircraftCondition
+                                aircraftCondition={engine.wear}
+                              />
+                            </td>
+                            {shouldShowMaintenance() && (
+                              <td>
+                                <button
+                                  onClick={() =>
+                                    handleGeneralMaintenance(
+                                      aircraft,
+                                      5,
+                                      engine.id
+                                    )
+                                  }
+                                  className="btn btn-secondary btn-xs"
+                                >
+                                  Engine Maintenance
+                                </button>
+                              </td>
+                            )}
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </CardBody>
               </Card>
             </div>
           )}
           {!aircraft.is_rental && (
             <div>
-              <Card title="Maintenance Logs">
-                <div className="overflow-x-auto">
-                  <table className="table table-compact w-full">
-                    <thead>
-                      <tr>
-                        <th>Type</th>
-                        <th>Cost</th>
-                        <th>Date</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {aircraft.maintenance.map((maintenance) => (
-                        <tr key={maintenance.id}>
-                          <td>
-                            {renderMaintenanceType(
-                              maintenance.maintenance_type
-                            )}
-                          </td>
-                          <td>{maintenance.cost}</td>
-                          <td>
-                            {format(maintenance.created_at, 'DD/MM/YYYY')}
-                          </td>
+              <Card>
+                <CardHeader>Maintenance Log</CardHeader>
+                <CardBody>
+                  <div className="overflow-x-auto">
+                    <table className="table table-compact w-full">
+                      <thead>
+                        <tr>
+                          <th>Type</th>
+                          <th>Cost</th>
+                          <th>Date</th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
+                      </thead>
+                      <tbody>
+                        {aircraft.maintenance.map((maintenance) => (
+                          <tr key={maintenance.id}>
+                            <td>
+                              {renderMaintenanceType(
+                                maintenance.maintenance_type
+                              )}
+                            </td>
+                            <td>{maintenance.cost}</td>
+                            <td>
+                              {format(maintenance.created_at, 'DD/MM/YYYY')}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </CardBody>
               </Card>
             </div>
           )}
           <div className="mt-2">
-            <Card title="Flights">
-              <div className="overflow-x-auto">
-                <table className="table table-compact w-full">
-                  <thead>
-                    <tr>
-                      <th>Date</th>
-                      <th>Departure</th>
-                      <th>Arrival</th>
-                      <th>Distance</th>
-                      <th>Time</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {pireps &&
-                      pireps.map((pirep) => (
-                        <tr key={pirep.id}>
-                          <td>{pirep.submitted_at}</td>
-                          <td>{pirep.departure_airport_id}</td>
-                          <td>{pirep.destination_airport_id}</td>
-                          <td>{pirep.distance}</td>
-                          <td>
-                            {convertMinuteDecimalToHoursAndMinutes(
-                              pirep.flight_time
-                            )}
-                          </td>
-                        </tr>
-                      ))}
-                  </tbody>
-                </table>
-              </div>
+            <Card>
+              <CardHeader>Flights</CardHeader>
+              <CardBody>
+                <div className="overflow-x-auto">
+                  <table className="table table-compact w-full">
+                    <thead>
+                      <tr>
+                        <th>Date</th>
+                        <th>Departure</th>
+                        <th>Arrival</th>
+                        <th>Distance</th>
+                        <th>Time</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {pireps &&
+                        pireps.map((pirep) => (
+                          <tr key={pirep.id}>
+                            <td>{pirep.submitted_at}</td>
+                            <td>{pirep.departure_airport_id}</td>
+                            <td>{pirep.destination_airport_id}</td>
+                            <td>{pirep.distance}</td>
+                            <td>
+                              {convertMinuteDecimalToHoursAndMinutes(
+                                pirep.flight_time
+                              )}
+                            </td>
+                          </tr>
+                        ))}
+                    </tbody>
+                  </table>
+                </div>
+              </CardBody>
             </Card>
           </div>
         </div>
         <div className="md:w-1/2 mx-1">
           <div>
             <Card>
-              <AircraftMap
-                aircraft={aircraft}
-                size="large"
-                mapStyle={auth.user.map_style}
-              />
+              <CardBody>
+                <AircraftMap
+                  aircraft={aircraft}
+                  size="large"
+                  mapStyle={auth.user.map_style}
+                />
+              </CardBody>
             </Card>
           </div>
         </div>

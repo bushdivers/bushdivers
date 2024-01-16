@@ -1,5 +1,5 @@
 import { Card, CardBody, Icon } from '@chakra-ui/react'
-import { Inertia, Link, usePage } from '@inertiajs/react'
+import { Link, router, usePage } from '@inertiajs/react'
 import { Award, CheckCircle2 } from 'lucide-react'
 import React, { useState } from 'react'
 
@@ -33,7 +33,7 @@ const Profile = ({ profile, rank, nextRank, awards }) => {
 
   function handleSubmit(e) {
     e.preventDefault()
-    Inertia.put('/profile', values)
+    router.put('/profile', values)
   }
 
   return (

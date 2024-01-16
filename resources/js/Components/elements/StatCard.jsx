@@ -1,5 +1,5 @@
 import { Card, CardBody } from '@chakra-ui/react'
-import { Link } from '@inertiajs/reactreact'
+import { Link } from '@inertiajs/react'
 import React from 'react'
 
 const StatCard = (props) => {

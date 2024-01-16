@@ -13,7 +13,7 @@ import {
   Input,
   Text,
 } from '@chakra-ui/react'
-import { Inertia, usePage } from '@inertiajs/react'
+import { router, usePage } from '@inertiajs/react'
 import React, { useState } from 'react'
 
 import AuthLayout from '../../components/layout/AuthLayout'
@@ -36,7 +36,7 @@ const RequestPassword = () => {
 
   function handleSubmit(e) {
     e.preventDefault()
-    Inertia.post('/password', values)
+    router.post('/password', values)
   }
 
   return (

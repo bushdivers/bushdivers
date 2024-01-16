@@ -1,5 +1,5 @@
 import { Card, CardBody, CardHeader, Icon } from '@chakra-ui/react'
-import { Inertia, usePage } from '@inertiajs/react'
+import { router, usePage } from '@inertiajs/react'
 import axios from 'axios'
 import {
   ArrowsUpFromLine,
@@ -28,7 +28,7 @@ function renameAirport(airport) {
   const newIcao = window.prompt('Enter new ICAO code for this airport', airport)
   if (newIcao.length <= 2) return
 
-  Inertia.post('/airports/maintenance/rename', { airport, newIcao })
+  router.post('/airports/maintenance/rename', { airport, newIcao })
 }
 
 function AirportInfo({ airport, updateCurrentViews, currentViews }) {
@@ -185,7 +185,7 @@ function ContractList({
     }
     await axios.post('/api/contracts/bid', data)
 
-    Inertia.reload({ only: ['contracts'] })
+    router.reload({ only: ['contracts'] })
   }
   return (
     <>

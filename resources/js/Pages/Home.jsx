@@ -7,7 +7,7 @@ import {
   StatLabel,
   StatNumber,
 } from '@chakra-ui/react'
-import { Head, Inertia, usePage } from '@inertiajs/react'
+import { Head, router, usePage } from '@inertiajs/react'
 import React, { useEffect } from 'react'
 
 import Footer from '../components/layout/navigation/public/Footer'
@@ -17,7 +17,7 @@ const Home = ({ stats }) => {
   const { auth } = usePage().props
 
   useEffect(() => {
-    if (auth.user) Inertia.get('/dashboard')
+    if (auth.user) router.get('/dashboard')
   })
 
   return (

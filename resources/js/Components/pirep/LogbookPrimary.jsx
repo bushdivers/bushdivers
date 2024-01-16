@@ -1,5 +1,5 @@
 import { Card, CardBody, Icon } from '@chakra-ui/react'
-import { Link } from '@inertiajs/inertia-react'
+import { Link } from '@inertiajs/react'
 import { format } from 'date-fns'
 import { PlaneLanding, PlaneTakeoff } from 'lucide-react'
 import React from 'react'

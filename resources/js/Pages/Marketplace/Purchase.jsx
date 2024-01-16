@@ -1,5 +1,5 @@
 import { Card, CardBody, CardHeader } from '@chakra-ui/react'
-import { Inertia, usePage } from '@inertiajs/react'
+import { router, usePage } from '@inertiajs/react'
 import axios from 'axios'
 import React, { useState } from 'react'
 
@@ -107,7 +107,7 @@ const Purchase = ({ aircraft, purchaseType }) => {
       reg,
       purchaseType,
     }
-    Inertia.post('/marketplace/purchase', data)
+    router.post('/marketplace/purchase', data)
   }
 
   return (
