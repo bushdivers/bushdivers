@@ -11,23 +11,28 @@ import {
   StatLabel,
   StatNumber,
   Text,
+  useColorMode,
 } from '@chakra-ui/react'
 import { Link } from '@inertiajs/react'
-import { format, formatDistanceToNow } from 'date-fns'
+import { formatDistanceToNow } from 'date-fns'
 import { Plane } from 'lucide-react'
 import React from 'react'
 
 import CrewMap from '../../components/crew/CrewMap'
 import AppLayout from '../../components/layout/AppLayout'
-import { convertMinuteDecimalToHoursAndMinutes } from '../../helpers/date.helpers'
+import {
+  convertMinuteDecimalToHoursAndMinutes,
+  formatDate,
+} from '../../helpers/date.helpers'
 
 const Dashboard = ({ lastFlight, user, locations, distance }) => {
+  const { colorMode } = useColorMode()
   return (
     <Box position="relative">
       <CrewMap
         size="full"
         locations={locations && locations.length > 0 ? locations : []}
-        mapStyle={user.map_style}
+        mapStyle={colorMode}
       />
       <Box position="absolute" zIndex={10} w="400px" top={10} left={4}>
         <Card>
@@ -41,7 +46,7 @@ const Dashboard = ({ lastFlight, user, locations, distance }) => {
                     color="orange.300"
                     href={`/logbook/${lastFlight.id}`}
                   >
-                    {format(lastFlight.submitted_at, 'ddd DD MMM YYYY')}
+                    {formatDate(lastFlight.submitted_at)}
                   </ChakraLink>
                 )}
               </Heading>
@@ -51,8 +56,8 @@ const Dashboard = ({ lastFlight, user, locations, distance }) => {
             {lastFlight && (
               <Box>
                 <Text fontSize="xs">
-                  {formatDistanceToNow(lastFlight.submitted_at)} -{' '}
-                  {format(lastFlight.submitted_at, 'ddd DD MMM YYYY')}
+                  {formatDistanceToNow(new Date(lastFlight.submitted_at))} -{' '}
+                  {formatDate(lastFlight.submitted_at)}
                 </Text>
                 <Box mt={2}>
                   <Text fontSize="lg">{lastFlight.dep_airport.name}</Text>
@@ -75,7 +80,7 @@ const Dashboard = ({ lastFlight, user, locations, distance }) => {
                   </ChakraLink>
                 </Box>
                 <Flex alignItems="center" mt={2} gap={2}>
-                  <Icon color="white" as={Plane} />
+                  <Icon as={Plane} />
                   <Box>
                     {lastFlight.is_rental ? (
                       <Text fontSize="sm">
@@ -96,12 +101,7 @@ const Dashboard = ({ lastFlight, user, locations, distance }) => {
                 </Flex>
               </Box>
             )}
-            <Flex
-              color="white"
-              alignItems="center"
-              justifyContent="center"
-              my={6}
-            >
+            <Flex alignItems="center" justifyContent="center" my={6}>
               <Stat>
                 <StatLabel>Flights</StatLabel>
                 <StatNumber>
