@@ -15,7 +15,15 @@ import UserSection from './UserSection'
 const SidebarContainer = () => {
   const bg = useColorModeValue('white', 'gray.800')
   return (
-    <Box p={3} position="fixed" top={0} bottom={0} w="250px" bg={bg}>
+    <Box
+      p={3}
+      position="fixed"
+      top={0}
+      bottom={0}
+      w="250px"
+      bg={bg}
+      overflowY="auto"
+    >
       <Box>
         <Flex alignItems="center" gap={2} justifyContent="space-between">
           <Flex alignItems="center" gap={2}>

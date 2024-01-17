@@ -42,8 +42,8 @@ const Dashboard = ({ lastFlight, user, locations, distance }) => {
               <Heading size="sm">
                 {lastFlight && (
                   <ChakraLink
-                    a={Link}
-                    color="orange.300"
+                    color="orange.400"
+                    as={Link}
                     href={`/logbook/${lastFlight.id}`}
                   >
                     {formatDate(lastFlight.submitted_at)}
@@ -55,14 +55,19 @@ const Dashboard = ({ lastFlight, user, locations, distance }) => {
           <CardBody>
             {lastFlight && (
               <Box>
-                <Text fontSize="xs">
-                  {formatDistanceToNow(new Date(lastFlight.submitted_at))} -{' '}
-                  {formatDate(lastFlight.submitted_at)}
-                </Text>
+                <Flex justifyContent="space-between" alignItems="center">
+                  <Text fontSize="xs">
+                    {formatDistanceToNow(new Date(lastFlight.submitted_at))} -{' '}
+                    {formatDate(lastFlight.submitted_at)}
+                  </Text>
+                  <ChakraLink color="orange.400" as={Link} href={`/logbook`}>
+                    View Logbook List
+                  </ChakraLink>
+                </Flex>
                 <Box mt={2}>
                   <Text fontSize="lg">{lastFlight.dep_airport.name}</Text>
                   <ChakraLink
-                    color="orange.300"
+                    color="orange.400"
                     as={Link}
                     href={`/airports/${lastFlight.departure_airport_id}`}
                   >
@@ -72,7 +77,7 @@ const Dashboard = ({ lastFlight, user, locations, distance }) => {
                 <Box mt={2}>
                   <Text fontSize="lg">{lastFlight.arr_airport.name}</Text>
                   <ChakraLink
-                    color="orange.300"
+                    color="orange.400"
                     as={Link}
                     href={`/airports/${lastFlight.destination_airport_id}`}
                   >
@@ -90,7 +95,7 @@ const Dashboard = ({ lastFlight, user, locations, distance }) => {
                     ) : (
                       <ChakraLink
                         as={Link}
-                        color="orange.300"
+                        color="orange.400"
                         href={`/aircraft/${lastFlight.aircraft.id}`}
                       >
                         {lastFlight.aircraft.fleet.type} -{' '}

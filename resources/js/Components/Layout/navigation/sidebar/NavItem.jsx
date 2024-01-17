@@ -14,7 +14,7 @@ const NavItem = ({ to, icon, text }) => {
   console.log(location.pathname)
   return (
     <Box my={2}>
-      <ChakraLink as={InertiaLink} to={to}>
+      <ChakraLink as={InertiaLink} href={to}>
         <Button
           colorScheme={url === to ? 'orange' : ''}
           variant={url === to ? 'solid' : 'ghost'}

@@ -12,6 +12,13 @@ const theme = extendTheme(
   {
     initialColorMode: 'light',
     useSystemColorMode: false,
+    components: {
+      Link: {
+        defaultProps: {
+          color: 'orange.500', //mode('orange.500', 'orange.300'),
+        },
+      },
+    },
     styles: {
       global: (props) => ({
         body: {
@@ -19,6 +26,9 @@ const theme = extendTheme(
           color: mode('gray.800', 'whiteAlpha.900')(props),
           bg: mode('gray.50', 'gray.900')(props),
           lineHeight: 'base',
+        },
+        a: {
+          color: 'orange.500', // mode('orange.500', 'orange.300')(props),
         },
       }),
     },
