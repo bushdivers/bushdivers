@@ -14,7 +14,7 @@ const LandingMap = (props) => {
       style: parseMapStyle(props.mapStyle),
       center: [props.pirep.landing_lon, props.pirep.landing_lat],
       zoom: 16,
-      mapboxToken,
+      accessToken: mapboxToken,
     })
   })
 

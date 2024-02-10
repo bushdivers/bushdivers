@@ -1,21 +1,24 @@
-import { Badge, Card, CardBody } from '@chakra-ui/react'
-import { router } from '@inertiajs/react'
-import { format } from 'date-fns'
+import {
+  Badge,
+  Box,
+  Card,
+  CardBody,
+  Link as ChakraLink,
+  Table,
+  TableContainer,
+  Tbody,
+  Td,
+  Th,
+  Thead,
+  Tr,
+} from '@chakra-ui/react'
+import { Link as InertiaLink, router } from '@inertiajs/react'
 import React from 'react'
 
-import NoContent from '../../components/elements/NoContent'
 import Pagination from '../../components/elements/Pagination'
 import AppLayout from '../../components/layout/AppLayout'
+import { formatDate } from '../../helpers/date.helpers'
 import { convertMinuteDecimalToHoursAndMinutes } from '../../helpers/date.helpers'
-
-const EmptyData = () => {
-  return (
-    <>
-      <i className="material-icons md-48">airplane_landing</i>
-      <div>There are no logbook entries</div>
-    </>
-  )
-}
 
 const Logbook = ({ logbook }) => {
   function loadPirep(pirep) {
@@ -23,91 +26,88 @@ const Logbook = ({ logbook }) => {
   }
 
   return (
-    <div>
-      <p className="text-sm mb-1">
-        {logbook.length > 0 && <span>Total pireps: {logbook.length} </span>}{' '}
-      </p>
-      <div>
+    <>
+      <Box>
         <Card>
           <CardBody>
             {logbook.length === 0 ? (
-              <NoContent content={<EmptyData />} />
+              <Box>No flights yet.</Box>
             ) : (
-              <div className="overflow-x-auto">
-                <table className="table w-full">
-                  <thead>
-                    <tr>
-                      <th></th>
-                      <th>Departure</th>
-                      <th>Arrival</th>
-                      <th>Time</th>
-                      <th>Distance</th>
-                      <th>Points</th>
-                      <th>Date</th>
-                    </tr>
-                  </thead>
-                  <tbody>
+              <TableContainer>
+                <Table size="sm" variant="simple">
+                  <Thead>
+                    <Tr>
+                      <Th></Th>
+                      <Th>Departure</Th>
+                      <Th>Arrival</Th>
+                      <Th>Time</Th>
+                      <Th>Distance</Th>
+                      <Th>Points</Th>
+                      <Th>Date</Th>
+                    </Tr>
+                  </Thead>
+                  <Tbody>
                     {logbook.data.map((entry) => (
-                      <tr key={entry.id}>
-                        <td
+                      <Tr key={entry.id}>
+                        <Td
                           className="text-primary cursor-pointer"
                           onClick={() => loadPirep(entry)}
                         >
-                          <span className="hover:underline">View Pirep</span>
+                          <ChakraLink
+                            color="orange.400"
+                            as={InertiaLink}
+                            href={`/logbook/${entry.id}`}
+                          >
+                            View Pirep
+                          </ChakraLink>
                           {entry.state === 5 && (
-                            <span className="px-2 ml-2">
-                              <Badge label="Review" color="primary" />
-                            </span>
+                            <Badge ml={2} colorScheme="orange" fontSize="0.7em">
+                              Review
+                            </Badge>
                           )}
-                        </td>
-                        <td>
+                        </Td>
+                        <Td>
                           {entry.departure_airport_id}
                           <br />
                           <span className="text-xs">
                             {entry.dep_airport.name}
                           </span>
-                        </td>
-                        <td>
+                        </Td>
+                        <Td>
                           {entry.destination_airport_id}
                           <br />
                           <span className="text-xs">
                             {entry.arr_airport.name}
                           </span>
-                        </td>
-                        <td>
+                        </Td>
+                        <Td>
                           {convertMinuteDecimalToHoursAndMinutes(
                             entry.flight_time
                           )}
-                        </td>
-                        <td>
+                        </Td>
+                        <Td>
                           {entry.distance &&
                             entry.distance.toLocaleString(navigator.language)}
                           nm
-                        </td>
-                        <td>
+                        </Td>
+                        <Td>
                           {entry.score &&
                             entry.score.toLocaleString(navigator.language)}
-                        </td>
-                        <td>
-                          {format(
-                            new Date(entry.submitted_at),
-                            'dd LLL yyyy hh:mm',
-                            { timeZone: 'UTC' }
-                          )}
-                        </td>
-                      </tr>
+                        </Td>
+                        <Td>{formatDate(entry.submitted_at)}</Td>
+                      </Tr>
                     ))}
-                  </tbody>
-                </table>
-              </div>
+                  </Tbody>
+                </Table>
+              </TableContainer>
             )}
+            <Box mt={2}>
+              <Pagination pages={logbook} />
+            </Box>
           </CardBody>
         </Card>
-        <div className="mt-2">
-          <Pagination pages={logbook} />
-        </div>
-      </div>
-    </div>
+      </Box>
+    </>
   )
 }
 

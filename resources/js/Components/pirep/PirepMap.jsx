@@ -15,7 +15,7 @@ const PirepMap = (props) => {
       style: parseMapStyle(props.mapStyle),
       center: [props.pirep.arr_airport.lon, props.pirep.arr_airport.lat],
       zoom: 5,
-      mapboxToken,
+      accessToken: mapboxToken,
     })
   })
 
