@@ -1,9 +1,30 @@
-import { Icon } from '@chakra-ui/react'
+import {
+  Box,
+  Button,
+  Card,
+  CardBody,
+  Flex,
+  Grid,
+  GridItem,
+  Icon,
+  Input,
+  Link,
+  Table,
+  TableContainer,
+  Tag,
+  Tbody,
+  Td,
+  Text,
+  Th,
+  Thead,
+  Tr,
+} from '@chakra-ui/react'
 import { router } from '@inertiajs/react'
 import { format } from 'date-fns'
 import { Check } from 'lucide-react'
 import React, { useState } from 'react'
 
+import AdminMenu from '../../Components/Layout/navigation/AdminMenu.jsx'
 import NoContent from '../../components/elements/NoContent'
 import Pagination from '../../components/elements/Pagination'
 import AppLayout from '../../components/layout/AppLayout'
@@ -50,98 +71,97 @@ const Pireps = ({ pireps }) => {
   }
 
   return (
-    <div className="p-4">
-      <div className="bg-white rounded shadow overflow-x-auto">
-        {pireps.length === 0 ? (
-          <NoContent content={<EmptyData />} />
-        ) : (
-          <div className="my-2">
-            <div className="inline-block mx-2">
-              <label htmlFor="pirep">
-                <span className="text-gray-700">Pirep Id</span>
-              </label>
-              <input
-                id="pirep"
-                type="text"
-                placeholder="Find pirep"
-                className="form-input form"
-                value={pirepId}
-                onChange={handleChange}
-              />
-            </div>
-            <div className="inline-block mx-2">
-              <button
-                onClick={() => handleSearch()}
-                className="btn btn-secondary"
-              >
-                Go
-              </button>
-            </div>
-            <table className="table table-auto">
-              <thead>
-                <tr>
-                  <th></th>
-                  <th>Departure</th>
-                  <th>Arrival</th>
-                  <th>Pilot</th>
-                  <th>State</th>
-                  <th>Date</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                {pireps.data.map((entry) => (
-                  <tr key={entry.id}>
-                    <td
-                      className="text-orange-500 hover:underline"
-                      onClick={() => loadPirep(entry)}
-                    >
-                      View Details
-                      {entry.state === 5 && (
-                        <span className="bg-orange-500 px-2 ml-2 text-white text-sm rounded">
-                          Review
-                        </span>
-                      )}
-                    </td>
-                    <td>
-                      {entry.departure_airport_id}
-                      <br />
-                      <span className="text-xs">{entry.dep_airport.name}</span>
-                    </td>
-                    <td>
-                      {entry.destination_airport_id}
-                      <br />
-                      <span className="text-xs">{entry.arr_airport.name}</span>
-                    </td>
-                    <td>
-                      <span>{entry.pilot.pilot_id}</span>
-                      <br />
-                      <span className="text-xs">
-                        {entry.pilot.private_name}
-                      </span>
-                    </td>
-                    <td>{renderPirepState(entry.state)}</td>
-                    <td>
-                      {format(new Date(entry.submitted_at), 'dd LLL yyyy')}
-                    </td>
-                    <td>
-                      {entry.state === 5 && (
-                        <Icon
-                          as={Check}
-                          onClick={() => approvePirep(entry)}
-                          className="p-1 hover:rounded hover:shadow"
-                        />
-                      )}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-            <Pagination pages={pireps} />
-          </div>
-        )}
-      </div>
-    </div>
+    <Grid templateColumns="repeat(6, 1fr)" gap={2}>
+      <GridItem colSpan={1}>
+        <AdminMenu />
+      </GridItem>
+      <GridItem colSpan={5}>
+        <Card>
+          <CardBody>
+            {pireps.length === 0 ? (
+              <NoContent content={<EmptyData />} />
+            ) : (
+              <>
+                <Flex gap={2} alignItems="center">
+                  <Box className="text-gray-700">Pirep Id</Box>
+                  <Box>
+                    <Input
+                      id="pirep"
+                      type="text"
+                      placeholder="Find pirep"
+                      className="form-input form"
+                      value={pirepId}
+                      onChange={handleChange}
+                    />
+                  </Box>
+                  <Button onClick={() => handleSearch()}>Go</Button>
+                </Flex>
+                <TableContainer>
+                  <Table>
+                    <Thead>
+                      <Tr>
+                        <Th></Th>
+                        <Th>Departure</Th>
+                        <Th>Arrival</Th>
+                        <Th>Pilot</Th>
+                        <Th>State</Th>
+                        <Th>Date</Th>
+                        <Th></Th>
+                      </Tr>
+                    </Thead>
+                    <Tbody>
+                      {pireps.data.map((entry) => (
+                        <Tr key={entry.id}>
+                          <Td onClick={() => loadPirep(entry)}>
+                            <Link>View Details</Link>
+                            {entry.state === 5 && <Tag ml={2}>Review</Tag>}
+                          </Td>
+                          <Td>
+                            {entry.departure_airport_id}
+                            <br />
+                            <Text fontSize="xs">{entry.dep_airport.name}</Text>
+                          </Td>
+                          <Td>
+                            {entry.destination_airport_id}
+                            <br />
+                            <Text fontSize="xs">{entry.arr_airport.name}</Text>
+                          </Td>
+                          <Td>
+                            <Text>{entry.pilot.pilot_id}</Text>
+                            <Text fontSize="xs">
+                              {entry.pilot.private_name}
+                            </Text>
+                          </Td>
+                          <Td>{renderPirepState(entry.state)}</Td>
+                          <Td>
+                            {format(
+                              new Date(entry.submitted_at),
+                              'dd LLL yyyy'
+                            )}
+                          </Td>
+                          <Td>
+                            {entry.state === 5 && (
+                              <Button
+                                variant="ghost"
+                                size="xs"
+                                onClick={() => approvePirep(entry)}
+                              >
+                                <Icon as={Check} />
+                              </Button>
+                            )}
+                          </Td>
+                        </Tr>
+                      ))}
+                    </Tbody>
+                  </Table>
+                </TableContainer>
+                <Pagination pages={pireps} />
+              </>
+            )}
+          </CardBody>
+        </Card>
+      </GridItem>
+    </Grid>
   )
 }
 

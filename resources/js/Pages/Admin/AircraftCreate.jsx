@@ -1,11 +1,26 @@
-import { Card, CardBody } from '@chakra-ui/react'
+import {
+  Box,
+  Button,
+  Card,
+  CardBody,
+  Flex,
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
+  Grid,
+  GridItem,
+  Input,
+  Select,
+} from '@chakra-ui/react'
 import { router, usePage } from '@inertiajs/react'
 import React, { useState } from 'react'
 
+import AdminMenu from '../../Components/Layout/navigation/AdminMenu.jsx'
 import AppLayout from '../../components/layout/AppLayout'
 
 const AircraftCreate = ({ fleet, hubs, fleetId }) => {
   const { errors } = usePage().props
+  console.log(errors)
   const [values, setValues] = useState({
     fleet: fleetId > 0 ? fleetId : '1',
     registration: '',
@@ -29,103 +44,82 @@ const AircraftCreate = ({ fleet, hubs, fleetId }) => {
   }
 
   return (
-    <div className="p-4">
-      <Card>
-        <CardBody>
-          <div className="lg:w-1/2 mt-2 p-4 rounded shadow">
-            <form onSubmit={handleSubmit}>
-              <div className="my-2">
-                <label htmlFor="fleet" className="block">
-                  Fleet type
-                </label>
-                <select
-                  id="fleet"
-                  value={values.fleet}
-                  onChange={handleChange}
-                  className="select"
-                >
-                  {fleet.map((f) => (
-                    <option key={f.id} value={f.id}>
-                      {f.type}
-                    </option>
-                  ))}
-                </select>
-                {errors.fleet && (
-                  <div className="text-sm text-red-500">{errors.fleet}</div>
-                )}
-              </div>
-              <div className="my-2">
-                <label htmlFor="registration" className="block">
-                  Registration
-                </label>
-                <input
-                  id="registration"
-                  value={values.registration}
-                  onChange={handleChange}
-                  type="text"
-                  className="input"
-                />
-                {errors.registration && (
-                  <div className="text-sm text-red-500">
-                    {errors.registration}
-                  </div>
-                )}
-              </div>
-              <div className="my-2">
-                <label htmlFor="deliveryIcao" className="block">
-                  Start location
-                </label>
-                <input
-                  id="deliveryIcao"
-                  value={values.deliveryIcao}
-                  onChange={handleChange}
-                  type="text"
-                  className="input"
-                />
-                {errors.deliveryIcao && (
-                  <div className="text-sm text-red-500">
-                    {errors.deliveryIcao}
-                  </div>
-                )}
-              </div>
-              <div className="my-2">
-                <label htmlFor="hub" className="block">
-                  Hub location
-                </label>
-                <select
-                  id="hub"
-                  value={values.hub}
-                  onChange={handleChange}
-                  className="select"
-                >
-                  {hubs.map((hub) => (
-                    <option key={hub.identifier} value={hub.identifier}>
-                      {hub.identifier}
-                    </option>
-                  ))}
-                </select>
-                {errors.hub && (
-                  <div className="text-sm text-red-500">{errors.hub}</div>
-                )}
-              </div>
-              <div className="my-2">
-                <label htmlFor="cost" className="block">
-                  Cost
-                </label>
-                <input
-                  id="cost"
-                  value={values.cost}
-                  onChange={handleChange}
-                  type="number"
-                  className="input"
-                />
-              </div>
-              <button className="btn btn-primary">Create Aircraft</button>
-            </form>
-          </div>
-        </CardBody>
-      </Card>
-    </div>
+    <Grid templateColumns="repeat(6, 1fr)" gap={2}>
+      <GridItem colSpan={1}>
+        <AdminMenu />
+      </GridItem>
+      <GridItem colSpan={5}>
+        <Card>
+          <CardBody>
+            <Box w="50%">
+              <form onSubmit={handleSubmit}>
+                <FormControl isInvalid={errors.fleet}>
+                  <FormLabel htmlFor="fleet">Fleet type</FormLabel>
+                  <Select
+                    id="fleet"
+                    value={values.fleet}
+                    onChange={handleChange}
+                    className="select"
+                  >
+                    {fleet.map((f) => (
+                      <option key={f.id} value={f.id}>
+                        {f.type}
+                      </option>
+                    ))}
+                  </Select>
+                  <FormErrorMessage>{errors.fleet}</FormErrorMessage>
+                </FormControl>
+                <FormControl isInvalid={errors.registration}>
+                  <FormLabel htmlFor="registration">Registration</FormLabel>
+                  <Input
+                    id="registration"
+                    value={values.registration}
+                    onChange={handleChange}
+                    type="text"
+                  />
+                  <FormErrorMessage>{errors.registration}</FormErrorMessage>
+                </FormControl>
+                <FormControl isInvalid={errors.deliveryIcao}>
+                  <FormLabel htmlFor="deliveryIcao">Start location</FormLabel>
+                  <Input
+                    id="deliveryIcao"
+                    value={values.deliveryIcao}
+                    onChange={handleChange}
+                    type="text"
+                  />
+                  <FormErrorMessage>{errors.deliveryIcao}</FormErrorMessage>
+                </FormControl>
+                <FormControl isInvalid={errors.hub}>
+                  <FormLabel htmlFor="hub">Hub location</FormLabel>
+                  <Select id="hub" value={values.hub} onChange={handleChange}>
+                    {hubs.map((hub) => (
+                      <option key={hub.identifier} value={hub.identifier}>
+                        {hub.identifier}
+                      </option>
+                    ))}
+                  </Select>
+                  <FormErrorMessage>{errors.hub}</FormErrorMessage>
+                </FormControl>
+                <FormControl>
+                  <FormLabel htmlFor="cost">Cost</FormLabel>
+                  <Input
+                    id="cost"
+                    value={values.cost}
+                    onChange={handleChange}
+                    type="number"
+                  />
+                </FormControl>
+                <Flex justifyContent="right">
+                  <Button type="submit" mt={2}>
+                    Create Aircraft
+                  </Button>
+                </Flex>
+              </form>
+            </Box>
+          </CardBody>
+        </Card>
+      </GridItem>
+    </Grid>
   )
 }
 

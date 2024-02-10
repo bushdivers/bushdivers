@@ -4,6 +4,7 @@ import {
   AreaChart,
   Building,
   CircleDollarSign,
+  Cog,
   Download,
   FileSearch,
   GanttChartSquare,
@@ -40,6 +41,9 @@ const NavMenuItems = () => {
       </Box>
       <Divider mt={4} />
       <Box my={4}>
+        {auth.user.is_admin && (
+          <NavItem icon={Cog} text="Admin" to="/admin/fleet" />
+        )}
         <NavItem icon={HelpCircle} text="Help" to="/live-map" />
         <NavItem icon={Download} text="Bush Tracker" to="/live-map" />
       </Box>

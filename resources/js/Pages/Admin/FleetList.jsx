@@ -1,8 +1,25 @@
-import { Card, CardBody, Icon } from '@chakra-ui/react'
+import {
+  Box,
+  Button,
+  Card,
+  CardBody,
+  Flex,
+  Grid,
+  GridItem,
+  Icon,
+  Table,
+  TableContainer,
+  Tbody,
+  Td,
+  Th,
+  Thead,
+  Tr,
+} from '@chakra-ui/react'
 import { Link, router } from '@inertiajs/react'
 import { Pen, Plus, Trash2 } from 'lucide-react'
 import React, { useState } from 'react'
 
+import AdminMenu from '../../Components/Layout/navigation/AdminMenu.jsx'
 import FleetAircraft from '../../components/admin/FleetAircraft'
 import NoContent from '../../components/elements/NoContent'
 import AppLayout from '../../components/layout/AppLayout'
@@ -31,104 +48,97 @@ const FleetList = ({ fleet }) => {
   }
 
   return (
-    <div>
-      <div className="flex flex-col md:flex-row md:justify-between">
+    <Grid templateColumns="repeat(6, 1fr)" gap={2}>
+      <GridItem colSpan={1}>
+        <AdminMenu />
+      </GridItem>
+      <GridItem colSpan={5}>
         <Card>
           <CardBody>
-            <div className="overflow-x-auto">
-              <div className="flex justify-between">
-                {fleet && fleet.length > 0 && (
-                  <button
-                    onClick={toggleDetail}
-                    className="btn btn-secondary m-2"
-                  >
-                    Toggle fleet aircraft details
-                  </button>
-                )}
-                <div className="inline m-2">
-                  <Link
-                    href="/admin/fleet/create"
-                    className="btn btn-secondary mr-2"
-                  >
-                    Add new fleet
-                  </Link>
-                  <Link
-                    href="/admin/aircraft/create"
-                    className="btn btn-secondary"
-                  >
-                    Add new aircraft
-                  </Link>
-                </div>
-              </div>
-              {!fleet && <NoContent content={<EmptyData />} />}
-              {
-                fleet && fleet.length > 0 && (
-                  // (
-                  <div>
-                    <table className="table table-compact w-full">
-                      <thead>
-                        <tr className="">
-                          <th>Id</th>
-                          <th>Type</th>
-                          <th>Manufacturer</th>
-                          <th>Name</th>
-                          <th>Qty</th>
-                          <th>VA Fleet</th>
-                          <th>Can Rent</th>
-                          <td>Actions</td>
-                        </tr>
-                      </thead>
-                      <tbody>
+            <Flex justifyContent="space-between">
+              {fleet && fleet.length > 0 && (
+                <Button colorScheme="gray" onClick={toggleDetail}>
+                  Toggle fleet aircraft details
+                </Button>
+              )}
+              <Flex gap={2}>
+                <Link href="/admin/fleet/create">
+                  <Button>Add new fleet</Button>
+                </Link>
+                <Link href="/admin/aircraft/create">
+                  <Button>Add new aircraft</Button>
+                </Link>
+              </Flex>
+            </Flex>
+            {!fleet && <NoContent content={<EmptyData />} />}
+            {
+              fleet && fleet.length > 0 && (
+                // (
+                <Box p={2}>
+                  <TableContainer>
+                    <Table>
+                      <Thead>
+                        <Tr className="">
+                          <Th>Id</Th>
+                          <Th>Type</Th>
+                          <Th>Manufacturer</Th>
+                          <Th>Name</Th>
+                          <Th>Qty</Th>
+                          <Th>VA Fleet</Th>
+                          <Th>Can Rent</Th>
+                          <Th>Actions</Th>
+                        </Tr>
+                      </Thead>
+                      <Tbody>
                         {fleet &&
                           fleet.map((f) => (
                             <>
-                              <tr key={f.id}>
-                                <td>{f.id}</td>
-                                <td>{f.type}</td>
-                                <td>{f.manufacturer}</td>
-                                <td>{f.name}</td>
-                                <td>{f.aircraft.length}</td>
-                                <td>{f.company_fleet ? 'Yes' : 'No'}</td>
-                                <td>{f.is_rental ? 'Yes' : 'No'}</td>
-                                <td>
-                                  <div className="flex items-center">
-                                    <Link
-                                      href={`/admin/fleet/edit/${f.id}`}
-                                      className="btn btn-secondary flex items-center mr-2"
-                                    >
-                                      <Icon as={Pen} />
+                              <Tr key={f.id}>
+                                <Td>{f.id}</Td>
+                                <Td>{f.type}</Td>
+                                <Td>{f.manufacturer}</Td>
+                                <Td>{f.name}</Td>
+                                <Td>{f.aircraft.length}</Td>
+                                <Td>{f.company_fleet ? 'Yes' : 'No'}</Td>
+                                <Td>{f.is_rental ? 'Yes' : 'No'}</Td>
+                                <Td>
+                                  <Flex alignItems="center" gap={2}>
+                                    <Link href={`/admin/fleet/edit/${f.id}`}>
+                                      <Button variant="ghost" size="xs">
+                                        <Icon as={Pen} />
+                                      </Button>
                                     </Link>
                                     <Link
                                       href={`/admin/aircraft/create?fleet=${f.id}`}
-                                      className="btn btn-light flex items-center mr-2"
                                     >
-                                      <Icon as={Plus} />
+                                      <Button variant="ghost" size="xs">
+                                        <Icon as={Plus} />
+                                      </Button>
                                     </Link>
                                     {f.aircraft.length === 0 && (
-                                      <Link
-                                        onClick={() => handleDelete(f.id)}
-                                        className="btn btn-light flex items-center mr-2"
-                                      >
-                                        <Icon as={Trash2} />
+                                      <Link onClick={() => handleDelete(f.id)}>
+                                        <Button variant="ghost" size="xs">
+                                          <Icon as={Trash2} />
+                                        </Button>
                                       </Link>
                                     )}
-                                  </div>
-                                </td>
-                              </tr>
+                                  </Flex>
+                                </Td>
+                              </Tr>
                               {showDetail && <FleetAircraft fleet={f} />}
                             </>
                           ))}
-                      </tbody>
-                    </table>
-                  </div>
-                )
-                // )
-              }
-            </div>
+                      </Tbody>
+                    </Table>
+                  </TableContainer>
+                </Box>
+              )
+              // )
+            }
           </CardBody>
         </Card>
-      </div>
-    </div>
+      </GridItem>
+    </Grid>
   )
 }
 

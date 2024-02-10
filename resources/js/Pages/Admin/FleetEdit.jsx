@@ -1,7 +1,22 @@
-import { Card, CardBody } from '@chakra-ui/react'
+import {
+  Box,
+  Button,
+  Card,
+  CardBody,
+  Flex,
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
+  Grid,
+  GridItem,
+  Input,
+  Select,
+  SimpleGrid,
+} from '@chakra-ui/react'
 import { router, usePage } from '@inertiajs/react'
 import React, { useState } from 'react'
 
+import AdminMenu from '../../Components/Layout/navigation/AdminMenu.jsx'
 import AppLayout from '../../components/layout/AppLayout'
 
 const FleetEdit = ({ fleet, manufacturers }) => {
@@ -52,397 +67,336 @@ const FleetEdit = ({ fleet, manufacturers }) => {
   }
 
   return (
-    <div className="p-4">
-      <Card>
-        <CardBody>
-          <form onSubmit={handleSubmit}>
-            <div className="flex flex-row">
-              <div className="lg:w-1/2 mt-2 p-4 rounded shadow">
-                <div className="my-2">
-                  <label htmlFor="type" className="block">
-                    <span>ICAO type</span>
-                  </label>
-                  <input
-                    id="type"
-                    value={values.type}
-                    onChange={handleChange}
-                    type="text"
-                    className="input"
-                  />
-                  {errors.type && (
-                    <div className="text-sm text-red-500">{errors.type}</div>
-                  )}
-                </div>
-                <div className="my-2">
-                  <label htmlFor="name" className="block">
-                    <span>Model name</span>
-                  </label>
-                  <input
-                    id="name"
-                    value={values.name}
-                    onChange={handleChange}
-                    type="text"
-                    className="input"
-                  />
-                  {errors.name && (
-                    <div className="text-sm text-red-500">{errors.name}</div>
-                  )}
-                </div>
-                <div className="my-2">
-                  <label htmlFor="manufacturer" className="block">
-                    <span>Manufacturer</span>
-                  </label>
-                  <input
-                    id="manufacturer"
-                    value={values.manufacturer}
-                    onChange={handleChange}
-                    type="text"
-                    className="input"
-                  />
-                  {errors.manufacturer && (
-                    <div className="text-sm text-red-500">
-                      {errors.manufacturer}
-                    </div>
-                  )}
-                </div>
-                <div className="my-2">
-                  <label htmlFor="powerplants" className="block">
-                    <span>Engine type</span>
-                  </label>
-                  <input
-                    id="powerplants"
-                    value={values.powerplants}
-                    onChange={handleChange}
-                    type="text"
-                    className="input"
-                  />
-                  {errors.powerplants && (
-                    <div className="text-sm text-red-500">
-                      {errors.powerplants}
-                    </div>
-                  )}
-                </div>
-                <div className="my-2">
-                  <label htmlFor="engines" className="block">
-                    <span>Number of engines</span>
-                  </label>
-                  <input
-                    id="engines"
-                    value={values.engines}
-                    onChange={handleChange}
-                    type="text"
-                    className="input"
-                  />
-                  {errors.engines && (
-                    <div className="text-sm text-red-500">{errors.engines}</div>
-                  )}
-                </div>
-                <div className="my-2">
-                  <label htmlFor="fuel" className="block">
-                    <span>Fuel type</span>
-                  </label>
-                  <select
-                    id="fuel"
-                    value={values.fuel}
-                    onChange={handleChange}
-                    className="select"
-                  >
-                    <option value="1">Avgas (100LL)</option>
-                    <option value="2">Jet Fuel</option>
-                  </select>
-                </div>
-                <div className="my-2">
-                  <label htmlFor="tbo_mins" className="block">
-                    <span>TBO (minutes)</span>
-                  </label>
-                  <input
-                    id="tbo_mins"
-                    value={values.tbo_mins}
-                    onChange={handleChange}
-                    type="text"
-                    className="input"
-                  />
-                  {errors.tbo_mins && (
-                    <div className="text-sm text-red-500">
-                      {errors.tbo_mins}
-                    </div>
-                  )}
-                </div>
-                <div className="my-2">
-                  <label htmlFor="zfw" className="block">
-                    <span>Zero fuel weight / empty weight (lbs)</span>
-                  </label>
-                  <input
-                    id="zfw"
-                    value={values.zfw}
-                    onChange={handleChange}
-                    type="text"
-                    className="input"
-                  />
-                  {errors.zfw && (
-                    <div className="text-sm text-red-500">{errors.zfw}</div>
-                  )}
-                </div>
-                <div className="my-2">
-                  <label htmlFor="mtow" className="block">
-                    <span>MTOW (lbs)</span>
-                  </label>
-                  <input
-                    id="mtow"
-                    value={values.mtow}
-                    onChange={handleChange}
-                    type="text"
-                    className="input"
-                  />
-                  {errors.mtow && (
-                    <div className="text-sm text-red-500">{errors.mtow}</div>
-                  )}
-                </div>
-                <div className="my-2">
-                  <label htmlFor="cargo" className="block">
-                    <span>Cargo capacity (lbs)</span>
-                  </label>
-                  <input
-                    id="cargo"
-                    value={values.cargo}
-                    onChange={handleChange}
-                    type="text"
-                    className="input"
-                  />
-                  {errors.cargo && (
-                    <div className="text-sm text-red-500">{errors.cargo}</div>
-                  )}
-                </div>
-                <div className="my-2">
-                  <label htmlFor="pax" className="block">
-                    <span>Passenger capacity</span>
-                  </label>
-                  <input
-                    id="pax"
-                    value={values.pax}
-                    onChange={handleChange}
-                    type="text"
-                    className="input"
-                  />
-                  {errors.pax && (
-                    <div className="text-sm text-red-500">{errors.pax}</div>
-                  )}
-                </div>
-                <div className="my-2">
-                  <label htmlFor="fuelCapacity" className="block">
-                    <span>Fuel capacity (gal)</span>
-                  </label>
-                  <input
-                    id="fuelCapacity"
-                    value={values.fuelCapacity}
-                    onChange={handleChange}
-                    type="text"
-                    className="input"
-                  />
-                  {errors.fuelCapacity && (
-                    <div className="text-sm text-red-500">
-                      {errors.fuelCapacity}
-                    </div>
-                  )}
-                </div>
-                <div className="my-2">
-                  <label htmlFor="ceiling" className="block">
-                    <span>Service ceiling (ft)</span>
-                  </label>
-                  <input
-                    id="ceiling"
-                    value={values.ceiling}
-                    onChange={handleChange}
-                    type="text"
-                    className="input"
-                  />
-                  {errors.ceiling && (
-                    <div className="text-sm text-red-500">{errors.ceiling}</div>
-                  )}
-                </div>
-                <div className="my-2">
-                  <label htmlFor="range" className="block">
-                    <span>Range (nm)</span>
-                  </label>
-                  <input
-                    id="range"
-                    value={values.range}
-                    onChange={handleChange}
-                    type="text"
-                    className="input"
-                  />
-                  {errors.range && (
-                    <div className="text-sm text-red-500">{errors.range}</div>
-                  )}
-                </div>
-                <div className="my-2">
-                  <label htmlFor="cruise" className="block">
-                    <span>Cruise speed (kts)</span>
-                  </label>
-                  <input
-                    id="cruise"
-                    value={values.cruise}
-                    onChange={handleChange}
-                    type="text"
-                    className="input"
-                  />
-                  {errors.cruise && (
-                    <div className="text-sm text-red-500">{errors.cruise}</div>
-                  )}
-                </div>
-                <div className="my-2">
-                  <label htmlFor="size" className="block">
-                    <span>Size</span>
-                  </label>
-                  <select
-                    id="size"
-                    value={values.size}
-                    onChange={handleChange}
-                    className="select"
-                  >
-                    <option value="S">Small</option>
-                    <option value="M">Medium</option>
-                    <option value="L">Large</option>
-                  </select>
-                </div>
-                <button className="btn btn-primary">Save Fleet</button>
-              </div>
-              <div className="lg:w-1/2 mt-2 p-4 rounded shadow">
-                <div className="my-2">
-                  <label htmlFor="company_fleet" className="block">
-                    <span>Is company fleet?</span>
-                  </label>
-                  <select
-                    id="company_fleet"
-                    value={values.company_fleet}
-                    onChange={handleChange}
-                    className="select"
-                  >
-                    <option value="0">No</option>
-                    <option value="1">Yes</option>
-                  </select>
-                </div>
-                <div className="my-2">
-                  <label htmlFor="is_rental" className="block">
-                    <span>Can private rent?</span>
-                  </label>
-                  <select
-                    id="is_rental"
-                    value={values.is_rental}
-                    onChange={handleChange}
-                    className="select"
-                  >
-                    <option value="0">No</option>
-                    <option value="1">Yes</option>
-                  </select>
-                </div>
-                <div className="my-2">
-                  <label htmlFor="manufacturer_id" className="block">
-                    <span>Manufacturer</span>
-                  </label>
-                  <select
-                    id="manufacturer_id"
-                    value={values.manufacturer_id}
-                    onChange={handleChange}
-                    className="select"
-                  >
-                    <option value="0">(no private ownership)</option>
-                    {manufacturers.map((m) => (
-                      <option key={m.id} value={m.id}>
-                        {m.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div className="my-2">
-                  <label htmlFor="rental_cost" className="block">
-                    <span>Rental cost (per hour)</span>
-                  </label>
-                  <input
-                    id="rental_cost"
-                    value={values.rental_cost}
-                    onChange={handleChange}
-                    type="text"
-                    className="input"
-                  />
-                  {errors.rental_cost && (
-                    <div className="text-sm text-red-500">
-                      {errors.rental_cost}
-                    </div>
-                  )}
-                </div>
-                <div className="my-2">
-                  <label htmlFor="hq" className="block">
-                    <span>HQ</span>
-                  </label>
-                  <input
-                    id="hq"
-                    value={values.hq}
-                    onChange={handleChange}
-                    type="text"
-                    className="input"
-                  />
-                  {errors.hq && (
-                    <div className="text-sm text-red-500">{errors.hq}</div>
-                  )}
-                </div>
-                <div className="my-2">
-                  <label htmlFor="new_price" className="block">
-                    <span>New price</span>
-                  </label>
-                  <input
-                    id="new_price"
-                    value={values.new_price}
-                    onChange={handleChange}
-                    type="text"
-                    className="input"
-                  />
-                  {errors.new_price && (
-                    <div className="text-sm text-red-500">
-                      {errors.new_price}
-                    </div>
-                  )}
-                </div>
-                <div className="my-2">
-                  <label htmlFor="used_low_price" className="block">
-                    <span>Used low price</span>
-                  </label>
-                  <input
-                    id="used_low_price"
-                    value={values.used_low_price}
-                    onChange={handleChange}
-                    type="text"
-                    className="input"
-                  />
-                  {errors.used_low_price && (
-                    <div className="text-sm text-red-500">
-                      {errors.used_low_price}
-                    </div>
-                  )}
-                </div>
-                <div className="my-2">
-                  <label htmlFor="used_high_price" className="block">
-                    <span>Used high price</span>
-                  </label>
-                  <input
-                    id="used_high_price"
-                    value={values.used_high_price}
-                    onChange={handleChange}
-                    type="text"
-                    className="input"
-                  />
-                  {errors.used_high_price && (
-                    <div className="text-sm text-red-500">
-                      {errors.used_high_price}
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-          </form>
-        </CardBody>
-      </Card>
-    </div>
+    <Grid templateColumns="repeat(6, 1fr)" gap={2}>
+      <GridItem colSpan={1}>
+        <AdminMenu />
+      </GridItem>
+      <GridItem colSpan={5}>
+        <Card>
+          <CardBody>
+            <form onSubmit={handleSubmit}>
+              <SimpleGrid columns={2} gap={10}>
+                <Box>
+                  <FormControl isInvalid={errors.type}>
+                    <FormLabel htmlFor="type">ICAO type</FormLabel>
+                    <Input
+                      id="type"
+                      value={values.type}
+                      onChange={handleChange}
+                      type="text"
+                    />
+                    {errors.type && (
+                      <FormErrorMessage>{errors.type}</FormErrorMessage>
+                    )}
+                  </FormControl>
+                  <FormControl isInvalid={errors.name}>
+                    <FormLabel htmlFor="name">Model name</FormLabel>
+                    <Input
+                      id="name"
+                      value={values.name}
+                      onChange={handleChange}
+                      type="text"
+                    />
+                    {errors.name && (
+                      <FormErrorMessage>{errors.name}</FormErrorMessage>
+                    )}
+                  </FormControl>
+                  <FormControl isInvalid={errors.manufacturer}>
+                    <FormLabel htmlFor="manufacturer">Manufacturer</FormLabel>
+                    <Input
+                      id="manufacturer"
+                      value={values.manufacturer}
+                      onChange={handleChange}
+                      type="text"
+                    />
+                    {errors.manufacturer && (
+                      <FormErrorMessage>{errors.manufacturer}</FormErrorMessage>
+                    )}
+                  </FormControl>
+                  <FormControl isInvalid={errors.powerplants}>
+                    <FormLabel htmlFor="powerplants">Engine type</FormLabel>
+                    <Input
+                      id="powerplants"
+                      value={values.powerplants}
+                      onChange={handleChange}
+                      type="text"
+                    />
+                    {errors.powerplants && (
+                      <FormErrorMessage>{errors.powerplants}</FormErrorMessage>
+                    )}
+                  </FormControl>
+                  <FormControl isInvalid={errors.engines}>
+                    <FormLabel htmlFor="engines">Number of engines</FormLabel>
+                    <Input
+                      id="engines"
+                      value={values.engines}
+                      onChange={handleChange}
+                      type="text"
+                    />
+                    {errors.engines && (
+                      <FormErrorMessage>{errors.engines}</FormErrorMessage>
+                    )}
+                  </FormControl>
+                  <FormControl>
+                    <FormLabel htmlFor="fuel">Fuel type</FormLabel>
+                    <Select
+                      id="fuel"
+                      value={values.fuel}
+                      onChange={handleChange}
+                    >
+                      <option value="1">Avgas (100LL)</option>
+                      <option value="2">Jet Fuel</option>
+                    </Select>
+                  </FormControl>
+                  <FormControl isInvalid={errors.tbo_mins}>
+                    <FormLabel htmlFor="tbo_mins">TBO (minutes)</FormLabel>
+                    <Input
+                      id="tbo_mins"
+                      value={values.tbo_mins}
+                      onChange={handleChange}
+                      type="text"
+                    />
+                    {errors.tbo_mins && (
+                      <FormErrorMessage>{errors.tbo_mins}</FormErrorMessage>
+                    )}
+                  </FormControl>
+                  <FormControl isInvalid={errors.zfw}>
+                    <FormLabel htmlFor="zfw">
+                      Zero fuel weight / empty weight (lbs)
+                    </FormLabel>
+                    <Input
+                      id="zfw"
+                      value={values.zfw}
+                      onChange={handleChange}
+                      type="text"
+                    />
+                    {errors.zfw && (
+                      <FormErrorMessage>{errors.zfw}</FormErrorMessage>
+                    )}
+                  </FormControl>
+                  <FormControl isInvalid={errors.mtow}>
+                    <FormLabel htmlFor="mtow">MTOW (lbs)</FormLabel>
+                    <Input
+                      id="mtow"
+                      value={values.mtow}
+                      onChange={handleChange}
+                      type="text"
+                    />
+                    {errors.mtow && (
+                      <FormErrorMessage>{errors.mtow}</FormErrorMessage>
+                    )}
+                  </FormControl>
+                  <FormControl isInvalid={errors.cargo}>
+                    <FormLabel htmlFor="cargo">Cargo capacity (lbs)</FormLabel>
+                    <Input
+                      id="cargo"
+                      value={values.cargo}
+                      onChange={handleChange}
+                      type="text"
+                    />
+                    {errors.cargo && (
+                      <FormErrorMessage>{errors.cargo}</FormErrorMessage>
+                    )}
+                  </FormControl>
+                  <FormControl isInvalid={errors.pax}>
+                    <FormLabel htmlFor="pax">Passenger capacity</FormLabel>
+                    <Input
+                      id="pax"
+                      value={values.pax}
+                      onChange={handleChange}
+                      type="text"
+                    />
+                    {errors.pax && (
+                      <FormErrorMessage>{errors.pax}</FormErrorMessage>
+                    )}
+                  </FormControl>
+                  <FormControl isInvalid={errors.fuelCapacity}>
+                    <FormLabel htmlFor="fuelCapacity">
+                      Fuel capacity (gal)
+                    </FormLabel>
+                    <Input
+                      id="fuelCapacity"
+                      value={values.fuelCapacity}
+                      onChange={handleChange}
+                      type="text"
+                    />
+                    {errors.fuelCapacity && (
+                      <FormErrorMessage>{errors.fuelCapacity}</FormErrorMessage>
+                    )}
+                  </FormControl>
+                  <FormControl isInvalid={errors.ceiling}>
+                    <FormLabel htmlFor="ceiling">
+                      Service ceiling (ft)
+                    </FormLabel>
+                    <Input
+                      id="ceiling"
+                      value={values.ceiling}
+                      onChange={handleChange}
+                      type="text"
+                    />
+                    {errors.ceiling && (
+                      <FormErrorMessage>{errors.ceiling}</FormErrorMessage>
+                    )}
+                  </FormControl>
+                  <FormControl isInvalid={errors.range}>
+                    <FormLabel htmlFor="range">Range (nm)</FormLabel>
+                    <Input
+                      id="range"
+                      value={values.range}
+                      onChange={handleChange}
+                      type="text"
+                    />
+                    {errors.range && (
+                      <FormErrorMessage>{errors.range}</FormErrorMessage>
+                    )}
+                  </FormControl>
+                  <FormControl isInvalid={errors.cruise}>
+                    <FormLabel htmlFor="cruise">Cruise speed (kts)</FormLabel>
+                    <Input
+                      id="cruise"
+                      value={values.cruise}
+                      onChange={handleChange}
+                      type="text"
+                    />
+                    {errors.cruise && (
+                      <FormErrorMessage>{errors.cruise}</FormErrorMessage>
+                    )}
+                  </FormControl>
+                  <FormControl>
+                    <FormLabel htmlFor="size">Size</FormLabel>
+                    <Select
+                      id="size"
+                      value={values.size}
+                      onChange={handleChange}
+                    >
+                      <option value="S">Small</option>
+                      <option value="M">Medium</option>
+                      <option value="L">Large</option>
+                    </Select>
+                  </FormControl>
+                </Box>
+                <Box>
+                  <FormControl>
+                    <FormLabel htmlFor="company_fleet">
+                      Is company fleet?
+                    </FormLabel>
+                    <Select
+                      id="company_fleet"
+                      value={values.company_fleet}
+                      onChange={handleChange}
+                    >
+                      <option value="0">No</option>
+                      <option value="1">Yes</option>
+                    </Select>
+                  </FormControl>
+                  <FormControl>
+                    <FormLabel htmlFor="is_rental">Can private rent?</FormLabel>
+                    <Select
+                      id="is_rental"
+                      value={values.is_rental}
+                      onChange={handleChange}
+                    >
+                      <option value="0">No</option>
+                      <option value="1">Yes</option>
+                    </Select>
+                  </FormControl>
+                  <FormControl>
+                    <FormLabel htmlFor="manufacturer_id">
+                      Manufacturer
+                    </FormLabel>
+                    <Select
+                      id="manufacturer_id"
+                      value={values.manufacturer_id}
+                      onChange={handleChange}
+                    >
+                      <option value="0">(no private ownership)</option>
+                      {manufacturers.map((m) => (
+                        <option key={m.id} value={m.id}>
+                          {m.name}
+                        </option>
+                      ))}
+                    </Select>
+                  </FormControl>
+                  <FormControl isInvalid={errors.rental_cost}>
+                    <FormLabel htmlFor="rental_cost">
+                      Rental cost (per hour)
+                    </FormLabel>
+                    <Input
+                      id="rental_cost"
+                      value={values.rental_cost}
+                      onChange={handleChange}
+                      type="text"
+                    />
+                    {errors.rental_cost && (
+                      <FormErrorMessage>{errors.rental_cost}</FormErrorMessage>
+                    )}
+                  </FormControl>
+                  <FormControl isInvalid={errors.hq}>
+                    <FormLabel htmlFor="hq">HQ</FormLabel>
+                    <Input
+                      id="hq"
+                      value={values.hq}
+                      onChange={handleChange}
+                      type="text"
+                    />
+                    {errors.hq && (
+                      <FormErrorMessage>{errors.hq}</FormErrorMessage>
+                    )}
+                  </FormControl>
+                  <FormControl isInvalid={errors.new_price}>
+                    <FormLabel htmlFor="new_price">New price</FormLabel>
+                    <Input
+                      id="new_price"
+                      value={values.new_price}
+                      onChange={handleChange}
+                      type="text"
+                    />
+                    {errors.new_price && (
+                      <FormErrorMessage>{errors.new_price}</FormErrorMessage>
+                    )}
+                  </FormControl>
+                  <FormControl isInvalid={errors.used_low_price}>
+                    <FormLabel htmlFor="used_low_price">
+                      Used low price
+                    </FormLabel>
+                    <Input
+                      id="used_low_price"
+                      value={values.used_low_price}
+                      onChange={handleChange}
+                      type="text"
+                    />
+                    {errors.used_low_price && (
+                      <FormErrorMessage>
+                        {errors.used_low_price}
+                      </FormErrorMessage>
+                    )}
+                  </FormControl>
+                  <FormControl isInvalid={errors.used_high_price}>
+                    <FormLabel htmlFor="used_high_price">
+                      Used high price
+                    </FormLabel>
+                    <Input
+                      id="used_high_price"
+                      value={values.used_high_price}
+                      onChange={handleChange}
+                      type="text"
+                    />
+                    {errors.used_high_price && (
+                      <FormErrorMessage>
+                        {errors.used_high_price}
+                      </FormErrorMessage>
+                    )}
+                  </FormControl>
+                </Box>
+              </SimpleGrid>
+              <Flex justifyContent="right">
+                <Button type="submit">Save Fleet</Button>
+              </Flex>
+            </form>
+          </CardBody>
+        </Card>
+      </GridItem>
+    </Grid>
   )
 }
 

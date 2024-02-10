@@ -1,4 +1,4 @@
-import { Icon } from '@chakra-ui/react'
+import { Button, Icon } from '@chakra-ui/react'
 import { Link } from '@inertiajs/react'
 import { X } from 'lucide-react'
 import React from 'react'
@@ -12,11 +12,10 @@ const FleetAircraft = (props) => {
           <td>Current Location: {detail.current_airport_id}</td>
           <td>
             <div className="flex items-center">
-              <Link
-                href={`/admin/aircraft/delete/${detail.id}`}
-                className="btn btn-light flex items-center"
-              >
-                <Icon as={X} />
+              <Link href={`/admin/aircraft/delete/${detail.id}`}>
+                <Button variant="ghost" size="xs">
+                  <Icon as={X} />
+                </Button>
               </Link>
             </div>
           </td>
