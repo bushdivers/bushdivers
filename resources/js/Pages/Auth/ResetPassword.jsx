@@ -50,7 +50,7 @@ const ResetPassword = ({ token }) => {
       </Box>
       <Card>
         <CardHeader>
-          <Heading size="lg">Request Password</Heading>
+          <Heading size="lg">Reset Password</Heading>
         </CardHeader>
         <CardBody>
           <FormControl my={2} isInvalid={errors?.password}>

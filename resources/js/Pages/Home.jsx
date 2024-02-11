@@ -6,6 +6,7 @@ import {
   Stat,
   StatLabel,
   StatNumber,
+  Text,
 } from '@chakra-ui/react'
 import { Head, router, usePage } from '@inertiajs/react'
 import React, { useEffect } from 'react'
@@ -62,11 +63,16 @@ const Home = ({ stats }) => {
         </Flex>
       </Box>
       <Box style={{ backgroundImage: 'url(img/bg-2.jpg)' }}>
-        <Box px={72} py={20} style={{ background: 'rgba(0,0,0,0.51)' }}>
-          <Heading size="2xl" className="text-5xl">
+        <Box
+          color="white"
+          px={72}
+          py={20}
+          style={{ background: 'rgba(0,0,0,0.51)' }}
+        >
+          <Heading mb={4} size="2xl">
             Our story
           </Heading>
-          <Heading size="md" className="mt-4 text-2xl leading-relaxed">
+          <Text fontSize="xl">
             We are a community of pilots focused on one thing, bush flying!
             Disregarding the ho-hum of big jets and long airfields we opt for
             the dangers of low and slow flying through rugged terrain and
@@ -94,7 +100,7 @@ const Home = ({ stats }) => {
             >
               information site
             </a>
-          </Heading>
+          </Text>
         </Box>
       </Box>
       <Footer />

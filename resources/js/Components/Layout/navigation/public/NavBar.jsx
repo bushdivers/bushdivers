@@ -5,15 +5,7 @@ import React from 'react'
 export default function NavBar() {
   const { auth } = usePage().props
   return (
-    <Box
-      p={3}
-      position="fixed"
-      width="100%"
-      top={0}
-      left={0}
-      right={0}
-      bg="gray.800"
-    >
+    <Box p={3} position="fixed" width="100%" top={0} left={0} right={0}>
       <Flex justifyContent="space-between" alignItems="center">
         <Flex alignItems="center" gap={2}>
           <Image
