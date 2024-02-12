@@ -1,62 +1,75 @@
-import { Card, CardBody, CardHeader } from '@chakra-ui/react'
+import {
+  Box,
+  Card,
+  CardBody,
+  CardHeader,
+  Table,
+  TableContainer,
+  Tbody,
+  Td,
+  Text,
+  Th,
+  Thead,
+  Tr,
+} from '@chakra-ui/react'
 import React from 'react'
 
 const PirepCargo = (props) => {
   return (
-    <div className="mt-2 mx-2">
+    <Box mt={2}>
       <Card>
         <CardHeader>Cargo</CardHeader>
         <CardBody>
-          <div className="overflow-x-auto">
-            <table className="table table-compact w-full">
-              <thead>
-                <tr>
-                  <th>Contract</th>
-                  <th>Pick Up</th>
-                  <th>Destination</th>
-                  <th>Distance</th>
-                  <th>Heading</th>
-                  <th>Type</th>
-                  <th>Cargo</th>
-                </tr>
-              </thead>
-              <tbody>
+          <TableContainer>
+            <Table>
+              <Thead>
+                <Tr>
+                  <Th>Contract</Th>
+                  <Th>Pick Up</Th>
+                  <Th>Destination</Th>
+                  <Th>Distance</Th>
+                  <Th>Heading</Th>
+                  <Th>Type</Th>
+                  <Th>Cargo</Th>
+                </Tr>
+              </Thead>
+              <Tbody>
                 {props.cargo.map((detail) => (
-                  <tr key={detail.id}>
-                    <td>{detail.id}</td>
-                    <td>{detail.dep_airport_id}</td>
-                    <td>{detail.arr_airport_id}</td>
-                    <td>
+                  <Tr key={detail.id}>
+                    <Td>{detail.id}</Td>
+                    <Td>{detail.dep_airport_id}</Td>
+                    <Td>{detail.arr_airport_id}</Td>
+                    <Td>
                       {detail.distance.toLocaleString(navigator.language)}
-                    </td>
-                    <td>{detail.heading}</td>
-                    <td>{detail.cargo_type === 1 ? 'Cargo' : 'Passenger'}</td>
-                    <td>
+                    </Td>
+                    <Td>{detail.heading}</Td>
+                    <Td>{detail.cargo_type === 1 ? 'Cargo' : 'Passenger'}</Td>
+                    <Td>
                       {detail.cargo_type === 1 ? (
-                        <div>
-                          <span>
+                        <>
+                          <Text>
                             {detail.cargo_qty.toLocaleString(
                               navigator.language
                             )}{' '}
                             lbs
-                          </span>{' '}
-                          <span className="text-xs">{detail.cargo}</span>
-                        </div>
+                          </Text>{' '}
+                          <Text fontSize="xs">{detail.cargo}</Text>
+                        </>
                       ) : (
-                        <div>
-                          <span>{detail.cargo_qty}</span>{' '}
-                          <span className="text-xs">{detail.cargo}</span>
-                        </div>
+                        <>
+                          <Text>{detail.cargo_qty}</Text>{' '}
+                          <Text fontSize="xs">{detail.cargo}</Text>
+                        </>
                       )}
-                    </td>
-                  </tr>
+                    </Td>
+                  </Tr>
                 ))}
-              </tbody>
-            </table>
-          </div>
+              </Tbody>
+            </Table>
+          </TableContainer>
         </CardBody>
       </Card>
-    </div>
+    </Box>
   )
 }
 

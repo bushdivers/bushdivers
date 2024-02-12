@@ -48,29 +48,32 @@ const LogbookDetail = ({
         )}
       </Flex>
       <SimpleGrid columns={2} spacing={10}>
-        <LogbookPrimary pirep={pirep} />
-        <LogbookSecondary pirep={pirep} />
-        <Points points={points} />
-        <PirepCargo cargo={cargo} />
-        {/* <div className="mt-2 mx-2"> */}
-        {/*  <PirepChart data={logs} /> */}
-        {/* </div> */}
-        <PirepFinancials
-          company={companyFinancials}
-          pilot={pilotFinancials}
-          companyTotal={companyTotal}
-          pilotTotal={pilotTotal}
-        />
+        <Box>
+          <LogbookPrimary pirep={pirep} />
+          <LogbookSecondary pirep={pirep} />
+          <Points points={points} />
+          <PirepCargo cargo={cargo} />
 
-        <div className="mt-2 mx-2">
+          {/* <div className="mt-2 mx-2"> */}
+          {/*  <PirepChart data={logs} /> */}
+          {/* </div> */}
+          <PirepFinancials
+            company={companyFinancials}
+            pilot={pilotFinancials}
+            companyTotal={companyTotal}
+            pilotTotal={pilotTotal}
+          />
+        </Box>
+
+        <Box>
           <PirepMap
             pirep={pirep}
             coords={logs}
             size="small"
             mapStyle={auth.user.map_style}
           />
-        </div>
-        <LandingSummary pirep={pirep} mapStyle={auth.user.map_style} />
+          <LandingSummary pirep={pirep} mapStyle={auth.user.map_style} />
+        </Box>
       </SimpleGrid>
     </Box>
   )

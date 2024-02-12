@@ -1,46 +1,38 @@
+import { Box, useColorMode } from '@chakra-ui/react'
 import maplibre from 'maplibre-gl'
-import React, { useEffect, useRef } from 'react'
+import React from 'react'
+import { Map, Marker } from 'react-map-gl'
 
-import { mapboxToken, parseMapStyle } from '../../helpers/geo.helpers'
+import {
+  mapboxToken,
+  parseMapStyle,
+  transformRequest,
+} from '../../helpers/geo.helpers'
 
 const LandingMap = (props) => {
-  const mapContainer = useRef(null)
-  const map = useRef(null)
-
-  useEffect(() => {
-    if (map.current) return
-    map.current = new maplibre.Map({
-      container: mapContainer.current,
-      style: parseMapStyle(props.mapStyle),
-      center: [props.pirep.landing_lon, props.pirep.landing_lat],
-      zoom: 16,
-      accessToken: mapboxToken,
-    })
-  })
-
-  useEffect(() => {
-    if (props.pirep) {
-      // setFlight(props.pirep.flight)
-
-      const landingLngLat = [props.pirep.landing_lon, props.pirep.landing_lat]
-
-      map.current.on('load', function () {
-        new maplibre.Marker({
-          color: '#22C55E',
-        })
-          .setLngLat(landingLngLat)
-          .addTo(map.current)
-      })
-    }
-  }, [props.pirep])
+  const { colorMode } = useColorMode()
 
   return (
-    <>
-      <div
-        ref={mapContainer}
-        className={`map-container-${props.size} rounded`}
-      />
-    </>
+    <Box className="map-container-small rounded">
+      <Map
+        mapLib={maplibre}
+        mapboxAccessToken={mapboxToken}
+        initialViewState={{
+          longitude: props.pirep.landing_lon,
+          latitude: props.pirep.landing_lat,
+          zoom: 16,
+        }}
+        mapStyle={parseMapStyle(colorMode)}
+        transformRequest={transformRequest}
+      >
+        {props.pirep && (
+          <Marker
+            longitude={props.pirep.landing_lon}
+            latitude={props.pirep.landing_lat}
+          />
+        )}
+      </Map>
+    </Box>
   )
 }
 

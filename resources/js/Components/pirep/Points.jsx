@@ -1,30 +1,28 @@
-import { Card, CardBody, CardHeader } from '@chakra-ui/react'
+import { Box, Card, CardBody, CardHeader, Flex } from '@chakra-ui/react'
 import React from 'react'
+
+import StatDisplay from '../elements/StatDisplay.jsx'
 
 const Points = (props) => {
   return (
-    <div className="mt-2 mx-2">
+    <Box mt={2}>
       <Card>
         <CardHeader>Points Awarded</CardHeader>
         <CardBody>
           {props.points.length > 0 && (
-            <div className="flex justify-between items-center">
+            <Flex justifyContent="space-between">
               {props.points.map((point) => (
-                <div
+                <StatDisplay
                   key={point.id}
-                  className="flex flex-col items-center my-2 mx-4"
-                >
-                  <div className="text-sm">{point.type_name}</div>
-                  <div className="text-xl">
-                    {point.points.toLocaleString(navigator.language)}
-                  </div>
-                </div>
+                  title={point.type_name}
+                  stat={point.points.toLocaleString(navigator.language)}
+                />
               ))}
-            </div>
+            </Flex>
           )}
         </CardBody>
       </Card>
-    </div>
+    </Box>
   )
 }
 

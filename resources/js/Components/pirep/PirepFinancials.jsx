@@ -1,4 +1,18 @@
-import { Card, CardBody, CardHeader } from '@chakra-ui/react'
+import {
+  Box,
+  Card,
+  CardBody,
+  CardHeader,
+  Flex,
+  Table,
+  TableContainer,
+  Tbody,
+  Td,
+  Text,
+  Th,
+  Thead,
+  Tr,
+} from '@chakra-ui/react'
 import React from 'react'
 
 const PirepFinancials = (props) => {
@@ -37,91 +51,75 @@ const PirepFinancials = (props) => {
   }
 
   return (
-    <div className="my-2 mx-2">
-      <div className="mb-2">
-        <Card>
-          <CardHeader>Pirep Financials</CardHeader>
-          <CardBody>
-            <div className="overflow-x-auto">
-              <table className="table table-compact w-full">
-                <thead>
-                  <tr>
-                    <th>Transaction</th>
-                    <th>Total</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {props.company.map((company) => (
-                    <tr key={company.id}>
-                      <td>
-                        {renderCompanyTransactionType(company.transaction_type)}{' '}
-                        - {company.memo}
-                      </td>
-                      <td
-                        className={
-                          company.total < 0 ? 'text-red-500' : undefined
-                        }
-                      >
-                        ${company.total.toLocaleString(navigator.language)}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-              <div className="text-right">
-                <div>
-                  Total:{' '}
-                  <span
-                    className={
-                      props.companyTotal < 0 ? 'text-red-500' : undefined
-                    }
-                  >
-                    ${props.companyTotal.toLocaleString(navigator.language)}
-                  </span>
-                </div>
-              </div>
-            </div>
-          </CardBody>
-        </Card>
-      </div>
+    <Box mt={2}>
       <Card>
-        <CardHeader>Pilot Financials</CardHeader>
+        <CardHeader>Pirep Financials</CardHeader>
         <CardBody>
-          <div className="overflow-x-auto">
-            <table className="table table-compact w-full">
-              <thead>
-                <tr>
-                  <th>Transaction</th>
-                  <th>Total</th>
-                </tr>
-              </thead>
-              <tbody>
-                {props.pilot.map((pilot) => (
-                  <tr key={pilot.id}>
-                    <td>{renderPilotTransactionType(pilot.type)}</td>
-                    <td
-                      className={pilot.total < 0 ? 'text-red-500' : undefined}
-                    >
-                      ${pilot.total.toLocaleString(navigator.language)}
-                    </td>
-                  </tr>
+          <TableContainer>
+            <Table>
+              <Thead>
+                <Tr>
+                  <Th>Transaction</Th>
+                  <Th>Total</Th>
+                </Tr>
+              </Thead>
+              <Tbody>
+                {props.company.map((company) => (
+                  <Tr key={company.id}>
+                    <Td>
+                      {renderCompanyTransactionType(company.transaction_type)} -{' '}
+                      {company.memo}
+                    </Td>
+                    <Td>
+                      <Text color={company.total < 0 ? 'red.500' : undefined}>
+                        ${company.total.toLocaleString(navigator.language)}
+                      </Text>
+                    </Td>
+                  </Tr>
                 ))}
-              </tbody>
-            </table>
-          </div>
-          <div className="text-right">
-            <div>
-              Total:{' '}
-              <span
-                className={props.pilotTotal < 0 ? 'text-red-500' : undefined}
-              >
-                ${props.pilotTotal.toLocaleString(navigator.language)}
-              </span>
-            </div>
-          </div>
+              </Tbody>
+            </Table>
+            <Flex justifyContent="right" className="text-right">
+              <Text color={props.company.total < 0 ? 'red.500' : undefined}>
+                Total: ${props.companyTotal.toLocaleString(navigator.language)}
+              </Text>
+            </Flex>
+          </TableContainer>
         </CardBody>
       </Card>
-    </div>
+      <Card mt={2}>
+        <CardHeader>Pilot Financials</CardHeader>
+        <CardBody>
+          <TableContainer>
+            <Table>
+              <Thead>
+                <Tr>
+                  <Th>Transaction</Th>
+                  <Th>Total</Th>
+                </Tr>
+              </Thead>
+              <Tbody>
+                {props.pilot.map((pilot) => (
+                  <Tr key={pilot.id}>
+                    <Td>{renderPilotTransactionType(pilot.type)}</Td>
+                    <Td>
+                      <Text color={pilot.total < 0 ? 'red.500' : undefined}>
+                        ${pilot.total.toLocaleString(navigator.language)}
+                      </Text>
+                    </Td>
+                  </Tr>
+                ))}
+              </Tbody>
+            </Table>
+          </TableContainer>
+          <Flex justifyContent="right">
+            <Text color={props.pilotTotal < 0 ? 'text-red-500' : undefined}>
+              Total: ${props.pilotTotal.toLocaleString(navigator.language)}
+            </Text>
+          </Flex>
+        </CardBody>
+      </Card>
+    </Box>
   )
 }
 

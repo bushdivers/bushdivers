@@ -1,4 +1,4 @@
-import { Box, Card, CardBody, Text } from '@chakra-ui/react'
+import { Box, Card, CardBody } from '@chakra-ui/react'
 import maplibre from 'maplibre-gl'
 import React, { useState } from 'react'
 import Map, { Marker, Popup } from 'react-map-gl'

@@ -1,29 +1,24 @@
-import { Card, CardBody, CardHeader } from '@chakra-ui/react'
+import { Card, CardBody, CardHeader, Flex } from '@chakra-ui/react'
 import React from 'react'
 
+import StatDisplay from '../elements/StatDisplay.jsx'
 import LandingMap from './LandingMap'
 
-const LandingSummary = ({ pirep, mapStyle }) => {
+const LandingSummary = ({ pirep }) => {
   return (
     <div className="mt-2 mx-2">
       <Card>
         <CardHeader>Landing Summary</CardHeader>
         <CardBody>
-          <div className="flex justify-between items-center mb-2">
-            <div className="flex flex-col items-center my-2 mx-4">
-              <div className="text-sm">Landing Rate</div>
-              <div className="text-xl">{pirep.landing_rate} fpm</div>
-            </div>
-            <div className="flex flex-col items-center my-2 mx-4">
-              <div className="text-sm">Landing Pitch</div>
-              <div className="text-xl">{pirep.landing_pitch}</div>
-            </div>
-            <div className="flex flex-col items-center my-2 mx-4">
-              <div className="text-sm">Landing Bank</div>
-              <div className="text-xl">{pirep.landing_bank}</div>
-            </div>
-          </div>
-          <LandingMap pirep={pirep} size="small" mapStyle={mapStyle} />
+          <Flex mb={2} justifyContent="space-between">
+            <StatDisplay
+              stat={`${pirep.landing_rate} fpm`}
+              title="Landing Rate"
+            />
+            <StatDisplay stat={pirep.landing_pitch} title="Landing Pitch" />
+            <StatDisplay stat={pirep.landing_bank} title="Landing Bank" />
+          </Flex>
+          <LandingMap pirep={pirep} size="small" />
         </CardBody>
       </Card>
     </div>
