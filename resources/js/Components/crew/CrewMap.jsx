@@ -1,4 +1,4 @@
-import { Box } from '@chakra-ui/react'
+import { Box, Card, CardBody, Text } from '@chakra-ui/react'
 import maplibre from 'maplibre-gl'
 import React, { useState } from 'react'
 import Map, { Marker, Popup } from 'react-map-gl'
@@ -52,7 +52,9 @@ const CrewMap = (props) => {
               anchor="top"
               onClose={() => setSelectedMarker(null)}
             >
-              <p>{selectedMarker.identifier}</p>
+              <Card>
+                <CardBody>{selectedMarker.identifier}</CardBody>
+              </Card>
             </Popup>
           )}
         </Map>

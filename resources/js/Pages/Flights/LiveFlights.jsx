@@ -1,12 +1,10 @@
-import { usePage } from '@inertiajs/react'
+import { Box, Card, CardBody, CardHeader } from '@chakra-ui/react'
 import React, { useState } from 'react'
 
-import StatBlock from '../../components/elements/StatBlock'
 import LiveFlightMap from '../../components/flights/LiveFlightMap'
 import AppLayout from '../../components/layout/AppLayout'
 
 const LiveFlights = () => {
-  const { auth } = usePage().props
   const [flightCount, setFlightCount] = useState(0)
   const updateFlightCount = (count) => {
     setFlightCount(count)
@@ -14,14 +12,22 @@ const LiveFlights = () => {
 
   function renderContent() {
     return (
-      <>
-        <StatBlock width="1/2" data={flightCount} text="Current Flights" />
-        <LiveFlightMap
-          size="large"
-          updateFlightCount={updateFlightCount}
-          mapStyle={auth.user.map_style}
-        />
-      </>
+      <Box position="relative">
+        <LiveFlightMap updateFlightCount={updateFlightCount} />
+        <Box
+          trans={80}
+          position="absolute"
+          zIndex={10}
+          w="400px"
+          top={10}
+          left={4}
+        >
+          <Card>
+            <CardHeader>Current Flights</CardHeader>
+            <CardBody>{flightCount}</CardBody>
+          </Card>
+        </Box>
+      </Box>
     )
   }
 
@@ -29,7 +35,12 @@ const LiveFlights = () => {
 }
 
 LiveFlights.layout = (page) => (
-  <AppLayout children={page} title="Live Flights" heading="Live Flights" />
+  <AppLayout
+    children={page}
+    title="Live Flights"
+    heading="Live Flights"
+    isFullSize
+  />
 )
 
 export default LiveFlights
