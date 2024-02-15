@@ -1,4 +1,15 @@
-import { Card, CardBody } from '@chakra-ui/react'
+import {
+  Box,
+  Button,
+  Card,
+  CardBody,
+  Flex,
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
+  Input,
+  Text,
+} from '@chakra-ui/react'
 import { router, usePage } from '@inertiajs/react'
 import React, { useState } from 'react'
 
@@ -30,57 +41,69 @@ const Submission = () => {
   }
 
   return (
-    <div className="p-4">
-      <p>
+    <Box>
+      <Text>
         This page is for submitting pireps manually, in case Bush Tracker is
         unable to submit a pirep. All submission will be reviewed by management
-      </p>
-      <div className="mt-4">
+      </Text>
+      <Box mt={2} w={450}>
         <Card>
           <CardBody>
-            <div className="w-1/2">
+            <Box>
               <form onSubmit={handleSubmit}>
-                <TextInput
-                  id="pirep_id"
-                  value={values.pirep_id}
-                  type="text"
-                  label="Pirep Id"
-                  onChange={handleChange}
-                  error={errors?.pirep_id}
-                />
-                <TextInput
-                  id="fuel_used"
-                  value={values.fuel_used}
-                  type="text"
-                  label="Fuel Used (gal)"
-                  onChange={handleChange}
-                  error={errors?.fuel_used}
-                />
-                <TextInput
-                  id="distance"
-                  value={values.distance}
-                  type="text"
-                  label="Distance (nm)"
-                  onChange={handleChange}
-                  error={errors?.distance}
-                />
-                <TextInput
-                  id="flight_time_mins"
-                  value={values.flight_time_mins}
-                  type="text"
-                  label="Flight Time (mins)"
-                  onChange={handleChange}
-                  error={errors?.flight_time_mins}
-                />
-                <button className="btn btn-primary mt-2">
-                  Submit Pirep for Review
-                </button>
+                <FormControl isInvalid={errors?.pirep_id}>
+                  <FormLabel>Pirep Id</FormLabel>
+                  <Input
+                    id="pirep_id"
+                    value={values.pirep_id}
+                    type="text"
+                    onChange={handleChange}
+                  />
+                  <FormErrorMessage>{errors?.pirep_id}</FormErrorMessage>
+                </FormControl>
+                <FormControl isInvalid={errors?.fuel_used}>
+                  <FormLabel>Fuel Used (gal)</FormLabel>
+                  <Input
+                    id="fuel_used"
+                    value={values.fuel_used}
+                    type="text"
+                    onChange={handleChange}
+                  />
+                  <FormErrorMessage>{errors?.fuel_used}</FormErrorMessage>
+                </FormControl>
+                <FormControl isInvalid={errors?.distance}>
+                  <FormLabel>Distance (nm)</FormLabel>
+                  <Input
+                    id="distance"
+                    value={values.distance}
+                    type="text"
+                    onChange={handleChange}
+                  />
+                  <FormErrorMessage>{errors?.distance}</FormErrorMessage>
+                </FormControl>
+                <FormControl isInvalid={errors?.flight_time_mins}>
+                  <FormLabel>Flight Time (mins)</FormLabel>
+                  <Input
+                    id="flight_time_mins"
+                    value={values.flight_time_mins}
+                    type="text"
+                    onChange={handleChange}
+                  />
+                  <FormErrorMessage>
+                    {errors?.flight_time_mins}
+                  </FormErrorMessage>
+                </FormControl>
+                <Flex justifyContent="end">
+                  <Button mt={2} type="submit">
+                    Submit Pirep for Review
+                  </Button>
+                </Flex>
               </form>
-            </div>
+            </Box>
           </CardBody>
         </Card>
-      </div>
-    </div>
+      </Box>
+    </Box>
   )
 }
 
