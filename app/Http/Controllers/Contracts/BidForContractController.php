@@ -20,12 +20,17 @@ class BidForContractController extends Controller
     public function __invoke(Request $request): JsonResponse
     {
         $contract = Contract::findOrFail($request->id);
-        $contract->is_available = false;
-        $contract->user_id = $request->userId;
+        if ($request->action == 'remove') {
+            $contract->is_available = true;
+            $contract->user_id = null;
+        } else {
+            $contract->is_available = false;
+            $contract->user_id = $request->userId;
+            Cache::forget($contract->dep_airport_id.'-contracts');
+        }
+
         $contract->save();
 
-        Cache::forget($contract->dep_airport_id.'-contracts');
-
-        return \response()->json(['message' => 'Contract saved!']);
+        return \response()->json(['message' => 'Contract updated']);
     }
 }

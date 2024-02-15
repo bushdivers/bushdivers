@@ -173,6 +173,7 @@ function ContractList({
     const data = {
       id: contract.id,
       userId: auth.user.id,
+      action: 'bid',
     }
     await axios.post('/api/contracts/bid', data)
 
