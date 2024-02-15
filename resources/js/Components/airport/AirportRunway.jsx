@@ -1,4 +1,4 @@
-import { Card, CardBody } from '@chakra-ui/react'
+import { Box, Card, CardBody } from '@chakra-ui/react'
 import React from 'react'
 
 const renderRunwayText = (surface) => {
@@ -32,7 +32,7 @@ const renderRunwayText = (surface) => {
 
 function AirportRunway({ airport }) {
   return (
-    <div className="absolute top-44 left-12 z-10">
+    <Box position="absolute" top={52} left={12}>
       <Card>
         <CardBody>
           {airport.longest_runway_length && (
@@ -47,7 +47,7 @@ function AirportRunway({ airport }) {
           )}
         </CardBody>
       </Card>
-    </div>
+    </Box>
   )
 }
 

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Contract;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 
 class BidForContractController extends Controller
@@ -20,6 +21,7 @@ class BidForContractController extends Controller
     {
         $contract = Contract::findOrFail($request->id);
         $contract->is_available = false;
+        $contract->user_id = $request->userId;
         $contract->save();
 
         Cache::forget($contract->dep_airport_id.'-contracts');

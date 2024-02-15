@@ -1,14 +1,19 @@
-import { Card, CardBody, CardHeader, Icon } from '@chakra-ui/react'
+import {
+  Box,
+  Button,
+  Card,
+  CardBody,
+  CardHeader,
+  Flex,
+  Icon,
+  Select,
+  Tag,
+  Text,
+  useColorMode,
+} from '@chakra-ui/react'
 import { router, usePage } from '@inertiajs/react'
 import axios from 'axios'
-import {
-  ArrowsUpFromLine,
-  ChevronDown,
-  ChevronUp,
-  Cloud,
-  FilePen,
-  Plane,
-} from 'lucide-react'
+import { ArrowsUpFromLine, Cloud, FilePen, Filter, Plane } from 'lucide-react'
 import maplibre from 'maplibre-gl'
 import React, { useEffect, useState } from 'react'
 import Map, { Layer, Marker, Popup, Source, useMap } from 'react-map-gl'
@@ -20,7 +25,6 @@ import {
   transformRequest,
 } from '../../helpers/geo.helpers'
 import ContractDetail from '../contracts/ContractDetail'
-import Select from '../elements/forms/Select'
 import AirportMetar from './AirportMetar'
 import AirportRunway from './AirportRunway'
 
@@ -44,87 +48,74 @@ function AirportInfo({ airport, updateCurrentViews, currentViews }) {
   }
 
   return (
-    <div className="absolute z-10 w-1/2 lg:w-1/4 opacity-90 top-10 left-12 right-12">
-      <div className="w-full">
-        <Card>
-          <CardHeader>{`${airport.name} - ${airport.identifier}`}</CardHeader>
-          <CardBody>
-            <div className="flex items-center space-x-4">
-              <span className="w-6 h-6 p-1 flex items-center justify-center rounded-full bg-secondary text-white">
-                {airport.size}
-              </span>
-              <span className="text-lg">{airport.altitude}ft</span>
-              <span className="text-lg">
-                Lat: {airport.lat} Lon: {airport.lon}
-              </span>
-              {airport.is_hub ? (
-                <span className="badge badge-accent">hub</span>
-              ) : (
-                <></>
-              )}
-            </div>
-            <div className="mt-2 flex space-x-1">
-              <Tooltip direction="top" content="Metar">
-                <button
-                  onClick={() => changeViews('metar')}
-                  className={`btn ${
-                    currentViews.includes('metar')
-                      ? 'btn-primary'
-                      : 'btn-secondary'
-                  } btn-sm`}
-                >
-                  <Icon as={Cloud} />
-                </button>
-              </Tooltip>
-              <Tooltip direction="top" content="Runway Info">
-                <button
-                  onClick={() => changeViews('runway')}
-                  className={`btn ${
-                    currentViews.includes('runway')
-                      ? 'btn-primary'
-                      : 'btn-secondary'
-                  } btn-sm`}
-                >
-                  <Icon as={ArrowsUpFromLine} />
-                </button>
-              </Tooltip>
-              <Tooltip direction="top" content="Contracts">
-                <button
-                  onClick={() => changeViews('contracts')}
-                  className={`btn ${
-                    currentViews.includes('contracts')
-                      ? 'btn-primary'
-                      : 'btn-secondary'
-                  } btn-sm`}
-                >
-                  <Icon as={FilePen} />
-                </button>
-              </Tooltip>
-              <Tooltip direction="top" content="Aircraft">
-                <button
-                  onClick={() => changeViews('aircraft')}
-                  className={`btn ${
-                    currentViews.includes('aircraft')
-                      ? 'btn-primary'
-                      : 'btn-secondary'
-                  } btn-sm`}
-                >
-                  <Icon as={Plane} />
-                </button>
-              </Tooltip>
-              {auth.user.user_roles.includes('airport_manager') && (
-                <button
-                  onClick={() => renameAirport(airport.identifier)}
-                  className="btn btn-secondary btn-sm"
-                >
-                  Rename ICAO
-                </button>
-              )}
-            </div>
-          </CardBody>
-        </Card>
-      </div>
-    </div>
+    <Box position="absolute" top={10} left={12} w={300}>
+      <Card>
+        <CardHeader>
+          <Flex justifyContent="space-between">
+            <Tag w={6} h={6}>
+              {airport.size}
+            </Tag>
+            <Text fontSize="lg">{`${airport.name} - ${airport.identifier}`}</Text>
+            {airport.is_hub ? <Tag>hub</Tag> : <></>}
+          </Flex>
+        </CardHeader>
+        <CardBody>
+          <Flex direction="column" gap={1}>
+            <Text>{airport.altitude}ft</Text>
+            <Text>
+              Lat: {airport.lat} Lon: {airport.lon}
+            </Text>
+          </Flex>
+          <Flex mt={2} gap={1} className="mt-2 flex space-x-1">
+            <Tooltip direction="top" content="Metar">
+              <Button
+                onClick={() => changeViews('metar')}
+                size="xs"
+                variant={currentViews.includes('metar') ? 'solid' : 'ghost'}
+              >
+                <Icon as={Cloud} />
+              </Button>
+            </Tooltip>
+            <Tooltip direction="top" content="Runway Info">
+              <Button
+                onClick={() => changeViews('runway')}
+                size="xs"
+                variant={currentViews.includes('runway') ? 'solid' : 'ghost'}
+              >
+                <Icon as={ArrowsUpFromLine} />
+              </Button>
+            </Tooltip>
+            <Tooltip direction="top" content="Contracts">
+              <Button
+                onClick={() => changeViews('contracts')}
+                size="xs"
+                variant={currentViews.includes('contracts') ? 'solid' : 'ghost'}
+              >
+                <Icon as={FilePen} />
+              </Button>
+            </Tooltip>
+            <Tooltip direction="top" content="Aircraft">
+              <Button
+                onClick={() => changeViews('aircraft')}
+                size="xs"
+                variant={currentViews.includes('aircraft') ? 'solid' : 'ghost'}
+              >
+                <Icon as={Plane} />
+              </Button>
+            </Tooltip>
+            {auth.user.user_roles.includes('airport_manager') && (
+              <Button
+                onClick={() => renameAirport(airport.identifier)}
+                size="xs"
+                variant="ghost"
+              >
+                Rename ICAO
+              </Button>
+            )}
+          </Flex>
+        </CardBody>
+      </Card>
+    </Box>
   )
 }
 
@@ -190,24 +181,26 @@ function ContractList({
   return (
     <>
       {currentViews.includes('contracts') && contracts.length > 0 && (
-        <div className="absolute z-10 bg-neutral px-4 lg:w-2/5 opacity-90 map-data bottom-4 left-12 right-12 rounded-lg shadow-lg">
-          <div className="sticky top-0 bg-neutral py-2 flex justify-between items-center mb-2">
-            <h4>Contracts from {icao}</h4>
-          </div>
-          <div className="map-data-content overflow-y-auto">
-            {contracts &&
-              contracts.map((c) => (
-                <ContractDetail
-                  key={c.id}
-                  contract={c}
-                  selectedContract={selectedContract}
-                  action={bidForContract}
-                  type="search"
-                  updateSelectedContract={updateSelectedContract}
-                />
-              ))}
-          </div>
-        </div>
+        <Box position="absolute" w={400} bottom={4} left={12}>
+          <Card>
+            <CardHeader>Contracts from {icao}</CardHeader>
+            <CardBody>
+              <Box overflowY="auto" className="map-data-content">
+                {contracts &&
+                  contracts.map((c) => (
+                    <ContractDetail
+                      key={c.id}
+                      contract={c}
+                      selectedContract={selectedContract}
+                      action={bidForContract}
+                      type="search"
+                      updateSelectedContract={updateSelectedContract}
+                    />
+                  ))}
+              </Box>
+            </CardBody>
+          </Card>
+        </Box>
       )}
     </>
   )
@@ -222,6 +215,7 @@ function AirportMap({
   size,
   updatedMapStyle,
 }) {
+  const { colorMode } = useColorMode()
   const [currentViews, setCurrentViews] = useState(['contracts'])
   const [routeData, setRouteData] = useState(null)
   const [selectedContract, setSelectedContract] = useState(null)
@@ -346,7 +340,7 @@ function AirportMap({
   }
 
   return (
-    <div className={`map-container-${size} relative`}>
+    <Box position="relative" className="map-container-full">
       <Map
         id="airportMap"
         mapLib={maplibre}
@@ -356,7 +350,7 @@ function AirportMap({
           latitude: airport.lat,
           zoom: 7,
         }}
-        mapStyle={parseMapStyle(mapStyle)}
+        mapStyle={parseMapStyle(colorMode)}
         transformRequest={transformRequest}
       >
         {currentViews.includes('contracts') &&
@@ -369,9 +363,7 @@ function AirportMap({
               latitude={contract.arr_airport.lat}
               onClick={() => updateSelectedContract(contract)}
             >
-              <div className="h-10 w-10 p-2 rounded-full text-1xs bg-accent border-primary-content border text-primary-content flex justify-center items-center cursor-pointer">
-                {contract.arr_airport.identifier}
-              </div>
+              <Tag cursor="pointer">{contract.arr_airport.identifier}</Tag>
             </Marker>
           ))}
         <ContractRoute
@@ -405,15 +397,15 @@ function AirportMap({
             onClose={() => setShowPopup(false)}
             closeOnClick={false}
           >
-            <div>
-              <p>
+            <Box>
+              <Text color="gray.800">
                 {selectedAircraft.fleet.manufacturer}{' '}
                 {selectedAircraft.fleet.name}
-              </p>
-              <p>
+              </Text>
+              <Text color="gray.800">
                 {selectedAircraft.fleet.type} {selectedAircraft.registration}
-              </p>
-            </div>
+              </Text>
+            </Box>
           </Popup>
         )}
         <AirportInfo
@@ -436,66 +428,58 @@ function AirportMap({
           icao={airport.identifier}
           updateSelectedContract={updateSelectedContract}
         />
-        <div className="absolute z-10 top-10 right-12">
-          <button onClick={() => clearFilters()} className="btn btn-primary">
+        <Box position="absolute" top={10} right={12}>
+          <Button size="sm" onClick={() => clearFilters()}>
             Clear Filters
-          </button>
-        </div>
+          </Button>
+        </Box>
         {currentViews.includes('contracts') && (
-          <div className="absolute z-10 top-10 right-52">
-            <Card slimline>
-              <div className="flex w-full flex-col items-center space-y-2">
-                <div
-                  onClick={() => setShowFilters(!showFilters)}
-                  className="flex w-full items-center justify-between space-x-2 cursor-pointer"
-                >
-                  <h4>Filters</h4>
-                  <span className="p-2 cursor-pointer">
-                    {showFilters ? (
-                      <Icon as={ChevronUp} />
-                    ) : (
-                      <Icon as={ChevronDown} />
-                    )}
-                  </span>
-                </div>
-                {showFilters && (
-                  <div className="flex flex-col">
-                    <div className="flex flex-col">
-                      <span className="text-sm">Distance</span>
-                      <Select
-                        value={filters.distance}
-                        onChange={handleFilterChange}
-                        id="distance"
-                        options={[
-                          { value: '0', text: 'All Distances' },
-                          { value: '60', text: '< 60' },
-                          { value: '100', text: '60 - 100' },
-                          { value: '300', text: '> 100' },
-                        ]}
-                      />
-                    </div>
-                    <div className="flex flex-col">
-                      <span className="text-sm">Payload</span>
-                      <Select
-                        value={filters.payload}
-                        onChange={handleFilterChange}
-                        id="payload"
-                        options={[
-                          { value: '0', text: 'All Payloads' },
-                          { value: '1000', text: '< 1000' },
-                          { value: '3000', text: '1000 - 3000' },
-                          { value: '10000', text: '> 3000' },
-                        ]}
-                      />
-                    </div>
-                  </div>
-                )}
-              </div>
-            </Card>
-          </div>
+          <>
+            <Box position="absolute" top={10} right={52}>
+              <Button size="sm" onClick={() => setShowFilters(!showFilters)}>
+                <Icon as={Filter} />
+              </Button>
+            </Box>
+            <Box position="absolute" top={20} right={52}>
+              {showFilters && (
+                <Card>
+                  <CardBody>
+                    <Flex direction="column">
+                      <Flex direction="column" gap={1}>
+                        <Text fontSize="sm">Distance</Text>
+                        <Select
+                          value={filters.distance}
+                          onChange={handleFilterChange}
+                          id="distance"
+                        >
+                          <option value="0">All</option>
+                          <option value="60">{'< 60'}</option>
+                          <option value="100">60 - 100</option>
+                          <option value="300">{'> '} 100</option>
+                        </Select>
+                      </Flex>
+                      <Flex direction="column" gap={1}>
+                        <Text fontSize="sm">Payload</Text>
+                        <Select
+                          value={filters.payload}
+                          onChange={handleFilterChange}
+                          id="payload"
+                        >
+                          <option value="0">All</option>
+                          <option value="1000">{'< 1000'}</option>
+                          <option value="3000">1000 - 3000</option>
+                          <option value="10000">{'> '} 3000</option>
+                        </Select>
+                      </Flex>
+                    </Flex>
+                  </CardBody>
+                </Card>
+              )}
+            </Box>
+          </>
         )}
       </Map>
-    </div>
+    </Box>
   )
 }
 

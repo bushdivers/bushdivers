@@ -1,4 +1,13 @@
-import { Icon } from '@chakra-ui/react'
+import {
+  Box,
+  Button,
+  Card,
+  CardBody,
+  Flex,
+  Icon,
+  Text,
+  useColorModeValue,
+} from '@chakra-ui/react'
 import { Link } from '@inertiajs/react'
 import { formatDistanceToNowStrict } from 'date-fns'
 import { ArrowUp, Check, Plane } from 'lucide-react'
@@ -29,90 +38,68 @@ const ContractDetail = ({
   updateSelectedContract,
 }) => {
   return (
-    <div
-      onClick={() => updateSelectedContract(contract)}
-      className={`${
+    <Card
+      cursor="pointer"
+      bgColor={
         selectedContract && selectedContract.id === contract.id
-          ? 'bg-primary'
-          : 'bg-neutral'
-      } cursor-pointer py-3 px-2 w-full border-neutral shadow-lg flex items-center justify-between my-2 space-x-2`}
+          ? useColorModeValue('orange.300', 'orange.800')
+          : ''
+      }
+      onClick={() => updateSelectedContract(contract)}
     >
-      <div className="flex items-center justify-start space-x-4 w-2/3">
-        <div className="flex flex-col items-center space-y-1 w-1/3">
-          <div className="flex items-center justify-start content-center space-x-2">
-            <span className="text-xl">
+      <CardBody>
+        <Box>
+          <Flex justifyContent="space-between" gap={2}>
+            <Flex alignItems="center" gap={2}>
               <Link href={`/airports/${contract.current_airport_id}`}>
-                {contract.current_airport_id}
+                <Text fontSize="xl">{contract.current_airport_id}</Text>
               </Link>
-            </span>
-            <span className="p-1 border rounded">
-              <Icon as={Plane} />
-            </span>
-            <span className="text-xl">
+              <Box p={1}>
+                <Icon as={Plane} />
+              </Box>
               <Link href={`/airports/${contract.arr_airport.identifier}`}>
-                {contract.arr_airport.identifier}
+                <Text fontSize="xl">{contract.arr_airport.identifier}</Text>
               </Link>
-            </span>
-          </div>
-          <span className="text-lg font-bold">
+            </Flex>
+            <Box mr={4}>
+              <Tooltip content="Bid">
+                <Button
+                  colorScheme="gray"
+                  size="xs"
+                  onClick={() => action(contract)}
+                >
+                  <Icon as={Check} />
+                </Button>
+              </Tooltip>
+            </Box>
+          </Flex>
+          <Text fontSize="lg">
             $
             {parseFloat(contract.contract_value).toLocaleString(undefined, {
               minimumFractionDigits: 2,
             })}
-          </span>
-        </div>
-        <div></div>
-        <div className="flex flex-col items-center space-y-1 w-1/3">
-          <span>{contract.distance} nm</span>
-          <div className="flex items-center">
-            <span style={{ transform: `rotate(${contract.heading}deg)` }}>
-              <Icon as={ArrowUp} className="text-secondary" />
-            </span>
-            <span className="ml-1">{contract.heading}&deg;</span>
-          </div>
-        </div>
-        <div className="text-sm w-1/3">{renderCargo(contract)}</div>
-      </div>
-      <div className="flex justify-end items-center space-x-4 w-1/3">
-        <div className="flex flex-col items-center text-sm w-2/3">
-          <span>Expires In</span>
-          <span>
-            {formatDistanceToNowStrict(new Date(contract.expires_at))}
-          </span>
-        </div>
-        <div className="w-1/3 flex justify-end">
-          {type === 'available' ? (
-            <>
-              {contract.user_id === null ? (
-                <div className="mr-4">
-                  <Tooltip content="Assign">
-                    <button
-                      onClick={() => action(contract)}
-                      className="btn btn-secondary btn-xs"
-                    >
-                      <Icon as={Check} />
-                    </button>
-                  </Tooltip>
-                </div>
-              ) : (
-                <span className="text-sm mr-4">Assigned</span>
-              )}
-            </>
-          ) : (
-            <div className="mr-4">
-              <Tooltip content="Bid">
-                <button
-                  onClick={() => action(contract)}
-                  className="btn btn-secondary btn-xs"
-                >
-                  <Icon as={Check} />
-                </button>
-              </Tooltip>
-            </div>
-          )}
-        </div>
-      </div>
-    </div>
+          </Text>
+          <Box>
+            <Flex justifyContent="start" gap={2}>
+              <Flex>{contract.distance} nm</Flex>
+              <Flex alignItems="center">
+                <Box style={{ transform: `rotate(${contract.heading}deg)` }}>
+                  <Icon as={ArrowUp} />
+                </Box>
+                <Box ml={1}>{contract.heading}&deg;</Box>
+              </Flex>
+            </Flex>
+            <Flex gap={4}>
+              <Text fontSize="xs">{renderCargo(contract)}</Text>
+              <Text fontSize="xs">
+                Expires In{' '}
+                {formatDistanceToNowStrict(new Date(contract.expires_at))}
+              </Text>
+            </Flex>
+          </Box>
+        </Box>
+      </CardBody>
+    </Card>
   )
 }
 

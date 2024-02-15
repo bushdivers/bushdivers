@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 
 import AirportMap from '../../components/airport/AirportMap'
-// import MapOptions from '../../components/elements/MapOptions'
 import AppLayout from '../../components/layout/AppLayout'
 
 const AirportDetail = ({ airport, aircraft, contracts, metar }) => {
@@ -17,10 +16,6 @@ const AirportDetail = ({ airport, aircraft, contracts, metar }) => {
         size="full"
         updatedMapStyle={currentMapStyle}
       />
-      {/* <MapOptions
-        updateMap={setCurrentMapStyle}
-        currentStyle={currentMapStyle}
-      /> */}
     </div>
   )
 }
