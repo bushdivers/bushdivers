@@ -1,4 +1,4 @@
-import { Card, CardBody } from '@chakra-ui/react'
+import { Box, Card, CardBody, Flex, SimpleGrid } from '@chakra-ui/react'
 import { router } from '@inertiajs/react'
 import React from 'react'
 
@@ -10,26 +10,25 @@ const Manufacturers = ({ manufacturers }) => {
   }
 
   return (
-    <div className="p-4">
-      <p>Select a manufacturer:</p>
-      <div className="flex flex-wrap justify-start mt-4">
+    <Box>
+      <SimpleGrid columns={3} gap={5}>
         {manufacturers &&
           manufacturers.map((man) => (
-            <div
+            <Card
+              cursor="pointer"
               onClick={() => selectManufacturer(man.id)}
               key={man.id}
-              className="m-2 w-1/4 cursor-pointer flex items-center align-center justify-center"
             >
-              <Card>
-                <CardBody>
+              <CardBody>
+                <Flex justifyContent="center" alignItems="center" h="100%">
                   {man.logo_url && <img src={man.logo_url} width="200" />}
                   {!man.logo_url && man.name}
-                </CardBody>
-              </Card>
-            </div>
+                </Flex>
+              </CardBody>
+            </Card>
           ))}
-      </div>
-    </div>
+      </SimpleGrid>
+    </Box>
   )
 }
 

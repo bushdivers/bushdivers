@@ -1,4 +1,18 @@
-import { Card, CardBody, CardHeader } from '@chakra-ui/react'
+import {
+  Box,
+  Button,
+  Card,
+  CardBody,
+  CardHeader,
+  Heading,
+  Table,
+  TableContainer,
+  Tbody,
+  Td,
+  Th,
+  Thead,
+  Tr,
+} from '@chakra-ui/react'
 import { Link, router } from '@inertiajs/react'
 import axios from 'axios'
 import React from 'react'
@@ -22,109 +36,100 @@ const MyAircraft = ({ aircraft, rentals }) => {
   }
 
   return (
-    <div className="p-4 flex space-x-4">
-      <div className="w-full space-y-4">
-        <div>
-          <Card>
-            <CardHeader>My Aircraft</CardHeader>
-            <CardBody>
-              <div className="flex justify-between items-baseline mt-2">
-                <Link href="/marketplace">
-                  <button className="btn btn-primary btn-sm">
-                    Go To Marketplace
-                  </button>
-                </Link>
-              </div>
-              <div className="overflow-x-auto">
-                <table className="table table-compact w-full my-2">
-                  <thead>
-                    <tr>
-                      <th>Registration</th>
-                      <th>Type</th>
-                      <th>Location</th>
-                      <th>Home</th>
-                      <th>Hours</th>
-                      <th>Condition</th>
-                      <th></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {aircraft &&
-                      aircraft.map((ac) => (
-                        <tr key={ac.id}>
-                          <td>
-                            <Link href={`/aircraft/${ac.id}`} className="link">
-                              {ac.registration}
-                            </Link>
-                          </td>
-                          <td>{ac.fleet.type}</td>
-                          <td>{ac.current_airport_id}</td>
-                          <td>{ac.hub_id}</td>
-                          <td>
-                            {convertMinuteDecimalToHoursAndMinutes(
-                              ac.flight_time_mins
-                            )}
-                          </td>
-                          <td>
-                            <AircraftCondition aircraftCondition={ac.wear} />
-                          </td>
-                          <td>
-                            <button
-                              onClick={() => handleSale(ac)}
-                              className="btn btn-xs btn-secondary"
-                            >
-                              Sell
-                            </button>
-                          </td>
-                        </tr>
-                      ))}
-                  </tbody>
-                </table>
-              </div>
-            </CardBody>
-          </Card>
-        </div>
-        <div>
-          <Card>
-            <CardHeader>My Rentals</CardHeader>
-            <CardBody>
-              <div className="flex justify-between items-baseline mt-2">
-                <Link href="/rentals">
-                  <button className="btn btn-primary btn-sm">
-                    Go To Rentals
-                  </button>
-                </Link>
-              </div>
-              <div className="overflow-x-auto">
-                <table className="table table-compact w-full my-2">
-                  <thead>
-                    <tr>
-                      <th>Registration</th>
-                      <th>Type</th>
-                      <th>Location</th>
-                      <th>Home</th>
-                      <th>Rental Cost (hour)</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {rentals &&
-                      rentals.map((ac) => (
-                        <tr key={ac.id}>
-                          <td>{ac.registration}</td>
-                          <td>{ac.fleet.type}</td>
-                          <td>{ac.current_airport_id}</td>
-                          <td>{ac.hub_id}</td>
-                          <td>${ac.fleet.rental_cost}</td>
-                        </tr>
-                      ))}
-                  </tbody>
-                </table>
-              </div>
-            </CardBody>
-          </Card>
-        </div>
-      </div>
-    </div>
+    <Box>
+      <Card>
+        <CardHeader>
+          <Heading size="md">My Aircraft</Heading>
+        </CardHeader>
+        <CardBody>
+          <Link href="/marketplace">
+            <Button size="sm">Go To Marketplace</Button>
+          </Link>
+          <TableContainer>
+            <Table>
+              <Thead>
+                <Tr>
+                  <Th>Registration</Th>
+                  <Th>Type</Th>
+                  <Th>Location</Th>
+                  <Th>Home</Th>
+                  <Th>Hours</Th>
+                  <Th>Condition</Th>
+                  <Th></Th>
+                </Tr>
+              </Thead>
+              <Tbody>
+                {aircraft &&
+                  aircraft.map((ac) => (
+                    <Tr key={ac.id}>
+                      <Td>
+                        <Link href={`/aircraft/${ac.id}`} className="link">
+                          {ac.registration}
+                        </Link>
+                      </Td>
+                      <Td>{ac.fleet.type}</Td>
+                      <Td>{ac.current_airport_id}</Td>
+                      <Td>{ac.hub_id}</Td>
+                      <Td>
+                        {convertMinuteDecimalToHoursAndMinutes(
+                          ac.flight_time_mins
+                        )}
+                      </Td>
+                      <Td>
+                        <AircraftCondition aircraftCondition={ac.wear} />
+                      </Td>
+                      <Td>
+                        <Button
+                          colorScheme="gray"
+                          size="xs"
+                          onClick={() => handleSale(ac)}
+                        >
+                          Sell
+                        </Button>
+                      </Td>
+                    </Tr>
+                  ))}
+              </Tbody>
+            </Table>
+          </TableContainer>
+        </CardBody>
+      </Card>
+      <Card mt={2}>
+        <CardHeader>
+          <Heading size="md">My Rentals</Heading>
+        </CardHeader>
+        <CardBody>
+          <Link href="/rentals">
+            <Button size="sm">Go To Rentals</Button>
+          </Link>
+          <TableContainer className="overflow-x-auto">
+            <Table className="table table-compact w-full my-2">
+              <Thead>
+                <Tr>
+                  <Th>Registration</Th>
+                  <Th>Type</Th>
+                  <Th>Location</Th>
+                  <Th>Home</Th>
+                  <Th>Rental Cost (hour)</Th>
+                </Tr>
+              </Thead>
+              <Tbody>
+                {rentals &&
+                  rentals.map((ac) => (
+                    <Tr key={ac.id}>
+                      <Td>{ac.registration}</Td>
+                      <Td>{ac.fleet.type}</Td>
+                      <Td>{ac.current_airport_id}</Td>
+                      <Td>{ac.hub_id}</Td>
+                      <Td>${ac.fleet.rental_cost}</Td>
+                    </Tr>
+                  ))}
+              </Tbody>
+            </Table>
+          </TableContainer>
+        </CardBody>
+      </Card>
+    </Box>
   )
 }
 

@@ -1,10 +1,21 @@
-import { Card, CardBody, CardHeader } from '@chakra-ui/react'
+import {
+  Box,
+  Button,
+  Card,
+  CardBody,
+  CardHeader,
+  Checkbox,
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
+  Heading,
+  Input,
+  Text,
+} from '@chakra-ui/react'
 import { router, usePage } from '@inertiajs/react'
 import axios from 'axios'
 import React, { useState } from 'react'
 
-import CheckBox from '../../components/elements/forms/CheckBox'
-import TextInput from '../../components/elements/forms/TextInput'
 import AppLayout from '../../components/layout/AppLayout'
 
 const Purchase = ({ aircraft, purchaseType }) => {
@@ -111,101 +122,102 @@ const Purchase = ({ aircraft, purchaseType }) => {
   }
 
   return (
-    <div>
-      <div className="text-lg">
+    <>
+      <Heading size="md">
         Purchase New - {aircraft.manufacturer} {aircraft.name}
-      </div>
-      <div className="mt-2">
-        <Card>
-          <CardHeader>Invoice</CardHeader>
-          <CardBody>
-            {purchaseType === 'new' && (
-              <>
-                <div className="flex justify-start items-center space-x-2">
-                  <CheckBox
-                    id="delivery"
-                    checked={deliver}
-                    onChange={handleDeliveryChange}
-                    label="Deliver?"
-                  />
-                  {deliver && (
-                    <div className="flex justify-start items-center">
-                      <TextInput
-                        id="dep"
-                        placeHolder="Deliver to ICAO"
-                        type="text"
-                        value={icao}
-                        onChange={handleChange}
-                        inline
-                      />
-                    </div>
-                  )}
-                  {airport && <div className="text-sm mt-1">{airport}</div>}
-                  {error && (
-                    <div className="text-sm text-error mt-1">{error}</div>
-                  )}
-                </div>
-                {!deliver && (
-                  <div className="mt-2">Deliver to {aircraft.hq}</div>
+      </Heading>
+      <Card mt={2}>
+        <CardHeader>
+          <Heading size="sm">Invoice</Heading>
+        </CardHeader>
+        <CardBody>
+          {purchaseType === 'new' && (
+            <>
+              <Box w="200px">
+                <Checkbox
+                  id="delivery"
+                  checked={deliver}
+                  onChange={handleDeliveryChange}
+                >
+                  Deliver?
+                </Checkbox>
+                {deliver && (
+                  <FormControl>
+                    <FormLabel>Deliver to ICAO</FormLabel>
+                    <Input
+                      id="dep"
+                      placeHolder="Deliver to ICAO"
+                      type="text"
+                      value={icao}
+                      onChange={handleChange}
+                    />
+                  </FormControl>
                 )}
-                {deliver && airport && (
-                  <div className="mt-2">
-                    Deliver from: {aircraft.hq} to: {airport}
-                  </div>
+                {airport && (
+                  <Text fontSize="sm" mt={1}>
+                    {airport}
+                  </Text>
                 )}
-              </>
-            )}
-            <div className="w-1/4">
-              <TextInput
+                {error && (
+                  <Text fontSize="sm" mt={1} color="red.500">
+                    {error}
+                  </Text>
+                )}
+              </Box>
+              {!deliver && <Text mt={2}>Deliver to {aircraft.hq}</Text>}
+              {deliver && airport && (
+                <Text mt={2}>
+                  Deliver from: {aircraft.hq} to: {airport}
+                </Text>
+              )}
+            </>
+          )}
+          <Box width="200px">
+            <FormControl isInvalid={hubError}>
+              <FormLabel>Home Hub (ICAO)</FormLabel>
+              <Input
                 id="hub"
                 type="text"
                 value={hub}
                 onChange={handleHubChange}
-                error={hubError}
-                label="Home Hub (ICAO)"
               />
-              <TextInput
+              <FormErrorMessage>{hubError}</FormErrorMessage>
+            </FormControl>
+            <FormControl isInvalid={regError}>
+              <FormLabel>Registration</FormLabel>
+              <Input
                 id="reg"
                 type="text"
                 value={reg}
                 onChange={handleRegChange}
                 placeHolder="N1234A"
-                error={regError}
-                label="Registration"
               />
-            </div>
+              <FormErrorMessage>{regError}</FormErrorMessage>
+            </FormControl>
+          </Box>
 
-            <div className="my-4">
-              <div className="flex justify-between">
-                <span>Base Price</span>
-                <span>${basePrice}</span>
-              </div>
-              <div className="flex justify-between">
-                <span>Delivery</span>
-                <span>${price.toFixed(2)}</span>
-              </div>
-              <div className="flex justify-between">
-                <span>Total</span>
-                <span>
-                  $
-                  {(parseFloat(basePrice) + parseFloat(price))
-                    .toFixed(2)
-                    .toLocaleString()}
-                </span>
-              </div>
-            </div>
-            <button onClick={() => purchase()} className="btn btn-primary">
-              Purchase
-            </button>
-            {errors.reg && (
-              <span className="text-sm text-error my-2">
-                The aircraft registration has already exists
-              </span>
-            )}
-          </CardBody>
-        </Card>
-      </div>
-    </div>
+          <Box my={2}>
+            <Text>Base Price</Text>
+            <Text>${basePrice}</Text>
+            <Text>Delivery</Text>
+            <Text>${price.toFixed(2)}</Text>
+            <Text>Total</Text>
+            <Text>
+              $
+              {(parseFloat(basePrice) + parseFloat(price))
+                .toFixed(2)
+                .toLocaleString()}
+            </Text>
+          </Box>
+          <Button onClick={() => purchase()}>Purchase</Button>
+          {errors.reg && (
+            <Text my={2} fontSize="sm" color="red.500">
+              The aircraft registration already exists
+            </Text>
+          )}
+        </CardBody>
+      </Card>
+    </>
   )
 }
 

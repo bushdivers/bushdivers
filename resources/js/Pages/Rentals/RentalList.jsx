@@ -1,4 +1,20 @@
-import { Box, Card, CardBody, CardHeader } from '@chakra-ui/react'
+import {
+  Box,
+  Button,
+  Card,
+  CardBody,
+  CardHeader,
+  Heading,
+  SimpleGrid,
+  Table,
+  TableContainer,
+  Tbody,
+  Td,
+  Text,
+  Th,
+  Thead,
+  Tr,
+} from '@chakra-ui/react'
 import { Link, router, usePage } from '@inertiajs/react'
 import React from 'react'
 
@@ -37,14 +53,9 @@ const RentalList = ({ aircraft, myRentals, currentAirport }) => {
 
   const RentalButton = (props) => {
     return (
-      <div className="mt-6 text-center">
-        <button
-          onClick={() => handleRental(props.aircraft)}
-          className="btn btn-secondary"
-        >
-          Rent {props.aircraft.name}
-        </button>
-      </div>
+      <Button onClick={() => handleRental(props.aircraft)}>
+        Rent {props.aircraft.name}
+      </Button>
     )
   }
 
@@ -56,117 +67,110 @@ const RentalList = ({ aircraft, myRentals, currentAirport }) => {
         return <RentalButton aircraft={ac} />
       } else {
         return (
-          <div className="mt-4 text-center text-sm text-red-500">
+          <Text color="red.500" mt={4} fontSize="sm">
             Aircraft not available here
-          </div>
+          </Text>
         )
       }
     }
   }
 
   return (
-    <Box p={4}>
+    <>
       <Box>
         <Box my={2}>
           <Card>
-            <CardHeader>My Rentals</CardHeader>
+            <CardHeader>
+              <Heading size="md">My Rentals</Heading>
+            </CardHeader>
             <CardBody>
-              <Box className="overflow-x-auto">
-                <table className="table table-compact w-full">
-                  <thead>
-                    <tr>
-                      <th>Registration</th>
-                      <th>Type</th>
-                      <th>Location</th>
-                      <th>Home</th>
-                      <th>Rental Cost (hour)</th>
-                      <th>Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
+              <TableContainer className="overflow-x-auto">
+                <Table className="table table-compact w-full">
+                  <Thead>
+                    <Tr>
+                      <Th>Registration</Th>
+                      <Th>Type</Th>
+                      <Th>Location</Th>
+                      <Th>Home</Th>
+                      <Th>Rental Cost (hour)</Th>
+                      <Th>Actions</Th>
+                    </Tr>
+                  </Thead>
+                  <Tbody>
                     {myRentals &&
                       myRentals.map((ac) => (
-                        <tr key={ac.id}>
-                          <td>{ac.registration}</td>
-                          <td>
+                        <Tr key={ac.id}>
+                          <Td>{ac.registration}</Td>
+                          <Td>
                             {ac.fleet.manufacturer} {ac.fleet.name} (
                             {ac.fleet.type})
-                          </td>
-                          <td>
+                          </Td>
+                          <Td>
                             <Link href={`airports/${ac.current_airport_id}`}>
                               {ac.current_airport_id}
                             </Link>
-                          </td>
-                          <td>
+                          </Td>
+                          <Td>
                             <Link href={`airports/${ac.rental_airport_id}`}>
                               {ac.rental_airport_id}
                             </Link>
-                          </td>
-                          <td>${ac.fleet.rental_cost}</td>
-                          <td>
-                            <button
-                              className="btn btn-secondary btn-xs"
-                              onClick={() => handleCancel(ac)}
-                            >
+                          </Td>
+                          <Td>${ac.fleet.rental_cost}</Td>
+                          <Td>
+                            <Button size="xs" onClick={() => handleCancel(ac)}>
                               End rental
-                            </button>
-                          </td>
-                        </tr>
+                            </Button>
+                          </Td>
+                        </Tr>
                       ))}
-                  </tbody>
-                </table>
-              </Box>
+                  </Tbody>
+                </Table>
+              </TableContainer>
             </CardBody>
           </Card>
         </Box>
       </Box>
-      <div className="mt-4">
-        <h3 className="my-2">
-          {currentAirport.is_hub || currentAirport.size >= 4 ? (
-            <span>
-              Aircraft Available for Rental - {auth.user.current_airport_id}
-            </span>
-          ) : (
-            <span>
-              {auth.user.current_airport_id} -{' '}
-              <span className="text-sm text-red-500">
-                You must be at a hub or large airport to rent aircraft
-              </span>
-            </span>
-          )}
-        </h3>
-        <div className="flex flex-wrap justify-start mt-2">
-          {aircraft &&
-            aircraft.map((ac) => (
-              <div key={ac.id} className="w-1/4 mx-4 my-2">
-                <Card>
-                  <CardBody>
-                    <img className="rounded-t" src={ac.rental_image} />
-                    <div className="p-3">
-                      <div className="text-xl">
-                        {ac.type} {ac.manufacturer} - {ac.name}
-                      </div>
-                      <div className="mt-1">
-                        ${ac.rental_cost} per hour{' '}
-                        <span className="text-sm">(min. 2 hours per day)</span>
-                      </div>
-                      <div>${ac.rental_cost * 10} Returnable deposit</div>
-                      <div className="mt-2">
-                        <div>Cargo (lbs): {ac.cargo_capacity}</div>
-                        <div>Pax: {ac.pax_capacity}</div>
-                        <div>Fuel (gal): {ac.fuel_capacity}</div>
-                        <div>Cruise (kts): {ac.cruise_speed}</div>
-                        <div>Range (nm): {ac.range}</div>
-                      </div>
-                      {renderRentalButton(ac)}
-                    </div>
-                  </CardBody>
-                </Card>
-              </div>
-            ))}
-        </div>
-      </div>
-    </Box>
+      <Heading size="md" className="my-2">
+        {currentAirport.is_hub || currentAirport.size >= 4 ? (
+          <Box>
+            Aircraft Available for Rental - {auth.user.current_airport_id}
+          </Box>
+        ) : (
+          <Box>
+            {auth.user.current_airport_id} -{' '}
+            <Text fontSize="sm" color="red.500">
+              You must be at a hub or large airport to rent aircraft
+            </Text>
+          </Box>
+        )}
+      </Heading>
+      <SimpleGrid mt={2} colums={3} gap={5}>
+        {aircraft &&
+          aircraft.map((ac) => (
+            <Card key={ac.id}>
+              <CardBody>
+                <img className="rounded-t" src={ac.rental_image} />
+                <Heading size="sm" mt={2}>
+                  {ac.type} {ac.manufacturer} - {ac.name}
+                </Heading>
+                <Box mt={1}>
+                  ${ac.rental_cost} per hour{' '}
+                  <Text fontSize="sm">(min. 2 hours per day)</Text>
+                </Box>
+                <Text>${ac.rental_cost * 10} Returnable deposit</Text>
+                <Box my={2}>
+                  <Text>Cargo (lbs): {ac.cargo_capacity}</Text>
+                  <Text>Pax: {ac.pax_capacity}</Text>
+                  <Text>Fuel (gal): {ac.fuel_capacity}</Text>
+                  <Text>Cruise (kts): {ac.cruise_speed}</Text>
+                  <Text>Range (nm): {ac.range}</Text>
+                </Box>
+                {renderRentalButton(ac)}
+              </CardBody>
+            </Card>
+          ))}
+      </SimpleGrid>
+    </>
   )
 }
 

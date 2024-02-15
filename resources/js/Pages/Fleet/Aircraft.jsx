@@ -1,10 +1,30 @@
-import { Badge, Card, CardBody, CardHeader, Icon } from '@chakra-ui/react'
+import {
+  Box,
+  Button,
+  Card,
+  CardBody,
+  CardHeader,
+  Flex,
+  Heading,
+  Icon,
+  SimpleGrid,
+  Tab,
+  Table,
+  TableContainer,
+  Tag,
+  Tbody,
+  Td,
+  Text,
+  Th,
+  Thead,
+  Tr,
+} from '@chakra-ui/react'
 import { router, usePage } from '@inertiajs/react'
 import { format } from 'date-fns'
 import { Wrench } from 'lucide-react'
 import React from 'react'
 
-import StatCard from '../../components/elements/StatCard'
+import StatDisplay from '../../Components/elements/StatDisplay.jsx'
 import AircraftCondition from '../../components/fleet/AircraftCondition'
 import AircraftMap from '../../components/fleet/AircraftMap'
 import AppLayout from '../../components/layout/AppLayout'
@@ -160,286 +180,314 @@ const Aircraft = ({ aircraft, maintenanceStatus, pireps }) => {
   }
 
   return (
-    <div>
-      <div className="flex justify-start items-center mb-2">
-        <h2>{`${aircraft.registration} - ${aircraft.fleet.manufacturer} ${aircraft.fleet.name} (${aircraft.fleet.type})`}</h2>
+    <>
+      <Flex justifyItems="start" alignItems="center">
+        <Heading size="md">{`${aircraft.registration} - ${aircraft.fleet.manufacturer} ${aircraft.fleet.name} (${aircraft.fleet.type})`}</Heading>
         {aircraft.maintenance_status && !aircraft.is_rental && (
-          <span className="ml-2 text-orange-500">
-            <Icon as={Wrench} />
-          </span>
+          <Icon ml={2} color="orange.500" as={Wrench} />
         )}
-        {aircraft.is_rental ? (
-          <span className="ml-2">
-            <Badge color="primary" label="Rental" />
-          </span>
-        ) : (
-          <></>
-        )}
+        {aircraft.is_rental ? <Tag ml={2}>Rental</Tag> : <></>}
         {aircraft.owner_id > 0 && aircraft.owner_id === auth.user.id ? (
-          <span className="ml-2">
-            <Badge color="primary" label="Private Plane - Owner" />
-          </span>
+          <Tag ml={2}>Private Plane - Owner</Tag>
         ) : aircraft.owner_id > 0 ? (
-          <span className="ml-2 bg-orange-500 text-white p-1 rounded text-xs">
-            Private Plane
-          </span>
+          <Tag ml={2}>Private Plane</Tag>
         ) : (
           <></>
         )}
-      </div>
-      {maintenanceStatus['100hr'] ||
-      maintenanceStatus.annual ||
-      maintenanceStatus.tbo ? (
-        <div className="text-red-400">
-          <p>Maintenance Required:</p>
-          <ul>
-            {maintenanceStatus.annual && <li>Airframe Annual Inspection</li>}
-            {maintenanceStatus['100hr'] && <li>100 Hour Inspection</li>}
-            {maintenanceStatus.tbo && <li>Engine Overhaul</li>}
-          </ul>
-        </div>
-      ) : (
-        <></>
-      )}
-      <div className="flex flex-col md:flex-row justify-between">
-        <div className="md:w-1/5 my-1">
-          <StatCard title="Flights" stat={pireps.length} />
-        </div>
-        <div className="md:w-1/5 my-1">
-          <StatCard
-            title="Distance Flown"
-            stat={calculateDistanceFlown(pireps)}
-          />
-        </div>
-        <div className="md:w-1/5 my-1">
-          <StatCard
-            title="Current Location"
-            stat={aircraft.current_airport_id}
-            link={'/airports/' + aircraft.current_airport_id}
-          />
-        </div>
-        <div className="md:w-1/5 my-1">
-          <StatCard
-            title="Home Hub"
-            stat={aircraft.hub_id}
-            link={'/airports/' + aircraft.hub_id}
-          />
-        </div>
-        <div className="md:w-1/5 my-1">
-          <StatCard title="Current Fuel" stat={aircraft.fuel_onboard} />
-        </div>
-      </div>
-      <div className="flex flex-col md:flex-row md:justify-between mt-4">
-        <div className="md:w-1/2 mx-2">
-          <div className="flex flex-col md:flex-row justify-between">
-            <div className="md:w-1/3 my-1">
-              <StatCard
-                title="Airframe Time"
-                stat={(aircraft.flight_time_mins / 60).toFixed(2)}
-              />
-            </div>
-            <div className="md:w-1/3 my-1">
-              <StatCard
-                title="Last Inspection (Annual)"
-                stat={format(aircraft.last_inspected_at, 'DD/MM/YYYY')}
-              />
-            </div>
-            <div className="md:w-1/3 my-1">
-              <StatCard
-                title="TBO Interval"
-                stat={aircraft.fleet.tbo_mins / 60}
-              />
-            </div>
-          </div>
-          {!aircraft.is_rental && (
-            <div className="my-2">
-              <Card>
-                <CardHeader>Maintenance</CardHeader>
-                <CardBody>
-                  <div className="flex justify-between">
+      </Flex>
+      <SimpleGrid mt={2} columns={5} gap={5}>
+        <Card>
+          <CardBody>
+            <StatDisplay stat={pireps.length} title="Flights" />
+          </CardBody>
+        </Card>
+        <Card>
+          <CardBody>
+            <StatDisplay
+              stat={calculateDistanceFlown(pireps)}
+              title="Distance Flown (nm)"
+            />
+          </CardBody>
+        </Card>
+        <Card>
+          <CardBody>
+            <StatDisplay
+              stat={aircraft.current_airport_id}
+              link={'/airports/' + aircraft.current_airport_id}
+              title="Current Location"
+            />
+          </CardBody>
+        </Card>
+        <Card>
+          <CardBody>
+            <StatDisplay
+              stat={aircraft.hub_id}
+              link={'/airports/' + aircraft.hub_id}
+              title="Home Hub"
+            />
+          </CardBody>
+        </Card>
+        <Card>
+          <CardBody>
+            <StatDisplay
+              stat={aircraft.fuel_onboard}
+              title="Current Fuel (gal)"
+            />
+          </CardBody>
+        </Card>
+      </SimpleGrid>
+      <SimpleGrid mt={2} columns={2} gap={5}>
+        <Box>
+          <Flex gap={5}>
+            <Card>
+              <CardBody>
+                <StatDisplay
+                  stat={(aircraft.flight_time_mins / 60).toFixed(2)}
+                  title="Airframe Time"
+                />
+              </CardBody>
+            </Card>
+            <Card>
+              <CardBody>
+                <StatDisplay
+                  stat={format(aircraft.last_inspected_at, 'dd/MM/yyyy')}
+                  title="Last Inspection (Annual)"
+                />
+              </CardBody>
+            </Card>
+            <Card>
+              <CardBody>
+                <StatDisplay
+                  stat={aircraft.fleet.tbo_mins / 60}
+                  title="TBO Interval"
+                />
+              </CardBody>
+            </Card>
+            {maintenanceStatus['100hr'] ||
+            maintenanceStatus.annual ||
+            maintenanceStatus.tbo ? (
+              <Box color="red.400">
+                <Heading size="xs">Maintenance Required:</Heading>
+                {maintenanceStatus.annual && (
+                  <Text>Airframe Annual Inspection</Text>
+                )}
+                {maintenanceStatus['100hr'] && <Text>100 Hour Inspection</Text>}
+                {maintenanceStatus.tbo && <Text>Engine Overhaul</Text>}
+              </Box>
+            ) : (
+              <></>
+            )}
+          </Flex>
+          <Box>
+            {!aircraft.is_rental && (
+              <Box mt={2}>
+                <Card>
+                  <CardHeader>
+                    <Heading size="md">Maintenance</Heading>
+                  </CardHeader>
+                  <CardBody>
                     {shouldShowMaintenance() && (
-                      <div className="flex justify-between space-x-1">
-                        <button
-                          className="btn btn-secondary btn-sm my-1"
-                          onClick={() => handleGeneralMaintenance(aircraft, 4)}
-                        >
-                          General Maintenance
-                        </button>
-                        <button
-                          className="btn btn-secondary my-1 btn-sm"
-                          onClick={() => handleAnnual(aircraft)}
-                        >
-                          Annual Inspection
-                        </button>
-                        <button
+                      <Flex mt={2} justifyContent="space-between">
+                        <Flex gap={2}>
+                          <Button
+                            size="sm"
+                            className="btn btn-secondary btn-sm my-1"
+                            onClick={() =>
+                              handleGeneralMaintenance(aircraft, 4)
+                            }
+                          >
+                            General Maintenance
+                          </Button>
+                          <Button
+                            size="sm"
+                            className="btn btn-secondary my-1 btn-sm"
+                            onClick={() => handleAnnual(aircraft)}
+                          >
+                            Annual Inspection
+                          </Button>
+                        </Flex>
+                        <Button
+                          size="sm"
                           className="btn btn-secondary my-1 btn-sm"
                           onClick={() => handleRelocate(aircraft)}
                         >
                           Relocate
-                        </button>
-                      </div>
+                        </Button>
+                      </Flex>
                     )}
-                  </div>
-                  <div className="mt-2 my-4">
-                    <p>Airframe Condition</p>
-                    <AircraftCondition aircraftCondition={aircraft.wear} />
-                  </div>
-                  <div className="overflow-x-auto">
-                    <table className="table table-compact w-full">
-                      <thead>
-                        <tr>
-                          <th>Engine #</th>
-                          <th>Time since 100 hr</th>
-                          <th>Time since TBO</th>
-                          <th>Condition</th>
-                          {shouldShowMaintenance() && <th>Action</th>}
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {aircraft.engines.map((engine) => (
-                          <tr key={engine.id}>
-                            <td>{engine.engine_no}</td>
-                            <td>
-                              {(engine.mins_since_100hr / 60).toFixed(2)}
+                    <Box mt={2} my={4}>
+                      <Heading mb={2} size="sm">
+                        Airframe Condition
+                      </Heading>
+                      <AircraftCondition aircraftCondition={aircraft.wear} />
+                    </Box>
+                    <TableContainer>
+                      <Table className="table table-compact w-full">
+                        <Thead>
+                          <Tr>
+                            <Th>Engine #</Th>
+                            <Th>Time since 100 hr</Th>
+                            <Th>Time since TBO</Th>
+                            <Th>Condition</Th>
+                            {shouldShowMaintenance() && <Th>Action</Th>}
+                          </Tr>
+                        </Thead>
+                        <Tbody>
+                          {aircraft.engines.map((engine) => (
+                            <Tr key={engine.id}>
+                              <Td>{engine.engine_no}</Td>
+                              <Td>
+                                {(engine.mins_since_100hr / 60).toFixed(2)}
+                                {shouldShowMaintenance() && (
+                                  <Button
+                                    ml={2}
+                                    colorScheme="gray"
+                                    size="xs"
+                                    onClick={() =>
+                                      handle100hr(aircraft, engine.id)
+                                    }
+                                  >
+                                    100 hr
+                                  </Button>
+                                )}
+                              </Td>
+                              <Td>
+                                {(engine.mins_since_tbo / 60).toFixed(2)}
+                                {shouldShowMaintenance() && (
+                                  <Button
+                                    ml={2}
+                                    colorScheme="gray"
+                                    size="xs"
+                                    onClick={() =>
+                                      handleTBO(aircraft, engine.id)
+                                    }
+                                  >
+                                    TBO
+                                  </Button>
+                                )}
+                              </Td>
+                              <Td>
+                                <AircraftCondition
+                                  aircraftCondition={engine.wear}
+                                />
+                              </Td>
                               {shouldShowMaintenance() && (
-                                <button
-                                  className="btn btn-secondary ml-2 btn-xs"
-                                  onClick={() =>
-                                    handle100hr(aircraft, engine.id)
-                                  }
-                                >
-                                  100 hr
-                                </button>
+                                <Td>
+                                  <Button
+                                    onClick={() =>
+                                      handleGeneralMaintenance(
+                                        aircraft,
+                                        5,
+                                        engine.id
+                                      )
+                                    }
+                                    ml={2}
+                                    colorScheme="gray"
+                                    size="xs"
+                                  >
+                                    Engine Maintenance
+                                  </Button>
+                                </Td>
                               )}
-                            </td>
-                            <td>
-                              {(engine.mins_since_tbo / 60).toFixed(2)}
-                              {shouldShowMaintenance() && (
-                                <button
-                                  className="btn btn-secondary ml-2 btn-xs"
-                                  onClick={() => handleTBO(aircraft, engine.id)}
-                                >
-                                  TBO
-                                </button>
-                              )}
-                            </td>
-                            <td>
-                              <AircraftCondition
-                                aircraftCondition={engine.wear}
-                              />
-                            </td>
-                            {shouldShowMaintenance() && (
-                              <td>
-                                <button
-                                  onClick={() =>
-                                    handleGeneralMaintenance(
-                                      aircraft,
-                                      5,
-                                      engine.id
-                                    )
-                                  }
-                                  className="btn btn-secondary btn-xs"
-                                >
-                                  Engine Maintenance
-                                </button>
-                              </td>
-                            )}
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                </CardBody>
-              </Card>
-            </div>
-          )}
-          {!aircraft.is_rental && (
-            <div>
-              <Card>
-                <CardHeader>Maintenance Log</CardHeader>
-                <CardBody>
-                  <div className="overflow-x-auto">
-                    <table className="table table-compact w-full">
-                      <thead>
-                        <tr>
-                          <th>Type</th>
-                          <th>Cost</th>
-                          <th>Date</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {aircraft.maintenance.map((maintenance) => (
-                          <tr key={maintenance.id}>
-                            <td>
-                              {renderMaintenanceType(
-                                maintenance.maintenance_type
-                              )}
-                            </td>
-                            <td>{maintenance.cost}</td>
-                            <td>
-                              {format(maintenance.created_at, 'DD/MM/YYYY')}
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                </CardBody>
-              </Card>
-            </div>
-          )}
-          <div className="mt-2">
-            <Card>
-              <CardHeader>Flights</CardHeader>
-              <CardBody>
-                <div className="overflow-x-auto">
-                  <table className="table table-compact w-full">
-                    <thead>
-                      <tr>
-                        <th>Date</th>
-                        <th>Departure</th>
-                        <th>Arrival</th>
-                        <th>Distance</th>
-                        <th>Time</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {pireps &&
-                        pireps.map((pirep) => (
-                          <tr key={pirep.id}>
-                            <td>{pirep.submitted_at}</td>
-                            <td>{pirep.departure_airport_id}</td>
-                            <td>{pirep.destination_airport_id}</td>
-                            <td>{pirep.distance}</td>
-                            <td>
-                              {convertMinuteDecimalToHoursAndMinutes(
-                                pirep.flight_time
-                              )}
-                            </td>
-                          </tr>
-                        ))}
-                    </tbody>
-                  </table>
-                </div>
-              </CardBody>
-            </Card>
-          </div>
-        </div>
-        <div className="md:w-1/2 mx-1">
-          <div>
-            <Card>
-              <CardBody>
-                <AircraftMap
-                  aircraft={aircraft}
-                  size="large"
-                  mapStyle={auth.user.map_style}
-                />
-              </CardBody>
-            </Card>
-          </div>
-        </div>
-      </div>
-    </div>
+                            </Tr>
+                          ))}
+                        </Tbody>
+                      </Table>
+                    </TableContainer>
+                  </CardBody>
+                </Card>
+              </Box>
+            )}
+          </Box>
+          <Box>
+            {!aircraft.is_rental && (
+              <>
+                <Card>
+                  <CardHeader>
+                    <Heading size="md">Maintenance Log</Heading>
+                  </CardHeader>
+                  <CardBody>
+                    <TableContainer>
+                      <Table>
+                        <Thead>
+                          <Tr>
+                            <Th>Type</Th>
+                            <Th>Cost</Th>
+                            <Th>Date</Th>
+                          </Tr>
+                        </Thead>
+                        <Tbody>
+                          {aircraft.maintenance.map((maintenance) => (
+                            <Tr key={maintenance.id}>
+                              <Td>
+                                {renderMaintenanceType(
+                                  maintenance.maintenance_type
+                                )}
+                              </Td>
+                              <Td>{maintenance.cost}</Td>
+                              <Td>
+                                {format(maintenance.created_at, 'dd/MM/yyyy')}
+                              </Td>
+                            </Tr>
+                          ))}
+                        </Tbody>
+                      </Table>
+                    </TableContainer>
+                  </CardBody>
+                </Card>
+              </>
+            )}
+          </Box>
+        </Box>
+        <Card>
+          <CardBody>
+            <AircraftMap
+              aircraft={aircraft}
+              size="large"
+              mapStyle={auth.user.map_style}
+            />
+          </CardBody>
+        </Card>
+      </SimpleGrid>
+      <Box mt={2}>
+        <Card>
+          <CardHeader>
+            <Heading size="md">Flights</Heading>
+          </CardHeader>
+          <CardBody>
+            <TableContainer>
+              <Table>
+                <Thead>
+                  <Tr>
+                    <Th>Date</Th>
+                    <Th>Departure</Th>
+                    <Th>Arrival</Th>
+                    <Th>Distance</Th>
+                    <Th>Time</Th>
+                  </Tr>
+                </Thead>
+                <Tbody>
+                  {pireps &&
+                    pireps.map((pirep) => (
+                      <Tr key={pirep.id}>
+                        <Td>{pirep.submitted_at}</Td>
+                        <Td>{pirep.departure_airport_id}</Td>
+                        <Td>{pirep.destination_airport_id}</Td>
+                        <Td>{pirep.distance}</Td>
+                        <Td>
+                          {convertMinuteDecimalToHoursAndMinutes(
+                            pirep.flight_time
+                          )}
+                        </Td>
+                      </Tr>
+                    ))}
+                </Tbody>
+              </Table>
+            </TableContainer>
+          </CardBody>
+        </Card>
+      </Box>
+    </>
   )
 }
 
