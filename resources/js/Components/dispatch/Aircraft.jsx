@@ -14,6 +14,7 @@ import {
   Th,
   Thead,
   Tr,
+  useColorModeValue,
 } from '@chakra-ui/react'
 import { Link, usePage } from '@inertiajs/react'
 import { Wrench } from 'lucide-react'
@@ -58,10 +59,10 @@ const Aircraft = (props) => {
                     <Tr
                       key={ac.id}
                       onClick={() => props.handleAircraftSelect(ac)}
-                      className={
+                      bgColor={
                         props.selectedAircraft.registration === ac.registration
-                          ? 'text-primary cursor-pointer'
-                          : 'cursor-pointer'
+                          ? useColorModeValue('orange.300', 'orange.700')
+                          : ''
                       }
                     >
                       <Td>
