@@ -1,11 +1,28 @@
-import { Card, CardBody, Icon } from '@chakra-ui/react'
+import {
+  Box,
+  Button,
+  Card,
+  CardBody,
+  Flex,
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
+  Heading,
+  Icon,
+  Input,
+  SimpleGrid,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
+  Text,
+} from '@chakra-ui/react'
 import { Link, router, usePage } from '@inertiajs/react'
 import { Award, CheckCircle2 } from 'lucide-react'
 import React, { useState } from 'react'
 
 import ApiKey from '../../components/crew/ApiKey'
-import CheckBox from '../../components/elements/forms/CheckBox'
-import TextInput from '../../components/elements/forms/TextInput'
 import AppLayout from '../../components/layout/AppLayout'
 import { convertMinuteDecimalToHoursAndMinutes } from '../../helpers/date.helpers'
 
@@ -37,165 +54,168 @@ const Profile = ({ profile, rank, nextRank, awards }) => {
   }
 
   return (
-    <div>
-      <div className="flex flex-col md:flex-row justify-between md:items-start">
-        <div className="mt-4 md:w-1/2">
-          <Card>
-            <CardBody>
-              <form onSubmit={handleSubmit}>
-                <TextInput
-                  id="email"
-                  type="email"
-                  value={values.email}
-                  label="Email"
-                  error={errors?.email}
-                  onChange={handleChange}
-                />
-                <TextInput
-                  id="name"
-                  type="text"
-                  value={values.name}
-                  label="Name"
-                  error={errors?.name}
-                  onChange={handleChange}
-                />
-                <TextInput
-                  id="password"
-                  type="password"
-                  value={values.password}
-                  label="Password"
-                  error={errors?.password}
-                  onChange={handleChange}
-                />
-                <TextInput
-                  id="msfs_username"
-                  type="text"
-                  value={values.msfs_username}
-                  label="MSFS Username"
-                  error={errors?.msfs_username}
-                  onChange={handleChange}
-                />
-                <TextInput
-                  id="volanta_username"
-                  type="text"
-                  value={values.volanta_username}
-                  label="Volanta Username"
-                  error={errors?.volanta_username}
-                  onChange={handleChange}
-                />
-                <TextInput
-                  id="discord_username"
-                  type="text"
-                  value={values.discord_username}
-                  label="Discord Username"
-                  error={errors?.discord_username}
-                  onChange={handleChange}
-                />
-                <div className="mt-2">
-                  <CheckBox
-                    id="opt_in"
-                    label="Opt in to notification emails"
-                    value={values.opt_in}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div className="text-right">
-                  <button className="btn btn-primary">Update profile</button>
-                </div>
-              </form>
-            </CardBody>
-          </Card>
-        </div>
-        <div className="md:w-1/2 md:ml-4 mt-4">
+    <Tabs>
+      <TabList>
+        <Tab>Profile Details</Tab>
+        <Tab>Rank Progress</Tab>
+        <Tab>Awards</Tab>
+      </TabList>
+
+      <TabPanels>
+        <TabPanel>
           <Card>
             <CardBody>
               <ApiKey apiKey={profile.api_token} />
+              <Heading my={2} size="md">
+                Edit Profile
+              </Heading>
+              <form onSubmit={handleSubmit}>
+                <FormControl isInvalid={errors?.email}>
+                  <FormLabel>Email</FormLabel>
+                  <Input
+                    id="email"
+                    value={values.email}
+                    type="email"
+                    onChange={handleChange}
+                  />
+                  <FormErrorMessage>{errors?.email}</FormErrorMessage>
+                </FormControl>
+                <FormControl isInvalid={errors?.name}>
+                  <FormLabel>Name</FormLabel>
+                  <Input
+                    id="name"
+                    value={values.name}
+                    type="text"
+                    onChange={handleChange}
+                  />
+                  <FormErrorMessage>{errors?.name}</FormErrorMessage>
+                </FormControl>
+                <FormControl isInvalid={errors?.password}>
+                  <FormLabel>Password</FormLabel>
+                  <Input
+                    id="password"
+                    value={values.password}
+                    type="password"
+                    onChange={handleChange}
+                  />
+                  <FormErrorMessage>{errors?.password}</FormErrorMessage>
+                </FormControl>
+                <FormControl isInvalid={errors?.msfs_username}>
+                  <FormLabel>MSFS Username</FormLabel>
+                  <Input
+                    id="msfs_username"
+                    value={values.msfs_username}
+                    type="text"
+                    onChange={handleChange}
+                  />
+                  <FormErrorMessage>{errors?.msfs_username}</FormErrorMessage>
+                </FormControl>
+                <FormControl isInvalid={errors?.volanta_username}>
+                  <FormLabel>Volanta Username</FormLabel>
+                  <Input
+                    id="volanta_username"
+                    value={values.volanta_username}
+                    type="text"
+                    onChange={handleChange}
+                  />
+                  <FormErrorMessage>
+                    {errors?.volanta_username}
+                  </FormErrorMessage>
+                </FormControl>
+                <FormControl isInvalid={errors?.discord_username}>
+                  <FormLabel>Discord Username</FormLabel>
+                  <Input
+                    id="discord_username"
+                    value={values.discord_username}
+                    type="text"
+                    onChange={handleChange}
+                  />
+                  <FormErrorMessage>
+                    {errors?.discord_username}
+                  </FormErrorMessage>
+                </FormControl>
+                <Flex mt={2} justifyContent="end">
+                  <Button type="submit">Update profile</Button>
+                </Flex>
+              </form>
             </CardBody>
           </Card>
-          <div className="mt-4">
-            <Card>
-              <CardBody>
-                {!nextRank ? (
-                  <div>
-                    Congratulations, {rank.name}.<br />
-                    You have achieved the highest rank.
-                  </div>
-                ) : (
-                  <>
-                    <div>Next Rank:</div>
-                    <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
-                      <div className="flex items-center">
-                        <img width="60" src={nextRank.image} />{' '}
-                        <span className="ml-2 text-sm">{nextRank.name}</span>
-                      </div>
-                      <div className="text-sm flex">
-                        <div className="mr-2">
-                          Hours:{' '}
-                          {profile.flights_time >= nextRank.hours * 60 ? (
-                            <Icon
-                              className="text-green-500"
-                              as={CheckCircle2}
-                            />
-                          ) : (
-                            <span>
-                              {convertMinuteDecimalToHoursAndMinutes(
-                                nextRank.hours * 60 - profile.flights_time
-                              )}
-                            </span>
-                          )}
-                          <br />
-                          Points:{' '}
-                          {profile.points >= nextRank.points ? (
-                            <Icon
-                              className="text-green-500"
-                              as={CheckCircle2}
-                            />
-                          ) : (
-                            <span>{nextRank.points - profile.points}</span>
-                          )}
-                        </div>
-                      </div>
-                      <div className="">
-                        <div className="text-sm flex items-center"></div>
-                      </div>
-                    </div>
-                  </>
-                )}
-              </CardBody>
-            </Card>
-          </div>
-          <div className="mt-4">
-            <Card>
-              <CardBody>
-                <div className="text-lg flex items-center">
-                  <Icon as={Award} className="mr-2" /> Awards
+        </TabPanel>
+        <TabPanel>
+          <Card>
+            <CardBody>
+              {!nextRank ? (
+                <Box>
+                  Congratulations, {rank.name}.<br />
+                  You have achieved the highest rank.
+                </Box>
+              ) : (
+                <Box>
+                  <Heading size="sm">Next Rank:</Heading>
+                  <Flex alignItems="center" gap={4}>
+                    <Flex alignItems="center">
+                      <img width="60" src={nextRank.image} />{' '}
+                      <Text fontSize="sm" ml={2}>
+                        {nextRank.name}
+                      </Text>
+                    </Flex>
+                    <Flex alignItems="center">
+                      <Box mr={2}>
+                        Hours:{' '}
+                        {profile.flights_time >= nextRank.hours * 60 ? (
+                          <Icon color="green.500" as={CheckCircle2} />
+                        ) : (
+                          <Box>
+                            {convertMinuteDecimalToHoursAndMinutes(
+                              nextRank.hours * 60 - profile.flights_time
+                            )}
+                          </Box>
+                        )}
+                        <br />
+                        Points:{' '}
+                        {profile.points >= nextRank.points ? (
+                          <Icon color="green.500" as={CheckCircle2} />
+                        ) : (
+                          <Box>{nextRank.points - profile.points}</Box>
+                        )}
+                      </Box>
+                    </Flex>
+                  </Flex>
+                </Box>
+              )}
+            </CardBody>
+          </Card>
+        </TabPanel>
+        <TabPanel>
+          <Card>
+            <CardBody>
+              {!awards.length ? (
+                <div className="mt-1 text-sm text-center">
+                  No awards yet. <Link href="/ranks#awards">Earn some!</Link>
                 </div>
-                {!awards.length ? (
-                  <div className="mt-1 text-sm text-center">
-                    No awards yet. <Link href="/ranks#awards">Earn some!</Link>
-                  </div>
-                ) : (
-                  <div className="mt-4 flex flex-col md:flex-row flex-wrap justify-center items-center">
-                    {awards &&
-                      awards.map((award) => (
-                        <div
-                          className="mx-2 my-1 w-1/6 flex flex-col items-center"
-                          key={award.id}
-                        >
-                          <img height="100" width="100" src={award.image} />
-                          <div className="mt-1 text-sm text-center">
-                            {award.name}
-                          </div>
-                        </div>
-                      ))}
-                  </div>
-                )}
-              </CardBody>
-            </Card>
-          </div>
-        </div>
-      </div>
-    </div>
+              ) : (
+                <SimpleGrid columns={5} gap={5}>
+                  {awards &&
+                    awards.map((award) => (
+                      <Flex
+                        direction="column"
+                        alignItems="center"
+                        gap={1}
+                        key={award.id}
+                      >
+                        <img height="100" width="100" src={award.image} />
+                        <Box mt={1}>
+                          <Text fontSize="sm">{award.name}</Text>
+                        </Box>
+                      </Flex>
+                    ))}
+                </SimpleGrid>
+              )}
+            </CardBody>
+          </Card>
+        </TabPanel>
+      </TabPanels>
+    </Tabs>
   )
 }
 

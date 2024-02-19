@@ -1,18 +1,24 @@
+import { Box, Heading, Text } from '@chakra-ui/react'
 import React, { useState } from 'react'
 
 const ApiKey = ({ apiKey }) => {
   const [show, setShow] = useState(false)
 
-  function showKey () {
-    setShow(true)
+  function showKey() {
+    setShow(!show)
     navigator.clipboard.writeText(apiKey)
   }
 
   return (
-    <div>
-      <div>Bush Tracker Key <span className="text-xs">(click to display key and copy to clipboard)</span></div>
-      <div className="cursor-pointer mt-2" onClick={showKey}>{show ? apiKey : '***************'}</div>
-    </div>
+    <Box>
+      <Heading size="md">
+        Bush Tracker Key{' '}
+        <Text fontSize="xs">(click to display key and copy to clipboard)</Text>
+      </Heading>
+      <Box cursor="pointer" mt={2} onClick={showKey}>
+        {show ? apiKey : '***************'}
+      </Box>
+    </Box>
   )
 }
 

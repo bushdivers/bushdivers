@@ -37,7 +37,7 @@ const NavMenuItems = () => {
         <NavItem icon={Plane} text="My Aircraft" to="/my-aircraft" />
         <NavItem icon={CircleDollarSign} text="Finances" to="/finances" />
         <NavItem icon={Building} text="Bush Divers HQ" to="/live-map" />
-        <NavItem icon={AreaChart} text="Stats" to="/live-map" />
+        <NavItem icon={AreaChart} text="Stats (Coming Soon)" to="" />
       </Box>
       <Divider mt={4} />
       <Box my={4}>
