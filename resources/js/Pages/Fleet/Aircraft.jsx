@@ -8,7 +8,6 @@ import {
   Heading,
   Icon,
   SimpleGrid,
-  Tab,
   Table,
   TableContainer,
   Tag,

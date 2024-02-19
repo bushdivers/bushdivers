@@ -1,4 +1,4 @@
-import { Card, CardBody, CardHeader, Flex } from '@chakra-ui/react'
+import { Box, Card, CardBody, CardHeader, Flex } from '@chakra-ui/react'
 import React from 'react'
 
 import StatDisplay from '../elements/StatDisplay.jsx'
@@ -6,7 +6,7 @@ import LandingMap from './LandingMap'
 
 const LandingSummary = ({ pirep }) => {
   return (
-    <div className="mt-2 mx-2">
+    <Box mt={2}>
       <Card>
         <CardHeader>Landing Summary</CardHeader>
         <CardBody>
@@ -21,7 +21,7 @@ const LandingSummary = ({ pirep }) => {
           <LandingMap pirep={pirep} size="small" />
         </CardBody>
       </Card>
-    </div>
+    </Box>
   )
 }
 

@@ -95,6 +95,7 @@ const Users = ({ users }) => {
                       <Td>
                         <Flex direction="column">
                           {entry.user_roles &&
+                            // eslint-disable-next-line react/jsx-key
                             entry.user_roles.map((role) => <Box>{role}</Box>)}
                         </Flex>
                       </Td>
