@@ -1,4 +1,19 @@
-import { Icon } from '@chakra-ui/react'
+import {
+  Box,
+  Button,
+  Flex,
+  Heading,
+  Icon,
+  Image,
+  Table,
+  TableContainer,
+  Tbody,
+  Td,
+  Text,
+  Th,
+  Thead,
+  Tr,
+} from '@chakra-ui/react'
 import { Link, usePage } from '@inertiajs/react'
 import { Wrench } from 'lucide-react'
 import React from 'react'
@@ -24,155 +39,146 @@ const FleetCardContent = ({ fleet }) => {
   }
 
   return (
-    <>
-      <div className="flex flex-col md:flex-row items-start justify-between">
-        <div className="flex flex-col">
-          <div className="md:ml-3">
-            <h3>
+    <Box>
+      <Flex alignItems="start" justifyContent="start" gap={8}>
+        <Flex direction="column" className="flex flex-col">
+          <Box>
+            <Heading size="md">
               {fleet.type} - {fleet.manufacturer} {fleet.name}
-            </h3>
-            <p>{fleet.aircraft.length} aircraft in fleet</p>
-          </div>
-          <img className="rounded w-full md:w-auto" src={fleet.image_url} />
-        </div>
-        <div className="ml-2">
-          <div className="flex flex-col md:flex-row mt-2 md:mt-0">
-            <div className="md:mr-8">
-              <span className="text-md font-bold text-base">Powerplants: </span>
-              <br />
-              <span>
+            </Heading>
+            <Text>{fleet.aircraft.length} aircraft in fleet</Text>
+          </Box>
+          <Image borderRadius="md" src={fleet.image_url} />
+        </Flex>
+        <Box ml={2}>
+          <Flex mt={2} gap={8}>
+            <Box>
+              <Text as="b">Powerplants:</Text>
+              <Text>
                 {fleet.number_of_engines}x {fleet.powerplants}
-              </span>
-            </div>
-            <div className="md:mr-8">
-              <span className="text-md font-bold text-base">Fuel Type: </span>
-              <br />
-              <span>
+              </Text>
+            </Box>
+            <Box className="md:mr-8">
+              <Text as="b" className="text-md font-bold text-base">
+                Fuel Type:{' '}
+              </Text>
+              <Text>
                 {fleet.fuel_type === 1 ? (
                   <span>Avgas</span>
                 ) : (
                   <span>Jet Fuel</span>
                 )}
-              </span>
-            </div>
-            <div className="mr-8">
-              <span className="text-md font-bold text-base">
-                Fuel Capacity:{' '}
-              </span>
-              <br />
-              <span>
+              </Text>
+            </Box>
+            <Box className="mr-8">
+              <Text as="b" className="text-md font-bold text-base">
+                Fuel Capacity:
+              </Text>
+              <Text>
                 {fleet.fuel_capacity.toLocaleString(navigator.language)} gal
-              </span>
-            </div>
-          </div>
-          <div className="flex flex-col md:flex-row mt-4">
-            <div className="mr-8">
-              <span className="text-md font-bold text-base">
-                Service Ceiling:{' '}
-              </span>
-              <br />
-              <span>
-                {fleet.service_ceiling.toLocaleString(navigator.language)} ft
-              </span>
-            </div>
-            <div className="mr-8">
-              <span className="text-md font-bold text-base">Max Range: </span>
-              <br />
-              <span>{fleet.range.toLocaleString(navigator.language)} nm</span>
-            </div>
-            <div className="mr-8">
-              <span className="text-md font-bold text-base">
-                Max Cruise Speed:{' '}
-              </span>
-              <br />
-              <span>
-                {fleet.cruise_speed.toLocaleString(navigator.language)} kts
-              </span>
-            </div>
-            <div className="mr-8">
-              <span className="text-md font-bold text-base">
-                PAX Capacity:{' '}
-              </span>
-              <br />
-              <span>{fleet.pax_capacity}</span>
-            </div>
-            <div className="mr-8">
-              <span className="text-md font-bold text-base">
-                Cargo Capacity:{' '}
-              </span>
-              <br />
-              <span>
-                {fleet.cargo_capacity.toLocaleString(navigator.language)} lbs
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
+              </Text>
+            </Box>
+          </Flex>
+          <Box className="mr-8">
+            <Text as="b" className="text-md font-bold text-base">
+              Service Ceiling:
+            </Text>
+            <Text>
+              {fleet.service_ceiling.toLocaleString(navigator.language)} ft
+            </Text>
+          </Box>
+          <Box className="mr-8">
+            <Text as="b" className="text-md font-bold text-base">
+              Max Range:{' '}
+            </Text>
+            <Text>{fleet.range.toLocaleString(navigator.language)} nm</Text>
+          </Box>
+          <Box className="mr-8">
+            <Text as="b" className="text-md font-bold text-base">
+              Max Cruise Speed:
+            </Text>
+            <Text>
+              {fleet.cruise_speed.toLocaleString(navigator.language)} kts
+            </Text>
+          </Box>
+          <Box className="mr-8">
+            <Text as="b" className="text-md font-bold text-base">
+              PAX Capacity:
+            </Text>
+            <Text>{fleet.pax_capacity}</Text>
+          </Box>
+          <Box className="mr-8">
+            <Text as="b" className="text-md font-bold text-base">
+              Cargo Capacity:
+            </Text>
+            <Text>
+              {fleet.cargo_capacity.toLocaleString(navigator.language)} lbs
+            </Text>
+          </Box>
+        </Box>
+      </Flex>
       {auth.user && (
-        <div className="mt-4 overflow-x-auto">
+        <Box>
           {fleet.aircraft.length > 0 && (
-            <table className="table table-compact w-full">
-              <thead>
-                <tr>
-                  <th scope="col">Registration</th>
-                  <th scope="col">Hub</th>
-                  <th scope="col">Current Location</th>
-                  <th scope="col">Flight Time (minutes)</th>
-                  <th scope="col">Status</th>
-                  <th scope="col">Overall Condition</th>
-                  {shouldShowMaintenance() && <th scope="col">Action</th>}
-                </tr>
-              </thead>
-              <tbody>
-                {fleet.aircraft.map((aircraft) => (
-                  <tr key={aircraft.id}>
-                    <td>
-                      <Link href={`/aircraft/${aircraft.id}`}>
-                        {aircraft.registration}
-                      </Link>
-                    </td>
-                    <td>
-                      <Link href={`/airports/${aircraft.hub_id}`}>
-                        {aircraft.hub_id}
-                      </Link>
-                    </td>
-                    <td>
-                      <Link href={`/airports/${aircraft.current_airport_id}`}>
-                        {aircraft.current_airport_id}
-                      </Link>
-                    </td>
-                    <td>{aircraft.flight_time_mins}</td>
-                    <td>
-                      {renderAircraftStatus(aircraft.state)}{' '}
-                      {aircraft.maintenance_status && (
-                        <span className="ml-2 text-orange-500">
-                          <Icon as={Wrench} />
-                        </span>
-                      )}
-                    </td>
-                    <td>
-                      <AircraftCondition
-                        aircraftCondition={aircraft.total_condition}
-                      />
-                    </td>
-                    {shouldShowMaintenance() && (
-                      <td>
-                        <Link
-                          href={`/aircraft/${aircraft.id}`}
-                          className="btn btn-secondary btn-xs"
-                        >
-                          Maintenance
+            <TableContainer mt={4}>
+              <Table>
+                <Thead>
+                  <Tr>
+                    <Th scope="col">Registration</Th>
+                    <Th scope="col">Hub</Th>
+                    <Th scope="col">Current Location</Th>
+                    <Th scope="col">Flight Time (minutes)</Th>
+                    <Th scope="col">Status</Th>
+                    <Th scope="col">Overall Condition</Th>
+                    {shouldShowMaintenance() && <th scope="col">Action</th>}
+                  </Tr>
+                </Thead>
+                <Tbody>
+                  {fleet.aircraft.map((aircraft) => (
+                    <Tr key={aircraft.id}>
+                      <Td>
+                        <Link href={`/aircraft/${aircraft.id}`}>
+                          {aircraft.registration}
                         </Link>
-                      </td>
-                    )}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+                      </Td>
+                      <Td>
+                        <Link href={`/airports/${aircraft.hub_id}`}>
+                          {aircraft.hub_id}
+                        </Link>
+                      </Td>
+                      <Td>
+                        <Link href={`/airports/${aircraft.current_airport_id}`}>
+                          {aircraft.current_airport_id}
+                        </Link>
+                      </Td>
+                      <Td>{aircraft.flight_time_mins}</Td>
+                      <Td>
+                        {renderAircraftStatus(aircraft.state)}{' '}
+                        {aircraft.maintenance_status && (
+                          <Icon ml={2} color="orange.500" as={Wrench} />
+                        )}
+                      </Td>
+                      <Td>
+                        <AircraftCondition
+                          aircraftCondition={aircraft.total_condition}
+                        />
+                      </Td>
+                      {shouldShowMaintenance() && (
+                        <Td>
+                          <Link href={`/aircraft/${aircraft.id}`}>
+                            <Button size="xs">Maintenance</Button>
+                          </Link>
+                        </Td>
+                      )}
+                    </Tr>
+                  ))}
+                </Tbody>
+              </Table>
+            </TableContainer>
           )}
-        </div>
+        </Box>
       )}
-    </>
+    </Box>
   )
 }
 

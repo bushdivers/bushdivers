@@ -19,7 +19,7 @@ import {
   Text,
 } from '@chakra-ui/react'
 import { Link, router, usePage } from '@inertiajs/react'
-import { Award, CheckCircle2 } from 'lucide-react'
+import { CheckCircle2 } from 'lucide-react'
 import React, { useState } from 'react'
 
 import ApiKey from '../../components/crew/ApiKey'

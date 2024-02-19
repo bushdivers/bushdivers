@@ -9,12 +9,12 @@ import {
 import { Link as InertiaLink, usePage } from '@inertiajs/react'
 import React from 'react'
 
-const NavItem = ({ to, icon, text }) => {
+const NavItem = ({ to, icon, text, isExternal = false }) => {
   const { url } = usePage().props
   console.log(location.pathname)
   return (
     <Box my={2}>
-      <ChakraLink as={InertiaLink} href={to}>
+      <ChakraLink as={isExternal ? '' : InertiaLink} href={to}>
         <Button
           colorScheme={url === to ? 'orange' : ''}
           variant={url === to ? 'solid' : 'ghost'}

@@ -107,6 +107,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/aircraft/maintenance', \App\Http\Controllers\Fleet\PerformMaintenanceController::class)
     ->name('aircraft.maintenance');
 
+    Route::get('/bushdivers-hq', \App\Http\Controllers\GetHqController::class)->name('hq');
+
     Route::middleware('role:fleet_manager')->group(function () {
         Route::post('/aircraft/maintenance/relocate', \App\Http\Controllers\Fleet\RelocateMaintenanceController::class)
             ->name('aircraft.relocate');

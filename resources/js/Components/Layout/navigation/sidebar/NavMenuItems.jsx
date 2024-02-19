@@ -35,8 +35,8 @@ const NavMenuItems = () => {
           to={`/airports/${auth.user.current_airport_id}`}
         />
         <NavItem icon={Plane} text="My Aircraft" to="/my-aircraft" />
-        <NavItem icon={CircleDollarSign} text="Finances" to="/finances" />
-        <NavItem icon={Building} text="Bush Divers HQ" to="/live-map" />
+        <NavItem icon={CircleDollarSign} text="My Finances" to="/my-finances" />
+        <NavItem icon={Building} text="Bush Divers HQ" to="/bushdivers-hq" />
         <NavItem icon={AreaChart} text="Stats (Coming Soon)" to="" />
       </Box>
       <Divider mt={4} />
@@ -44,8 +44,13 @@ const NavMenuItems = () => {
         {auth.user.is_admin && (
           <NavItem icon={Cog} text="Admin" to="/admin/fleet" />
         )}
-        <NavItem icon={HelpCircle} text="Help" to="/live-map" />
-        <NavItem icon={Download} text="Bush Tracker" to="/live-map" />
+        <NavItem icon={HelpCircle} text="Help (Coming Soon)" to="" />
+        <NavItem
+          isExternal
+          icon={Download}
+          text="Bush Tracker"
+          to="https://bushdivers-resource.s3.amazonaws.com/bush-tracker/BushTracker.zip"
+        />
       </Box>
     </Box>
   )

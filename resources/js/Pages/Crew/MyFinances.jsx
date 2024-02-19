@@ -1,4 +1,21 @@
-import { Card, CardBody, CardHeader } from '@chakra-ui/react'
+import {
+  Box,
+  Button,
+  Card,
+  CardBody,
+  CardHeader,
+  Flex,
+  Heading,
+  SimpleGrid,
+  Table,
+  TableContainer,
+  Tbody,
+  Td,
+  Text,
+  Th,
+  Thead,
+  Tr,
+} from '@chakra-ui/react'
 import { router, usePage } from '@inertiajs/react'
 import { format } from 'date-fns'
 import React from 'react'
@@ -66,104 +83,95 @@ const MyFinances = ({ accounts, balance, loanAvailable }) => {
   }
 
   return (
-    <div>
-      <div className="flex flex-col md:flex-row md:justify-between">
-        <div className="md:w-1/2">
-          <Card>
-            <CardBody>
-              <div className="overflow-x-auto">
-                <table className="table table-compact w-full overflow-x-auto">
-                  <thead>
-                    <tr>
-                      <th>Amount</th>
-                      <th>Transaction Type</th>
-                      <th>Date</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {accounts.data.map((row) => (
-                      <tr key={row.id}>
-                        <td>
-                          <span className="text-right">
-                            $
-                            {parseFloat(row.total).toLocaleString(undefined, {
-                              maximumFractionDigits: 2,
-                              minimumFractionDigits: 2,
-                            })}
-                          </span>
-                        </td>
-                        <td>
-                          <span>{renderTransactionType(row.type)}</span>
-                        </td>
-                        <td>
-                          <span>
-                            {format(
-                              new Date(row.created_at),
-                              'dd LLL yyyy hh:mm',
-                              { timeZone: 'UTC' }
-                            )}
-                          </span>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </CardBody>
-          </Card>
-          <div className="mt-2">
+    <SimpleGrid columns={2} gap={2}>
+      <Card>
+        <CardBody>
+          <TableContainer>
+            <Table className="table table-compact w-full overflow-x-auto">
+              <Thead>
+                <Tr>
+                  <Th>Amount</Th>
+                  <Th>Transaction Type</Th>
+                  <Th>Date</Th>
+                </Tr>
+              </Thead>
+              <Tbody>
+                {accounts.data.map((row) => (
+                  <Tr key={row.id}>
+                    <Td>
+                      <span className="text-right">
+                        $
+                        {parseFloat(row.total).toLocaleString(undefined, {
+                          maximumFractionDigits: 2,
+                          minimumFractionDigits: 2,
+                        })}
+                      </span>
+                    </Td>
+                    <Td>
+                      <span>{renderTransactionType(row.type)}</span>
+                    </Td>
+                    <Td>
+                      <span>
+                        {format(new Date(row.created_at), 'dd LLL yyyy hh:mm', {
+                          timeZone: 'UTC',
+                        })}
+                      </span>
+                    </Td>
+                  </Tr>
+                ))}
+              </Tbody>
+            </Table>
+          </TableContainer>
+          <Box mt={2}>
             <Pagination pages={accounts} />
-          </div>
-        </div>
-        <div className="md:w-1/4 md:mx-2">
-          <Card>
-            <CardHeader>Current Balance</CardHeader>
-            <CardBody>
-              <h4>${displayNumber(balance)}</h4>
-            </CardBody>
-          </Card>
-          <div className="mt-2">
-            <Card>
-              <CardHeader>Current Loan</CardHeader>
-              <CardBody>
-                <div className="flex items-center gap-2">
-                  <h4>
-                    ${auth.user.loan > 0.0 ? '-' : ''}
-                    {displayNumber(auth.user.loan)}
-                  </h4>
-                  {auth.user.loan > 0 && (
-                    <button
-                      onClick={() => handleRepayClick()}
-                      className="btn btn-primary btn-sm"
-                    >
-                      Repay
-                    </button>
-                  )}
-                </div>
-              </CardBody>
-            </Card>
-          </div>
-        </div>
-        <div className="md:w-1/4 md:mx-2">
-          <Card>
-            <CardHeader>Available to Borrow</CardHeader>
-            <CardBody>
-              <div className="flex items-center gap-2">
-                <h4>${displayNumber(loanAvailable)}</h4>
-                {loanAvailable >= 1 && (
-                  <button
-                    onClick={() => handleBorrowClick()}
-                    className="btn btn-primary btn-sm"
-                  >
-                    Borrow
-                  </button>
-                )}
-              </div>
-            </CardBody>
-          </Card>
-        </div>
-      </div>
-    </div>
+          </Box>
+        </CardBody>
+      </Card>
+      <Box>
+        <Card>
+          <CardHeader>
+            <Heading size="md">Current Balance</Heading>
+          </CardHeader>
+          <CardBody>
+            <Heading size="lg">${displayNumber(balance)}</Heading>
+          </CardBody>
+        </Card>
+        <Card mt={2}>
+          <CardHeader>
+            <Heading size="md">Current Loan</Heading>
+          </CardHeader>
+          <CardBody>
+            <Flex alignItems="center" gap={4}>
+              <Heading size="lg">
+                ${auth.user.loan > 0.0 ? '-' : ''}
+                {displayNumber(auth.user.loan)}
+              </Heading>
+              {auth.user.loan > 0 && (
+                <Button size="sm" onClick={() => handleRepayClick()}>
+                  Repay
+                </Button>
+              )}
+            </Flex>
+          </CardBody>
+        </Card>
+        <Card mt={2}>
+          <CardHeader>
+            <Heading size="md">Available to Borrow</Heading>
+          </CardHeader>
+          <CardBody>
+            <Flex alignItems="center" gap={4}>
+              <Heading size="lg">${displayNumber(loanAvailable)}</Heading>
+              {loanAvailable >= 1 && (
+                <Button size="sm" onClick={() => handleBorrowClick()}>
+                  Borrow
+                </Button>
+              )}
+            </Flex>
+          </CardBody>
+        </Card>
+      </Box>
+      <div className="md:w-1/4 md:mx-2"></div>
+    </SimpleGrid>
   )
 }
 
