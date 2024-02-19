@@ -1,14 +1,7 @@
-import {
-  Box,
-  Card,
-  CardBody,
-  Image,
-  Text,
-  useColorMode,
-} from '@chakra-ui/react'
+import { Box, Card, CardBody, Image, useColorMode } from '@chakra-ui/react'
 import axios from 'axios'
 import maplibre from 'maplibre-gl'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Map, { Marker, Popup } from 'react-map-gl'
 
 import {

@@ -11,6 +11,7 @@ import {
 
 const HubMap = ({ hubs }) => {
   const [selectedMarker, setSelectedMarker] = useState(null)
+  const { colorMode } = useColorMode()
   const handleClick = (loc) => {
     setSelectedMarker(loc)
   }
@@ -25,7 +26,7 @@ const HubMap = ({ hubs }) => {
           latitude: -5.8,
           zoom: 4,
         }}
-        mapStyle={parseMapStyle('dark')}
+        mapStyle={parseMapStyle(colorMode)}
         transformRequest={transformRequest}
       >
         {hubs.length > 0 &&

@@ -208,20 +208,11 @@ function ContractList({
   )
 }
 
-function AirportMap({
-  airport,
-  metar,
-  metarLoading,
-  aircraft,
-  contracts,
-  size,
-  updatedMapStyle,
-}) {
+function AirportMap({ airport, metar, metarLoading, aircraft, contracts }) {
   const { colorMode } = useColorMode()
   const [currentViews, setCurrentViews] = useState(['contracts'])
   const [routeData, setRouteData] = useState(null)
   const [selectedContract, setSelectedContract] = useState(null)
-  const [mapStyle, setMapStyle] = useState('')
   const [showPopup, setShowPopup] = useState(false)
   const [selectedAircraft, setSelectedAircraft] = useState(null)
   const [showFilters, setShowFilters] = useState(false)
@@ -230,14 +221,6 @@ function AirportMap({
     payload: 0,
   })
   const [filteredContracts, setFilteredContracts] = useState(contracts)
-
-  useEffect(() => {
-    if (updatedMapStyle === '') {
-      setMapStyle('')
-    } else {
-      setMapStyle(updatedMapStyle)
-    }
-  }, [updatedMapStyle])
 
   useEffect(() => {
     setRouteData(null)

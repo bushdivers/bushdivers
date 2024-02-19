@@ -1,4 +1,4 @@
-import { Box, Card, CardBody, Flex, Text } from '@chakra-ui/react'
+import { Box, Card, CardBody, Flex } from '@chakra-ui/react'
 import React from 'react'
 
 import { convertMinuteDecimalToHoursAndMinutes } from '../../helpers/date.helpers'

@@ -1,6 +1,6 @@
 import { Box, Card, CardBody, CardHeader, useColorMode } from '@chakra-ui/react'
 import maplibre from 'maplibre-gl'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Layer, Map, Marker, Source } from 'react-map-gl'
 
 import {

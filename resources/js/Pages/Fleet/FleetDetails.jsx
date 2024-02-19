@@ -1,4 +1,4 @@
-import { Card, CardBody } from '@chakra-ui/react'
+import { Box, Button, Card, CardBody } from '@chakra-ui/react'
 import { Link, usePage } from '@inertiajs/react'
 import React from 'react'
 
@@ -13,10 +13,10 @@ const FleetDetails = ({ fleet }) => {
   }
 
   return (
-    <div className="p-4">
+    <Box>
       {isFleetAdmin() && (
-        <Link href="/admin/fleet" className="btn btn-secondary btn-xs">
-          Fleet Administration
+        <Link href="/admin/fleet">
+          <Button size="sm">Fleet Administration</Button>
         </Link>
       )}
       {fleet &&
@@ -29,7 +29,7 @@ const FleetDetails = ({ fleet }) => {
             </Card>
           </div>
         ))}
-    </div>
+    </Box>
   )
 }
 

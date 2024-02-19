@@ -33,7 +33,6 @@ function renderCargo(contract) {
 const ContractDetail = ({
   contract,
   action,
-  type = 'available',
   selectedContract = null,
   updateSelectedContract,
 }) => {
