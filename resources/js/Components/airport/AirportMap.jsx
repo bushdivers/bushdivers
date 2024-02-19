@@ -48,10 +48,10 @@ function AirportInfo({ airport, updateCurrentViews, currentViews }) {
   }
 
   return (
-    <Box position="absolute" top={10} left={12} w={300}>
+    <Box position="absolute" top={10} left={12} w={400}>
       <Card>
         <CardHeader>
-          <Flex justifyContent="space-between">
+          <Flex justifyContent="space-between" gap={2}>
             <Tag w={6} h={6}>
               {airport.size}
             </Tag>
@@ -66,7 +66,7 @@ function AirportInfo({ airport, updateCurrentViews, currentViews }) {
               Lat: {airport.lat} Lon: {airport.lon}
             </Text>
           </Flex>
-          <Flex mt={2} gap={1} className="mt-2 flex space-x-1">
+          <Flex mt={2} gap={1}>
             <Tooltip direction="top" content="Metar">
               <Button
                 onClick={() => changeViews('metar')}
@@ -108,6 +108,7 @@ function AirportInfo({ airport, updateCurrentViews, currentViews }) {
                 onClick={() => renameAirport(airport.identifier)}
                 size="xs"
                 variant="ghost"
+                colorScheme="gray"
               >
                 Rename ICAO
               </Button>
