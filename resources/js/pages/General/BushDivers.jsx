@@ -9,10 +9,10 @@ import {
 } from '@chakra-ui/react'
 import React from 'react'
 
-import AppLayout from '../../Components/Layout/AppLayout.jsx'
-import HubMap from '../../Components/airport/HubMap.jsx'
-import CompanyFinances from '../../Components/finances/CompanyFinances.jsx'
-import FleetDetails from '../../Components/fleet/FleetDetails.jsx'
+import AppLayout from '../../components/layout/AppLayout.jsx'
+import HubMap from '../../components/airport/HubMap.jsx'
+import CompanyFinances from '../../components/finances/CompanyFinances.jsx'
+import FleetDetails from '../../components/fleet/FleetDetails.jsx'
 
 const BushDivers = ({ hubs, fleet, finances }) => {
   return (

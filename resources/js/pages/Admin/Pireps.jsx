@@ -24,7 +24,7 @@ import { format } from 'date-fns'
 import { Check } from 'lucide-react'
 import React, { useState } from 'react'
 
-import AdminMenu from '../../Components/Layout/navigation/AdminMenu.jsx'
+import AdminMenu from '../../components/layout/navigation/AdminMenu.jsx'
 import NoContent from '../../components/elements/NoContent'
 import Pagination from '../../components/elements/Pagination'
 import AppLayout from '../../components/layout/AppLayout'

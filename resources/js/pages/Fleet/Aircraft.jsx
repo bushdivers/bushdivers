@@ -23,7 +23,7 @@ import { format } from 'date-fns'
 import { Wrench } from 'lucide-react'
 import React from 'react'
 
-import StatDisplay from '../../Components/elements/StatDisplay.jsx'
+import StatDisplay from '../../components/elements/StatDisplay.jsx'
 import AircraftCondition from '../../components/fleet/AircraftCondition'
 import AircraftMap from '../../components/fleet/AircraftMap'
 import AppLayout from '../../components/layout/AppLayout'

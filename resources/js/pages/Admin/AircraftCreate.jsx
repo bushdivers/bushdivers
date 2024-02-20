@@ -15,7 +15,7 @@ import {
 import { router, usePage } from '@inertiajs/react'
 import React, { useState } from 'react'
 
-import AdminMenu from '../../Components/Layout/navigation/AdminMenu.jsx'
+import AdminMenu from '../../components/layout/navigation/AdminMenu.jsx'
 import AppLayout from '../../components/layout/AppLayout'
 
 const AircraftCreate = ({ fleet, hubs, fleetId }) => {

@@ -7,7 +7,7 @@ import {
   mapboxToken,
   parseMapStyle,
   transformRequest,
-} from '../../Helpers/geo.helpers.js'
+} from '../../helpers/geo.helpers.js'
 
 const HubMap = ({ hubs }) => {
   const [selectedMarker, setSelectedMarker] = useState(null)

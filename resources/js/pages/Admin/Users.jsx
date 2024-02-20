@@ -20,7 +20,7 @@ import { format } from 'date-fns'
 import { Ban, CheckCircle2, User, UserCog } from 'lucide-react'
 import React from 'react'
 
-import AdminMenu from '../../Components/Layout/navigation/AdminMenu.jsx'
+import AdminMenu from '../../components/layout/navigation/AdminMenu.jsx'
 import Pagination from '../../components/elements/Pagination'
 import AppLayout from '../../components/layout/AppLayout'
 

@@ -2,7 +2,7 @@ import { Link as ChakraLink, Flex, Text } from '@chakra-ui/react'
 import { Link as InertiaLink, usePage } from '@inertiajs/react'
 import React from 'react'
 
-import { displayNumber } from '../../../Helpers/number.helpers.js'
+import { displayNumber } from '../../../helpers/number.helpers.js'
 
 const UserStats = () => {
   const { auth } = usePage().props
