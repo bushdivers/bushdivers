@@ -33,6 +33,7 @@ const EmptyData = (props) => {
 }
 
 const Aircraft = (props) => {
+  const selectedCol = useColorModeValue('orange.300', 'orange.700')
   const { auth } = usePage().props
   return (
     <Box>
@@ -61,7 +62,7 @@ const Aircraft = (props) => {
                       onClick={() => props.handleAircraftSelect(ac)}
                       bgColor={
                         props.selectedAircraft.registration === ac.registration
-                          ? useColorModeValue('orange.300', 'orange.700')
+                          ? selectedCol
                           : ''
                       }
                     >
