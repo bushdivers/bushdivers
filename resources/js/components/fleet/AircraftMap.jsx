@@ -1,4 +1,4 @@
-import { Box } from '@chakra-ui/react'
+import { Box, useColorMode } from '@chakra-ui/react'
 import maplibre from 'maplibre-gl'
 import React from 'react'
 import Map, { Marker } from 'react-map-gl'
@@ -10,6 +10,7 @@ import {
 } from '../../helpers/geo.helpers'
 
 const AircraftMap = (props) => {
+  const { colorMode } = useColorMode()
   return (
     <Box className="map-container-large">
       <Map
@@ -20,7 +21,7 @@ const AircraftMap = (props) => {
           latitude: props.aircraft.last_lat,
           zoom: 14,
         }}
-        mapStyle={parseMapStyle(props.mapStyle)}
+        mapStyle={parseMapStyle(colorMode)}
         transformRequest={transformRequest}
       >
         <Marker
