@@ -42,7 +42,6 @@ const Jumpseat = ({ user, spent, balance }) => {
         const priceResp = await axios.get(
           `/api/jumpseat/cost/${user.current_airport_id}/${response.data.airport.identifier}`
         )
-        console.log(priceResp)
         if (priceResp.status === 200) {
           setPrice(priceResp.data.cost)
           setDistance(priceResp.data.distance)

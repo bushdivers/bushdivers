@@ -146,7 +146,7 @@ const Purchase = ({ aircraft, purchaseType }) => {
                     <FormLabel>Deliver to ICAO</FormLabel>
                     <Input
                       id="dep"
-                      placeHolder="Deliver to ICAO"
+                      placeholder="Deliver to ICAO"
                       type="text"
                       value={icao}
                       onChange={handleChange}
@@ -190,7 +190,7 @@ const Purchase = ({ aircraft, purchaseType }) => {
                 type="text"
                 value={reg}
                 onChange={handleRegChange}
-                placeHolder="N1234A"
+                placeholder="N1234A"
               />
               <FormErrorMessage>{regError}</FormErrorMessage>
             </FormControl>

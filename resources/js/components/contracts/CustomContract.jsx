@@ -38,7 +38,7 @@ const CustomContract = ({ hideSection }) => {
         value={dep}
         type="text"
         onChange={handleChangeDep}
-        placeHolder="Departure ICAO"
+        placeholder="Departure ICAO"
         label="Departure (ICAO)"
       />
       <Input
@@ -47,7 +47,7 @@ const CustomContract = ({ hideSection }) => {
         value={arr}
         type="text"
         onChange={handleChangeArr}
-        placeHolder="Arrival ICAO"
+        placeholder="Arrival ICAO"
         label="Arrival (ICAO)"
       />
       <Box className="inline-block">

@@ -20,7 +20,6 @@ import AuthLayout from '../../components/layout/AuthLayout'
 
 const RequestPassword = () => {
   const { errors } = usePage().props
-  console.log(errors)
   const [values, setValues] = useState({
     email: '',
   })
@@ -60,7 +59,7 @@ const RequestPassword = () => {
               value={values.email}
               type="email"
               id="email"
-              placeHolder="Email"
+              placeholder="Email"
               onChange={handleChange}
             />
             <FormErrorMessage>{errors?.email}</FormErrorMessage>

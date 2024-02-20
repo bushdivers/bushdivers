@@ -169,7 +169,7 @@ function ContractList({
 }) {
   const { auth } = usePage().props
   async function bidForContract(contract) {
-    console.log(contract)
+
     // await updateSelectedContract(null)
     const data = {
       id: contract.id,
@@ -232,7 +232,6 @@ function AirportMap({ airport, metar, metarLoading, aircraft, contracts }) {
   }, [filters])
 
   const applyFilters = () => {
-    console.log(filters)
     let distanceFiltered = null
     let newContracts = null
     switch (filters.distance) {
@@ -241,7 +240,6 @@ function AirportMap({ airport, metar, metarLoading, aircraft, contracts }) {
         break
       case '60':
         distanceFiltered = contracts.filter((c) => c.distance < 60)
-        console.log(distanceFiltered)
         break
       case '100':
         distanceFiltered = contracts.filter(

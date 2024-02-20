@@ -49,7 +49,6 @@ const Dispatch = ({ cargo, aircraft }) => {
   }
 
   async function handleCargoSelect(cargo) {
-    console.log(cargo)
     setSubmitError(null)
     if (selectedCargo.find((sc) => sc.id === cargo.id)) {
       await setSelectedCargo(selectedCargo.filter((sc) => sc.id !== cargo.id))

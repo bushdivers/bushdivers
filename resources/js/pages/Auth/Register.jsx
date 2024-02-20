@@ -65,7 +65,7 @@ const Register = () => {
               value={values.name}
               type="text"
               id="name"
-              placeHolder="Name"
+              placeholder="Name"
               onChange={handleChange}
             />
             <FormErrorMessage>{errors?.name}</FormErrorMessage>
@@ -78,7 +78,7 @@ const Register = () => {
               value={values.email}
               type="email"
               id="email"
-              placeHolder="Email"
+              placeholder="Email"
               onChange={handleChange}
             />
             <FormErrorMessage>{errors?.email}</FormErrorMessage>
@@ -91,7 +91,7 @@ const Register = () => {
               value={values.password}
               type="password"
               id="password"
-              placeHolder="Password"
+              placeholder="Password"
               onChange={handleChange}
             />
             <FormErrorMessage>{errors?.password}</FormErrorMessage>

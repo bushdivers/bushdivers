@@ -20,7 +20,6 @@ import AuthLayout from '../../components/layout/AuthLayout'
 
 const ResetPassword = ({ token }) => {
   const { errors } = usePage().props
-  console.log(errors)
   const [values, setValues] = useState({
     password: '',
     token: token,
@@ -61,7 +60,7 @@ const ResetPassword = ({ token }) => {
               value={values.password}
               type="password"
               id="password"
-              placeHolder="Enter new password"
+              placeholder="Enter new password"
               onChange={handleChange}
             />
             <FormErrorMessage>{errors?.password}</FormErrorMessage>

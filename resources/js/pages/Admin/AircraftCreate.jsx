@@ -20,7 +20,6 @@ import AppLayout from '../../components/layout/AppLayout'
 
 const AircraftCreate = ({ fleet, hubs, fleetId }) => {
   const { errors } = usePage().props
-  console.log(errors)
   const [values, setValues] = useState({
     fleet: fleetId > 0 ? fleetId : '1',
     registration: '',

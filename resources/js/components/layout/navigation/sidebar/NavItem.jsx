@@ -11,7 +11,7 @@ import React from 'react'
 
 const NavItem = ({ to, icon, text, isExternal = false }) => {
   const { url } = usePage().props
-  console.log(location.pathname)
+
   return (
     <Box my={2}>
       <ChakraLink as={isExternal ? '' : InertiaLink} href={to}>
