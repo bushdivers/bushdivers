@@ -70,9 +70,8 @@ const LogbookDetail = ({
             pirep={pirep}
             coords={logs}
             size="small"
-            mapStyle={auth.user.map_style}
           />
-          <LandingSummary pirep={pirep} mapStyle={auth.user.map_style} />
+          <LandingSummary pirep={pirep} />
         </Box>
       </SimpleGrid>
     </Box>

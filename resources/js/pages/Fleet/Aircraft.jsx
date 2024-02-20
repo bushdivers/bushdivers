@@ -17,6 +17,7 @@ import {
   Th,
   Thead,
   Tr,
+  useColorMode,
 } from '@chakra-ui/react'
 import { router, usePage } from '@inertiajs/react'
 import { format } from 'date-fns'
@@ -30,6 +31,7 @@ import AppLayout from '../../components/layout/AppLayout'
 import { convertMinuteDecimalToHoursAndMinutes } from '../../helpers/date.helpers'
 
 const Aircraft = ({ aircraft, maintenanceStatus, pireps }) => {
+  const { colorMode } = useColorMode()
   const { auth } = usePage().props
 
   const calculateDistanceFlown = (p) => {
@@ -443,7 +445,7 @@ const Aircraft = ({ aircraft, maintenanceStatus, pireps }) => {
             <AircraftMap
               aircraft={aircraft}
               size="large"
-              mapStyle={auth.user.map_style}
+              mapStyle={colorMode}
             />
           </CardBody>
         </Card>
