@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Input } from '@chakra-ui/react'
+import { Box, Button, Flex, Input, Text } from '@chakra-ui/react'
 import { router, usePage } from '@inertiajs/react'
 import React, { useState } from 'react'
 
@@ -31,7 +31,11 @@ const CustomContract = ({ hideSection }) => {
 
   return (
     <Flex className="flex items-end space-x-2">
-      {error && <div className="text-sm text-red-500 mt-1">{error}</div>}
+      {error && (
+        <Text color="red.500" size="sm" mt={1}>
+          {error}
+        </Text>
+      )}
       <Input
         inline
         id="icaoDep"
