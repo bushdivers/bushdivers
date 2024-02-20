@@ -41,9 +41,10 @@ const NavMenuItems = () => {
       </Box>
       <Divider mt={4} />
       <Box my={4}>
-        {auth.user.is_admin && (
-          <NavItem icon={Cog} text="Admin" to="/admin/fleet" />
-        )}
+        {auth.user.is_admin
+          ? <NavItem icon={Cog} text="Admin" to="/admin/fleet" />
+          : <></>
+        }
         <NavItem icon={HelpCircle} text="Help (Coming Soon)" to="" />
         <NavItem
           isExternal
