@@ -24,9 +24,10 @@ class AdminAddAircraft extends FormRequest
     public function rules()
     {
         return [
-            'fleet' => 'required',
+            'fleet' => 'required|exists:fleets,id',
             'registration' => 'required|unique:aircraft',
-            'hub' => 'required'
+            'hub' => 'required',
+            'deliveryIcao' => 'required|exists:airports,identifier',
         ];
     }
 }

@@ -38,6 +38,7 @@ class UpdateFleetController extends Controller
         $fleet->size = $request->size;
         $fleet->tbo_mins = $request->tbo_mins;
 
+        $fleet->company_fleet = $request->company_fleet;
         $fleet->is_rental = $request->is_rental;
         $fleet->rental_cost = $request->rental_cost;
         $fleet->hq = Str::upper($request->hq);
