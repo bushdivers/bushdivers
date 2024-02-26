@@ -16,8 +16,8 @@ import {
 import { router, usePage } from '@inertiajs/react'
 import React, { useState } from 'react'
 
-import AdminMenu from '../../components/layout/navigation/AdminMenu.jsx'
 import AppLayout from '../../components/layout/AppLayout'
+import AdminMenu from '../../components/layout/navigation/AdminMenu.jsx'
 
 const FleetEdit = ({ fleet, manufacturers }) => {
   const { errors } = usePage().props

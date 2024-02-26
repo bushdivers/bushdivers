@@ -19,10 +19,10 @@ import { Link, router } from '@inertiajs/react'
 import { Pen, Plus, Trash2 } from 'lucide-react'
 import React, { useState } from 'react'
 
-import AdminMenu from '../../components/layout/navigation/AdminMenu.jsx'
 import FleetAircraft from '../../components/admin/FleetAircraft'
 import NoContent from '../../components/elements/NoContent'
 import AppLayout from '../../components/layout/AppLayout'
+import AdminMenu from '../../components/layout/navigation/AdminMenu.jsx'
 
 const EmptyData = () => {
   return (
