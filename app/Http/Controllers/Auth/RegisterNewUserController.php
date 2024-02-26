@@ -86,17 +86,9 @@ class RegisterNewUserController extends Controller
 //            //
 //        }
 
-        $credentials = $request->only('email', 'password');
-        if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
 
-            return redirect()->route('intro')->with([
-                'success' => 'Registered successfully!'
-            ]);
-        }
-
-        return redirect()->back()->with([
-            'error' => 'Error registering'
+        return redirect()->route('login')->with([
+            'success' => 'Registered successfully!'
         ]);
     }
 }

@@ -22,8 +22,6 @@ Route::get('/privacy', function () {
 
 Route::get('/ranks', \App\Http\Controllers\General\ShowRanksController::class)
     ->name('ranks');
-Route::get('/hubs', \App\Http\Controllers\Airports\ShowHubsController::class)
-    ->name('hubs');
 Route::get('/staff', \App\Http\Controllers\General\ShowStaffController::class)
     ->name('staff');
 Route::get('/supporters', \App\Http\Controllers\General\ShowSupportersController::class)
@@ -60,8 +58,6 @@ Route::middleware('auth')->group(function () {
     // Crew
     Route::get('/dashboard', \App\Http\Controllers\Crew\ShowDashboardController::class)
         ->name('dashboard');
-    Route::get('/intro', \App\Http\Controllers\Crew\ShowIntroController::class)
-        ->name('intro');
     Route::any('/roster', \App\Http\Controllers\Crew\ShowPilotRosterController::class)
         ->name('roster');
     Route::get('/profile', \App\Http\Controllers\Crew\ShowProfileController::class)
@@ -108,9 +104,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/rentals/end/{id}', \App\Http\Controllers\Rentals\EndRentalController::class)
         ->name('rentals.end');
 
-    // Outside of fleet manager role so pilots can self-service their owned aircraft
     Route::post('/aircraft/maintenance', \App\Http\Controllers\Fleet\PerformMaintenanceController::class)
-        ->name('aircraft.maintenance');
+    ->name('aircraft.maintenance');
+
+    Route::get('/bushdivers-hq', \App\Http\Controllers\GetHqController::class)->name('hq');
 
     Route::middleware('role:fleet_manager')->group(function () {
         Route::post('/aircraft/maintenance/relocate', \App\Http\Controllers\Fleet\RelocateMaintenanceController::class)

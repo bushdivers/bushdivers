@@ -24,7 +24,7 @@ class GenerateContracts
     {
             // get airports
             //$airports = Airport::all();
-            $airports = DB::select(DB::raw(
+            $airports = DB::select(
                 "SELECT *
                         FROM (
                           SELECT
@@ -41,7 +41,7 @@ class GenerateContracts
                         ) r
                         WHERE distance BETWEEN 15 AND 150
                         ORDER BY distance ASC"
-            ));
+            );
 
             // pick (n) random airports in each category
             $allAirports = collect($airports);

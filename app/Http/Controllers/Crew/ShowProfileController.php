@@ -20,8 +20,8 @@ class ShowProfileController extends Controller
      */
     public function __invoke(Request $request): Response
     {
-        $user = User::find(Auth::user()->id);
-        $user->makeVisible(['email', 'api_token']);
+        $user = Auth::user();
+        $user->makeVisible(['email', 'api_token', 'name']);
 
         $rank = Rank::find($user->rank_id);
         $nextRank = Rank::find($user->rank_id + 1);
