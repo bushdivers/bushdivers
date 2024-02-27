@@ -53,7 +53,7 @@ class RegisterNewUserController extends Controller
      */
     public function __invoke(RegisterRequest $request): RedirectResponse
     {
-        $user = $this->createUser->execute($request->name, $request->email, $request->password, $request->optin);
+        $user = $this->createUser->execute($request->name, $request->email, $request->password);
         // generate api key
         $this->createApiToken->execute($user);
 

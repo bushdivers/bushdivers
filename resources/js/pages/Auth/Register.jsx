@@ -25,8 +25,6 @@ const Register = () => {
     name: '',
     email: '',
     password: '',
-    agree: false,
-    optin: false,
   })
 
   function handleChange(e) {
@@ -99,6 +97,12 @@ const Register = () => {
           <Button width="100%" onClick={(e) => handleSubmit(e)}>
             Register
           </Button>
+          <Text mt={2}>
+            By registering you agree to our{' '}
+            <ChakraLink color="orange.500" as={Link} href="/privacy">
+              privacy policy
+            </ChakraLink>
+          </Text>
         </CardBody>
       </Card>
       <Box className="mt-2">

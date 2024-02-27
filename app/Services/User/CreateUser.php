@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Hash;
 
 class CreateUser
 {
-    public function execute($name, $email, $password, $optin): User
+    public function execute($name, $email, $password): User
     {
         $user = new User();
         $user->name = $name;
@@ -15,7 +15,7 @@ class CreateUser
         $user->password = Hash::make($password);
         $user->current_airport_id = 'AYMR';
         $user->toc_accepted = true;
-        $user->opt_in = $optin;
+        $user->opt_in = false;
         $user->rank_id = 1;
 $user->loan = 0.00;
         $user->save();
