@@ -19,6 +19,10 @@ import NavItem from './NavItem.jsx'
 
 const NavMenuItems = () => {
   const { auth } = usePage().props
+  const isFleetAdmin = () => {
+    console.log(auth.user.user_roles)
+    return auth.user.user_roles.includes('fleet_admin')
+  }
   return (
     <Box>
       <Box my={4}>
@@ -41,10 +45,11 @@ const NavMenuItems = () => {
       </Box>
       <Divider mt={4} />
       <Box my={4}>
-        {auth.user.is_admin
-          ? <NavItem icon={Cog} text="Admin" to="/admin/fleet" />
-          : <></>
-        }
+        {auth.user.is_admin || isFleetAdmin() ? (
+          <NavItem icon={Cog} text="Admin" to="/admin/fleet" />
+        ) : (
+          <></>
+        )}
         <NavItem icon={HelpCircle} text="Help (Coming Soon)" to="" />
         <NavItem
           isExternal
