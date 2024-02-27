@@ -15,10 +15,12 @@ import {
 } from 'lucide-react'
 import React from 'react'
 
+import { doesUserHaveRole } from '../../../../helpers/auth.helpers.js'
 import NavItem from './NavItem.jsx'
 
 const NavMenuItems = () => {
   const { auth } = usePage().props
+
   return (
     <Box>
       <Box my={4}>
@@ -41,10 +43,10 @@ const NavMenuItems = () => {
       </Box>
       <Divider mt={4} />
       <Box my={4}>
-        {auth.user.is_admin
-          ? <NavItem icon={Cog} text="Admin" to="/admin/fleet" />
-          : <></>
-        }
+        {!!auth.user.is_admin ||
+          (doesUserHaveRole(auth.user.user_roles, 'fleet_admin') && (
+            <NavItem icon={Cog} text="Admin" to="/admin/fleet" />
+          ))}
         <NavItem icon={HelpCircle} text="Help (Coming Soon)" to="" />
         <NavItem
           isExternal
