@@ -45,7 +45,7 @@ const Cargo = (props) => {
       userId: auth.user.id,
       action: 'remove',
     }
-    await axios.post('/api/contracts/assign', data)
+    await axios.post('/api/contracts/bid', data)
 
     router.reload()
   }
