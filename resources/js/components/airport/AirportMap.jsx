@@ -6,14 +6,23 @@ import {
   CardHeader,
   Flex,
   Icon,
+  Input,
   Select,
   Tag,
   Text,
   useColorMode,
+  useColorModeValue,
 } from '@chakra-ui/react'
 import { router, usePage } from '@inertiajs/react'
 import axios from 'axios'
-import { ArrowsUpFromLine, Cloud, FilePen, Filter, Plane } from 'lucide-react'
+import {
+  ArrowsUpFromLine,
+  Cloud,
+  FilePen,
+  Filter,
+  Plane,
+  Search,
+} from 'lucide-react'
 import maplibre from 'maplibre-gl'
 import React, { useEffect, useState } from 'react'
 import Map, { Layer, Marker, Popup, Source, useMap } from 'react-map-gl'
@@ -169,7 +178,6 @@ function ContractList({
 }) {
   const { auth } = usePage().props
   async function bidForContract(contract) {
-
     // await updateSelectedContract(null)
     const data = {
       id: contract.id,
@@ -221,6 +229,7 @@ function AirportMap({ airport, metar, metarLoading, aircraft, contracts }) {
     payload: 0,
   })
   const [filteredContracts, setFilteredContracts] = useState(contracts)
+  const [airportSearch, setAirportSearch] = useState('')
 
   useEffect(() => {
     setRouteData(null)
@@ -311,6 +320,16 @@ function AirportMap({ airport, metar, metarLoading, aircraft, contracts }) {
   const handleAircraftSelection = (ac) => {
     setSelectedAircraft(ac)
     setShowPopup(true)
+  }
+
+  const handleSearchChange = (e) => {
+    setAirportSearch(e.target.value)
+  }
+
+  const handleAirportSearch = () => {
+    if (airportSearch !== '') {
+      router.get(`/airports/${airportSearch}`)
+    }
   }
 
   const handleFilterChange = (e) => {
@@ -411,56 +430,74 @@ function AirportMap({ airport, metar, metarLoading, aircraft, contracts }) {
           icao={airport.identifier}
           updateSelectedContract={updateSelectedContract}
         />
-        <Box position="absolute" top={10} right={12}>
-          <Button size="sm" onClick={() => clearFilters()}>
-            Clear Filters
-          </Button>
-        </Box>
-        {currentViews.includes('contracts') && (
-          <>
-            <Box position="absolute" top={10} right={52}>
-              <Button size="sm" onClick={() => setShowFilters(!showFilters)}>
-                <Icon as={Filter} />
-              </Button>
-            </Box>
-            <Box position="absolute" top={20} right={52}>
-              {showFilters && (
-                <Card>
-                  <CardBody>
-                    <Flex direction="column">
-                      <Flex direction="column" gap={1}>
-                        <Text fontSize="sm">Distance</Text>
-                        <Select
-                          value={filters.distance}
-                          onChange={handleFilterChange}
-                          id="distance"
-                        >
-                          <option value="0">All</option>
-                          <option value="60">{'< 60'}</option>
-                          <option value="100">60 - 100</option>
-                          <option value="300">{'> '} 100</option>
-                        </Select>
+        <Flex gap={2} position="absolute" top={10} right={12}>
+          {currentViews.includes('contracts') && (
+            <Flex direction="column">
+              <Flex justifyContent="end">
+                <Button size="sm" onClick={() => setShowFilters(!showFilters)}>
+                  <Icon as={Filter} />
+                </Button>
+              </Flex>
+              <Box mt={2}>
+                {showFilters && (
+                  <Card>
+                    <CardBody>
+                      <Flex direction="column">
+                        <Flex direction="column" gap={1}>
+                          <Text fontSize="sm">Distance</Text>
+                          <Select
+                            value={filters.distance}
+                            onChange={handleFilterChange}
+                            id="distance"
+                          >
+                            <option value="0">All</option>
+                            <option value="60">{'< 60'}</option>
+                            <option value="100">60 - 100</option>
+                            <option value="300">{'> '} 100</option>
+                          </Select>
+                        </Flex>
+                        <Flex direction="column" gap={1}>
+                          <Text fontSize="sm">Payload</Text>
+                          <Select
+                            value={filters.payload}
+                            onChange={handleFilterChange}
+                            id="payload"
+                          >
+                            <option value="0">All</option>
+                            <option value="1000">{'< 1000'}</option>
+                            <option value="3000">1000 - 3000</option>
+                            <option value="10000">{'> '} 3000</option>
+                          </Select>
+                        </Flex>
                       </Flex>
-                      <Flex direction="column" gap={1}>
-                        <Text fontSize="sm">Payload</Text>
-                        <Select
-                          value={filters.payload}
-                          onChange={handleFilterChange}
-                          id="payload"
-                        >
-                          <option value="0">All</option>
-                          <option value="1000">{'< 1000'}</option>
-                          <option value="3000">1000 - 3000</option>
-                          <option value="10000">{'> '} 3000</option>
-                        </Select>
-                      </Flex>
-                    </Flex>
-                  </CardBody>
-                </Card>
-              )}
-            </Box>
-          </>
-        )}
+                    </CardBody>
+                  </Card>
+                )}
+              </Box>
+            </Flex>
+          )}
+          <Box>
+            <Button size="sm" onClick={() => clearFilters()}>
+              Clear Filters
+            </Button>
+          </Box>
+          <Flex gap={1} ml={4}>
+            <Input
+              value={airportSearch}
+              onChange={handleSearchChange}
+              placeholder="Search ICAO"
+              size="sm"
+              type="text"
+              bgColor={useColorModeValue('white', 'gray.800')}
+            />
+            <Button
+              size="sm"
+              onClick={() => handleAirportSearch(airportSearch)}
+            >
+              <Icon as={Search} />
+            </Button>
+          </Flex>
+        </Flex>
       </Map>
     </Box>
   )
