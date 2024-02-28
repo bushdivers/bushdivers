@@ -12,7 +12,7 @@ use Illuminate\Support\Str;
 
 class CreateAircraft
 {
-    public function execute($data, $userId): Aircraft
+    public function execute($data, $user, $location): Aircraft
     {
         $fleet = Fleet::find($data['id']);
         // create aircraft
@@ -24,7 +24,9 @@ class CreateAircraft
         $aircraft->status = AircraftStatus::ACTIVE;
         $aircraft->hub_id = Str::upper($data['hub']);
         $aircraft->last_inspected_at = Carbon::now();
-        $aircraft->owner_id = $userId;
+        $aircraft->owner_id = $user->id;
+        $aircraft->last_lat = $location->lat;
+        $aircraft->last_lon = $location->lon;
         $aircraft->save();
 
         $numEngines = $fleet->number_of_engines;

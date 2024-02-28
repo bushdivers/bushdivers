@@ -17,7 +17,7 @@ class GenerateAircraft
         $hubs = Airport::where('is_hub', true)->get();
         $fleet = Fleet::all();
         foreach ($hubs as $hub) {
-            $airports = DB::select(DB::raw(
+            $airports = DB::select(
             "SELECT *
                         FROM (
                           SELECT
@@ -34,7 +34,7 @@ class GenerateAircraft
                         ) r
                         WHERE distance < 180
                         ORDER BY distance ASC"
-            ));
+            );
 
             $allAirports = collect($airports);
 

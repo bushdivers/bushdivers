@@ -23,6 +23,7 @@ class BidForContractController extends Controller
         if ($request->action == 'remove') {
             $contract->is_available = true;
             $contract->user_id = null;
+            Cache::forget($contract->dep_airport_id.'-contracts');
         } else {
             $contract->is_available = false;
             $contract->user_id = $request->userId;
