@@ -18,7 +18,7 @@ const UserSection = () => {
             <Text fontSize="xs">{auth.user.rank.name}</Text>
           </Box>
         </Flex>
-        <ChakraLink to="/logout" as={InertiaLink}>
+        <ChakraLink href="/logout" as={InertiaLink}>
           <Text fontSize="sm">Sign out</Text>
         </ChakraLink>
       </Flex>
