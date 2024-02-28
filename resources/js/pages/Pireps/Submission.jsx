@@ -15,10 +15,10 @@ import React, { useState } from 'react'
 
 import AppLayout from '../../components/layout/AppLayout'
 
-const Submission = () => {
+const Submission = ({ pirep }) => {
   const { errors } = usePage().props
   const [values, setValues] = useState({
-    pirep_id: null,
+    pirep_id: pirep.id,
     fuel_used: null,
     distance: null,
     flight_time_mins: null,

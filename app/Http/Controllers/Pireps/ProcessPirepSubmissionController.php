@@ -52,7 +52,7 @@ class ProcessPirepSubmissionController extends Controller
         try {
             $pirep = Pirep::where('id', $request->pirep_id)
                 ->where('user_id', Auth::user()->id)
-                ->where('state', '<>', PirepState::ACCEPTED)
+                ->whereIn('state', [PirepState::DISPATCH, PirepState::IN_PROGRESS])
                 ->firstOrFail();
 
             $blockOffTime = Carbon::now('UTC')->subMinutes($request->flight_time_mins);
