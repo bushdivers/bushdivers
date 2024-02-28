@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\PurchaseAircraftRequest;
 use App\Models\Aircraft;
 use App\Models\AircraftEngine;
+use App\Models\Airport;
 use App\Models\Enums\TransactionTypes;
 use App\Models\Fleet;
 use App\Services\Aircraft\CreateAircraft;
@@ -55,10 +56,10 @@ class PurchaseController extends Controller
         if ($request->total > Auth::user()->balance) {
             return redirect()->back()->with(['error' => 'Insufficient funds']);
         }
-        $this->addUserTransaction->execute(Auth::user()->id, TransactionTypes::AircraftPurchase, -$request->total);
 
         if ($request->purchaseType == 'new') {
-            $aircraft = $this->createAircraft->execute($request->all(), Auth::user()->id);
+            $currentAirport = Airport::where('identifier', $request->deliveryIcao)->first();
+            $aircraft = $this->createAircraft->execute($request->all(), Auth::user(), $currentAirport);
         } else {
             $aircraft = Aircraft::find($request->id);
 
@@ -77,6 +78,7 @@ class PurchaseController extends Controller
 
             $this->generateAircraft->generateSpecific($aircraft->fleet_id, $aircraft->current_airport_id);
         }
+        $this->addUserTransaction->execute(Auth::user()->id, TransactionTypes::AircraftPurchase, -$request->total);
         return redirect()->to('/aircraft/'.$aircraft->id)->with(['success' => 'Aircraft purchased']);
     }
 }
