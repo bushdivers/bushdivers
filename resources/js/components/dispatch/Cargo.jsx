@@ -8,6 +8,19 @@ import {
   Flex,
   Heading,
   Icon,
+  Popover,
+  PopoverArrow,
+  PopoverBody,
+  PopoverCloseButton,
+  PopoverContent,
+  PopoverFooter,
+  PopoverHeader,
+  PopoverTrigger,
+  Slider,
+  SliderFilledTrack,
+  SliderMark,
+  SliderThumb,
+  SliderTrack,
   Table,
   TableContainer,
   Tag,
@@ -23,6 +36,7 @@ import axios from 'axios'
 import { Archive, ArrowUp, X } from 'lucide-react'
 import React, { useState } from 'react'
 
+import { displayNumber } from '../../helpers/number.helpers.js'
 import CustomContract from '../contracts/CustomContract'
 import NoContent from '../elements/NoContent'
 
@@ -36,8 +50,40 @@ const EmptyData = (props) => {
 }
 
 const Cargo = (props) => {
+  const [cargoForSplit, setCargoForSplit] = useState(null)
+  const [sliderValue, setSliderValue] = useState(100)
+  const [sliderCargoValue, setSliderCargoValue] = useState(null)
   const { auth } = usePage().props
   const [showCustom, setShowCustom] = useState(false)
+
+  function updateSlideValue(val, cargo) {
+    setSliderValue(val)
+    if (val > 0) setSliderCargoValue((val / 100) * cargo)
+  }
+
+  function handleSplitClick(cargo) {
+    if (cargoForSplit !== cargo.id) {
+      setSliderCargoValue(cargo.cargo_qty)
+    } else {
+      if (sliderCargoValue !== cargo.cargo_qty) {
+        setSliderCargoValue(sliderCargoValue)
+      } else {
+        setSliderCargoValue(cargo.cargo_qty)
+      }
+    }
+    setCargoForSplit(cargo.id)
+  }
+
+  async function splitContract(contractId) {
+    const data = {
+      id: contractId,
+      qty: displayNumber(sliderCargoValue, false),
+      userId: auth.user.id,
+    }
+    await axios.post('/api/contracts/split', data)
+
+    router.reload()
+  }
 
   async function removeFromFlight(contract) {
     const data = {
@@ -48,6 +94,12 @@ const Cargo = (props) => {
     await axios.post('/api/contracts/bid', data)
 
     router.reload()
+  }
+
+  const labelStyles = {
+    mt: '2',
+    ml: '-2.5',
+    fontSize: 'sm',
   }
 
   return (
@@ -93,7 +145,6 @@ const Cargo = (props) => {
                         <Th>Arrival</Th>
                         <Th>Distance</Th>
                         <Th>Heading</Th>
-                        <Th>Type</Th>
                         <Th>Cargo</Th>
                         <Th></Th>
                       </Tr>
@@ -144,9 +195,6 @@ const Cargo = (props) => {
                             </Flex>
                           </Td>
                           <Td>
-                            {detail.cargo_type === 1 ? 'Cargo' : 'Passenger'}
-                          </Td>
-                          <Td>
                             {detail.cargo_type === 1 ? (
                               <div>
                                 <span>
@@ -166,13 +214,75 @@ const Cargo = (props) => {
                             {detail.is_custom ? <Tag>Custom</Tag> : <></>}
                           </Td>
                           <Td>
-                            <Button
-                              onClick={() => removeFromFlight(detail)}
-                              size="xs"
-                              colorScheme="gray"
-                            >
-                              <Icon as={X} />
-                            </Button>
+                            <Flex align="center" gap={2}>
+                              <Popover>
+                                <PopoverTrigger>
+                                  <Button
+                                    onClick={() => handleSplitClick(detail)}
+                                    size="xs"
+                                    colorScheme="gray"
+                                  >
+                                    Split
+                                  </Button>
+                                </PopoverTrigger>
+                                <PopoverContent>
+                                  <PopoverArrow />
+                                  <PopoverCloseButton />
+                                  <PopoverHeader>Split Contract</PopoverHeader>
+                                  <PopoverBody>
+                                    <Slider
+                                      defaultValue={sliderValue}
+                                      my={2}
+                                      min={5}
+                                      max={100}
+                                      step={5}
+                                      aria-label="slider-ex-6"
+                                      onChange={(val) =>
+                                        updateSlideValue(val, detail.cargo_qty)
+                                      }
+                                    >
+                                      <SliderMark value={25} {...labelStyles}>
+                                        25%
+                                      </SliderMark>
+                                      <SliderMark value={50} {...labelStyles}>
+                                        50%
+                                      </SliderMark>
+                                      <SliderMark value={75} {...labelStyles}>
+                                        75%
+                                      </SliderMark>
+                                      <SliderTrack>
+                                        <SliderFilledTrack />
+                                      </SliderTrack>
+                                      <SliderThumb />
+                                    </Slider>
+                                  </PopoverBody>
+                                  <PopoverFooter>
+                                    <Flex
+                                      justifyContent="space-between"
+                                      alignItems="center"
+                                    >
+                                      <Button
+                                        onClick={() => splitContract(detail.id)}
+                                        size="sm"
+                                      >
+                                        Save Split
+                                      </Button>
+                                      <Text>
+                                        {displayNumber(sliderCargoValue, false)}
+                                      </Text>
+                                    </Flex>
+                                  </PopoverFooter>
+                                </PopoverContent>
+                              </Popover>
+
+                              <Button
+                                onClick={() => removeFromFlight(detail)}
+                                size="xs"
+                                colorScheme="gray"
+                              >
+                                <Icon as={X} />
+                              </Button>
+                            </Flex>
                           </Td>
                         </Tr>
                       ))}
@@ -183,8 +293,10 @@ const Cargo = (props) => {
             )
           )}
           {props.cargo.cargoElsewhere && (
-            <div className="overflow-x-auto mt-2">
-              <Heading size="sm">Cargo Elsewhere</Heading>
+            <div>
+              <Heading mt={2} size="sm">
+                Cargo Elsewhere
+              </Heading>
               <TableContainer mt={2}>
                 <Table colorScheme="blackAlpha" size="sm" variant="simple">
                   <Thead>
@@ -193,7 +305,6 @@ const Cargo = (props) => {
                       <Th>Arrival</Th>
                       <Th>Distance</Th>
                       <Th>Heading</Th>
-                      <Th>Type</Th>
                       <Th>Cargo</Th>
                       <Th></Th>
                     </Tr>
@@ -214,23 +325,16 @@ const Cargo = (props) => {
                           nm
                         </Td>
                         <Td>
-                          <div className="flex items-center">
-                            <div className="w-1/2">
-                              <span className="mr-2">{detail.heading}</span>
-                            </div>
-                            <div className="w-1/2 flex">
-                              <span
-                                style={{
-                                  transform: `rotate(${detail.heading}deg)`,
-                                }}
-                              >
-                                <Icon as={ArrowUp} />
-                              </span>
-                            </div>
-                          </div>
-                        </Td>
-                        <Td>
-                          {detail.cargo_type === 1 ? 'Cargo' : 'Passenger'}
+                          <Flex alignItems="center">
+                            <Box className="mr-2">{detail.heading}</Box>
+                            <Box
+                              style={{
+                                transform: `rotate(${detail.heading}deg)`,
+                              }}
+                            >
+                              <Icon as={ArrowUp} />
+                            </Box>
+                          </Flex>
                         </Td>
                         <Td>
                           {detail.cargo_type === 1 ? (

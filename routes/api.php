@@ -28,6 +28,7 @@ Route::get('/resources/categories', \App\Http\Controllers\Admin\Resources\GetCat
     ->name('resources.categories');
 Route::post('/contracts/bid', \App\Http\Controllers\Contracts\BidForContractController::class)
     ->name('contracts.bid');
+Route::post('/contracts/split', \App\Http\Controllers\Contracts\SplitContractController::class)->name('contracts.split');
 Route::post('/contracts/assign', \App\Http\Controllers\Contracts\AssignContractController::class)
     ->name('contracts.assign');
 Route::get('/aircraft/price/{id}', \App\Http\Controllers\MarketPlace\GetAircraftPriceController::class)
