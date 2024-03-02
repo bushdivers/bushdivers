@@ -75,6 +75,10 @@ const Cargo = (props) => {
   }
 
   async function splitContract(contractId) {
+    if (sliderCargoValue < 1) {
+      alert('Cannot have zero cargo!')
+      return
+    }
     const data = {
       id: contractId,
       qty: parseInt(sliderCargoValue),
