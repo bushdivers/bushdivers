@@ -77,7 +77,7 @@ const Cargo = (props) => {
   async function splitContract(contractId) {
     const data = {
       id: contractId,
-      qty: displayNumber(sliderCargoValue, false),
+      qty: parseInt(sliderCargoValue),
       userId: auth.user.id,
     }
     await axios.post('/api/contracts/split', data)
