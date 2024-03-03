@@ -87,7 +87,7 @@ class ShowDispatchController extends Controller
 
     protected function getCargoForDispatch($currentLocation, $userId): array
     {
-        $cargoAtAirport = Contract::with('currentAirport', 'depAirport', 'arrAirport')
+        $userCargoAtAirport = Contract::with('currentAirport', 'depAirport', 'arrAirport')
             ->where('current_airport_id', $currentLocation)
             ->where('is_completed', false)
             ->where('user_id', $userId)
@@ -95,13 +95,36 @@ class ShowDispatchController extends Controller
             ->orderBy('arr_airport_id')
             ->get();
 
-        $cargoElsewhere = Contract::with('currentAirport', 'depAirport', 'arrAirport')
+        $sharedCargoAtAirport = Contract::with('currentAirport', 'depAirport', 'arrAirport')
+            ->where('current_airport_id', $currentLocation)
+            ->where('is_completed', false)
+            ->where('is_shared', true)
+            ->where('active_pirep', null)
+            ->orderBy('heading')
+            ->orderBy('arr_airport_id')
+            ->get();
+
+        $cargoAtAirport = $userCargoAtAirport->merge($sharedCargoAtAirport);
+
+        $myCargoElsewhere = Contract::with('currentAirport', 'depAirport', 'arrAirport')
+            ->where('current_airport_id', '<>', $currentLocation)
+            ->where('is_completed', false)
+            ->where('is_shared', true)
+            ->where('active_pirep', null)
+            ->orderBy('heading')
+            ->orderBy('arr_airport_id')
+            ->get();
+
+        $sharedCargoElsewhere = Contract::with('currentAirport', 'depAirport', 'arrAirport')
             ->where('current_airport_id', '<>', $currentLocation)
             ->where('is_completed', false)
             ->where('user_id', $userId)
             ->orderBy('heading')
             ->orderBy('arr_airport_id')
             ->get();
+
+        $cargoElsewhere = $myCargoElsewhere->merge($sharedCargoElsewhere);
+
         return ['cargoAtAirport' => $cargoAtAirport, 'cargoElsewhere' => $cargoElsewhere];
     }
 

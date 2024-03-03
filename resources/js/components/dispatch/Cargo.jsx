@@ -29,11 +29,13 @@ import {
   Text,
   Th,
   Thead,
+  Tooltip,
   Tr,
+  useToast,
 } from '@chakra-ui/react'
 import { router, usePage } from '@inertiajs/react'
 import axios from 'axios'
-import { Archive, ArrowUp, X } from 'lucide-react'
+import { Archive, ArrowUp, Share2, Split, X } from 'lucide-react'
 import React, { useState } from 'react'
 
 import { displayNumber } from '../../helpers/number.helpers.js'
@@ -50,6 +52,7 @@ const EmptyData = (props) => {
 }
 
 const Cargo = (props) => {
+  const toast = useToast()
   const [cargoForSplit, setCargoForSplit] = useState(null)
   const [sliderValue, setSliderValue] = useState(100)
   const [sliderCargoValue, setSliderCargoValue] = useState(null)
@@ -84,9 +87,37 @@ const Cargo = (props) => {
       qty: parseInt(sliderCargoValue),
       userId: auth.user.id,
     }
-    await axios.post('/api/contracts/split', data)
+    try {
+      await axios.post('/api/contracts/split', data)
+      router.reload()
+    } catch (e) {
+      if (e.response.status === 422) {
+        toast({
+          title: e.response.data.message,
+          status: 'error',
+          isClosable: true,
+        })
+      }
+    }
+  }
 
-    router.reload()
+  async function handleShareContract(contract) {
+    const data = {
+      id: contract.id,
+    }
+
+    try {
+      await axios.post('/api/contracts/share', data)
+      router.reload()
+    } catch (e) {
+      if (e.response.status === 422) {
+        toast({
+          title: e.response.data.message,
+          status: 'error',
+          isClosable: true,
+        })
+      }
+    }
   }
 
   async function removeFromFlight(contract) {
@@ -219,16 +250,33 @@ const Cargo = (props) => {
                           </Td>
                           <Td>
                             <Flex align="center" gap={2}>
-                              <Popover>
-                                <PopoverTrigger>
+                              {detail.is_shared ? <Tag>Shared</Tag> : <></>}
+                              {!detail.is_shared && (
+                                <Tooltip label="Share contract" placement="top">
                                   <Button
-                                    onClick={() => handleSplitClick(detail)}
+                                    onClick={() => handleShareContract(detail)}
                                     size="xs"
                                     colorScheme="gray"
                                   >
-                                    Split
+                                    <Icon as={Share2} />
                                   </Button>
-                                </PopoverTrigger>
+                                </Tooltip>
+                              )}
+                              <Popover>
+                                <Tooltip label="Split contract" placement="top">
+                                  {/* random box hack needed as worked around to tooltip and popover*/}
+                                  <Box display="inline-block">
+                                    <PopoverTrigger>
+                                      <Button
+                                        onClick={() => handleSplitClick(detail)}
+                                        size="xs"
+                                        colorScheme="gray"
+                                      >
+                                        <Icon as={Split} />
+                                      </Button>
+                                    </PopoverTrigger>
+                                  </Box>
+                                </Tooltip>
                                 <PopoverContent>
                                   <PopoverArrow />
                                   <PopoverCloseButton />
@@ -278,14 +326,20 @@ const Cargo = (props) => {
                                   </PopoverFooter>
                                 </PopoverContent>
                               </Popover>
-
-                              <Button
-                                onClick={() => removeFromFlight(detail)}
-                                size="xs"
-                                colorScheme="gray"
-                              >
-                                <Icon as={X} />
-                              </Button>
+                              {!detail.is_shared && (
+                                <Tooltip
+                                  label="Cancel contract"
+                                  placement="top"
+                                >
+                                  <Button
+                                    onClick={() => removeFromFlight(detail)}
+                                    size="xs"
+                                    colorScheme="gray"
+                                  >
+                                    <Icon as={X} />
+                                  </Button>
+                                </Tooltip>
+                              )}
                             </Flex>
                           </Td>
                         </Tr>
@@ -359,13 +413,14 @@ const Cargo = (props) => {
                           )}
                         </Td>
                         <Td>
-                          <Button
-                            size="xs"
-                            colorScheme="gray"
-                            onClick={() => removeFromFlight(detail)}
-                          >
-                            <Icon as={X} />
-                          </Button>
+                          {detail.is_shared ? <Tag>Shared</Tag> : <></>}
+                          {/*<Button*/}
+                          {/*  size="xs"*/}
+                          {/*  colorScheme="gray"*/}
+                          {/*  onClick={() => removeFromFlight(detail)}*/}
+                          {/*>*/}
+                          {/*  <Icon as={X} />*/}
+                          {/*</Button>*/}
                         </Td>
                       </Tr>
                     ))}

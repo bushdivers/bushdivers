@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Ramsey\Uuid\Uuid;
 use Tests\TestCase;
 
 class SplitContractTest extends TestCase
@@ -110,5 +111,26 @@ class SplitContractTest extends TestCase
         $this->assertDatabaseHas('contracts', [
             'contract_value' => 400
         ]);
+    }
+
+    public function test_split_on_contract_in_progress_fails()
+    {
+        $id = Uuid::uuid4();
+        $c = Contract::factory()->create([
+            'cargo_qty' => 3800,
+            'cargo_type' => 1,
+            'payload' => 3800,
+            'contract_value' => 6525,
+            'active_pirep' => $id
+        ]);
+
+        $data = [
+            'id' => $c->id,
+            'qty' => 3,
+            'userId' => $this->user->id
+        ];
+        $response = $this->postJson('/api/contracts/split', $data);
+        $response->assertStatus(422);
+        $response->assertJson(['message' => 'Contract is in progress']);
     }
 }

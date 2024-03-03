@@ -17,6 +17,11 @@ class SplitContractController extends Controller
     {
 
         $existingContract = Contract::find($request->id);
+
+        if ($existingContract->active_pirep) {
+            return \response()->json(['message' => 'Contract is in progress'], 422);
+        }
+
         $newQty = $request->qty;
         $remainingQty = $existingContract->cargo_qty - $newQty;
         $splitPercentage = ($newQty / $existingContract->cargo_qty) * 100;
@@ -39,6 +44,7 @@ class SplitContractController extends Controller
         $contract->heading = $existingContract->heading;
         $contract->expires_at = $existingContract->expires_at;
         $contract->is_available = false;
+        $contract->is_shared = $existingContract->is_shared;
         if ($existingContract->cargo_type == 1) {
             $existingContract->payload = $newQty;
             $contract->payload = $remainingQty;
