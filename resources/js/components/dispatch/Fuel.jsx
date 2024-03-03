@@ -12,7 +12,7 @@ import React from 'react'
 
 const Fuel = (props) => {
   return (
-    <Box mt={2}>
+    <Box my={2}>
       <Card>
         <CardHeader>
           <Heading size="md">Fuel</Heading>

@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Heading, SimpleGrid, Text } from '@chakra-ui/react'
+import { Box, Flex, Heading, SimpleGrid, Text } from '@chakra-ui/react'
 import { router, usePage } from '@inertiajs/react'
 import React, { useState } from 'react'
 
@@ -177,6 +177,8 @@ const Dispatch = ({ cargo, aircraft }) => {
               deadHead={deadHead}
               handleDeadHead={handleDeadHead}
             />
+          </Box>
+          <Box>
             <Destination
               currentAirport={auth.user.current_airport_id}
               updateDestinationValue={setDestination}
@@ -188,8 +190,6 @@ const Dispatch = ({ cargo, aircraft }) => {
               handleUpdateFuel={handleUpdateFuel}
               error={error}
             />
-          </Box>
-          <Box>
             <DispatchSummary
               selectedAircraft={selectedAircraft}
               selectedCargo={selectedCargo}
@@ -200,11 +200,10 @@ const Dispatch = ({ cargo, aircraft }) => {
               destination={destination}
               fuel={fuel}
               deadHead={deadHead}
+              handleSubmitDispatch={handleSubmitDispatch}
+              isActive={false}
             />
             <Box textAlign="right" mt={2}>
-              <Button onClick={() => handleSubmitDispatch()}>
-                File Dispatch
-              </Button>
               {submitError && (
                 <Text fontSize="xs" mt={2} color="red.300">
                   {submitError}

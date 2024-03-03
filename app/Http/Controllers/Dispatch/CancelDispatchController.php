@@ -39,8 +39,7 @@ class CancelDispatchController extends Controller
             $aircraft->save();
         }
 
-        Contract::where('user_id', Auth::user()->id)
-            ->where('active_pirep', $request->pirep)
+        Contract::where('active_pirep', $request->pirep)
             ->where('is_completed', false)
             ->update(['active_pirep' => null]);
 

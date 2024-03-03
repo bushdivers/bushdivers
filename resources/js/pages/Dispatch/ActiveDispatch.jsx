@@ -130,6 +130,7 @@ const ActiveDispatch = ({
               passengerCount={passengerCount}
               pirep={pirep}
               deadHead={pirep.is_empty}
+              isActive={true}
             />
             <Flex justifyContent="right">
               <Box mt={2}>

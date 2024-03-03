@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   Card,
   CardBody,
   CardHeader,
@@ -17,7 +18,14 @@ const DispatchSummary = (props) => {
     <Box>
       <Card title="Dispatch Summary">
         <CardHeader>
-          <Heading size="md">Dispatch Summary</Heading>
+          <Flex justifyContent="space-between" alignItems="center">
+            <Heading size="md">Dispatch Summary</Heading>
+            {!props.isActive && (
+              <Button onClick={() => props.handleSubmitDispatch()}>
+                File Dispatch
+              </Button>
+            )}
+          </Flex>
         </CardHeader>
         <CardBody>
           <Heading size="sm">
@@ -56,14 +64,12 @@ const DispatchSummary = (props) => {
               )}
             </Box>
             <Box my={1}>
-              <Text>Pilot & payload weight (inc. fuel):{' '}</Text>
+              <Text>Pilot & payload weight (inc. fuel): </Text>
               {props.selectedAircraft && (
                 <Text
                   color={
                     props.selectedAircraft &&
-                    props.personWeight +
-                      props.fuelWeight +
-                      props.cargoWeight >
+                    props.personWeight + props.fuelWeight + props.cargoWeight >
                       props.selectedAircraft.fleet.mtow -
                         props.selectedAircraft.fleet.zfw
                       ? 'red.300'
@@ -83,7 +89,7 @@ const DispatchSummary = (props) => {
               )}
             </Box>
             <Box my={1}>
-              <Text>Cargo payload:{' '}</Text>
+              <Text>Cargo payload: </Text>
               {props.selectedAircraft && (
                 <Text
                   color={
@@ -100,7 +106,7 @@ const DispatchSummary = (props) => {
               )}
             </Box>
             <Box my={1}>
-              <Text>Passenger count:{' '}</Text>
+              <Text>Passenger count: </Text>
               {props.selectedAircraft && (
                 <Text
                   color={
@@ -117,7 +123,7 @@ const DispatchSummary = (props) => {
               )}
             </Box>
             <Box my={1}>
-              <Text mt={1}>Fuel:{' '}</Text>
+              <Text mt={1}>Fuel: </Text>
               {props.pirep ? (
                 <Text>
                   {props.pirep.planned_fuel} gal |{' '}
