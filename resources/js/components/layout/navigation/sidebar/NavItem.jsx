@@ -14,7 +14,11 @@ const NavItem = ({ to, icon, text, isExternal = false }) => {
 
   return (
     <Box my={2}>
-      <ChakraLink as={isExternal ? '' : InertiaLink} href={to}>
+      <ChakraLink
+        as={isExternal ? '' : InertiaLink}
+        href={to}
+        target={isExternal ? '_blank' : ''}
+      >
         <Button
           colorScheme={url === to ? 'orange' : ''}
           variant={url === to ? 'solid' : 'ghost'}

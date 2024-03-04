@@ -49,7 +49,12 @@ const NavMenuItems = () => {
         ) : (
           <></>
         )}
-        <NavItem icon={HelpCircle} text="Help (Coming Soon)" to="" />
+        <NavItem
+          icon={HelpCircle}
+          text="Help (Docs)"
+          to="https://bush-divers-1.gitbook.io/bush-divers/"
+          isExternal
+        />
         <NavItem
           isExternal
           icon={Download}
