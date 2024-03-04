@@ -32,6 +32,11 @@ class Pirep extends Model
         return $this->hasMany(FlightLog::class);
     }
 
+    public function latestLog()
+    {
+        return $this->hasOne(FlightLog::class)->latestOfMany();
+    }
+
     public function depAirport()
     {
         return $this->belongsTo(Airport::class, 'departure_airport_id', 'identifier');

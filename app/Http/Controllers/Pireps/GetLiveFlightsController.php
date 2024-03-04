@@ -3,33 +3,41 @@
 namespace App\Http\Controllers\Pireps;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\PirepIVAOCollection;
 use App\Models\Enums\PirepState;
 use App\Models\Pirep;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 
 class GetLiveFlightsController extends Controller
 {
-    /**
-     * Handle the incoming request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    // Default API response
     public function __invoke(Request $request): JsonResponse
     {
-        $liveFlights = Pirep::with('depAirport', 'arrAirport', 'aircraft', 'aircraft.fleet', 'pilot')
+        $flights = $this->getLiveFlights();
+        return response()->json(['flights' => $flights]);
+    }
+
+    // Whazzup response based on IVAO JSON format
+    public  function whazzup(): JsonResponse
+    {
+        $flights = $this->getLiveFlights();
+        return response()->json(new PirepIVAOCollection($flights));
+    }
+
+    private function getLiveFlights(): Collection
+    {
+        $liveFlights = Pirep::with('depAirport', 'arrAirport', 'aircraft', 'aircraft.fleet', 'pilot', 'latestLog')
             ->where('state', PirepState::IN_PROGRESS)
             ->where('is_rental', false)
             ->get();
 
-        $liveRentalFlights = Pirep::with('depAirport', 'arrAirport', 'rental', 'rental.fleet', 'pilot')
+        $liveRentalFlights = Pirep::with('depAirport', 'arrAirport', 'rental', 'rental.fleet', 'pilot', 'latestLog')
             ->where('state', PirepState::IN_PROGRESS)
             ->where('is_rental', true)
             ->get();
 
-        $flights = collect($liveFlights)->merge($liveRentalFlights);
-
-        return response()->json(['flights' => $flights]);
+        return collect($liveFlights)->merge($liveRentalFlights);
     }
 }
