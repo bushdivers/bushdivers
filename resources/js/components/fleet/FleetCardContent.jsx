@@ -15,7 +15,7 @@ import {
   Tr,
 } from '@chakra-ui/react'
 import { Link, usePage } from '@inertiajs/react'
-import { Wrench } from 'lucide-react'
+import { Anchor, Wrench } from 'lucide-react'
 import React from 'react'
 
 import AircraftCondition from './AircraftCondition'
@@ -142,14 +142,26 @@ const FleetCardContent = ({ fleet }) => {
                         </Link>
                       </Td>
                       <Td>
-                        <Link href={`/airports/${aircraft.hub_id}`}>
-                          {aircraft.hub_id}
-                        </Link>
+                        <Flex alignItems="center" gap={2}>
+                          <Link href={`/airports/${aircraft.hub_id}`}>
+                            {aircraft.hub_id}
+                          </Link>
+                          {aircraft.hub.longest_runway_surface === 'W' && (
+                            <Icon as={Anchor} color="blue.500" />
+                          )}
+                        </Flex>
                       </Td>
                       <Td>
-                        <Link href={`/airports/${aircraft.current_airport_id}`}>
-                          {aircraft.current_airport_id}
-                        </Link>
+                        <Flex alignItems="center" gap={2}>
+                          <Link
+                            href={`/airports/${aircraft.current_airport_id}`}
+                          >
+                            {aircraft.current_airport_id}
+                          </Link>
+                          {aircraft.location.longest_runway_surface === 'W' && (
+                            <Icon as={Anchor} color="blue.500" />
+                          )}
+                        </Flex>
                       </Td>
                       <Td>{aircraft.flight_time_mins}</Td>
                       <Td>

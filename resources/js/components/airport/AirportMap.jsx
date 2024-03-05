@@ -16,6 +16,7 @@ import {
 import { router, usePage } from '@inertiajs/react'
 import axios from 'axios'
 import {
+  Anchor,
   ArrowsUpFromLine,
   Cloud,
   FilePen,
@@ -64,7 +65,14 @@ function AirportInfo({ airport, updateCurrentViews, currentViews }) {
             <Tag w={6} h={6}>
               {airport.size}
             </Tag>
-            <Text fontSize="lg">{`${airport.name} - ${airport.identifier}`}</Text>
+            <Text fontSize="lg">
+              <Flex alignItems="center" gap={2}>
+                {`${airport.name} - ${airport.identifier}`}
+                {airport.longest_runway_surface === 'W' && (
+                  <Icon as={Anchor} color="blue.500" />
+                )}
+              </Flex>
+            </Text>
             {airport.is_hub ? <Tag>hub</Tag> : <></>}
           </Flex>
         </CardHeader>

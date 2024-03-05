@@ -10,7 +10,7 @@ import {
 } from '@chakra-ui/react'
 import { Link } from '@inertiajs/react'
 import { formatDistanceToNowStrict } from 'date-fns'
-import { ArrowUp, Check, Plane } from 'lucide-react'
+import { Anchor, ArrowUp, Check, Plane } from 'lucide-react'
 import React from 'react'
 
 import Tooltip from '../elements/Tooltip'
@@ -53,12 +53,19 @@ const ContractDetail = ({
               <Link href={`/airports/${contract.current_airport_id}`}>
                 <Text fontSize="xl">{contract.current_airport_id}</Text>
               </Link>
+              {contract.dep_airport.longest_runway_surface === 'W' && (
+                <Icon as={Anchor} color="blue.500" />
+              )}
+
               <Box p={1}>
                 <Icon as={Plane} />
               </Box>
               <Link href={`/airports/${contract.arr_airport.identifier}`}>
                 <Text fontSize="xl">{contract.arr_airport.identifier}</Text>
               </Link>
+              {contract.arr_airport.longest_runway_surface === 'W' && (
+                <Icon as={Anchor} color="blue.500" />
+              )}
             </Flex>
             <Box mr={4}>
               <Tooltip content="Bid">

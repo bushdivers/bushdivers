@@ -21,7 +21,7 @@ class GetHqController extends Controller
             $q->where('owner_id', 0);
             $q->where('status', AircraftStatus::ACTIVE);
             $q->orderBy('hub_id');
-        }])
+        }, 'aircraft.location', 'aircraft.hub'])
             ->where('company_fleet', true)
             ->orderBy('type')
             ->get();

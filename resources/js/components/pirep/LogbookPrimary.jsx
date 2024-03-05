@@ -1,7 +1,7 @@
 import { Box, Card, CardBody, Flex, Icon, Text } from '@chakra-ui/react'
 import { Link } from '@inertiajs/react'
 import { format } from 'date-fns'
-import { PlaneLanding, PlaneTakeoff } from 'lucide-react'
+import { Anchor, PlaneLanding, PlaneTakeoff } from 'lucide-react'
 import React from 'react'
 
 const LogbookPrimary = ({ pirep }) => {
@@ -12,18 +12,27 @@ const LogbookPrimary = ({ pirep }) => {
           <Flex justifyContent="space-between">
             <Flex direction="column" alignItems="center">
               <Icon w={6} h={6} as={PlaneTakeoff} />
-              <Link href={`/airports/${pirep.departure_airport_id}`}>
-                <Text fontSize="xl">{pirep.departure_airport_id}</Text>
-              </Link>
-
+              <Flex direction="row" alignItems="center" gap={2}>
+                <Link href={`/airports/${pirep.departure_airport_id}`}>
+                  <Text fontSize="xl">{pirep.departure_airport_id}</Text>
+                </Link>
+                {pirep.dep_airport.longest_runway_surface === 'W' && (
+                  <Icon as={Anchor} color="blue.500" />
+                )}
+              </Flex>
               <Text>{pirep.dep_airport.name}</Text>
               <Text>{format(new Date(pirep.block_off_time), 'kk:mm')}</Text>
             </Flex>
             <Flex direction="column" alignItems="center">
               <Icon w={6} h={6} as={PlaneLanding} />
-              <Link href={`/airports/${pirep.destination_airport_id}`}>
-                <Text fontSize="xl">{pirep.destination_airport_id}</Text>
-              </Link>
+              <Flex direction="row" alignItems="center" gap={2}>
+                <Link href={`/airports/${pirep.destination_airport_id}`}>
+                  <Text fontSize="xl">{pirep.destination_airport_id}</Text>
+                </Link>
+                {pirep.arr_airport.longest_runway_surface === 'W' && (
+                  <Icon as={Anchor} color="blue.500" />
+                )}
+              </Flex>
               <Text>{pirep.arr_airport.name}</Text>
               <Text>{format(new Date(pirep.block_on_time), 'kk:mm')}</Text>
             </Flex>

@@ -35,7 +35,7 @@ import {
 } from '@chakra-ui/react'
 import { router, usePage } from '@inertiajs/react'
 import axios from 'axios'
-import { Archive, ArrowUp, Share2, Split, X } from 'lucide-react'
+import { Anchor, Archive, ArrowUp, Share2, Split, X } from 'lucide-react'
 import React, { useState } from 'react'
 
 import { displayNumber } from '../../helpers/number.helpers.js'
@@ -205,13 +205,11 @@ const Cargo = (props) => {
                           </Td>
                           <Td>{detail.current_airport_id}</Td>
                           <Td>
-                            {detail.arr_airport_id}{' '}
-                            {detail.arr_airport.longest_runway_surface ===
-                              'W' && (
-                              <span className="material-icons md-18">
-                                anchor
-                              </span>
-                            )}
+                            <Flex alignItems="center" gap={2}>
+                              {detail.arr_airport_id}{' '}
+                              {detail.arr_airport.longest_runway_surface ===
+                                'W' && <Icon as={Anchor} color="blue.500" />}
+                            </Flex>
                           </Td>
                           <Td>
                             {detail.distance.toLocaleString(navigator.language)}{' '}
@@ -237,13 +235,13 @@ const Cargo = (props) => {
                                     navigator.language
                                   )}{' '}
                                   lbs
-                                </span>{' '}
-                                <span className="text-xs">{detail.cargo}</span>
+                                </span>
+                                <Text fontSize="xs">{detail.cargo}</Text>
                               </div>
                             ) : (
                               <div>
                                 <span>{detail.cargo_qty}</span>{' '}
-                                <span className="text-xs">{detail.cargo}</span>
+                                <Text fontSize="xs">{detail.cargo}</Text>
                               </div>
                             )}
                             {detail.is_custom ? <Tag>Custom</Tag> : <></>}
@@ -372,11 +370,11 @@ const Cargo = (props) => {
                       <Tr key={detail.id}>
                         <Td>{detail.current_airport_id}</Td>
                         <Td>
-                          {detail.arr_airport_id}{' '}
-                          {detail.arr_airport.longest_runway_surface ===
-                            'W' && (
-                            <span className="material-icons md-18">anchor</span>
-                          )}
+                          <Flex alignItems="center" gap={2}>
+                            {detail.arr_airport_id}{' '}
+                            {detail.arr_airport.longest_runway_surface ===
+                              'W' && <Icon as={Anchor} color="blue.500" />}
+                          </Flex>
                         </Td>
                         <Td>
                           {detail.distance.toLocaleString(navigator.language)}{' '}
@@ -402,13 +400,13 @@ const Cargo = (props) => {
                                   navigator.language
                                 )}{' '}
                                 lbs
-                              </span>{' '}
-                              <span className="text-xs">{detail.cargo}</span>
+                              </span>
+                              <Text fontSize="xs">{detail.cargo}</Text>
                             </div>
                           ) : (
                             <div>
                               <span>{detail.cargo_qty}</span>{' '}
-                              <span className="text-xs">{detail.cargo}</span>
+                              <Text fontSize="xs">{detail.cargo}</Text>
                             </div>
                           )}
                         </Td>

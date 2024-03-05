@@ -4,15 +4,19 @@ import {
   Card,
   CardBody,
   Link as ChakraLink,
+  Flex,
+  Icon,
   Table,
   TableContainer,
   Tbody,
   Td,
+  Text,
   Th,
   Thead,
   Tr,
 } from '@chakra-ui/react'
 import { Link as InertiaLink, router } from '@inertiajs/react'
+import { Anchor } from 'lucide-react'
 import React from 'react'
 
 import Pagination from '../../components/elements/Pagination'
@@ -67,18 +71,30 @@ const Logbook = ({ logbook }) => {
                           )}
                         </Td>
                         <Td>
-                          {entry.departure_airport_id}
-                          <br />
-                          <span className="text-xs">
-                            {entry.dep_airport.name}
-                          </span>
+                          <Flex alignItems="center" gap={2}>
+                            <Box>
+                              {entry.departure_airport_id}
+                              <br />
+                              <Text fontSize="xs">
+                                {entry.dep_airport.name}
+                              </Text>
+                            </Box>
+                            {entry.dep_airport.longest_runway_surface ===
+                              'W' && <Icon as={Anchor} color="blue.500" />}
+                          </Flex>
                         </Td>
                         <Td>
-                          {entry.destination_airport_id}
-                          <br />
-                          <span className="text-xs">
-                            {entry.arr_airport.name}
-                          </span>
+                          <Flex alignItems="center" gap={2}>
+                            <Box>
+                              {entry.destination_airport_id}
+                              <br />
+                              <Text fontSize="xs">
+                                {entry.arr_airport.name}
+                              </Text>
+                            </Box>
+                            {entry.arr_airport.longest_runway_surface ===
+                              'W' && <Icon as={Anchor} color="blue.500" />}
+                          </Flex>
                         </Td>
                         <Td>
                           {convertMinuteDecimalToHoursAndMinutes(
