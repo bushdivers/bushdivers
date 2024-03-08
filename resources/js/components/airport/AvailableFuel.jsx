@@ -1,11 +1,11 @@
-import { Flex, Text } from '@chakra-ui/react'
+import { Box, Flex, Text } from '@chakra-ui/react'
 import React from 'react'
 
 const AvailableFuel = ({ airport }) => {
   return (
     <>
       <Flex alignItems="center" gap={4}>
-        {airport.has_avgas && (
+        {airport.has_avgas ? (
           <Flex direction="column">
             <Flex alignItems="center" gap={2}>
               <Text as="b" fontSize="sm">
@@ -17,8 +17,10 @@ const AvailableFuel = ({ airport }) => {
               {airport.is_hub ? 'unlimited' : `${airport.avgas_qty} gal`}
             </Text>
           </Flex>
+        ) : (
+          <Box mx={2}>No 100LL</Box>
         )}
-        {airport.has_jetfuel && (
+        {airport.has_jetfuel ? (
           <Flex direction="column">
             <Flex alignItems="center" gap={2}>
               <Text as="b" fontSize="sm">
@@ -30,6 +32,8 @@ const AvailableFuel = ({ airport }) => {
               {airport.is_hub ? 'unlimited' : `${airport.jetfuel_qty} gal`}
             </Text>
           </Flex>
+        ) : (
+          <Box mx={2}>No Jet Fuel</Box>
         )}
       </Flex>
     </>

@@ -74,16 +74,18 @@ class CreateDispatchController extends Controller
 
 
         $actualFuelAdded = $request->fuel - $aircraft->fuel_onboard;
-        // charge fuel
-        if ($isRental) {
-            $addUserTransaction->execute(Auth::user()->id, TransactionTypes::FlightFeesFuel, -$request->fuel_price);
-        } elseif ($aircraft->owner_id != 0) {
-            $addUserTransaction->execute(Auth::user()->id, TransactionTypes::FlightFeesFuel, -$request->fuel_price);
-        } else {
-            $addAirlineTransaction->execute(AirlineTransactionTypes::FuelFees, -$request->fuel_price, 'Fuel '.$actualFuelAdded.' at '.Auth::user()->current_airport_id, null, 'debit');
+        if ($actualFuelAdded > 0) {
+            // charge fuel
+            if ($isRental) {
+                $addUserTransaction->execute(Auth::user()->id, TransactionTypes::FlightFeesFuel, -$request->fuel_price);
+            } elseif ($aircraft->owner_id != 0) {
+                $addUserTransaction->execute(Auth::user()->id, TransactionTypes::FlightFeesFuel, -$request->fuel_price);
+            } else {
+                $addAirlineTransaction->execute(AirlineTransactionTypes::FuelFees, -$request->fuel_price, 'Fuel '.$actualFuelAdded.' at '.Auth::user()->current_airport_id, null, 'debit');
+            }
+            // decrement fuel from airport
+            $updateFuelAtAirport->execute(Auth::user()->current_airport_id, $actualFuelAdded, $aircraft->fleet->fuel_type, 'decrement');
         }
-        // decrement fuel from airport
-        $updateFuelAtAirport->execute(Auth::user()->current_airport_id, $actualFuelAdded, $aircraft->fleet->fuel_type, 'decrement');
 
         // update aircraft for user and fuel
         if (!$isRental) {

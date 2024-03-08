@@ -69,6 +69,19 @@ const Fuel = (props) => {
         (val / 100) * props.selectedAircraft.fleet.fuel_capacity
       )
   }
+
+  function shouldWeRenderFuelActions(fuelType) {
+    let shouldIRenderFuelSlider = false
+    if (fuelType === 1) {
+      shouldIRenderFuelSlider =
+        props.airport.avgas_qty > 0 || props.airport.avgas_qty === null
+    } else {
+      shouldIRenderFuelSlider =
+        props.airport.jetfuel_qty > 0 || props.airport.jetfuel_qty === null
+    }
+    return shouldIRenderFuelSlider
+  }
+
   return (
     <Box my={2}>
       <Card>
@@ -89,7 +102,9 @@ const Fuel = (props) => {
                   <Text>
                     Current Fuel (gal): {props.fuel !== null ? props.fuel : ''}
                   </Text>
-                  {props.selectedAircraft && (
+                  {shouldWeRenderFuelActions(
+                    props.selectedAircraft?.fleet?.fuel_type
+                  ) ? (
                     <Popover>
                       <PopoverTrigger>
                         <Button size="xs" variant="link">
@@ -120,15 +135,6 @@ const Fuel = (props) => {
                             aria-label="slider-ex-6"
                             onChange={(val) => updateSlideValue(val)}
                           >
-                            {/*<SliderMark value={25} {...labelStyles}>*/}
-                            {/*  25%*/}
-                            {/*</SliderMark>*/}
-                            {/*<SliderMark value={50} {...labelStyles}>*/}
-                            {/*  50%*/}
-                            {/*</SliderMark>*/}
-                            {/*<SliderMark value={75} {...labelStyles}>*/}
-                            {/*  75%*/}
-                            {/*</SliderMark>*/}
                             <SliderTrack>
                               <SliderFilledTrack />
                             </SliderTrack>
@@ -162,6 +168,8 @@ const Fuel = (props) => {
                         </PopoverFooter>
                       </PopoverContent>
                     </Popover>
+                  ) : (
+                    <></>
                   )}
                 </Flex>
                 {/*<Input*/}
@@ -182,10 +190,14 @@ const Fuel = (props) => {
                   </Text>
                 </Flex>
               </Box>
-              {props.airport.is_hub && (
+              {shouldWeRenderFuelActions(
+                props.selectedAircraft?.fleet?.fuel_type
+              ) ? (
                 <Button colorScheme="gray" size="sm">
                   Create Fuel Cargo
                 </Button>
+              ) : (
+                <></>
               )}
             </Flex>
           </Box>
