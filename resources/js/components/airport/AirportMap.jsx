@@ -34,9 +34,11 @@ import {
   parseMapStyle,
   transformRequest,
 } from '../../helpers/geo.helpers'
+import { displayNumber } from '../../helpers/number.helpers.js'
 import ContractDetail from '../contracts/ContractDetail'
 import AirportMetar from './AirportMetar'
 import AirportRunway from './AirportRunway'
+import AvailableFuel from './AvailableFuel.jsx'
 
 function renameAirport(airport) {
   const newIcao = window.prompt('Enter new ICAO code for this airport', airport)
@@ -62,74 +64,86 @@ function AirportInfo({ airport, updateCurrentViews, currentViews }) {
       <Card>
         <CardHeader>
           <Flex justifyContent="space-between" gap={2}>
-            <Tag w={6} h={6}>
-              {airport.size}
-            </Tag>
-            <Text fontSize="lg">
-              <Flex alignItems="center" gap={2}>
-                {`${airport.name} - ${airport.identifier}`}
-                {airport.longest_runway_surface === 'W' && (
-                  <Icon as={Anchor} color="blue.500" />
-                )}
-              </Flex>
-            </Text>
-            {airport.is_hub ? <Tag>hub</Tag> : <></>}
+            <Flex alignItems="center" gap={2}>
+              <Tag w={6} h={6}>
+                {airport.size}
+              </Tag>
+              <Text fontSize="lg">
+                <Flex alignItems="center" gap={2}>
+                  {`${airport.name} - ${airport.identifier}`}
+                  {airport.longest_runway_surface === 'W' && (
+                    <Icon as={Anchor} color="blue.500" />
+                  )}
+                </Flex>
+              </Text>
+            </Flex>
+            <Flex direction="column" gap={1}>
+              <Text>Elevation: {displayNumber(airport.altitude, false)}ft</Text>
+              <Text>Lat: {airport.lat}</Text>
+              <Text>Lon: {airport.lon}</Text>
+            </Flex>
           </Flex>
         </CardHeader>
         <CardBody>
-          <Flex direction="column" gap={1}>
-            <Text>{airport.altitude}ft</Text>
-            <Text>
-              Lat: {airport.lat} Lon: {airport.lon}
-            </Text>
-          </Flex>
-          <Flex mt={2} gap={1}>
-            <Tooltip direction="top" content="Metar">
-              <Button
-                onClick={() => changeViews('metar')}
-                size="xs"
-                variant={currentViews.includes('metar') ? 'solid' : 'ghost'}
-              >
-                <Icon as={Cloud} />
-              </Button>
-            </Tooltip>
-            <Tooltip direction="top" content="Runway Info">
-              <Button
-                onClick={() => changeViews('runway')}
-                size="xs"
-                variant={currentViews.includes('runway') ? 'solid' : 'ghost'}
-              >
-                <Icon as={ArrowsUpFromLine} />
-              </Button>
-            </Tooltip>
-            <Tooltip direction="top" content="Contracts">
-              <Button
-                onClick={() => changeViews('contracts')}
-                size="xs"
-                variant={currentViews.includes('contracts') ? 'solid' : 'ghost'}
-              >
-                <Icon as={FilePen} />
-              </Button>
-            </Tooltip>
-            <Tooltip direction="top" content="Aircraft">
-              <Button
-                onClick={() => changeViews('aircraft')}
-                size="xs"
-                variant={currentViews.includes('aircraft') ? 'solid' : 'ghost'}
-              >
-                <Icon as={Plane} />
-              </Button>
-            </Tooltip>
-            {auth.user.user_roles.includes('airport_manager') && (
-              <Button
-                onClick={() => renameAirport(airport.identifier)}
-                size="xs"
-                variant="ghost"
-                colorScheme="gray"
-              >
-                Rename ICAO
-              </Button>
-            )}
+          <AvailableFuel airport={airport} />
+          <Flex mt={4} justifyContent="space-between">
+            <Box>
+              <Flex mt={2} gap={1}>
+                <Tooltip direction="top" content="Metar">
+                  <Button
+                    onClick={() => changeViews('metar')}
+                    size="xs"
+                    variant={currentViews.includes('metar') ? 'solid' : 'ghost'}
+                  >
+                    <Icon as={Cloud} />
+                  </Button>
+                </Tooltip>
+                <Tooltip direction="top" content="Runway Info">
+                  <Button
+                    onClick={() => changeViews('runway')}
+                    size="xs"
+                    variant={
+                      currentViews.includes('runway') ? 'solid' : 'ghost'
+                    }
+                  >
+                    <Icon as={ArrowsUpFromLine} />
+                  </Button>
+                </Tooltip>
+                <Tooltip direction="top" content="Contracts">
+                  <Button
+                    onClick={() => changeViews('contracts')}
+                    size="xs"
+                    variant={
+                      currentViews.includes('contracts') ? 'solid' : 'ghost'
+                    }
+                  >
+                    <Icon as={FilePen} />
+                  </Button>
+                </Tooltip>
+                <Tooltip direction="top" content="Aircraft">
+                  <Button
+                    onClick={() => changeViews('aircraft')}
+                    size="xs"
+                    variant={
+                      currentViews.includes('aircraft') ? 'solid' : 'ghost'
+                    }
+                  >
+                    <Icon as={Plane} />
+                  </Button>
+                </Tooltip>
+                {auth.user.user_roles.includes('airport_manager') && (
+                  <Button
+                    onClick={() => renameAirport(airport.identifier)}
+                    size="xs"
+                    variant="ghost"
+                    colorScheme="gray"
+                  >
+                    Rename ICAO
+                  </Button>
+                )}
+              </Flex>
+            </Box>
+            <Box>{airport.is_hub ? <Tag>hub</Tag> : <></>}</Box>
           </Flex>
         </CardBody>
       </Card>

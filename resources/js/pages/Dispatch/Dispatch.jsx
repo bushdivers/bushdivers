@@ -9,7 +9,7 @@ import DispatchSummary from '../../components/dispatch/DispatchSummary'
 import Fuel from '../../components/dispatch/Fuel'
 import AppLayout from '../../components/layout/AppLayout'
 
-const Dispatch = ({ cargo, aircraft }) => {
+const Dispatch = ({ cargo, aircraft, airport }) => {
   const { auth } = usePage().props
   const [personWeight] = useState(170.0)
   const [avgasWeight] = useState(5.99)
@@ -17,6 +17,7 @@ const Dispatch = ({ cargo, aircraft }) => {
   const [selectedAircraft, setSelectedAircraft] = useState('')
   const [selectedCargo, setSelectedCargo] = useState([])
   const [fuel, setFuel] = useState(0)
+  const [fuelPrice, setFuelPrice] = useState(0.0)
   const [destination, setDestination] = useState('')
   const [fuelWeight, setFuelWeight] = useState(0)
   const [cargoWeight, setCargoWeight] = useState(0)
@@ -98,16 +99,16 @@ const Dispatch = ({ cargo, aircraft }) => {
     setCargoWeight(newTotal)
   }
 
-  function handleUpdateFuel(e) {
+  function handleUpdateFuel(qty, price) {
     setSubmitError(null)
     setError(null)
-    const qty = e.target.value
     if (qty > selectedAircraft.fleet.fuel_capacity) {
       setError('Cannot specify more than the aircraft fuel capacity')
       setFuel(selectedAircraft.fleet.fuel_capacity)
       return
     }
     setFuel(qty)
+    setFuelPrice(price)
     calculateFuelWeight(selectedAircraft, qty)
   }
 
@@ -124,6 +125,7 @@ const Dispatch = ({ cargo, aircraft }) => {
       aircraft: selectedAircraft.registration,
       destination,
       fuel,
+      fuel_price: fuelPrice,
       cargo,
       is_empty: deadHead,
     }
@@ -184,6 +186,7 @@ const Dispatch = ({ cargo, aircraft }) => {
               updateDestinationValue={setDestination}
             />
             <Fuel
+              airport={airport}
               selectedAircraft={selectedAircraft}
               fuel={fuel}
               fuelWeight={fuelWeight}

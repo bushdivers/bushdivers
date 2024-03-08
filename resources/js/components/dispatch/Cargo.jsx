@@ -318,7 +318,10 @@ const Cargo = (props) => {
                                         Save Split
                                       </Button>
                                       <Text>
-                                        {displayNumber(sliderCargoValue, false)}
+                                        {displayNumber(
+                                          parseInt(sliderCargoValue),
+                                          false
+                                        )}
                                       </Text>
                                     </Flex>
                                   </PopoverFooter>
@@ -410,16 +413,7 @@ const Cargo = (props) => {
                             </div>
                           )}
                         </Td>
-                        <Td>
-                          {detail.is_shared ? <Tag>Shared</Tag> : <></>}
-                          {/*<Button*/}
-                          {/*  size="xs"*/}
-                          {/*  colorScheme="gray"*/}
-                          {/*  onClick={() => removeFromFlight(detail)}*/}
-                          {/*>*/}
-                          {/*  <Icon as={X} />*/}
-                          {/*</Button>*/}
-                        </Td>
+                        <Td>{detail.is_shared ? <Tag>Shared</Tag> : <></>}</Td>
                       </Tr>
                     ))}
                   </Tbody>
