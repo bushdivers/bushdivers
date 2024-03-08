@@ -107,7 +107,7 @@ const ActiveDispatch = ({
                               </Flex>
                             ) : (
                               <Flex gap={2}>
-                                <span>{detail.cargo_qty}</span>{' '}
+                                <span>{detail.cargo_qty} lbs</span>{' '}
                                 <Text size="sm">{detail.cargo}</Text>
                               </Flex>
                             )}

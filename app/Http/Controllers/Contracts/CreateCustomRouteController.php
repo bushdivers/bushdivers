@@ -34,6 +34,7 @@ class CreateCustomRouteController extends Controller
         }
 
         $existingCustom = Contract::where('user_id', Auth::user()->id)
+            ->where('dep_airport_id', strtoupper($request->departure))
             ->where('is_completed', false)
             ->where('is_custom', true)
             ->count();

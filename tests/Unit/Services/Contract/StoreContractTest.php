@@ -36,7 +36,8 @@ class StoreContractTest extends TestCase
                 'cargo_type' => 1,
                 'cargo' => 'Test',
                 'cargo_qty' => 10,
-                'expires_at' => Carbon::now()->addDays(2)
+                'expires_at' => Carbon::now()->addDays(2),
+                'is_fuel' => false,
             ]
         ];
         $this->storeContracts->execute($data);
@@ -58,7 +59,8 @@ class StoreContractTest extends TestCase
                 'cargo_type' => 1,
                 'cargo' => 'Test',
                 'cargo_qty' => 10,
-                'expires_at' => Carbon::now()->addDays(2)
+                'expires_at' => Carbon::now()->addDays(2),
+                'is_fuel' => false,
             ],
             [
                 'departure' => 'AYMR',
@@ -69,10 +71,36 @@ class StoreContractTest extends TestCase
                 'cargo_type' => 1,
                 'cargo' => 'Test',
                 'cargo_qty' => 10,
-                'expires_at' => Carbon::now()->addDays(2)
+                'expires_at' => Carbon::now()->addDays(2),
+                'is_fuel' => false,
             ]
         ];
         $this->storeContracts->execute($data);
         $this->assertDatabaseCount('contracts', 2);
+    }
+
+    public function test_fuel_contract_details_stored()
+    {
+        $data = [
+            [
+                'departure' => 'AYMR',
+                'destination' => 'AYMH',
+                'distance' => 60,
+                'heading' => 45,
+                'contract_value' => 1000,
+                'cargo_type' => 1,
+                'cargo' => '10 gal 100LL Fuel',
+                'cargo_qty' => 10,
+                'expires_at' => Carbon::now()->addDays(2),
+                'is_fuel' => true,
+                'fuel_qty' => 10,
+                'fuel_type' => 1
+            ]
+        ];
+        $this->storeContracts->execute($data);
+        $this->assertDatabaseHas('contracts', [
+            'arr_airport_id' => 'AYMH',
+            'is_fuel' => true
+        ]);
     }
 }

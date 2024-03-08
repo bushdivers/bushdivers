@@ -5,7 +5,10 @@ import {
   CardBody,
   CardHeader,
   Flex,
+  FormControl,
+  FormLabel,
   Heading,
+  Input,
   Popover,
   PopoverArrow,
   PopoverBody,
@@ -14,12 +17,16 @@ import {
   PopoverFooter,
   PopoverHeader,
   PopoverTrigger,
+  Radio,
+  RadioGroup,
   Slider,
   SliderFilledTrack,
   SliderThumb,
   SliderTrack,
+  Stack,
   Text,
 } from '@chakra-ui/react'
+import { router } from '@inertiajs/react'
 import React, { useEffect, useState } from 'react'
 
 import { displayNumber } from '../../helpers/number.helpers.js'
@@ -30,6 +37,13 @@ const Fuel = (props) => {
   const [sliderValue, setSliderValue] = useState(0)
   const [sliderFuelValue, setSliderFuelValue] = useState(0)
   const [fuelPrice, setFuelPrice] = useState(0.0)
+  const [fuelCargoData, setFuelCargoData] = useState({
+    destination: '',
+    fuel_qty: 0,
+  })
+  const [fuelCargoType, setFuelCargoType] = useState('1')
+  const [fuelWeight, setFuelWeight] = useState(0)
+  const [fuelCargoError, setFuelCargoError] = useState(null)
 
   useEffect(() => {
     updateFuelPrice()
@@ -80,6 +94,60 @@ const Fuel = (props) => {
         props.airport.jetfuel_qty > 0 || props.airport.jetfuel_qty === null
     }
     return shouldIRenderFuelSlider
+  }
+
+  function handleFuelCargoChange(e) {
+    const key = e.target.id
+    const value = e.target.value
+    setFuelCargoData((values) => ({
+      ...values,
+      [key]: value,
+    }))
+  }
+
+  useEffect(() => {
+    let weight = 0
+    weight =
+      fuelCargoType === '1'
+        ? fuelCargoData.fuel_qty * 5.99
+        : fuelCargoData.fuel_qty * 6.79
+    setFuelWeight(parseInt(weight))
+  }, [fuelCargoData.fuel_qty, fuelCargoType])
+
+  async function handleCreateFuelCargo() {
+    setFuelCargoError(null)
+    if (
+      fuelCargoData.destination &&
+      fuelCargoData.fuel_qty > 0 &&
+      fuelCargoType
+    ) {
+      if (fuelCargoType === '1') {
+        if (
+          props.airport.avgas_qty &&
+          fuelCargoType > props.airport.avgas_qty
+        ) {
+          setFuelCargoError('Not enough 100LL')
+          return
+        }
+      } else {
+        if (
+          props.airport.jetfuel_qty &&
+          fuelCargoType > props.airport.jetfuel_qty
+        ) {
+          setFuelCargoError('Not enough Jet Fuel')
+          return
+        }
+      }
+      const data = {
+        destination: fuelCargoData.destination,
+        qty: parseInt(fuelCargoData.fuel_qty),
+        weight: parseInt(fuelWeight),
+        fuel_type: parseInt(fuelCargoType),
+      }
+      await router.post('/contracts/fuel', data)
+    } else {
+      setFuelCargoError('Please enter a destination, fuel type and fuel qty')
+    }
   }
 
   return (
@@ -193,9 +261,67 @@ const Fuel = (props) => {
               {shouldWeRenderFuelActions(
                 props.selectedAircraft?.fleet?.fuel_type
               ) ? (
-                <Button colorScheme="gray" size="sm">
-                  Create Fuel Cargo
-                </Button>
+                <Popover>
+                  <PopoverTrigger>
+                    <Button colorScheme="gray" size="sm">
+                      Create Fuel Cargo
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent>
+                    <PopoverArrow />
+                    <PopoverCloseButton />
+                    <PopoverHeader>Create a Fuel Cargo Contract</PopoverHeader>
+                    <PopoverBody>
+                      <FormControl>
+                        <FormLabel>Destination ICAO</FormLabel>
+                        <Input
+                          id="destination"
+                          name="destination"
+                          value={fuelCargoData.destination}
+                          type="text"
+                          onChange={handleFuelCargoChange}
+                        />
+                      </FormControl>
+                      <FormControl mt={2}>
+                        <FormLabel>Fuel Type</FormLabel>
+                        <RadioGroup
+                          id="fuel_type"
+                          name="fuel_type"
+                          onChange={setFuelCargoType}
+                          value={fuelCargoType}
+                        >
+                          <Stack direction="row">
+                            <Radio value="1">100LL</Radio>
+                            <Radio value="2">Jet Fuel</Radio>
+                          </Stack>
+                        </RadioGroup>
+                      </FormControl>
+                      <FormControl mt={2}>
+                        <FormLabel>Fuel Qty (gal)</FormLabel>
+                        <Input
+                          id="fuel_qty"
+                          name="fuel_qty"
+                          value={fuelCargoData.fuel_qty}
+                          type="text"
+                          onChange={handleFuelCargoChange}
+                        />
+                      </FormControl>
+                    </PopoverBody>
+                    <PopoverFooter>
+                      <Flex justifyContent="space-between" alignItems="end">
+                        <Button onClick={() => handleCreateFuelCargo()}>
+                          Create
+                        </Button>
+                        <Text>{fuelWeight} lbs</Text>
+                      </Flex>
+                      {fuelCargoError && (
+                        <Text fontSize="xs" color="red.500">
+                          {fuelCargoError}
+                        </Text>
+                      )}
+                    </PopoverFooter>
+                  </PopoverContent>
+                </Popover>
               ) : (
                 <></>
               )}
