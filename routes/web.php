@@ -49,6 +49,10 @@ Route::get('/password/reset/{token}', \App\Http\Controllers\Auth\ShowPasswordRes
     ->name('password.reset.index');
 Route::post('/password/reset', \App\Http\Controllers\Auth\ResetPasswordController::class)
     ->name('password.reset');
+Route::post('/error', \App\Http\Controllers\General\ReportWebErrorController::class)
+    ->name('error.report');
+Route::get('/error', \App\Http\Controllers\General\ShowWebErrorController::class)
+    ->name('error');
 
 Route::middleware('auth')->group(function () {
     Route::get('/logout', \App\Http\Controllers\Auth\LogoutUserController::class)

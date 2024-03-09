@@ -2,9 +2,12 @@ import { ChakraProvider, ColorModeScript } from '@chakra-ui/react'
 import { createInertiaApp } from '@inertiajs/react'
 import React from 'react'
 import { createRoot } from 'react-dom/client'
+import { ErrorBoundary } from 'react-error-boundary'
 
 import '../css/app.css'
 import './bootstrap'
+import { postError } from './helpers/error.helpers'
+import Error from './pages/General/Error'
 import theme from './theme'
 
 createInertiaApp({
@@ -17,7 +20,12 @@ createInertiaApp({
     createRoot(el).render(
       <ChakraProvider theme={theme}>
         <ColorModeScript initialColorMode={theme.config.initialColorMode} />
-        <App {...props} />
+        <ErrorBoundary
+          onError={postError}
+          fallbackRender={() => <Error status={500} />}
+        >
+          <App {...props} />
+        </ErrorBoundary>
       </ChakraProvider>
     )
   },
