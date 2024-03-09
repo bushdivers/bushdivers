@@ -5,7 +5,7 @@ const AvailableFuel = ({ airport }) => {
   return (
     <>
       <Flex alignItems="center" gap={4}>
-        {airport.has_avgas ? (
+        {airport.avgas_qty > 0 ? (
           <Flex direction="column">
             <Flex alignItems="center" gap={2}>
               <Text as="b" fontSize="sm">
@@ -20,7 +20,7 @@ const AvailableFuel = ({ airport }) => {
         ) : (
           <Box mx={2}>No 100LL</Box>
         )}
-        {airport.has_jetfuel ? (
+        {airport.jetfuel_qty > 0 ? (
           <Flex direction="column">
             <Flex alignItems="center" gap={2}>
               <Text as="b" fontSize="sm">
