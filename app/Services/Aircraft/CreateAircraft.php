@@ -24,7 +24,7 @@ class CreateAircraft
         $aircraft->status = AircraftStatus::ACTIVE;
         $aircraft->hub_id = Str::upper($data['hub']);
         $aircraft->last_inspected_at = Carbon::now();
-        $aircraft->owner_id = $user->id;
+        $aircraft->owner_id = $user->id ?? 0;
         $aircraft->last_lat = $location->lat;
         $aircraft->last_lon = $location->lon;
         $aircraft->save();

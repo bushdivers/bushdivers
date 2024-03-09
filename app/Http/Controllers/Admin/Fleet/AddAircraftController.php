@@ -5,13 +5,14 @@ namespace App\Http\Controllers\Admin\Fleet;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AdminAddAircraft;
 use App\Models\Aircraft;
+use App\Models\Airport;
 use App\Models\Enums\AircraftState;
 use App\Models\Enums\AircraftStatus;
 use App\Models\Enums\AirlineTransactionTypes;
 use App\Services\Aircraft\CreateAircraft;
 use App\Services\Finance\AddAirlineTransaction;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class AddAircraftController extends Controller
 {
@@ -43,7 +44,9 @@ class AddAircraftController extends Controller
         $data['id'] = $data['fleet'];
         $data['reg'] = $data['registration'];
 
-        $aircraft = $this->createAircraft->execute($data, 0);
+        $currentAirport = Airport::where('identifier', Str::upper($data['deliveryIcao']))->first();
+
+        $aircraft = $this->createAircraft->execute($data, null, $currentAirport);
 
         if (!$aircraft)
             return redirect()->back()->withInput()->with(['error' => 'Failed to create aircraft']);
