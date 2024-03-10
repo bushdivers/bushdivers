@@ -2,10 +2,10 @@
 
 namespace Tests\Feature\Api\Contracts;
 
+use App\Models\Airport;
 use App\Models\Contract;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class BidForContractTest extends TestCase
@@ -41,5 +41,42 @@ class BidForContractTest extends TestCase
     {
         $response = $this->postJson('/api/contracts/bid', ['id' => 2]);
         $response->assertStatus(404);
+    }
+
+    public function test_fuel_contract_returns_fuel_to_airport()
+    {
+        $airport = Airport::factory()->create([
+            'identifier' => 'AYMN',
+            'avgas_qty' => 10,
+            'is_hub' => false
+        ]);
+        $contract = Contract::factory()->create([
+            'dep_airport_id' => 'AYMN',
+            'is_fuel' => true,
+            'fuel_qty' => 100,
+            'fuel_type' => 1
+        ]);
+        $this->postJson('/api/contracts/bid', ['id' => $contract->id, 'action' => 'remove']);
+        $airport->refresh();
+        $this->assertEquals(110, $airport->avgas_qty);
+    }
+
+    public function test_fuel_contract_is_removed()
+    {
+        $airport = Airport::factory()->create([
+            'identifier' => 'AYMN',
+            'avgas_qty' => 10,
+            'is_hub' => false
+        ]);
+        $contract = Contract::factory()->create([
+            'dep_airport_id' => 'AYMN',
+            'is_fuel' => true,
+            'fuel_qty' => 100,
+            'fuel_type' => 1
+        ]);
+        $this->postJson('/api/contracts/bid', ['id' => $contract->id, 'action' => 'remove']);
+        $this->assertDatabaseMissing('contracts', [
+            'id' => $contract->id
+        ]);
     }
 }

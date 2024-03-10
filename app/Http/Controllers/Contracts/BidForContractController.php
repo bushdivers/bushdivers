@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Contracts;
 
 use App\Http\Controllers\Controller;
 use App\Models\Contract;
+use App\Services\Airports\UpdateFuelAtAirport;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,10 +18,17 @@ class BidForContractController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function __invoke(Request $request): JsonResponse
+    public function __invoke(Request $request, UpdateFuelAtAirport $updateFuelAtAirport): JsonResponse
     {
         $contract = Contract::findOrFail($request->id);
         if ($request->action == 'remove') {
+            if ($contract->is_fuel) {
+                $updateFuelAtAirport->execute($contract->dep_airport_id, $contract->fuel_qty, $contract->fuel_type,
+                    'increment');
+                $contract->delete();
+                return \response()->json(['message' => 'Contract updated']);
+            }
+
             $contract->is_available = true;
             $contract->user_id = null;
             Cache::forget($contract->dep_airport_id.'-contracts');
@@ -29,7 +37,6 @@ class BidForContractController extends Controller
             $contract->user_id = $request->userId;
             Cache::forget($contract->dep_airport_id.'-contracts');
         }
-
         $contract->save();
 
         return \response()->json(['message' => 'Contract updated']);
