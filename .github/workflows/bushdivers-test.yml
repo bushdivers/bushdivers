@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+env:
+  LARAVEL_BYPASS_ENV_CHECK: 1
 
 jobs:
   backend-tests:
