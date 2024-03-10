@@ -32,7 +32,9 @@ jobs:
           node-version: '20.11'
       - uses: actions/checkout@v2
       - name: Install Dependencies
-        run: npm ci
+        run: npm i
+      - name: Run tests
+        run: npm run test
       - name: Eslint
         run: npm run lint
       - name: Check it builds

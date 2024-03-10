@@ -5,7 +5,8 @@
         "dev": "vite",
         "build": "vite build",
         "lint": "npx eslint resources/js/ --ext .js,.jsx",
-        "prepare": "husky install"
+        "prepare": "husky install",
+        "test":  "vitest run"
     },
     "devDependencies": {
         "@trivago/prettier-plugin-sort-imports": "^4.3.0",
@@ -27,7 +28,6 @@
         "@inertiajs/react": "^1.0.14",
         "date-fns": "^3.2.0",
         "framer-motion": "^10.17.12",
-        "haversine-distance": "^1.2.1",
         "lucide-react": "^0.308.0",
         "maplibre-gl": "^1.15.3",
         "maplibregl-mapbox-request-transformer": "^0.0.2",
