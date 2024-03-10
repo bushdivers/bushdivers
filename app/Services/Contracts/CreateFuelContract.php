@@ -52,7 +52,12 @@ class CreateFuelContract
             ];
 
             $value = $this->calcContractValue->execute($cargo['type'], $cargo['qty'], $distance);
-
+            if ($weight > 3200) {
+                $value = round(round($value / 2) + 2000);
+            }
+            if ($weight > 10000) {
+                $value = round(round($value / 10) + 4000);
+            }
             // add contract
             $data = [[
                 'departure' => $depAirport->identifier,
