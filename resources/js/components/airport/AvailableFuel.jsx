@@ -5,7 +5,7 @@ const AvailableFuel = ({ airport }) => {
   return (
     <>
       <Flex alignItems="center" gap={4}>
-        {airport.avgas_qty > 0 ? (
+        {airport.avgas_qty > 0 || airport.is_hub ? (
           <Flex direction="column">
             <Flex alignItems="center" gap={2}>
               <Text as="b" fontSize="sm">
@@ -18,9 +18,11 @@ const AvailableFuel = ({ airport }) => {
             </Text>
           </Flex>
         ) : (
-          <Box mx={2}>No 100LL</Box>
+          <Box data-testid="nofuel-avgas" mx={2}>
+            No 100LL
+          </Box>
         )}
-        {airport.jetfuel_qty > 0 ? (
+        {airport.jetfuel_qty > 0 || airport.is_hub ? (
           <Flex direction="column">
             <Flex alignItems="center" gap={2}>
               <Text as="b" fontSize="sm">
@@ -33,7 +35,9 @@ const AvailableFuel = ({ airport }) => {
             </Text>
           </Flex>
         ) : (
-          <Box mx={2}>No Jet Fuel</Box>
+          <Box data-testid="nofuel-jet" mx={2}>
+            No Jet Fuel
+          </Box>
         )}
       </Flex>
     </>

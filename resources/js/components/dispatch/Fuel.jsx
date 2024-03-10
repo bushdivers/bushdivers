@@ -84,16 +84,26 @@ const Fuel = (props) => {
       )
   }
 
-  function shouldWeRenderFuelActions(fuelType) {
-    let shouldIRenderFuelSlider = false
-    if (fuelType === 1) {
-      shouldIRenderFuelSlider =
+  function shouldWeRenderAddFuel() {
+    if (!props.selectedAircraft) return false
+    let shouldIRenderAddFuel = false
+    if (props.selectedAircraft.fleet.fuel_type === 1) {
+      shouldIRenderAddFuel =
         props.airport.avgas_qty > 0 || props.airport.avgas_qty === null
     } else {
-      shouldIRenderFuelSlider =
+      shouldIRenderAddFuel =
         props.airport.jetfuel_qty > 0 || props.airport.jetfuel_qty === null
     }
-    return shouldIRenderFuelSlider
+    return shouldIRenderAddFuel
+  }
+
+  function shouldWeRenderCreateFuelCargo() {
+    return (
+      props.airport.avgas_qty > 0 ||
+      props.airport.avgas_qty === null ||
+      props.airport.jetfuel_qty > 0 ||
+      props.airport.jetfuel_qty === null
+    )
   }
 
   function handleFuelCargoChange(e) {
@@ -170,12 +180,14 @@ const Fuel = (props) => {
                   <Text>
                     Current Fuel (gal): {props.fuel !== null ? props.fuel : ''}
                   </Text>
-                  {shouldWeRenderFuelActions(
-                    props.selectedAircraft?.fleet?.fuel_type
-                  ) ? (
+                  {shouldWeRenderAddFuel() ? (
                     <Popover>
                       <PopoverTrigger>
-                        <Button size="xs" variant="link">
+                        <Button
+                          size="xs"
+                          variant="link"
+                          data-testid="btn-add-fuel"
+                        >
                           Add fuel
                         </Button>
                       </PopoverTrigger>
@@ -240,13 +252,6 @@ const Fuel = (props) => {
                     <></>
                   )}
                 </Flex>
-                {/*<Input*/}
-                {/*  id="fuel"*/}
-                {/*  type="text"*/}
-                {/*  value={props.fuel}*/}
-                {/*  onChange={props.handleUpdateFuel}*/}
-                {/*  error={props.error}*/}
-                {/*/>*/}
                 <Flex alignItems="center" gap={2}>
                   <Text fontSize="xs" color="green.500">
                     {props.fuelWeight !== null
@@ -258,12 +263,14 @@ const Fuel = (props) => {
                   </Text>
                 </Flex>
               </Box>
-              {shouldWeRenderFuelActions(
-                props.selectedAircraft?.fleet?.fuel_type
-              ) ? (
+              {shouldWeRenderCreateFuelCargo() ? (
                 <Popover>
                   <PopoverTrigger>
-                    <Button colorScheme="gray" size="sm">
+                    <Button
+                      data-testid="btn-fuel-cargo"
+                      colorScheme="gray"
+                      size="sm"
+                    >
                       Create Fuel Cargo
                     </Button>
                   </PopoverTrigger>
