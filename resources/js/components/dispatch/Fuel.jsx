@@ -41,7 +41,7 @@ const Fuel = (props) => {
     destination: '',
     fuel_qty: 0,
   })
-  const [fuelCargoType, setFuelCargoType] = useState('1')
+  const [fuelCargoType, setFuelCargoType] = useState('')
   const [fuelWeight, setFuelWeight] = useState(0)
   const [fuelCargoError, setFuelCargoError] = useState(null)
 
@@ -133,16 +133,16 @@ const Fuel = (props) => {
     ) {
       if (fuelCargoType === '1') {
         if (
-          props.airport.avgas_qty &&
-          fuelCargoType > props.airport.avgas_qty
+          props.airport.avgas_qty !== null &&
+          fuelCargoData.fuel_qty > props.airport.avgas_qty
         ) {
           setFuelCargoError('Not enough 100LL')
           return
         }
       } else {
         if (
-          props.airport.jetfuel_qty &&
-          fuelCargoType > props.airport.jetfuel_qty
+          props.airport.jetfuel_qty !== null &&
+          fuelCargoData.fuel_qty > props.airport.jetfuel_qty
         ) {
           setFuelCargoError('Not enough Jet Fuel')
           return
@@ -298,8 +298,18 @@ const Fuel = (props) => {
                           value={fuelCargoType}
                         >
                           <Stack direction="row">
-                            <Radio value="1">100LL</Radio>
-                            <Radio value="2">Jet Fuel</Radio>
+                            {props.airport.avgas_qty > 0 ||
+                            props.airport.avgas_qty === null ? (
+                              <Radio value="1">100LL</Radio>
+                            ) : (
+                              <></>
+                            )}
+                            {props.airport.jetfuel_qty > 0 ||
+                            props.airport.jetfuel_qty === null ? (
+                              <Radio value="2">Jet Fuel</Radio>
+                            ) : (
+                              <></>
+                            )}
                           </Stack>
                         </RadioGroup>
                       </FormControl>
