@@ -3,6 +3,8 @@
 namespace App\Console;
 
 use App\Models\Enums\FinancialConsts;
+use App\Services\Airports\ResupplyFuel;
+use App\Services\Airports\UpdateFuelAtAirport;
 use App\Services\Contracts\CheckForExpiry;
 use App\Services\Finance\CalcMonthlyFees;
 use App\Services\Pireps\FindInactivePireps;
@@ -24,6 +26,8 @@ class Kernel extends ConsoleKernel
     protected CalcMonthlyFees $calcMonthlyFees;
     protected CheckForExpiry $checkForExpiry;
 
+    protected ResupplyFuel $resupplyFuel;
+
     public function __construct(
         Application $app,
         Dispatcher $events,
@@ -31,7 +35,8 @@ class Kernel extends ConsoleKernel
         FindInactivePireps $findInactivePireps,
         RemoveMultiplePireps $removeMultiplePireps,
         CalcMonthlyFees $calcMonthlyFees,
-        CheckForExpiry $checkForExpiry
+        CheckForExpiry $checkForExpiry,
+        ResupplyFuel $resupplyFuel
     )
     {
         parent::__construct($app, $events);
@@ -40,6 +45,7 @@ class Kernel extends ConsoleKernel
         $this->removeMultiplePireps = $removeMultiplePireps;
         $this->calcMonthlyFees = $calcMonthlyFees;
         $this->checkForExpiry = $checkForExpiry;
+        $this->resupplyFuel = $resupplyFuel;
     }
 
     /**
@@ -82,6 +88,14 @@ class Kernel extends ConsoleKernel
             $this->calcMonthlyFees->execute();
             Log::info('Monthly financials was called');
         })->monthly();
+
+        $schedule->call(function () {
+            $this->resupplyFuel->execute(true);
+        })->daily();
+
+        $schedule->call(function () {
+            $this->resupplyFuel->execute();
+        })->weekly();
     }
 
     /**
