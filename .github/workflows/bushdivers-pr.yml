@@ -17,10 +17,10 @@ jobs:
         ports:
           - 3306:3306
         env:
-#          MARIADB_ROOT_PASSWORD: root_password
+          MARIADB_ROOT_PASSWORD: root_password
           MARIADB_DATABASE: bushdivers_ci
           MARIADB_USER: root
-#          MARIADB_PASSWORD: test_password
+#         MARIADB_PASSWORD: test_password
     steps:
       - uses: shivammathur/setup-php@15c43e89cdef867065b0213be354c2841860869e
         with:
