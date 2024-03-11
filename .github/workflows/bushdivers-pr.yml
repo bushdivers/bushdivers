@@ -16,6 +16,7 @@ jobs:
       MARIADB_DATABASE: bushdivers_ci
       MARIADB_USER: test_user
       MARIADB_PASSWORD: test_password
+      MARIADB_HOST: mariadb
     services:
       mariadb:
         image: mariadb:latest
