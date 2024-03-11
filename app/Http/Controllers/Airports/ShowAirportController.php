@@ -14,7 +14,6 @@ use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cache;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -43,13 +42,7 @@ class ShowAirportController extends Controller
         if (!$icao) return Inertia::render('Airports/AirportDetail');
 
         $icao = strtoupper($icao);
-        if (Cache::has($icao)) {
-            $airport = Cache::get($icao);
-        } else {
-            $airport = Airport::where('identifier', $icao)->first();
-            Cache::put($icao, $airport, now()->addHours(23));
-        }
-
+        $airport = Airport::where('identifier', $icao)->first();
 
         if (!$airport) {
             return redirect()->back()->with(['error' => 'Airport not found']);
