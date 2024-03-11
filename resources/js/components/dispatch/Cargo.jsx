@@ -154,6 +154,8 @@ const Cargo = (props) => {
               </Checkbox>
             </Box>
             <Button
+              mb={1}
+              size="sm"
               colorScheme="gray"
               onClick={() => setShowCustom(!showCustom)}
             >
@@ -161,9 +163,7 @@ const Cargo = (props) => {
             </Button>
           </Flex>
           {showCustom && (
-            <div className="my-4 flex justify-center">
-              <CustomContract hideSection={() => setShowCustom(false)} />
-            </div>
+            <CustomContract hideSection={() => setShowCustom(false)} />
           )}
           {props.cargo.cargoAtAirport.length === 0 ? (
             <NoContent content={<EmptyData content="Cargo" />} />
@@ -244,7 +244,12 @@ const Cargo = (props) => {
                                 <Text fontSize="xs">{detail.cargo}</Text>
                               </div>
                             )}
-                            {detail.is_custom ? <Tag>Custom</Tag> : <></>}
+                            {detail.is_custom ? (
+                              <Tag size="sm">Custom</Tag>
+                            ) : (
+                              <></>
+                            )}
+                            {detail.is_fuel ? <Tag size="sm">Fuel</Tag> : <></>}
                           </Td>
                           <Td>
                             <Flex align="center" gap={2}>
@@ -260,70 +265,87 @@ const Cargo = (props) => {
                                   </Button>
                                 </Tooltip>
                               )}
-                              <Popover>
-                                <Tooltip label="Split contract" placement="top">
-                                  {/* random box hack needed as worked around to tooltip and popover*/}
-                                  <Box display="inline-block">
-                                    <PopoverTrigger>
-                                      <Button
-                                        onClick={() => handleSplitClick(detail)}
-                                        size="xs"
-                                        colorScheme="gray"
+                              {!detail.is_fuel && (
+                                <Popover>
+                                  <Tooltip
+                                    label="Split contract"
+                                    placement="top"
+                                  >
+                                    {/* random box hack needed as worked around to tooltip and popover*/}
+                                    <Box display="inline-block">
+                                      <PopoverTrigger>
+                                        <Button
+                                          onClick={() =>
+                                            handleSplitClick(detail)
+                                          }
+                                          size="xs"
+                                          colorScheme="gray"
+                                        >
+                                          <Icon as={Split} />
+                                        </Button>
+                                      </PopoverTrigger>
+                                    </Box>
+                                  </Tooltip>
+                                  <PopoverContent>
+                                    <PopoverArrow />
+                                    <PopoverCloseButton />
+                                    <PopoverHeader>
+                                      Split Contract
+                                    </PopoverHeader>
+                                    <PopoverBody>
+                                      <Slider
+                                        defaultValue={sliderValue}
+                                        my={2}
+                                        min={5}
+                                        max={100}
+                                        step={5}
+                                        aria-label="slider-ex-6"
+                                        onChange={(val) =>
+                                          updateSlideValue(
+                                            val,
+                                            detail.cargo_qty
+                                          )
+                                        }
                                       >
-                                        <Icon as={Split} />
-                                      </Button>
-                                    </PopoverTrigger>
-                                  </Box>
-                                </Tooltip>
-                                <PopoverContent>
-                                  <PopoverArrow />
-                                  <PopoverCloseButton />
-                                  <PopoverHeader>Split Contract</PopoverHeader>
-                                  <PopoverBody>
-                                    <Slider
-                                      defaultValue={sliderValue}
-                                      my={2}
-                                      min={5}
-                                      max={100}
-                                      step={5}
-                                      aria-label="slider-ex-6"
-                                      onChange={(val) =>
-                                        updateSlideValue(val, detail.cargo_qty)
-                                      }
-                                    >
-                                      <SliderMark value={25} {...labelStyles}>
-                                        25%
-                                      </SliderMark>
-                                      <SliderMark value={50} {...labelStyles}>
-                                        50%
-                                      </SliderMark>
-                                      <SliderMark value={75} {...labelStyles}>
-                                        75%
-                                      </SliderMark>
-                                      <SliderTrack>
-                                        <SliderFilledTrack />
-                                      </SliderTrack>
-                                      <SliderThumb />
-                                    </Slider>
-                                  </PopoverBody>
-                                  <PopoverFooter>
-                                    <Flex
-                                      justifyContent="space-between"
-                                      alignItems="center"
-                                    >
-                                      <Button
-                                        onClick={() => splitContract(detail.id)}
-                                        size="sm"
+                                        <SliderMark value={25} {...labelStyles}>
+                                          25%
+                                        </SliderMark>
+                                        <SliderMark value={50} {...labelStyles}>
+                                          50%
+                                        </SliderMark>
+                                        <SliderMark value={75} {...labelStyles}>
+                                          75%
+                                        </SliderMark>
+                                        <SliderTrack>
+                                          <SliderFilledTrack />
+                                        </SliderTrack>
+                                        <SliderThumb />
+                                      </Slider>
+                                    </PopoverBody>
+                                    <PopoverFooter>
+                                      <Flex
+                                        justifyContent="space-between"
+                                        alignItems="center"
                                       >
-                                        Save Split
-                                      </Button>
-                                      <Text>
-                                        {displayNumber(sliderCargoValue, false)}
-                                      </Text>
-                                    </Flex>
-                                  </PopoverFooter>
-                                </PopoverContent>
-                              </Popover>
+                                        <Button
+                                          onClick={() =>
+                                            splitContract(detail.id)
+                                          }
+                                          size="sm"
+                                        >
+                                          Save Split
+                                        </Button>
+                                        <Text>
+                                          {displayNumber(
+                                            parseInt(sliderCargoValue),
+                                            false
+                                          )}
+                                        </Text>
+                                      </Flex>
+                                    </PopoverFooter>
+                                  </PopoverContent>
+                                </Popover>
+                              )}
                               {!detail.is_shared && (
                                 <Tooltip
                                   label="Cancel contract"
@@ -410,16 +432,7 @@ const Cargo = (props) => {
                             </div>
                           )}
                         </Td>
-                        <Td>
-                          {detail.is_shared ? <Tag>Shared</Tag> : <></>}
-                          {/*<Button*/}
-                          {/*  size="xs"*/}
-                          {/*  colorScheme="gray"*/}
-                          {/*  onClick={() => removeFromFlight(detail)}*/}
-                          {/*>*/}
-                          {/*  <Icon as={X} />*/}
-                          {/*</Button>*/}
-                        </Td>
+                        <Td>{detail.is_shared ? <Tag>Shared</Tag> : <></>}</Td>
                       </Tr>
                     ))}
                   </Tbody>

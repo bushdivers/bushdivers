@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Dispatch;
 
 use App\Http\Controllers\Controller;
 use App\Models\Aircraft;
+use App\Models\Airport;
 use App\Models\Contract;
 use App\Models\ContractCargo;
 use App\Models\Enums\AircraftState;
@@ -81,8 +82,9 @@ class ShowDispatchController extends Controller
         $cargo = $this->getCargoForDispatch(Auth::user()->current_airport_id, Auth::user()->id);
 //        $aircraft = Aircraft::with('fleet')->find($pirep->aircraft_id);
         $aircraft = $this->getAircraftForDispatch(Auth::user()->current_airport_id);
+        $airport = Airport::where('identifier', Auth::user()->current_airport_id)->first();
 
-        return Inertia::render('Dispatch/Dispatch', ['cargo' => $cargo, 'aircraft' => $aircraft]);
+        return Inertia::render('Dispatch/Dispatch', ['cargo' => $cargo, 'aircraft' => $aircraft, 'airport' => $airport]);
     }
 
     protected function getCargoForDispatch($currentLocation, $userId): array

@@ -30,7 +30,7 @@ const CustomContract = ({ hideSection }) => {
   }
 
   return (
-    <Flex className="flex items-end space-x-2">
+    <Flex alignItems="end" gap={2}>
       {error && (
         <Text color="red.500" size="sm" mt={1}>
           {error}
@@ -43,7 +43,6 @@ const CustomContract = ({ hideSection }) => {
         type="text"
         onChange={handleChangeDep}
         placeholder="Departure ICAO"
-        label="Departure (ICAO)"
       />
       <Input
         inline
@@ -52,9 +51,8 @@ const CustomContract = ({ hideSection }) => {
         type="text"
         onChange={handleChangeArr}
         placeholder="Arrival ICAO"
-        label="Arrival (ICAO)"
       />
-      <Box className="inline-block">
+      <Box>
         <Button onClick={() => handleCreate()}>Create</Button>
       </Box>
     </Flex>

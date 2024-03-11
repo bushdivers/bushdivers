@@ -60,7 +60,8 @@ class GenerateContractDetails
                     'distance' => $distance,
                     'heading' => $heading,
                     'contract_value' => $contractValue,
-                    'expires_at' => $expiry
+                    'expires_at' => $expiry,
+                    'is_fuel' => false
                 ];
             return $contract;
 

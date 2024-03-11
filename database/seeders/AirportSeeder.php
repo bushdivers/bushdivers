@@ -28,6 +28,12 @@ class AirportSeeder extends Seeder
                 'longest_runway_surface' => 'A',
                 'longest_runway_length' => 7185,
                 'altitude' => 5383,
+                'has_avgas' => true,
+                'avgas_qty' => 5000,
+                'avgas_price' => 4.00,
+                'has_jetfuel' => true,
+                'jetfuel_qty' => 5000,
+                'jetfuel_price' => 4.00
             ],
             [
                 'id' => 2,
@@ -41,6 +47,12 @@ class AirportSeeder extends Seeder
                 'longest_runway_surface' => 'A',
                 'longest_runway_length' => 5972,
                 'altitude' => 2741,
+                'has_avgas' => true,
+                'avgas_qty' => null,
+                'avgas_price' => 4.00,
+                'has_jetfuel' => true,
+                'jetfuel_qty' => null,
+                'jetfuel_price' => 4.00
             ],
             [
                 'id' => 3,
@@ -54,6 +66,12 @@ class AirportSeeder extends Seeder
                 'longest_runway_surface' => 'A',
                 'longest_runway_length' => 4411,
                 'altitude' => 5680,
+                'has_avgas' => true,
+                'avgas_qty' => 0,
+                'avgas_price' => 4.00,
+                'has_jetfuel' => true,
+                'jetfuel_qty' => 0,
+                'jetfuel_price' => 4.00
             ]
         ]);
     }

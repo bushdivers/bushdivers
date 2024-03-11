@@ -4,13 +4,19 @@ namespace App\Http\Controllers\Dispatch;
 
 use App\Http\Controllers\Controller;
 use App\Models\Aircraft;
+use App\Models\Airport;
 use App\Models\Contract;
 use App\Models\ContractCargo;
 use App\Models\Enums\AircraftState;
+use App\Models\Enums\AirlineTransactionTypes;
 use App\Models\Enums\PirepState;
+use App\Models\Enums\TransactionTypes;
 use App\Models\Pirep;
 use App\Models\PirepCargo;
 use App\Models\Rental;
+use App\Services\Airports\UpdateFuelAtAirport;
+use App\Services\Finance\AddAirlineTransaction;
+use App\Services\Finance\AddUserTransaction;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -24,14 +30,14 @@ class CreateDispatchController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function __invoke(Request $request): RedirectResponse
+    public function __invoke(Request $request, UpdateFuelAtAirport $updateFuelAtAirport, AddUserTransaction $addUserTransaction, AddAirlineTransaction $addAirlineTransaction): RedirectResponse
     {
         // check aircraft is available
         $isRental = false;
-        $aircraft = Aircraft::where('registration', $request->aircraft)->first();
+        $aircraft = Aircraft::with('fleet')->where('registration', $request->aircraft)->first();
 
         if (!$aircraft) {
-            $aircraft = Rental::where('registration', $request->aircraft)->first();
+            $aircraft = Rental::with('fleet')->where('registration', $request->aircraft)->first();
             $isRental = true;
         } elseif ($aircraft->user_id != null && $aircraft->state == 2) {
             return redirect()->back()->with(['error' => 'Aircraft is part of another flight dispatch']);
@@ -64,6 +70,21 @@ class CreateDispatchController extends Controller
                 $contract->active_pirep = $pirep->id;
                 $contract->save();
             }
+        }
+
+
+        $actualFuelAdded = $request->fuel - $aircraft->fuel_onboard;
+        if ($actualFuelAdded > 0) {
+            // charge fuel
+            if ($isRental) {
+                $addUserTransaction->execute(Auth::user()->id, TransactionTypes::FlightFeesFuel, -$request->fuel_price);
+            } elseif ($aircraft->owner_id != 0) {
+                $addUserTransaction->execute(Auth::user()->id, TransactionTypes::FlightFeesFuel, -$request->fuel_price);
+            } else {
+                $addAirlineTransaction->execute(AirlineTransactionTypes::FuelFees, -$request->fuel_price, 'Fuel '.$actualFuelAdded.' at '.Auth::user()->current_airport_id, null, 'debit');
+            }
+            // decrement fuel from airport
+            $updateFuelAtAirport->execute(Auth::user()->current_airport_id, $actualFuelAdded, $aircraft->fleet->fuel_type, 'decrement');
         }
 
         // update aircraft for user and fuel

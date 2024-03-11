@@ -38,6 +38,12 @@ class StoreContracts
                 $contract->user_id = $userId;
                 $contract->is_custom = true;
             }
+            if ($contractInfo['is_fuel']) {
+                $contract->user_id = $userId;
+                $contract->is_fuel = true;
+                $contract->fuel_qty = $contractInfo['fuel_qty'];
+                $contract->fuel_type = $contractInfo['fuel_type'];
+            }
 
             $contract->save();
         }

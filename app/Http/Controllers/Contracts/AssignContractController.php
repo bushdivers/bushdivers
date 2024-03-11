@@ -37,6 +37,9 @@ class AssignContractController extends Controller
                     'cargo' => $contract->cargo,
                     'cargo_qty' => $newContractQty,
                     'expires_at' => $contract->expires_at,
+                    'is_fuel' => $contract->is_fuel,
+                    'fuel_qty' => $contract->fuel_qty,
+                    'fuel_type' => $contract->fuel_type
                 ]], false);
                 $contract->contract_value = $updatedValue;
                 $contract->cargo_qty = $request->qty;

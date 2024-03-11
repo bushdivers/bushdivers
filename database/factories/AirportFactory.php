@@ -29,7 +29,11 @@ class AirportFactory extends Factory
             'lat' => -6.36188,
             'lon' => 143.23070,
             'altitude' => 100,
-            'size' => 4
+            'size' => 4,
+            'has_avgas' => true,
+            'has_jetfuel' => true,
+            'avgas_qty' => 2000,
+            'jetfuel_qty' => 2000
         ];
     }
 }

@@ -14,7 +14,6 @@ use Carbon\Carbon;
 class ProcessPirepFinancials
 {
     protected CalcLandingFee $calcLandingFee;
-    protected CalcFuelUsedFee $calcFuelUsedFee;
     protected CalcCargoHandlingFee $calcCargoHandlingFee;
     protected CalcContractPay $calcContractPay;
     protected AddUserTransaction $addUserTransaction;
@@ -22,7 +21,6 @@ class ProcessPirepFinancials
 
     public function __construct(
         CalcLandingFee $calcLandingFee,
-        CalcFuelUsedFee $calcFuelUsedFee,
         CalcCargoHandlingFee $calcCargoHandlingFee,
         CalcContractPay $calcContractPay,
         AddUserTransaction $addUserTransaction,
@@ -30,7 +28,6 @@ class ProcessPirepFinancials
     )
     {
         $this->calcLandingFee = $calcLandingFee;
-        $this->calcFuelUsedFee = $calcFuelUsedFee;
         $this->calcCargoHandlingFee = $calcCargoHandlingFee;
         $this->calcContractPay = $calcContractPay;
         $this->addUserTransaction = $addUserTransaction;
@@ -44,7 +41,6 @@ class ProcessPirepFinancials
         }
 
         $this->calcLandingFee->execute($pirep);
-        $this->calcFuelUsedFee->execute($pirep);
 
         if (!$pirep->is_empty) {
             $this->calcCargoHandlingFee->execute($pirep);

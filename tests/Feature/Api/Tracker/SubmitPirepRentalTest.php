@@ -169,11 +169,6 @@ class SubmitPirepRentalTest extends TestCase
 
         $this->assertDatabaseHas('user_accounts', [
             'flight_id' => $this->pirep->id,
-            'type' => TransactionTypes::FlightFeesFuel
-        ]);
-
-        $this->assertDatabaseHas('user_accounts', [
-            'flight_id' => $this->pirep->id,
             'type' => TransactionTypes::FlightFeesLanding
         ]);
 
