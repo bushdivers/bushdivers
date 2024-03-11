@@ -12,9 +12,10 @@ jobs:
   backend-tests:
     runs-on: ubuntu-latest
     env:
-      DB_DATABASE: bushdivers_ci
-      DB_USER: root
-      DB_PASSWORD: root
+      MARIADB_ROOT_PASSWORD: root_password
+      MARIADB_DATABASE: bushdivers_ci
+      MARIADB_USER: test_user
+      MARIADB_PASSWORD: test_password
     services:
       mariadb:
         image: mariadb:latest
