@@ -11,6 +11,15 @@ env:
 jobs:
   backend-tests:
     runs-on: ubuntu-latest
+    env:
+      DB_DATABASE: bushdivers_ci
+      DB_USER: root
+      DB_PASSWORD: root
+    services:
+      mariadb:
+        image: mariadb:latest
+        ports:
+          - 3306:3306
     steps:
       - uses: shivammathur/setup-php@15c43e89cdef867065b0213be354c2841860869e
         with:

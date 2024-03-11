@@ -148,7 +148,9 @@ class CargoHandlingFeeTest extends TestCase
             'size' => 1
         ]);
         $pirep = Pirep::factory()->create([
-            'destination_airport_id' => $airport->identifier
+            'destination_airport_id' => $airport->identifier,
+            'user_id' => $this->user->id,
+            'aircraft_id' => $this->aircraft->id
         ]);
         $pirepCargo = PirepCargo::factory()->create([
             'pirep_id' => $pirep->id,

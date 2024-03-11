@@ -60,7 +60,8 @@ class ContractPayTest extends TestCase
 
         $this->pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,
-            'destination_airport_id' => $this->airport->identifier
+            'destination_airport_id' => $this->airport->identifier,
+            'aircraft_id' => $this->aircraft->id
         ]);
         $this->contract = Contract::factory()->create([
             'is_completed' => true,
