@@ -1,4 +1,4 @@
-name: Bushdivers Stage
+name: Bushdivers Pre-Deploy
 
 on:
   push:
@@ -9,7 +9,8 @@ env:
 
 jobs:
   backend-tests:
-    runs-on: ubuntu-latest
+    name: Backend Tests
+    runs-on: ubuntu-20.04
     env:
       DB_DATABASE: bushdivers_ci
       DB_USERNAME: root
@@ -21,7 +22,7 @@ jobs:
       MARIADB_DATABASE: bushdivers_ci
     services:
       mariadb:
-        image: mariadb:latest
+        image: mariadb:10.6
         ports:
           - 3257:3306
         env:
@@ -30,9 +31,9 @@ jobs:
           MARIADB_DATABASE: bushdivers_ci
         options: --health-cmd="healthcheck.sh --connect --innodb_initialized" --health-interval=10s --health-timeout=5s --health-retries=3
     steps:
-      - uses: shivammathur/setup-php@15c43e89cdef867065b0213be354c2841860869e
+      - uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.1'
+          php-version: '8.2'
       - uses: actions/checkout@v2
       - name: Copy .env
         run: php -r "file_exists('.env') || copy('.env.example', '.env');"
@@ -48,7 +49,8 @@ jobs:
         run: vendor/bin/phpunit
 
   front-end-checks:
-    runs-on: ubuntu-latest
+    name: Frontend Checks
+    runs-on: ubuntu-20.04
     steps:
       - uses: actions/setup-node@v3
         with:
@@ -60,4 +62,15 @@ jobs:
         run: npm run lint
       - name: Check it builds
         run: npm run build
+
+  deploy:
+    name: deploy
+    runs-on: ubuntu-20.04
+    needs: [backend-tests, front-end-checks]
+    steps:
+      - uses: distributhor/workflow-webhook@v2
+        with:
+          webhook_url: ${{ secrets.DEPLOY_WEBHOOK_URL }}
+
+
 
