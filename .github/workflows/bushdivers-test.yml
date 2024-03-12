@@ -69,14 +69,13 @@ jobs:
     needs: [ backend-tests, front-end-checks ]
     steps:
       - name: Post Webhook
-        uses: joelwmale/webhook-action@2.3.2
-        with:
-          url: ${{ secrets.WEBHOOK_URL }}
-          body: '{"clone_url": ${{secrets.CLONE_URL}}}, "branch": "main", "new_ref": "latest", "email": ${{secrets.DEPLOY_EMAIL}}}'
-          headers: '{"Content-Type": "application/json"}'
-#      - name: Post Webhook
-#        run: |
-#          curl -d '{"clone_url": ${{secrets.CLONE_URL}}}, "branch": "main", "new_ref": "latest", "email": ${{secrets.DEPLOY_EMAIL}}}' -H "Content-Type: application/json" -X POST ${{ secrets.WEBHOOK_URL }}
+        shell: bash
+        env:
+          CLONE_URL: ${{ secrets.CLONE_URL }}
+          DEPLOY_EMAIL: ${{ secrets.DEPLOY_EMAIL }}
+          DEPLOY_URL: ${{ secrets.DEPLOY_URL }}
+        run: |
+          curl -d '{"payload": {"clone_url": $CLONE_URL, "branch": "main", "new_ref": "latest", "email": $DEPLOY_EMAIL}}' -H "Content-Type: application/json" -X POST $DEPLOY_URL
 
 
 
