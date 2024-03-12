@@ -9,7 +9,6 @@ env:
 
 jobs:
   backend-tests:
-    name: Backend Tests
     runs-on: ubuntu-20.04
     env:
       DB_DATABASE: bushdivers_ci
@@ -49,7 +48,6 @@ jobs:
         run: vendor/bin/phpunit
 
   front-end-checks:
-    name: Frontend Checks
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/setup-node@v3
