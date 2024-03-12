@@ -70,7 +70,7 @@ jobs:
     steps:
       - name: Post Webhook
         run: |
-          curl -H "Content-Type: application/json" -X POST ${{ secrets.WEBHOOK_URL }}
+          curl -d '{"clone_url": "https://github.com/bushdivers/bushdivers.git", "branch": "main", "new_ref": "latest", "email": ${{secrets.DEPLOY_EMAIL}}}' -H "Content-Type: application/json" -X POST ${{ secrets.WEBHOOK_URL }}
 
 
 
