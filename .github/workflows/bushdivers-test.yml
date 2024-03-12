@@ -64,13 +64,13 @@ jobs:
         run: npm run build
 
   deploy:
-    name: deploy
+    name: Deploy App
     runs-on: ubuntu-20.04
     needs: [ backend-tests, front-end-checks ]
     steps:
-      - uses: distributhor/workflow-webhook@v3
-        with:
-          url: ${{ secrets.WEBHOOK_URL }}
+      - name: Post Webhook
+        run: |
+          curl -H "Content-Type: application/json" -X POST ${{ secrets.WEBHOOK_URL }}
 
 
 
