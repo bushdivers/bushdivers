@@ -66,11 +66,11 @@ jobs:
   deploy:
     name: deploy
     runs-on: ubuntu-20.04
-    needs: [backend-tests, front-end-checks]
+    needs: [ backend-tests, front-end-checks ]
     steps:
-      - uses: distributhor/workflow-webhook@v2
-        with:
-          webhook_url: ${{ secrets.DEPLOY_WEBHOOK_URL }}
+      - name: ping webhook
+        run: |
+          curl -n ${{ secrets.WEBHOOK_URL }}
 
 
 
