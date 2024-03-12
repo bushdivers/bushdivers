@@ -45,7 +45,7 @@ const Destination = (props) => {
   }
 
   return (
-    <Box mt={2}>
+    <Box>
       <Card>
         <CardHeader>
           <Heading size="md">Destination (ICAO)</Heading>
