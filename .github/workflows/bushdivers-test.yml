@@ -68,9 +68,9 @@ jobs:
     runs-on: ubuntu-20.04
     needs: [ backend-tests, front-end-checks ]
     steps:
-      - name: ping webhook
-        run: |
-          curl -n ${{ secrets.WEBHOOK_URL }}
+      - uses: distributhor/workflow-webhook@v3
+        with:
+          url: ${{ secrets.WEBHOOK_URL }}
 
 
 
