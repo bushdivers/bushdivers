@@ -70,7 +70,7 @@ jobs:
     steps:
       - name: Post Webhook
         run: |
-          curl -d '{"payload": {"clone_url": ${{secrets.CLONE_URL}}}, "branch": "main", "new_ref": "latest", "email": ${{secrets.DEPLOY_EMAIL}}}}' -H "Content-Type: application/json" -X POST ${{ secrets.WEBHOOK_URL }}
+          curl -d '{"payload": {"clone_url": "${{secrets.CLONE_URL}}", "branch": "main", "new_ref": "latest", "email": "${{secrets.DEPLOY_EMAIL}}"}}' -H "Content-Type: application/json" -X POST ${{ secrets.WEBHOOK_URL }}
 
 
 
