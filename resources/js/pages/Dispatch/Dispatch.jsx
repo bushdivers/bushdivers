@@ -165,7 +165,7 @@ const Dispatch = ({ cargo, aircraft, airport }) => {
     <div>
       <Heading size="md">{`Dispatch - ${auth.user.current_airport_id}`}</Heading>
       <Flex justifyContent="space-between" mt={4}>
-        <SimpleGrid columns={2} spacing={10}>
+        <SimpleGrid columns={2} spacing={4}>
           <Box>
             <Aircraft
               aircraft={aircraft}

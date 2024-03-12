@@ -39,6 +39,7 @@ import { Anchor, Archive, ArrowUp, Share2, Split, X } from 'lucide-react'
 import React, { useState } from 'react'
 
 import { displayNumber } from '../../helpers/number.helpers.js'
+import AvailableFuel from '../airport/AvailableFuel.jsx'
 import CustomContract from '../contracts/CustomContract'
 import NoContent from '../elements/NoContent'
 
@@ -209,6 +210,10 @@ const Cargo = (props) => {
                               {detail.arr_airport_id}{' '}
                               {detail.arr_airport.longest_runway_surface ===
                                 'W' && <Icon as={Anchor} color="blue.500" />}
+                              <AvailableFuel
+                                airport={detail.arr_airport}
+                                stack={true}
+                              />
                             </Flex>
                           </Td>
                           <Td>

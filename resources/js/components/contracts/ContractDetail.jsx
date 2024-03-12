@@ -13,6 +13,7 @@ import { formatDistanceToNowStrict } from 'date-fns'
 import { Anchor, ArrowUp, Check, Plane } from 'lucide-react'
 import React from 'react'
 
+import AvailableFuel from '../airport/AvailableFuel.jsx'
 import Tooltip from '../elements/Tooltip'
 
 function renderCargo(contract) {
@@ -56,7 +57,6 @@ const ContractDetail = ({
               {contract.dep_airport.longest_runway_surface === 'W' && (
                 <Icon as={Anchor} color="blue.500" />
               )}
-
               <Box p={1}>
                 <Icon as={Plane} />
               </Box>
@@ -79,30 +79,33 @@ const ContractDetail = ({
               </Tooltip>
             </Box>
           </Flex>
-          <Text fontSize="lg">
+          <Text my={2} fontSize="lg">
             $
             {parseFloat(contract.contract_value).toLocaleString(undefined, {
               minimumFractionDigits: 2,
             })}
           </Text>
-          <Box>
-            <Flex justifyContent="start" gap={2}>
-              <Flex>{contract.distance} nm</Flex>
-              <Flex alignItems="center">
-                <Box style={{ transform: `rotate(${contract.heading}deg)` }}>
-                  <Icon as={ArrowUp} />
-                </Box>
-                <Box ml={1}>{contract.heading}&deg;</Box>
+          <Flex justifyContent="space-between">
+            <Box>
+              <Flex justifyContent="start" gap={2}>
+                <Flex>{contract.distance} nm</Flex>
+                <Flex alignItems="center">
+                  <Box style={{ transform: `rotate(${contract.heading}deg)` }}>
+                    <Icon as={ArrowUp} />
+                  </Box>
+                  <Box ml={1}>{contract.heading}&deg;</Box>
+                </Flex>
               </Flex>
-            </Flex>
-            <Flex gap={4}>
-              <Text fontSize="xs">{renderCargo(contract)}</Text>
+              <Flex gap={4}>
+                <Text fontSize="xs">{renderCargo(contract)}</Text>
+              </Flex>
               <Text fontSize="xs">
                 Expires In{' '}
                 {formatDistanceToNowStrict(new Date(contract.expires_at))}
               </Text>
-            </Flex>
-          </Box>
+            </Box>
+            <AvailableFuel airport={contract.arr_airport} stack={true} />
+          </Flex>
         </Box>
       </CardBody>
     </Card>

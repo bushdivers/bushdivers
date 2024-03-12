@@ -1,42 +1,53 @@
 import { Box, Flex, Text } from '@chakra-ui/react'
 import React from 'react'
 
-const AvailableFuel = ({ airport }) => {
+import { displayNumber } from '../../helpers/number.helpers.js'
+
+const AvailableFuel = ({ airport, stack = false }) => {
   return (
     <>
-      <Flex alignItems="center" gap={4}>
+      <Flex
+        direction={stack ? 'column' : 'row'}
+        alignItems="center"
+        justifyContent={stack ? 'center' : ''}
+        gap={stack ? 1 : 4}
+      >
         {airport.avgas_qty > 0 || airport.is_hub ? (
-          <Flex direction="column">
-            <Flex alignItems="center" gap={2}>
-              <Text as="b" fontSize="sm">
+          <Flex direction="column" alignItems="center">
+            <Flex alignItems="center" gap={stack ? 1 : 2}>
+              <Text as="b" fontSize={stack ? 'xs' : 'sm'}>
                 100LL
               </Text>
               <Text fontSize="xs">(${airport.avgas_price})</Text>
             </Flex>
             <Text fontSize="xs">
-              {airport.is_hub ? 'unlimited' : `${airport.avgas_qty} gal`}
+              {airport.is_hub
+                ? 'unlimited'
+                : `${displayNumber(airport.avgas_qty, false)} gal`}
             </Text>
           </Flex>
         ) : (
-          <Box data-testid="nofuel-avgas" mx={2}>
-            No 100LL
+          <Box data-testid="nofuel-avgas" mx={stack ? 1 : 2}>
+            <Text fontSize={stack ? 'xs' : 'sm'}>No 100LL</Text>
           </Box>
         )}
         {airport.jetfuel_qty > 0 || airport.is_hub ? (
-          <Flex direction="column">
-            <Flex alignItems="center" gap={2}>
-              <Text as="b" fontSize="sm">
+          <Flex direction="column" alignItems="center">
+            <Flex alignItems="center" gap={stack ? 1 : 2}>
+              <Text as="b" fontSize={stack ? 'xs' : 'sm'}>
                 Jet Fuel
               </Text>
               <Text fontSize="xs">(${airport.jetfuel_price})</Text>
             </Flex>
             <Text fontSize="xs">
-              {airport.is_hub ? 'unlimited' : `${airport.jetfuel_qty} gal`}
+              {airport.is_hub
+                ? 'unlimited'
+                : `${displayNumber(airport.jetfuel_qty, false)} gal`}
             </Text>
           </Flex>
         ) : (
-          <Box data-testid="nofuel-jet" mx={2}>
-            No Jet Fuel
+          <Box data-testid="nofuel-jet" mx={stack ? 1 : 2}>
+            <Text fontSize={stack ? 'xs' : 'sm'}>No Jet Fuel</Text>
           </Box>
         )}
       </Flex>
