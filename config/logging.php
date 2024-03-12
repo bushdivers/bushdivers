@@ -17,7 +17,7 @@ return [
     |
     */
 
-    'default' => env('LOG_CHANNEL', 'stack'),
+    'default' => env('LOG_CHANNEL', 'single'),
 
     /*
     |--------------------------------------------------------------------------
@@ -37,7 +37,7 @@ return [
     'channels' => [
         'stack' => [
             'driver' => 'stack',
-            'channels' => ['single'],
+            'channels' => ['single', 'discord'],
             'ignore_exceptions' => false,
         ],
 
@@ -45,6 +45,15 @@ return [
             'driver' => 'single',
             'path' => storage_path('logs/laravel.log'),
             'level' => env('LOG_LEVEL', 'debug'),
+        ],
+
+        'discord' => [
+            'driver' => 'monolog',
+            'level' => 'error',
+            'handler' => App\Logging\DiscordLogger::class,
+            'handler_with' => [
+                'webhook' => env('LOG_DISCORD_WEBHOOK_URL'),
+            ],
         ],
 
         'daily' => [
