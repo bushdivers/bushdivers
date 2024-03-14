@@ -178,7 +178,8 @@ const Fuel = (props) => {
               <Box>
                 <Flex alignItems="center" gap={2}>
                   <Text>
-                    Current Fuel (gal): {props.fuel !== null ? props.fuel : ''}
+                    Current Fuel (gal):{' '}
+                    {displayNumber(props.fuel !== null ? props.fuel : '')}
                   </Text>
                   {shouldWeRenderAddFuel() ? (
                     <Popover>
@@ -211,7 +212,7 @@ const Fuel = (props) => {
                             my={2}
                             min={minFuel}
                             max={100}
-                            step={5}
+                            step={1}
                             aria-label="slider-ex-6"
                             onChange={(val) => updateSlideValue(val)}
                           >
