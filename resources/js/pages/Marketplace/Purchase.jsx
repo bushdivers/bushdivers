@@ -17,6 +17,7 @@ import axios from 'axios'
 import React, { useState } from 'react'
 
 import AppLayout from '../../components/layout/AppLayout'
+import { displayNumber } from '../../helpers/number.helpers.js'
 
 const Purchase = ({ aircraft, purchaseType }) => {
   const { auth, errors } = usePage().props
@@ -198,15 +199,12 @@ const Purchase = ({ aircraft, purchaseType }) => {
 
           <Box my={2}>
             <Text>Base Price</Text>
-            <Text>${basePrice}</Text>
+            <Text>${displayNumber(basePrice, true)}</Text>
             <Text>Delivery</Text>
-            <Text>${price.toFixed(2)}</Text>
+            <Text>${displayNumber(price, true)}</Text>
             <Text>Total</Text>
             <Text>
-              $
-              {(parseFloat(basePrice) + parseFloat(price))
-                .toFixed(2)
-                .toLocaleString()}
+              ${displayNumber(parseFloat(basePrice) + parseFloat(price), true)}
             </Text>
           </Box>
           <Button onClick={() => purchase()}>Purchase</Button>

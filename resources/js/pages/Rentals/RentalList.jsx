@@ -19,6 +19,7 @@ import { Link, router, usePage } from '@inertiajs/react'
 import React from 'react'
 
 import AppLayout from '../../components/layout/AppLayout'
+import { displayNumber } from '../../helpers/number.helpers.js'
 
 const RentalList = ({ aircraft, myRentals, currentAirport }) => {
   const { auth } = usePage().props
@@ -154,16 +155,18 @@ const RentalList = ({ aircraft, myRentals, currentAirport }) => {
                   {ac.type} {ac.manufacturer} - {ac.name}
                 </Heading>
                 <Box mt={1}>
-                  ${ac.rental_cost} per hour{' '}
+                  ${displayNumber(ac.rental_cost)} per hour{' '}
                   <Text fontSize="sm">(min. 2 hours per day)</Text>
                 </Box>
-                <Text>${ac.rental_cost * 10} Returnable deposit</Text>
+                <Text>
+                  ${displayNumber(ac.rental_cost * 10)} Returnable deposit
+                </Text>
                 <Box my={2}>
-                  <Text>Cargo (lbs): {ac.cargo_capacity}</Text>
+                  <Text>Cargo (lbs): {displayNumber(ac.cargo_capacity)}</Text>
                   <Text>Pax: {ac.pax_capacity}</Text>
-                  <Text>Fuel (gal): {ac.fuel_capacity}</Text>
+                  <Text>Fuel (gal): {displayNumber(ac.fuel_capacity)}</Text>
                   <Text>Cruise (kts): {ac.cruise_speed}</Text>
-                  <Text>Range (nm): {ac.range}</Text>
+                  <Text>Range (nm): {displayNumber(ac.range)}</Text>
                 </Box>
                 {renderRentalButton(ac)}
               </CardBody>

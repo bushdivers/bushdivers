@@ -11,6 +11,7 @@ import { Link } from '@inertiajs/react'
 import React from 'react'
 
 import AppLayout from '../../components/layout/AppLayout'
+import { displayNumber } from '../../helpers/number.helpers.js'
 
 const Aircraft = ({ fleet }) => {
   return (
@@ -29,9 +30,10 @@ const Aircraft = ({ fleet }) => {
                   <Text fontSize="lg">{f.name}</Text>
                   <Box mb={2}>
                     <Text>Price Range:</Text>
-                    <Text>New: ${f.new_price}</Text>
+                    <Text>New: ${displayNumber(f.new_price)}</Text>
                     <Text>
-                      Used: ${f.used_low_price} - ${f.used_high_price}
+                      Used: ${displayNumber(f.used_low_price)} - $
+                      {displayNumber(f.used_high_price)}
                     </Text>
                   </Box>
                   <Flex mb={2} direction="column">
@@ -46,13 +48,19 @@ const Aircraft = ({ fleet }) => {
                         <Box>Jet Fuel</Box>
                       )}
                     </Box>
-                    <Box>Fuel Capacity: {f.fuel_capacity} gal</Box>
-                    <Box>ZFW: {f.zfw} lbs</Box>
-                    <Box>MTOW: {f.mtow} lbs</Box>
-                    <Box>Cargo Capacity: {f.cargo_capacity} lbs</Box>
+                    <Box>
+                      Fuel Capacity: {displayNumber(f.fuel_capacity)} gal
+                    </Box>
+                    <Box>ZFW: {displayNumber(f.zfw)} lbs</Box>
+                    <Box>MTOW: {displayNumber(f.mtow)} lbs</Box>
+                    <Box>
+                      Cargo Capacity: {displayNumber(f.cargo_capacity)} lbs
+                    </Box>
                     <Box>PAX Capacity: {f.pax_capacity}</Box>
-                    <Box>Service Ceiling: {f.service_ceiling} ft</Box>
-                    <Box>Range: {f.range} nm</Box>
+                    <Box>
+                      Service Ceiling: {displayNumber(f.service_ceiling)} ft
+                    </Box>
+                    <Box>Range: {displayNumber(f.range)} nm</Box>
                     <Box>Cruise Speed: {f.cruise_speed} KIAS</Box>
                   </Flex>
                   <Link href={`/marketplace/purchase/new/${f.id}`}>
