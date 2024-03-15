@@ -65,12 +65,13 @@ class ShowAirportController extends Controller
 
         // get contracts
         $contracts = $this->getContracts($icao);
+        $numToGenerate = 0;
         if ($contracts->count() <= 10) {
-            if ($airport->is_hub) {
-                $numToGenerate = 25 - $contracts->count();
-            } else {
-                $numToGenerate = $airport->size >= 3 ? 18 - $contracts->count() : 9 - $contracts->count();
-            }
+            if ($airport->is_hub) $numToGenerate = 50 - $contracts->count();
+            if ($airport->size >= 3) $numToGenerate = 30 - $contracts->count();
+            if ($airport->size == 1 || $airport->size == 2) $numToGenerate = 10 - $contracts->count();
+            if ($airport->size == 0) $numToGenerate = 5 - $contracts->count();
+
             if ($numToGenerate > 0) {
                 $newContracts = $this->generateContracts->execute($airport, $numToGenerate);
                 if ($newContracts !== null) {
