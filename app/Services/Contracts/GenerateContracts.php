@@ -18,7 +18,11 @@ class GenerateContracts
     public function execute($airport, $numberToGenerate, $toHub = false)
     {
         // get airports
-        $allAirports = $this->findAirportsWithinDistance->execute($airport, 15, 150, $toHub);
+        $nearbyAirports = $this->findAirportsWithinDistance->execute($airport, 10, 50, $toHub);
+        $midRangeAirports = $this->findAirportsWithinDistance->execute($airport, 51, 300, $toHub);
+        $furtherAfieldAirports = $this->findAirportsWithinDistance->execute($airport, 301, 800, $toHub);
+
+        $allAirports = $nearbyAirports->merge($midRangeAirports)->merge($furtherAfieldAirports);
 
         // pick (n) random airports
         if ($allAirports->count() === 0) {
