@@ -8,8 +8,13 @@ use Illuminate\Support\Facades\DB;
 
 class FindAirportsWithinDistance
 {
-    public function execute($originAirport, int $minDistance, int $maxDistance): Collection
+    public function execute($originAirport, int $minDistance, int $maxDistance, $toHub = false): Collection
     {
+        if ($toHub) {
+            $query = "WHERE distance BETWEEN ? AND ? AND is_hub = true";
+        } else {
+            $query = "WHERE distance BETWEEN ? AND ?";
+        }
         $results = DB::select(
             "SELECT *
                         FROM (
@@ -25,7 +30,7 @@ class FindAirportsWithinDistance
                               BETWEEN $originAirport->lon - (300 / (69 * COS(RADIANS($originAirport->lat))))
                               AND $originAirport->lon + (300 / (69* COS(RADIANS($originAirport->lat))))
                         ) r
-                        WHERE distance BETWEEN ? AND ?
+                        $query
                         ORDER BY distance ASC"
         , [$minDistance, $maxDistance]);
         return collect($results);
