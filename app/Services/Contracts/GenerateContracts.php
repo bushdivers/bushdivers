@@ -58,22 +58,27 @@ class GenerateContracts
             }
 
             $contracts = [];
+            $numberToHubs = 0;
             $i = 1;
             while ($i <= $numberToGenerate) {
                 $destAirport = $allAirports->random(1);
 
                 if ($airport->identifier != $destAirport[0]->identifier) {
+                    if ($destAirport[0]->is_hub) $numberToHubs = $numberToHubs + 1;
                     $contract = $this->generateContractDetails->execute($airport, $destAirport[0]);
                     $contracts[] = $contract;
                 }
                 $i++;
             }
+            // generate one hub contract if none have been generated
+            if ($numberToHubs == 0) {
+                $destination = $allAirports->where('is_hub', true);
+                if ($destination->count() > 0) {
+                    $destination = $destination->random(1);
+                    $hubContract = $this->generateContractDetails->execute($airport, $destination[0]);
+                    $contracts[] = $hubContract;
+                }
+            }
             return $contracts;
-
-//            if ($allAirports->count() <= $numberToGenerate && $allAirports->count() > 0) {
-//                return $this->generateContractDetails->execute($airport, $allAirports);
-//            } elseif (count($allAirports) > 0) {
-//                return $this->generateContractDetails->execute($airport, $allAirports->random($numberToGenerate));
-//            }
     }
 }
