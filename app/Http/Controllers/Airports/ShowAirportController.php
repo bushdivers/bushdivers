@@ -9,6 +9,7 @@ use App\Models\Contract;
 use App\Models\Enums\AircraftStatus;
 use App\Services\Airports\GetMetarForAirport;
 use App\Services\Contracts\GenerateContracts;
+use App\Services\Contracts\GetNumberToGenerate;
 use App\Services\Contracts\StoreContracts;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
@@ -23,12 +24,14 @@ class ShowAirportController extends Controller
     protected GetMetarForAirport $getMetarForAirport;
     protected GenerateContracts $generateContracts;
     protected StoreContracts $storeContracts;
+    protected GetNumberToGenerate $getNumberToGenerate;
 
-    public function __construct(GetMetarForAirport $getMetarForAirport, GenerateContracts $generateContracts, StoreContracts $storeContracts)
+    public function __construct(GetMetarForAirport $getMetarForAirport, GenerateContracts $generateContracts, StoreContracts $storeContracts, GetNumberToGenerate $getNumberToGenerate)
     {
         $this->getMetarForAirport = $getMetarForAirport;
         $this->generateContracts = $generateContracts;
         $this->storeContracts = $storeContracts;
+        $this->getNumberToGenerate = $getNumberToGenerate;
     }
 
     /**
@@ -65,13 +68,9 @@ class ShowAirportController extends Controller
 
         // get contracts
         $contracts = $this->getContracts($icao);
-        $numToGenerate = 0;
-        if ($contracts->count() <= 10) {
-            if ($airport->is_hub) $numToGenerate = 50 - $contracts->count();
-            if ($airport->size >= 3) $numToGenerate = 30 - $contracts->count();
-            if ($airport->size == 1 || $airport->size == 2) $numToGenerate = 10 - $contracts->count();
-            if ($airport->size == 0) $numToGenerate = 5 - $contracts->count();
 
+        if ($contracts->count() <= 20) {
+            $numToGenerate = $this->getNumberToGenerate->execute($airport, $contracts->count());
             if ($numToGenerate > 0) {
                 $newContracts = $this->generateContracts->execute($airport, $numToGenerate);
                 if ($newContracts !== null) {
