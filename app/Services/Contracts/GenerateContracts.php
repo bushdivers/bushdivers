@@ -2,50 +2,25 @@
 
 namespace App\Services\Contracts;
 
-use App\Models\Airport;
-use App\Models\Enums\ContractConsts;
-use App\Services\Airports\CalcDistanceBetweenPoints;
 use App\Services\Airports\FindAirportsWithinDistance;
-use App\Services\Geo\CreatePolygon;
-use App\Services\Geo\IsPointInPolygon;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 
 class GenerateContracts
 {
     protected GenerateContractDetails $generateContractDetails;
+    protected FindAirportsWithinDistance $findAirportsWithinDistance;
 
-    public function __construct(GenerateContractDetails $generateContractDetails)
+    public function __construct(GenerateContractDetails $generateContractDetails, FindAirportsWithinDistance $findAirportsWithinDistance)
     {
         $this->generateContractDetails = $generateContractDetails;
+        $this->findAirportsWithinDistance = $findAirportsWithinDistance;
     }
 
     public function execute($airport, $numberToGenerate)
     {
             // get airports
-            //$airports = Airport::all();
-            $airports = DB::select(
-                "SELECT *
-                        FROM (
-                          SELECT
-                            airports.*,
-                            3956 * ACOS(COS(RADIANS($airport->lat)) * COS(RADIANS(lat)) * COS(RADIANS($airport->lon) - RADIANS(lon)) + SIN(RADIANS($airport->lat)) * SIN(RADIANS(lat))) AS `distance`
-                          FROM airports
-                          WHERE
-                            lat
-                              BETWEEN $airport->lat - (300 / 69)
-                              AND $airport->lat + (300 / 69)
-                            AND lon
-                              BETWEEN $airport->lon - (300 / (69 * COS(RADIANS($airport->lat))))
-                              AND $airport->lon + (300 / (69* COS(RADIANS($airport->lat))))
-                        ) r
-                        WHERE distance BETWEEN 15 AND 150
-                        ORDER BY distance ASC"
-            );
+        $allAirports = $this->findAirportsWithinDistance->execute($airport, 15, 150);
 
-            // pick (n) random airports in each category
-            $allAirports = collect($airports);
-
+            // pick (n) random airports
             if ($allAirports->count() === 0) {
                 return null;
             }

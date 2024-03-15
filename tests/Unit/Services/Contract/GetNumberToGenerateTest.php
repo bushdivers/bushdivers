@@ -5,10 +5,12 @@ namespace Tests\Unit\Services\Contract;
 use App\Models\Airport;
 use App\Services\Contracts\GetNumberToGenerate;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class GetNumberToGenerateTest extends TestCase
 {
+    use RefreshDatabase;
     protected GetNumberToGenerate $getNumberToGenerate;
 
     protected function setUp(): void
