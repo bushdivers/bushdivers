@@ -56,6 +56,13 @@ class GenerateContracts
                 $destination = $destination->random(1);
                 $hubContract = $this->generateContractDetails->execute($airport, $destination[0]);
                 $contracts[] = $hubContract;
+            } else {
+                $destination = $allAirports->whereIn('size', [4, 5]);
+                if ($destination->count() > 0) {
+                    $destination = $destination->random(1);
+                    $hubContract = $this->generateContractDetails->execute($airport, $destination[0]);
+                    $contracts[] = $hubContract;
+                }
             }
         }
         return $contracts;
