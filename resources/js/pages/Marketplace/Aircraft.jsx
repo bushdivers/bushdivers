@@ -30,7 +30,11 @@ const Aircraft = ({ fleet }) => {
                   <Text fontSize="lg">{f.name}</Text>
                   <Box mb={2}>
                     <Text>Price Range:</Text>
-                    <Text>New: ${displayNumber(f.new_price)}</Text>
+                    {f.can_purchase_new ? (
+                      <Text>New: ${displayNumber(f.new_price)}</Text>
+                    ) : (
+                      <></>
+                    )}
                     <Text>
                       Used: ${displayNumber(f.used_low_price)} - $
                       {displayNumber(f.used_high_price)}
@@ -63,10 +67,18 @@ const Aircraft = ({ fleet }) => {
                     <Box>Range: {displayNumber(f.range)} nm</Box>
                     <Box>Cruise Speed: {f.cruise_speed} KIAS</Box>
                   </Flex>
-                  <Link href={`/marketplace/purchase/new/${f.id}`}>
-                    <Button>Purchase New</Button>
-                  </Link>
-                  {/* <Link href={`/marketplace/list/used/${f.id}`} className="btn btn-primary">Purchase Used</Link> */}
+                  <Flex gap={2}>
+                    {f.can_purchase_new ? (
+                      <Link href={`/marketplace/purchase/new/${f.id}`}>
+                        <Button>Purchase New</Button>
+                      </Link>
+                    ) : (
+                      <></>
+                    )}
+                    <Link href={`/marketplace/list/used/${f.id}`}>
+                      <Button>Purchase Used</Button>
+                    </Link>
+                  </Flex>
                 </Box>
               </CardBody>
             </Card>

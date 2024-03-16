@@ -57,12 +57,16 @@ class PurchaseController extends Controller
             return redirect()->back()->with(['error' => 'Insufficient funds']);
         }
 
+        $hub = Airport::where('identifier', $request->hub)->first();
+        if (!$hub) {
+            return redirect()->back()->with(['error' => 'Airport specified as hub does not exist']);
+        }
+
         if ($request->purchaseType == 'new') {
             $currentAirport = Airport::where('identifier', $request->deliveryIcao)->first();
             $aircraft = $this->createAircraft->execute($request->all(), Auth::user(), $currentAirport);
         } else {
             $aircraft = Aircraft::find($request->id);
-
             if ($request->reg != $aircraft->registration) {
                 $aircraftCount = Aircraft::where('registration', $request->reg)
                     ->count();
@@ -76,7 +80,7 @@ class PurchaseController extends Controller
             $aircraft->registration = $request->reg;
             $aircraft->save();
 
-            $this->generateAircraft->generateSpecific($aircraft->fleet_id, $aircraft->current_airport_id);
+            // $this->generateAircraft->generateSpecific($aircraft->fleet_id, $aircraft->current_airport_id);
         }
         $this->addUserTransaction->execute(Auth::user()->id, TransactionTypes::AircraftPurchase, -$request->total);
         return redirect()->to('/aircraft/'.$aircraft->id)->with(['success' => 'Aircraft purchased']);
