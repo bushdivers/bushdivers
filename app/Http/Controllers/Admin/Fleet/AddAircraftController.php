@@ -36,9 +36,6 @@ class AddAircraftController extends Controller
         $price = floatval($request->cost);
         $price = abs($price);
 
-        if ($price >= 999999.99)
-            return redirect()->back()->withInput()->with(['error' => 'Too expensive']);
-
         // Remap some fields to match service
         $data = $request->all();
         $data['id'] = $data['fleet'];
