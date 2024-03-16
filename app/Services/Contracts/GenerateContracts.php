@@ -2,78 +2,69 @@
 
 namespace App\Services\Contracts;
 
-use App\Models\Airport;
-use App\Models\Enums\ContractConsts;
-use App\Services\Airports\CalcDistanceBetweenPoints;
 use App\Services\Airports\FindAirportsWithinDistance;
-use App\Services\Geo\CreatePolygon;
-use App\Services\Geo\IsPointInPolygon;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 
 class GenerateContracts
 {
     protected GenerateContractDetails $generateContractDetails;
+    protected FindAirportsWithinDistance $findAirportsWithinDistance;
 
-    public function __construct(GenerateContractDetails $generateContractDetails)
+    public function __construct(GenerateContractDetails $generateContractDetails, FindAirportsWithinDistance $findAirportsWithinDistance)
     {
         $this->generateContractDetails = $generateContractDetails;
+        $this->findAirportsWithinDistance = $findAirportsWithinDistance;
     }
 
-    public function execute($airport, $numberToGenerate)
+    public function execute($airport, $numberToGenerate, $toHub = false)
     {
-            // get airports
-            //$airports = Airport::all();
-            $airports = DB::select(
-                "SELECT *
-                        FROM (
-                          SELECT
-                            airports.*,
-                            3956 * ACOS(COS(RADIANS($airport->lat)) * COS(RADIANS(lat)) * COS(RADIANS($airport->lon) - RADIANS(lon)) + SIN(RADIANS($airport->lat)) * SIN(RADIANS(lat))) AS `distance`
-                          FROM airports
-                          WHERE
-                            lat
-                              BETWEEN $airport->lat - (300 / 69)
-                              AND $airport->lat + (300 / 69)
-                            AND lon
-                              BETWEEN $airport->lon - (300 / (69 * COS(RADIANS($airport->lat))))
-                              AND $airport->lon + (300 / (69* COS(RADIANS($airport->lat))))
-                        ) r
-                        WHERE distance BETWEEN 15 AND 150
-                        ORDER BY distance ASC"
-            );
+        // get airports
+        $nearbyAirports = $this->findAirportsWithinDistance->execute($airport, 10, 50, $toHub);
+        $midRangeAirports = $this->findAirportsWithinDistance->execute($airport, 51, 300, $toHub);
+        $furtherAfieldAirports = $this->findAirportsWithinDistance->execute($airport, 301, 800, $toHub);
 
-            // pick (n) random airports in each category
-            $allAirports = collect($airports);
+        $allAirports = $nearbyAirports->merge($midRangeAirports)->merge($furtherAfieldAirports);
 
-            if ($allAirports->count() === 0) {
-                return null;
+        // pick (n) random airports
+        if ($allAirports->count() === 0) {
+            return null;
+        }
+        if ($allAirports->count() === 1) {
+            $numberToGenerate = 4;
+        }
+
+        if ($allAirports->count() < $numberToGenerate && $allAirports->count() > 1) {
+            $numberToGenerate = $numberToGenerate / 2;
+        }
+
+        $contracts = [];
+        $numberToHubs = 0;
+        $i = 1;
+        while ($i <= $numberToGenerate) {
+            $destAirport = $allAirports->random(1);
+
+            if ($airport->identifier != $destAirport[0]->identifier) {
+                if ($destAirport[0]->is_hub) $numberToHubs = $numberToHubs + 1;
+                $contract = $this->generateContractDetails->execute($airport, $destAirport[0]);
+                $contracts[] = $contract;
             }
-            if ($allAirports->count() === 1) {
-                $numberToGenerate = 4;
-            }
-
-            if ($allAirports->count() < $numberToGenerate && $allAirports->count() > 1) {
-                $numberToGenerate = $numberToGenerate / 2;
-            }
-
-            $contracts = [];
-            $i = 1;
-            while ($i <= $numberToGenerate) {
-                $destAirport = $allAirports->random(1);
-
-                if ($airport->identifier != $destAirport[0]->identifier) {
-                    $contract = $this->generateContractDetails->execute($airport, $destAirport[0]);
-                    $contracts[] = $contract;
+            $i++;
+        }
+        // generate one hub contract if none have been generated
+        if ($numberToHubs == 0) {
+            $destination = $allAirports->where('is_hub', true);
+            if ($destination->count() > 0) {
+                $destination = $destination->random(1);
+                $hubContract = $this->generateContractDetails->execute($airport, $destination[0]);
+                $contracts[] = $hubContract;
+            } else {
+                $destination = $allAirports->whereIn('size', [4, 5]);
+                if ($destination->count() > 0) {
+                    $destination = $destination->random(1);
+                    $hubContract = $this->generateContractDetails->execute($airport, $destination[0]);
+                    $contracts[] = $hubContract;
                 }
-                $i++;
             }
-            return $contracts;
-
-//            if ($allAirports->count() <= $numberToGenerate && $allAirports->count() > 0) {
-//                return $this->generateContractDetails->execute($airport, $allAirports);
-//            } elseif (count($allAirports) > 0) {
-//                return $this->generateContractDetails->execute($airport, $allAirports->random($numberToGenerate));
-//            }
+        }
+        return $contracts;
     }
 }
