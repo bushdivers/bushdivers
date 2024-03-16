@@ -3,21 +3,15 @@
 namespace App\Http\Controllers\MarketPlace;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\PurchaseAircraftRequest;
 use App\Models\Aircraft;
-use App\Models\AircraftEngine;
 use App\Models\Airport;
 use App\Models\Enums\TransactionTypes;
-use App\Models\Fleet;
 use App\Services\Aircraft\CreateAircraft;
 use App\Services\Aircraft\GenerateAircraft;
 use App\Services\Finance\AddUserTransaction;
-use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
-use Inertia\Inertia;
 
 class PurchaseController extends Controller
 {
@@ -79,8 +73,6 @@ class PurchaseController extends Controller
             $aircraft->hub_id = $request->hub;
             $aircraft->registration = $request->reg;
             $aircraft->save();
-
-            // $this->generateAircraft->generateSpecific($aircraft->fleet_id, $aircraft->current_airport_id);
         }
         $this->addUserTransaction->execute(Auth::user()->id, TransactionTypes::AircraftPurchase, -$request->total);
         return redirect()->to('/aircraft/'.$aircraft->id)->with(['success' => 'Aircraft purchased']);
