@@ -3,6 +3,7 @@ import {
   Button,
   Card,
   CardBody,
+  Checkbox,
   Flex,
   FormControl,
   FormErrorMessage,
@@ -20,6 +21,7 @@ import AppLayout from '../../components/layout/AppLayout'
 import AdminMenu from '../../components/layout/navigation/AdminMenu.jsx'
 
 const FleetEdit = ({ fleet, manufacturers }) => {
+  console.log(fleet?.can_purchase_new)
   const { errors } = usePage().props
   const [values, setValues] = useState({
     type: fleet?.type,
@@ -46,6 +48,7 @@ const FleetEdit = ({ fleet, manufacturers }) => {
     new_price: fleet?.new_price ?? '',
     used_low_price: fleet?.used_low_price ?? '',
     used_high_price: fleet?.used_high_price ?? '',
+    can_purchase_new: fleet?.can_purchase_new ?? false,
   })
 
   function handleChange(e) {
@@ -387,6 +390,15 @@ const FleetEdit = ({ fleet, manufacturers }) => {
                       </FormErrorMessage>
                     )}
                   </FormControl>
+                  <Checkbox
+                    id="can_purchase_new"
+                    value={values.can_purchase_new}
+                    defaultChecked={values.can_purchase_new}
+                    mt={2}
+                    onChange={handleChange}
+                  >
+                    Can purchase new?
+                  </Checkbox>
                 </Box>
               </SimpleGrid>
               <Flex justifyContent="right">
