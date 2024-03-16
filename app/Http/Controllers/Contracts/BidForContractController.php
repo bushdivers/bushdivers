@@ -34,10 +34,11 @@ class BidForContractController extends Controller
 
             $contract->is_available = true;
             $contract->user_id = null;
+            $contract->save();
             Cache::forget($contract->dep_airport_id.'-contracts');
         } else {
             // generate return to hub
-            $airport = Airport::where('identifier', $contract->arr_airport_id)->first();
+            $airport = Airport::where('identifier', $contract->arr_airport_id)->firstOrFail();
 
             $airportContracts = Contract::with('arrAirport')
                 ->where('dep_airport_id', $airport->identifier)
@@ -49,18 +50,21 @@ class BidForContractController extends Controller
             if ($airportContracts->count() == 0) {
                 // generate new contract back to hub
                 $originAirport = Airport::where('identifier', $contract->dep_airport_id)->first();
-                $contracts = $generateContracts->execute($originAirport, 1, true);
-                if ($contracts) {
-                    $storeContracts->execute($contracts);
+                if (!$originAirport->is_hub) {
+                    $contracts = $generateContracts->execute($originAirport, 1, true);
+                    if ($contracts) {
+                        $storeContracts->execute($contracts);
+                    }
                 }
             }
 
             // update contract for user
             $contract->is_available = false;
             $contract->user_id = $request->userId;
+            $contract->save();
             Cache::forget($contract->dep_airport_id.'-contracts');
         }
-        $contract->save();
+
 
         return \response()->json(['message' => 'Contract updated']);
     }
