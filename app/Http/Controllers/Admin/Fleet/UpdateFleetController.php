@@ -46,6 +46,7 @@ class UpdateFleetController extends Controller
         $fleet->used_low_price = $request->used_low_price;
         $fleet->used_high_price = $request->used_high_price;
         $fleet->manufacturer_id = $request->manufacturer_id;
+        $fleet->can_purchase_new = $request->can_purchase_new;
 
         $fleet->save();
 

@@ -1,92 +1,120 @@
+import {
+  Box,
+  Button,
+  Card,
+  CardBody,
+  CardHeader,
+  Heading,
+  Table,
+  TableContainer,
+  Tbody,
+  Td,
+  Th,
+  Thead,
+  Tr,
+} from '@chakra-ui/react'
 import { router } from '@inertiajs/react'
-import { format } from 'date-fns'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 import AircraftCondition from '../../components/fleet/AircraftCondition'
 import AppLayout from '../../components/layout/AppLayout'
+import {
+  convertMinuteDecimalToHoursAndMinutes,
+  formatDate,
+} from '../../helpers/date.helpers.js'
+import { dynamicSort } from '../../helpers/generic.helpers.js'
 import { getDistance } from '../../helpers/geo.helpers'
+import { displayNumber } from '../../helpers/number.helpers.js'
 
 const UsedAircraft = ({ aircraft, currentLocation, fleet }) => {
+  const [updatedAircraft, setUpdatedAircraft] = useState(aircraft)
   const handlePurchase = (ac) => {
     router.get(`/marketplace/purchase/used/${ac.id}`)
   }
 
+  useEffect(() => {
+    const updatedAircraft = aircraft.map((item) => ({
+      ...item,
+      distance: getDistance(
+        currentLocation.lat,
+        currentLocation.lon,
+        item.location.lat,
+        item.location.lon
+      ),
+    }))
+    setUpdatedAircraft(updatedAircraft.sort(dynamicSort('distance', 'asc')))
+  }, [aircraft])
+
   return (
-    <div className="p-4">
-      <h1>
-        {fleet.manufacturer} {fleet.name} - {fleet.type}
-      </h1>
-      <div className="rounded bg-white shadow">
-        <table className="table-condensed table-auto">
-          <thead>
-            <tr className="">
-              <th>Registration</th>
-              <th>Location</th>
-              <th>Distance</th>
-              <th>Condition</th>
-              <th>Airframe</th>
-              <th>Last Inspection</th>
-              <th>Engines (hrs)</th>
-              <th>Price</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            {aircraft &&
-              aircraft.map((ac) => (
-                <tr key={ac.id}>
-                  <td>{ac.registration}</td>
-                  <td>
-                    {ac.current_airport_id} <br />
-                    <span className="text-sm">{ac.location.name}</span>
-                  </td>
-                  <td>
-                    {getDistance(
-                      currentLocation.lat,
-                      currentLocation.lon,
-                      ac.location.lat,
-                      ac.location.lon
-                    )}
-                    nm
-                  </td>
-                  <td>
-                    <AircraftCondition aircraftCondition={ac.total_condition} />
-                  </td>
-                  <td>{(ac.flight_time_mins / 60).toFixed(2)}</td>
-                  <td>{format(ac.last_inspected_at, 'DD/MM/YYYY')}</td>
-                  <td>
-                    {ac.engines.map((e) => (
-                      <>
-                        <span>
-                          Until TBO:{' '}
-                          {(
-                            ac.fleet.tbo_mins / 60 -
-                            e.mins_since_tbo / 60
-                          ).toFixed(2)}
-                        </span>
-                        <br />
-                        <span>
-                          Until 100hr{' '}
-                          {(100 - e.mins_since_100hr / 60).toFixed(2)}
-                        </span>
-                      </>
-                    ))}
-                  </td>
-                  <td>${parseFloat(ac.sale_price).toLocaleString()}</td>
-                  <td>
-                    <button
-                      onClick={() => handlePurchase(ac)}
-                      className="btn btn-secondary btn-small"
-                    >
-                      Purchase
-                    </button>
-                  </td>
-                </tr>
-              ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
+    <Box>
+      <Card>
+        <CardHeader>
+          <Heading size="md">
+            {fleet.manufacturer} {fleet.name} - {fleet.type}
+          </Heading>
+        </CardHeader>
+        <CardBody>
+          <TableContainer>
+            <Table>
+              <Thead>
+                <Tr>
+                  <Th>Registration</Th>
+                  <Th>Location</Th>
+                  <Th>Distance</Th>
+                  <Th>Airframe Condition</Th>
+                  <Th>Airframe (hrs)</Th>
+                  <Th>Last Inspection</Th>
+                  <Th>Engines</Th>
+                  <Th>Price</Th>
+                  <Th></Th>
+                </Tr>
+              </Thead>
+              <Tbody>
+                {aircraft &&
+                  updatedAircraft.map((ac) => (
+                    <Tr key={ac.id}>
+                      <Td>{ac.registration}</Td>
+                      <Td>
+                        {ac.current_airport_id} <br />
+                        <span className="text-sm">{ac.location.name}</span>
+                      </Td>
+                      <Td>{ac.distance} nm</Td>
+                      <Td>
+                        <AircraftCondition aircraftCondition={ac.wear} />
+                      </Td>
+                      <Td>
+                        {convertMinuteDecimalToHoursAndMinutes(
+                          ac.flight_time_mins
+                        )}
+                      </Td>
+                      <Td>{formatDate(ac.last_inspected_at)}</Td>
+                      <Td>
+                        {ac.engines.map((e) => (
+                          <Box key={e.id}>
+                            <Box>
+                              {convertMinuteDecimalToHoursAndMinutes(
+                                e.mins_since_tbo
+                              )}{' '}
+                              hrs
+                              <AircraftCondition aircraftCondition={e.wear} />
+                            </Box>
+                          </Box>
+                        ))}
+                      </Td>
+                      <Td>${displayNumber(ac.sale_price, true)}</Td>
+                      <Td>
+                        <Button size="sm" onClick={() => handlePurchase(ac)}>
+                          Purchase
+                        </Button>
+                      </Td>
+                    </Tr>
+                  ))}
+              </Tbody>
+            </Table>
+          </TableContainer>
+        </CardBody>
+      </Card>
+    </Box>
   )
 }
 

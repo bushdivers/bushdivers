@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\Aircraft;
 use App\Models\Airport;
 use App\Models\Fleet;
+use App\Services\Aircraft\GenerateAircraft;
 use App\Services\Airports\CalcDistanceBetweenPoints;
+use App\Services\Airports\FindAirportsWithinDistance;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -16,10 +18,14 @@ use Inertia\Response;
 class ShowUsedAircraftController extends Controller
 {
     protected CalcDistanceBetweenPoints $calcDistanceBetweenPoints;
+    protected FindAirportsWithinDistance $findAirportsWithinDistance;
+    protected GenerateAircraft $generateAircraft;
 
-    public function __construct(CalcDistanceBetweenPoints $calcDistanceBetweenPoints)
+    public function __construct(CalcDistanceBetweenPoints $calcDistanceBetweenPoints, FindAirportsWithinDistance $findAirportsWithinDistance, GenerateAircraft $generateAircraft)
     {
         $this->calcDistanceBetweenPoints = $calcDistanceBetweenPoints;
+        $this->findAirportsWithinDistance = $findAirportsWithinDistance;
+        $this->generateAircraft = $generateAircraft;
     }
 
     /**
@@ -31,37 +37,18 @@ class ShowUsedAircraftController extends Controller
     public function __invoke($fleet): Response
     {
         $currentLocation = Airport::where('identifier', Auth::user()->current_airport_id)->first();
-
-        $airports = DB::select(DB::raw(
-            "SELECT *
-                        FROM (
-                          SELECT
-                            airports.identifier,
-                            3956 * ACOS(COS(RADIANS($currentLocation->lat)) * COS(RADIANS(lat)) * COS(RADIANS($currentLocation->lon) - RADIANS(lon)) + SIN(RADIANS($currentLocation->lat)) * SIN(RADIANS(lat))) AS `distance`
-                          FROM airports
-                          WHERE
-                            lat
-                              BETWEEN $currentLocation->lat - (300 / 69)
-                              AND $currentLocation->lat + (300 / 69)
-                            AND lon
-                              BETWEEN $currentLocation->lon - (300 / (69 * COS(RADIANS($currentLocation->lat))))
-                              AND $currentLocation->lon + (300 / (69* COS(RADIANS($currentLocation->lat))))
-                        ) r
-                        WHERE distance < 251
-                        ORDER BY distance ASC"
-        ));
-
-        $allAirports = collect($airports);
-        $allAirports = $allAirports->pluck('identifier');
-        $aircraft = Aircraft::with('location', 'fleet', 'engines')
-            ->where('owner_id', null)
-            ->where('fleet_id', $fleet)
-            ->whereIn('current_airport_id', $allAirports)
-            ->orderBy('sale_price')
-            ->get();
-
         $fleetDetail = Fleet::find($fleet);
 
-        return Inertia::render('Marketplace/UsedAircraft', ['aircraft' => $aircraft, 'currentLocation' => $currentLocation, 'fleet' => $fleetDetail]);
+        $this->generateAircraft->execute($fleet, $currentLocation);
+
+        $allAirports = $this->findAirportsWithinDistance->execute($currentLocation, 0, 300);
+        $allAirportsId = $allAirports->pluck('identifier');
+        $currentAircraftForSale = Aircraft::with('location', 'fleet', 'engines')
+            ->where('owner_id', null)
+            ->where('fleet_id', $fleet)
+            ->whereIn('current_airport_id', $allAirportsId)
+            ->get();
+
+        return Inertia::render('Marketplace/UsedAircraft', ['aircraft' => $currentAircraftForSale, 'currentLocation' => $currentLocation, 'fleet' => $fleetDetail]);
     }
 }

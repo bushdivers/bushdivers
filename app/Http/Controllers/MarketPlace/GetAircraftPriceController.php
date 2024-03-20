@@ -27,6 +27,16 @@ class GetAircraftPriceController extends Controller
             $price = $fleet->used_high_price;
         }
 
+        if ($ac->sale_price != null) {
+            if ($price > $ac->sale_price) {
+                $newPrice = $ac->sale_price - 2000;
+                $price = $newPrice;
+                if ($newPrice < 0) {
+                    $price = $ac->sale_price;
+                }
+            }
+        }
+
         return response()->json(['price' => $price]);
     }
 }

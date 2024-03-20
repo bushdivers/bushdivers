@@ -8,12 +8,14 @@ import {
   Text,
 } from '@chakra-ui/react'
 import { Link } from '@inertiajs/react'
+import { useFeatureFlagEnabled } from 'posthog-js/react'
 import React from 'react'
 
 import AppLayout from '../../components/layout/AppLayout'
 import { displayNumber } from '../../helpers/number.helpers.js'
 
 const Aircraft = ({ fleet }) => {
+  const flagEnabled = useFeatureFlagEnabled('used-aircraft')
   return (
     <>
       <SimpleGrid columns={3} gap={5}>
@@ -30,11 +32,19 @@ const Aircraft = ({ fleet }) => {
                   <Text fontSize="lg">{f.name}</Text>
                   <Box mb={2}>
                     <Text>Price Range:</Text>
-                    <Text>New: ${displayNumber(f.new_price)}</Text>
-                    <Text>
-                      Used: ${displayNumber(f.used_low_price)} - $
-                      {displayNumber(f.used_high_price)}
-                    </Text>
+                    {f.can_purchase_new ? (
+                      <Text>New: ${displayNumber(f.new_price)}</Text>
+                    ) : (
+                      <></>
+                    )}
+                    {flagEnabled ? (
+                      <Text>
+                        Used: ${displayNumber(f.used_low_price)} - $
+                        {displayNumber(f.used_high_price)}
+                      </Text>
+                    ) : (
+                      <></>
+                    )}
                   </Box>
                   <Flex mb={2} direction="column">
                     <Box>
@@ -63,10 +73,22 @@ const Aircraft = ({ fleet }) => {
                     <Box>Range: {displayNumber(f.range)} nm</Box>
                     <Box>Cruise Speed: {f.cruise_speed} KIAS</Box>
                   </Flex>
-                  <Link href={`/marketplace/purchase/new/${f.id}`}>
-                    <Button>Purchase New</Button>
-                  </Link>
-                  {/* <Link href={`/marketplace/list/used/${f.id}`} className="btn btn-primary">Purchase Used</Link> */}
+                  <Flex gap={2}>
+                    {f.can_purchase_new ? (
+                      <Link href={`/marketplace/purchase/new/${f.id}`}>
+                        <Button>Purchase New</Button>
+                      </Link>
+                    ) : (
+                      <></>
+                    )}
+                    {flagEnabled ? (
+                      <Link href={`/marketplace/list/used/${f.id}`}>
+                        <Button>Purchase Used</Button>
+                      </Link>
+                    ) : (
+                      <></>
+                    )}
+                  </Flex>
                 </Box>
               </CardBody>
             </Card>
