@@ -97,17 +97,17 @@ const ActiveDispatch = ({
                             </Flex>
                           </Td>
                           <Td>
-                            {detail.cargo_type_id === 1 ? 'Cargo' : 'Passenger'}
+                            {detail.cargo_type === 1 ? 'Cargo' : 'Passenger'}
                           </Td>
                           <Td>
-                            {detail.cargo_type_id === 1 ? (
+                            {detail.cargo_type === 1 ? (
                               <Flex gap={2}>
                                 <span>{detail.cargo_qty} lbs</span>{' '}
                                 <Text size="sm">{detail.cargo}</Text>
                               </Flex>
                             ) : (
                               <Flex gap={2}>
-                                <span>{detail.cargo_qty} lbs</span>{' '}
+                                <span>{detail.cargo_qty}</span>{' '}
                                 <Text size="sm">{detail.cargo}</Text>
                               </Flex>
                             )}
