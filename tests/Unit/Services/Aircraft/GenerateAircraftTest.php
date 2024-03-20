@@ -37,27 +37,8 @@ class GenerateAircraftTest extends TestCase
     public function test_aircraft_low_popularity_generated_successfully()
     {
         $fleet = Fleet::factory()->create([
-            'popularity' => 1
-        ]);
-
-        Airport::factory()->create([
-            'identifier' => 'AYMN',
-            'country' => 'PG',
-            'lat' => -6.14617,
-            'lon' => 143.65733
-        ]);
-
-        $this->generateAircraft->execute($fleet->id, $this->currentAirport);
-        $this->assertDatabaseHas('aircraft', [
-            'fleet_id' => $fleet->id
-        ]);
-        $this->assertDatabaseCount('aircraft', 5);
-    }
-
-    public function test_aircraft_medium_popularity_generated_successfully()
-    {
-        $fleet = Fleet::factory()->create([
-            'popularity' => 2
+            'popularity' => 1,
+            'size' => 'S'
         ]);
 
         Airport::factory()->create([
@@ -74,10 +55,32 @@ class GenerateAircraftTest extends TestCase
         $this->assertDatabaseCount('aircraft', 10);
     }
 
+    public function test_aircraft_medium_popularity_generated_successfully()
+    {
+        $fleet = Fleet::factory()->create([
+            'popularity' => 2,
+            'size' => 'S'
+        ]);
+
+        Airport::factory()->create([
+            'identifier' => 'AYMN',
+            'country' => 'PG',
+            'lat' => -6.14617,
+            'lon' => 143.65733
+        ]);
+
+        $this->generateAircraft->execute($fleet->id, $this->currentAirport);
+        $this->assertDatabaseHas('aircraft', [
+            'fleet_id' => $fleet->id
+        ]);
+        $this->assertDatabaseCount('aircraft', 13);
+    }
+
     public function test_aircraft_high_popularity_generated_successfully()
     {
         $fleet = Fleet::factory()->create([
-            'popularity' => 3
+            'popularity' => 3,
+            'size' => 'S'
         ]);
 
         Airport::factory()->create([
@@ -104,7 +107,8 @@ class GenerateAircraftTest extends TestCase
         ]);
 
         $fleet = Fleet::factory()->create([
-            'popularity' => 1
+            'popularity' => 1,
+            'size' => 'S'
         ]);
 
         Aircraft::factory()->create([
@@ -118,7 +122,7 @@ class GenerateAircraftTest extends TestCase
         $this->assertDatabaseHas('aircraft', [
             'fleet_id' => $fleet->id
         ]);
-        // still 5 because 1 already exists
-        $this->assertDatabaseCount('aircraft', 5);
+        // still 10 because 1 already exists
+        $this->assertDatabaseCount('aircraft', 10);
     }
 }

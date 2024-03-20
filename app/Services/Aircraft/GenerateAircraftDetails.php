@@ -32,7 +32,7 @@ class GenerateAircraftDetails
         $ac->state = 1;
         $ac->status = 1;
         $ac->owner_id = null;
-        $ac->last_inspected_at = Carbon::now()->addDays($randInspection);
+        $ac->last_inspected_at = Carbon::now()->subDays($randInspection);
         $ac->wear = rand(40, 95);
         $ac->save();
         $e = 1;
