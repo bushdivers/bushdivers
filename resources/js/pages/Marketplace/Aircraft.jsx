@@ -8,14 +8,15 @@ import {
   Text,
 } from '@chakra-ui/react'
 import { Link } from '@inertiajs/react'
-import { useFeatureFlagEnabled } from 'posthog-js/react'
+import { useFlags } from 'flagsmith/react'
 import React from 'react'
 
 import AppLayout from '../../components/layout/AppLayout'
 import { displayNumber } from '../../helpers/number.helpers.js'
 
 const Aircraft = ({ fleet }) => {
-  const flagEnabled = useFeatureFlagEnabled('used-aircraft')
+  const flags = useFlags(['used_aircraft'])
+  const usedAircraftEnabled = flags.used_aircraft.enabled
   return (
     <>
       <SimpleGrid columns={3} gap={5}>
@@ -37,7 +38,7 @@ const Aircraft = ({ fleet }) => {
                     ) : (
                       <></>
                     )}
-                    {flagEnabled ? (
+                    {usedAircraftEnabled ? (
                       <Text>
                         Used: ${displayNumber(f.used_low_price)} - $
                         {displayNumber(f.used_high_price)}
@@ -81,7 +82,7 @@ const Aircraft = ({ fleet }) => {
                     ) : (
                       <></>
                     )}
-                    {flagEnabled ? (
+                    {usedAircraftEnabled ? (
                       <Link href={`/marketplace/list/used/${f.id}`}>
                         <Button>Purchase Used</Button>
                       </Link>

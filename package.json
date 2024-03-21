@@ -25,6 +25,7 @@
         "@emotion/styled": "^11.11.0",
         "@inertiajs/react": "^1.0.14",
         "date-fns": "^3.2.0",
+        "flagsmith": "^3.23.2",
         "framer-motion": "^10.17.12",
         "lucide-react": "^0.308.0",
         "maplibre-gl": "^1.15.3",
