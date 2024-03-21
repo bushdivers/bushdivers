@@ -68,6 +68,7 @@ Route::middleware('auth')->group(function () {
         ->name('profile.index');
     Route::put('/profile', \App\Http\Controllers\Crew\UpdateProfileController::class)
         ->name('profile.update');
+    Route::post('/profile/reset', \App\Http\Controllers\Crew\ResetCareerController::class);
     Route::get('/logbook', \App\Http\Controllers\Pireps\ShowLogbookController::class)
         ->name('logbook');
     Route::get('/logbook/{pirep}', \App\Http\Controllers\Pireps\ShowPirepController::class)

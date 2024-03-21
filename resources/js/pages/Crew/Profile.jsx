@@ -53,6 +53,16 @@ const Profile = ({ profile, rank, nextRank, awards }) => {
     router.put('/profile', values)
   }
 
+  function handleResetCareer() {
+    if (
+      window.confirm(
+        'Are you sure you want to reset your career, this will clear your finance history and any owned aircraft?'
+      )
+    ) {
+      router.post('/profile/reset')
+    }
+  }
+
   return (
     <Tabs>
       <TabList>
@@ -65,7 +75,16 @@ const Profile = ({ profile, rank, nextRank, awards }) => {
         <TabPanel>
           <Card>
             <CardBody>
-              <ApiKey apiKey={profile.api_token} />
+              <Flex justifyContent="space-between">
+                <ApiKey apiKey={profile.api_token} />
+                <Button
+                  onClick={() => handleResetCareer()}
+                  size="sm"
+                  colorScheme="gray"
+                >
+                  Reset Career
+                </Button>
+              </Flex>
               <Heading my={2} size="md">
                 Edit Profile
               </Heading>
