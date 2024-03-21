@@ -59,7 +59,7 @@ class EndRentalTest extends TestCase
     {
         $this->endRental->execute($this->aircraftHome->id, $this->user->id);
         $this->assertDatabaseHas('user_accounts',[
-            'total' => 2000,
+            'total' => 400,
             'type' => TransactionTypes::Rental,
             'user_id' => $this->user->id
         ]);

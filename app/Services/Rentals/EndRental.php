@@ -35,7 +35,7 @@ class EndRental
         // check current location
         if ($aircraft->current_airport_id == $aircraft->rental_airport_id) {
             // return deposit to user
-            $deposit = $aircraft->fleet->rental_cost * 10;
+            $deposit = $aircraft->fleet->rental_cost * 2;
             $this->addUserTransaction->execute($userId, TransactionTypes::Rental, $deposit);
         }
         // update rental status

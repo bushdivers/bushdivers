@@ -5,6 +5,7 @@ import {
   CardBody,
   CardHeader,
   Heading,
+  Image,
   SimpleGrid,
   Table,
   TableContainer,
@@ -28,7 +29,7 @@ const RentalList = ({ aircraft, myRentals, currentAirport }) => {
     const confirm = window.confirm(
       `Confirm you would like to rent a ${ac.manufacturer} ${ac.name} for $${
         ac.rental_cost
-      }ph and a returnable deposit of $${ac.rental_cost * 10}`
+      }ph and a returnable deposit of $${ac.rental_cost * 2}`
     )
     if (confirm) {
       router.post('/rentals', { aircraft: ac.id })
@@ -145,12 +146,12 @@ const RentalList = ({ aircraft, myRentals, currentAirport }) => {
           </Box>
         )}
       </Heading>
-      <SimpleGrid mt={2} colums={3} gap={5}>
+      <SimpleGrid mt={2} columns={3} spacing={2}>
         {aircraft &&
           aircraft.map((ac) => (
             <Card key={ac.id}>
               <CardBody>
-                <img className="rounded-t" src={ac.rental_image} />
+                <Image src={ac.rental_image} />
                 <Heading size="sm" mt={2}>
                   {ac.type} {ac.manufacturer} - {ac.name}
                 </Heading>
@@ -159,7 +160,7 @@ const RentalList = ({ aircraft, myRentals, currentAirport }) => {
                   <Text fontSize="sm">(min. 2 hours per day)</Text>
                 </Box>
                 <Text>
-                  ${displayNumber(ac.rental_cost * 10)} Returnable deposit
+                  ${displayNumber(ac.rental_cost * 2)} Returnable deposit
                 </Text>
                 <Box my={2}>
                   <Text>Cargo (lbs): {displayNumber(ac.cargo_capacity)}</Text>

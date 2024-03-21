@@ -62,7 +62,7 @@ class StartRentalTest extends TestCase
         DB::table('user_accounts')->insert([
             'user_id' => $this->user->id,
             'type' => TransactionTypes::Bonus,
-            'total' => -1000.00
+            'total' => -10000.00
         ]);
 
         $result = $this->startRental->execute($this->fleet->id, $this->user->id, 'AYMR');
@@ -104,7 +104,7 @@ class StartRentalTest extends TestCase
         $this->assertDatabaseHas('user_accounts', [
            'user_id' => $this->user->id,
            'type' => TransactionTypes::Rental,
-           'total' => -1000
+           'total' => -200
         ]);
     }
 }

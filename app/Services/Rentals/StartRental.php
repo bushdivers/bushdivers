@@ -27,7 +27,7 @@ class StartRental
     {
         $fleet = Fleet::find($id);
         $airport = Airport::where('identifier', $icao)->first();
-        $deposit = $fleet->rental_cost * 10;
+        $deposit = $fleet->rental_cost * 2;
 
         // check user can afford
         if ($this->getUserBalance->execute($userId) < $deposit) {
