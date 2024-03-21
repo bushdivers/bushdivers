@@ -61,11 +61,9 @@ class GenerateAircraftDetails
 
         $multiplier = $engineMultiplier + $acMultiplier;
         if ($multiplier < 1) {
-            $price = rand(($fleet->used_low_price - 10000), (($fleet->used_low_price + 10000)));
-        } elseif ($multiplier < 2 && $multiplier >= 1) {
-            $price = rand(($fleet->used_low_price + 15000), (($fleet->used_low_price + 50000)));
+            $price = rand(($fleet->used_low_price - 2000), (($fleet->used_low_price + 2000)));
         } else {
-            $price = rand(($fleet->used_high_price - 30000), ($fleet->used_high_price + 15000));
+            $price = rand(($fleet->used_low_price + 1000), ($fleet->used_high_price));
         }
 
         $ac->sale_price = $price;
