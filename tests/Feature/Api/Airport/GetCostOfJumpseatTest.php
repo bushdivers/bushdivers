@@ -23,7 +23,8 @@ class GetCostOfJumpseatTest extends TestCase
             'identifier' => 'AYMN',
             'name' => 'Mendi',
             'lat' => -5.82781,
-            'lon' => 144.29953
+            'lon' => 144.29953,
+            'is_hub' => false
         ]);
     }
 
