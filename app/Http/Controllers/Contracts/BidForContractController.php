@@ -37,31 +37,31 @@ class BidForContractController extends Controller
             $contract->save();
             Cache::forget($contract->dep_airport_id.'-contracts');
         } else {
-            // generate return to hub
-            $airport = Airport::where('identifier', $contract->arr_airport_id)->firstOrFail();
-
-            $airportContracts = Contract::with('arrAirport')
-                ->where('dep_airport_id', $airport->identifier)
-                ->whereHas('arrAirport', function ($query) {
-                    $query->where('is_hub', true);
-                })
-                ->get();
-
-            if ($airportContracts->count() == 0) {
-                // generate new contract back to hub
-                $originAirport = Airport::where('identifier', $contract->dep_airport_id)->first();
-                if (!$originAirport->is_hub) {
-                    $contracts = $generateContracts->execute($originAirport, 1, true);
-                    if ($contracts) {
-                        $storeContracts->execute($contracts);
-                    }
-                }
-            }
 
             // update contract for user
             $contract->is_available = false;
             $contract->user_id = $request->userId;
             $contract->save();
+
+            // generate return to hub
+            $airport = Airport::where('identifier', $contract->arr_airport_id)->firstOrFail();
+            if (!$airport->is_hub) {
+                $airportContracts = Contract::with('arrAirport')
+                    ->where('dep_airport_id', $airport->identifier)
+                    ->where('is_available', true)
+                    ->whereHas('arrAirport', function ($query) {
+                        $query->where('is_hub', true);
+                    })
+                    ->get();
+
+                if ($airportContracts->count() == 0) {
+                    // generate new contract back to hub
+                    $contracts = $generateContracts->execute($airport, 1, true);
+                    if ($contracts) {
+                        $storeContracts->execute($contracts);
+                    }
+                }
+            }
             Cache::forget($contract->dep_airport_id.'-contracts');
         }
 
