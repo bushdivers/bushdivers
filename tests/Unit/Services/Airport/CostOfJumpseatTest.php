@@ -42,6 +42,23 @@ class CostOfJumpseatTest extends TestCase
         $this->assertEquals($expected, $data['cost']);
     }
 
+    public function test_jumpseat_calculated_between_hubs_free()
+    {
+        $fromAirport = Airport::factory()->create([
+            'identifier' => 'AYMG',
+            'is_hub' => true,
+        ]);
+        $toAirport = Airport::factory()->create([
+            'identifier' => 'AYMN',
+            'name' => 'Mount hagen',
+            'lat' => -5.82781,
+            'lon' => 144.29953,
+            'is_hub' => true
+        ]);
+        $data = $this->calcCostOfJumpseat->execute('AYMG', 'AYMN');
+        $this->assertEquals(0.00, $data['cost']);
+    }
+
     public function test_jumpseat_invalid_icao_handled()
     {
         $this->expectException(ModelNotFoundException::class);

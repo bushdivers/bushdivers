@@ -3,6 +3,7 @@
 namespace App\Services\Airports;
 
 use App\Models\Airport;
+use Illuminate\Support\Facades\Auth;
 
 class CalcCostOfJumpseat
 {
@@ -20,7 +21,14 @@ class CalcCostOfJumpseat
 
         $distance = $this->calcDistanceBetweenPoints->execute($start->lat, $start->lon, $end->lat, $end->lon);
 
-        $cost = round($distance * 0.25,2);
+        $hubs = Airport::where('is_hub', true)->get();
+        $hubs = $hubs->pluck('identifier');
+        if ($hubs->contains($start->identifier) && $hubs->contains($end->identifier)) {
+            $cost = 0.00;
+        } else {
+            $cost = round($distance * 0.25,2);
+        }
+
         return ['cost' => $cost, 'distance' => $distance];
     }
 }

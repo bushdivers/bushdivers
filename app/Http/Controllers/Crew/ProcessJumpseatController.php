@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Crew;
 
 use App\Http\Controllers\Controller;
+use App\Models\Airport;
 use App\Models\Enums\TransactionTypes;
 use App\Services\Finance\AddUserTransaction;
 use App\Services\User\UpdateUserLocation;
@@ -36,9 +37,9 @@ class ProcessJumpseatController extends Controller
 
         $isCost = true;
 
-        $hubs = ['AYMR', 'PAMX', 'AYMH', 'LSZS'];
-
-        if (in_array(Auth::user()->current_airport_id, $hubs) && in_array($request->icao, $hubs)) {
+        $hubs = Airport::where('is_hub', true)->get();
+        $hubs = $hubs->pluck('icao');
+        if ($hubs->contains(Auth::user()->current_airport_id) && $hubs->contains($request->icao)) {
             $isCost = false;
         }
 
