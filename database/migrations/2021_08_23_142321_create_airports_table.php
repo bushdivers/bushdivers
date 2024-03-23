@@ -22,7 +22,7 @@ class CreateAirportsTable extends Migration
             $table->boolean('is_hub');
             $table->decimal('lat', 11, 5)->index();
             $table->decimal('lon', 11, 5)->index();
-            $table->point('point')->nullable();
+            $table->geography('point', subtype: 'point')->nullable();
             $table->decimal('magnetic_variance', 11, 5)->default(0);
             $table->integer('altitude')->nullable();
             $table->integer('size')->nullable();
