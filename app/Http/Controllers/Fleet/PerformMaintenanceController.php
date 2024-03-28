@@ -57,7 +57,7 @@ class PerformMaintenanceController extends Controller
         $engine = null;
         $aircraft = Aircraft::with('location')->find($request->aircraft);
 
-        if ($aircraft->location->size < 3 || $aircraft->location->is_hub === false) return redirect()->back()->with(['error' => 'You cannot perform maintenance at this location']);
+        if ($aircraft->location->size < 3 && $aircraft->location->is_hub === false) return redirect()->back()->with(['error' => 'You cannot perform maintenance at this location']);
 
         if ($request->engine) {
             $engine = AircraftEngine::find($request->engine);
