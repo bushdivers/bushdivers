@@ -42,9 +42,9 @@ class GenerateContracts
         $numberToHubs = 0;
 
         if (!$toHub) {
-            $nearbyNumber = ($numberToGenerate / 100) * 35;
-            $midNumber = ($numberToGenerate / 100) * 50;
-            $furtherNumber = ($numberToGenerate / 100) * 15;
+            $nearbyNumber = ($numberToGenerate / 100) * min(35, $nearbyAirports->count() * 3);
+            $midNumber = ($numberToGenerate / 100) * min(50, $midRangeAirports->count() * 3);
+            $furtherNumber = ($numberToGenerate / 100) * min(15, $furtherAfieldAirports->count() * 3);
 
             $near = 1;
             while ($near <= $nearbyNumber) {
