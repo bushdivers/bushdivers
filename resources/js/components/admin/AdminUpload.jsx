@@ -51,6 +51,7 @@ const AdminUpload = ({ type, id }) => {
               <FormLabel htmlFor="display_text">Select File</FormLabel>
               <Input
                 id="uploaded_file"
+                accept=".png, .jpg, .jpeg, .zip"
                 type="file"
                 onChange={(e) => setData('uploaded_file', e.target.files[0])}
                 sx={{
