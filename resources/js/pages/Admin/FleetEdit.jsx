@@ -94,7 +94,7 @@ const FleetEdit = ({ fleet, manufacturers }) => {
                   </Flex>
                   <Flex direction="column" gap={1}>
                     <Heading size="sm">Marketplace Image</Heading>
-                    <Link href={fleet.image_url} target="_blank">
+                    <Link href={fleet.rental_image} target="_blank">
                       <Image src={fleet.rental_image} width={250} />
                     </Link>
                   </Flex>
