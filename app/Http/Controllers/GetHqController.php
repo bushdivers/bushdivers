@@ -17,7 +17,7 @@ class GetHqController extends Controller
     public function __invoke(Request $request, GetFinanceData $getFinanceData)
     {
         $finances = $getFinanceData->execute();
-        $fleet = Fleet::with(['aircraft' => function ($q) {
+        $fleet = Fleet::with(['uploads', 'aircraft' => function ($q) {
             $q->where('owner_id', 0);
             $q->where('status', AircraftStatus::ACTIVE);
             $q->orderBy('hub_id');

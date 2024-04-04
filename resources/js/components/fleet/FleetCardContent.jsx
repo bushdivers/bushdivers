@@ -18,6 +18,7 @@ import { Link, usePage } from '@inertiajs/react'
 import { Anchor, Wrench } from 'lucide-react'
 import React from 'react'
 
+import { displayFileSize } from '../../helpers/generic.helpers.js'
 import AircraftCondition from './AircraftCondition'
 
 const FleetCardContent = ({ fleet }) => {
@@ -49,6 +50,18 @@ const FleetCardContent = ({ fleet }) => {
             <Text>{fleet.aircraft.length} aircraft in fleet</Text>
           </Box>
           <Image w={300} borderRadius="md" src={fleet.image_url} />
+          {fleet.uploads?.length > 0 ? (
+            fleet.uploads.map((u) => (
+              <Flex gap={2} key={u.id}>
+                <Link target="_blank" href={u.url}>
+                  {u.display_name}
+                </Link>
+                <Text>{displayFileSize(u.size)}</Text>
+              </Flex>
+            ))
+          ) : (
+            <Text>No Liveries</Text>
+          )}
         </Flex>
         <Box ml={2}>
           <Flex mt={2} gap={8}>

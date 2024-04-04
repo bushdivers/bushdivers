@@ -102,12 +102,12 @@ const FleetEdit = ({ fleet, manufacturers }) => {
                 <Box mt={2}>
                   <Heading size="md">Livery Files</Heading>
                   {fleet.uploads?.length > 0 ? (
-                    fleet.uploads.map((f) => (
-                      <Flex gap={2} key={f.id}>
-                        <Link target="_blank" href={f.url}>
-                          {f.display_name}
+                    fleet.uploads.map((u) => (
+                      <Flex gap={2} key={u.id}>
+                        <Link target="_blank" href={u.url}>
+                          {u.display_name}
                         </Link>
-                        <Text>{displayFileSize(f.size)}</Text>
+                        <Text>{displayFileSize(u.size)}</Text>
                       </Flex>
                     ))
                   ) : (

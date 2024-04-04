@@ -21,7 +21,6 @@ const AdminUpload = ({ type, id }) => {
   })
 
   function submit(e) {
-    alert(data.upload_type)
     e.preventDefault()
     post('/admin/fleet/upload')
     setData('upload_type', null)
