@@ -135,7 +135,11 @@ const LiveFlightMap = ({ updateFlightCount }) => {
               >
                 <Image
                   boxSize="30px"
-                  src="https://res.cloudinary.com/dji0yvkef/image/upload/v1631525263/BDVA/icon_c208_orangekFus_whiteWings_revnmm.png"
+                  src={
+                    colorMode === 'dark'
+                      ? 'https://d1z4ruc262gung.cloudfront.net/assets/bd_flight_white.png'
+                      : 'https://d1z4ruc262gung.cloudfront.net/assets/bd_flight_black.png'
+                  }
                 />
               </Marker>
             ))}

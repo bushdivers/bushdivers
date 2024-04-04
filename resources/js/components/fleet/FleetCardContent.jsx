@@ -48,7 +48,7 @@ const FleetCardContent = ({ fleet }) => {
             </Heading>
             <Text>{fleet.aircraft.length} aircraft in fleet</Text>
           </Box>
-          <Image borderRadius="md" src={fleet.image_url} />
+          <Image w={300} borderRadius="md" src={fleet.image_url} />
         </Flex>
         <Box ml={2}>
           <Flex mt={2} gap={8}>

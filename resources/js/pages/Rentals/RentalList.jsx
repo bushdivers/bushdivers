@@ -151,7 +151,7 @@ const RentalList = ({ aircraft, myRentals, currentAirport }) => {
           aircraft.map((ac) => (
             <Card key={ac.id}>
               <CardBody>
-                <Image src={ac.rental_image} />
+                <Image w={300} borderRadius="md" src={ac.rental_image} />
                 <Heading size="sm" mt={2}>
                   {ac.type} {ac.manufacturer} - {ac.name}
                 </Heading>
