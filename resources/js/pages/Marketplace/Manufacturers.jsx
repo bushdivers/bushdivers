@@ -1,4 +1,4 @@
-import { Box, Card, CardBody, Flex, SimpleGrid } from '@chakra-ui/react'
+import { Box, Card, CardBody, Flex, Image, SimpleGrid } from '@chakra-ui/react'
 import { router } from '@inertiajs/react'
 import React from 'react'
 
@@ -21,7 +21,7 @@ const Manufacturers = ({ manufacturers }) => {
             >
               <CardBody>
                 <Flex justifyContent="center" alignItems="center" h="100%">
-                  {man.logo_url && <img src={man.logo_url} width="200" />}
+                  {man.logo_url && <Image src={man.logo_url} width={150} />}
                   {!man.logo_url && man.name}
                 </Flex>
               </CardBody>

@@ -4,6 +4,7 @@ import {
   Card,
   CardBody,
   Flex,
+  Image,
   SimpleGrid,
   Text,
 } from '@chakra-ui/react'
@@ -26,7 +27,7 @@ const Aircraft = ({ fleet }) => {
               <CardBody>
                 {f.rental_image && (
                   <Box w="100%">
-                    <img src={f.rental_image} />
+                    <Image w={300} borderRadius="md" src={f.rental_image} />
                   </Box>
                 )}
                 <Box>

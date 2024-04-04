@@ -179,6 +179,8 @@ Route::middleware('auth')->group(function () {
             ->name('admin.aircraft.store');
         Route::get('/admin/aircraft/delete/{id}', \App\Http\Controllers\Admin\Fleet\DeleteAircraftController::class)
             ->name('admin.aircraft.delete');
+        Route::post('/admin/fleet/upload', \App\Http\Controllers\Admin\Fleet\FleetUploadController::class)
+            ->name('admin.fleet.upload');
     });
 
     Route::middleware('admin')->group(function () {
