@@ -20,7 +20,7 @@ class FleetUploadController extends Controller
         $cloudFront = config('app.aws_cloudfront_url');
         $file = $request->file('uploaded_file');
         $originalName = $file->getClientOriginalName();
-        $newName = $originalName . '-' . Carbon::now()->timestamp;
+        $newName = Carbon::now()->timestamp . '-' . $originalName;
             switch ($request->upload_type) {
                 case "fleet":
                     $path = Storage::disk('s3')->putFileAs('fleet/bushdivers', $file, $newName);
