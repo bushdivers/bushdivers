@@ -51,24 +51,32 @@ const Tours = ({ tours }) => {
       {tours?.length > 0 ? (
         <SimpleGrid mt={2} columns={3} gap={4}>
           {tours.map((tour) => (
-            <Link key={tour.id} href={`/tours/${tour.id}`}>
-              <Card>
-                <CardBody>
-                  <Flex direction="column" alignItems="center">
-                    <Heading size="md">{tour.title}</Heading>
-                    <Flex>
-                      <Text>No. of Checkpoints:</Text>
-                      <Text ml={2}>{tour.checkpoints.length}</Text>
-                    </Flex>
-                    {tour.participants.find(
-                      (p) => p.user_id === auth.user.id
-                    ) ? (
-                      <Icon color="green.500" boxSize={10} as={BadgeCheck} />
-                    ) : null}
-                  </Flex>
-                </CardBody>
-              </Card>
-            </Link>
+            <>
+              {tour.is_published ? (
+                <Link key={tour.id} href={`/tours/${tour.id}`}>
+                  <Card>
+                    <CardBody>
+                      <Flex direction="column" alignItems="center">
+                        <Heading size="md">{tour.title}</Heading>
+                        <Flex>
+                          <Text>No. of Checkpoints:</Text>
+                          <Text ml={2}>{tour.checkpoints.length}</Text>
+                        </Flex>
+                        {tour.participants.find(
+                          (p) => p.user_id === auth.user.id
+                        ) ? (
+                          <Icon
+                            color="green.500"
+                            boxSize={10}
+                            as={BadgeCheck}
+                          />
+                        ) : null}
+                      </Flex>
+                    </CardBody>
+                  </Card>
+                </Link>
+              ) : null}
+            </>
           ))}
         </SimpleGrid>
       ) : (
