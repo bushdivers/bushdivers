@@ -51,6 +51,7 @@ const TourDetails = ({ tour, checkpoints, userCheckpoints }) => {
               <Text mt={2} width="90%">
                 {tour.description}
               </Text>
+              <Text>Starting from: {tour.start_airport_id}</Text>
             </CardBody>
             {isUserParticipant ? null : (
               <CardFooter>
