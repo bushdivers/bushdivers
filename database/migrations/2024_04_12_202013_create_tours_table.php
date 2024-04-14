@@ -15,11 +15,14 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->string('description');
-            $table->string('image');
-            $table->foreignId('award_id');
+            $table->foreignId('award_id')->nullable();
             $table->string('start_airport_id');
             $table->timestamps();
         });
+
+        \Illuminate\Support\Facades\DB::table('roles')->insert([
+            'role' => 'tour_admin',
+        ]);
     }
 
     /**

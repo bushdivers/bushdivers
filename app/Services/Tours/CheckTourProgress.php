@@ -47,7 +47,10 @@ class CheckTourProgress
                 // completed tour
                 $tourUser->is_completed = true;
                 $tourUser->completed_at = Carbon::now();
-                $this->addAwardToUser->execute($pirep->user_id, $tour->award_id);
+                if ($tour->award_id) {
+                    $this->addAwardToUser->execute($pirep->user_id, $tour->award_id);
+                }
+
             }
 
             // update user tour progress

@@ -3,6 +3,8 @@ import { Link as InertiaLink } from '@inertiajs/react'
 import { usePage } from '@inertiajs/react'
 import React from 'react'
 
+import { doesUserHaveRole } from '../../../helpers/auth.helpers.js'
+
 const AdminMenu = () => {
   const { auth } = usePage().props
   return (
@@ -13,6 +15,11 @@ const AdminMenu = () => {
             <ChakraLink as={InertiaLink} href="/admin/fleet">
               Fleet
             </ChakraLink>
+            {doesUserHaveRole(auth.user.user_roles, 'tour_admin') && (
+              <ChakraLink as={InertiaLink} href="/admin/tours">
+                Tours
+              </ChakraLink>
+            )}
             {!!auth.user.is_admin && (
               <ChakraLink as={InertiaLink} href="/admin/users">
                 Users

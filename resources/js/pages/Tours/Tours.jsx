@@ -9,7 +9,6 @@ import {
   Flex,
   Heading,
   Icon,
-  Image,
   SimpleGrid,
   Text,
 } from '@chakra-ui/react'
@@ -56,7 +55,6 @@ const Tours = ({ tours }) => {
               <Card>
                 <CardBody>
                   <Flex direction="column" alignItems="center">
-                    <Image src={tour.image} h="200px" objectFit="cover" />
                     <Heading size="md">{tour.title}</Heading>
                     <Flex>
                       <Text>No. of Checkpoints:</Text>

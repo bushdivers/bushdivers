@@ -8,7 +8,6 @@ import {
   Grid,
   GridItem,
   Heading,
-  Image,
   Text,
 } from '@chakra-ui/react'
 import { router, usePage } from '@inertiajs/react'
@@ -46,7 +45,6 @@ const TourDetails = ({ tour, checkpoints, userCheckpoints }) => {
     <Box>
       <Flex justifyContent="center">
         <Flex alignItems="center" gap={24}>
-          <Image h="200px" src={tour.image} />
           <Card mt={2}>
             <CardBody>
               <Heading size="md">{tour.title}</Heading>

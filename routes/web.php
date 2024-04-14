@@ -191,6 +191,27 @@ Route::middleware('auth')->group(function () {
             ->name('admin.fleet.upload');
     });
 
+    Route::middleware('role:tour_admin')->group(function() {
+       Route::get('/admin/tours', \App\Http\Controllers\Admin\Tours\ShowToursController::class)
+           ->name('admin.tours');
+        Route::post('/admin/tours', \App\Http\Controllers\Admin\Tours\CreateTourController::class)
+            ->name('admin.tours.create');
+        Route::get('/admin/tours/{id}', \App\Http\Controllers\Admin\Tours\ShowTourDetailController::class)
+            ->name('admin.tours.details');
+        Route::delete('/admin/tours/{id}', \App\Http\Controllers\Admin\Tours\DeleteTourController::class)
+            ->name('admin.tours.delete');
+        Route::post('/admin/tours/{id}', \App\Http\Controllers\Admin\Tours\EditTourController::class)
+            ->name('admin.tours.edit');
+        Route::post('/admin/tours/{id}/publish', \App\Http\Controllers\Admin\Tours\PublishTourController::class)
+            ->name('admin.tours.publish');
+        Route::post('/admin/tours/{id}/fleet', \App\Http\Controllers\Admin\Tours\AddTourFleetController::class)
+            ->name('admin.tours.add.fleet');
+        Route::delete('/admin/tours/{tour}/fleet/{fleet}', \App\Http\Controllers\Admin\Tours\RemoveTourFleetController::class)
+            ->name('admin.tours.remove.fleet');
+        Route::post('/admin/tours/{id}/checkpoint', \App\Http\Controllers\Admin\Tours\AddTourCheckpointController::class)
+            ->name('admin.tours.add.checkpoint');
+    });
+
     Route::middleware('admin')->group(function () {
         Route::get('/admin/pireps', \App\Http\Controllers\Admin\Pireps\ShowPirepsListController::class)
             ->name('admin.pireps');

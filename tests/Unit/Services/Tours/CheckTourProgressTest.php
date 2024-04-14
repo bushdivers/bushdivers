@@ -33,7 +33,6 @@ class CheckTourProgressTest extends TestCase
         $this->tour = Tour::factory()->create([
             'title' => 'test',
             'description' => 'test',
-            'image' => 'test',
             'award_id' => 1,
             'start_airport_id' => 'AYMR'
         ]);
@@ -120,7 +119,6 @@ class CheckTourProgressTest extends TestCase
         $tour2 = Tour::factory()->create([
             'title' => 'test',
             'description' => 'test',
-            'image' => 'test',
             'award_id' => 1,
             'start_airport_id' => 'AYMR'
         ]);
@@ -172,6 +170,41 @@ class CheckTourProgressTest extends TestCase
         $this->assertDatabaseHas('award_user', [
             'user_id' => $this->user->id,
             'award_id' => $this->tour->award_id
+        ]);
+    }
+
+    public function test_tour_without_award_does_not_break(): void
+    {
+        $tour2 = Tour::factory()->create([
+            'title' => 'test',
+            'description' => 'test',
+            'start_airport_id' => 'AYMR',
+            'award_id' => null
+        ]);
+        $tour2User = TourUser::factory()->create([
+            'user_id' => $this->user->id,
+            'tour_id' => $tour2->id,
+            'next_checkpoint' => 'AYMH'
+        ]);
+        $other = TourCheckpointUser::factory()->create([
+            'user_id' => $this->user->id,
+            'tour_id' => $tour2->id,
+            'section' => 1,
+            'is_completed' => true,
+            'checkpoint' => 'WAVG'
+        ]);
+        $other1 = TourCheckpointUser::factory()->create([
+            'user_id' => $this->user->id,
+            'tour_id' => $tour2->id,
+            'section' => 2,
+            'checkpoint' => 'AYMH'
+        ]);
+        $this->pirep->tour_id = $tour2->id;
+        $this->pirep->save();
+        $this->checkTourProgress->execute($this->pirep);
+
+        $this->assertDatabaseMissing('award_user', [
+            'user_id' => $this->user->id
         ]);
     }
 }
