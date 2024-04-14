@@ -2,11 +2,11 @@ version: '3'
 services:
     laravel.test:
         build:
-            context: ./docker/8.1
+            context: ./docker/8.2
             dockerfile: Dockerfile
             args:
                 WWWGROUP: '${WWWGROUP}'
-        image: sail-8.1/app
+        image: sail-8.2/app
         extra_hosts:
             - 'host.docker.internal:host-gateway'
         ports:
@@ -25,18 +25,18 @@ services:
         depends_on:
             - mysql
     mysql:
-        image: 'mysql/mysql-server:8.0'
+        image: 'mariadb:10.6'
         ports:
             - '${FORWARD_DB_PORT:-3306}:3306'
         environment:
-            MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
-            MYSQL_ROOT_HOST: '%'
-            MYSQL_DATABASE: '${DB_DATABASE}'
-            MYSQL_USER: '${DB_USERNAME}'
-            MYSQL_PASSWORD: '${DB_PASSWORD}'
-            MYSQL_ALLOW_EMPTY_PASSWORD: 1
+            MARIADB_ROOT_PASSWORD: '${DB_PASSWORD}'
+            MARIADB_DATABASE: '${DB_DATABASE}'
+            MARIADB_USER: '${DB_USERNAME}'
+            MARIADB_PASSWORD: '${DB_PASSWORD}'
+            MARIADB_AUTO_UPGRADE: 1
+            MARIADB_ALLOW_EMPTY_PASSWORD: 1
         volumes:
-            - 'sailmysql:/var/lib/mysql'
+            - 'sailmariadb:/var/lib/mysql'
             - './docker/mysql/create-testing-database.sh:/docker-entrypoint-initdb.d/10-create-testing-database.sh'
         networks:
             - sail
@@ -52,5 +52,5 @@ networks:
     sail:
         driver: bridge
 volumes:
-    sailmysql:
+    sailmariadb:
         driver: local

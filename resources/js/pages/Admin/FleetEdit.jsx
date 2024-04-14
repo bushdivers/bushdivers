@@ -29,7 +29,7 @@ const FleetEdit = ({ fleet, manufacturers }) => {
   const [values, setValues] = useState({
     type: fleet?.type,
     name: fleet?.name ?? '',
-    manufacturer: fleet?.manufacturer.name ?? '',
+    manufacturer: fleet?.manufacturer ?? '',
     manufacturer_id: fleet?.manufacturer_id ?? '0',
     powerplants: fleet?.powerplants ?? '',
     engines: fleet?.number_of_engines ?? '',
@@ -149,7 +149,9 @@ const FleetEdit = ({ fleet, manufacturers }) => {
                   )}
                 </FormControl>
                 <FormControl isInvalid={errors.manufacturer}>
-                  <FormLabel htmlFor="manufacturer">Manufacturer</FormLabel>
+                  <FormLabel htmlFor="manufacturer">
+                    Fleet Manufacturer
+                  </FormLabel>
                   <Input
                     id="manufacturer"
                     value={values.manufacturer}
@@ -338,7 +340,9 @@ const FleetEdit = ({ fleet, manufacturers }) => {
                   </Select>
                 </FormControl>
                 <FormControl>
-                  <FormLabel htmlFor="manufacturer_id">Manufacturer</FormLabel>
+                  <FormLabel htmlFor="manufacturer_id">
+                    Marketplace Manufacturer
+                  </FormLabel>
                   <Select
                     id="manufacturer_id"
                     value={values.manufacturer_id}
