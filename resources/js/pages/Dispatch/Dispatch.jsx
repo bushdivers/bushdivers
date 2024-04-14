@@ -151,7 +151,11 @@ const Dispatch = ({ cargo, aircraft, airport, tours }) => {
       const compatibleAircraft = selectedTour.aircraft.filter(
         (ac) => ac.fleet.id === selectedAircraft.fleet.id
       )
-      if (compatibleAircraft === undefined || compatibleAircraft.length === 0) {
+      if (
+        compatibleAircraft === undefined ||
+        compatibleAircraft.length === 0 ||
+        selectedAircraft.owner_id === 0
+      ) {
         setSubmitError('This aircraft is not compatible with the tour flight')
         return
       }
