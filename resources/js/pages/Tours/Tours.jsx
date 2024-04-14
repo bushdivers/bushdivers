@@ -45,6 +45,10 @@ const Tours = ({ tours }) => {
               flights. During dispatch, you will need to specify if it is a tour
               flight. This is important in order to track progress.
             </Text>
+            <Text fontSize="sm">
+              Pay attention to fuel!! you will need to plan when you need to
+              carry it with you or you might get stranded.
+            </Text>
           </AlertDescription>
         </Box>
       </Alert>
@@ -63,7 +67,7 @@ const Tours = ({ tours }) => {
                           <Text ml={2}>{tour.checkpoints.length}</Text>
                         </Flex>
                         {tour.participants.find(
-                          (p) => p.user_id === auth.user.id
+                          (p) => p.user_id === auth.user.id && p.is_completed
                         ) ? (
                           <Icon
                             color="green.500"
