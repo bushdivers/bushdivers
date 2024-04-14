@@ -136,9 +136,9 @@ const LiveFlightMap = ({ updateFlightCount }) => {
                 <Image
                   boxSize="30px"
                   src={
-                    colorMode === 'dark'
-                      ? 'https://d1z4ruc262gung.cloudfront.net/assets/bd_flight_white.png'
-                      : 'https://d1z4ruc262gung.cloudfront.net/assets/bd_flight_black.png'
+                    flight.tour_id
+                      ? 'https://d1z4ruc262gung.cloudfront.net/assets/bd_flight_black.png'
+                      : 'https://d1z4ruc262gung.cloudfront.net/assets/bd_flight_white.png'
                   }
                 />
               </Marker>
