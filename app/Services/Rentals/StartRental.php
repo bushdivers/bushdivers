@@ -13,39 +13,30 @@ use Illuminate\Support\Facades\Auth;
 
 class StartRental
 {
-    protected AddUserTransaction $addUserTransaction;
-    protected GetUserBalance $getUserBalance;
     protected string $reg = '';
 
-    public function __construct(AddUserTransaction $addUserTransaction, GetUserBalance $getUserBalance)
-    {
-        $this->addUserTransaction = $addUserTransaction;
-        $this->getUserBalance = $getUserBalance;
-    }
 
     public function execute($id, $userId, $icao): bool
     {
-        $fleet = Fleet::find($id);
         $airport = Airport::where('identifier', $icao)->first();
-        $deposit = $fleet->rental_cost * 2;
 
-        // check user can afford
-        if ($this->getUserBalance->execute($userId) < $deposit) {
-            return false;
+        $existingRental = Rental::where('current_airport_id', $icao)->where('fleet_id', $id)->where('is_active', false)->first();
+        if ($existingRental) {
+            $existingRental->user_id = $userId;
+            $existingRental->is_active = true;
+            $existingRental->rental_airport_id = $icao;
+            $existingRental->save();
+        } else {
+            $reg = $this->findAvailableReg($airport->country);
+
+            $rental = new Rental();
+            $rental->registration = $reg;
+            $rental->user_id = $userId;
+            $rental->fleet_id = $id;
+            $rental->current_airport_id = $icao;
+            $rental->rental_airport_id = $icao;
+            $rental->save();
         }
-
-        $reg = $this->findAvailableReg($airport->country);
-
-        $rental = new Rental();
-        $rental->registration = $reg;
-        $rental->user_id = $userId;
-        $rental->fleet_id = $id;
-        $rental->current_airport_id = $icao;
-        $rental->rental_airport_id = $icao;
-        $rental->save();
-
-        // process financials
-        $this->addUserTransaction->execute($userId, TransactionTypes::Rental, -$deposit);
 
         return true;
     }

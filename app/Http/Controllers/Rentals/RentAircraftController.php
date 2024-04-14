@@ -26,7 +26,6 @@ class RentAircraftController extends Controller
      */
     public function __invoke(Request $request): RedirectResponse
     {
-        // TODO: update params
         if ($this->startRental->execute($request->aircraft, Auth::user()->id, Auth::user()->current_airport_id)) {
             return redirect()->to('/rentals')->with(['success' => 'Aircraft rented']);
         } else {

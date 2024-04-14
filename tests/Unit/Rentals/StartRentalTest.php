@@ -57,17 +57,6 @@ class StartRentalTest extends TestCase
      *
      * @return void
      */
-    public function test_insufficient_funds_returns_false()
-    {
-        DB::table('user_accounts')->insert([
-            'user_id' => $this->user->id,
-            'type' => TransactionTypes::Bonus,
-            'total' => -10000.00
-        ]);
-
-        $result = $this->startRental->execute($this->fleet->id, $this->user->id, 'AYMR');
-        $this->assertFalse($result);
-    }
 
     public function test_successful_process_returns_true()
     {
@@ -96,15 +85,5 @@ class StartRentalTest extends TestCase
         $this->startRental->execute($this->fleet->id, $this->user->id, 'AYMR');
         $rental = Rental::where('user_id', $this->user->id)->first();
         $this->assertMatchesRegularExpression('/([P])([2])([\-])([R])([0-9]){3}/', $rental->registration);
-    }
-
-    public function test_account_transaction_added()
-    {
-        $this->startRental->execute($this->fleet->id, $this->user->id, 'AYMR');
-        $this->assertDatabaseHas('user_accounts', [
-           'user_id' => $this->user->id,
-           'type' => TransactionTypes::Rental,
-           'total' => -200
-        ]);
     }
 }
