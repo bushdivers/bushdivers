@@ -98,6 +98,14 @@ Route::middleware('auth')->group(function () {
         ->name('airport.rename');
     });
 
+    // Tours
+    Route::get('/tours', \App\Http\Controllers\Tours\ShowToursController::class)
+        ->name('tours');
+    Route::get('/tours/{id}', \App\Http\Controllers\Tours\ShowTourController::class)
+        ->name('tour.detail');
+    Route::post('/tours/{id}/join', \App\Http\Controllers\Tours\JoinTourController::class)
+        ->name('tour.join');
+
 
     // Aircraft/Fleet
     Route::get('/aircraft/{id}', \App\Http\Controllers\Fleet\ShowAircraftController::class)

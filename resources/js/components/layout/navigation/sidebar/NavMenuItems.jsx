@@ -12,6 +12,7 @@ import {
   HelpCircle,
   NotebookText,
   Plane,
+  Route,
 } from 'lucide-react'
 import React from 'react'
 
@@ -36,6 +37,7 @@ const NavMenuItems = () => {
           text="Find Contracts"
           to={`/airports/${auth.user.current_airport_id}`}
         />
+        <NavItem icon={Route} text="Tours" to="/tours" />
         <NavItem icon={Plane} text="My Aircraft" to="/my-aircraft" />
         <NavItem icon={CircleDollarSign} text="My Finances" to="/my-finances" />
         <NavItem icon={Building} text="Bush Divers HQ" to="/bushdivers-hq" />
