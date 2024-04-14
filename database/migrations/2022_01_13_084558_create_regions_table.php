@@ -18,7 +18,7 @@ class CreateRegionsTable extends Migration
             $table->integer('type');
             $table->string('code');
             $table->string('name');
-            $table->geometry('polygon', subtype: 'polygon');
+            $table->geography('polygon', subtype: 'polygon');
         });
     }
 

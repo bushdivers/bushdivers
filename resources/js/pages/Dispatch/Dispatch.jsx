@@ -1,4 +1,14 @@
-import { Box, Flex, Heading, SimpleGrid, Text } from '@chakra-ui/react'
+import {
+  Box,
+  Card,
+  CardBody,
+  Checkbox,
+  Flex,
+  Heading,
+  Select,
+  SimpleGrid,
+  Text,
+} from '@chakra-ui/react'
 import { router, usePage } from '@inertiajs/react'
 import React, { useState } from 'react'
 
@@ -9,7 +19,7 @@ import DispatchSummary from '../../components/dispatch/DispatchSummary'
 import Fuel from '../../components/dispatch/Fuel'
 import AppLayout from '../../components/layout/AppLayout'
 
-const Dispatch = ({ cargo, aircraft, airport }) => {
+const Dispatch = ({ cargo, aircraft, airport, tours }) => {
   const { auth } = usePage().props
   const [personWeight] = useState(170.0)
   const [avgasWeight] = useState(5.99)
@@ -25,6 +35,8 @@ const Dispatch = ({ cargo, aircraft, airport }) => {
   const [error, setError] = useState(null)
   const [submitError, setSubmitError] = useState(null)
   const [deadHead, setDeadHead] = useState(false)
+  const [tourFlight, setTourFlight] = useState(false)
+  const [selectedTour, setSelectedTour] = useState(null)
 
   function handleDeadHead() {
     if (!selectedAircraft.maintenance_status) {
@@ -128,12 +140,22 @@ const Dispatch = ({ cargo, aircraft, airport }) => {
       fuel_price: fuelPrice,
       cargo,
       is_empty: deadHead,
+      tour: selectedTour?.id,
     }
     router.post('/dispatch', data)
   }
 
   function handleSubmitDispatch() {
     setSubmitError(null)
+    if (tourFlight) {
+      const compatibleAircraft = selectedTour.aircraft.filter(
+        (ac) => ac.fleet.id === selectedAircraft.fleet.id
+      )
+      if (compatibleAircraft === undefined || compatibleAircraft.length === 0) {
+        setSubmitError('This aircraft is not compatible with the tour flight')
+        return
+      }
+    }
     if (deadHead && selectedAircraft && fuel > 0 && destination) {
       sendDispatch()
       return
@@ -161,12 +183,43 @@ const Dispatch = ({ cargo, aircraft, airport }) => {
     }
   }
 
+  function handleTourFlight() {
+    if (!tourFlight) {
+      setSelectedTour(tours[0])
+    } else {
+      setSelectedTour(null)
+    }
+    setTourFlight(!tourFlight)
+  }
+
+  function handleTourSelect(e) {
+    setSelectedTour(e.target.value)
+  }
+
   return (
     <div>
       <Heading size="md">{`Dispatch - ${auth.user.current_airport_id}`}</Heading>
       <Flex justifyContent="space-between" mt={4}>
         <SimpleGrid columns={2} spacing={4}>
           <Box>
+            {tours?.length > 0 && (
+              <Card mb={2}>
+                <CardBody>
+                  <Checkbox onChange={handleTourFlight}>
+                    Is this a Tour flight?
+                  </Checkbox>
+                  {tourFlight ? (
+                    <Select onChange={handleTourSelect} mt={2} size="sm">
+                      {tours.map((t) => (
+                        <option key={t.id} value={t.id}>
+                          {t.title}
+                        </option>
+                      ))}
+                    </Select>
+                  ) : null}
+                </CardBody>
+              </Card>
+            )}
             <Aircraft
               aircraft={aircraft}
               selectedAircraft={selectedAircraft}

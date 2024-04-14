@@ -11,4 +11,5 @@ class AwardType
     public const DISTANCE = 5;
     public const AIRPORTS = 6;
     public const HUB = 7;
+    public const TOUR = 8;
 }

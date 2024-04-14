@@ -13,6 +13,8 @@ use App\Models\Enums\PirepState;
 use App\Models\Pirep;
 use App\Models\PirepCargo;
 use App\Models\Rental;
+use App\Models\Tour;
+use App\Models\TourUser;
 use App\Services\Dispatch\CalcCargoWeight;
 use App\Services\Dispatch\CalcFuelWeight;
 use App\Services\Dispatch\CalcPassengerCount;
@@ -83,8 +85,13 @@ class ShowDispatchController extends Controller
 //        $aircraft = Aircraft::with('fleet')->find($pirep->aircraft_id);
         $aircraft = $this->getAircraftForDispatch(Auth::user()->current_airport_id);
         $airport = Airport::where('identifier', Auth::user()->current_airport_id)->first();
+        $tours = Tour::with('aircraft.fleet', 'participants')
+            ->whereHas('participants', function ($q) {
+                return $q->where('user_id', Auth::user()->id)->where('is_completed', false);
+            })
+            ->get();
 
-        return Inertia::render('Dispatch/Dispatch', ['cargo' => $cargo, 'aircraft' => $aircraft, 'airport' => $airport]);
+        return Inertia::render('Dispatch/Dispatch', ['cargo' => $cargo, 'aircraft' => $aircraft, 'airport' => $airport, 'tours' => $tours]);
     }
 
     protected function getCargoForDispatch($currentLocation, $userId): array

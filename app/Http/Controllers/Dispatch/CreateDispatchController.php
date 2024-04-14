@@ -54,6 +54,7 @@ class CreateDispatchController extends Controller
         $pirep->state = PirepState::DISPATCH;
         $pirep->is_empty = $request->is_empty;
         $pirep->is_rental = $isRental;
+        $pirep->tour_id = $request->tour;
         $pirep->save();
 
         if (!$request->is_empty) {
