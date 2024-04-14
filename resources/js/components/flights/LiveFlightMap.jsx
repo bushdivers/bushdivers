@@ -20,7 +20,7 @@ const LiveFlightMap = ({ updateFlightCount }) => {
   const [flights, setFlights] = useState([])
   useInterval(async () => {
     await loadMarkers()
-  }, 30000)
+  }, 10000)
 
   const loadMarkers = async () => {
     const res = await axios.get('/api/liveflights')
