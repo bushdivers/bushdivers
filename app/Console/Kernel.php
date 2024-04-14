@@ -19,8 +19,6 @@ use Illuminate\Support\Facades\Log;
 
 class Kernel extends ConsoleKernel
 {
-
-    protected CheckRentalDailyFee $checkRentalDailyFee;
     protected FindInactivePireps $findInactivePireps;
     protected RemoveMultiplePireps $removeMultiplePireps;
     protected CalcMonthlyFees $calcMonthlyFees;
@@ -31,7 +29,6 @@ class Kernel extends ConsoleKernel
     public function __construct(
         Application $app,
         Dispatcher $events,
-        CheckRentalDailyFee $checkRentalDailyFee,
         FindInactivePireps $findInactivePireps,
         RemoveMultiplePireps $removeMultiplePireps,
         CalcMonthlyFees $calcMonthlyFees,
@@ -40,7 +37,6 @@ class Kernel extends ConsoleKernel
     )
     {
         parent::__construct($app, $events);
-        $this->checkRentalDailyFee = $checkRentalDailyFee;
         $this->findInactivePireps = $findInactivePireps;
         $this->removeMultiplePireps = $removeMultiplePireps;
         $this->calcMonthlyFees = $calcMonthlyFees;
@@ -77,11 +73,6 @@ class Kernel extends ConsoleKernel
             $this->checkForExpiry->execute();
             Log::info('Contract expiry was called');
         })->twiceDaily();
-
-        $schedule->call(function () {
-            $this->checkRentalDailyFee->execute();
-            Log::info('Rentals was called');
-        })->daily();
 
         // financial calculations
         $schedule->call(function () {

@@ -55,26 +55,6 @@ class EndRentalTest extends TestCase
      *
      * @return void
      */
-    public function test_deposit_is_returned_when_at_home_location()
-    {
-        $this->endRental->execute($this->aircraftHome->id, $this->user->id);
-        $this->assertDatabaseHas('user_accounts',[
-            'total' => 400,
-            'type' => TransactionTypes::Rental,
-            'user_id' => $this->user->id
-        ]);
-    }
-
-    public function test_deposit_not_returned_when_away_from_home()
-    {
-        $this->endRental->execute($this->aircraftAway->id, $this->user->id);
-        $this->assertDatabaseMissing('user_accounts',[
-            'total' => 2000,
-            'type' => TransactionTypes::Rental,
-            'user_id' => $this->user->id
-        ]);
-    }
-
     public function test_rental_made_inactive()
     {
         $this->endRental->execute($this->aircraftHome->id, $this->user->id);

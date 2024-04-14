@@ -27,9 +27,7 @@ const RentalList = ({ aircraft, myRentals, currentAirport }) => {
 
   const handleRental = (ac) => {
     const confirm = window.confirm(
-      `Confirm you would like to rent a ${ac.manufacturer} ${ac.name} for $${
-        ac.rental_cost
-      }ph and a returnable deposit of $${ac.rental_cost * 2}`
+      `Confirm you would like to rent a ${ac.manufacturer} ${ac.name} for $${ac.rental_cost}ph`
     )
     if (confirm) {
       router.post('/rentals', { aircraft: ac.id })
@@ -37,16 +35,7 @@ const RentalList = ({ aircraft, myRentals, currentAirport }) => {
   }
 
   const handleCancel = (ac) => {
-    if (ac.current_airport_id !== ac.rental_airport_id) {
-      const confirm = window.confirm(
-        `Aircraft ${ac.registration} is not at its home location, if you end the rental now you will not get your deposit back. Do you wish to continue?`
-      )
-      if (confirm) {
-        returnRental(ac)
-      }
-    } else {
-      returnRental(ac)
-    }
+    returnRental(ac)
   }
 
   const returnRental = (ac) => {
@@ -155,13 +144,7 @@ const RentalList = ({ aircraft, myRentals, currentAirport }) => {
                 <Heading size="sm" mt={2}>
                   {ac.type} {ac.manufacturer} - {ac.name}
                 </Heading>
-                <Box mt={1}>
-                  ${displayNumber(ac.rental_cost)} per hour{' '}
-                  <Text fontSize="sm">(min. 2 hours per day)</Text>
-                </Box>
-                <Text>
-                  ${displayNumber(ac.rental_cost * 2)} Returnable deposit
-                </Text>
+                <Box mt={1}>${displayNumber(ac.rental_cost)} per hour </Box>
                 <Box my={2}>
                   <Text>Cargo (lbs): {displayNumber(ac.cargo_capacity)}</Text>
                   <Text>Pax: {ac.pax_capacity}</Text>
