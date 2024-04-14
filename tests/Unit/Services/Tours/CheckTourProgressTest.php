@@ -88,11 +88,62 @@ class CheckTourProgressTest extends TestCase
         $this->assertEquals(true, $this->tourCheckpointUser->is_completed);
     }
 
+    public function test_only_correct_user_checkpoint_completed(): void
+    {
+        $user = User::factory()->create();
+        $other = TourCheckpointUser::factory()->create([
+            'user_id' => $user->id,
+            'tour_id' => $this->tour->id,
+            'section' => 1,
+            'checkpoint' => 'WAVG'
+        ]);
+        $other1 = TourCheckpointUser::factory()->create([
+            'user_id' => $user->id,
+            'tour_id' => $this->tour->id,
+            'section' => 2,
+            'checkpoint' => 'AYMH'
+        ]);
+        $this->checkTourProgress->execute($this->pirep);
+        $other->refresh();
+        $this->assertEquals(false, $other->is_completed);
+    }
+
     public function test_progress_updated(): void
     {
         $this->checkTourProgress->execute($this->pirep);
         $this->tourUser->refresh();
         $this->assertEquals(50, $this->tourUser->progress);
+    }
+
+    public function test_correct_tour_progress_updated(): void
+    {
+        $tour2 = Tour::factory()->create([
+            'title' => 'test',
+            'description' => 'test',
+            'image' => 'test',
+            'award_id' => 1,
+            'start_airport_id' => 'AYMR'
+        ]);
+        $tour2User = TourUser::factory()->create([
+            'user_id' => $this->user->id,
+            'tour_id' => $tour2->id,
+            'next_checkpoint' => 'WAVG'
+        ]);
+        $other = TourCheckpointUser::factory()->create([
+            'user_id' => $this->user->id,
+            'tour_id' => $tour2->id,
+            'section' => 1,
+            'checkpoint' => 'WAVG'
+        ]);
+        $other1 = TourCheckpointUser::factory()->create([
+            'user_id' => $this->user->id,
+            'tour_id' => $tour2->id,
+            'section' => 2,
+            'checkpoint' => 'AYMH'
+        ]);
+        $this->checkTourProgress->execute($this->pirep);
+        $this->tourUser->refresh();
+        $this->assertEquals(0, $tour2User->progress);
     }
 
     public function test_tour_completed(): void
@@ -108,8 +159,19 @@ class CheckTourProgressTest extends TestCase
         $this->assertEquals(true, $this->tourUser->is_completed);
     }
 
-//    public function test_tour_award_added(): void
-//    {
-//        $this->assertTrue(true);
-//    }
+    public function test_tour_award_added(): void
+    {
+        $this->tourUser->next_checkpoint = 'AYMH';
+        $this->tourUser->save();
+        $this->tourCheckpointUser->is_completed = true;
+        $this->tourCheckpointUser->save();
+        $this->pirep->destination_airport_id = 'AYMH';
+        $this->pirep->save();
+        $this->checkTourProgress->execute($this->pirep);
+
+        $this->assertDatabaseHas('award_user', [
+            'user_id' => $this->user->id,
+            'award_id' => $this->tour->award_id
+        ]);
+    }
 }
