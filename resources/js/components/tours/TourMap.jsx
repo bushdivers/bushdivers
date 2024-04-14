@@ -1,7 +1,8 @@
 import { Box, Card, Tag, Text, useColorMode } from '@chakra-ui/react'
+import { featureCollection, greatCircle, point } from '@turf/turf'
 import maplibre from 'maplibre-gl'
 import React from 'react'
-import { Map, Marker } from 'react-map-gl'
+import { Layer, Map, Marker, Source } from 'react-map-gl'
 
 import {
   mapboxToken,
@@ -12,6 +13,30 @@ import {
 const TourMap = ({ checkpoints, start }) => {
   const { colorMode } = useColorMode()
 
+  let lineFeatures = []
+  let prevPoint = point([start.lon, start.lat])
+  for (let i = 0; i < checkpoints.length; i++) {
+    const startPoint = prevPoint
+    const endPoint = point([
+      checkpoints[i].airport.lon,
+      checkpoints[i].airport.lat,
+    ])
+    const gc = greatCircle(startPoint, endPoint)
+    prevPoint = endPoint
+    lineFeatures.push(gc)
+  }
+
+  const geojson = featureCollection(lineFeatures)
+
+  const layerStyle = {
+    id: 'line',
+    type: 'line',
+    paint: {
+      'line-width': 1,
+      'line-color': '#FF6900',
+    },
+  }
+
   return (
     <Card>
       <Box rounded="md" className="map-container-small">
@@ -20,8 +45,8 @@ const TourMap = ({ checkpoints, start }) => {
           mapboxAccessToken={mapboxToken}
           initialViewState={{
             zoom: 0.75,
-            latitude: 21.15,
-            longitude: 169.96,
+            latitude: start.lat,
+            longitude: start.lon,
           }}
           mapStyle={parseMapStyle(colorMode)}
           transformRequest={transformRequest}
@@ -42,6 +67,9 @@ const TourMap = ({ checkpoints, start }) => {
               </Tag>
             </Marker>
           ))}
+          <Source id="my-data" type="geojson" data={geojson}>
+            <Layer {...layerStyle} />
+          </Source>
         </Map>
       </Box>
     </Card>

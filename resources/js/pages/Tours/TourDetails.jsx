@@ -63,7 +63,7 @@ const TourDetails = ({ tour, checkpoints, userCheckpoints }) => {
             )}
           </Card>
           <Box>
-            <Heading size="md">Valid Aircraft</Heading>
+            <Heading size="md">Valid Aircraft ({tour.aircraft.length})</Heading>
             <Box mt={2} overflowY="auto" maxHeight="100px" px={2}>
               {tour.aircraft.map((ac) => (
                 <Card my={1} p={2} key={ac.id}>
