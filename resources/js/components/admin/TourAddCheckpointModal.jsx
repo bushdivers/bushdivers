@@ -13,14 +13,29 @@ import {
   Text,
 } from '@chakra-ui/react'
 import { router } from '@inertiajs/react'
+import axios from 'axios'
 import React, { useState } from 'react'
 
 const TourAddFleetModal = ({ isOpen, onClose, tourId }) => {
   const [checkpoint, setCheckpoint] = useState('')
+  const [airport, setAirport] = useState('')
   const [error, setError] = useState('')
 
-  function handleChange(e) {
-    setCheckpoint(e.target.value)
+  async function handleChange(e) {
+    setError(null)
+    setAirport(null)
+
+    if (e.target.value !== '' && e.target.value.length > 2) {
+      const response = await axios.get(`/api/airport/search/${e.target.value}`)
+      if (response.data.airport) {
+        setAirport(
+          `${response.data.airport.identifier} - ${response.data.airport.name}`
+        )
+        setCheckpoint(e.target.value)
+      } else {
+        setError('Airport not found')
+      }
+    }
   }
 
   function save() {
@@ -29,11 +44,16 @@ const TourAddFleetModal = ({ isOpen, onClose, tourId }) => {
       setError('Checkpoint cannot be empty')
       return
     }
+    if (airport === '') {
+      setError('Airport not found')
+      return
+    }
     onClose()
     router.post(`/admin/tours/${tourId}/checkpoint`, {
       checkpoint,
       tour: tourId,
     })
+    setAirport('')
   }
 
   return (
@@ -42,6 +62,8 @@ const TourAddFleetModal = ({ isOpen, onClose, tourId }) => {
       onClose={() => {
         onClose()
         setError('')
+        setAirport('')
+        setCheckpoint('')
       }}
     >
       <ModalOverlay />
@@ -54,10 +76,11 @@ const TourAddFleetModal = ({ isOpen, onClose, tourId }) => {
             <FormLabel>Checkpoint ICAO</FormLabel>
             <Input id="checkpoint" onChange={handleChange} />
           </FormControl>
+          {airport && <Text>{airport}</Text>}
         </ModalBody>
 
         <ModalFooter>
-          <Button onClick={() => save()} mr={3}>
+          <Button isDisabled={!checkpoint} onClick={() => save()} mr={3}>
             Save
           </Button>
           <Button
@@ -65,6 +88,8 @@ const TourAddFleetModal = ({ isOpen, onClose, tourId }) => {
             onClick={() => {
               onClose()
               setError('')
+              setAirport('')
+              setCheckpoint('')
             }}
           >
             Cancel
