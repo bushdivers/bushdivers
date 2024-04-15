@@ -18,7 +18,11 @@ class ShowManufacturerController extends Controller
      */
     public function __invoke(Request $request, $manufacturer, $buyer): Response
     {
-        $fleet = Fleet::with('manufacturer')->where('manufacturer_id', $manufacturer)->get();
+        if ($buyer == 'admin') {
+            $fleet = Fleet::with('manufacturer')->where('manufacturer_id', $manufacturer)->where('company_fleet', true)->get();
+        } else {
+            $fleet = Fleet::with('manufacturer')->where('manufacturer_id', $manufacturer)->get();
+        }
         return Inertia::render('Marketplace/Aircraft', ['fleet' => $fleet, 'buyer' => $buyer]);
     }
 }

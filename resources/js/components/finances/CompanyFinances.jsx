@@ -37,6 +37,8 @@ const renderTransactionType = (transactionType) => {
       return 'Contract Pilot Pay'
     case 10:
       return 'General Expenditure'
+    case 11:
+      return 'General Income'
   }
 }
 
