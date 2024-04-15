@@ -15,7 +15,7 @@ import React from 'react'
 import AppLayout from '../../components/layout/AppLayout'
 import { displayNumber } from '../../helpers/number.helpers.js'
 
-const Aircraft = ({ fleet }) => {
+const Aircraft = ({ fleet, buyer }) => {
   const flags = useFlags(['used_aircraft'])
   const usedAircraftEnabled = flags.used_aircraft.enabled
   return (
@@ -77,14 +77,14 @@ const Aircraft = ({ fleet }) => {
                   </Flex>
                   <Flex gap={2}>
                     {f.can_purchase_new ? (
-                      <Link href={`/marketplace/purchase/new/${f.id}`}>
+                      <Link href={`/marketplace/purchase/new/${f.id}/${buyer}`}>
                         <Button>Purchase New</Button>
                       </Link>
                     ) : (
                       <></>
                     )}
                     {usedAircraftEnabled ? (
-                      <Link href={`/marketplace/list/used/${f.id}`}>
+                      <Link href={`/marketplace/list/used/${f.id}/${buyer}`}>
                         <Button>Purchase Used</Button>
                       </Link>
                     ) : (

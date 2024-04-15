@@ -57,8 +57,8 @@ const FleetList = ({ fleet }) => {
             <Link href="/admin/fleet/create">
               <Button>Add new fleet</Button>
             </Link>
-            <Link href="/admin/aircraft/create">
-              <Button>Add new aircraft</Button>
+            <Link href="/marketplace/admin">
+              <Button>Purchase VA Aircraft</Button>
             </Link>
           </Flex>
         </Flex>

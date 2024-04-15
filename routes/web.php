@@ -128,21 +128,21 @@ Route::middleware('auth')->group(function () {
     });
 
     // marketplace
-    Route::get('/marketplace', \App\Http\Controllers\MarketPlace\ShowMarketPlaceController::class)
+    Route::get('/marketplace/{buyer}', \App\Http\Controllers\MarketPlace\ShowMarketPlaceController::class)
         ->name('marketplace');
-    Route::get('/marketplace/{manufacturer}', \App\Http\Controllers\MarketPlace\ShowManufacturerController::class)
+    Route::get('/marketplace/list/{manufacturer}/{buyer}', \App\Http\Controllers\MarketPlace\ShowManufacturerController::class)
         ->name('marketplace.manufacture');
-    Route::get('/marketplace/purchase/new/{fleet}', \App\Http\Controllers\MarketPlace\ShowPurchaseNewController::class)
+    Route::get('/marketplace/purchase/new/{fleet}/{buyer}', \App\Http\Controllers\MarketPlace\ShowPurchaseNewController::class)
         ->name('marketplace.new');
-    Route::get('/marketplace/list/used/{fleet}', \App\Http\Controllers\MarketPlace\ShowUsedAircraftController::class)
+    Route::get('/marketplace/list/used/{fleet}/{buyer}', \App\Http\Controllers\MarketPlace\ShowUsedAircraftController::class)
         ->name('marketplace.list.used');
-    Route::get('/marketplace/purchase/used/{id}', \App\Http\Controllers\MarketPlace\ShowPurchaseUsedController::class)
+    Route::get('/marketplace/purchase/used/{id}/{buyer}', \App\Http\Controllers\MarketPlace\ShowPurchaseUsedController::class)
         ->name('marketplace.used');
-    Route::post('/marketplace/purchase', \App\Http\Controllers\MarketPlace\PurchaseController::class)
+    Route::post('/marketplace/purchase/{buyer}', \App\Http\Controllers\MarketPlace\PurchaseController::class)
         ->name('marketplace.purchase');
     Route::get('/my-aircraft', \App\Http\Controllers\Aircraft\ShowMyAircraftController::class)
         ->name('aircraft.mine');
-    Route::post('/marketplace/sell/{id}', \App\Http\Controllers\MarketPlace\SellAircraftController::class)
+    Route::post('/marketplace/sell/{id}/{seller}', \App\Http\Controllers\MarketPlace\SellAircraftController::class)
         ->name('marketplace.sell');
 
 
@@ -181,10 +181,6 @@ Route::middleware('auth')->group(function () {
             ->name('admin.fleet.update');
         Route::get('/admin/fleet/delete/{id}', \App\Http\Controllers\Admin\Fleet\DeleteFleetController::class)
             ->name('admin.fleet.delete');
-        Route::get('/admin/aircraft/create', \App\Http\Controllers\Admin\Fleet\ShowAddAircraftController::class)
-            ->name('admin.aircraft.add');
-        Route::post('/admin/aircraft/create', \App\Http\Controllers\Admin\Fleet\AddAircraftController::class)
-            ->name('admin.aircraft.store');
         Route::get('/admin/aircraft/delete/{id}', \App\Http\Controllers\Admin\Fleet\DeleteAircraftController::class)
             ->name('admin.aircraft.delete');
         Route::post('/admin/fleet/upload', \App\Http\Controllers\Admin\Fleet\FleetUploadController::class)

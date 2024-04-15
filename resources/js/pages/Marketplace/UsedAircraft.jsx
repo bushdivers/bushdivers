@@ -26,10 +26,10 @@ import { dynamicSort } from '../../helpers/generic.helpers.js'
 import { getDistance } from '../../helpers/geo.helpers'
 import { displayNumber } from '../../helpers/number.helpers.js'
 
-const UsedAircraft = ({ aircraft, currentLocation, fleet }) => {
+const UsedAircraft = ({ aircraft, currentLocation, fleet, buyer }) => {
   const [updatedAircraft, setUpdatedAircraft] = useState(aircraft)
   const handlePurchase = (ac) => {
-    router.get(`/marketplace/purchase/used/${ac.id}`)
+    router.get(`/marketplace/purchase/used/${ac.id}/${buyer}`)
   }
 
   useEffect(() => {

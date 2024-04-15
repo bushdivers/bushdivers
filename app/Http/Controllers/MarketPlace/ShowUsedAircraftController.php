@@ -34,7 +34,7 @@ class ShowUsedAircraftController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function __invoke($fleet): Response
+    public function __invoke($fleet, $buyer): Response
     {
         $currentLocation = Airport::where('identifier', Auth::user()->current_airport_id)->first();
         $fleetDetail = Fleet::find($fleet);
@@ -49,6 +49,6 @@ class ShowUsedAircraftController extends Controller
             ->whereIn('current_airport_id', $allAirportsId)
             ->get();
 
-        return Inertia::render('Marketplace/UsedAircraft', ['aircraft' => $currentAircraftForSale, 'currentLocation' => $currentLocation, 'fleet' => $fleetDetail]);
+        return Inertia::render('Marketplace/UsedAircraft', ['aircraft' => $currentAircraftForSale, 'currentLocation' => $currentLocation, 'fleet' => $fleetDetail, 'buyer' => $buyer]);
     }
 }

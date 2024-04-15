@@ -51,7 +51,7 @@ class PurchaseTest extends TestCase
             'total' => 10000,
             'id' => $this->fleet->id
         ];
-        $response = $this->actingAs($this->user)->post('/marketplace/purchase', $data);
+        $response = $this->actingAs($this->user)->post('/marketplace/purchase/user', $data);
 
         $response->assertStatus(302);
         // assert user transaction exists
@@ -83,7 +83,7 @@ class PurchaseTest extends TestCase
             'total' => 10000,
             'id' => $this->fleet->id
         ];
-        $response = $this->actingAs($this->user)->post('/marketplace/purchase', $data);
+        $response = $this->actingAs($this->user)->post('/marketplace/purchase/user', $data);
 
         $response->assertStatus(302);
         $this->followRedirects($response)->assertSee('Insufficient funds');

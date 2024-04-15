@@ -4,9 +4,9 @@ import React from 'react'
 
 import AppLayout from '../../components/layout/AppLayout'
 
-const Manufacturers = ({ manufacturers }) => {
+const Manufacturers = ({ manufacturers, buyer }) => {
   const selectManufacturer = (manufacturer) => {
-    router.get(`marketplace/${manufacturer}`)
+    router.get(`/marketplace/list/${manufacturer}/${buyer}`)
   }
 
   return (

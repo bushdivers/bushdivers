@@ -12,7 +12,7 @@ use Illuminate\Support\Str;
 
 class CreateAircraft
 {
-    public function execute($data, $user, $location): Aircraft
+    public function execute($data, $user = null, $location = null): Aircraft
     {
         $fleet = Fleet::find($data['id']);
         // create aircraft
