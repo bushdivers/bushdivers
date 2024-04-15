@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\MarketPlace;
 
 use App\Http\Controllers\Controller;
+use App\Models\Airport;
 use App\Models\Fleet;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -16,9 +17,10 @@ class ShowPurchaseNewController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function __invoke(Request $request, $fleetId): Response
+    public function __invoke(Request $request, $fleetId, $buyer): Response
     {
         $fleet = Fleet::find($fleetId);
-        return Inertia::render('Marketplace/Purchase', ['aircraft' => $fleet, 'purchaseType' => 'new']);
+        $hubs = Airport::where('is_hub', true)->orderBy('identifier')->get();
+        return Inertia::render('Marketplace/Purchase', ['aircraft' => $fleet, 'purchaseType' => 'new', 'buyer' => $buyer, 'hubs' => $hubs]);
     }
 }

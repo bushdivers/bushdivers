@@ -9,6 +9,7 @@ import {
   FormLabel,
   Heading,
   Input,
+  Select,
   Text,
 } from '@chakra-ui/react'
 import React, { useState } from 'react'
@@ -24,6 +25,8 @@ const UsedPurchase = ({
   handleRegChange,
   regError,
   purchase,
+  buyer,
+  hubs,
 }) => {
   const [basePrice] = useState(aircraft.sale_price)
 
@@ -31,7 +34,7 @@ const UsedPurchase = ({
     <Box>
       <Heading size="md">
         Purchase Used - {aircraft.fleet.manufacturer} {aircraft.fleet.name}{' '}
-        {aircraft.registration}
+        {aircraft.registration} {buyer === 'admin' && ' - For VA'}
       </Heading>
       <Card mt={2}>
         <CardHeader>
@@ -39,16 +42,32 @@ const UsedPurchase = ({
         </CardHeader>
         <CardBody>
           <Box width="200px">
-            <FormControl isInvalid={hubError}>
-              <FormLabel>Home Hub (ICAO)</FormLabel>
-              <Input
-                id="hub"
-                type="text"
-                value={hub}
-                onChange={handleHubChange}
-              />
-              <FormErrorMessage>{hubError}</FormErrorMessage>
-            </FormControl>
+            {buyer === 'admin' ? (
+              <FormControl isInvalid={hubError}>
+                <FormLabel htmlFor="hub">Hub location</FormLabel>
+                <Select id="hub" value={hub} onChange={handleHubChange}>
+                  <option>Please select hub</option>
+                  {hubs.map((hub) => (
+                    <option key={hub.identifier} value={hub.identifier}>
+                      {hub.identifier}
+                    </option>
+                  ))}
+                </Select>
+                <FormErrorMessage>{hubError}</FormErrorMessage>
+              </FormControl>
+            ) : (
+              <FormControl isInvalid={hubError}>
+                <FormLabel>Home Hub (ICAO)</FormLabel>
+                <Input
+                  id="hub"
+                  type="text"
+                  value={hub}
+                  onChange={handleHubChange}
+                />
+                <FormErrorMessage>{hubError}</FormErrorMessage>
+              </FormControl>
+            )}
+
             <FormControl isInvalid={regError}>
               <FormLabel>Registration</FormLabel>
               <Input

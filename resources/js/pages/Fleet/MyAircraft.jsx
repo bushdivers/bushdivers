@@ -42,7 +42,7 @@ const MyAircraft = ({ aircraft, rentals }) => {
           <Heading size="md">My Aircraft</Heading>
         </CardHeader>
         <CardBody>
-          <Link href="/marketplace">
+          <Link href="/marketplace/user">
             <Button size="sm">Go To Marketplace</Button>
           </Link>
           <TableContainer>

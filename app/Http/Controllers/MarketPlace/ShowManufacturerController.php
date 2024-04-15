@@ -16,9 +16,9 @@ class ShowManufacturerController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function __invoke(Request $request, $manufacturer): Response
+    public function __invoke(Request $request, $manufacturer, $buyer): Response
     {
         $fleet = Fleet::with('manufacturer')->where('manufacturer_id', $manufacturer)->get();
-        return Inertia::render('Marketplace/Aircraft', ['fleet' => $fleet]);
+        return Inertia::render('Marketplace/Aircraft', ['fleet' => $fleet, 'buyer' => $buyer]);
     }
 }

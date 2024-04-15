@@ -6,7 +6,7 @@ import AppLayout from '../../components/layout/AppLayout'
 import NewPurchase from '../../components/marketplace/NewPurchase.jsx'
 import UsedPurchase from '../../components/marketplace/UsedPurchase.jsx'
 
-const Purchase = ({ aircraft, purchaseType }) => {
+const Purchase = ({ aircraft, purchaseType, buyer, hubs }) => {
   const { auth } = usePage().props
   const [hub, setHub] = useState(null)
   const [hubError, setHubError] = useState(null)
@@ -52,7 +52,7 @@ const Purchase = ({ aircraft, purchaseType }) => {
       return
     }
 
-    if (parseFloat(price) > auth.user.balance) {
+    if (buyer === 'user' && parseFloat(price) > auth.user.balance) {
       window.alert('You do not have sufficient funds')
       return
     }
@@ -65,7 +65,7 @@ const Purchase = ({ aircraft, purchaseType }) => {
       reg,
       purchaseType,
     }
-    router.post('/marketplace/purchase', data)
+    router.post(`/marketplace/purchase/${buyer}`, data)
   }
 
   return (
@@ -81,6 +81,8 @@ const Purchase = ({ aircraft, purchaseType }) => {
           regError={regError}
           purchase={purchase}
           updateDelivery={handleDeliveryChange}
+          buyer={buyer}
+          hubs={hubs}
         />
       ) : (
         <UsedPurchase
@@ -92,6 +94,8 @@ const Purchase = ({ aircraft, purchaseType }) => {
           regError={regError}
           hubError={hubError}
           purchase={purchase}
+          buyer={buyer}
+          hubs={hubs}
         />
       )}
       {error && (

@@ -18,10 +18,10 @@ class ShowMarketPlaceController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function __invoke(Request $request): Response
+    public function __invoke(Request $request, $buyer): Response
     {
 //        $fleet = Fleet::all();
         $manufacturers = Manufacturer::orderBy('name')->get();
-        return Inertia::render('Marketplace/Manufacturers', ['manufacturers' => $manufacturers]);
+        return Inertia::render('Marketplace/Manufacturers', ['manufacturers' => $manufacturers, 'buyer' => $buyer]);
     }
 }
