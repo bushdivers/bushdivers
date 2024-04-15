@@ -14,7 +14,7 @@ import {
   Tr,
 } from '@chakra-ui/react'
 import { Link, router } from '@inertiajs/react'
-import { Pen, Plus, Trash2 } from 'lucide-react'
+import { Pen, Trash2 } from 'lucide-react'
 import React, { useState } from 'react'
 
 import FleetAircraft from '../../components/admin/FleetAircraft'
@@ -98,13 +98,6 @@ const FleetList = ({ fleet }) => {
                                 <Link href={`/admin/fleet/edit/${f.id}`}>
                                   <Button variant="ghost" size="xs">
                                     <Icon as={Pen} />
-                                  </Button>
-                                </Link>
-                                <Link
-                                  href={`/admin/aircraft/create?fleet=${f.id}`}
-                                >
-                                  <Button variant="ghost" size="xs">
-                                    <Icon as={Plus} />
                                   </Button>
                                 </Link>
                                 {f.aircraft.length === 0 && (

@@ -30,7 +30,7 @@ const MyAircraft = ({ aircraft, rentals }) => {
           `Are you sure you want to sell your aircraft ${ac.registration} for $${res.data.price}?`
         )
       ) {
-        router.post(`/marketplace/sell/${ac.id}`)
+        router.post(`/marketplace/sell/${ac.id}/user`)
       }
     }
   }

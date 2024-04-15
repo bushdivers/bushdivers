@@ -1,9 +1,21 @@
-import { Button, Icon } from '@chakra-ui/react'
-import { Link } from '@inertiajs/react'
-import { X } from 'lucide-react'
+import { Button } from '@chakra-ui/react'
+import { router } from '@inertiajs/react'
+import axios from 'axios'
 import React from 'react'
 
 const FleetAircraft = (props) => {
+  const handleSale = async (ac) => {
+    const res = await axios.get(`/api/aircraft/price/${ac.id}`)
+    if (res.status === 200) {
+      if (
+        window.confirm(
+          `Are you sure you want to sell this aircraft ${ac.registration} for $${res.data.price}?`
+        )
+      ) {
+        router.post(`/marketplace/sell/${ac.id}/admin`)
+      }
+    }
+  }
   return (
     <>
       {props.fleet.aircraft.map((detail) => (
@@ -12,11 +24,13 @@ const FleetAircraft = (props) => {
           <td>Current Location: {detail.current_airport_id}</td>
           <td>
             <div className="flex items-center">
-              <Link href={`/admin/aircraft/delete/${detail.id}`}>
-                <Button variant="ghost" size="xs">
-                  <Icon as={X} />
-                </Button>
-              </Link>
+              <Button
+                onClick={() => handleSale(detail)}
+                variant="ghost"
+                size="xs"
+              >
+                Sell
+              </Button>
             </div>
           </td>
         </tr>
