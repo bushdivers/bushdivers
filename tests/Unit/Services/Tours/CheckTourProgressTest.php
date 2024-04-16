@@ -18,9 +18,14 @@ class CheckTourProgressTest extends TestCase
 
     protected Model $tour;
     protected Model $user;
+    protected Model $anotherUser;
     protected Model $tourUser;
+    protected Model $anotherTourUser;
     protected Model $tourCheckpointUser;
     protected Model $tourCheckpointUser1;
+
+    protected Model $anotherTourCheckpointUser;
+    protected Model $anotherTourCheckpointUser1;
 
     protected Model $pirep;
 
@@ -37,8 +42,15 @@ class CheckTourProgressTest extends TestCase
             'start_airport_id' => 'AYMR'
         ]);
         $this->user = User::factory()->create();
+        $this->anotherUser = User::factory()->create();
+
         $this->tourUser = TourUser::factory()->create([
             'user_id' => $this->user->id,
+            'tour_id' => $this->tour->id,
+            'next_checkpoint' => 'WAVG'
+        ]);
+        $this->anotherTourUser = TourUser::factory()->create([
+            'user_id' => $this->anotherUser->id,
             'tour_id' => $this->tour->id,
             'next_checkpoint' => 'WAVG'
         ]);
@@ -54,9 +66,22 @@ class CheckTourProgressTest extends TestCase
             'section' => 2,
             'checkpoint' => 'AYMH'
         ]);
+        $this->anotherTourCheckpointUser = TourCheckpointUser::factory()->create([
+            'user_id' => $this->anotherUser->id,
+            'tour_id' => $this->tour->id,
+            'section' => 1,
+            'checkpoint' => 'WAVG'
+        ]);
+        $this->anotherTourCheckpointUser1 = TourCheckpointUser::factory()->create([
+            'user_id' => $this->anotherUser->id,
+            'tour_id' => $this->tour->id,
+            'section' => 2,
+            'checkpoint' => 'AYMH'
+        ]);
         $this->pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,
             'tour_id' => $this->tour->id,
+            'departure_airport_id' => 'AYYM',
             'destination_airport_id' => 'WAVG',
         ]);
     }
@@ -66,9 +91,22 @@ class CheckTourProgressTest extends TestCase
      */
     public function test_next_checkpoint_set(): void
     {
+        $firstPirep = Pirep::factory()->create([
+            'user_id' => $this->user->id,
+            'tour_id' => $this->tour->id,
+            'departure_airport_id' => 'AYMN',
+            'destination_airport_id' => 'AYYM',
+        ]);
+        $this->checkTourProgress->execute($firstPirep);
+        $this->tourUser->refresh();
+        $this->assertEquals('WAVG', $this->tourUser->next_checkpoint);
         $this->checkTourProgress->execute($this->pirep);
         $this->tourUser->refresh();
         $this->assertEquals('AYMH', $this->tourUser->next_checkpoint);
+        $this->assertDatabaseHas('tour_users', [
+            'user_id' => $this->user->id,
+            'next_checkpoint' => 'AYMH'
+        ]);
     }
 
     public function test_nothing_happens_if_not_checkpoint(): void
