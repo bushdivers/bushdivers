@@ -11,6 +11,7 @@ import {
 import AirportSummary from './AirportSummary.jsx'
 import ContractList from './ContractList.jsx'
 import ContractRoute from './ContractRoute.jsx'
+import PanelContainer from './panels/PanelContainer.jsx'
 
 function AirportMap({ airport, aircraft, contracts }) {
   const { colorMode } = useColorMode()
@@ -195,6 +196,7 @@ function AirportMap({ airport, aircraft, contracts }) {
           </Popup>
         )}
         <AirportSummary airport={airport} />
+        <PanelContainer />
         <ContractList
           currentViews={currentViews}
           selectedContract={selectedContract}

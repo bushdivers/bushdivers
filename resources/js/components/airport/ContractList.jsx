@@ -26,7 +26,7 @@ const ContractList = ({
   return (
     <>
       {currentViews.includes('contracts') && contracts.length > 0 && (
-        <Card position="absolute" w={400} top={8} bottom={8} left={4}>
+        <Card position="absolute" w={300} top={12} bottom={12} left={4}>
           <Box p={2} overflowY="auto">
             {contracts &&
               contracts.map((c) => (

@@ -39,7 +39,8 @@ const ContractDetail = ({
   return (
     <Card
       my={2}
-      p={3}
+      py={2}
+      px={3}
       cursor="pointer"
       bgColor={
         selectedContract && selectedContract.id === contract.id
