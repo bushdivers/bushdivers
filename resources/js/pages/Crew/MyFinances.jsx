@@ -51,6 +51,8 @@ const renderTransactionType = (transactionType) => {
       return 'Aircraft Purchase'
     case 13:
       return 'Aircraft Sale'
+    case 14:
+      return 'Loan'
     default:
       return 'Other'
   }
