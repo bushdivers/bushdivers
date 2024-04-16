@@ -17,6 +17,7 @@ use App\Services\Contracts\UpdateContractCargoProgress;
 use App\Services\Finance\ProcessPirepFinancials;
 use App\Services\Pireps\CalculatePirepPoints;
 use App\Services\Pireps\SetPirepTotalScore;
+use App\Services\Tours\CheckTourProgress;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
@@ -28,18 +29,21 @@ class SubmitPirepController extends Controller
     protected ProcessPirepFinancials $processPirepFinancials;
     protected CalculatePirepPoints $calculatePirepPoints;
     protected SetPirepTotalScore $setPirepTotalScore;
+    protected CheckTourProgress $checkTourProgress;
 
     public function __construct(
         UpdateContractCargoProgress $updateContractCargoProgress,
         ProcessPirepFinancials $processPirepFinancials,
         CalculatePirepPoints $calculatePirepPoints,
-        SetPirepTotalScore $setPirepTotalScore
+        SetPirepTotalScore $setPirepTotalScore,
+        CheckTourProgress $checkTourProgress
     )
     {
         $this->updateContractCargoProgress = $updateContractCargoProgress;
         $this->processPirepFinancials = $processPirepFinancials;
         $this->calculatePirepPoints = $calculatePirepPoints;
         $this->setPirepTotalScore = $setPirepTotalScore;
+        $this->checkTourProgress = $checkTourProgress;
     }
 
     /**
@@ -98,6 +102,9 @@ class SubmitPirepController extends Controller
         }
 
         try {
+            if ($pirep->tour_id) {
+                $this->checkTourProgress->execute($pirep);
+            }
             // process points and financials
             $this->processPirepFinancials->execute($pirep);
             $this->calculatePirepPoints->execute($pirep);
