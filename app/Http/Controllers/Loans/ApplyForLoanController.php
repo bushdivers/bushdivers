@@ -22,14 +22,15 @@ class ApplyForLoanController extends Controller
     public function __invoke(LoanRequest $request, AddUserTransaction $addUserTransaction): RedirectResponse
     {
         $user = User::find(Auth::user()->id);
+        $amount = abs(floatval($request->loanAmount));
         if ($request->transaction === 'borrow') {
-            $user->loan = $user->loan + $request->loanAmount;
-            $addUserTransaction->execute(Auth::user()->id, TransactionTypes::Loan, $request->loanAmount);
+            $user->loan = $user->loan + $amount;
+            $addUserTransaction->execute(Auth::user()->id, TransactionTypes::Loan, $amount);
             $message = 'Loan amount added to balance';
         } else {
-            $user->loan = $user->loan - $request->loanAmount;
-            $addUserTransaction->execute(Auth::user()->id, TransactionTypes::Loan, -$request->loanAmount);
-            $message = 'Loan amount repayed';
+            $user->loan = $user->loan - $amount;
+            $addUserTransaction->execute(Auth::user()->id, TransactionTypes::Loan, -$amount);
+            $message = 'Loan amount repaid';
         }
 
         $user->save();

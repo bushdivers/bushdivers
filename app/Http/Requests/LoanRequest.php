@@ -24,7 +24,7 @@ class LoanRequest extends FormRequest
     public function rules()
     {
         return [
-            'loanAmount' => 'required'
+            'loanAmount' => 'required|numeric'
         ];
     }
 }

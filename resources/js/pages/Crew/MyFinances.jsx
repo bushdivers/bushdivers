@@ -63,23 +63,29 @@ const MyFinances = ({ accounts, balance, loanAvailable }) => {
 
   function handleBorrowClick() {
     const value = window.prompt('Enter amount to borrow')
-    if (parseFloat(value) > loanAvailable) {
+    const floatValue = parseFloat(value)
+    if (floatValue > loanAvailable) {
       window.alert(
-        'Amount to borrow must be less than or equal to available amount!'
+        'Amount to borrow must be less than or equal to available amount'
       )
+    } else if (!floatValue) {
+      window.alert('Invalid amount entered')
     } else {
-      router.post('/loans', { loanAmount: value, transaction: 'borrow' })
+      router.post('/loans', { loanAmount: floatValue, transaction: 'borrow' })
     }
   }
 
   function handleRepayClick() {
     const value = window.prompt('Enter amount to repay')
-    if (parseFloat(value) > auth.user.loan) {
+    const floatValue = parseFloat(value)
+    if (floatValue > auth.user.loan) {
       window.alert(
-        'Amount to repay must be less than or equal to current amount!'
+        'Amount to repay must be less than or equal to current amount'
       )
+    } else if (!floatValue) {
+      window.alert('Invalid amount entered')
     } else {
-      router.post('/loans', { loanAmount: value, transaction: 'repay' })
+      router.post('/loans', { loanAmount: floatValue, transaction: 'repay' })
     }
   }
 
