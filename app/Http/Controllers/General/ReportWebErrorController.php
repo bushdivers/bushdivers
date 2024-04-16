@@ -26,6 +26,7 @@ class ReportWebErrorController extends Controller
 
         Log::critical('BD website error for ' . $user, [
             'message' => $request->post('message'),
+            'url' => $request->post('url', 'unknown url'),
             'detail' => $stack,
         ]);
 
