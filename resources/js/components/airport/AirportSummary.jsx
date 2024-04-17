@@ -1,5 +1,15 @@
-import { Box, Button, Card, Flex, Heading, Image, Text } from '@chakra-ui/react'
+import {
+  Box,
+  Button,
+  Card,
+  Flex,
+  Heading,
+  Icon,
+  Image,
+  Text,
+} from '@chakra-ui/react'
 import { router, usePage } from '@inertiajs/react'
+import { Anchor } from 'lucide-react'
 import React from 'react'
 
 import { displayNumber } from '../../helpers/number.helpers.js'
@@ -29,10 +39,18 @@ const AirportSummary = ({ airport }) => {
             <Image rounded="sm" h={5} src={airport.flag} />
           </Flex>
         </Flex>
-        <Flex justifyContent="space-between" my={2} alignItems="center" gap={2}>
-          <Flex gap={2}>
+        <Flex
+          justifyContent="space-between"
+          mt={2}
+          mb={1}
+          alignItems="center"
+          gap={2}
+        >
+          <Flex alignItems="center" gap={2}>
             <Text as="b">{airport.identifier}</Text>
-            <Text>Elev. {displayNumber(airport.altitude)} ft</Text>
+            {airport.longest_runway_surface === 'W' && (
+              <Icon as={Anchor} color="blue.500" />
+            )}
           </Flex>
 
           {auth.user.user_roles.includes('airport_manager') && (
@@ -45,6 +63,12 @@ const AirportSummary = ({ airport }) => {
               Rename ICAO
             </Button>
           )}
+        </Flex>
+        <Flex alignItems="center" gap={2} mb={2}>
+          <Text>Elev. {displayNumber(airport.altitude)} ft</Text>
+          <Text>
+            Longest Rwy. {displayNumber(airport.longest_runway_length)} ft
+          </Text>
         </Flex>
         <Flex justifyContent="center">
           <AvailableFuel airport={airport} />
