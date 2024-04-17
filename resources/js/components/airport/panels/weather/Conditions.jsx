@@ -75,7 +75,7 @@ const renderConditions = (metar) => {
   )
 }
 const Conditions = ({ metar }) => {
-  return <>{renderConditions(metar)}</>
+  return <>{metar.clouds?.length > 0 ? renderConditions(metar) : ''}</>
 }
 
 export default Conditions
