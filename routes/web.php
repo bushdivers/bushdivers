@@ -20,17 +20,8 @@ Route::get('/privacy', function () {
     return \Inertia\Inertia::render('General/Privacy');
 });
 
-Route::get('/ranks', \App\Http\Controllers\General\ShowRanksController::class)
-    ->name('ranks');
-Route::get('/staff', \App\Http\Controllers\General\ShowStaffController::class)
-    ->name('staff');
 Route::get('/supporters', \App\Http\Controllers\General\ShowSupportersController::class)
     ->name('supporters');
-Route::get('/live-flights', \App\Http\Controllers\Pireps\ShowLiveFlightsController::class)
-    ->name('flights.map');
-// Fleet
-Route::get('/fleet', \App\Http\Controllers\Fleet\ShowFleetController::class)
-    ->name('fleet');
 
 // Auth
 Route::get('/register', \App\Http\Controllers\Auth\ShowRegisterFormController::class)
@@ -59,6 +50,16 @@ Route::middleware('auth')->group(function () {
         ->name('logout');
     Route::get('/finances', \App\Http\Controllers\General\ShowFinancesController::class)
         ->name('company.finances');
+
+    Route::get('/live-flights', \App\Http\Controllers\Pireps\ShowLiveFlightsController::class)
+        ->name('flights.map');
+    Route::get('/ranks', \App\Http\Controllers\General\ShowRanksController::class)
+        ->name('ranks');
+    Route::get('/staff', \App\Http\Controllers\General\ShowStaffController::class)
+        ->name('staff');
+    Route::get('/fleet', \App\Http\Controllers\Fleet\ShowFleetController::class)
+        ->name('fleet');
+
     // Crew
     Route::get('/dashboard', \App\Http\Controllers\Crew\ShowDashboardController::class)
         ->name('dashboard');
