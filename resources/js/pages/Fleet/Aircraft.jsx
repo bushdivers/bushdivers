@@ -16,7 +16,7 @@ import {
   Text,
   Th,
   Thead,
-  Tr
+  Tr,
 } from '@chakra-ui/react'
 import { router, usePage } from '@inertiajs/react'
 import { format } from 'date-fns'
@@ -290,7 +290,6 @@ const Aircraft = ({ aircraft, maintenanceStatus, pireps }) => {
                         <Flex gap={2}>
                           <Button
                             size="sm"
-                            className="btn btn-secondary btn-sm my-1"
                             onClick={() =>
                               handleGeneralMaintenance(aircraft, 4)
                             }
@@ -299,19 +298,19 @@ const Aircraft = ({ aircraft, maintenanceStatus, pireps }) => {
                           </Button>
                           <Button
                             size="sm"
-                            className="btn btn-secondary my-1 btn-sm"
                             onClick={() => handleAnnual(aircraft)}
                           >
                             Annual Inspection
                           </Button>
                         </Flex>
-                        <Button
-                          size="sm"
-                          className="btn btn-secondary my-1 btn-sm"
-                          onClick={() => handleRelocate(aircraft)}
-                        >
-                          Relocate
-                        </Button>
+                        {auth.user.user_roles.includes('fleet_manager') && (
+                          <Button
+                            size="sm"
+                            onClick={() => handleRelocate(aircraft)}
+                          >
+                            Relocate
+                          </Button>
+                        )}
                       </Flex>
                     )}
                     <Box mt={2} my={4}>
@@ -440,10 +439,7 @@ const Aircraft = ({ aircraft, maintenanceStatus, pireps }) => {
         </Box>
         <Card>
           <CardBody>
-            <AircraftMap
-              aircraft={aircraft}
-              size="large"
-            />
+            <AircraftMap aircraft={aircraft} size="large" />
           </CardBody>
         </Card>
       </SimpleGrid>
