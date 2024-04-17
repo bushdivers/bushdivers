@@ -195,7 +195,7 @@ function AirportMap({ airport, aircraft, contracts, metar, fuel }) {
           </Popup>
         )}
         <AirportSummary airport={airport} />
-        <PanelContainer metar={metar} fuel={fuel} />
+        <PanelContainer metar={metar} fuel={fuel} currentAirport={airport} />
         <ContractList
           currentViews={currentViews}
           selectedContract={selectedContract}

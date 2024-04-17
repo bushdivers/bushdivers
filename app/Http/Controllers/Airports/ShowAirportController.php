@@ -56,7 +56,7 @@ class ShowAirportController extends Controller
         }
 
         $metar = $this->getMetarForAirport->execute($icao);
-        $nearestFuel = $this->findAirportsWithinDistance->execute($airport, 2, 100,false, true, 5);
+        $nearestFuel = $this->findAirportsWithinDistance->execute($airport, 2, 500,false, true, 5);
         $companyAc = Aircraft::with('fleet')
             ->where('current_airport_id', $icao)
             ->where('owner_id', 0)

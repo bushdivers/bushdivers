@@ -45,3 +45,15 @@ export const getDistance = (lat1, lon1, lat2, lon2) => {
   const d = R * c // in metres
   return Math.round(d / 1852) // in nm
 }
+
+export const getBearing = (lat1, lon1, lat2, lon2) => {
+  let y = Math.sin(lon2 - lon1) * Math.cos(lat2)
+  let x =
+    Math.cos(lat1) * Math.sin(lat2) -
+    Math.sin(lat1) * Math.cos(lat2) * Math.cos(lon2 - lon1)
+  let brng = (Math.atan2(y, x) * 180) / Math.PI
+  if (brng < 0) {
+    brng = brng + 360
+  }
+  return Math.round(brng)
+}

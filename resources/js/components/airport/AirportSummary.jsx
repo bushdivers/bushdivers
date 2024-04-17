@@ -6,6 +6,7 @@ import {
   Heading,
   Icon,
   Image,
+  Tag,
   Text,
 } from '@chakra-ui/react'
 import { router, usePage } from '@inertiajs/react'
@@ -47,6 +48,7 @@ const AirportSummary = ({ airport }) => {
           gap={2}
         >
           <Flex alignItems="center" gap={2}>
+            <Tag colorScheme="orange">{airport.size}</Tag>
             <Text as="b">{airport.identifier}</Text>
             {airport.longest_runway_surface === 'W' && (
               <Icon as={Anchor} color="blue.500" />
