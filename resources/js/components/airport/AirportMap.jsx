@@ -1,4 +1,5 @@
 import { Box, Tag, Text, useColorMode } from '@chakra-ui/react'
+import { useAtomValue } from 'jotai'
 import maplibre from 'maplibre-gl'
 import React, { useEffect, useState } from 'react'
 import Map, { Marker, Popup } from 'react-map-gl'
@@ -8,6 +9,7 @@ import {
   parseMapStyle,
   transformRequest,
 } from '../../helpers/geo.helpers'
+import { contractFiltersAtom } from '../../state/contract.state.js'
 import AirportSummary from './AirportSummary.jsx'
 import ContractList from './ContractList.jsx'
 import ContractRoute from './ContractRoute.jsx'
@@ -20,10 +22,7 @@ function AirportMap({ airport, aircraft, contracts, metar, fuel }) {
   const [selectedContract, setSelectedContract] = useState(null)
   const [showPopup, setShowPopup] = useState(false)
   const [selectedAircraft, setSelectedAircraft] = useState(null)
-  const [filters] = useState({
-    distance: 0,
-    payload: 0,
-  })
+  const filters = useAtomValue(contractFiltersAtom)
   const [filteredContracts, setFilteredContracts] = useState(contracts)
 
   useEffect(() => {
