@@ -13,7 +13,7 @@ import ContractList from './ContractList.jsx'
 import ContractRoute from './ContractRoute.jsx'
 import PanelContainer from './panels/PanelContainer.jsx'
 
-function AirportMap({ airport, aircraft, contracts, metar }) {
+function AirportMap({ airport, aircraft, contracts, metar, fuel }) {
   const { colorMode } = useColorMode()
   const [currentViews] = useState(['contracts'])
   const [routeData, setRouteData] = useState(null)
@@ -196,7 +196,7 @@ function AirportMap({ airport, aircraft, contracts, metar }) {
           </Popup>
         )}
         <AirportSummary airport={airport} />
-        <PanelContainer metar={metar} />
+        <PanelContainer metar={metar} fuel={fuel} />
         <ContractList
           currentViews={currentViews}
           selectedContract={selectedContract}

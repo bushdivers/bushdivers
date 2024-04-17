@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import AirportMap from '../../components/airport/AirportMap'
 import AppLayout from '../../components/layout/AppLayout'
 
-const AirportDetail = ({ airport, aircraft, contracts, metar }) => {
+const AirportDetail = ({ airport, aircraft, contracts, metar, fuel }) => {
   const [currentMapStyle] = useState('')
 
   return (
@@ -15,6 +15,7 @@ const AirportDetail = ({ airport, aircraft, contracts, metar }) => {
         contracts={contracts}
         size="full"
         updatedMapStyle={currentMapStyle}
+        fuel={fuel}
       />
     </div>
   )

@@ -7,6 +7,8 @@ use App\Models\Aircraft;
 use App\Models\Airport;
 use App\Models\Contract;
 use App\Models\Enums\AircraftStatus;
+use App\Services\Airports\FindAirportsWithFuel;
+use App\Services\Airports\FindAirportsWithinDistance;
 use App\Services\Airports\GetMetarForAirport;
 use App\Services\Contracts\GenerateContracts;
 use App\Services\Contracts\GetNumberToGenerate;
@@ -25,13 +27,15 @@ class ShowAirportController extends Controller
     protected GenerateContracts $generateContracts;
     protected StoreContracts $storeContracts;
     protected GetNumberToGenerate $getNumberToGenerate;
+    protected FindAirportsWithinDistance $findAirportsWithinDistance;
 
-    public function __construct(GetMetarForAirport $getMetarForAirport, GenerateContracts $generateContracts, StoreContracts $storeContracts, GetNumberToGenerate $getNumberToGenerate)
+    public function __construct(GetMetarForAirport $getMetarForAirport, GenerateContracts $generateContracts, StoreContracts $storeContracts, GetNumberToGenerate $getNumberToGenerate, FindAirportsWithinDistance $findAirportsWithinDistance)
     {
         $this->getMetarForAirport = $getMetarForAirport;
         $this->generateContracts = $generateContracts;
         $this->storeContracts = $storeContracts;
         $this->getNumberToGenerate = $getNumberToGenerate;
+        $this->findAirportsWithinDistance = $findAirportsWithinDistance;
     }
 
     /**
@@ -52,6 +56,7 @@ class ShowAirportController extends Controller
         }
 
         $metar = $this->getMetarForAirport->execute($icao);
+        $nearestFuel = $this->findAirportsWithinDistance->execute($airport, 2, 100,false, true, 5);
         $companyAc = Aircraft::with('fleet')
             ->where('current_airport_id', $icao)
             ->where('owner_id', 0)
@@ -80,7 +85,13 @@ class ShowAirportController extends Controller
             $contracts = $this->getContracts($icao);
         }
 
-        return Inertia::render('Airports/AirportDetail', ['airport' => $airport, 'aircraft' => $aircraft, 'contracts' => $contracts, 'metar' => $metar]);
+        return Inertia::render('Airports/AirportDetail', [
+            'airport' => $airport,
+            'aircraft' => $aircraft,
+            'contracts' => $contracts,
+            'metar' => $metar,
+            'fuel' => $nearestFuel
+        ]);
     }
 
     protected function getContracts(string $icao)

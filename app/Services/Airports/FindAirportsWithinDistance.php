@@ -8,13 +8,23 @@ use Illuminate\Support\Facades\DB;
 
 class FindAirportsWithinDistance
 {
-    public function execute($originAirport, int $minDistance, int $maxDistance, $toHub = false): Collection
+    public function execute($originAirport, int $minDistance, int $maxDistance, $toHub = false, $fuel = false, $limit = null): Collection
     {
-        if ($toHub) {
-            $query = "WHERE distance BETWEEN ? AND ? AND is_hub = true";
-        } else {
-            $query = "WHERE distance BETWEEN ? AND ?";
+        $query = "WHERE distance BETWEEN ? AND ?";
+        if ($toHub && !$fuel) {
+            $query .= " AND is_hub = true";
+        } else if ($fuel && !$toHub) {
+            $query .= " AND (has_avgas = true OR has_jetfuel = true)";
+        } else if ($fuel && $toHub) {
+            $query .= " (has_avgas = true OR has_jetfuel = true) AND is_hub = true";
         }
+
+        if ($limit) {
+            $limit = " LIMIT $limit";
+        } else {
+            $limit = "";
+        }
+
         $results = DB::select(
             "SELECT *
                         FROM (
@@ -24,7 +34,8 @@ class FindAirportsWithinDistance
                           FROM airports
                         ) r
                         $query
-                        ORDER BY distance ASC"
+                        ORDER BY distance ASC
+                        $limit"
         , [$minDistance, $maxDistance]);
         return collect($results);
     }

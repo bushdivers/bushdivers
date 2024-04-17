@@ -12,7 +12,7 @@ import FuelPanel from './FuelPanel.jsx'
 import LayersPanel from './LayersPanel.jsx'
 import WeatherPanel from './weather/WeatherPanel.jsx'
 
-const PanelContainer = ({ metar }) => {
+const PanelContainer = ({ metar, fuel }) => {
   const { colorMode } = useColorMode()
   const selectedMapPanel = useAtomValue(selectedMapPanelAtom)
 
@@ -36,7 +36,7 @@ const PanelContainer = ({ metar }) => {
           {selectedMapPanel === PANELSTATE.WEATHER && (
             <WeatherPanel metar={metar} />
           )}
-          {selectedMapPanel === PANELSTATE.FUEL && <FuelPanel />}
+          {selectedMapPanel === PANELSTATE.FUEL && <FuelPanel fuel={fuel} />}
           {selectedMapPanel === PANELSTATE.FILTERS && <FilterPanel />}
           {selectedMapPanel === PANELSTATE.LAYERS && <LayersPanel />}
         </Box>
