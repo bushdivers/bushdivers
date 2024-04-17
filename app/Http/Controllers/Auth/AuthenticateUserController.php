@@ -24,7 +24,7 @@ class AuthenticateUserController extends Controller
               'email' => $request->email,
               'password' => $request->password,
               'is_active' => true
-            ], $request->remember)
+            ], true)
         ) {
             $request->session()->regenerate();
 

@@ -8,10 +8,16 @@ use Illuminate\Support\Facades\Http;
 
 class GetMetarForAirport
 {
-    private $apiKey = 'a12889c7844f470580dca7f41c';
-    private $baseMetarUrl = 'https://api.checkwx.com/metar/';
+    private $apiKey;
+    private $baseUrl;
 
-    public function execute(string $icao): string
+    public function __construct()
+    {
+        $this->apiKey = config('services.checkwx.key');
+        $this->baseUrl = config('services.checkwx.url');
+    }
+
+    public function execute(string $icao): array|string
     {
         try {
             // check if metar exists in cache
@@ -23,8 +29,7 @@ class GetMetarForAirport
                 'X-API-KEY' => $this->apiKey
             ])
                 ->timeout(3)
-                ->get($this->baseMetarUrl.$icao);
-
+                ->get($this->baseUrl.'/metar/'.$icao.'/decoded');
 
             if (!$response->json(['results']) == 1) {
                 // if no metar, get nearest
@@ -32,20 +37,13 @@ class GetMetarForAirport
                     'X-API-KEY' => $this->apiKey
                 ])
                     ->timeout(3)
-                    ->get($this->baseMetarUrl.$icao.'/nearest');
-                return $this->returnMetarAsString($response->json(['data']), $icao);
+                    ->get($this->baseUrl.'/metar/'.$icao.'/nearest/decoded');
+                return $response->json(['data']);
             }
-
-            return $this->returnMetarAsString($response->json(['data']), $icao);
+            Cache::add($icao.'-metar', $response->json(['data']), 1800);
+            return $response->json(['data']);
         } catch (ConnectionException $connectionException) {
-            return '';
+            return [];
         }
-    }
-
-    protected function returnMetarAsString($data, string $icao): string
-    {
-        $metar = implode($data);
-        Cache::put($icao.'-metar', $metar, now()->addHours(2));
-        return $metar;
     }
 }

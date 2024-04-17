@@ -2,7 +2,6 @@ import {
   Box,
   Button,
   Card,
-  CardBody,
   Flex,
   Icon,
   Text,
@@ -39,6 +38,9 @@ const ContractDetail = ({
 }) => {
   return (
     <Card
+      my={2}
+      py={2}
+      px={3}
       cursor="pointer"
       bgColor={
         selectedContract && selectedContract.id === contract.id
@@ -47,67 +49,65 @@ const ContractDetail = ({
       }
       onClick={() => updateSelectedContract(contract)}
     >
-      <CardBody>
-        <Box>
-          <Flex justifyContent="space-between" gap={2}>
-            <Flex alignItems="center" gap={2}>
-              <Link href={`/airports/${contract.current_airport_id}`}>
-                <Text fontSize="xl">{contract.current_airport_id}</Text>
-              </Link>
-              {contract.dep_airport.longest_runway_surface === 'W' && (
-                <Icon as={Anchor} color="blue.500" />
-              )}
-              <Box p={1}>
-                <Icon as={Plane} />
-              </Box>
-              <Link href={`/airports/${contract.arr_airport.identifier}`}>
-                <Text fontSize="xl">{contract.arr_airport.identifier}</Text>
-              </Link>
-              {contract.arr_airport.longest_runway_surface === 'W' && (
-                <Icon as={Anchor} color="blue.500" />
-              )}
+      <Box>
+        <Flex justifyContent="space-between" gap={1}>
+          <Flex alignItems="center" gap={1}>
+            <Link href={`/airports/${contract.current_airport_id}`}>
+              <Text fontSize="lg">{contract.current_airport_id}</Text>
+            </Link>
+            {contract.dep_airport.longest_runway_surface === 'W' && (
+              <Icon as={Anchor} color="blue.500" />
+            )}
+            <Box p={1}>
+              <Icon as={Plane} />
+            </Box>
+            <Link href={`/airports/${contract.arr_airport.identifier}`}>
+              <Text fontSize="lg">{contract.arr_airport.identifier}</Text>
+            </Link>
+            {contract.arr_airport.longest_runway_surface === 'W' && (
+              <Icon as={Anchor} color="blue.500" />
+            )}
+          </Flex>
+          <Box>
+            <Tooltip content="Bid">
+              <Button
+                colorScheme="gray"
+                size="xs"
+                onClick={() => action(contract)}
+              >
+                <Icon as={Check} />
+              </Button>
+            </Tooltip>
+          </Box>
+        </Flex>
+        <Text my={1} as="b" fontSize="sm">
+          $
+          {parseFloat(contract.contract_value).toLocaleString(undefined, {
+            minimumFractionDigits: 2,
+          })}
+        </Text>
+        <Flex justifyContent="space-between">
+          <Box>
+            <Flex justifyContent="start" gap={2}>
+              <Flex>{contract.distance} nm</Flex>
+              <Flex alignItems="center">
+                <Box style={{ transform: `rotate(${contract.heading}deg)` }}>
+                  <Icon as={ArrowUp} />
+                </Box>
+                <Box ml={1}>{contract.heading}&deg;</Box>
+              </Flex>
             </Flex>
-            <Box mr={4}>
-              <Tooltip content="Bid">
-                <Button
-                  colorScheme="gray"
-                  size="xs"
-                  onClick={() => action(contract)}
-                >
-                  <Icon as={Check} />
-                </Button>
-              </Tooltip>
-            </Box>
-          </Flex>
-          <Text my={2} fontSize="lg">
-            $
-            {parseFloat(contract.contract_value).toLocaleString(undefined, {
-              minimumFractionDigits: 2,
-            })}
-          </Text>
-          <Flex justifyContent="space-between">
-            <Box>
-              <Flex justifyContent="start" gap={2}>
-                <Flex>{contract.distance} nm</Flex>
-                <Flex alignItems="center">
-                  <Box style={{ transform: `rotate(${contract.heading}deg)` }}>
-                    <Icon as={ArrowUp} />
-                  </Box>
-                  <Box ml={1}>{contract.heading}&deg;</Box>
-                </Flex>
-              </Flex>
-              <Flex gap={4}>
-                <Text fontSize="xs">{renderCargo(contract)}</Text>
-              </Flex>
-              <Text fontSize="xs">
-                Expires In{' '}
-                {formatDistanceToNowStrict(new Date(contract.expires_at))}
-              </Text>
-            </Box>
-            <AvailableFuel airport={contract.arr_airport} stack={true} />
-          </Flex>
-        </Box>
-      </CardBody>
+            <Flex gap={4}>
+              <Text fontSize="xs">{renderCargo(contract)}</Text>
+            </Flex>
+            <Text fontSize="xs">
+              Expires In{' '}
+              {formatDistanceToNowStrict(new Date(contract.expires_at))}
+            </Text>
+          </Box>
+          <AvailableFuel airport={contract.arr_airport} stack={true} />
+        </Flex>
+      </Box>
     </Card>
   )
 }
