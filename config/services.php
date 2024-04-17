@@ -30,4 +30,9 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'checkwx' => [
+        'key' => env('WEATHER_API_KEY'),
+        'url' => env('WEATHER_API_URL'),
+    ]
+
 ];

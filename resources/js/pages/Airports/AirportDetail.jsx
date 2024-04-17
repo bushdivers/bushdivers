@@ -10,7 +10,7 @@ const AirportDetail = ({ airport, aircraft, contracts, metar }) => {
     <div className="relative">
       <AirportMap
         airport={airport}
-        metar={metar}
+        metar={metar[0]}
         aircraft={aircraft}
         contracts={contracts}
         size="full"

@@ -10,9 +10,9 @@ import AirportOptions from './AirportOptions.jsx'
 import FilterPanel from './FilterPanel.jsx'
 import FuelPanel from './FuelPanel.jsx'
 import LayersPanel from './LayersPanel.jsx'
-import WeatherPanel from './WeatherPanel.jsx'
+import WeatherPanel from './weather/WeatherPanel.jsx'
 
-const PanelContainer = () => {
+const PanelContainer = ({ metar }) => {
   const { colorMode } = useColorMode()
   const selectedMapPanel = useAtomValue(selectedMapPanelAtom)
 
@@ -30,10 +30,12 @@ const PanelContainer = () => {
           roundedLeft="md"
           bg={colorMode === 'light' ? 'white' : 'gray.700'}
           py={4}
-          px={2}
+          px={3}
           css={{ transform: 'translateY(-50%)' }}
         >
-          {selectedMapPanel === PANELSTATE.WEATHER && <WeatherPanel />}
+          {selectedMapPanel === PANELSTATE.WEATHER && (
+            <WeatherPanel metar={metar} />
+          )}
           {selectedMapPanel === PANELSTATE.FUEL && <FuelPanel />}
           {selectedMapPanel === PANELSTATE.FILTERS && <FilterPanel />}
           {selectedMapPanel === PANELSTATE.LAYERS && <LayersPanel />}
