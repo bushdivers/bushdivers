@@ -1,5 +1,6 @@
 import { Box, Card, Tag, Text, useColorMode } from '@chakra-ui/react'
-import { featureCollection, greatCircle, point } from '@turf/turf'
+import greatCircle from '@turf/great-circle'
+import { featureCollection, point } from '@turf/helpers'
 import maplibre from 'maplibre-gl'
 import React from 'react'
 import { Layer, Map, Marker, Source } from 'react-map-gl'

@@ -1,3 +1,6 @@
+import bearing from '@turf/bearing'
+import distance from '@turf/distance'
+import { point } from '@turf/helpers'
 import {
   isMapboxURL,
   transformMapboxUrl,
@@ -31,29 +34,14 @@ export const parseMapStyle = (mapStyle) => {
 }
 
 export const getDistance = (lat1, lon1, lat2, lon2) => {
-  const R = 6371e3 // metres
-  const φ1 = (lat1 * Math.PI) / 180 // φ, λ in radians
-  const φ2 = (lat2 * Math.PI) / 180
-  const Δφ = ((lat2 - lat1) * Math.PI) / 180
-  const Δλ = ((lon2 - lon1) * Math.PI) / 180
-
-  const a =
-    Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
-    Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) * Math.sin(Δλ / 2)
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
-
-  const d = R * c // in metres
-  return Math.round(d / 1852) // in nm
+  const start = point([lon1, lat1])
+  const end = point([lon2, lat2])
+  const distanceInKm = distance(start, end, { units: 'kilometers' })
+  return Math.round(distanceInKm / 1.852)
 }
 
 export const getBearing = (lat1, lon1, lat2, lon2) => {
-  let y = Math.sin(lon2 - lon1) * Math.cos(lat2)
-  let x =
-    Math.cos(lat1) * Math.sin(lat2) -
-    Math.sin(lat1) * Math.cos(lat2) * Math.cos(lon2 - lon1)
-  let brng = (Math.atan2(y, x) * 180) / Math.PI
-  if (brng < 0) {
-    brng = brng + 360
-  }
-  return Math.round(brng)
+  const start = point([lon1, lat1])
+  const end = point([lon2, lat2])
+  return Math.round(bearing(start, end))
 }
