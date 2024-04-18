@@ -47,7 +47,9 @@ const ContractDetail = ({
           ? useColorModeValue('orange.300', 'orange.800')
           : ''
       }
-      onClick={() => updateSelectedContract(contract)}
+      onClick={() =>
+        updateSelectedContract(contract === selectedContract ? null : contract)
+      }
     >
       <Box>
         <Flex justifyContent="space-between" gap={1}>

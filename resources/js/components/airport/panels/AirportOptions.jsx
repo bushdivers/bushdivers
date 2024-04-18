@@ -10,10 +10,7 @@ import { useAtom } from 'jotai'
 import { CloudSunRain, Filter, Fuel, Layers2 } from 'lucide-react'
 import React from 'react'
 
-import {
-  PANELSTATE,
-  selectedMapPanelAtom,
-} from '../../../state/airport.state.js'
+import { PANELSTATE, selectedMapPanelAtom } from '../../../state/map.state.js'
 
 const AirportOptions = () => {
   const { colorMode } = useColorMode()

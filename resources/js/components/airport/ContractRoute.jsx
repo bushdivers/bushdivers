@@ -1,8 +1,13 @@
+import { useAtomValue } from 'jotai'
 import React, { useEffect } from 'react'
 import { Layer, Source, useMap } from 'react-map-gl'
 
-const ContractRoute = ({ routeData, currentViews, selectedContract }) => {
+import { contractMapLayersAtom } from '../../state/map.state.js'
+
+const ContractRoute = ({ routeData, selectedContract, airport }) => {
   const { current: map } = useMap()
+  const contractMapLayers = useAtomValue(contractMapLayersAtom)
+
   useEffect(() => {
     if (selectedContract !== null) {
       const depLngLat = [
@@ -16,11 +21,13 @@ const ContractRoute = ({ routeData, currentViews, selectedContract }) => {
       map.fitBounds([depLngLat, arrLngLat], {
         padding: { top: 100, bottom: 100, right: 50, left: 400 },
       })
+    } else {
+      map.flyTo({ center: [airport.lon, airport.lat], zoom: 7 })
     }
   }, [routeData, selectedContract])
   return (
     <>
-      {currentViews.includes('contracts') && routeData && (
+      {contractMapLayers.contracts && selectedContract && routeData && (
         <Source id="routeData" type="geojson" data={routeData}>
           <Layer
             id="lineLayer"
