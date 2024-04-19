@@ -46,7 +46,8 @@ class ShowAirportController extends Controller
      */
     public function __invoke(Request $request, $icao = null): Response | RedirectResponse
     {
-        if (!$icao) return Inertia::render('Airports/AirportDetail');
+        if (!$icao)
+            return redirect()->back()->with(['error' => 'Airport not found']);
 
         $icao = strtoupper($icao);
         $airport = Airport::where('identifier', $icao)->first();
