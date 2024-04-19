@@ -43,5 +43,6 @@ export const getDistance = (lat1, lon1, lat2, lon2) => {
 export const getBearing = (lat1, lon1, lat2, lon2) => {
   const start = point([lon1, lat1])
   const end = point([lon2, lat2])
-  return Math.round(bearing(start, end))
+  const finalBearing = Math.round(bearing(start, end))
+  return finalBearing < 0.0 ? finalBearing + 360 : finalBearing
 }
