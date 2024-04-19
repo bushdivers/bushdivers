@@ -2,10 +2,7 @@ import { Box, useColorMode } from '@chakra-ui/react'
 import { useAtomValue } from 'jotai'
 import React from 'react'
 
-import {
-  PANELSTATE,
-  selectedMapPanelAtom,
-} from '../../../state/airport.state.js'
+import { PANELSTATE, selectedMapPanelAtom } from '../../../state/map.state.js'
 import AirportOptions from './AirportOptions.jsx'
 import FilterPanel from './FilterPanel.jsx'
 import FuelPanel from './FuelPanel.jsx'

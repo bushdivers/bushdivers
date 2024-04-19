@@ -1,5 +1,6 @@
-import { Box, Tag, Text, useColorMode } from '@chakra-ui/react'
+import { Box, Image, Text, useColorMode } from '@chakra-ui/react'
 import { useAtomValue } from 'jotai'
+import { PlaneLanding, PlaneTakeoff } from 'lucide-react'
 import maplibre from 'maplibre-gl'
 import React, { useEffect, useState } from 'react'
 import Map, { Marker, Popup } from 'react-map-gl'
@@ -10,19 +11,36 @@ import {
   transformRequest,
 } from '../../helpers/geo.helpers'
 import { contractFiltersAtom } from '../../state/contract.state.js'
+import {
+  contractMapLayersAtom,
+  contractMapStyleAtom,
+} from '../../state/map.state.js'
+import ContractMarker from '../contracts/ContractMarker.jsx'
+import AircraftList from './AircraftList.jsx'
 import AirportSummary from './AirportSummary.jsx'
 import ContractList from './ContractList.jsx'
 import ContractRoute from './ContractRoute.jsx'
+import DetailsContainer from './DetailsContainer.jsx'
 import PanelContainer from './panels/PanelContainer.jsx'
 
-function AirportMap({ airport, aircraft, contracts, metar, fuel }) {
+function AirportMap({
+  airport,
+  fleet,
+  aircraft,
+  contracts,
+  metar,
+  fuel,
+  myContracts,
+  sharedContracts,
+}) {
   const { colorMode } = useColorMode()
-  const [currentViews] = useState(['contracts'])
   const [routeData, setRouteData] = useState(null)
   const [selectedContract, setSelectedContract] = useState(null)
   const [showPopup, setShowPopup] = useState(false)
   const [selectedAircraft, setSelectedAircraft] = useState(null)
   const filters = useAtomValue(contractFiltersAtom)
+  const contractMapLayers = useAtomValue(contractMapLayersAtom)
+  const contractMapStyle = useAtomValue(contractMapStyleAtom)
   const [filteredContracts, setFilteredContracts] = useState(contracts)
 
   useEffect(() => {
@@ -79,23 +97,6 @@ function AirportMap({ airport, aircraft, contracts, metar, fuel }) {
     setFilteredContracts(newContracts)
   }
 
-  // const clearFilters = () => {
-  //   setFilters({
-  //     distance: 0,
-  //     payload: 0,
-  //   })
-  // }
-
-  // const updateCurrentViews = (view) => {
-  //   if (currentViews.includes(view)) {
-  //     const newViews = currentViews.filter((v) => !v.includes(view))
-  //     setCurrentViews(newViews)
-  //   } else {
-  //     const newViews = [...currentViews, view]
-  //     setCurrentViews(newViews)
-  //   }
-  // }
-
   const updateSelectedContract = (contract) => {
     setSelectedContract(null)
     const depLngLat = [contract.dep_airport.lon, contract.dep_airport.lat]
@@ -116,15 +117,6 @@ function AirportMap({ airport, aircraft, contracts, metar, fuel }) {
     setShowPopup(true)
   }
 
-  // const handleFilterChange = (e) => {
-  //   const value = e.target.value
-  //   const field = e.target.id
-  //   setFilters({
-  //     ...filters,
-  //     [field]: value,
-  //   })
-  // }
-
   return (
     <Box position="relative" className="map-container-full">
       <Map
@@ -136,33 +128,105 @@ function AirportMap({ airport, aircraft, contracts, metar, fuel }) {
           latitude: airport.lat,
           zoom: 7,
         }}
-        mapStyle={parseMapStyle(colorMode)}
+        mapStyle={parseMapStyle(
+          contractMapStyle === 'default' ? colorMode : contractMapStyle
+        )}
         transformRequest={transformRequest}
       >
-        {currentViews.includes('contracts') &&
+        {contractMapLayers.contracts &&
           filteredContracts &&
           filteredContracts.map((contract) => (
-            <Marker
+            <ContractMarker
               key={contract.id}
-              scale={0.75}
-              longitude={contract.arr_airport.lon}
-              latitude={contract.arr_airport.lat}
-              onClick={() => updateSelectedContract(contract)}
-            >
-              <Tag cursor="pointer">{contract.arr_airport.identifier}</Tag>
-            </Marker>
+              updateSelectedContract={updateSelectedContract}
+              color="green"
+              icon={PlaneLanding}
+              identifier={contract.arr_airport.identifier}
+              contract={contract}
+              lat={contract.arr_airport.lat}
+              lon={contract.arr_airport.lon}
+            />
+          ))}
+        {contractMapLayers.myContracts &&
+          myContracts &&
+          myContracts.map((contract) => (
+            <>
+              <ContractMarker
+                key={contract.id}
+                updateSelectedContract={updateSelectedContract}
+                color="blue"
+                icon={PlaneLanding}
+                identifier={contract.arr_airport.identifier}
+                contract={contract}
+                lat={contract.arr_airport.lat}
+                lon={contract.arr_airport.lon}
+              />
+              <ContractMarker
+                key={contract.id}
+                updateSelectedContract={updateSelectedContract}
+                color="blue"
+                icon={PlaneTakeoff}
+                identifier={contract.current_airport.identifier}
+                contract={contract}
+                lat={contract.current_airport.lat}
+                lon={contract.current_airport.lon}
+              />
+            </>
+          ))}
+        {contractMapLayers.sharedContracts &&
+          sharedContracts &&
+          sharedContracts.map((contract) => (
+            <>
+              <ContractMarker
+                key={contract.id}
+                updateSelectedContract={updateSelectedContract}
+                color="orange"
+                icon={PlaneLanding}
+                identifier={contract.arr_airport.identifier}
+                contract={contract}
+                lat={contract.arr_airport.lat}
+                lon={contract.arr_airport.lon}
+              />
+              <ContractMarker
+                key={contract.id}
+                updateSelectedContract={updateSelectedContract}
+                color="orange"
+                icon={PlaneTakeoff}
+                identifier={contract.current_airport.identifier}
+                contract={contract}
+                lat={contract.current_airport.lat}
+                lon={contract.current_airport.lon}
+              />
+            </>
           ))}
         <ContractRoute
           routeData={routeData}
-          currentViews={currentViews}
           selectedContract={selectedContract}
+          airport={airport}
         />
+        {/*Current Airport Marker*/}
         <Marker
           latitude={airport.lat}
           longitude={airport.lon}
           color="#F97316"
         />
-        {currentViews.includes('aircraft') &&
+        {contractMapLayers.fleet &&
+          fleet &&
+          fleet.map((ac) => (
+            <Marker
+              onClick={() => handleAircraftSelection(ac)}
+              key={ac.id}
+              scale={0.75}
+              longitude={ac.last_lon}
+              latitude={ac.last_lat}
+            >
+              <Image
+                boxSize="30px"
+                src="https://d1z4ruc262gung.cloudfront.net/assets/bd_flight_white.png"
+              />
+            </Marker>
+          ))}
+        {contractMapLayers.myAircraft &&
           aircraft &&
           aircraft.map((ac) => (
             <Marker
@@ -172,7 +236,10 @@ function AirportMap({ airport, aircraft, contracts, metar, fuel }) {
               longitude={ac.last_lon}
               latitude={ac.last_lat}
             >
-              <img src="https://res.cloudinary.com/dji0yvkef/image/upload/v1631525263/BDVA/icon_c208_orangekFus_whiteWings_revnmm.png" />
+              <Image
+                boxSize="30px"
+                src="https://d1z4ruc262gung.cloudfront.net/assets/bd_flight_black.png"
+              />
             </Marker>
           ))}
         {showPopup && (
@@ -196,13 +263,26 @@ function AirportMap({ airport, aircraft, contracts, metar, fuel }) {
         )}
         <AirportSummary airport={airport} />
         <PanelContainer metar={metar} fuel={fuel} currentAirport={airport} />
-        <ContractList
-          currentViews={currentViews}
-          selectedContract={selectedContract}
-          contracts={filteredContracts}
-          icao={airport.identifier}
-          updateSelectedContract={updateSelectedContract}
-        />
+        <DetailsContainer>
+          {contractMapLayers.contracts && (
+            <ContractList
+              selectedContract={selectedContract}
+              myContracts={myContracts}
+              sharedContracts={sharedContracts}
+              contracts={filteredContracts}
+              updateSelectedContract={updateSelectedContract}
+            />
+          )}
+          {!contractMapLayers.myAircraft && contractMapLayers.fleet && (
+            <AircraftList airport={airport} fleet={fleet} />
+          )}
+          {contractMapLayers.myAircraft && !contractMapLayers.fleet && (
+            <AircraftList airport={airport} aircraft={aircraft} />
+          )}
+          {contractMapLayers.myAircraft && contractMapLayers.fleet && (
+            <AircraftList airport={airport} fleet={fleet} aircraft={aircraft} />
+          )}
+        </DetailsContainer>
       </Map>
     </Box>
   )

@@ -4,6 +4,7 @@ import {
   Card,
   Flex,
   Icon,
+  Tag,
   Text,
   useColorModeValue,
 } from '@chakra-ui/react'
@@ -32,9 +33,10 @@ function renderCargo(contract) {
 
 const ContractDetail = ({
   contract,
-  action,
+  action = null,
   selectedContract = null,
   updateSelectedContract,
+  type,
 }) => {
   return (
     <Card
@@ -47,7 +49,9 @@ const ContractDetail = ({
           ? useColorModeValue('orange.300', 'orange.800')
           : ''
       }
-      onClick={() => updateSelectedContract(contract)}
+      onClick={() =>
+        updateSelectedContract(contract === selectedContract ? null : contract)
+      }
     >
       <Box>
         <Flex justifyContent="space-between" gap={1}>
@@ -68,17 +72,27 @@ const ContractDetail = ({
               <Icon as={Anchor} color="blue.500" />
             )}
           </Flex>
-          <Box>
-            <Tooltip content="Bid">
-              <Button
-                colorScheme="gray"
-                size="xs"
-                onClick={() => action(contract)}
-              >
-                <Icon as={Check} />
-              </Button>
-            </Tooltip>
-          </Box>
+          {type === 'available' ? (
+            <Box>
+              <Tooltip content="Bid">
+                <Button
+                  colorScheme="gray"
+                  size="xs"
+                  onClick={() => action(contract)}
+                >
+                  <Icon as={Check} />
+                </Button>
+              </Tooltip>
+            </Box>
+          ) : type === 'mine' ? (
+            <Tag size="sm" colorScheme="blue">
+              Mine
+            </Tag>
+          ) : (
+            <Tag size="sm" colorScheme="orange">
+              Shared
+            </Tag>
+          )}
         </Flex>
         <Text my={1} as="b" fontSize="sm">
           $

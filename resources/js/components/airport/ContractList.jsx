@@ -1,17 +1,21 @@
-import { Box, Card } from '@chakra-ui/react'
+import { Box, Card, Flex, Heading, Tag } from '@chakra-ui/react'
 import { router, usePage } from '@inertiajs/react'
 import axios from 'axios'
+import { useAtomValue } from 'jotai'
 import React from 'react'
 
+import { contractMapLayersAtom } from '../../state/map.state.js'
 import ContractDetail from '../contracts/ContractDetail.jsx'
 
 const ContractList = ({
   contracts,
-  currentViews,
+  myContracts,
+  sharedContracts,
   selectedContract,
   updateSelectedContract,
 }) => {
   const { auth } = usePage().props
+  const contractMapLayers = useAtomValue(contractMapLayersAtom)
   async function bidForContract(contract) {
     // await updateSelectedContract(null)
     const data = {
@@ -25,23 +29,63 @@ const ContractList = ({
   }
   return (
     <>
-      {currentViews.includes('contracts') && contracts.length > 0 && (
-        <Card position="absolute" w={300} top={12} bottom={12} left={4}>
-          <Box p={2} overflowY="auto">
-            {contracts &&
-              contracts.map((c) => (
-                <ContractDetail
-                  key={c.id}
-                  contract={c}
-                  selectedContract={selectedContract}
-                  action={bidForContract}
-                  type="search"
-                  updateSelectedContract={updateSelectedContract}
-                />
-              ))}
-          </Box>
-        </Card>
-      )}
+      <Card
+        position="absolute"
+        w={300}
+        h={
+          contractMapLayers.fleet || contractMapLayers.myAircraft
+            ? '49%'
+            : '100%'
+        }
+      >
+        <Box p={2} overflowY="auto">
+          {contractMapLayers.myContracts && (
+            <>
+              <Heading size="sm">My Contracts</Heading>
+              {myContracts &&
+                myContracts.map((c) => (
+                  <ContractDetail
+                    key={c.id}
+                    contract={c}
+                    selectedContract={selectedContract}
+                    type="mine"
+                    updateSelectedContract={updateSelectedContract}
+                  />
+                ))}
+            </>
+          )}
+          {contractMapLayers.sharedContracts && (
+            <>
+              <Heading size="sm">Shared Contracts</Heading>
+              {sharedContracts &&
+                sharedContracts.map((c) => (
+                  <ContractDetail
+                    key={c.id}
+                    contract={c}
+                    selectedContract={selectedContract}
+                    type="shared"
+                    updateSelectedContract={updateSelectedContract}
+                  />
+                ))}
+            </>
+          )}
+          <Flex alignItems="center" justifyContent="space-between">
+            <Heading size="sm">Available Contracts</Heading>
+            <Tag colorScheme="green">Available</Tag>
+          </Flex>
+          {contracts &&
+            contracts.map((c) => (
+              <ContractDetail
+                key={c.id}
+                contract={c}
+                selectedContract={selectedContract}
+                action={bidForContract}
+                type="available"
+                updateSelectedContract={updateSelectedContract}
+              />
+            ))}
+        </Box>
+      </Card>
     </>
   )
 }

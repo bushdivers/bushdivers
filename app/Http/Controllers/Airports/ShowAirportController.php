@@ -59,18 +59,14 @@ class ShowAirportController extends Controller
         $metar = $this->getMetarForAirport->execute($icao);
         $nearestFuel = $this->findAirportsWithinDistance->execute($airport, 2, 500,false, true, 5);
         $companyAc = Aircraft::with('fleet')
-            ->where('current_airport_id', $icao)
             ->where('owner_id', 0)
             ->where('status', AircraftStatus::ACTIVE)
             ->get();
 
         $privateAc = Aircraft::with('fleet')
-            ->where('current_airport_id', $icao)
             ->where('owner_id', Auth::user()->id)
             ->where('status', AircraftStatus::ACTIVE)
             ->get();
-
-        $aircraft = $companyAc->merge($privateAc);
 
         // get contracts
         $contracts = $this->getContracts($icao);
@@ -86,12 +82,28 @@ class ShowAirportController extends Controller
             $contracts = $this->getContracts($icao);
         }
 
+        $myContracts = Contract::with(['depAirport', 'currentAirport', 'arrAirport'])
+            ->where('user_id', Auth::user()->id)
+            ->where('is_completed', false)
+            ->orderBy('distance')
+            ->get();
+
+        $sharedContracts = Contract::with(['depAirport', 'currentAirport', 'arrAirport'])
+            ->where('user_id', null)
+            ->where('is_shared', true)
+            ->where('is_completed', false)
+            ->orderBy('distance')
+            ->get();
+
         return Inertia::render('Airports/AirportDetail', [
             'airport' => $airport,
-            'aircraft' => $aircraft,
+            'fleet' => $companyAc,
+            'aircraft' => $privateAc,
             'contracts' => $contracts,
             'metar' => $metar,
-            'fuel' => $nearestFuel
+            'fuel' => $nearestFuel,
+            'myContracts' => $myContracts,
+            'sharedContracts' => $sharedContracts
         ]);
     }
 
