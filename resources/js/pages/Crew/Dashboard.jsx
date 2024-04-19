@@ -98,12 +98,13 @@ const Dashboard = ({ lastFlight, user, locations, distance }) => {
                 <Flex alignItems="center" mt={2} gap={2}>
                   <Icon as={Plane} />
                   <Box>
-                    {lastFlight.is_rental ? (
+                    {lastFlight.is_rental != 0 && lastFlight.rental && (
                       <Text fontSize="sm">
                         {lastFlight.rental.fleet.type} -{' '}
                         {lastFlight.rental.registration}
                       </Text>
-                    ) : (
+                    )}
+                    {lastFlight.is_rental == 0 && lastFlight.aircraft && (
                       <ChakraLink
                         as={Link}
                         color="orange.400"
@@ -112,6 +113,9 @@ const Dashboard = ({ lastFlight, user, locations, distance }) => {
                         {lastFlight.aircraft.fleet.type} -{' '}
                         {lastFlight.aircraft.registration}
                       </ChakraLink>
+                    )}
+                    {!lastFlight.aircraft && !lastFlight.rental && (
+                      <Text fontSize="sm">Sold or unavailable</Text>
                     )}
                   </Box>
                 </Flex>
