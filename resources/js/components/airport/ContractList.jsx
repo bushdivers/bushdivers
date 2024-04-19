@@ -1,4 +1,4 @@
-import { Box, Card } from '@chakra-ui/react'
+import { Box, Card, Flex, Heading, Tag } from '@chakra-ui/react'
 import { router, usePage } from '@inertiajs/react'
 import axios from 'axios'
 import { useAtomValue } from 'jotai'
@@ -9,6 +9,8 @@ import ContractDetail from '../contracts/ContractDetail.jsx'
 
 const ContractList = ({
   contracts,
+  myContracts,
+  sharedContracts,
   selectedContract,
   updateSelectedContract,
 }) => {
@@ -37,6 +39,40 @@ const ContractList = ({
         }
       >
         <Box p={2} overflowY="auto">
+          {contractMapLayers.myContracts && (
+            <>
+              <Heading size="sm">My Contracts</Heading>
+              {myContracts &&
+                myContracts.map((c) => (
+                  <ContractDetail
+                    key={c.id}
+                    contract={c}
+                    selectedContract={selectedContract}
+                    type="mine"
+                    updateSelectedContract={updateSelectedContract}
+                  />
+                ))}
+            </>
+          )}
+          {contractMapLayers.sharedContracts && (
+            <>
+              <Heading size="sm">Shared Contracts</Heading>
+              {sharedContracts &&
+                sharedContracts.map((c) => (
+                  <ContractDetail
+                    key={c.id}
+                    contract={c}
+                    selectedContract={selectedContract}
+                    type="shared"
+                    updateSelectedContract={updateSelectedContract}
+                  />
+                ))}
+            </>
+          )}
+          <Flex alignItems="center" justifyContent="space-between">
+            <Heading size="sm">Available Contracts</Heading>
+            <Tag colorScheme="green">Available</Tag>
+          </Flex>
           {contracts &&
             contracts.map((c) => (
               <ContractDetail
@@ -44,7 +80,7 @@ const ContractList = ({
                 contract={c}
                 selectedContract={selectedContract}
                 action={bidForContract}
-                type="search"
+                type="available"
                 updateSelectedContract={updateSelectedContract}
               />
             ))}

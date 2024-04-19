@@ -10,6 +10,8 @@ const AirportDetail = ({
   contracts,
   metar,
   fuel,
+  myContracts,
+  sharedContracts,
 }) => {
   const [currentMapStyle] = useState('')
 
@@ -24,6 +26,8 @@ const AirportDetail = ({
         size="full"
         updatedMapStyle={currentMapStyle}
         fuel={fuel}
+        myContracts={myContracts}
+        sharedContracts={sharedContracts}
       />
     </div>
   )

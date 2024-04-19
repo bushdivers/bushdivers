@@ -81,13 +81,28 @@ class ShowAirportController extends Controller
             $contracts = $this->getContracts($icao);
         }
 
+        $myContracts = Contract::with(['depAirport', 'currentAirport', 'arrAirport'])
+            ->where('user_id', Auth::user()->id)
+            ->where('is_completed', false)
+            ->orderBy('distance')
+            ->get();
+
+        $sharedContracts = Contract::with(['depAirport', 'currentAirport', 'arrAirport'])
+            ->where('user_id', null)
+            ->where('is_shared', true)
+            ->where('is_completed', false)
+            ->orderBy('distance')
+            ->get();
+
         return Inertia::render('Airports/AirportDetail', [
             'airport' => $airport,
             'fleet' => $companyAc,
             'aircraft' => $privateAc,
             'contracts' => $contracts,
             'metar' => $metar,
-            'fuel' => $nearestFuel
+            'fuel' => $nearestFuel,
+            'myContracts' => $myContracts,
+            'sharedContracts' => $sharedContracts
         ]);
     }
 
