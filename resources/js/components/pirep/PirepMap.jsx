@@ -1,6 +1,6 @@
 import { Box, Card, CardBody, CardHeader, useColorMode } from '@chakra-ui/react'
 import maplibre from 'maplibre-gl'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { Layer, Map, Marker, Source } from 'react-map-gl'
 
 import {
@@ -11,145 +11,27 @@ import {
 
 const PirepMap = (props) => {
   const { colorMode } = useColorMode()
-  const [pirepRoute, setPirepRoute] = useState()
-  useEffect(() => {
-    if (props.pirep) {
-      const data = []
+  let pirepRoute = null
+  let pirepFlight = null
+  if (props.pirep) {
+    const depLngLat = [props.pirep.dep_airport.lon, props.pirep.dep_airport.lat]
+    const arrLngLat = [props.pirep.arr_airport.lon, props.pirep.arr_airport.lat]
 
-      const depLngLat = [
-        props.pirep.dep_airport.lon,
-        props.pirep.dep_airport.lat,
-      ]
-      const arrLngLat = [
-        props.pirep.arr_airport.lon,
-        props.pirep.arr_airport.lat,
-      ]
-      data.push({
-        type: 'Feature',
-        id: 'route',
-        geometry: { type: 'LineString', coordinates: [depLngLat, arrLngLat] },
-      })
-
-      const coords = []
-      props.coords.map((log) =>
-        coords.push(new maplibre.LngLat(log.lon, log.lat).toArray())
-      )
-
-      data.push({
-        type: 'Feature',
-        id: 'coords',
-        geometry: { type: 'LineString', coordinates: [coords] },
-      })
-
-      const geojson = {
-        type: 'FeatureCollection',
-        features: data,
-      }
-      setPirepRoute(geojson)
+    pirepRoute = {
+      type: 'Feature',
+      id: 'route',
+      geometry: { type: 'LineString', coordinates: [depLngLat, arrLngLat] },
     }
-  }, [props.pirep])
 
-  // useEffect(() => {
-  //   if (props.pirep) {
-  //     // setFlight(props.pirep.flight)
-  //
-  //     const depPopup = new maplibre.Popup({ offset: 25 }).setText(
-  //       props.pirep.departure_airport_id
-  //     )
-  //
-  //     const arrPopup = new maplibre.Popup({ offset: 25 }).setText(
-  //       props.pirep.destination_airport_id
-  //     )
-  //
-  //     const depLngLat = [
-  //       props.pirep.dep_airport.lon,
-  //       props.pirep.dep_airport.lat,
-  //     ]
-  //     const arrLngLat = [
-  //       props.pirep.arr_airport.lon,
-  //       props.pirep.arr_airport.lat,
-  //     ]
-  //
-  //     map.current.on('load', function () {
-  //       new maplibre.Marker({
-  //         color: '#22C55E',
-  //       })
-  //         .setLngLat(depLngLat)
-  //         .setPopup(depPopup)
-  //         .addTo(map.current)
-  //
-  //       new maplibre.Marker({
-  //         color: '#F97316',
-  //       })
-  //         .setLngLat(arrLngLat)
-  //         .setPopup(arrPopup)
-  //         .addTo(map.current)
-  //
-  //       map.current.addSource('route', {
-  //         type: 'geojson',
-  //         data: {
-  //           type: 'Feature',
-  //           geometry: {
-  //             type: 'LineString',
-  //             coordinates: [depLngLat, arrLngLat],
-  //           },
-  //         },
-  //       })
-  //
-  //       const coords = []
-  //       props.coords.map((log) =>
-  //         coords.push(new maplibre.LngLat(log.lon, log.lat).toArray())
-  //       )
-  //
-  //       // coords = JSON.stringify(coords)
-  //       // const newc = JSON.parse(coords)
-  //
-  //       console.log(coords)
-  //
-  //       map.current.addSource('coords', {
-  //         type: 'geojson',
-  //         data: {
-  //           type: 'Feature',
-  //           geometry: {
-  //             type: 'MultiLineString',
-  //             coordinates: [coords],
-  //           },
-  //         },
-  //       })
-  //
-  //       map.current.addLayer({
-  //         id: 'route',
-  //         type: 'line',
-  //         source: 'route',
-  //         paint: {
-  //           'line-color': '#fff',
-  //           'line-width': 4,
-  //           'line-opacity': 0.6,
-  //         },
-  //       })
-  //
-  //       map.current.addLayer({
-  //         id: 'coords',
-  //         type: 'line',
-  //         source: 'coords',
-  //         layout: {
-  //           'line-join': 'round',
-  //           'line-cap': 'round',
-  //         },
-  //         paint: {
-  //           'line-color': '#F97316',
-  //           'line-width': 4,
-  //           'line-opacity': 0.6,
-  //         },
-  //       })
-  //     })
-  //
-  //     const bounds = [depLngLat, arrLngLat]
-  //     map.current.fitBounds(bounds, {
-  //       padding: 80,
-  //     })
-  //   }
-  // }, [props.pirep])
+    const coords = []
+    props.coords.map((log) => coords.push([log.lon, log.lat]))
+
+    pirepFlight = {
+      type: 'Feature',
+      id: 'coords',
+      geometry: { type: 'LineString', coordinates: coords },
+    }
+  }
 
   return (
     <Card>
@@ -180,33 +62,33 @@ const PirepMap = (props) => {
                   latitude={props.pirep.arr_airport.lat}
                   color="#F97316"
                 />
-                <Source id="routeData" type="geojson" data={pirepRoute}>
+                <Source id="pirep-route" type="geojson" data={pirepRoute}>
                   <Layer
-                    id="lineLayer"
+                    id="pirep-route-layer"
                     type="line"
-                    source="route"
+                    source="pirep-route"
                     layout={{
                       'line-join': 'round',
                       'line-cap': 'round',
                     }}
                     paint={{
-                      'line-color': '#fff',
-                      'line-width': 4,
-                      'line-opacity': 0.6,
+                      'line-color': '#4299E1',
+                      'line-width': 1,
                     }}
                   />
+                </Source>
+                <Source id="pirep-flight" type="geojson" data={pirepFlight}>
                   <Layer
-                    id="lineLayer"
+                    id="pirep-flight-layer"
                     type="line"
-                    source="coodrs"
+                    source="pirep-route"
                     layout={{
                       'line-join': 'round',
                       'line-cap': 'round',
                     }}
                     paint={{
-                      'line-color': '#F97316',
-                      'line-width': 4,
-                      'line-opacity': 0.6,
+                      'line-color': '#ED8936',
+                      'line-width': 2.5,
                     }}
                   />
                 </Source>
