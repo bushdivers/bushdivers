@@ -10,7 +10,10 @@ import {
   parseMapStyle,
   transformRequest,
 } from '../../helpers/geo.helpers'
-import { contractFiltersAtom } from '../../state/contract.state.js'
+import {
+  contractFiltersAtom,
+  selectedContractAtom,
+} from '../../state/contract.state.js'
 import {
   contractMapLayersAtom,
   contractMapStyleAtom,
@@ -35,7 +38,7 @@ function AirportMap({
 }) {
   const { colorMode } = useColorMode()
   const [routeData, setRouteData] = useState(null)
-  const [selectedContract, setSelectedContract] = useState(null)
+  const selectedContract = useAtomValue(selectedContractAtom)
   const [showPopup, setShowPopup] = useState(false)
   const [selectedAircraft, setSelectedAircraft] = useState(null)
   const filters = useAtomValue(contractFiltersAtom)
@@ -97,20 +100,26 @@ function AirportMap({
     setFilteredContracts(newContracts)
   }
 
-  const updateSelectedContract = (contract) => {
-    setSelectedContract(null)
-    const depLngLat = [contract.dep_airport.lon, contract.dep_airport.lat]
-    const arrLngLat = [contract.arr_airport.lon, contract.arr_airport.lat]
-    const geojson = {
-      type: 'Feature',
-      geometry: {
-        type: 'LineString',
-        coordinates: [depLngLat, arrLngLat],
-      },
+  useEffect(() => {
+    if (selectedContract) {
+      const depLngLat = [
+        selectedContract.dep_airport.lon,
+        selectedContract.dep_airport.lat,
+      ]
+      const arrLngLat = [
+        selectedContract.arr_airport.lon,
+        selectedContract.arr_airport.lat,
+      ]
+      const geojson = {
+        type: 'Feature',
+        geometry: {
+          type: 'LineString',
+          coordinates: [depLngLat, arrLngLat],
+        },
+      }
+      setRouteData(geojson)
     }
-    setRouteData(geojson)
-    setSelectedContract(contract)
-  }
+  }, [selectedContract])
 
   const handleAircraftSelection = (ac) => {
     setSelectedAircraft(ac)
@@ -138,7 +147,6 @@ function AirportMap({
           filteredContracts.map((contract) => (
             <ContractMarker
               key={contract.id}
-              updateSelectedContract={updateSelectedContract}
               color="green"
               icon={PlaneLanding}
               identifier={contract.arr_airport.identifier}
@@ -153,7 +161,6 @@ function AirportMap({
             <>
               <ContractMarker
                 key={contract.id}
-                updateSelectedContract={updateSelectedContract}
                 color="blue"
                 icon={PlaneLanding}
                 identifier={contract.arr_airport.identifier}
@@ -163,7 +170,6 @@ function AirportMap({
               />
               <ContractMarker
                 key={contract.id}
-                updateSelectedContract={updateSelectedContract}
                 color="blue"
                 icon={PlaneTakeoff}
                 identifier={contract.current_airport.identifier}
@@ -179,7 +185,6 @@ function AirportMap({
             <>
               <ContractMarker
                 key={contract.id}
-                updateSelectedContract={updateSelectedContract}
                 color="orange"
                 icon={PlaneLanding}
                 identifier={contract.arr_airport.identifier}
@@ -189,7 +194,6 @@ function AirportMap({
               />
               <ContractMarker
                 key={contract.id}
-                updateSelectedContract={updateSelectedContract}
                 color="orange"
                 icon={PlaneTakeoff}
                 identifier={contract.current_airport.identifier}
@@ -199,11 +203,7 @@ function AirportMap({
               />
             </>
           ))}
-        <ContractRoute
-          routeData={routeData}
-          selectedContract={selectedContract}
-          airport={airport}
-        />
+        <ContractRoute routeData={routeData} airport={airport} />
         {/*Current Airport Marker*/}
         <Marker
           latitude={airport.lat}
@@ -266,11 +266,9 @@ function AirportMap({
         <DetailsContainer>
           {contractMapLayers.contracts && (
             <ContractList
-              selectedContract={selectedContract}
               myContracts={myContracts}
               sharedContracts={sharedContracts}
               contracts={filteredContracts}
-              updateSelectedContract={updateSelectedContract}
             />
           )}
           {!contractMapLayers.myAircraft && contractMapLayers.fleet && (

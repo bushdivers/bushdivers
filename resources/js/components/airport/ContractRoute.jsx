@@ -2,11 +2,13 @@ import { useAtomValue } from 'jotai'
 import React, { useEffect } from 'react'
 import { Layer, Source, useMap } from 'react-map-gl'
 
+import { selectedContractAtom } from '../../state/contract.state.js'
 import { contractMapLayersAtom } from '../../state/map.state.js'
 
-const ContractRoute = ({ routeData, selectedContract, airport }) => {
+const ContractRoute = ({ routeData, airport }) => {
   const { current: map } = useMap()
   const contractMapLayers = useAtomValue(contractMapLayersAtom)
+  const selectedContract = useAtomValue(selectedContractAtom)
 
   useEffect(() => {
     if (selectedContract !== null) {

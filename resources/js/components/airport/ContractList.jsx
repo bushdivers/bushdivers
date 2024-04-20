@@ -7,13 +7,7 @@ import React from 'react'
 import { contractMapLayersAtom } from '../../state/map.state.js'
 import ContractDetail from '../contracts/ContractDetail.jsx'
 
-const ContractList = ({
-  contracts,
-  myContracts,
-  sharedContracts,
-  selectedContract,
-  updateSelectedContract,
-}) => {
+const ContractList = ({ contracts, myContracts, sharedContracts }) => {
   const { auth } = usePage().props
   const contractMapLayers = useAtomValue(contractMapLayersAtom)
   async function bidForContract(contract) {
@@ -44,13 +38,7 @@ const ContractList = ({
               <Heading size="sm">My Contracts</Heading>
               {myContracts &&
                 myContracts.map((c) => (
-                  <ContractDetail
-                    key={c.id}
-                    contract={c}
-                    selectedContract={selectedContract}
-                    type="mine"
-                    updateSelectedContract={updateSelectedContract}
-                  />
+                  <ContractDetail key={c.id} contract={c} type="mine" />
                 ))}
             </>
           )}
@@ -59,13 +47,7 @@ const ContractList = ({
               <Heading size="sm">Shared Contracts</Heading>
               {sharedContracts &&
                 sharedContracts.map((c) => (
-                  <ContractDetail
-                    key={c.id}
-                    contract={c}
-                    selectedContract={selectedContract}
-                    type="shared"
-                    updateSelectedContract={updateSelectedContract}
-                  />
+                  <ContractDetail key={c.id} contract={c} type="shared" />
                 ))}
             </>
           )}
@@ -78,10 +60,8 @@ const ContractList = ({
               <ContractDetail
                 key={c.id}
                 contract={c}
-                selectedContract={selectedContract}
                 action={bidForContract}
                 type="available"
-                updateSelectedContract={updateSelectedContract}
               />
             ))}
         </Box>
