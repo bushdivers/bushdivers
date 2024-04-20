@@ -60,12 +60,17 @@ class CreateDispatchController extends Controller
         if (!$request->is_empty) {
             // add contract cargo to pirep_cargos
             foreach ($request->cargo as $cargo) {
+                $contract = Contract::find($cargo);
+
+                // Prevent assigning contracts that don't exist
+                if (!$contract)
+                    continue;
+
                 $pirepCargo = new PirepCargo();
                 $pirepCargo->contract_cargo_id = $cargo;
                 $pirepCargo->pirep_id = $pirep->id;
                 $pirepCargo->save();
 
-                $contract = Contract::find($cargo);
                 $contract->is_available = false;
                 $contract->user_id = Auth::user()->id;
                 $contract->active_pirep = $pirep->id;
