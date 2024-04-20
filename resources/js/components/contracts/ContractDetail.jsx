@@ -10,9 +10,11 @@ import {
 } from '@chakra-ui/react'
 import { Link } from '@inertiajs/react'
 import { formatDistanceToNowStrict } from 'date-fns'
+import { useAtom } from 'jotai'
 import { Anchor, ArrowUp, Check, Plane } from 'lucide-react'
 import React from 'react'
 
+import { selectedContractAtom } from '../../state/contract.state.js'
 import AvailableFuel from '../airport/AvailableFuel.jsx'
 import Tooltip from '../elements/Tooltip'
 
@@ -31,13 +33,8 @@ function renderCargo(contract) {
   }`
 }
 
-const ContractDetail = ({
-  contract,
-  action = null,
-  selectedContract = null,
-  updateSelectedContract,
-  type,
-}) => {
+const ContractDetail = ({ contract, action = null, type }) => {
+  const [selectedContract, setSelectedContract] = useAtom(selectedContractAtom)
   return (
     <Card
       my={2}
@@ -50,7 +47,7 @@ const ContractDetail = ({
           : ''
       }
       onClick={() =>
-        updateSelectedContract(contract === selectedContract ? null : contract)
+        setSelectedContract(contract === selectedContract ? null : contract)
       }
     >
       <Box>

@@ -1,16 +1,20 @@
 import { Box, Image, Text, useColorMode } from '@chakra-ui/react'
+import { usePage } from '@inertiajs/react'
 import { useAtomValue } from 'jotai'
 import { PlaneLanding, PlaneTakeoff } from 'lucide-react'
 import maplibre from 'maplibre-gl'
 import React, { useEffect, useState } from 'react'
-import Map, { Marker, Popup } from 'react-map-gl'
+import Map, { Layer, Marker, Popup, Source } from 'react-map-gl'
 
 import {
   mapboxToken,
   parseMapStyle,
   transformRequest,
 } from '../../helpers/geo.helpers'
-import { contractFiltersAtom } from '../../state/contract.state.js'
+import {
+  contractFiltersAtom,
+  selectedContractAtom,
+} from '../../state/contract.state.js'
 import {
   contractMapLayersAtom,
   contractMapStyleAtom,
@@ -35,13 +39,14 @@ function AirportMap({
 }) {
   const { colorMode } = useColorMode()
   const [routeData, setRouteData] = useState(null)
-  const [selectedContract, setSelectedContract] = useState(null)
+  const selectedContract = useAtomValue(selectedContractAtom)
   const [showPopup, setShowPopup] = useState(false)
   const [selectedAircraft, setSelectedAircraft] = useState(null)
   const filters = useAtomValue(contractFiltersAtom)
   const contractMapLayers = useAtomValue(contractMapLayersAtom)
   const contractMapStyle = useAtomValue(contractMapStyleAtom)
   const [filteredContracts, setFilteredContracts] = useState(contracts)
+  const { auth } = usePage().props
 
   useEffect(() => {
     setRouteData(null)
@@ -97,10 +102,42 @@ function AirportMap({
     setFilteredContracts(newContracts)
   }
 
-  const updateSelectedContract = (contract) => {
-    setSelectedContract(null)
-    const depLngLat = [contract.dep_airport.lon, contract.dep_airport.lat]
-    const arrLngLat = [contract.arr_airport.lon, contract.arr_airport.lat]
+  useEffect(() => {
+    if (selectedContract) {
+      const depLngLat = [
+        selectedContract.dep_airport.lon,
+        selectedContract.dep_airport.lat,
+      ]
+      const arrLngLat = [
+        selectedContract.arr_airport.lon,
+        selectedContract.arr_airport.lat,
+      ]
+      const geojson = {
+        type: 'Feature',
+        geometry: {
+          type: 'LineString',
+          coordinates: [depLngLat, arrLngLat],
+        },
+      }
+      setRouteData(geojson)
+    }
+  }, [selectedContract])
+
+  function getRouteDataForContract(contract) {
+    let depLngLat = []
+    let arrLngLat = []
+    if (
+      (contract.is_shared && contract.user_id === null) ||
+      contract.user_id === auth.user.id
+    ) {
+      depLngLat = [contract.current_airport.lon, contract.current_airport.lat]
+      arrLngLat = [contract.arr_airport.lon, contract.arr_airport.lat]
+    } else if (contract.user_id === null && contract.is_available) {
+      depLngLat = [contract.dep_airport.lon, contract.dep_airport.lat]
+      arrLngLat = [contract.arr_airport.lon, contract.arr_airport.lat]
+    } else {
+      return null
+    }
     const geojson = {
       type: 'Feature',
       geometry: {
@@ -108,8 +145,7 @@ function AirportMap({
         coordinates: [depLngLat, arrLngLat],
       },
     }
-    setRouteData(geojson)
-    setSelectedContract(contract)
+    return geojson
   }
 
   const handleAircraftSelection = (ac) => {
@@ -138,7 +174,6 @@ function AirportMap({
           filteredContracts.map((contract) => (
             <ContractMarker
               key={contract.id}
-              updateSelectedContract={updateSelectedContract}
               color="green"
               icon={PlaneLanding}
               identifier={contract.arr_airport.identifier}
@@ -153,7 +188,6 @@ function AirportMap({
             <>
               <ContractMarker
                 key={contract.id}
-                updateSelectedContract={updateSelectedContract}
                 color="blue"
                 icon={PlaneLanding}
                 identifier={contract.arr_airport.identifier}
@@ -163,7 +197,6 @@ function AirportMap({
               />
               <ContractMarker
                 key={contract.id}
-                updateSelectedContract={updateSelectedContract}
                 color="blue"
                 icon={PlaneTakeoff}
                 identifier={contract.current_airport.identifier}
@@ -171,6 +204,25 @@ function AirportMap({
                 lat={contract.current_airport.lat}
                 lon={contract.current_airport.lon}
               />
+              <Source
+                id={`my-contract-route-data-${contract.id}`}
+                type="geojson"
+                data={getRouteDataForContract(contract)}
+              >
+                <Layer
+                  id={`my-contract-route-layer-${contract.id}`}
+                  type="line"
+                  source={`my-contract-route-data-${contract.id}`}
+                  layout={{
+                    'line-join': 'round',
+                    'line-cap': 'round',
+                  }}
+                  paint={{
+                    'line-color': '#4299E1',
+                    'line-width': 1,
+                  }}
+                />
+              </Source>
             </>
           ))}
         {contractMapLayers.sharedContracts &&
@@ -179,7 +231,6 @@ function AirportMap({
             <>
               <ContractMarker
                 key={contract.id}
-                updateSelectedContract={updateSelectedContract}
                 color="orange"
                 icon={PlaneLanding}
                 identifier={contract.arr_airport.identifier}
@@ -189,7 +240,6 @@ function AirportMap({
               />
               <ContractMarker
                 key={contract.id}
-                updateSelectedContract={updateSelectedContract}
                 color="orange"
                 icon={PlaneTakeoff}
                 identifier={contract.current_airport.identifier}
@@ -197,13 +247,28 @@ function AirportMap({
                 lat={contract.current_airport.lat}
                 lon={contract.current_airport.lon}
               />
+              <Source
+                id={`shared-contract-route-data-${contract.id}`}
+                type="geojson"
+                data={getRouteDataForContract(contract)}
+              >
+                <Layer
+                  id={`shared-contract-route-layer-${contract.id}`}
+                  type="line"
+                  source={`shared-contract-route-data-${contract.id}`}
+                  layout={{
+                    'line-join': 'round',
+                    'line-cap': 'round',
+                  }}
+                  paint={{
+                    'line-color': '#ED8936',
+                    'line-width': 1,
+                  }}
+                />
+              </Source>
             </>
           ))}
-        <ContractRoute
-          routeData={routeData}
-          selectedContract={selectedContract}
-          airport={airport}
-        />
+        <ContractRoute routeData={routeData} airport={airport} />
         {/*Current Airport Marker*/}
         <Marker
           latitude={airport.lat}
@@ -266,11 +331,9 @@ function AirportMap({
         <DetailsContainer>
           {contractMapLayers.contracts && (
             <ContractList
-              selectedContract={selectedContract}
               myContracts={myContracts}
               sharedContracts={sharedContracts}
               contracts={filteredContracts}
-              updateSelectedContract={updateSelectedContract}
             />
           )}
           {!contractMapLayers.myAircraft && contractMapLayers.fleet && (
