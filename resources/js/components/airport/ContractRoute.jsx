@@ -30,17 +30,17 @@ const ContractRoute = ({ routeData, airport }) => {
   return (
     <>
       {contractMapLayers.contracts && selectedContract && routeData && (
-        <Source id="routeData" type="geojson" data={routeData}>
+        <Source id="route-data" type="geojson" data={routeData}>
           <Layer
-            id="lineLayer"
+            id="selected-route-layer"
             type="line"
-            source="my-data"
+            source="route-data"
             layout={{
               'line-join': 'round',
               'line-cap': 'round',
             }}
             paint={{
-              'line-color': '#F97316',
+              'line-color': '#48BB78',
               'line-width': 1,
             }}
           />
