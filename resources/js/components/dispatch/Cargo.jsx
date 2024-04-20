@@ -122,6 +122,10 @@ const Cargo = (props) => {
   }
 
   async function removeFromFlight(contract) {
+    // If cargo already selected, deselect first
+    if (props.selectedCargo.find((sc) => sc.id === contract.id))
+      props.handleCargoSelect(contract)
+
     const data = {
       id: contract.id,
       userId: auth.user.id,

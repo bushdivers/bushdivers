@@ -27,7 +27,7 @@ class CancelPirepController extends Controller
                     $q->where('state', PirepState::DISPATCH)
                       ->orWhere('state', PirepState::IN_PROGRESS);
                 })
-                ->first();
+                ->firstOrFail();
 
             $pirep->state = PirepState::DISPATCH;
             $pirep->save();
