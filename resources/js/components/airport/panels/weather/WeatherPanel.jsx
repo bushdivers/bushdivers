@@ -62,7 +62,7 @@ const WeatherPanel = ({ metar }) => {
                 <Icon boxSize={6} as={MoveUp} />
               </Box>
               <Text fontSize="md">
-                {metar.wind?.degrees}&#176; {metar.wind?.speed} kts
+                {metar.wind?.degrees}&#176; {metar.wind?.speed_kts} kts
               </Text>
             </WeatherItem>
           </Flex>
