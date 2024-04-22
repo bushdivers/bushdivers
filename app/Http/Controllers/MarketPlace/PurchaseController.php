@@ -80,6 +80,10 @@ class PurchaseController extends Controller
                 }
             }
 
+            $currentAirport = Airport::where('identifier', $aircraft->current_airport_id)->first();
+            $aircraft->last_lat = $currentAirport->lat;
+            $aircraft->last_lon = $currentAirport->lon;
+
             $aircraft->owner_id = $buyer === 'admin' ? 0 : Auth::user()->id;
             $aircraft->hub_id = $request->hub;
             $aircraft->registration = $request->reg;
