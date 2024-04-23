@@ -72,7 +72,7 @@ const Logbook = ({ logbook }) => {
                           )}
                           {entry.tour_id && (
                             <Tag size="sm" ml={2}>
-                              Tour Flight: {entry.tour.title}
+                              Tour Flight: {entry.tour?.title}
                             </Tag>
                           )}
                         </Td>
