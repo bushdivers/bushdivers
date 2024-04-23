@@ -81,6 +81,7 @@ class SubmitPirepController extends Controller
             $pirep->submitted_at = Carbon::now('UTC');
             $pirep->block_off_time = $startTime;
             $pirep->block_on_time = $endTime;
+            $pirep->aircraft_used = $request->aircraft_used;
             $pirep->save();
         } catch (\Exception $e) {
             $this->rollbackSubmission(1, $request);

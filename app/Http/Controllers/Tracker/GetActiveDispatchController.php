@@ -35,13 +35,13 @@ class GetActiveDispatchController extends Controller
     public function __invoke(Request $request): JsonResponse
     {
 
-        $dispatch = Pirep::with('aircraft', 'aircraft.fleet', 'depAirport', 'arrAirport')
+        $dispatch = Pirep::with('aircraft', 'aircraft.fleet', 'depAirport', 'arrAirport', 'tour')
             ->where('user_id', Auth::user()->id)
             ->where('state', PirepState::DISPATCH)
             ->where('is_rental', false)
             ->first();
 
-        $rentalDispatch = Pirep::with('rental', 'rental.fleet', 'depAirport', 'arrAirport')
+        $rentalDispatch = Pirep::with('rental', 'rental.fleet', 'depAirport', 'arrAirport', 'tour')
             ->where('user_id', Auth::user()->id)
             ->where('state', PirepState::DISPATCH)
             ->where('is_rental', true)
@@ -83,7 +83,8 @@ class GetActiveDispatchController extends Controller
             'planned_fuel' => $dispatch->planned_fuel,
             'cargo_weight' => $cargoWeight,
             'passenger_count' => $passengerCount,
-            'is_empty' => $dispatch->is_empty
+            'is_empty' => $dispatch->is_empty,
+            'tour' => $dispatch->tour->title ?? null
         ];
 
         return response()->json($data);
