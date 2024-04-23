@@ -40,12 +40,12 @@ class ShowPirepController extends Controller
             }
         } else {
             if ($pcheck->is_rental) {
-                $p = Pirep::with('depAirport', 'arrAirport', 'rental', 'rental.fleet')
+                $p = Pirep::with('depAirport', 'arrAirport', 'rental', 'rental.fleet', 'tour')
                     ->where('id', $pirep)
                     ->where('user_id', Auth::user()->id)
                     ->first();
             } else {
-                $p = Pirep::with('depAirport', 'arrAirport', 'aircraft', 'aircraft.fleet')
+                $p = Pirep::with('depAirport', 'arrAirport', 'aircraft', 'aircraft.fleet', 'tour')
                     ->where('id', $pirep)
                     ->where('user_id', Auth::user()->id)
                     ->first();
