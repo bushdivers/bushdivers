@@ -72,7 +72,7 @@ const LogbookPrimary = ({ pirep }) => {
               </Flex>
               {pirep.tour_id && (
                 <Tag size="sm" ml={2}>
-                  Tour Flight: {pirep.tour.title}
+                  Tour Flight: {pirep.tour?.title}
                 </Tag>
               )}
             </Flex>
