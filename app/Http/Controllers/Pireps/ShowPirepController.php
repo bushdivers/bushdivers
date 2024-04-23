@@ -30,11 +30,11 @@ class ShowPirepController extends Controller
 
         if (Auth::user()->is_admin) {
             if ($pcheck->is_rental) {
-                $p = Pirep::with('depAirport', 'arrAirport', 'rental', 'rental.fleet', 'pilot')
+                $p = Pirep::with('depAirport', 'arrAirport', 'rental', 'rental.fleet', 'pilot', 'tour')
                     ->where('id', $pirep)
                     ->first();
             } else {
-                $p = Pirep::with('depAirport', 'arrAirport', 'aircraft', 'aircraft.fleet', 'pilot')
+                $p = Pirep::with('depAirport', 'arrAirport', 'aircraft', 'aircraft.fleet', 'pilot', 'tour')
                     ->where('id', $pirep)
                     ->first();
             }

@@ -4,9 +4,10 @@ import {
   CardBody,
   Checkbox,
   Flex,
+  Grid,
+  GridItem,
   Heading,
   Select,
-  SimpleGrid,
   Text,
 } from '@chakra-ui/react'
 import { router, usePage } from '@inertiajs/react'
@@ -204,8 +205,8 @@ const Dispatch = ({ cargo, aircraft, airport, tours }) => {
     <div>
       <Heading size="md">{`Dispatch - ${auth.user.current_airport_id}`}</Heading>
       <Flex justifyContent="space-between" mt={4}>
-        <SimpleGrid columns={2} spacing={4}>
-          <Box>
+        <Grid templateColumns="repeat(5, 1fr)" gap={4}>
+          <GridItem colSpan={3}>
             {tours?.length > 0 && (
               <Card mb={2}>
                 <CardBody>
@@ -236,8 +237,8 @@ const Dispatch = ({ cargo, aircraft, airport, tours }) => {
               deadHead={deadHead}
               handleDeadHead={handleDeadHead}
             />
-          </Box>
-          <Box>
+          </GridItem>
+          <GridItem colStart={4} colEnd={6}>
             <Destination
               currentAirport={auth.user.current_airport_id}
               updateDestinationValue={setDestination}
@@ -270,8 +271,8 @@ const Dispatch = ({ cargo, aircraft, airport, tours }) => {
                 </Text>
               )}
             </Box>
-          </Box>
-        </SimpleGrid>
+          </GridItem>
+        </Grid>
       </Flex>
     </div>
   )

@@ -50,7 +50,8 @@ class ShowDispatchController extends Controller
     public function __invoke(Request $request): Response
     {
         // check for existing Pirep
-        $pirep = Pirep::where('user_id', Auth::user()->id)
+        $pirep = Pirep::with('tour')
+            ->where('user_id', Auth::user()->id)
             ->whereNotIn('state', [PirepState::ACCEPTED, PirepState::REVIEW])
             ->first();
 

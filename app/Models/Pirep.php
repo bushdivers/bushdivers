@@ -46,4 +46,9 @@ class Pirep extends Model
     {
         return $this->belongsTo(Airport::class, 'destination_airport_id', 'identifier');
     }
+
+    public function tour()
+    {
+        return $this->belongsTo(Tour::class);
+    }
 }

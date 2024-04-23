@@ -11,6 +11,7 @@ import {
   SimpleGrid,
   Table,
   TableContainer,
+  Tag,
   Tbody,
   Td,
   Text,
@@ -24,7 +25,7 @@ import React from 'react'
 
 import DispatchSummary from '../../components/dispatch/DispatchSummary'
 import AppLayout from '../../components/layout/AppLayout'
-import { personWeight } from '../../helpers/number.helpers'
+import { displayNumber, personWeight } from '../../helpers/number.helpers'
 
 const ActiveDispatch = ({
   cargo,
@@ -45,12 +46,15 @@ const ActiveDispatch = ({
 
   return (
     <Box>
-      <Box>
+      <Flex alignItems="center">
         {pirep.id}{' '}
         <ChakraLink as={Link} href="/pireps/submit">
           <Button colorScheme="gray">Submit Manual Pirep</Button>
         </ChakraLink>
-      </Box>
+        <Box ml={2}>
+          {pirep.tour_id && <Tag>Tour Flight: {pirep.tour.title}</Tag>}
+        </Box>
+      </Flex>
       {pirep.state === 2 && (
         <Box>
           <Text color="green.600">Current flight in progress</Text>
@@ -75,6 +79,7 @@ const ActiveDispatch = ({
                         <Th>Heading</Th>
                         <Th>Type</Th>
                         <Th>Cargo</Th>
+                        <Th>Contract Value</Th>
                       </Tr>
                     </Thead>
                     <Tbody>
@@ -112,6 +117,7 @@ const ActiveDispatch = ({
                               </Flex>
                             )}
                           </Td>
+                          <Td>${displayNumber(detail.contract_value, true)}</Td>
                         </Tr>
                       ))}
                     </Tbody>

@@ -186,6 +186,7 @@ const Cargo = (props) => {
                         <Th>Distance</Th>
                         <Th>Heading</Th>
                         <Th>Cargo</Th>
+                        <Th>Value</Th>
                         <Th></Th>
                       </Tr>
                     </Thead>
@@ -260,6 +261,7 @@ const Cargo = (props) => {
                             )}
                             {detail.is_fuel ? <Tag size="sm">Fuel</Tag> : <></>}
                           </Td>
+                          <Td>${displayNumber(detail.contract_value, true)}</Td>
                           <Td>
                             <Flex align="center" gap={2}>
                               {detail.is_shared ? <Tag>Shared</Tag> : <></>}

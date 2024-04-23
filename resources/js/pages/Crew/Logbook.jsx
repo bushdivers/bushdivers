@@ -8,6 +8,7 @@ import {
   Icon,
   Table,
   TableContainer,
+  Tag,
   Tbody,
   Td,
   Text,
@@ -68,6 +69,11 @@ const Logbook = ({ logbook }) => {
                             <Badge ml={2} colorScheme="orange" fontSize="0.7em">
                               Review
                             </Badge>
+                          )}
+                          {entry.tour_id && (
+                            <Tag size="sm" ml={2}>
+                              Tour Flight: {entry.tour.title}
+                            </Tag>
                           )}
                         </Td>
                         <Td>
