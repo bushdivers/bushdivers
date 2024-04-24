@@ -52,7 +52,7 @@ const ActiveDispatch = ({
           <Button colorScheme="gray">Submit Manual Pirep</Button>
         </ChakraLink>
         <Box ml={2}>
-          {pirep.tour_id && <Tag>Tour Flight: {pirep.tour.title}</Tag>}
+          {pirep.tour_id && <Tag>Tour Flight: {pirep.tour?.title}</Tag>}
         </Box>
       </Flex>
       {pirep.state === 2 && (
