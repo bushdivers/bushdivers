@@ -13,7 +13,11 @@ class PublishTourController extends Controller
      */
     public function __invoke(Request $request)
     {
-        $tour = Tour::find($request->id);
+        $tour = Tour::withCount('checkpoints')->find($request->id);
+
+        if ($tour->checkpoints_count < 2)
+            return redirect()->back()->with(['error' => 'Tour requires at least 2 checkpoints']);
+
         $tour->is_published = true;
         $tour->save();
         return redirect()->back()->with(['success' => 'Tour has been published']);
