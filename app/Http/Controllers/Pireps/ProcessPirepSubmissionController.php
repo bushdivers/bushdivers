@@ -62,7 +62,7 @@ class ProcessPirepSubmissionController extends Controller
 
             $blockOffTime = Carbon::now('UTC')->subMinutes($request->flight_time_mins);
 
-            $pirep->fuel_used = $request->fuel_used;
+            $pirep->fuel_used = abs($request->fuel_used);
             $pirep->distance = $request->distance;
             $pirep->flight_time = $request->flight_time_mins;
             $pirep->landing_rate = 0;

@@ -25,9 +25,9 @@ class ManualPirepRequest extends FormRequest
     {
         return [
             'pirep_id' => 'required',
-            'fuel_used' => 'required|numeric',
-            'distance' => 'required|numeric',
-            'flight_time_mins' => 'required|numeric'
+            'fuel_used' => 'required|numeric|min:0',
+            'distance' => 'required|numeric|min:0',
+            'flight_time_mins' => 'required|numeric|min:0'
         ];
     }
 }
