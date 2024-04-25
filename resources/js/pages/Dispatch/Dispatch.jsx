@@ -198,7 +198,8 @@ const Dispatch = ({ cargo, aircraft, airport, tours }) => {
   }
 
   function handleTourSelect(e) {
-    setSelectedTour(e.target.value)
+    const tour = tours.filter((t) => t.id == e.target.value)
+    setSelectedTour(tour[0] ?? null)
   }
 
   return (
