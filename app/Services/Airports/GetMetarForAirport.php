@@ -20,6 +20,10 @@ class GetMetarForAirport
     public function execute(string $icao): array|string
     {
         try {
+            if (empty($this->apiKey) || empty($this->baseUrl)) {
+                return [];
+            }
+
             // check if metar exists in cache
             if (Cache::has($icao.'-metar')) {
                 return Cache::get($icao.'-metar');
