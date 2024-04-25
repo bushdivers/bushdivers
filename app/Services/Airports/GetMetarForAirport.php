@@ -35,15 +35,14 @@ class GetMetarForAirport
                 ->timeout(3)
                 ->get($this->baseUrl.'/metar/'.$icao.'/decoded');
 
-            if (!$response->json(['results']) == 1) {
-                // if no metar, get nearest
+            // if no metar, get nearest
+            if (!$response->json(['results']) == 1)
                 $response = Http::withHeaders([
                     'X-API-KEY' => $this->apiKey
                 ])
                     ->timeout(3)
                     ->get($this->baseUrl.'/metar/'.$icao.'/nearest/decoded');
-                return $response->json(['data']);
-            }
+
             Cache::add($icao.'-metar', $response->json(['data']), 1800);
             return $response->json(['data']);
         } catch (ConnectionException $connectionException) {
