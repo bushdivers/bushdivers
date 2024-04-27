@@ -13,7 +13,7 @@ class GetFinanceData
     public function execute()
     {
         $accounts = AccountLedger::with('pirep')->orderBy('created_at', 'desc')->paginate(15);
-        $balance = AccountLedger::all();
+        $balance = AccountLedger::sum('total');
 
         $largeAc = Aircraft::with(['fleet'])
             ->where('owner_id', 0)
@@ -62,7 +62,7 @@ class GetFinanceData
 
         return [
             'accounts' => $accounts,
-            'balance' => $balance->sum('total'),
+            'balance' => $balance,
             'aircraftStorage' => $aircraftStorage,
             'aircraftOps' => $aircraftOps,
             'hubs' => $hubRental
