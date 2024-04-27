@@ -7,9 +7,9 @@ use Carbon\Carbon;
 
 class CheckAircraftMaintenanceStatus
 {
-    public function execute($aircraftId): array
+    public function execute(Aircraft $aircraft): array
     {
-        $aircraft = Aircraft::with('fleet', 'engines')->find($aircraftId);
+        $aircraft->load(['fleet', 'engines']);
         $oneYearAgo = Carbon::now()->subYears(2);
         $status = ['tbo' => false, '100hr' => false, 'annual' => false];
         if ($aircraft->last_inspected_at && $aircraft->last_inspected_at->lessThan($oneYearAgo)) {

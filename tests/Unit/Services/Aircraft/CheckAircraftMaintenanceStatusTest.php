@@ -65,25 +65,25 @@ class CheckAircraftMaintenanceStatusTest extends TestCase
      */
     public function test_aircraft_annual_is_needed()
     {
-        $res = $this->checkAircraftMaintenanceStatus->execute($this->aircraft1->id);
+        $res = $this->checkAircraftMaintenanceStatus->execute($this->aircraft1);
         $this->assertTrue($res['annual']);
     }
 
     public function test_aircraft_100_is_needed()
     {
-        $res = $this->checkAircraftMaintenanceStatus->execute($this->aircraft1->id);
+        $res = $this->checkAircraftMaintenanceStatus->execute($this->aircraft1);
         $this->assertTrue($res['100hr']);
     }
 
     public function test_aircraft_tbo_is_needed()
     {
-        $res = $this->checkAircraftMaintenanceStatus->execute($this->aircraft1->id);
+        $res = $this->checkAircraftMaintenanceStatus->execute($this->aircraft1);
         $this->assertTrue($res['tbo']);
     }
 
     public function test_aircraft_maintence_is_not_needed()
     {
-        $res = $this->checkAircraftMaintenanceStatus->execute($this->aircraft2->id);
+        $res = $this->checkAircraftMaintenanceStatus->execute($this->aircraft2);
         $this->assertFalse($res['annual']);
     }
 }
