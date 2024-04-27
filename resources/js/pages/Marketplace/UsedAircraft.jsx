@@ -4,7 +4,9 @@ import {
   Card,
   CardBody,
   CardHeader,
+  Flex,
   Heading,
+  Icon,
   Table,
   TableContainer,
   Tbody,
@@ -14,6 +16,7 @@ import {
   Tr,
 } from '@chakra-ui/react'
 import { router } from '@inertiajs/react'
+import { Wrench } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 
 import AircraftCondition from '../../components/fleet/AircraftCondition'
@@ -73,7 +76,18 @@ const UsedAircraft = ({ aircraft, currentLocation, fleet, buyer }) => {
                 {aircraft &&
                   updatedAircraft.map((ac) => (
                     <Tr key={ac.id}>
-                      <Td>{ac.registration}</Td>
+                      <Td>
+                        <Flex alignItems="center">
+                          {ac.registration}
+                          {ac.maintenance_status && (
+                            <Box mx={2}>
+                              <Box color="orange.400">
+                                <Icon as={Wrench} />
+                              </Box>
+                            </Box>
+                          )}
+                        </Flex>
+                      </Td>
                       <Td>
                         {ac.current_airport_id} <br />
                         <span className="text-sm">{ac.location.name}</span>
