@@ -7,16 +7,22 @@ import {
   TabPanels,
   Tabs,
 } from '@chakra-ui/react'
-import React from 'react'
+import React, { useState } from 'react'
 
-import AppLayout from '../../components/layout/AppLayout.jsx'
 import HubMap from '../../components/airport/HubMap.jsx'
 import CompanyFinances from '../../components/finances/CompanyFinances.jsx'
 import FleetDetails from '../../components/fleet/FleetDetails.jsx'
+import AppLayout from '../../components/layout/AppLayout.jsx'
 
 const BushDivers = ({ hubs, fleet, finances }) => {
+  const [hubMapIsVisible, setHubMapIsVisible] = useState(false)
+
   return (
-    <Tabs>
+    <Tabs
+      onChange={(idx) => {
+        setHubMapIsVisible(idx == 1)
+      }}
+    >
       <TabList>
         <Tab>Fleet</Tab>
         <Tab>Hubs</Tab>
@@ -33,7 +39,7 @@ const BushDivers = ({ hubs, fleet, finances }) => {
         <TabPanel>
           <Card>
             <CardBody>
-              <HubMap hubs={hubs} />
+              <HubMap hubs={hubs} onIsVisible={hubMapIsVisible} />
             </CardBody>
           </Card>
         </TabPanel>

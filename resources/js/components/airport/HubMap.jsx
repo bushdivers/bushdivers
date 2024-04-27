@@ -1,6 +1,6 @@
 import { Box, Card, CardBody, useColorMode } from '@chakra-ui/react'
 import maplibre from 'maplibre-gl'
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Map, Marker, Popup } from 'react-map-gl'
 
 import {
@@ -9,16 +9,25 @@ import {
   transformRequest,
 } from '../../helpers/geo.helpers.js'
 
-const HubMap = ({ hubs }) => {
+const HubMap = ({ hubs, onIsVisible }) => {
   const [selectedMarker, setSelectedMarker] = useState(null)
   const { colorMode } = useColorMode()
   const handleClick = (loc) => {
     setSelectedMarker(loc)
   }
 
+  const mapRef = useRef(null)
+
+  useEffect(() => {
+    if (onIsVisible) {
+      mapRef.current.resize()
+    }
+  }, [onIsVisible])
+
   return (
     <Box className="map-container-large">
       <Map
+        ref={mapRef}
         mapLib={maplibre}
         mapboxAccessToken={mapboxToken}
         initialViewState={{
