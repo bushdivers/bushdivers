@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Airports;
 
 use App\Http\Controllers\Controller;
 use App\Models\Airport;
-use Honeybadger\Support\Arr;
-use Illuminate\Http\JsonResponse;
+use App\Models\Enums\PirepState;
+use App\Models\Pirep;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -33,6 +33,14 @@ class RenameAirportController extends Controller
         $airport = Airport::where('identifier', $request->airport)->first();
         if (!$airport)
             return redirect()->back()->with(['error' => 'Airport not found']);
+
+        if (Pirep::whereNotIn('state', [PirepState::ACCEPTED, PirepState::REVIEW])
+            ->where(function ($q) use ($airport) {
+                $q->where('departure_airport_id', $airport->identifier)->orWhere('destination_airport_id', $airport->identifier);
+            })
+            ->first()) {
+            return redirect()->back()->with(['error' => 'Cannot rename airport with active PIREPs']);
+        }
 
         $newIcao = strtoupper($newIcao);
 
