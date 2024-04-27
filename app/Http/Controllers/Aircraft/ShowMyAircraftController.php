@@ -22,7 +22,7 @@ class ShowMyAircraftController extends Controller
     public function __invoke(Request $request): Response
     {
         // get my aircraft
-        $aircraft = Aircraft::with('fleet')->where('owner_id', Auth::user()->id)->get();
+        $aircraft = Aircraft::with(['fleet', 'engines'])->where('owner_id', Auth::user()->id)->get();
         // get my rentals
         $rentals = Rental::with('fleet')
             ->where('user_id', Auth::user()->id)

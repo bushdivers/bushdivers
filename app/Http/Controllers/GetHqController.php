@@ -21,10 +21,11 @@ class GetHqController extends Controller
             $q->where('owner_id', 0);
             $q->where('status', AircraftStatus::ACTIVE);
             $q->orderBy('hub_id');
-        }, 'aircraft.location', 'aircraft.hub'])
+        }, 'aircraft.location', 'aircraft.hub', 'aircraft.engines'])
             ->where('company_fleet', true)
             ->orderBy('type')
             ->get();
+
         $hubs = Airport::where('is_hub', true)->get();
         return Inertia::render('General/BushDivers', ['fleet' => $fleet, 'hubs' => $hubs, 'finances' => $finances]);
     }
