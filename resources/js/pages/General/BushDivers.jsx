@@ -7,6 +7,7 @@ import {
   TabPanels,
   Tabs,
 } from '@chakra-ui/react'
+import { usePage, useRemember } from '@inertiajs/react'
 import React, { useState } from 'react'
 
 import HubMap from '../../components/airport/HubMap.jsx'
@@ -16,11 +17,16 @@ import AppLayout from '../../components/layout/AppLayout.jsx'
 
 const BushDivers = ({ hubs, fleet, finances }) => {
   const [hubMapIsVisible, setHubMapIsVisible] = useState(false)
+  const [activeTab, setActiveTab] = useRemember({
+    idx: usePage().url.search('page=') == -1 ? 0 : 2,
+  })
 
   return (
     <Tabs
+      defaultIndex={activeTab.idx}
       onChange={(idx) => {
         setHubMapIsVisible(idx == 1)
+        setActiveTab({ idx })
       }}
     >
       <TabList>

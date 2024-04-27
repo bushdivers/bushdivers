@@ -110,7 +110,7 @@ const CompanyFinances = ({ finances }) => {
         </Table>
       </TableContainer>
       <div className="mt-2">
-        <Pagination pages={finances.accounts} />
+        <Pagination pages={finances.accounts} only={['finances']} />
       </div>
     </Box>
   )

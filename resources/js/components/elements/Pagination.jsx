@@ -25,12 +25,20 @@ const Pagination = (props) => {
       </Box>
       {props.pages.total > props.pages.per_page && (
         <Flex mt={2} alignItems="center" gap={2}>
-          <Link href={props.pages.prev_page_url} className="btn btn-secondary">
+          <Link
+            href={props.pages.prev_page_url}
+            only={props.only ?? undefined}
+            className="btn btn-secondary"
+          >
             <Button size="sm" className="sr-only">
               <Icon as={ChevronLeft} />
             </Button>
           </Link>
-          <Link href={props.pages.next_page_url} className="btn btn-secondary">
+          <Link
+            href={props.pages.next_page_url}
+            only={props.only ?? undefined}
+            className="btn btn-secondary"
+          >
             <Button size="sm" className="sr-only">
               <Icon as={ChevronRight} />
             </Button>
