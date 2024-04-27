@@ -55,26 +55,25 @@ class Aircraft extends Model
 
     public function getMaintenanceStatusAttribute()
     {
+        if ($this->is_rental) {
+            return false;
+        }
+
         $oneYearAgo = Carbon::now()->subYear();
-        $status = false;
         if ($this->last_inspected_at && $this->last_inspected_at->lessThan($oneYearAgo)) {
-            $status = true;
+            return true;
         }
         // check tbo and 100hr
         foreach ($this->engines as $engine) {
             if ($engine->mins_since_tbo >= $this->fleet->tbo_mins) {
-                $status = true;
+                return true;
             }
             if ($engine->mins_since_100hr >= (100 * 60)) {
-                $status = true;
+                return true;
             }
         }
 
-        if ($this->is_rental) {
-            $status = false;
-        }
-
-        return $status;
+        return false;
     }
 
     public function getTotalConditionAttribute()
