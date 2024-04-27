@@ -6,9 +6,10 @@ import {
   CardHeader,
   Link as ChakraLink,
   Flex,
+  Grid,
+  GridItem,
   Heading,
   Icon,
-  SimpleGrid,
   Table,
   TableContainer,
   Tag,
@@ -48,7 +49,7 @@ const ActiveDispatch = ({
     <Box>
       <Flex alignItems="center">
         {pirep.id}{' '}
-        <ChakraLink as={Link} href="/pireps/submit">
+        <ChakraLink as={Link} href="/pireps/submit" ml={2}>
           <Button colorScheme="gray">Submit Manual Pirep</Button>
         </ChakraLink>
         <Box ml={2}>
@@ -61,90 +62,96 @@ const ActiveDispatch = ({
         </Box>
       )}
       <Flex mt={4} justifyContent="space-between">
-        <SimpleGrid columns={2} spacing={10}>
-          <Box>
-            <Card>
-              <CardHeader>
-                <Heading size="sm">Selected Cargo</Heading>
-              </CardHeader>
-              <CardBody>
-                <TableContainer>
-                  <Table colorScheme="blackAlpha" size="sm" variant="simple">
-                    <Thead>
-                      <Tr>
-                        <Th>Contract</Th>
-                        <Th>Current</Th>
-                        <Th>Arrival</Th>
-                        <Th>Distance</Th>
-                        <Th>Heading</Th>
-                        <Th>Type</Th>
-                        <Th>Cargo</Th>
-                        <Th>Contract Value</Th>
-                      </Tr>
-                    </Thead>
-                    <Tbody>
-                      {cargo.map((detail) => (
-                        <Tr key={detail.id}>
-                          <Td>{detail.id}</Td>
-                          <Td>{detail.current_airport_id}</Td>
-                          <Td>{detail.arr_airport_id}</Td>
-                          <Td>{detail.distance} nm</Td>
-                          <Td>
-                            <Flex alignItems="center">
-                              <span className="mr-2">{detail.heading}</span>
-                              <span
-                                style={{
-                                  transform: `rotate(${detail.heading}deg)`,
-                                }}
-                              >
-                                <Icon as={ArrowUp} />
-                              </span>
-                            </Flex>
-                          </Td>
-                          <Td>
-                            {detail.cargo_type === 1 ? 'Cargo' : 'Passenger'}
-                          </Td>
-                          <Td>
-                            {detail.cargo_type === 1 ? (
-                              <Flex gap={2}>
-                                <span>{detail.cargo_qty} lbs</span>{' '}
-                                <Text size="sm">{detail.cargo}</Text>
-                              </Flex>
-                            ) : (
-                              <Flex gap={2}>
-                                <span>{detail.cargo_qty}</span>{' '}
-                                <Text size="sm">{detail.cargo}</Text>
-                              </Flex>
-                            )}
-                          </Td>
-                          <Td>${displayNumber(detail.contract_value, true)}</Td>
+        <Grid templateColumns="repeat(3, 1fr)" gap={5}>
+          <GridItem colSpan={[3, null, null, null, null, 2]}>
+            <Box>
+              <Card>
+                <CardHeader>
+                  <Heading size="sm">Selected Cargo</Heading>
+                </CardHeader>
+                <CardBody>
+                  <TableContainer>
+                    <Table colorScheme="blackAlpha" size="sm" variant="simple">
+                      <Thead>
+                        <Tr>
+                          <Th>Contract</Th>
+                          <Th>Current</Th>
+                          <Th>Arrival</Th>
+                          <Th>Distance</Th>
+                          <Th>Heading</Th>
+                          <Th>Type</Th>
+                          <Th>Cargo</Th>
+                          <Th>Contract Value</Th>
                         </Tr>
-                      ))}
-                    </Tbody>
-                  </Table>
-                </TableContainer>
-              </CardBody>
-            </Card>
-          </Box>
-          <Box>
-            <DispatchSummary
-              selectedAircraft={aircraft}
-              selectedCargo={cargo}
-              personWeight={personWeight}
-              cargoWeight={cargoWeight}
-              fuelWeight={fuelWeight}
-              passengerCount={passengerCount}
-              pirep={pirep}
-              deadHead={pirep.is_empty}
-              isActive={true}
-            />
-            <Flex justifyContent="right">
-              <Box mt={2}>
-                <Button onClick={handleCancel}>Cancel Dispatch</Button>
-              </Box>
-            </Flex>
-          </Box>
-        </SimpleGrid>
+                      </Thead>
+                      <Tbody>
+                        {cargo.map((detail) => (
+                          <Tr key={detail.id}>
+                            <Td>{detail.id}</Td>
+                            <Td>{detail.current_airport_id}</Td>
+                            <Td>{detail.arr_airport_id}</Td>
+                            <Td>{detail.distance} nm</Td>
+                            <Td>
+                              <Flex alignItems="center">
+                                <span className="mr-2">{detail.heading}</span>
+                                <span
+                                  style={{
+                                    transform: `rotate(${detail.heading}deg)`,
+                                  }}
+                                >
+                                  <Icon as={ArrowUp} />
+                                </span>
+                              </Flex>
+                            </Td>
+                            <Td>
+                              {detail.cargo_type === 1 ? 'Cargo' : 'Passenger'}
+                            </Td>
+                            <Td>
+                              {detail.cargo_type === 1 ? (
+                                <Flex gap={2}>
+                                  <span>{detail.cargo_qty} lbs</span>{' '}
+                                  <Text size="sm">{detail.cargo}</Text>
+                                </Flex>
+                              ) : (
+                                <Flex gap={2}>
+                                  <span>{detail.cargo_qty}</span>{' '}
+                                  <Text size="sm">{detail.cargo}</Text>
+                                </Flex>
+                              )}
+                            </Td>
+                            <Td>
+                              ${displayNumber(detail.contract_value, true)}
+                            </Td>
+                          </Tr>
+                        ))}
+                      </Tbody>
+                    </Table>
+                  </TableContainer>
+                </CardBody>
+              </Card>
+            </Box>
+          </GridItem>
+          <GridItem colSpan={[3, null, null, null, null, 1]}>
+            <Box>
+              <DispatchSummary
+                selectedAircraft={aircraft}
+                selectedCargo={cargo}
+                personWeight={personWeight}
+                cargoWeight={cargoWeight}
+                fuelWeight={fuelWeight}
+                passengerCount={passengerCount}
+                pirep={pirep}
+                deadHead={pirep.is_empty}
+                isActive={true}
+              />
+              <Flex justifyContent="right">
+                <Box mt={2}>
+                  <Button onClick={handleCancel}>Cancel Dispatch</Button>
+                </Box>
+              </Flex>
+            </Box>
+          </GridItem>
+        </Grid>
       </Flex>
     </Box>
   )
