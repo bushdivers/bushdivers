@@ -28,12 +28,6 @@ class GetJumpseatCostController extends Controller
         $cost = $jump['cost'];
         $distance = $jump['distance'];
 
-        $hubs = ['AYMR', 'PAMX', 'AYMH', 'LSZS'];
-
-        if (in_array($from, $hubs) && in_array($to, $hubs)) {
-            $cost = 0.00;
-        }
-
         return response()->json(['cost' => $cost, 'distance' => $distance]);
     }
 }

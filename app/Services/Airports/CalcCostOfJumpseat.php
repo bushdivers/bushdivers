@@ -21,9 +21,7 @@ class CalcCostOfJumpseat
 
         $distance = $this->calcDistanceBetweenPoints->execute($start->lat, $start->lon, $end->lat, $end->lon);
 
-        $hubs = Airport::where('is_hub', true)->get();
-        $hubs = $hubs->pluck('identifier');
-        if ($hubs->contains($start->identifier) && $hubs->contains($end->identifier)) {
+        if ($start->is_hub && $end->is_hub) {
             $cost = 0.00;
         } else {
             $cost = round($distance * 0.25,2);
