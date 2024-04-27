@@ -5,6 +5,7 @@ import {
   CardBody,
   CardHeader,
   Heading,
+  Icon,
   Table,
   TableContainer,
   Tbody,
@@ -15,6 +16,7 @@ import {
 } from '@chakra-ui/react'
 import { Link, router } from '@inertiajs/react'
 import axios from 'axios'
+import { Wrench } from 'lucide-react'
 import React from 'react'
 
 import AircraftCondition from '../../components/fleet/AircraftCondition'
@@ -65,6 +67,9 @@ const MyAircraft = ({ aircraft, rentals }) => {
                       <Td>
                         <Link href={`/aircraft/${ac.id}`} className="link">
                           {ac.registration}
+                          {ac.maintenance_status && !ac.is_rental && (
+                            <Icon ml={2} color="orange.500" as={Wrench} />
+                          )}
                         </Link>
                       </Td>
                       <Td>{ac.fleet.type}</Td>
