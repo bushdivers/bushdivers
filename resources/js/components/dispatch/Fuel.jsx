@@ -223,6 +223,9 @@ const Fuel = (props) => {
                           </Slider>
                         </PopoverBody>
                         <PopoverFooter>
+                          <Text mx={2} fontSize="xs" color="red.500">
+                            {props.error}
+                          </Text>
                           <Flex justifyContent="space-between" alignItems="end">
                             <Button
                               onClick={() =>

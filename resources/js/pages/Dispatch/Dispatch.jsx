@@ -120,6 +120,18 @@ const Dispatch = ({ cargo, aircraft, airport, tours }) => {
       setFuel(selectedAircraft.fleet.fuel_capacity)
       return
     }
+    if (selectedAircraft.fleet.fuel_type === 1 && qty > airport.avgas_qty) {
+      setError('Cannot specify more than the available 100LL at this airport')
+      setFuel(selectedAircraft.fuel_onboard)
+      return
+    }
+    if (selectedAircraft.fleet.fuel_type === 2 && qty > airport.jetfuel_qty) {
+      setError(
+        'Cannot specify more than the available Jet Fuel at this airport'
+      )
+      setFuel(selectedAircraft.fleet.fuel_capacity)
+      return
+    }
     setFuel(qty)
     setFuelPrice(price)
     calculateFuelWeight(selectedAircraft, qty)
