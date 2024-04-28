@@ -2,16 +2,26 @@
 
 namespace App\Services\Pireps;
 
+use App\Models\Aircraft;
 use App\Models\Contract;
+use App\Models\Enums\AircraftState;
+use App\Models\FlightLog;
 use App\Models\Pirep;
 use App\Models\PirepCargo;
 
 class RemoveSinglePirep
 {
-    public function execute($pirepId)
+    public function execute(Pirep $pirep): bool
     {
-        $pirepCargo = PirepCargo::where('pirep_id', $pirepId)->get();
+        // clear up aircraft assignment
+        if (!$pirep->is_rental) {
+            $aircraft = Aircraft::find($pirep->aircraft_id);
+            $aircraft->state = AircraftState::AVAILABLE;
+            $aircraft->user_id = null;
+            $aircraft->save();
+        }
 
+        $pirepCargo = PirepCargo::where('pirep_id', $pirep->id)->get();
         foreach ($pirepCargo as $cargo) {
             $cc = Contract::find($cargo->contract_cargo_id);
             if (!$cc)
@@ -20,7 +30,13 @@ class RemoveSinglePirep
             $cc->save();
         }
 
-        PirepCargo::where('pirep_id', $pirepId)->delete();
-        Pirep::destroy($pirepId);
+        // Should be duplicate of above foreach
+        Contract::where('active_pirep', $pirep->id)
+            ->update(['active_pirep' => null]);
+
+        PirepCargo::where('pirep_id', $pirep->id)->delete();
+        FlightLog::where('pirep_id', $pirep->id)->delete();
+
+        return $pirep->delete();
     }
 }

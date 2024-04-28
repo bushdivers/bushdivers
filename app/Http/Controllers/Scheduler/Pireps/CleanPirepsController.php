@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Airport;
 use App\Services\General\LogSchedule;
 use App\Services\Pireps\FindInactivePireps;
-use App\Services\Pireps\RemoveMultiplePireps;
+use App\Services\Pireps\RemoveSinglePirep;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -18,11 +18,13 @@ class CleanPirepsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function __invoke(Request $request, FindInactivePireps $findInactivePireps, RemoveMultiplePireps $removeMultiplePireps, LogSchedule $logSchedule): JsonResponse
+    public function __invoke(Request $request, FindInactivePireps $findInactivePireps, RemoveSinglePirep $removeSinglePirep, LogSchedule $logSchedule): JsonResponse
     {
         try {
             $inactive = $findInactivePireps->execute();
-            $removeMultiplePireps->execute($inactive);
+            foreach ($inactive as $pirep) {
+                $removeSinglePirep->execute($pirep);
+            }
             $logSchedule->execute('inactive-pireps', true);
             return response()->json(['message' => 'Successfully processed pirep cleanse']);
         } catch (\Exception $exception) {

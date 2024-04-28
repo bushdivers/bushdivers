@@ -8,7 +8,7 @@ use App\Services\Airports\UpdateFuelAtAirport;
 use App\Services\Contracts\CheckForExpiry;
 use App\Services\Finance\CalcMonthlyFees;
 use App\Services\Pireps\FindInactivePireps;
-use App\Services\Pireps\RemoveMultiplePireps;
+use App\Services\Pireps\RemoveSinglePirep;
 use App\Services\Rentals\CheckRentalDailyFee;
 use App\Services\Rentals\EndRental;
 use Illuminate\Console\Scheduling\Schedule;
@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Log;
 class Kernel extends ConsoleKernel
 {
     protected FindInactivePireps $findInactivePireps;
-    protected RemoveMultiplePireps $removeMultiplePireps;
+    protected RemoveSinglePirep $removeSinglePirep;
     protected CalcMonthlyFees $calcMonthlyFees;
     protected CheckForExpiry $checkForExpiry;
 
@@ -30,7 +30,7 @@ class Kernel extends ConsoleKernel
         Application $app,
         Dispatcher $events,
         FindInactivePireps $findInactivePireps,
-        RemoveMultiplePireps $removeMultiplePireps,
+        RemoveSinglePirep $removeSinglePirep,
         CalcMonthlyFees $calcMonthlyFees,
         CheckForExpiry $checkForExpiry,
         ResupplyFuel $resupplyFuel
@@ -38,7 +38,7 @@ class Kernel extends ConsoleKernel
     {
         parent::__construct($app, $events);
         $this->findInactivePireps = $findInactivePireps;
-        $this->removeMultiplePireps = $removeMultiplePireps;
+        $this->removeSinglePirep = $removeSinglePirep;
         $this->calcMonthlyFees = $calcMonthlyFees;
         $this->checkForExpiry = $checkForExpiry;
         $this->resupplyFuel = $resupplyFuel;
@@ -65,7 +65,9 @@ class Kernel extends ConsoleKernel
          //removed inactive pireps to clear up booked planes
         $schedule->call(function () {
             $inactivePireps = $this->findInactivePireps->execute();
-            $this->removeMultiplePireps->execute($inactivePireps);
+            foreach ($inactivePireps as $inactivePirep) {
+                $this->removeSinglePirep->execute($inactivePirep);
+            }
             Log::info('Pirep tidy up was called');
         })->hourly();
 
