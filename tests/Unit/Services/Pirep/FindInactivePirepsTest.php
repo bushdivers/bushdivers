@@ -65,7 +65,8 @@ class FindInactivePirepsTest extends TestCase
             'destination_airport_id' => $this->contract->arr_airport_id,
             'departure_airport_id' => $this->contract->dep_airport_id,
             'aircraft_id' => $this->aircraft->id,
-            'created_at' => Carbon::now()
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
         ]);
 
         $pireps = $this->findInactivePireps->execute();
@@ -81,6 +82,7 @@ class FindInactivePirepsTest extends TestCase
             'departure_airport_id' => $this->contract->dep_airport_id,
             'aircraft_id' => $this->aircraft->id,
             'created_at' => Carbon::now()->subHours(4),
+            'updated_at' => Carbon::now()->subHours(4),
             'state' => PirepState::IN_PROGRESS
         ]);
 
@@ -97,6 +99,7 @@ class FindInactivePirepsTest extends TestCase
             'departure_airport_id' => $this->contract->dep_airport_id,
             'aircraft_id' => $this->aircraft->id,
             'created_at' => Carbon::now()->subHours(12),
+            'updated_at' => Carbon::now()->subHours(12),
             'state' => PirepState::DISPATCH
         ]);
 
