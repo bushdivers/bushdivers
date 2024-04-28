@@ -16,9 +16,11 @@ class RemoveSinglePirep
         // clear up aircraft assignment
         if (!$pirep->is_rental) {
             $aircraft = Aircraft::find($pirep->aircraft_id);
-            $aircraft->state = AircraftState::AVAILABLE;
-            $aircraft->user_id = null;
-            $aircraft->save();
+            if ($aircraft) {
+                $aircraft->state = AircraftState::AVAILABLE;
+                $aircraft->user_id = null;
+                $aircraft->save();
+            }
         }
 
         $pirepCargo = PirepCargo::where('pirep_id', $pirep->id)->get();
