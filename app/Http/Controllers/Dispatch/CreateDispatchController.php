@@ -10,6 +10,7 @@ use App\Models\ContractCargo;
 use App\Models\Enums\AircraftState;
 use App\Models\Enums\AirlineTransactionTypes;
 use App\Models\Enums\PirepState;
+use App\Models\Enums\PirepStatus;
 use App\Models\Enums\TransactionTypes;
 use App\Models\Pirep;
 use App\Models\PirepCargo;
@@ -35,7 +36,7 @@ class CreateDispatchController extends Controller
         // check aircraft is available
         $isRental = false;
         $aircraft = Aircraft::with('fleet')->where('registration', $request->aircraft)->first();
-
+        $currentLocation = Airport::where('identifier', Auth::user()->current_airport_id)->first();
         if (!$aircraft) {
             $aircraft = Rental::with('fleet')->where('registration', $request->aircraft)->first();
             $isRental = true;
@@ -52,9 +53,15 @@ class CreateDispatchController extends Controller
         $pirep->destination_airport_id = $request->destination;
         $pirep->planned_fuel = $request->fuel;
         $pirep->state = PirepState::DISPATCH;
+        $pirep->status = PirepStatus::PREFLIGHT;
         $pirep->is_empty = $request->is_empty;
         $pirep->is_rental = $isRental;
         $pirep->tour_id = $request->tour;
+        $pirep->current_lat = $currentLocation->lat;
+        $pirep->current_lon = $currentLocation->lon;
+        $pirep->current_altitude = $currentLocation->altitude;
+        $pirep->current_heading = 0;
+        $pirep->current_indicated_speed = 0;
         $pirep->save();
 
         if (!$request->is_empty) {
