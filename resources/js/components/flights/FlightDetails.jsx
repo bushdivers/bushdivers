@@ -88,7 +88,7 @@ const FlightDetails = ({ flights }) => {
 
   return (
     <Box position="absolute" left={4} top={12} bottom={12} w={300}>
-      <Card>
+      <Card overflowY="auto">
         <Flex mt={2} px={2} alignItems="center" justifyContent="space-between">
           <Heading size="sm">
             {selectedFlight
