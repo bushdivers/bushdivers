@@ -28,13 +28,13 @@ class GetLiveFlightsController extends Controller
 
     private function getLiveFlights(): Collection
     {
-        $liveFlights = Pirep::with('depAirport', 'arrAirport', 'aircraft', 'aircraft.fleet', 'pilot', 'latestLog')
-            ->where('state', PirepState::IN_PROGRESS)
+        $liveFlights = Pirep::with('depAirport', 'arrAirport', 'aircraft', 'aircraft.fleet', 'pilot', 'logs')
+            ->whereIn('state', [PirepState::DISPATCH, PirepState::IN_PROGRESS])
             ->where('is_rental', false)
             ->get();
 
-        $liveRentalFlights = Pirep::with('depAirport', 'arrAirport', 'rental', 'rental.fleet', 'pilot', 'latestLog')
-            ->where('state', PirepState::IN_PROGRESS)
+        $liveRentalFlights = Pirep::with('depAirport', 'arrAirport', 'rental', 'rental.fleet', 'pilot', 'logs')
+            ->whereIn('state', [PirepState::DISPATCH, PirepState::IN_PROGRESS])
             ->where('is_rental', true)
             ->get();
 

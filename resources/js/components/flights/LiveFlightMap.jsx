@@ -1,8 +1,10 @@
-import { Box, Card, CardBody, Image, useColorMode } from '@chakra-ui/react'
+import { Box, Image, useColorMode } from '@chakra-ui/react'
+import { usePage } from '@inertiajs/react'
 import axios from 'axios'
+import { useAtom } from 'jotai'
 import maplibre from 'maplibre-gl'
 import React, { useEffect, useState } from 'react'
-import Map, { Marker, Popup } from 'react-map-gl'
+import Map, { Marker } from 'react-map-gl'
 
 import {
   mapboxToken,
@@ -10,10 +12,24 @@ import {
   transformRequest,
 } from '../../helpers/geo.helpers'
 import { useInterval } from '../../hooks/useInterval'
+import { selectedFlightAtom } from '../../state/flight.state.js'
+import FlightDetails from './FlightDetails.jsx'
+import FlightTrail from './FlightTrail.jsx'
 
-const LiveFlightMap = ({ updateFlightCount }) => {
+const renderAircraftIcon = (flight) => {
+  if (flight.status === 0) {
+    return 'https://d1z4ruc262gung.cloudfront.net/assets/bd_flight_gray.png'
+  } else if (flight.tour_id) {
+    return 'https://d1z4ruc262gung.cloudfront.net/assets/bd_flight_black.png'
+  } else {
+    return 'https://d1z4ruc262gung.cloudfront.net/assets/bd_flight_white.png'
+  }
+}
+const LiveFlightMap = () => {
   const { colorMode } = useColorMode()
-  const [selectedMarker, setSelectedMarker] = useState(null)
+  const { auth } = usePage().props
+  const [selectedFlight, setSelectedFlight] = useAtom(selectedFlightAtom)
+
   // const mapContainer = useRef(null)
   // const map = useRef(null)
   // const markers = useRef([])
@@ -30,10 +46,6 @@ const LiveFlightMap = ({ updateFlightCount }) => {
   }
 
   useEffect(() => {
-    updateFlightCount(flights.length)
-  }, [flights])
-
-  useEffect(() => {
     async function asyncSetup() {
       await loadMarkers()
     }
@@ -41,90 +53,41 @@ const LiveFlightMap = ({ updateFlightCount }) => {
     asyncSetup()
   }, [])
 
-  const handleClick = (loc) => {
-    setSelectedMarker(loc)
-  }
-
   return (
     <>
-      <Box className={'map-container-full relative'}>
+      <Box position="relative" className="map-container-full">
         <Map
           mapLib={maplibre}
           mapboxAccessToken={mapboxToken}
           initialViewState={{
-            longitude: 145.0,
-            latitude: -5.8,
+            longitude: auth.user.location.lon,
+            latitude: auth.user.location.lat,
             zoom: 4,
           }}
           mapStyle={parseMapStyle(colorMode)}
           transformRequest={transformRequest}
         >
+          {selectedFlight && <FlightTrail />}
           {flights.length > 0 &&
             flights.map((flight) => (
               <Marker
+                style={{ cursor: 'pointer' }}
                 onClick={(e) => {
                   e.originalEvent.stopPropagation()
-                  handleClick(flight)
+                  setSelectedFlight(flight)
                 }}
                 key={flight.id}
                 color="#f97316"
                 scale={0.75}
                 longitude={flight.current_lon}
                 latitude={flight.current_lat}
-                anchor="bottom"
+                anchor="center"
                 rotation={flight.current_heading}
               >
-                <Image
-                  boxSize="30px"
-                  src={
-                    flight.tour_id
-                      ? 'https://d1z4ruc262gung.cloudfront.net/assets/bd_flight_black.png'
-                      : 'https://d1z4ruc262gung.cloudfront.net/assets/bd_flight_white.png'
-                  }
-                />
+                <Image boxSize="30px" src={renderAircraftIcon(flight)} />
               </Marker>
             ))}
-          {selectedMarker && (
-            <Popup
-              longitude={Number(selectedMarker.current_lon)}
-              latitude={Number(selectedMarker.current_lat)}
-              anchor="top"
-              onClose={() => setSelectedMarker(null)}
-            >
-              <Card>
-                <CardBody>
-                  <b>Pilot: </b>
-                  {selectedMarker.pilot.pilot_id}{' '}
-                  {selectedMarker.pilot.private_name}
-                  <br />
-                  <b>Route: </b>
-                  {selectedMarker.departure_airport_id} -{' '}
-                  {selectedMarker.destination_airport_id}
-                  <br />
-                  <b>Aircraft:</b>
-                  <br />
-                  {selectedMarker.is_rental
-                    ? selectedMarker.rental.fleet.manufacturer
-                    : selectedMarker.aircraft.fleet.manufacturer}
-                  {selectedMarker.is_rental
-                    ? selectedMarker.rental.fleet.name
-                    : selectedMarker.aircraft.fleet.name}
-                  <br />
-                  {selectedMarker.is_rental
-                    ? selectedMarker.rental.registration
-                    : selectedMarker.aircraft.registration}
-                  <br />
-                  <b>Altitude:</b> {selectedMarker.current_altitude} ft
-                  <br />
-                  <b>Ind. Speed:</b> {selectedMarker.current_indicated_speed}{' '}
-                  kts
-                  <br />
-                  <b>Heading:</b> {selectedMarker.current_heading}&#176;
-                  <br />
-                </CardBody>
-              </Card>
-            </Popup>
-          )}
+          <FlightDetails flights={flights} />
         </Map>
       </Box>
     </>
