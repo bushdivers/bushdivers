@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
 
 class ResetPasswordController extends Controller
 {
@@ -31,27 +32,21 @@ class ResetPasswordController extends Controller
      */
     public function __invoke(PasswordResetRequest $request): RedirectResponse
     {
-        $pw = Hash::make($request->password);
-        // create request uuid
-        $user = User::where('reset_token', $request->token)->firstorFail();
-        $user->password = $pw;
-        $user->reset_token = null;
-        $user->save();
+        $status = Password::reset($request->all(),
+            function ($user, $password) {
+                $user->password = Hash::make($password);
+                $user->save();
 
-//        try {
-//            DB::connection('mysql_ak')->table('users')->where('email', $user->email)->update([
-//                'password' => $pw,
-//                'updated_at' => Carbon::now()
-//            ]);
-//        } catch (\Exception) {
-//
-//        }
+                // send email
+                $body = MailTypes::passwordReset($user);
+                $this->sendEmail->execute($body);
+            }
+        );
 
-        // send email
-        $body = MailTypes::passwordReset($user);
-        $this->sendEmail->execute($body);
+        if ($status == Password::PASSWORD_RESET) {
+            return redirect()->route('login.index')->with(['success' => 'Password reset successfully, please login']);
+        }
 
-        // redirect to login
-        return redirect()->route('login.index')->with(['success' => 'Password reset successfully, please login']);
+        return redirect()->back()->with(['error' => 'Error resetting password']);
     }
 }
