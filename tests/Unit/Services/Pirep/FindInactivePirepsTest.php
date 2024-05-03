@@ -58,7 +58,7 @@ class FindInactivePirepsTest extends TestCase
      *
      * @return void
      */
-    public function test_pirep_not_removed()
+    public function test_pirep_not_returned_when_created_recently()
     {
         $this->pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,
@@ -66,7 +66,8 @@ class FindInactivePirepsTest extends TestCase
             'departure_airport_id' => $this->contract->dep_airport_id,
             'aircraft_id' => $this->aircraft->id,
             'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now()
+            'updated_at' => Carbon::now(),
+            'state' => PirepState::DISPATCH
         ]);
 
         $pireps = $this->findInactivePireps->execute();
@@ -74,21 +75,38 @@ class FindInactivePirepsTest extends TestCase
         $this->assertEquals(0, $pireps->count());
     }
 
-    public function test_pirep_not_removed_when_active_flight()
+    public function test_pirep_not_returned_when_active_flight_had_recent_update()
     {
         $this->pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,
             'destination_airport_id' => $this->contract->arr_airport_id,
             'departure_airport_id' => $this->contract->dep_airport_id,
             'aircraft_id' => $this->aircraft->id,
-            'created_at' => Carbon::now()->subHours(4),
-            'updated_at' => Carbon::now()->subHours(4),
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
             'state' => PirepState::IN_PROGRESS
         ]);
 
         $pireps = $this->findInactivePireps->execute();
 
         $this->assertEquals(0, $pireps->count());
+    }
+
+    public function test_pirep_returned_when_active_flight_and_no_update_for_a_while()
+    {
+        $this->pirep = Pirep::factory()->create([
+            'user_id' => $this->user->id,
+            'destination_airport_id' => $this->contract->arr_airport_id,
+            'departure_airport_id' => $this->contract->dep_airport_id,
+            'aircraft_id' => $this->aircraft->id,
+            'created_at' => Carbon::now()->subHours(5),
+            'updated_at' => Carbon::now()->subHours(3),
+            'state' => PirepState::IN_PROGRESS
+        ]);
+
+        $pireps = $this->findInactivePireps->execute();
+
+        $this->assertEquals(1, $pireps->count());
     }
 
     public function test_pireps_will_be_removed()
