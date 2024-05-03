@@ -87,7 +87,7 @@ const FlightDetails = ({ flights }) => {
   }, [selectedFlight])
 
   return (
-    <Card position="absolute" left={4} top={12} bottom={12} w={300} h="100%">
+    <Card position="absolute" left={4} top={12} bottom={12} w={300}>
       <Box p={2} overflowY="auto">
         <Flex mt={2} px={2} alignItems="center" justifyContent="space-between">
           <Heading size="sm">
@@ -199,6 +199,7 @@ const FlightDetails = ({ flights }) => {
                 <Text fontSize="xs">{selectedFlight.current_heading}&deg;</Text>
               </Flex>
             </Flex>
+            <Divider mt={2} />
           </Box>
         )}
         {!selectedFlight &&
