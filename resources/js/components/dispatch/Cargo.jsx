@@ -83,6 +83,7 @@ const Cargo = (props) => {
       alert('Cannot have zero cargo!')
       return
     }
+    props.handleCargoSelect(null)
     const data = {
       id: contractId,
       qty: parseInt(sliderCargoValue),

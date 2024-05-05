@@ -64,6 +64,11 @@ const Dispatch = ({ cargo, aircraft, airport, tours }) => {
 
   async function handleCargoSelect(cargo) {
     setSubmitError(null)
+    if (cargo === null) {
+      setSelectedCargo([])
+      setPassengerCount(0)
+      setCargoWeight(0)
+    }
     if (selectedCargo.find((sc) => sc.id === cargo.id)) {
       await setSelectedCargo(selectedCargo.filter((sc) => sc.id !== cargo.id))
       calculateCargoPayload('subtract', cargo)
