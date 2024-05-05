@@ -1,17 +1,19 @@
 import {
-  Box,
   Card,
   CardBody,
-  Checkbox,
   Flex,
+  FormControl,
+  FormLabel,
   Grid,
   GridItem,
   Heading,
+  Radio,
+  RadioGroup,
   Select,
-  Text,
+  Stack,
 } from '@chakra-ui/react'
 import { router, usePage } from '@inertiajs/react'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import Aircraft from '../../components/dispatch/Aircraft'
 import Cargo from '../../components/dispatch/Cargo'
@@ -34,9 +36,8 @@ const Dispatch = ({ cargo, aircraft, airport, tours }) => {
   const [cargoWeight, setCargoWeight] = useState(0)
   const [passengerCount, setPassengerCount] = useState(0)
   const [error, setError] = useState(null)
-  const [submitError, setSubmitError] = useState(null)
   const [deadHead, setDeadHead] = useState(false)
-  const [tourFlight, setTourFlight] = useState(false)
+  const [flightType, setFlightType] = useState(null)
   const [selectedTour, setSelectedTour] = useState(null)
 
   function handleDeadHead() {
@@ -46,7 +47,6 @@ const Dispatch = ({ cargo, aircraft, airport, tours }) => {
   }
 
   function handleAircraftSelect(ac) {
-    setSubmitError(null)
     setSelectedAircraft(
       aircraft.find((a) => a.registration === ac.registration)
     )
@@ -63,7 +63,6 @@ const Dispatch = ({ cargo, aircraft, airport, tours }) => {
   }
 
   async function handleCargoSelect(cargo) {
-    setSubmitError(null)
     if (selectedCargo.find((sc) => sc.id === cargo.id)) {
       await setSelectedCargo(selectedCargo.filter((sc) => sc.id !== cargo.id))
       calculateCargoPayload('subtract', cargo)
@@ -113,7 +112,6 @@ const Dispatch = ({ cargo, aircraft, airport, tours }) => {
   }
 
   function handleUpdateFuel(qty, price) {
-    setSubmitError(null)
     setError(null)
     if (qty > selectedAircraft.fleet.fuel_capacity) {
       setError('Cannot specify more than the aircraft fuel capacity')
@@ -167,8 +165,11 @@ const Dispatch = ({ cargo, aircraft, airport, tours }) => {
   }
 
   function handleSubmitDispatch() {
-    setSubmitError(null)
-    if (tourFlight) {
+    if (flightType === null) {
+      alert('Please select a flight type')
+      return
+    }
+    if (flightType === 'tour') {
       const compatibleAircraft = selectedTour.aircraft.filter(
         (ac) => ac.fleet.id === selectedAircraft.fleet.id
       )
@@ -177,7 +178,7 @@ const Dispatch = ({ cargo, aircraft, airport, tours }) => {
         compatibleAircraft.length === 0 ||
         selectedAircraft.owner_id === 0
       ) {
-        setSubmitError('This aircraft is not compatible with the tour flight')
+        alert('This aircraft is not compatible with the tour flight')
         return
       }
     }
@@ -197,25 +198,22 @@ const Dispatch = ({ cargo, aircraft, airport, tours }) => {
         personWeight + fuelWeight + cargoWeight >
           selectedAircraft.fleet.mtow - selectedAircraft.fleet.zfw
       ) {
-        setSubmitError('You are overweight!')
+        alert('You are overweight!')
         return
       }
       sendDispatch()
     } else {
-      setSubmitError(
-        'Please make sure you have selected an aircraft, cargo, and fuel'
-      )
+      alert('Please make sure you have selected an aircraft, cargo, and fuel')
     }
   }
 
-  function handleTourFlight() {
-    if (!tourFlight) {
+  useEffect(() => {
+    if (flightType === 'tour') {
       setSelectedTour(tours[0])
     } else {
       setSelectedTour(null)
     }
-    setTourFlight(!tourFlight)
-  }
+  }, [flightType])
 
   function handleTourSelect(e) {
     const tour = tours.filter((t) => t.id == e.target.value)
@@ -231,10 +229,16 @@ const Dispatch = ({ cargo, aircraft, airport, tours }) => {
             {tours?.length > 0 && (
               <Card mb={2}>
                 <CardBody>
-                  <Checkbox onChange={handleTourFlight}>
-                    Is this a Tour flight?
-                  </Checkbox>
-                  {tourFlight ? (
+                  <FormControl>
+                    <FormLabel>Flight Type</FormLabel>
+                    <RadioGroup onChange={setFlightType} value={flightType}>
+                      <Stack direction="row">
+                        <Radio value="standard">Standard Flight</Radio>
+                        <Radio value="tour">Tour Flight</Radio>
+                      </Stack>
+                    </RadioGroup>
+                  </FormControl>
+                  {flightType === 'tour' ? (
                     <Select onChange={handleTourSelect} mt={2} size="sm">
                       {tours.map((t) => (
                         <option key={t.id} value={t.id}>
@@ -285,13 +289,6 @@ const Dispatch = ({ cargo, aircraft, airport, tours }) => {
               handleSubmitDispatch={handleSubmitDispatch}
               isActive={false}
             />
-            <Box textAlign="right" mt={2}>
-              {submitError && (
-                <Text fontSize="xs" mt={2} color="red.300">
-                  {submitError}
-                </Text>
-              )}
-            </Box>
           </GridItem>
         </Grid>
       </Flex>
