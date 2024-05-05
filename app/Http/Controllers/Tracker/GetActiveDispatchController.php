@@ -53,7 +53,10 @@ class GetActiveDispatchController extends Controller
         }
 
         if (!$dispatch) {
+            $rentalDispatch->touch();
             $dispatch = $rentalDispatch;
+        } else {
+            $dispatch->touch();
         }
 
         $cargoWeight = 0;
