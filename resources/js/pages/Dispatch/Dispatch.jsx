@@ -37,7 +37,9 @@ const Dispatch = ({ cargo, aircraft, airport, tours }) => {
   const [passengerCount, setPassengerCount] = useState(0)
   const [error, setError] = useState(null)
   const [deadHead, setDeadHead] = useState(false)
-  const [flightType, setFlightType] = useState(null)
+  const [flightType, setFlightType] = useState(
+    tours?.length > 0 ? null : 'standard'
+  )
   const [selectedTour, setSelectedTour] = useState(null)
 
   function handleDeadHead() {
@@ -226,30 +228,30 @@ const Dispatch = ({ cargo, aircraft, airport, tours }) => {
       <Flex justifyContent="space-between" mt={4}>
         <Grid templateColumns="repeat(5, 1fr)" gap={4}>
           <GridItem colSpan={3}>
-            {tours?.length > 0 && (
-              <Card mb={2}>
-                <CardBody>
-                  <FormControl>
-                    <FormLabel>Flight Type</FormLabel>
-                    <RadioGroup onChange={setFlightType} value={flightType}>
-                      <Stack direction="row">
-                        <Radio value="standard">Standard Flight</Radio>
+            <Card mb={2}>
+              <CardBody>
+                <FormControl>
+                  <FormLabel>Flight Type</FormLabel>
+                  <RadioGroup onChange={setFlightType} value={flightType}>
+                    <Stack direction="row">
+                      <Radio value="standard">Standard Flight</Radio>
+                      {tours?.length > 0 && (
                         <Radio value="tour">Tour Flight</Radio>
-                      </Stack>
-                    </RadioGroup>
-                  </FormControl>
-                  {flightType === 'tour' ? (
-                    <Select onChange={handleTourSelect} mt={2} size="sm">
-                      {tours.map((t) => (
-                        <option key={t.id} value={t.id}>
-                          {t.title}
-                        </option>
-                      ))}
-                    </Select>
-                  ) : null}
-                </CardBody>
-              </Card>
-            )}
+                      )}
+                    </Stack>
+                  </RadioGroup>
+                </FormControl>
+                {flightType === 'tour' ? (
+                  <Select onChange={handleTourSelect} mt={2} size="sm">
+                    {tours.map((t) => (
+                      <option key={t.id} value={t.id}>
+                        {t.title}
+                      </option>
+                    ))}
+                  </Select>
+                ) : null}
+              </CardBody>
+            </Card>
             <Aircraft
               aircraft={aircraft}
               selectedAircraft={selectedAircraft}
