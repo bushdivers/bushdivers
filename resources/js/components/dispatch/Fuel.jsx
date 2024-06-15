@@ -9,6 +9,11 @@ import {
   FormLabel,
   Heading,
   Input,
+  NumberDecrementStepper,
+  NumberIncrementStepper,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
   Popover,
   PopoverArrow,
   PopoverBody,
@@ -33,9 +38,9 @@ import { displayNumber } from '../../helpers/number.helpers.js'
 import AvailableFuel from '../airport/AvailableFuel.jsx'
 
 const Fuel = (props) => {
-  const [minFuel, setMinFuel] = useState(5)
-  const [sliderValue, setSliderValue] = useState(0)
-  const [sliderFuelValue, setSliderFuelValue] = useState(0)
+  const [maxFuel, setMaxFuel] = useState(5.0) // max tank capacity
+  const [sliderValue, setSliderValue] = useState(0) // slider val (as percent)
+  const [fuelAmount, setFuelAmount] = useState(0) // fuel value (gal)
   const [fuelPrice, setFuelPrice] = useState(0.0)
   const [fuelCargoData, setFuelCargoData] = useState({
     destination: '',
@@ -47,18 +52,18 @@ const Fuel = (props) => {
 
   useEffect(() => {
     updateFuelPrice()
-  }, [sliderFuelValue])
+  }, [fuelAmount])
 
   useEffect(() => {
     if (props.selectedAircraft) {
+      setMaxFuel(parseInt(props.selectedAircraft.fleet.fuel_capacity))
       setFuelPrice(0.0)
-      setSliderFuelValue(props.selectedAircraft.fuel_onboard)
+      setFuelAmount(props.selectedAircraft.fuel_onboard)
       const perc =
         (props.selectedAircraft.fuel_onboard /
           props.selectedAircraft.fleet.fuel_capacity) *
         100
-      setMinFuel(perc)
-      setSliderValue(0)
+      setSliderValue(perc)
     }
   }, [props.selectedAircraft])
 
@@ -69,19 +74,28 @@ const Fuel = (props) => {
           ? props.airport.avgas_price
           : props.airport.jetfuel_price
       const calcPrice =
-        sliderFuelValue > 0
-          ? (sliderFuelValue - props.selectedAircraft.fuel_onboard) * fuelCost
+        fuelAmount > 0
+          ? (fuelAmount - props.selectedAircraft.fuel_onboard) * fuelCost
           : 0
       setFuelPrice(calcPrice)
     }
   }
 
-  function updateSlideValue(val) {
+  function onSliderChange(val) {
+    val = Math.max(val, 5)
     setSliderValue(val)
     if (val > 0)
-      setSliderFuelValue(
-        (val / 100) * props.selectedAircraft.fleet.fuel_capacity
+      setFuelAmount(
+        Math.round(
+          (val / 100.0) * props.selectedAircraft.fleet.fuel_capacity,
+          2
+        )
       )
+  }
+
+  function onNumberChange(val) {
+    setFuelAmount(val)
+    setSliderValue((val / props.selectedAircraft.fleet.fuel_capacity) * 100)
   }
 
   function shouldWeRenderAddFuel() {
@@ -197,7 +211,7 @@ const Fuel = (props) => {
                         <PopoverCloseButton />
                         <PopoverHeader>
                           <Heading size="sm">
-                            Add Fuel{' '}
+                            Adjust Fuel{' '}
                             {props.selectedAircraft?.fleet?.fuel_type === 1
                               ? '(100LL)'
                               : '(Jet Fuel)'}
@@ -208,19 +222,34 @@ const Fuel = (props) => {
                             The fuel will be charged when dispatching flight
                           </Text>
                           <Slider
-                            defaultValue={sliderValue}
+                            value={sliderValue}
                             my={2}
-                            min={minFuel}
+                            min={0}
                             max={100}
                             step={1}
                             aria-label="slider-ex-6"
-                            onChange={(val) => updateSlideValue(val)}
+                            focusThumbOnChange={false}
+                            onChange={(val) => onSliderChange(val)}
                           >
                             <SliderTrack>
                               <SliderFilledTrack />
                             </SliderTrack>
                             <SliderThumb />
                           </Slider>
+                          <NumberInput
+                            value={fuelAmount}
+                            min={5}
+                            max={maxFuel}
+                            precision={2}
+                            onChange={(val) => onNumberChange(val)}
+                            allowMouseWheel
+                          >
+                            <NumberInputField />
+                            <NumberInputStepper>
+                              <NumberIncrementStepper />
+                              <NumberDecrementStepper />
+                            </NumberInputStepper>
+                          </NumberInput>
                         </PopoverBody>
                         <PopoverFooter>
                           <Text mx={2} fontSize="xs" color="red.500">
@@ -229,23 +258,14 @@ const Fuel = (props) => {
                           <Flex justifyContent="space-between" alignItems="end">
                             <Button
                               onClick={() =>
-                                props.handleUpdateFuel(
-                                  sliderFuelValue,
-                                  fuelPrice
-                                )
+                                props.handleUpdateFuel(fuelAmount, fuelPrice)
                               }
                               size="sm"
                             >
                               Refuel
                             </Button>
                             <Flex direction="column" gap={1}>
-                              <Text>
-                                {displayNumber(
-                                  parseInt(sliderFuelValue),
-                                  false
-                                )}{' '}
-                                gal
-                              </Text>
+                              <Text>{displayNumber(fuelAmount)} gal</Text>
                               <Text>${displayNumber(fuelPrice)}</Text>
                             </Flex>
                           </Flex>

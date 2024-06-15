@@ -87,7 +87,7 @@ class CreateDispatchController extends Controller
 
 
         $actualFuelAdded = $request->fuel - $aircraft->fuel_onboard;
-        if ($actualFuelAdded > 0) {
+        if ($actualFuelAdded != 0.0) {
             // charge fuel
             if ($isRental) {
                 $addUserTransaction->execute(Auth::user()->id, TransactionTypes::FlightFeesFuel, -$request->fuel_price);
