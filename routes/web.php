@@ -228,6 +228,8 @@ Route::middleware('auth')->group(function () {
             ->name('admin.resources.approve');
         Route::post('/admin/resources/reject/{id}', \App\Http\Controllers\Admin\Resources\RejectResourceController::class)
             ->name('admin.resources.reject');
+        Route::get('/admin/hubs', \App\Http\Controllers\Admin\Hubs\ShowHubsController::class)
+            ->name('admin.hubs');
     });
 
 
