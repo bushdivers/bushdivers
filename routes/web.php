@@ -107,6 +107,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/tours/{id}/join', \App\Http\Controllers\Tours\JoinTourController::class)
         ->name('tour.join');
 
+    // community
+    Route::get('/community', \App\Http\Controllers\Tours\ShowToursController::class)
+        ->name('community');
+
 
     // Aircraft/Fleet
     Route::get('/aircraft/{id}', \App\Http\Controllers\Fleet\ShowAircraftController::class)
@@ -230,6 +234,8 @@ Route::middleware('auth')->group(function () {
             ->name('admin.resources.reject');
         Route::get('/admin/hubs', \App\Http\Controllers\Admin\Hubs\ShowHubsController::class)
             ->name('admin.hubs');
+        Route::post('/admin/hubs/create', \App\Http\Controllers\Admin\Hubs\CreateHubController::class)
+            ->name('admin.hubs.create');
     });
 
 
