@@ -17,7 +17,7 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react'
 import { Link, usePage } from '@inertiajs/react'
-import { Wrench } from 'lucide-react'
+import { Ship, Wrench } from 'lucide-react'
 import React from 'react'
 
 import AircraftCondition from '../../components/fleet/AircraftCondition'
@@ -76,6 +76,13 @@ const Aircraft = (props) => {
                               <Link href={`/aircraft/${ac.id}`}>
                                 {ac.registration}
                               </Link>
+                            )}
+                            {ac.is_ferry && (
+                              <Box mx={2}>
+                                <Box color="orange.400">
+                                  <Icon as={Ship} />
+                                </Box>
+                              </Box>
                             )}
                             {ac.maintenance_status && (
                               <Box mx={2}>

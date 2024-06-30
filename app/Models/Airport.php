@@ -12,4 +12,14 @@ class Airport extends Model
     protected $hidden = [
         'point'
     ];
+
+    public function hubContracts()
+    {
+        return $this->hasMany(Contract::class, 'airport', 'identifier');
+    }
+
+    public function ferryFlights()
+    {
+        return $this->hasMany(Aircraft::class, 'hub_id', 'identifier');
+    }
 }

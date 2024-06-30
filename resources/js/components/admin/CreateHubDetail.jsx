@@ -11,6 +11,11 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  NumberDecrementStepper,
+  NumberIncrementStepper,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
   Select,
   Text,
 } from '@chakra-ui/react'
@@ -46,14 +51,13 @@ const CreateHubDetail = ({ isOpen, onClose, fleet }) => {
     setSelectedFleet(e.target.value)
   }
 
-  function handleQtyChange(e) {
-    setSelectedQty(e.target.value)
+  function handleQtyChange(value) {
+    setSelectedQty(value)
   }
 
   function addFleet() {
     if (selectedFleet && selectedQty > 0) {
       const fleetDetail = fleet.filter((f) => f.id === parseInt(selectedFleet))
-      console.log(fleetDetail)
       setAircraft([
         ...aircraft,
         {
@@ -71,7 +75,6 @@ const CreateHubDetail = ({ isOpen, onClose, fleet }) => {
   }
 
   function save() {
-    alert(JSON.stringify({ identifier, aircraft }))
     router.post('/admin/hubs/create', { identifier, aircraft })
   }
 
@@ -128,12 +131,18 @@ const CreateHubDetail = ({ isOpen, onClose, fleet }) => {
                 </Select>
               </FormControl>
               <FormControl>
-                <Input
-                  placeholder="Qty"
-                  value={selectedQty}
+                <NumberInput
+                  defaultValue={0}
+                  min={0}
                   onChange={handleQtyChange}
                   id="qty"
-                />
+                >
+                  <NumberInputField />
+                  <NumberInputStepper>
+                    <NumberIncrementStepper />
+                    <NumberDecrementStepper />
+                  </NumberInputStepper>
+                </NumberInput>
               </FormControl>
               <Button onClick={() => addFleet()} mr={3}>
                 Add

@@ -19,13 +19,14 @@ class GetHqController extends Controller
         $finances = $getFinanceData->execute();
         $fleet = Fleet::with(['uploads', 'aircraft' => function ($q) {
             $q->where('owner_id', 0);
+            $q->where('is_ferry', false);
             $q->where('status', AircraftStatus::ACTIVE);
             $q->orderBy('hub_id');
         }, 'aircraft.location', 'aircraft.hub', 'aircraft.engines'])
             ->where('company_fleet', true)
             ->orderBy('type');
 
-        $hubs = Airport::where('is_hub', true);
+        $hubs = Airport::where('is_hub', true)->where('hub_in_progress', false);
         return Inertia::render('General/BushDivers', [
             'fleet' => fn() => $fleet->get(),
             'hubs' => fn() => $hubs->get(),

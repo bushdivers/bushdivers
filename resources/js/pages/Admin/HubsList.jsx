@@ -44,7 +44,10 @@ const HubsList = ({ hubs, fleet }) => {
                     {hubs &&
                       hubs.map((hub) => (
                         <>
-                          <Tr key={hub.id}>
+                          <Tr
+                            color={hub.hub_in_progress ? 'orange.500' : ''}
+                            key={hub.id}
+                          >
                             <Td>{hub.identifier}</Td>
                             <Td>{hub.name}</Td>
                             <Td>{hub.location}</Td>

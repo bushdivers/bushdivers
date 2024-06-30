@@ -1,7 +1,6 @@
 import { Box, Divider } from '@chakra-ui/react'
 import { usePage } from '@inertiajs/react'
 import {
-  AreaChart,
   Building,
   CircleDollarSign,
   Cog,
@@ -13,6 +12,7 @@ import {
   NotebookText,
   Plane,
   Route,
+  Users,
 } from 'lucide-react'
 import React from 'react'
 
@@ -41,7 +41,8 @@ const NavMenuItems = () => {
         <NavItem icon={Plane} text="My Aircraft" to="/my-aircraft" />
         <NavItem icon={CircleDollarSign} text="My Finances" to="/my-finances" />
         <NavItem icon={Building} text="Bush Divers HQ" to="/bushdivers-hq" />
-        <NavItem icon={AreaChart} text="Stats (Coming Soon)" to="" />
+        <NavItem icon={Users} text="Community Jobs" to="/community" />
+        {/*<NavItem icon={AreaChart} text="Stats (Coming Soon)" to="" />*/}
       </Box>
       <Divider mt={4} />
       <Box my={4}>

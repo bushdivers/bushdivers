@@ -108,7 +108,7 @@ Route::middleware('auth')->group(function () {
         ->name('tour.join');
 
     // community
-    Route::get('/community', \App\Http\Controllers\Tours\ShowToursController::class)
+    Route::get('/community', \App\Http\Controllers\Community\ShowCommunityController::class)
         ->name('community');
 
 
