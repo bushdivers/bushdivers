@@ -6,6 +6,7 @@ use App\Events\PirepFiled;
 use App\Models\Aircraft;
 use App\Models\Enums\AircraftState;
 use App\Services\Aircraft\ProcessAircraftCondition;
+use App\Services\Aircraft\UpdateAircraftFerry;
 use App\Services\Aircraft\UpdateAircraftFuel;
 use App\Services\Aircraft\UpdateAircraftHours;
 use App\Services\Aircraft\UpdateAircraftLastFlight;
@@ -27,6 +28,7 @@ class UpdateAircraft
     protected UpdateAircraftMaintenanceTimes $updateAircraftMaintenanceTimes;
     protected UpdateRentalAfterFlight $updateRentalAfterFlight;
     protected ProcessAircraftCondition $processAircraftCondition;
+    protected UpdateAircraftFerry $updateAircraftFerry;
     /**
      * Create the event listener.
      *
@@ -40,7 +42,8 @@ class UpdateAircraft
         UpdateAircraftLastFlight $updateAircraftLastFlight,
         UpdateAircraftMaintenanceTimes $updateAircraftMaintenanceTimes,
         UpdateRentalAfterFlight $updateRentalAfterFlight,
-        ProcessAircraftCondition $processAircraftCondition
+        ProcessAircraftCondition $processAircraftCondition,
+        UpdateAircraftFerry $updateAircraftFerry
     )
     {
         $this->updateAircraftState = $updateAircraftState;
@@ -51,6 +54,7 @@ class UpdateAircraft
         $this->updateAircraftMaintenanceTimes = $updateAircraftMaintenanceTimes;
         $this->updateRentalAfterFlight = $updateRentalAfterFlight;
         $this->processAircraftCondition = $processAircraftCondition;
+        $this->updateAircraftFerry = $updateAircraftFerry;
     }
 
     /**
@@ -71,6 +75,7 @@ class UpdateAircraft
             $this->updateAircraftLastFlight->execute($event->pirep->aircraft_id, $event->pirep->submitted_at);
             $this->updateAircraftMaintenanceTimes->execute($event->pirep->aircraft_id, $event->pirep->flight_time);
             $this->processAircraftCondition->execute($event->pirep->aircraft_id, $event->pirep->landing_rate);
+            $this->updateAircraftFerry->execute($event->pirep->aircraft_id, $event->pirep->destination_airport_id);
         } else {
             $this->updateRentalAfterFlight->execute($event->pirep->aircraft_id, $event->pirep->fuel_used, $event->pirep->destination_airport_id);
         }
