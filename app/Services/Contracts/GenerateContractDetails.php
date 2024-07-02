@@ -30,11 +30,16 @@ class GenerateContractDetails
         $this->calcBearingBetweenPoints = $calcBearingBetweenPoints;
     }
 
-    public function execute($origin, $airport): array
+    public function execute($origin, $airport, $preDefinedCargo = null): array
     {
         try {
             //$contracts = [];
+            if ($preDefinedCargo) {
+                $cargo = $preDefinedCargo;
+            } else {
                 $cargo = $this->generateContractCargo->execute();
+            }
+
                 // get distance and heading
                 $distance = $this->calcDistanceBetweenPoints->execute($origin->lat, $origin->lon, $airport->lat, $airport->lon);
                 $heading = $this->calcBearingBetweenPoints->execute($origin->lat, $origin->lon, $airport->lat, $airport->lon, $airport->magnetic_variance);

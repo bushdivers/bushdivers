@@ -1,20 +1,22 @@
 <?php
 
-namespace Tests\Feature\Api\Tracker;
+namespace Api\Tracker;
 
+use App\Events\PirepFiled;
 use App\Models\Aircraft;
 use App\Models\AircraftEngine;
 use App\Models\AirlineFees;
 use App\Models\Airport;
 use App\Models\Contract;
+use App\Models\Enums\AircraftState;
 use App\Models\Enums\AirlineTransactionTypes;
+use App\Models\Enums\FinancialConsts;
+use App\Models\Enums\PointsType;
+use App\Models\Enums\TransactionTypes;
 use App\Models\Fleet;
 use App\Models\FlightLog;
 use App\Models\Pirep;
 use App\Models\PirepCargo;
-use App\Models\Tour;
-use App\Models\TourCheckpointUser;
-use App\Models\TourUser;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
@@ -22,10 +24,11 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Event;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
-class SubmitPirepTourTest extends TestCase
+class SubmitPirepHubTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -35,12 +38,7 @@ class SubmitPirepTourTest extends TestCase
     protected Model $contract;
     protected Model $fleet;
     protected Model $aircraft;
-    protected Model $booking;
     protected Model $aircraftEngine;
-    protected Model $tour;
-    protected Model $tourUser;
-    protected Model $tourCheckpointUser;
-    protected Model $tourCheckpointUser1;
 
     public function setUp(): void
     {
@@ -60,7 +58,10 @@ class SubmitPirepTourTest extends TestCase
             'fuel_onboard' => 50,
             'current_airport_id' => 'AYMR',
             'user_id' => $this->user->id,
-            'flight_time_mins' => 0
+            'flight_time_mins' => 0,
+            'is_ferry' => true,
+            'ferry_user_id' => $this->user->id,
+            'hub_id' => 'AYMN'
         ]);
 
         $this->aircraftEngine = AircraftEngine::factory()->create([
@@ -76,55 +77,20 @@ class SubmitPirepTourTest extends TestCase
 
         $this->contract = Contract::factory()->create([
             'contract_value' => 250.00,
+            'contract_type_id' => 5,
             'dep_airport_id' => 'AYMR',
             'arr_airport_id' => 'AYMN',
             'current_airport_id' => 'AYMR',
-        ]);
-
-        $this->tour = Tour::factory()->create([
-            'title' => 'test',
-            'description' => 'test',
-            'award_id' => 1,
-            'start_airport_id' => 'AYMR'
-        ]);
-
-        $this->tourUser = TourUser::factory()->create([
-            'user_id' => $this->user->id,
-            'tour_id' => $this->tour->id,
-            'next_checkpoint' => 'WAVG'
-        ]);
-
-        $this->tourCheckpointUser = TourCheckpointUser::factory()->create([
-            'user_id' => $this->user->id,
-            'tour_id' => $this->tour->id,
-            'section' => 1,
-            'checkpoint' => 'WAVG'
-        ]);
-        $this->tourCheckpointUser1 = TourCheckpointUser::factory()->create([
-            'user_id' => $this->user->id,
-            'tour_id' => $this->tour->id,
-            'section' => 2,
-            'checkpoint' => 'AYMH'
+            'airport' => 'AYMN'
         ]);
 
         $this->pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,
-            'destination_airport_id' => $this->contract->arr_airport_id,
+            'destination_airport_id' => 'AYMN',
             'departure_airport_id' => $this->contract->dep_airport_id,
             'aircraft_id' => $this->aircraft->id,
             'current_lat' => -6.14617,
-            'current_lon' => 143.65733,
-            'tour_id' => $this->tour->id
-        ]);
-
-        $this->pirep2 = Pirep::factory()->create([
-            'user_id' => $this->user->id,
-            'destination_airport_id' => 'WAVG',
-            'departure_airport_id' => 'AYMR',
-            'aircraft_id' => $this->aircraft->id,
-            'current_lat' => -6.14617,
-            'current_lon' => 143.65733,
-            'tour_id' => $this->tour->id
+            'current_lon' => 143.65733
         ]);
 
         $this->pirepCargo = PirepCargo::factory()->create([
@@ -132,20 +98,13 @@ class SubmitPirepTourTest extends TestCase
             'contract_cargo_id' => $this->contract->id
         ]);
 
-        $this->pirepCargo2 = PirepCargo::factory()->create([
-            'pirep_id' => $this->pirep2->id,
-            'contract_cargo_id' => $this->contract->id
-        ]);
-
         Airport::factory()->create([
             'identifier' => 'AYMR'
         ]);
         Airport::factory()->create([
-            'identifier' => 'AYMN'
-        ]);
-
-        Airport::factory()->create([
-            'identifier' => 'WAVG'
+            'identifier' => 'AYMN',
+            'is_hub' => true,
+            'hub_in_progress' => true,
         ]);
 
         FlightLog::factory()->create([
@@ -177,16 +136,15 @@ class SubmitPirepTourTest extends TestCase
             'fee_amount' => 35.00
         ]);
 
-
-
     }
-
     /**
      * A basic feature test example.
+     *
+     * @return void
      */
-    public function test_pirep_submitted_without_updating_tour(): void
+    public function test_pirep_submitted_successfully()
     {
-        // flight not to checkpoint
+        $this->withExceptionHandling();
         Artisan::call('db:seed --class=RankSeeder');
         Sanctum::actingAs(
             $this->user,
@@ -204,57 +162,15 @@ class SubmitPirepTourTest extends TestCase
             'block_on_time' => $endTime
         ];
 
-        $this->postJson('/api/pirep/submit', $data);
-        $this->assertDatabaseMissing('tour_users', [
-            'user_id' => $this->user->id,
-            'tour_id' => $this->tour->id,
-            'next_checkpoint' => 'AYMH'
+        $response = $this->postJson('/api/pirep/submit', $data);
+        $this->assertDatabaseHas('aircraft', [
+            'is_ferry' => false,
+            'ferry_user_id' => null
         ]);
-        $this->assertDatabaseMissing('tour_checkpoint_users', [
-            'user_id' => $this->user->id,
-            'tour_id' => $this->tour->id,
-            'checkpoint' => 'WAVG',
-            'is_completed' => true
+        $this->assertDatabaseHas('airports', [
+            'identifier' => 'AYMN',
+            'hub_in_progress' => false
         ]);
-        $this->assertDatabaseHas('tour_checkpoint_users', [
-            'user_id' => $this->user->id,
-            'tour_id' => $this->tour->id,
-            'checkpoint' => 'WAVG',
-            'is_completed' => false
-        ]);
-    }
-
-    public function test_pirep_submitted_and_updates_tour(): void
-    {
-        // flight not to checkpoint
-        Artisan::call('db:seed --class=RankSeeder');
-        Sanctum::actingAs(
-            $this->user,
-            ['*']
-        );
-        $startTime = "05/10/2021 01:00:00";
-        $endTime = "05/10/2021 01:45:00";
-
-        $data = [
-            'pirep_id' => $this->pirep2->id,
-            'fuel_used' => 25,
-            'distance' => 76,
-            'landing_rate' => 149.12,
-            'block_off_time'=> $startTime,
-            'block_on_time' => $endTime
-        ];
-
-        $this->postJson('/api/pirep/submit', $data);
-        $this->assertDatabaseHas('tour_users', [
-            'user_id' => $this->user->id,
-            'tour_id' => $this->tour->id,
-            'next_checkpoint' => 'AYMH'
-        ]);
-        $this->assertDatabaseHas('tour_checkpoint_users', [
-            'user_id' => $this->user->id,
-            'tour_id' => $this->tour->id,
-            'checkpoint' => 'WAVG',
-            'is_completed' => true
-        ]);
+        $response->assertStatus(200);
     }
 }

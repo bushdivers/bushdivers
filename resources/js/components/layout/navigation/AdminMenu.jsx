@@ -30,6 +30,11 @@ const AdminMenu = () => {
                 Pireps
               </ChakraLink>
             )}
+            {!!auth.user.is_admin && (
+              <ChakraLink as={InertiaLink} href="/admin/hubs">
+                Hubs
+              </ChakraLink>
+            )}
           </Flex>
         </CardBody>
       </Card>

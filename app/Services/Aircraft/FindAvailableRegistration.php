@@ -20,6 +20,10 @@ class FindAvailableRegistration
                 $num = mt_rand(1, 999);
                 $num = str_pad($num, 2, 0, STR_PAD_LEFT);
                 $reg = 'P2-'.$num;
+            } elseif ($country == 'NZ') {
+                $num = mt_rand(1, 999);
+                $num = str_pad($num, 2, 0, STR_PAD_LEFT);
+                $reg = 'ZL-'.$num;
             } else {
                 $num = mt_rand(1, 9999);
                 $num = str_pad($num, 3, 0, STR_PAD_LEFT);

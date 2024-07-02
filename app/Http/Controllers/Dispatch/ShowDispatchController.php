@@ -145,6 +145,16 @@ class ShowDispatchController extends Controller
             ->where('status', AircraftStatus::ACTIVE)
             ->where('current_airport_id', $currentLocation)
             ->where('owner_id', 0)
+            ->where('is_ferry', false)
+            ->get();
+
+        $ferryAc = Aircraft::with('fleet')
+            ->where('state', AircraftState::AVAILABLE)
+            ->where('status', AircraftStatus::ACTIVE)
+            ->where('current_airport_id', $currentLocation)
+            ->where('owner_id', 0)
+            ->where('is_ferry', true)
+            ->where('ferry_user_id', Auth::user()->id)
             ->get();
 
         $rentalAc = Rental::with('fleet')
@@ -158,6 +168,6 @@ class ShowDispatchController extends Controller
             ->where('current_airport_id', $currentLocation)
             ->get();
 
-        return collect($fleetAc)->merge($rentalAc)->merge($privateAc);
+        return collect($fleetAc)->merge($rentalAc)->merge($privateAc)->merge($ferryAc);
     }
 }

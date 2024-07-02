@@ -18,7 +18,7 @@ class ShowHubsController extends Controller
      */
     public function __invoke(Request $request): Response
     {
-        $hubs = Airport::where('is_hub', true)->get();
+        $hubs = Airport::where('is_hub', true)->where('hub_in_progress', false)->orderBy('country', 'asc')->get();
         return Inertia::render('Airports/Hubs', ['hubs' => $hubs]);
     }
 }

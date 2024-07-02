@@ -267,8 +267,9 @@ const Cargo = (props) => {
                           </Td>
                           <Td>${displayNumber(detail.contract_value, true)}</Td>
                           <Td>
-                            <Flex align="center" gap={2}>
+                            <Flex align="center" gap={1}>
                               {detail.is_shared ? <Tag>Shared</Tag> : <></>}
+                              {detail.airport ? <Tag>Hub</Tag> : <></>}
                               {!detail.is_shared && (
                                 <Tooltip label="Share contract" placement="top">
                                   <Button
@@ -447,7 +448,12 @@ const Cargo = (props) => {
                             </div>
                           )}
                         </Td>
-                        <Td>{detail.is_shared ? <Tag>Shared</Tag> : <></>}</Td>
+                        <Td>
+                          <Flex gap={1}>
+                            {detail.is_shared ? <Tag>Shared</Tag> : <></>}
+                            {detail.airport ? <Tag>Hub</Tag> : <></>}
+                          </Flex>
+                        </Td>
                       </Tr>
                     ))}
                   </Tbody>

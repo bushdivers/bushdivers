@@ -40,4 +40,9 @@ class Contract extends Model
     {
         return $this->belongsTo(Airport::class, 'current_airport_id', 'identifier');
     }
+
+    public function aircraft()
+    {
+        return $this->belongsTo(Aircraft::class);
+    }
 }

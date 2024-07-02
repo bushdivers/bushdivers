@@ -15,7 +15,7 @@ class GenerateAircraftDetails
         $this->findAvailableReg = $findAvailableReg;
     }
 
-    public function execute($fleet, $airport, $locale): void
+    public function execute($fleet, $airport, $locale = null, $ferry = null, $hub = null): void
     {
         $reg = $this->findAvailableReg->execute($locale);
         $randInspection = rand(20,350);
@@ -26,14 +26,15 @@ class GenerateAircraftDetails
         $ac = new Aircraft();
         $ac->fleet_id = $fleet->id;
         $ac->current_airport_id = $airport->identifier;
-        $ac->hub_id = $airport->identifier;
+        $ac->hub_id = $hub ?: $airport->identifier;
         $ac->registration = $reg;
         $ac->flight_time_mins = $airframeTime;
         $ac->state = 1;
         $ac->status = 1;
-        $ac->owner_id = null;
+        $ac->owner_id = $hub ? 0 : null;
         $ac->last_inspected_at = Carbon::now()->subDays($randInspection);
         $ac->wear = rand(40, 95);
+        $ac->is_ferry = $ferry ?: false;
         $ac->save();
         $e = 1;
         while ($e <= $fleet->number_of_engines) {
