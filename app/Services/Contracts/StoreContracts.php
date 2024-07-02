@@ -10,7 +10,7 @@ use Carbon\Carbon;
 
 class StoreContracts
 {
-    public function execute($data, $isAvailable = true, $isCustom = false, $userId = null, $type = 1, $airport = null, $aircraft = null, $isShared = false)
+    public function execute($data, $isAvailable = true, $isCustom = false, $userId = null, $type = 1, $airport = null, $isShared = false)
     {
         foreach ($data as $contractInfo) {
             if (!$contractInfo)
@@ -30,7 +30,6 @@ class StoreContracts
             $contract->expires_at = $contractInfo['expires_at'];
             $contract->is_available = $isAvailable;
             $contract->airport = $airport;
-            $contract->aircraft_id = $aircraft;
             $contract->is_shared = $isShared;
             if ($contractInfo['cargo_type'] == 1) {
                 $contract->payload = $contractInfo['cargo_qty'];

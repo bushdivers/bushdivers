@@ -70,7 +70,7 @@ class GenerateAircraft
             $i = 1;
             while ($i <= $numberToGenerate) {
                 $destAirport = $allAirports->where('size', '>=', 3)->random(1);
-                $this->generateAircraftDetails->execute($fleet, $destAirport[0], $destAirport[0]->country);
+                $this->generateAircraftDetails->execute($fleet, $destAirport[0], $destAirport[0]->country_code);
                 $i++;
             }
         }

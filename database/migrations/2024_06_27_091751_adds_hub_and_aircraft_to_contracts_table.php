@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::table('contracts', function (Blueprint $table) {
             $table->string('airport')->nullable();
-            $table->bigInteger('aircraft_id')->nullable();
         });
     }
 
@@ -23,7 +22,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('contracts', function (Blueprint $table) {
-            $table->dropColumn('airport', 'aircraft_id');
+            $table->dropColumn('airport');
         });
     }
 };

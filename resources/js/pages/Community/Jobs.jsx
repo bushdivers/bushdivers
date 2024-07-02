@@ -2,6 +2,7 @@ import {
   Box,
   Card,
   CardBody,
+  Link as ChakraLink,
   Flex,
   Heading,
   Icon,
@@ -17,6 +18,7 @@ import {
   Thead,
   Tr,
 } from '@chakra-ui/react'
+import { Link as InertiaLink } from '@inertiajs/react'
 import { CheckCircle } from 'lucide-react'
 import React from 'react'
 
@@ -62,8 +64,24 @@ const Jobs = ({ hubs }) => {
                           <Td>
                             {contract.cargo_qty} x {contract.cargo}
                           </Td>
-                          <Td>{contract.dep_airport_id}</Td>
-                          <Td>{contract.current_airport_id}</Td>
+                          <Td>
+                            <ChakraLink
+                              href={`/airports/${contract.dep_airport_id}`}
+                              as={InertiaLink}
+                              color="orange.500"
+                            >
+                              {contract.dep_airport_id}
+                            </ChakraLink>
+                          </Td>
+                          <Td>
+                            <ChakraLink
+                              href={`/airports/${contract.current_airport_id}`}
+                              as={InertiaLink}
+                              color="orange.500"
+                            >
+                              {contract.current_airport_id}
+                            </ChakraLink>
+                          </Td>
                           <Td>
                             {contract.is_completed ? (
                               <Icon color="green.500" as={CheckCircle} />
@@ -93,7 +111,15 @@ const Jobs = ({ hubs }) => {
                             {ferry.registration} {ferry.fleet.type} -{' '}
                             {ferry.fleet.name}
                           </Td>
-                          <Td>{ferry.current_airport_id}</Td>
+                          <Td>
+                            <ChakraLink
+                              href={`/airports/${ferry.current_airport_id}`}
+                              as={InertiaLink}
+                              color="orange.500"
+                            >
+                              {ferry.current_airport_id}
+                            </ChakraLink>
+                          </Td>
                           <Td>
                             {ferry.ferry_user_id
                               ? `BDV${ferry.ferry_user_id}`

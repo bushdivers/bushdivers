@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::table('aircraft', function (Blueprint $table) {
             $table->boolean('is_ferry')->default(false);
-            $table->bigInteger('ferry_user_id')->nullable();
+            $table->foreignId('ferry_user_id')->nullable()->constrained('users', 'id');
         });
     }
 
@@ -24,6 +24,7 @@ return new class extends Migration
     {
         Schema::table('aircraft', function (Blueprint $table) {
             $table->dropColumn('is_ferry', 'ferry_user_id');
+            $table->dropForeign('ferry_user_id');
         });
     }
 };
