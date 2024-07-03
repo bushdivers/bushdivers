@@ -27,6 +27,8 @@ class GenerateAircraftDetails
         $ac->fleet_id = $fleet->id;
         $ac->current_airport_id = $airport->identifier;
         $ac->hub_id = $hub ?: $airport->identifier;
+        $ac->last_lat = $airport->lat;
+        $ac->last_lon = $airport->lon;
         $ac->registration = $reg;
         $ac->flight_time_mins = $airframeTime;
         $ac->state = 1;
