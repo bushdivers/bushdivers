@@ -20,7 +20,8 @@ class Aircraft extends Model
     ];
 
     protected $casts = [
-        'last_inspected_at' => 'datetime'
+        'last_inspected_at' => 'datetime',
+        'is_ferry' => 'boolean'
     ];
 
     public function fleet()
