@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   Card,
   CardBody,
   CardHeader,
@@ -18,21 +19,25 @@ const Destination = (props) => {
   const [icao, setIcao] = useState('')
 
   async function handleDestinationChange(e) {
+    setIcao(e.target.value)
+  }
+
+  async function getAirport() {
     setAirportError(null)
     setAirport(null)
-    setIcao(e.target.value)
-    if (e.target.value.length >= 3) {
-      const response = await axios.get(`/api/airport/search/${e.target.value}`)
+    setDistance(null)
+    if (icao.length >= 3) {
+      const response = await axios.get(`/api/airport/search/${icao}`)
       if (response.data.airport) {
-        setAirport(
-          `${response.data.airport.identifier} - ${response.data.airport.name}`
-        )
         props.updateDestinationValue(response.data.airport.identifier)
         setAirportError(null)
         const disResp = await axios.get(
           `/api/flights/distance/${props.currentAirport}/${response.data.airport.identifier}`
         )
         if (disResp.status === 200) {
+          setAirport(
+            `${response.data.airport.identifier} - ${response.data.airport.name}`
+          )
           setDistance(disResp.data.distance)
         } else {
           setAirportError('Cannot calculate distance')
@@ -51,12 +56,17 @@ const Destination = (props) => {
           <Heading size="md">Destination (ICAO)</Heading>
         </CardHeader>
         <CardBody>
-          <Input
-            id="icao"
-            type="text"
-            value={icao}
-            onChange={handleDestinationChange}
-          />
+          <Flex gap={1}>
+            <Input
+              id="icao"
+              type="text"
+              value={icao}
+              onChange={handleDestinationChange}
+            />
+            <Button colorScheme="gray" onClick={() => getAirport()}>
+              Set
+            </Button>
+          </Flex>
           <Flex alignItems="center" gap={2}>
             {airport && (
               <Text color="green.300" size="sm" mt={1}>
