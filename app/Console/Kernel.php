@@ -89,6 +89,8 @@ class Kernel extends ConsoleKernel
         $schedule->call(function () {
             $this->resupplyFuel->execute();
         })->weekly();
+
+        $schedule->command('auth:clear-resets')->hourly();
     }
 
     /**
