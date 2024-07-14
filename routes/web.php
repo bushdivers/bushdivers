@@ -173,6 +173,12 @@ Route::middleware('auth')->group(function () {
     Route::post('/pireps/submit', \App\Http\Controllers\Pireps\ProcessPirepSubmissionController::class)
         ->name('pireps.process');
 
+    // Temporary tie to fleet_admin until generic 'admin' role exists capturing all subroles
+    Route::middleware('role:fleet_admin')->group(function() {
+        Route::get('/admin/dashboard', \App\Http\Controllers\Admin\Dashboard\ShowDashboardController::class)
+            ->name('admin.dashboard');
+    });
+
     Route::middleware('role:fleet_admin')->group(function() {
         Route::get('/admin/fleet', \App\Http\Controllers\Admin\Fleet\ShowFleetListController::class)
             ->name('admin.fleet');
