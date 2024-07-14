@@ -48,7 +48,7 @@ const NavMenuItems = () => {
       <Box my={4}>
         {auth.user.is_admin ||
         doesUserHaveRole(auth.user.user_roles, 'fleet_admin') ? (
-          <NavItem icon={Cog} text="Admin" to="/admin/fleet" />
+          <NavItem icon={Cog} text="Admin" to="/admin/dashboard" />
         ) : (
           <></>
         )}

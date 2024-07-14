@@ -12,6 +12,9 @@ const AdminMenu = () => {
       <Card>
         <CardBody>
           <Flex direction="column">
+            <ChakraLink as={InertiaLink} href="/admin/dashboard">
+              Dashboard
+            </ChakraLink>
             <ChakraLink as={InertiaLink} href="/admin/fleet">
               Fleet
             </ChakraLink>
