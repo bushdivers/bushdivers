@@ -114,7 +114,7 @@ const Dashboard = ({ days, stats, pilots, airports, aircraft }) => {
           >
             {(item) => (
               <>
-                {item.identifier}
+                {item.id}
                 {!!item.flag && <Image rounded="sm" h={5} src={item.flag} />}
               </>
             )}
@@ -129,7 +129,7 @@ const Dashboard = ({ days, stats, pilots, airports, aircraft }) => {
           >
             {(item) => (
               <>
-                {item.identifier}
+                {item.id}
                 {!!item.flag && <Image rounded="sm" h={5} src={item.flag} />}
               </>
             )}
