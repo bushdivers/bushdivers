@@ -29,9 +29,10 @@ class ShowDashboardController extends Controller
             ->selectRaw('0 as airports')
             ->selectRaw('count(distinct aircraft_id) as aircraft')
             ->selectRaw('count(distinct aircraft.id) as fleet')
-            ->join('aircraft', function ($q) {
+            ->leftJoin('aircraft', function ($q) {
                 $q->on('pireps.aircraft_id', '=', 'aircraft.id');
                 $q->where('pireps.is_rental', false);
+                $q->where('aircraft.owner_id', 0);
             })
             ->first();
 

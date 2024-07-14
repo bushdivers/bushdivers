@@ -2,6 +2,7 @@ import {
   Box,
   Card,
   CardBody,
+  Flex,
   Grid,
   GridItem,
   Image,
@@ -113,10 +114,10 @@ const Dashboard = ({ days, stats, pilots, airports, aircraft }) => {
             data={airports.departures}
           >
             {(item) => (
-              <>
-                {item.id}
+              <Flex gap={2}>
                 {!!item.flag && <Image rounded="sm" h={5} src={item.flag} />}
-              </>
+                {item.id}
+              </Flex>
             )}
           </DashTableCard>
         </GridItem>
@@ -128,10 +129,10 @@ const Dashboard = ({ days, stats, pilots, airports, aircraft }) => {
             data={airports.arrivals}
           >
             {(item) => (
-              <>
-                {item.id}
+              <Flex gap={2}>
                 {!!item.flag && <Image rounded="sm" h={5} src={item.flag} />}
-              </>
+                {item.id}
+              </Flex>
             )}
           </DashTableCard>
         </GridItem>
@@ -139,11 +140,12 @@ const Dashboard = ({ days, stats, pilots, airports, aircraft }) => {
           <DashTableCard
             title="Top Airframes"
             itemName="Fleet Type"
+            unit="Flights"
             data={aircraft.types}
           >
-            {(item) => (
+            {(ac) => (
               <>
-                {item.type} {item.name}
+                {ac.type} {ac.name}
               </>
             )}
           </DashTableCard>
@@ -152,6 +154,7 @@ const Dashboard = ({ days, stats, pilots, airports, aircraft }) => {
           <DashTableCard
             title="Top Fleet Aircraft"
             itemName="Registration"
+            unit="Flights"
             data={aircraft.fleet}
           >
             {(ac) => (

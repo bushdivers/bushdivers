@@ -20,7 +20,7 @@ const DashTableCard = (props) => {
   const maxItemVal = useMemo(() => {
     if (!props.data) return 0
     return props.data.reduce(
-      (max, item) => (item.num > max ? item.num : max),
+      (max, item) => (parseFloat(item.num) > max ? parseFloat(item.num) : max),
       0
     )
   })
@@ -43,13 +43,14 @@ const DashTableCard = (props) => {
                   <Tr key={item.id}>
                     <Td colSpan={2}>
                       <Flex>
-                        <Text>{props.children?.(item)}</Text>
+                        {props.children?.(item)}
                         <Spacer />
                         <Text>{item.num}</Text>
                       </Flex>
                       <Progress
                         mt={'0.5em'}
-                        value={item.num}
+                        size={'sm'}
+                        value={parseFloat(item.num)}
                         max={maxItemVal}
                       ></Progress>
                     </Td>
