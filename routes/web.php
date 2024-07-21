@@ -211,6 +211,24 @@ Route::middleware('auth')->group(function () {
             ->name('admin.tours.remove.fleet');
         Route::post('/admin/tours/{id}/checkpoint', \App\Http\Controllers\Admin\Tours\AddTourCheckpointController::class)
             ->name('admin.tours.add.checkpoint');
+        Route::get('/admin/missions', \App\Http\Controllers\Admin\Missions\ShowMissionsController::class)
+            ->name('admin.missions');
+        Route::get('/admin/missions/{id}', \App\Http\Controllers\Admin\Missions\MissionDetailsController::class)
+            ->name('admin.mission.details');
+        Route::post('/admin/missions', \App\Http\Controllers\Admin\Missions\CreateMissionsController::class)
+            ->name('admin.mission.create');
+        Route::post('/admin/missions/{id}', \App\Http\Controllers\Admin\Missions\SaveMissionController::class)
+            ->name('admin.mission.edit');
+        Route::delete('/admin/missions/{id}', \App\Http\Controllers\Admin\Missions\DeleteMissionController::class)
+            ->name('admin.mission.delete');
+        Route::post('/admin/missions/{id}/jobs', \App\Http\Controllers\Admin\Missions\AddJobController::class)
+            ->name('admin.mission.add.job');
+        Route::delete('/admin/missions/jobs/{id}', \App\Http\Controllers\Admin\Missions\DeleteJobController::class)
+            ->name('admin.mission.delete.job');
+        Route::post('/admin/missions/{id}/publish', \App\Http\Controllers\Admin\Missions\PublishMissionController::class)
+            ->name('admin.mission.publish');
+        Route::post('/admin/missions/{id}/complete', \App\Http\Controllers\Admin\Missions\CompleteMissionController::class)
+            ->name('admin.mission.complete');
     });
 
     Route::middleware('admin')->group(function () {

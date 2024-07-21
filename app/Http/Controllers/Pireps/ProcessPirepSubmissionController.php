@@ -64,6 +64,7 @@ class ProcessPirepSubmissionController extends Controller
                 ->whereIn('state', [PirepState::DISPATCH, PirepState::IN_PROGRESS])
                 ->firstOrFail();
 
+
             $blockOffTime = Carbon::now('UTC')->subMinutes($request->flight_time_mins);
 
             $pirep->fuel_used = abs($request->fuel_used);

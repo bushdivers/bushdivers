@@ -54,6 +54,10 @@ class SplitContractController extends Controller
         }
         $contract->user_id = $existingContract->user_id;
         $contract->is_custom = false;
+        $contract->fuel_qty = $existingContract->fuel_qty;
+        $contract->fuel_type = $existingContract->fuel_type;
+        $contract->airport = $existingContract->airport;
+        $contract->community_job_contract_id = $existingContract->community_job_contract_id;
         $existingContract->saveOrFail();
         $contract->saveOrFail();
 

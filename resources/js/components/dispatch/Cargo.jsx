@@ -270,6 +270,11 @@ const Cargo = (props) => {
                             <Flex align="center" gap={1}>
                               {detail.is_shared ? <Tag>Shared</Tag> : <></>}
                               {detail.airport ? <Tag>Hub</Tag> : <></>}
+                              {detail.community_job_contract_id ? (
+                                <Tag>Community</Tag>
+                              ) : (
+                                <></>
+                              )}
                               {!detail.is_shared && (
                                 <Tooltip label="Share contract" placement="top">
                                   <Button
@@ -452,6 +457,11 @@ const Cargo = (props) => {
                           <Flex gap={1}>
                             {detail.is_shared ? <Tag>Shared</Tag> : <></>}
                             {detail.airport ? <Tag>Hub</Tag> : <></>}
+                            {detail.community_job_contract_id ? (
+                              <Tag>Community</Tag>
+                            ) : (
+                              <></>
+                            )}
                           </Flex>
                         </Td>
                       </Tr>
