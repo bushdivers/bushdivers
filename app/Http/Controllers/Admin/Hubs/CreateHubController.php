@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\Hubs;
 use App\Http\Controllers\Controller;
 use App\Models\Aircraft;
 use App\Models\Airport;
+use App\Models\CommunityJob;
 use App\Models\Enums\AirlineTransactionTypes;
 use App\Models\Fleet;
 use App\Services\Aircraft\GenerateAircraftDetails;
@@ -50,6 +51,11 @@ class CreateHubController extends Controller
 
     public function __invoke(Request $request): \Illuminate\Http\RedirectResponse
     {
+        $existingMission = CommunityJob::where('is_completed', 0)->where('is_published', 1)->count();
+        $hubInProgress = Airport::where('hub_in_progress', 1)->count();
+        if ($existingMission > 0 || $hubInProgress > 0) {
+            return redirect()->back()->with(['error' => 'Mission/Hub already published.']);
+        }
         // set airport as hub and in progress
         $airport = Airport::where('identifier', $request->identifier)->first();
 

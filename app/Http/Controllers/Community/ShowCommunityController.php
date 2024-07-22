@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Community;
 use App\Http\Controllers\Controller;
 use App\Models\Aircraft;
 use App\Models\Airport;
+use App\Models\CommunityJob;
 use App\Models\Contract;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -18,9 +19,7 @@ class ShowCommunityController extends Controller
     {
         // current community jobs
         // hubs
-        $hubContracts = [];
-        $ferry = [];
-        $hubs = Airport::with(['hubContracts' => function($query) {
+        $hub = Airport::with(['hubContracts' => function($query) {
                 $query->where('contract_type_id', 5);
             },
             'ferryFlights' => function($query) {
@@ -28,16 +27,18 @@ class ShowCommunityController extends Controller
             }, 'ferryFlights.fleet'])
         ->where('is_hub', true)
         ->where('hub_in_progress', true)
-        ->get();
-//        if ($hubs->count() > 0) {
-//            $hubContracts = Contract::with('depAirport', 'arrAirport')
-//                ->where('contract_type_id', 5)
-//                ->get();
-//
-//            $ferry = Aircraft::with('fleet')
-//                ->where('is_ferry', true)
-//                ->get();
-//        }
-        return Inertia::render('Community/Jobs', ['hubs' => $hubs]);
+        ->first();
+
+        $mission  = CommunityJob::with('jobs')->where('is_published', 1)->where('is_completed', 0)->first();
+        $fleet = null;
+        if ($mission) {
+            $fleet = Aircraft::where('owner_id', 0)->with(['fleet' => function($q) {
+                $q->orderBy('type', 'asc');
+            }])
+                ->orderBy('current_airport_id', 'asc')
+                ->orderBy('fleet_id', 'asc')
+                ->get();
+        }
+        return Inertia::render('Community/Jobs', ['hub' => $hub, 'mission' => $mission, 'fleet' => $fleet]);
     }
 }

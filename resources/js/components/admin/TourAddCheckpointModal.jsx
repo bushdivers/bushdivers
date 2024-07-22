@@ -16,7 +16,7 @@ import { router } from '@inertiajs/react'
 import axios from 'axios'
 import React, { useState } from 'react'
 
-const TourAddFleetModal = ({ isOpen, onClose, tourId }) => {
+const TourAddCheckpointModal = ({ isOpen, onClose, tourId }) => {
   const [checkpoint, setCheckpoint] = useState('')
   const [airport, setAirport] = useState('')
   const [error, setError] = useState('')
@@ -100,4 +100,4 @@ const TourAddFleetModal = ({ isOpen, onClose, tourId }) => {
   )
 }
 
-export default TourAddFleetModal
+export default TourAddCheckpointModal

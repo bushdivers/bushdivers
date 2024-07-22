@@ -184,6 +184,20 @@ const Dispatch = ({ cargo, aircraft, airport, tours }) => {
         return
       }
     }
+
+    if (
+      selectedCargo.length > 0 &&
+      selectedCargo.filter((c) => c.community_job_contract_id !== null).length >
+        0
+    ) {
+      if (selectedAircraft.owner_id !== 0) {
+        alert(
+          'This aircraft is not compatible with a community contract. please select a fleet plane'
+        )
+        return
+      }
+    }
+
     if (deadHead && selectedAircraft && fuel > 0 && destination) {
       sendDispatch()
       return

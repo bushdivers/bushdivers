@@ -6,10 +6,11 @@ use App\Models\Enums\FinancialConsts;
 use App\Services\Airports\ResupplyFuel;
 use App\Services\Airports\UpdateFuelAtAirport;
 use App\Services\Contracts\CheckForExpiry;
+use App\Services\Contracts\CreateCommunityContract;
+use App\Services\Contracts\GenerateRecurringCommunityJobs;
 use App\Services\Finance\CalcMonthlyFees;
 use App\Services\Pireps\FindInactivePireps;
 use App\Services\Pireps\RemoveSinglePirep;
-use App\Services\Rentals\CheckRentalDailyFee;
 use App\Services\Rentals\EndRental;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Contracts\Events\Dispatcher;
@@ -26,6 +27,8 @@ class Kernel extends ConsoleKernel
 
     protected ResupplyFuel $resupplyFuel;
 
+    protected GenerateRecurringCommunityJobs $generateRecurringCommunityJobs;
+
     public function __construct(
         Application $app,
         Dispatcher $events,
@@ -33,7 +36,8 @@ class Kernel extends ConsoleKernel
         RemoveSinglePirep $removeSinglePirep,
         CalcMonthlyFees $calcMonthlyFees,
         CheckForExpiry $checkForExpiry,
-        ResupplyFuel $resupplyFuel
+        ResupplyFuel $resupplyFuel,
+        GenerateRecurringCommunityJobs $generateRecurringCommunityJobs
     )
     {
         parent::__construct($app, $events);
@@ -42,6 +46,7 @@ class Kernel extends ConsoleKernel
         $this->calcMonthlyFees = $calcMonthlyFees;
         $this->checkForExpiry = $checkForExpiry;
         $this->resupplyFuel = $resupplyFuel;
+        $this->generateRecurringCommunityJobs = $generateRecurringCommunityJobs;
     }
 
     /**
@@ -89,6 +94,10 @@ class Kernel extends ConsoleKernel
         $schedule->call(function () {
             $this->resupplyFuel->execute();
         })->weekly();
+
+        $schedule->call(function () {
+            $this->generateRecurringCommunityJobs->execute();
+        })->daily();
     }
 
     /**

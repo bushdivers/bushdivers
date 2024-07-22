@@ -23,6 +23,11 @@ const AdminMenu = () => {
                 Tours
               </ChakraLink>
             )}
+            {doesUserHaveRole(auth.user.user_roles, 'tour_admin') && (
+              <ChakraLink as={InertiaLink} href="/admin/missions">
+                Missions
+              </ChakraLink>
+            )}
             {!!auth.user.is_admin && (
               <ChakraLink as={InertiaLink} href="/admin/users">
                 Users
