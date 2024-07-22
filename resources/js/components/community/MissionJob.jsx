@@ -13,6 +13,7 @@ import {
   Thead,
   Tr,
 } from '@chakra-ui/react'
+import DOMPurify from 'dompurify'
 import React from 'react'
 
 const MissionJob = ({ mission, fleet }) => {
@@ -24,7 +25,12 @@ const MissionJob = ({ mission, fleet }) => {
             <CardBody>
               <Heading size="md">{mission.name}</Heading>
               <Box overflowY="auto" maxHeight="200px">
-                <Text my={2}>{mission.description}</Text>
+                <Box
+                  my={2}
+                  dangerouslySetInnerHTML={{
+                    __html: DOMPurify.sanitize(mission.description),
+                  }}
+                ></Box>
               </Box>
               <Text my={2} fontSize="sm" as="i" color="red.500">
                 Remember, you can only fly fleet aircraft. See current fleet

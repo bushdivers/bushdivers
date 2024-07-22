@@ -31,6 +31,7 @@ import {
 import { router } from '@inertiajs/react'
 import axios from 'axios'
 import React, { useState } from 'react'
+import showdown from 'showdown'
 
 import AdminLayout from '../../components/layout/AdminLayout.jsx'
 
@@ -65,12 +66,15 @@ const MissionDetails = ({ mission, jobs }) => {
     })
   }
 
-  function saveMission() {
+  async function saveMission() {
     if (missionDetails.name === '' || missionDetails.description === '') {
       alert('Please ensure all fields are filled in')
       return
     }
-
+    const converter = new showdown.Converter()
+    missionDetails.description = await converter.makeHtml(
+      missionDetails.description
+    )
     router.post(`/admin/missions/${mission.id}`, missionDetails)
   }
   function publishMission() {
