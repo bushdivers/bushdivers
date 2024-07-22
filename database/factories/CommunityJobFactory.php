@@ -17,7 +17,10 @@ class CommunityJobFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'name' => fake()->words(3, true),
+            'description' => fake()->words(5, true),
+            'is_published' => false,
+            'is_completed' => false
         ];
     }
 }

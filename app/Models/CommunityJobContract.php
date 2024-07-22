@@ -9,6 +9,9 @@ class CommunityJobContract extends Model
 {
     use HasFactory;
 
+    protected $casts = [
+        'is_completed' => 'boolean'
+    ];
     public function contracts()
     {
         return $this->hasMany(Contract::class);
