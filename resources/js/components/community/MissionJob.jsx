@@ -23,7 +23,9 @@ const MissionJob = ({ mission, fleet }) => {
           <Card>
             <CardBody>
               <Heading size="md">{mission.name}</Heading>
-              <Text my={2}>{mission.description}</Text>
+              <Box overflowY="auto" maxHeight="200px">
+                <Text my={2}>{mission.description}</Text>
+              </Box>
               <Text my={2} fontSize="sm" as="i" color="red.500">
                 Remember, you can only fly fleet aircraft. See current fleet
                 status to the right
