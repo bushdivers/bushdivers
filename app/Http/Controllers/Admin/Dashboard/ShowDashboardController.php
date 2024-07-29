@@ -63,7 +63,7 @@ class ShowDashboardController extends Controller
             ->get();
 
         // Get top departure airports
-        $departures = DB::table('pireps')
+        $departuresIcao = DB::table('pireps')
             ->selectRaw('airports.identifier as id, count(*) as num, flag')
             ->join('airports', 'departure_airport_id', '=', 'airports.identifier')
             ->whereRaw('block_on_time >= DATE_SUB(NOW(), INTERVAL ? DAY)', [$days])
@@ -73,11 +73,31 @@ class ShowDashboardController extends Controller
             ->get();
 
         // Get top arrival airports
-        $arrivals = DB::table('pireps')
+        $arrivalsIcao = DB::table('pireps')
             ->selectRaw('airports.identifier as id, count(*) as num, flag')
             ->join('airports', 'destination_airport_id', '=', 'airports.identifier')
             ->whereRaw('block_on_time >= DATE_SUB(NOW(), INTERVAL ? DAY)', [$days])
             ->groupBy('airports.identifier', 'flag')
+            ->orderBy('num', 'desc')
+            ->limit(10)
+            ->get();
+
+        // Get top departure airports
+        $departures = DB::table('pireps')
+            ->selectRaw('IFNULL(airports.country_code, \'NULL\') as id, airports.country, count(*) as num, flag')
+            ->join('airports', 'departure_airport_id', '=', 'airports.identifier')
+            ->whereRaw('block_on_time >= DATE_SUB(NOW(), INTERVAL ? DAY)', [$days])
+            ->groupBy('airports.country_code', 'airports.country', 'flag')
+            ->orderBy('num', 'desc')
+            ->limit(10)
+            ->get();
+
+        // Get top arrival airports
+        $arrivals = DB::table('pireps')
+            ->selectRaw('IFNULL(airports.country_code, \'NULL\') as id, airports.country, count(*) as num, flag')
+            ->join('airports', 'destination_airport_id', '=', 'airports.identifier')
+            ->whereRaw('block_on_time >= DATE_SUB(NOW(), INTERVAL ? DAY)', [$days])
+            ->groupBy('airports.country_code', 'airports.country', 'flag')
             ->orderBy('num', 'desc')
             ->limit(10)
             ->get();
@@ -127,6 +147,8 @@ class ShowDashboardController extends Controller
                 'flights' => $pilots,
             ],
             'airports' => [
+                'departuresIcao' => $departuresIcao,
+                'arrivalsIcao' => $arrivalsIcao,
                 'departures' => $departures,
                 'arrivals' => $arrivals,
             ],

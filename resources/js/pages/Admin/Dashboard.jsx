@@ -108,10 +108,10 @@ const Dashboard = ({ days, stats, pilots, airports, aircraft }) => {
         </GridItem>
         <GridItem colSpan={[4, null, null, null, 2]}>
           <DashTableCard
-            title="Top Departures"
+            title="Top Departures by Airport"
             itemName="Airport"
             unit="Flights"
-            data={airports.departures}
+            data={airports.departuresIcao}
           >
             {(item) => (
               <Flex gap={2}>
@@ -123,15 +123,45 @@ const Dashboard = ({ days, stats, pilots, airports, aircraft }) => {
         </GridItem>
         <GridItem colSpan={[4, null, null, null, 2]}>
           <DashTableCard
-            title="Top Arrivals"
+            title="Top Arrivals by Airport"
             itemName="Airport"
+            unit="Flights"
+            data={airports.arrivalsIcao}
+          >
+            {(item) => (
+              <Flex gap={2}>
+                {!!item.flag && <Image rounded="sm" h={5} src={item.flag} />}
+                {item.id}
+              </Flex>
+            )}
+          </DashTableCard>
+        </GridItem>
+        <GridItem colSpan={[4, null, null, null, 2]}>
+          <DashTableCard
+            title="Top Departures by Country"
+            itemName="Country"
+            unit="Flights"
+            data={airports.departures}
+          >
+            {(item) => (
+              <Flex gap={2}>
+                {!!item.flag && <Image rounded="sm" h={5} src={item.flag} />}
+                {item.id} {item.country}
+              </Flex>
+            )}
+          </DashTableCard>
+        </GridItem>
+        <GridItem colSpan={[4, null, null, null, 2]}>
+          <DashTableCard
+            title="Top Arrivals by Country"
+            itemName="Country"
             unit="Flights"
             data={airports.arrivals}
           >
             {(item) => (
               <Flex gap={2}>
                 {!!item.flag && <Image rounded="sm" h={5} src={item.flag} />}
-                {item.id}
+                {item.id} {item.country}
               </Flex>
             )}
           </DashTableCard>
@@ -139,7 +169,7 @@ const Dashboard = ({ days, stats, pilots, airports, aircraft }) => {
         <GridItem colSpan={[4, null, null, null, 2]}>
           <DashTableCard
             title="Top Airframes"
-            itemName="Fleet Type"
+            itemName="Frame Type"
             unit="Flights"
             data={aircraft.types}
           >
