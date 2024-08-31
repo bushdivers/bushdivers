@@ -12,12 +12,12 @@
     "devDependencies": {
         "@trivago/prettier-plugin-sort-imports": "^4.3.0",
         "@vitejs/plugin-react": "^4.2.1",
-        "axios": "^1.6.4",
+        "axios": "^1.7.6",
         "eslint": "^8.56.0",
         "eslint-plugin-react": "^7.33.2",
         "husky": "^9.0.11",
         "laravel-vite-plugin": "^1.0.1",
-        "lint-staged": "^15.2.2",
+        "lint-staged": "^15.2.9",
         "prettier": "3.1.1",
         "vite": "^5.2.6"
     },
