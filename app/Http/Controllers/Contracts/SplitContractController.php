@@ -24,6 +24,11 @@ class SplitContractController extends Controller
 
         $newQty = $request->qty;
         $remainingQty = $existingContract->cargo_qty - $newQty;
+
+        if ($newQty <= 0 || $remainingQty <= 0) {
+            return \response()->json(['message' => 'Split too small'], 422);
+        }
+
         $splitPercentage = ($newQty / $existingContract->cargo_qty) * 100;
         $newValue = round(($splitPercentage / 100) * $existingContract->contract_value, 2);
         $remainingValue = round($existingContract->contract_value - $newValue, 2);
