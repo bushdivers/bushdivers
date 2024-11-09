@@ -15,6 +15,10 @@ class CheckHubProgress
             $hubContractsCount = Contract::where('airport', $hub)->where('is_completed', false)->count();
             if ($hubContractsCount === 0){
                 $airport->hub_in_progress = false;
+                $airport->has_avgas = true;
+                $airport->has_jetfuel = true;
+                $airport->avgas_qty = null;
+                $airport->jetfuel_qty = null;
                 $airport->save();
             }
         }
