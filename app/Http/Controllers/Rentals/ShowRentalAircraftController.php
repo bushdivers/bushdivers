@@ -7,6 +7,7 @@ use App\Models\Airport;
 use App\Models\Fleet;
 use App\Models\Rental;
 use App\Models\Enums\AircraftState;
+use App\Models\Enums\FuelType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;

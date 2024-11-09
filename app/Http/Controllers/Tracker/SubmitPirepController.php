@@ -23,6 +23,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class SubmitPirepController extends Controller
 {
@@ -67,6 +68,7 @@ class SubmitPirepController extends Controller
             $endTime = Carbon::parse($request->block_on_time);
             $duration = $startTime->diffInMinutes($endTime);
         } catch (\Exception $e) {
+            Log::error("Pirep submit failed: " . $e->getMessage());
             return response()->json(['message' => $e->getMessage()], 400);
         }
 
@@ -88,6 +90,7 @@ class SubmitPirepController extends Controller
             $pirep->aircraft_used = $request->aircraft_used;
             $pirep->save();
         } catch (\Exception $e) {
+            Log::error("Pirep submit stage 2 failed: " . $e->getMessage());
             $this->rollbackSubmission(1, $request);
             return response()->json(['message' => $e->getMessage()], 500);
         }
@@ -102,6 +105,7 @@ class SubmitPirepController extends Controller
                     $this->checkHubProgress->execute($pirep->destination_airport_id);
                 }
             } catch (\Exception $e) {
+                Log::error("Pirep submit stage 3 failed: " . $e->getMessage());
                 $this->rollbackSubmission(2, $request);
                 return response()->json(['message' => $e->getMessage()], 500);
             }
@@ -117,6 +121,7 @@ class SubmitPirepController extends Controller
             // add total to pirep
             $this->setPirepTotalScore->execute($pirep);
         } catch (\Exception $e) {
+            Log::error("Pirep submit stage 4 failed: " . $e->getMessage());
             $this->rollbackSubmission(3, $request);
             return response()->json(['message' => $e->getMessage()], 500);
         }
