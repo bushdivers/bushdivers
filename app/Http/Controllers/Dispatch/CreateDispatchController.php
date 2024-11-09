@@ -44,6 +44,12 @@ class CreateDispatchController extends Controller
             return redirect()->back()->with(['error' => 'Aircraft is part of another flight dispatch']);
         }
 
+        $actualFuelAdded = $request->fuel - $aircraft->fuel_onboard;
+        // check fuel quantity
+        if (($aircraft->fuel_type == 1 ? $currentLocation->avgas_qty : $currentLocation->jetfuel_qty) < $actualFuelAdded) {
+            return redirect()->back()->with(['error' => 'Not enough fuel at airport to fuel aircraft']);
+        }
+
         // create draft pirep with destination and detail
         $pirep = new Pirep();
         $pirep->id = Uuid::uuid4();
@@ -85,8 +91,6 @@ class CreateDispatchController extends Controller
             }
         }
 
-
-        $actualFuelAdded = $request->fuel - $aircraft->fuel_onboard;
         if ($actualFuelAdded != 0.0) {
             // charge fuel
             if ($isRental) {
