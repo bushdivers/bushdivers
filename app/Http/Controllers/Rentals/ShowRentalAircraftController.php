@@ -28,11 +28,11 @@ class ShowRentalAircraftController extends Controller
             $aircraft = Fleet::where('is_rental', true)->get();
         } else if ($currentLocation->has_avgas && !$currentLocation->has_jetfuel) {
             $aircraft = Fleet::where('is_rental', true)
-                ->where('fuel_type', 1)
+                ->where('fuel_type', FuelType::AVGAS)
                 ->get();
         } else if ($currentLocation->has_jetfuel && !$currentLocation->has_avgas) {
             $aircraft = Fleet::where('is_rental', true)
-                ->where('fuel_type', 2)
+                ->where('fuel_type', FuelType::JET)
                 ->get();
         }
 

@@ -9,6 +9,7 @@ use App\Models\Contract;
 use App\Models\ContractCargo;
 use App\Models\Enums\AircraftState;
 use App\Models\Enums\AirlineTransactionTypes;
+use App\Models\Enums\FuelType;
 use App\Models\Enums\PirepState;
 use App\Models\Enums\PirepStatus;
 use App\Models\Enums\TransactionTypes;
@@ -46,7 +47,7 @@ class CreateDispatchController extends Controller
 
         $actualFuelAdded = $request->fuel - $aircraft->fuel_onboard;
         // check fuel quantity
-        if (($aircraft->fuel_type == 1 ? $currentLocation->avgas_qty : $currentLocation->jetfuel_qty) < $actualFuelAdded) {
+        if (($aircraft->fuel_type == FuelType::AVGAS ? $currentLocation->avgas_qty : $currentLocation->jetfuel_qty) < $actualFuelAdded) {
             return redirect()->back()->with(['error' => 'Not enough fuel at airport to fuel aircraft']);
         }
 
