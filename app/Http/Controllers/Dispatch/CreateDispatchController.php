@@ -47,7 +47,7 @@ class CreateDispatchController extends Controller
 
         $actualFuelAdded = $request->fuel - $aircraft->fuel_onboard;
         // check fuel quantity
-        if (!$currentLocation->is_hub && ($aircraft->fuel_type == FuelType::AVGAS ? $currentLocation->avgas_qty : $currentLocation->jetfuel_qty) < $actualFuelAdded) {
+        if (!$currentLocation->is_hub && ($aircraft->fleet->fuel_type == FuelType::AVGAS ? $currentLocation->avgas_qty : $currentLocation->jetfuel_qty) < $actualFuelAdded) {
             return redirect()->back()->with(['error' => 'Not enough fuel at airport to fuel aircraft']);
         }
 
