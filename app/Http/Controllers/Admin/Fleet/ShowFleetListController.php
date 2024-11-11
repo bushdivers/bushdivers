@@ -20,7 +20,11 @@ class ShowFleetListController extends Controller
     {
         $fleet = Fleet::with(['aircraft' => function($q){
             $q->where('owner_id', 0);
-        }])->get();
+        }, 'aircraft.engines'])->get();
+
+        $fleet->each(function ($f) {
+            $f->aircraft->each->setRelation('fleet', $f);
+        });
 
         return Inertia::render('Admin/FleetList', ['fleet' => $fleet]);
     }

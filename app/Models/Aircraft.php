@@ -56,10 +56,6 @@ class Aircraft extends Model
 
     public function getMaintenanceStatusAttribute()
     {
-        if ($this->is_rental) {
-            return false;
-        }
-
         $oneYearAgo = Carbon::now()->subYear();
         if ($this->last_inspected_at && $this->last_inspected_at->lessThan($oneYearAgo)) {
             return true;

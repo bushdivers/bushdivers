@@ -17,6 +17,7 @@ class GetHqController extends Controller
     public function __invoke(Request $request, GetFinanceData $getFinanceData)
     {
         $finances = $getFinanceData->execute();
+
         $fleet = Fleet::with(['uploads', 'aircraft' => function ($q) {
             $q->where('owner_id', 0);
             $q->where('is_ferry', false);
@@ -28,7 +29,14 @@ class GetHqController extends Controller
 
         $hubs = Airport::where('is_hub', true)->where('hub_in_progress', false);
         return Inertia::render('General/BushDivers', [
-            'fleet' => fn() => $fleet->get(),
+            'fleet' => function() use ($fleet) {
+                $fleets = $fleet->get();
+                $fleets->each(
+                    function ($f) {
+                        $f->aircraft->each->setRelation('fleet', $f);
+                    });
+                return $fleets;
+            },
             'hubs' => fn() => $hubs->get(),
             'finances' => $finances]);
     }

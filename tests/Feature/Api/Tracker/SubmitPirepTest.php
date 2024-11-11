@@ -47,6 +47,7 @@ class SubmitPirepTest extends TestCase
         $this->user = User::factory()->create([
             'rank_id' => 1,
             'flights_time' => 299,
+            'flights' => 27,
             'points' => 49,
             'created_at' => Carbon::now()->addYears(-2)
         ]);

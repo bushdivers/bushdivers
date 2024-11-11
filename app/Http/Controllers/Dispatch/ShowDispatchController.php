@@ -140,7 +140,7 @@ class ShowDispatchController extends Controller
 
     protected function getAircraftForDispatch($currentLocation): Collection
     {
-        $fleetAc = Aircraft::with('fleet')
+        $fleetAc = Aircraft::with('fleet', 'engines')
             ->where('state', AircraftState::AVAILABLE)
             ->where('status', AircraftStatus::ACTIVE)
             ->where('current_airport_id', $currentLocation)
@@ -148,7 +148,7 @@ class ShowDispatchController extends Controller
             ->where('is_ferry', false)
             ->get();
 
-        $ferryAc = Aircraft::with('fleet')
+        $ferryAc = Aircraft::with('fleet', 'engines')
             ->where('state', AircraftState::AVAILABLE)
             ->where('status', AircraftStatus::ACTIVE)
             ->where('current_airport_id', $currentLocation)
@@ -163,7 +163,7 @@ class ShowDispatchController extends Controller
             ->where('current_airport_id', $currentLocation)
             ->get();
 
-        $privateAc = Aircraft::with('fleet')
+        $privateAc = Aircraft::with('fleet', 'engines')
             ->where('owner_id', Auth::user()->id)
             ->where('current_airport_id', $currentLocation)
             ->get();
