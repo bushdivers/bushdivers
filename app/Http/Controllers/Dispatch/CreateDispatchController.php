@@ -45,6 +45,14 @@ class CreateDispatchController extends Controller
             return redirect()->back()->with(['error' => 'Aircraft is part of another flight dispatch']);
         }
 
+        if ($aircraft->current_airport_id != Auth::user()->current_airport_id) {
+            return redirect()->back()->with(['error' => 'Aircraft is not at your current airport']);
+        }
+
+        if ($aircraft->owner_id > 0 && $aircraft->owner_id != Auth::user()->id && $aircraft->ferry_user_id != Auth::user()->id) {
+            return redirect()->back()->with(['error' => 'You do not own this aircraft']);
+        }
+
         $actualFuelAdded = $request->fuel - $aircraft->fuel_onboard;
         // check fuel quantity
         if (!$currentLocation->is_hub && ($aircraft->fleet->fuel_type == FuelType::AVGAS ? $currentLocation->avgas_qty : $currentLocation->jetfuel_qty) < $actualFuelAdded) {
