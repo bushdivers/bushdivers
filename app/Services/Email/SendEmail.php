@@ -2,6 +2,7 @@
 
 namespace App\Services\Email;
 
+use Illuminate\Support\Facades\Log;
 use Mailjet;
 
 class SendEmail
@@ -12,13 +13,18 @@ class SendEmail
 
     public function __construct()
     {
-        $this->apiKey = '45d85c59b918b3a27f90f90223218238';
-        $this->secret = 'a89e59b7c7761a992d805a2f62e460ed';
+        $this->apiKey = config('mail.mailers.mailjet.api_key', '');
+        $this->secret = config('mail.mailers.mailjet.api_secret', '');
         $this->mj = new Mailjet\Client($this->apiKey, $this->secret, true, ['version' => 'v3.1']);
     }
 
-    public function execute($body)
+    public function execute($body): bool
     {
-        $this->mj->post(Mailjet\Resources::$Email, ['body' => $body]);
+        $mail = $this->mj->post(Mailjet\Resources::$Email, ['body' => $body]);
+        if ($mail->success())
+            return true;
+
+        Log::error('Error sending email', ['error' => $mail->getData()]);
+        return false;
     }
 }

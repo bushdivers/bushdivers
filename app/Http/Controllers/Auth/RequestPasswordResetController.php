@@ -37,8 +37,10 @@ class RequestPasswordResetController extends Controller
 
             // send email
             $body = MailTypes::passwordRequest($user, $url);
-            $this->sendEmail->execute($body);
-            return Password::RESET_LINK_SENT;
+            if ($this->sendEmail->execute($body))
+                return Password::RESET_LINK_SENT;
+
+            return 'error';
         });
 
         if ($status == Password::RESET_LINK_SENT) {

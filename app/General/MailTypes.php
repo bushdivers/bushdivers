@@ -94,7 +94,7 @@ class MailTypes
                     'TemplateID' => 3180260,
                     'TemplateLanguage' => true,
                     'Subject' => "Password Reset Request",
-                    'Vairables' => $data
+                    'Variables' => $data
                 ]
             ]
         ];
