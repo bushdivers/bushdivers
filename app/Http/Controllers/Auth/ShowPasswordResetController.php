@@ -15,8 +15,11 @@ class ShowPasswordResetController extends Controller
      * @param $token
      * @return Response
      */
-    public function __invoke($token): Response
+    public function __invoke(Request $request): Response
     {
-        return Inertia::render('Auth/ResetPassword', ['token' => $token]);
+        return Inertia::render('Auth/ResetPassword', [
+            'token' => $request->token,
+            'email' => $request->email,
+        ]);
     }
 }
