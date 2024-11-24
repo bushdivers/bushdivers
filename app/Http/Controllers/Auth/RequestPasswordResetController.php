@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\General\MailTypes;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PasswordRequest;
 use App\Models\User;
-use App\Services\Email\SendEmail;
 use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -15,12 +13,10 @@ use Ramsey\Uuid\Uuid;
 
 class RequestPasswordResetController extends Controller
 {
-    protected SendEmail $sendEmail;
-
-    public function __construct(SendEmail $sendEmail)
+    public function __construct()
     {
-        $this->sendEmail = $sendEmail;
     }
+
     /**
      * Handle the incoming request.
      *
@@ -29,19 +25,7 @@ class RequestPasswordResetController extends Controller
      */
     public function __invoke(PasswordRequest $request): RedirectResponse
     {
-        $status = Password::sendResetLink($request->only('email'), function(CanResetPassword $user, $token) {
-            $url = route('password.reset.index', [
-                'token' => $token,
-                'email' => $user->getEmailForPasswordReset(),
-            ]);
-
-            // send email
-            $body = MailTypes::passwordRequest($user, $url);
-            if ($this->sendEmail->execute($body))
-                return Password::RESET_LINK_SENT;
-
-            return 'error';
-        });
+        $status = Password::sendResetLink($request->only('email'));
 
         if ($status == Password::RESET_LINK_SENT) {
             return redirect()->route('login.index')->with(['success' => 'Password request sent, please check your email.']);

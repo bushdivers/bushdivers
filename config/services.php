@@ -33,6 +33,11 @@ return [
     'checkwx' => [
         'key' => env('WEATHER_API_KEY'),
         'url' => env('WEATHER_API_URL'),
-    ]
+    ],
+
+    'mailjet' => [
+        'key' => env('MAILJET_API_KEY'),
+        'secret' => env('MAILJET_API_SECRET'),
+    ],
 
 ];
