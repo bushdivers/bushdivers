@@ -19,7 +19,7 @@ const AirportDetail = ({
     <div className="relative">
       <AirportMap
         airport={airport}
-        metar={metar[0]}
+        metar={metar}
         fleet={fleet}
         aircraft={aircraft}
         contracts={contracts}

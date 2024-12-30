@@ -56,7 +56,6 @@ class ShowAirportController extends Controller
             return redirect()->back()->with(['error' => 'Airport not found']);
         }
 
-        $metar = $this->getMetarForAirport->execute($icao);
         $nearestFuel = $this->findAirportsWithinDistance->execute($airport, 2, 500,false, true, 5);
         $companyAc = Aircraft::with(['fleet', 'engines'])
             ->where('owner_id', 0)
@@ -100,7 +99,7 @@ class ShowAirportController extends Controller
             'fleet' => $companyAc,
             'aircraft' => $privateAc,
             'contracts' => $contracts,
-            'metar' => $metar,
+            'metar' => Inertia::defer(fn() => $this->getMetarForAirport->execute($icao)),
             'fuel' => $nearestFuel,
             'myContracts' => $myContracts,
             'sharedContracts' => $sharedContracts
