@@ -40,7 +40,8 @@ Route::get('/resources', \App\Http\Controllers\Resources\GetResourcesController:
     ->name('api.resources');
 Route::put('/admin/categories', \App\Http\Controllers\Admin\Resources\EditResourceCategoryController::class)
     ->name('admin.categories.edit');
-
+Route::get('/tracker-version', \App\Http\Controllers\Tracker\GetTrackerVersionController::class)
+    ->name('tracker.version');
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/dispatch', \App\Http\Controllers\Tracker\GetActiveDispatchController::class);
