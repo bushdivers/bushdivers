@@ -36,7 +36,7 @@ class GetMetarForAirport
                     $response = Http::withHeaders([
                         'X-API-KEY' => $this->apiKey
                     ])
-                        ->timeout(3)
+                        ->timeout(15)
                         ->get($this->baseUrl . '/metar/' . $icao . '/decoded');
 
                     // if no metar, get nearest
