@@ -34,12 +34,12 @@ class SetDestinationController extends Controller
         }
         if ($airport != null) {
             // update piirep destination to new icao
-            $pirep = Pirep::find($request->pirep_id);
+            $pirep = Pirep::findOrFail($request->pirep_id);
             $pirep->destination_airport_id = $airport->identifier;
             $pirep->save();
 
             // return icao
-            return response()->json(['icao' => $airport->identifier]);
+            return response()->json(['icao' => $airport->identifier, 'lat' => $airport->lat, 'lon' => $airport->lon]);
         }
 
         return response()->json(404);
