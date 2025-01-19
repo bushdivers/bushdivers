@@ -154,7 +154,8 @@ class SubmitPirepTest extends TestCase
             'distance' => 76,
             'landing_rate' => 149.12,
             'block_off_time'=> $startTime,
-            'block_on_time' => $endTime
+            'block_on_time' => $endTime,
+            'sim_used' => 'MSFS2020'
         ];
 
         $response = $this->postJson('/api/pirep/submit', $data);
