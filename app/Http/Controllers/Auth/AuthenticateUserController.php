@@ -19,19 +19,10 @@ class AuthenticateUserController extends Controller
      */
     public function __invoke(LoginRequest $request): RedirectResponse
     {
-        if (
-            Auth::attempt([
-              'email' => $request->email,
-              'password' => $request->password,
-              'is_active' => true
-            ], true)
-        ) {
-            $request->session()->regenerate();
+        $request->authenticate();
 
-            return redirect()->intended('dashboard');
-        }
-        return redirect()->back()->with([
-            'error' => 'The provided credentials do not match our records.',
-        ]);
+        $request->session()->regenerate();
+
+        return redirect()->intended('dashboard');
     }
 }

@@ -2,23 +2,21 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\General\MailTypes;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PasswordRequest;
 use App\Models\User;
-use App\Services\Email\SendEmail;
+use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Password;
 use Ramsey\Uuid\Uuid;
 
 class RequestPasswordResetController extends Controller
 {
-    protected SendEmail $sendEmail;
-
-    public function __construct(SendEmail $sendEmail)
+    public function __construct()
     {
-        $this->sendEmail = $sendEmail;
     }
+
     /**
      * Handle the incoming request.
      *
@@ -27,17 +25,19 @@ class RequestPasswordResetController extends Controller
      */
     public function __invoke(PasswordRequest $request): RedirectResponse
     {
-        // create request uuid
-        $user = User::where('email', $request->email)->first();
-        $user->reset_token = Uuid::uuid4();
-        $user->save();
+        $status = Password::sendResetLink($request->only('email'));
 
-        $url = route('password.reset.index', ['token' => $user->reset_token]);
-        // send email
-        $body = MailTypes::passwordRequest($user, $url);
-        $this->sendEmail->execute($body);
-
-        // redirect to login
-        return redirect()->route('login.index')->with(['success' => 'Password request sent, please check your email']);
+        if ($status == Password::RESET_LINK_SENT) {
+            return redirect()->route('login.index')->with(['success' => 'Password request sent, please check your email.']);
+        }
+        else if ($status == Password::INVALID_USER) {
+            return redirect()->back()->with(['error' => 'User not found. Did you mean to register?']);
+        }
+        else if ($status == Password::RESET_THROTTLED) {
+            return redirect()->back()->with(['error' => 'Please wait before trying again.']);
+        }
+        else {
+            return redirect()->back()->with(['error' => 'Error sending password reset.']);
+        }
     }
 }

@@ -18,10 +18,11 @@ import React, { useState } from 'react'
 
 import AuthLayout from '../../components/layout/AuthLayout'
 
-const ResetPassword = ({ token }) => {
+const ResetPassword = ({ token, email }) => {
   const { errors } = usePage().props
   const [values, setValues] = useState({
     password: '',
+    email: email,
     token: token,
   })
 

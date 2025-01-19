@@ -36,7 +36,7 @@ Route::get('/password', \App\Http\Controllers\Auth\ShowPasswordRequestController
     ->name('password.request.index');
 Route::post('/password', \App\Http\Controllers\Auth\RequestPasswordResetController::class)
     ->name('password.request');
-Route::get('/password/reset/{token}', \App\Http\Controllers\Auth\ShowPasswordResetController::class)
+Route::get('/password/reset', \App\Http\Controllers\Auth\ShowPasswordResetController::class)
     ->name('password.reset.index');
 Route::post('/password/reset', \App\Http\Controllers\Auth\ResetPasswordController::class)
     ->name('password.reset');

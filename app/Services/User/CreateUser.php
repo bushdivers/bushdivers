@@ -17,7 +17,8 @@ class CreateUser
         $user->toc_accepted = true;
         $user->opt_in = false;
         $user->rank_id = 1;
-$user->loan = 0.00;
+        $user->loan = 0.00;
+        $user->email_verified_at = $user->freshTimestamp();
         $user->save();
 
         return $user;

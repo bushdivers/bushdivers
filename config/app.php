@@ -58,6 +58,8 @@ return [
 
     'aws_cloudfront_url' => env('AWS_CLOUDFRONT_URL', null),
 
+    'logo_url' => env('LOGO_URL', env('APP_URL', '/') . '/img/logo.png'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Timezone
@@ -168,6 +170,8 @@ return [
          * Package Service Providers...
          */
 
+        Mailjet\LaravelMailjet\MailjetServiceProvider::class,
+
         /*
          * Application Service Providers...
          */
@@ -213,6 +217,7 @@ return [
         'Lang' => Illuminate\Support\Facades\Lang::class,
         'Log' => Illuminate\Support\Facades\Log::class,
         'Mail' => Illuminate\Support\Facades\Mail::class,
+        'Mailjet' => Mailjet\LaravelMailjet\Facades\Mailjet::class,
         'Notification' => Illuminate\Support\Facades\Notification::class,
         'Password' => Illuminate\Support\Facades\Password::class,
         'Queue' => Illuminate\Support\Facades\Queue::class,

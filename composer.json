@@ -16,6 +16,7 @@
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.8",
         "league/flysystem-aws-s3-v3": "3.0",
+        "mailjet/laravel-mailjet": "^3.1",
         "mailjet/mailjet-apiv3-php": "^1.5",
         "mjaschen/phpgeo": "^4.0",
         "predis/predis": "^1.1",
