@@ -19,7 +19,7 @@
         "laravel-vite-plugin": "^1.0.1",
         "lint-staged": "^15.2.2",
         "prettier": "3.1.1",
-        "vite": "=5.4.11"
+        "vite": "=5.4.14"
     },
     "dependencies": {
         "@chakra-ui/react": "^2.8.2",
