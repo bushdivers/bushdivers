@@ -46,6 +46,11 @@ const Error = ({ status = 500 }) => {
             If you continue to have issues, reach out on Discord.
           </Text>
         </CardBody>
+        <CardBody>
+          <Text>
+            <a href="/dashboard">Return to home</a>
+          </Text>
+        </CardBody>
       </Card>
     </Flex>
   )

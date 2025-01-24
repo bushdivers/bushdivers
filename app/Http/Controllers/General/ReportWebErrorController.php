@@ -30,6 +30,6 @@ class ReportWebErrorController extends Controller
             'detail' => $stack,
         ]);
 
-        abort(500, 'A website error occurred');
+        return response('Error logged successfully', 202);
     }
 }
