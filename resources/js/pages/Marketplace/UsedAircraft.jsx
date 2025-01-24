@@ -101,7 +101,11 @@ const UsedAircraft = ({ aircraft, currentLocation, fleet, buyer }) => {
                           ac.flight_time_mins
                         )}
                       </Td>
-                      <Td>{formatDate(ac.last_inspected_at)}</Td>
+                      <Td>
+                        {ac.last_inspected_at
+                          ? formatDate(ac.last_inspected_at)
+                          : 'Never'}
+                      </Td>
                       <Td>
                         {ac.engines.map((e) => (
                           <Box key={e.id}>

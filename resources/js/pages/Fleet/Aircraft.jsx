@@ -249,7 +249,11 @@ const Aircraft = ({ aircraft, maintenanceStatus, pireps }) => {
             <Card>
               <CardBody>
                 <StatDisplay
-                  stat={format(aircraft.last_inspected_at, 'dd/MM/yyyy')}
+                  stat={
+                    aircraft.last_inspected_at
+                      ? format(aircraft.last_inspected_at, 'dd/MM/yyyy')
+                      : 'Never'
+                  }
                   title="Last Inspection (Annual)"
                 />
               </CardBody>
