@@ -84,6 +84,7 @@ class GetActiveDispatchController extends Controller
             'aircraft_type' => $dispatch->is_rental ? $dispatch->rental->fleet->type : $dispatch->aircraft->fleet->type,
             'registration' => $dispatch->is_rental ? $dispatch->rental->registration : $dispatch->aircraft->registration,
             'planned_fuel' => $dispatch->planned_fuel,
+            'fuel_type' => $dispatch->is_rental ? $dispatch->rental->fleet->fuel_type : $dispatch->aircraft->fleet->fuel_type,
             'cargo_weight' => $cargoWeight,
             'passenger_count' => $passengerCount,
             'is_empty' => $dispatch->is_empty,
