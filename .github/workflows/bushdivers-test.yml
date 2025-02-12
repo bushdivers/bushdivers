@@ -10,7 +10,7 @@ env:
 jobs:
   backend-tests:
     name: Backend Tests
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     env:
       DB_DATABASE: bushdivers_ci
       DB_USERNAME: root
@@ -33,7 +33,7 @@ jobs:
     steps:
       - uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.2'
+          php-version: '8.3'
       - uses: actions/checkout@v2
       - name: Copy .env
         run: php -r "file_exists('.env') || copy('.env.example', '.env');"
@@ -50,7 +50,7 @@ jobs:
 
   front-end-checks:
     name: Frontend Checks
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/setup-node@v3
         with:
@@ -65,12 +65,13 @@ jobs:
 
   deploy:
     name: Deploy App
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
+    if:
     needs: [ backend-tests, front-end-checks ]
     steps:
       - name: Post Webhook
         run: |
-          curl -d '{"payload": {"clone_url": "${{secrets.CLONE_URL}}", "branch": "main", "new_ref": "latest", "email": "${{secrets.DEPLOY_EMAIL}}"}}' -H "Content-Type: application/json" -X POST ${{ secrets.WEBHOOK_URL }}
+          [ "${{secrets.CLONE_URL}}" = "" ] && true || curl -d '{"payload": {"clone_url": "${{secrets.CLONE_URL}}", "branch": "main", "new_ref": "latest", "email": "${{secrets.DEPLOY_EMAIL}}"}}' -H "Content-Type: application/json" -X POST ${{ secrets.WEBHOOK_URL }}
 
 
 
