@@ -53,9 +53,9 @@ const FleetCardContent = ({ fleet }) => {
           {fleet.uploads?.length > 0 ? (
             fleet.uploads.map((u) => (
               <Flex gap={2} key={u.id}>
-                <Link target="_blank" href={u.url}>
+                <a target="_blank" rel="noreferrer" href={u.url}>
                   {u.display_name}
-                </Link>
+                </a>
                 <Text>{displayFileSize(u.size)}</Text>
               </Flex>
             ))
