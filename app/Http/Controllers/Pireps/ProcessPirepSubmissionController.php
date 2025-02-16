@@ -51,7 +51,7 @@ class ProcessPirepSubmissionController extends Controller
     }
 
     /**
-     * Handle the incoming request.
+     * Handle a manual pirep submission
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -81,7 +81,7 @@ class ProcessPirepSubmissionController extends Controller
             $pirep->block_off_time = $blockOffTime;
             $pirep->block_on_time = Carbon::now('UTC');
             $pirep->is_manual = true;
-            $pirep->sim_used = $request->sim_used;
+            $pirep->sim_used = null;
             $pirep->save();
 
             $pc = PirepCargo::where('pirep_id', $pirep->id)->get();

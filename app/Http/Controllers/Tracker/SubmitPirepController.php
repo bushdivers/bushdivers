@@ -88,6 +88,7 @@ class SubmitPirepController extends Controller
             $pirep->block_off_time = $startTime;
             $pirep->block_on_time = $endTime;
             $pirep->aircraft_used = $request->aircraft_used;
+            $pirep->sim_used = $request->sim_used;
             $pirep->save();
         } catch (\Exception $e) {
             Log::error("Pirep submit stage 2 failed: " . $e->getMessage());
