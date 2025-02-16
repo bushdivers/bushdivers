@@ -79,7 +79,11 @@ const Cargo = (props) => {
   }
 
   async function splitContract(contractId) {
-    if (props.selectedCargo.length > 0) {
+    console.log(props.selectedCargo)
+    if (
+      props.selectedCargo.length > 0 &&
+      props.selectedCargo.find((sc) => sc.id === contractId)
+    ) {
       alert('Cannot split when cargo is selected!')
       return
     }
