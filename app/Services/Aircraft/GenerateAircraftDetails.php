@@ -20,7 +20,7 @@ class GenerateAircraftDetails
         $reg = $this->findAvailableReg->execute($locale);
         $randInspection = rand(20,350);
         $airframeTime = rand(2000, 120000);
-        $tboTime = $airframeTime > $fleet->tbo_mins ? rand(1200, $fleet->tbo_time) : $airframeTime;
+        $tboTime = $airframeTime > $fleet->tbo_mins ? rand(1200, $fleet->tbo_mins) : $airframeTime;
         $checkTime = $airframeTime < 6000 ? $airframeTime : rand(100, 4000);
 
         $ac = new Aircraft();
