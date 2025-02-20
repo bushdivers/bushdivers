@@ -1,7 +1,5 @@
 import { ChakraProvider, ColorModeScript } from '@chakra-ui/react'
 import { createInertiaApp } from '@inertiajs/react'
-import flagsmith from 'flagsmith'
-import { FlagsmithProvider } from 'flagsmith/react'
 import React from 'react'
 import { createRoot } from 'react-dom/client'
 import { ErrorBoundary } from 'react-error-boundary'
@@ -20,22 +18,15 @@ createInertiaApp({
   title: (title) => `${title} - Bush Divers`,
   setup({ el, App, props }) {
     createRoot(el).render(
-      <FlagsmithProvider
-        options={{
-          environmentID: import.meta.env.VITE_FLAGSMITH_ENV,
-        }}
-        flagsmith={flagsmith}
-      >
-        <ChakraProvider theme={theme}>
-          <ColorModeScript initialColorMode={theme.config.initialColorMode} />
-          <ErrorBoundary
-            onError={postError}
-            fallbackRender={() => <Error status={500} />}
-          >
-            <App {...props} />
-          </ErrorBoundary>
-        </ChakraProvider>
-      </FlagsmithProvider>
+      <ChakraProvider theme={theme}>
+        <ColorModeScript initialColorMode={theme.config.initialColorMode} />
+        <ErrorBoundary
+          onError={postError}
+          fallbackRender={() => <Error status={500} />}
+        >
+          <App {...props} />
+        </ErrorBoundary>
+      </ChakraProvider>
     )
   },
 })

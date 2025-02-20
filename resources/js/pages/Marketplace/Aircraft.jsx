@@ -9,15 +9,12 @@ import {
   Text,
 } from '@chakra-ui/react'
 import { Link } from '@inertiajs/react'
-import { useFlags } from 'flagsmith/react'
 import React from 'react'
 
 import AppLayout from '../../components/layout/AppLayout'
 import { displayNumber } from '../../helpers/number.helpers.js'
 
 const Aircraft = ({ fleet, buyer }) => {
-  const flags = useFlags(['used_aircraft'])
-  const usedAircraftEnabled = flags.used_aircraft.enabled
   return (
     <>
       <SimpleGrid columns={3} gap={5}>
@@ -39,14 +36,11 @@ const Aircraft = ({ fleet, buyer }) => {
                     ) : (
                       <></>
                     )}
-                    {usedAircraftEnabled ? (
-                      <Text>
-                        Used: ${displayNumber(f.used_low_price)} - $
-                        {displayNumber(f.used_high_price)}
-                      </Text>
-                    ) : (
-                      <></>
-                    )}
+
+                    <Text>
+                      Used: ${displayNumber(f.used_low_price)} - $
+                      {displayNumber(f.used_high_price)}
+                    </Text>
                   </Box>
                   <Flex mb={2} direction="column">
                     <Box>
@@ -83,13 +77,9 @@ const Aircraft = ({ fleet, buyer }) => {
                     ) : (
                       <></>
                     )}
-                    {usedAircraftEnabled ? (
-                      <Link href={`/marketplace/list/used/${f.id}/${buyer}`}>
-                        <Button>Purchase Used</Button>
-                      </Link>
-                    ) : (
-                      <></>
-                    )}
+                    <Link href={`/marketplace/list/used/${f.id}/${buyer}`}>
+                      <Button>Purchase Used</Button>
+                    </Link>
                   </Flex>
                 </Box>
               </CardBody>
