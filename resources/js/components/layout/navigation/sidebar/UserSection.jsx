@@ -1,14 +1,59 @@
-import { Avatar, Box, Link as ChakraLink, Flex, Text } from '@chakra-ui/react'
+import {
+  Avatar,
+  Box,
+  Card,
+  Link as ChakraLink,
+  Flex,
+  Menu,
+  MenuButton,
+  MenuDivider,
+  MenuItem,
+  MenuList,
+  Text,
+  useColorModeValue,
+} from '@chakra-ui/react'
 import { Link as InertiaLink, usePage } from '@inertiajs/react'
 import React from 'react'
 
-import UserStats from '../UserStats'
+import { displayNumber } from '../../../../helpers/number.helpers'
 
 const UserSection = () => {
+  const bg = useColorModeValue('gray.50', 'gray.600')
   const { auth } = usePage().props
   return (
-    <Box my={4}>
-      <Flex justifyContent="space-between" alignItems="center" gap={3}>
+    <Menu>
+      <MenuButton _hover={{ bg: bg, cursor: 'pointer' }} as={Card} p={2} my={4}>
+        <Flex alignItems="center" justifyContent="space-between" gap={3}>
+          <Box>
+            <Flex alignItems="center" gap={3}>
+              <Avatar size="sm" name={auth.user.name} />
+              <Box>
+                <Text as="b">{auth.user.pilot_id}</Text>
+                <Text fontSize="xs">{auth.user.rank.name}</Text>
+              </Box>
+            </Flex>
+          </Box>
+          <Box>
+            <Flex direction="column">
+              <Text fontSize="xs">${displayNumber(auth.user.balance)}</Text>
+              <Text fontSize="xs">{auth.user.current_airport_id}</Text>
+            </Flex>
+          </Box>
+        </Flex>
+      </MenuButton>
+      <MenuList>
+        <ChakraLink href="/profile" as={InertiaLink}>
+          <MenuItem>Profile</MenuItem>
+        </ChakraLink>
+        <ChakraLink href="/jumpseat" as={InertiaLink}>
+          <MenuItem>Jumpseat</MenuItem>
+        </ChakraLink>
+        <MenuDivider />
+        <ChakraLink href="/logout" as={InertiaLink}>
+          <MenuItem>Sign Out</MenuItem>
+        </ChakraLink>
+      </MenuList>
+      {/* <Flex justifyContent="space-between" alignItems="center" gap={3}>
         <Flex alignItems="center" gap={3}>
           <ChakraLink href="/profile" as={InertiaLink}>
             <Avatar size="sm" name={auth.user.name} />
@@ -31,8 +76,8 @@ const UserSection = () => {
             <Text fontSize="xs">Jumpseat</Text>
           </ChakraLink>
         </Flex>
-      </Box>
-    </Box>
+      </Box> */}
+    </Menu>
   )
 }
 

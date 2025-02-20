@@ -1,11 +1,4 @@
-import {
-  Box,
-  Divider,
-  Flex,
-  Heading,
-  Image,
-  useColorModeValue,
-} from '@chakra-ui/react'
+import { Box, Flex, Image, useColorModeValue } from '@chakra-ui/react'
 import React from 'react'
 
 import ThemeToggle from '../ThemeToggle'
@@ -35,14 +28,12 @@ const SidebarContainer = () => {
               boxSize={10}
               alt="Bush Divers Logo"
             />
-            <Heading size="md">Bush Divers</Heading>
+            {/* <Heading size="md">Bush Divers</Heading> */}
           </Flex>
           <ThemeToggle />
         </Flex>
       </Box>
-      <Divider mt={4} />
       <UserSection />
-      <Divider mt={4} />
       <NavMenuItems />
     </Box>
   )
