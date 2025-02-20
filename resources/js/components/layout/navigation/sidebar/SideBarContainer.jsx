@@ -13,8 +13,8 @@ import NavMenuItems from './NavMenuItems'
 import UserSection from './UserSection'
 
 const SidebarContainer = () => {
-  const bg = useColorModeValue('gray.100', 'gray.800')
-  const border = useColorModeValue('gray.300', 'gray.700')
+  const bg = useColorModeValue('white', 'gray.700')
+  const border = useColorModeValue('gray.300', 'gray.800')
   return (
     <Box
       p={3}
