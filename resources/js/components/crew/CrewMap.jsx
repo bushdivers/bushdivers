@@ -18,7 +18,7 @@ const CrewMap = (props) => {
 
   return (
     <>
-      <Box className={'map-container-full relative'}>
+      <Box className={'map-container-full'} position="relative">
         <Map
           mapLib={maplibre}
           mapboxAccessToken={mapboxToken}

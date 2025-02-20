@@ -2,9 +2,8 @@ import {
   Box,
   Button,
   Link as ChakraLink,
+  Container,
   Flex,
-  Grid,
-  GridItem,
   Heading,
   Icon,
   Show,
@@ -22,7 +21,7 @@ import ThemeToggle from './navigation/ThemeToggle.jsx'
 import UserStats from './navigation/UserStats.jsx'
 import SidebarContainer from './navigation/sidebar/SideBarContainer.jsx'
 
-const AdminLayout = ({ children, title, heading, isFullSize = false }) => {
+const AdminLayout = ({ children, title, heading }) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   return (
     <>
@@ -31,18 +30,16 @@ const AdminLayout = ({ children, title, heading, isFullSize = false }) => {
       </Head>
       <Show above="md">
         <SidebarContainer />
-        <Box ml="250px" p={!isFullSize ? '4' : ''}>
+        <Container pl="252px" maxW="container.xl" mt={2}>
           <FlashSection />
-          <Grid templateColumns="repeat(6, 1fr)" gap={2}>
-            <GridItem colSpan={1}>
-              <AdminMenu />
-            </GridItem>
-            <GridItem colSpan={5}>
-              {!isFullSize && <Heading mb={4}>{heading}</Heading>}
-              <Box>{children}</Box>
-            </GridItem>
-          </Grid>
-        </Box>
+          <Flex justifyContent="space-between" alignItems="center">
+            <Heading size="lg" mb={4}>
+              {heading}
+            </Heading>
+            <AdminMenu />
+          </Flex>
+          <Box>{children}</Box>
+        </Container>
       </Show>
       <Show below="md">
         <Box p={2}>
@@ -59,18 +56,13 @@ const AdminLayout = ({ children, title, heading, isFullSize = false }) => {
             </Flex>
           </Flex>
         </Box>
-        <Box p={!isFullSize ? '4' : ''}>
+        <Box p={4}>
           <MobileNav isOpen={isOpen} onClose={onClose} />
           <FlashSection />
-          <Grid templateColumns="repeat(6, 1fr)" gap={2}>
-            <GridItem colSpan={1}>
-              <AdminMenu />
-            </GridItem>
-            <GridItem colSpan={5}>
-              {!isFullSize && <Heading mb={4}>{title}</Heading>}
-              <Box>{children}</Box>
-            </GridItem>
-          </Grid>
+
+          <Heading mb={4}>{title}</Heading>
+          <AdminMenu />
+          <Box>{children}</Box>
         </Box>
       </Show>
     </>

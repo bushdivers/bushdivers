@@ -28,7 +28,7 @@ import {
 const Dashboard = ({ lastFlight, user, locations, distance }) => {
   const { colorMode } = useColorMode()
   return (
-    <Box position="relative">
+    <Box rounded="lg" position="relative">
       <CrewMap
         size="full"
         locations={locations && locations.length > 0 ? locations : []}

@@ -31,7 +31,11 @@
 }
 
 .map-container-full {
-  height: 100vh;
+  height: calc(100vh - 115px);
+}
+
+.maplibregl-map {
+  border-radius: 8px;
 }
 
 .table-wrp {
