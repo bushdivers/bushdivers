@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   Link as ChakraLink,
+  Container,
   Flex,
   Heading,
   Icon,
@@ -19,7 +20,7 @@ import ThemeToggle from './navigation/ThemeToggle'
 import UserStats from './navigation/UserStats'
 import SidebarContainer from './navigation/sidebar/SideBarContainer'
 
-const AppLayout = ({ children, title, heading, isFullSize = false }) => {
+const AppLayout = ({ children, title, heading }) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   return (
     <>
@@ -28,11 +29,13 @@ const AppLayout = ({ children, title, heading, isFullSize = false }) => {
       </Head>
       <Show above="md">
         <SidebarContainer />
-        <Box ml="250px" p={!isFullSize ? '4' : ''}>
-          <FlashSection />
-          {!isFullSize && <Heading mb={4}>{heading}</Heading>}
-          <Box>{children}</Box>
-        </Box>
+        <FlashSection />
+        <Container pl="252px" maxW="container.xl" mt={2}>
+          <Heading size="lg" mb={4}>
+            {heading}
+          </Heading>
+          {children}
+        </Container>
       </Show>
       <Show below="md">
         <Box p={2}>
@@ -49,10 +52,12 @@ const AppLayout = ({ children, title, heading, isFullSize = false }) => {
             </Flex>
           </Flex>
         </Box>
-        <Box p={!isFullSize ? '4' : ''}>
+        <Box p={4}>
           <MobileNav isOpen={isOpen} onClose={onClose} />
           <FlashSection />
-          {!isFullSize && <Heading mb={4}>{title}</Heading>}
+          <Heading size="lg" mb={4}>
+            {title}
+          </Heading>
           {children}
         </Box>
       </Show>
