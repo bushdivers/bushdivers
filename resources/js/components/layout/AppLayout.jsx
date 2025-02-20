@@ -20,7 +20,7 @@ import ThemeToggle from './navigation/ThemeToggle'
 import UserStats from './navigation/UserStats'
 import SidebarContainer from './navigation/sidebar/SideBarContainer'
 
-const AppLayout = ({ children, title, heading }) => {
+const AppLayout = ({ children, title, heading, isFullSize = false }) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   return (
     <>
@@ -30,12 +30,21 @@ const AppLayout = ({ children, title, heading }) => {
       <Show above="md">
         <SidebarContainer />
         <FlashSection />
-        <Container pl="252px" maxW="container.xl" mt={2}>
-          <Heading size="lg" mb={4}>
-            {heading}
-          </Heading>
-          {children}
-        </Container>
+        {!isFullSize ? (
+          <Container pl="252px" maxW="container.xl" mt={2}>
+            <Heading size="lg" mb={4}>
+              {heading}
+            </Heading>
+            {children}
+          </Container>
+        ) : (
+          <Box pl="265px" pr={4} mt={2}>
+            <Heading size="lg" mb={4}>
+              {heading}
+            </Heading>
+            {children}
+          </Box>
+        )}
       </Show>
       <Show below="md">
         <Box p={2}>
