@@ -22,15 +22,11 @@ class ShowJumpseatController extends Controller
     public function __invoke(Request $request): Response
     {
         $user = User::with('location')->find(Auth::user()->id);
-        $spent = DB::table('user_accounts')
-            ->where('user_id', Auth::user()->id)
-            ->where('type', TransactionTypes::Jumpseat)
-            ->sum('total');
 
         $balance = DB::table('user_accounts')
             ->where('user_id', Auth::user()->id)
             ->sum('total');
 
-        return Inertia::render('Crew/Jumpseat', ['user' => $user, 'spent' => abs($spent), 'balance' => $balance]);
+        return Inertia::render('Crew/Jumpseat', ['user' => $user, 'balance' => $balance]);
     }
 }

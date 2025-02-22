@@ -2,38 +2,47 @@ import {
   Box,
   Button,
   Card,
-  CardBody,
-  CardHeader,
+  Link as ChakraLink,
   Flex,
   FormControl,
-  FormHelperText,
-  FormLabel,
+  FormErrorMessage,
+  GridItem,
   Heading,
+  Icon,
   Input,
   SimpleGrid,
   Text,
+  useColorModeValue,
 } from '@chakra-ui/react'
 import { router } from '@inertiajs/react'
+import { Link } from '@inertiajs/react'
 import axios from 'axios'
+import { ArrowLeftRight } from 'lucide-react'
 import React, { useState } from 'react'
 
 import AppLayout from '../../components/layout/AppLayout'
+import { displayNumber } from '../../helpers/number.helpers'
 
-const Jumpseat = ({ user, spent, balance }) => {
+const Jumpseat = ({ user, balance }) => {
+  const bg = useColorModeValue('gray.100', 'gray.500')
   const [airport, setAirport] = useState('')
   const [icao, setIcao] = useState('')
   const [transfer, setTransfer] = useState('')
   const [error, setError] = useState(null)
   const [distance, setDistance] = useState(null)
   const [price, setPrice] = useState(-1)
+  const [isEdit, setIsEdit] = useState(false)
 
   const handleChange = async (e) => {
     setError(null)
-    setAirport(null)
+    setAirport('')
+    setDistance(null)
+    setPrice(-1)
     setIcao(e.target.value)
     if (e.target.value.length >= 3) {
       const response = await axios.get(`/api/airport/search/${e.target.value}`)
       if (response.data.airport) {
+        setIsEdit(false)
         setAirport(
           `${response.data.airport.identifier} - ${response.data.airport.name}`
         )
@@ -75,94 +84,94 @@ const Jumpseat = ({ user, spent, balance }) => {
   }
 
   return (
-    <Box>
-      <Flex direction="column">
-        <SimpleGrid mt={4} columns={3} spacing={10}>
-          <Box>
-            <Card>
-              <CardBody>
-                <SimpleGrid columns={2} spacing={10}>
-                  <Box>
-                    <Heading size="sm">Current Location:</Heading>
-                    <Text my={1}>
-                      {user.location.identifier} - {user.location.name}
-                    </Text>
-                    <FormControl my={2}>
-                      <FormLabel>
-                        <Text>Destination ICAO</Text>
-                      </FormLabel>
-                      <Input
-                        value={icao}
-                        type="text"
-                        id="dep"
-                        placeholder="Enter ICAO"
-                        onChange={handleChange}
-                      />
-                      {airport && <FormHelperText>{airport}</FormHelperText>}
-                      {error && (
-                        <FormHelperText color="red.300">{error}</FormHelperText>
-                      )}
-                    </FormControl>
-                  </Box>
-                  <Box>
-                    <Flex
-                      textAlign="center"
-                      direction="column"
-                      alignItems="center"
-                      gap={4}
-                    >
-                      <Box>
-                        {distance && (
-                          <Box>
-                            <Heading size="sm">Distance</Heading>
-                            <Text>{distance.toLocaleString()} nm</Text>
-                          </Box>
-                        )}
-                      </Box>
-                      <Box>
-                        {price >= 0 ? (
-                          <Box>
-                            <Heading size="sm">Price</Heading>
-                            <Text>${price.toLocaleString()}</Text>
-                          </Box>
-                        ) : (
-                          <></>
-                        )}
-                      </Box>
-                    </Flex>
-                  </Box>
-                </SimpleGrid>
-              </CardBody>
-            </Card>
-            <Flex justifyContent="end">
-              <Button mt={2} onClick={() => processJumpseat()}>
-                Purchase Ticket
-              </Button>
+    <SimpleGrid columns={4} gap={2}>
+      <GridItem colSpan={3}>
+        <Card p={4}>
+          <Flex gap={6} justifyContent="center" alignItems="center">
+            <Flex gap={3} alignItems="baseline">
+              <ChakraLink
+                color="orange.400"
+                as={Link}
+                href={`/airports/${user.location.identifier}`}
+              >
+                <Heading size="md">
+                  {user.location.identifier} - {user.location.name}
+                </Heading>
+              </ChakraLink>
             </Flex>
-          </Box>
-          <Box>
-            <Card mb={2}>
-              <CardHeader>
-                <Heading size="sm">Current Balance</Heading>
-              </CardHeader>
-              <CardBody>
-                <Text fontSize="lg">
-                  ${parseFloat(balance).toLocaleString()}
+            <Icon as={ArrowLeftRight} />
+            <Flex gap={3} alignItems="center">
+              {airport === '' || isEdit ? (
+                <>
+                  <FormControl isInvalid={error}>
+                    <Input
+                      w={40}
+                      value={icao}
+                      type="text"
+                      id="dep"
+                      placeholder="Enter ICAO"
+                      onChange={handleChange}
+                    />
+                    {error && <FormErrorMessage>{error}</FormErrorMessage>}
+                  </FormControl>
+                </>
+              ) : (
+                <Heading
+                  py={1}
+                  px={2}
+                  color="blue.500"
+                  textDecoration="underline"
+                  textDecorationStyle="dashed"
+                  _hover={{
+                    bg: bg,
+                    borderRadius: 'md',
+                  }}
+                  onClick={() => setIsEdit(true)}
+                  size="md"
+                >
+                  {airport}
+                </Heading>
+              )}
+            </Flex>
+          </Flex>
+          {distance && price >= 0 && (
+            <Box mt={2}>
+              <Flex mt={2} justifyContent="center" alignItems="center" gap={3}>
+                <Text>
+                  {user.location.identifier} - {user.location.name}
                 </Text>
-              </CardBody>
-            </Card>
-            <Card>
-              <CardHeader>
-                <Heading size="sm">Spent on Jumpseat</Heading>
-              </CardHeader>
-              <CardBody>
-                <Text fontSize="lg">${parseFloat(spent).toLocaleString()}</Text>
-              </CardBody>
-            </Card>
-          </Box>
-        </SimpleGrid>
-      </Flex>
-    </Box>
+                <Text>to</Text>
+                <Text>{airport}</Text>
+              </Flex>
+              <Flex justifyContent="center" mt={2}>
+                <Heading size="lg">{distance} nm</Heading>
+              </Flex>
+            </Box>
+          )}
+        </Card>
+      </GridItem>
+      <GridItem>
+        <Card p={4}>
+          <Heading mb={2} size="sm">
+            Jumpseat Cost
+          </Heading>
+          {distance && price >= 0 ? (
+            <>
+              <Flex mt={2} justifyContent="end">
+                <Heading size="lg">${displayNumber(price, true)}</Heading>
+              </Flex>
+              <Flex mt={2} justifyContent="end">
+                <Button mt={2} onClick={() => processJumpseat()}>
+                  Purchase Ticket
+                </Button>
+              </Flex>
+            </>
+          ) : (
+            <Text>Please enter a destination</Text>
+          )}
+        </Card>
+      </GridItem>
+    </SimpleGrid>
   )
 }
 
