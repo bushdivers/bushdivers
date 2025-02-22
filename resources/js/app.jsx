@@ -18,7 +18,12 @@ createInertiaApp({
   title: (title) => `${title} - Bush Divers`,
   setup({ el, App, props }) {
     createRoot(el).render(
-      <ChakraProvider theme={theme}>
+      <ChakraProvider
+        theme={theme}
+        toastOptions={{
+          defaultOptions: { position: 'top-right', variant: 'subtle' },
+        }}
+      >
         <ColorModeScript initialColorMode={theme.config.initialColorMode} />
         <ErrorBoundary
           onError={postError}

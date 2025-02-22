@@ -9,10 +9,11 @@ import {
   Show,
   Text,
   useDisclosure,
+  useToast,
 } from '@chakra-ui/react'
-import { Head, Link as InertiaLink } from '@inertiajs/react'
+import { Head, Link as InertiaLink, usePage } from '@inertiajs/react'
 import { Menu } from 'lucide-react'
-import React from 'react'
+import React, { useEffect } from 'react'
 
 import FlashSection from './FlashSection'
 import MobileNav from './navigation/MobileNav'
@@ -21,15 +22,35 @@ import UserStats from './navigation/UserStats'
 import SidebarContainer from './navigation/sidebar/SideBarContainer'
 
 const AppLayout = ({ children, title, heading, isFullSize = false }) => {
+  const { flash } = usePage().props
+  const toast = useToast()
   const { isOpen, onOpen, onClose } = useDisclosure()
+
+  useEffect(() => {
+    if (flash.error) {
+      toast({
+        title: flash.error,
+        status: 'error',
+        isClosable: true,
+      })
+    }
+    if (flash.success) {
+      toast({
+        title: flash.success,
+        status: 'success',
+        isClosable: true,
+      })
+    }
+  }, [flash])
+
   return (
     <>
       <Head>
         <title>{title}</title>
       </Head>
+      {/* <Toast /> */}
       <Show above="md">
         <SidebarContainer />
-        <FlashSection />
         {!isFullSize ? (
           <Container pl="252px" maxW="container.xl" mt={2}>
             <Heading size="lg" mb={4}>
