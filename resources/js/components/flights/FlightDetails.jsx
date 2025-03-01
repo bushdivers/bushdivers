@@ -27,6 +27,8 @@ const renderStatus = (status) => {
       return 'Boarding/Loading'
     case 2:
       return 'Departed'
+    case 3:
+      return 'Enroute'
     case 4:
       return 'Landed'
     case 5:
