@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class CancelPirepController extends Controller
 {
@@ -36,7 +37,11 @@ class CancelPirepController extends Controller
 
             return response()->json(['message' => 'Pirep Cancelled']);
         } catch (ModelNotFoundException $e) {
-            return response()->json(['message' => 'Pirep could not be found']);
+            return response()->json(['message' => 'Pirep could not be found'], 404);
+        }
+        catch (\Exception $e) {
+            Log::warning('Error during pirep cancellation', ['error' => $e->getMessage()]);
+            return response()->json(['message' => 'An error occurred'], 500);
         }
     }
 }
