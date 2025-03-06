@@ -52,7 +52,7 @@ jobs:
     steps:
       - uses: actions/setup-node@v3
         with:
-          node-version: '20.11'
+          node-version: '22.x'
       - uses: actions/checkout@v2
       - name: Install Dependencies
         run: npm i
