@@ -210,7 +210,6 @@ const Cargo = (props) => {
                         >
                           <Td>
                             <Checkbox
-                              id="sel"
                               isChecked={props.selectedCargo.some(
                                 (s) => s.id === detail.id
                               )}
