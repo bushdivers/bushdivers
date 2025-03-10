@@ -34,7 +34,7 @@ class DiscordLogger extends AbstractProcessingHandler {
             'content' => $message,
         ]);
 
-        if ($response->status() != 200)
-            Log::channel('single')->error('DiscordLogger: Failed to send message to Discord', ['response' => $response->body()]);
+        if ($response->status() >= 300)
+            Log::channel('single')->error('DiscordLogger: Failed to send message to Discord', ['response' => $response->body(), 'status' => $response->status()]);
     }
 }
