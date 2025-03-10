@@ -21,10 +21,10 @@ class GenerateAircraft
         $this->generateAircraftDetails = $generateAircraftDetails;
     }
 
-    public function execute($type, $location): void
+    public function execute($type, Airport $location): void
     {
         $fleet = Fleet::find($type);
-        $allAirports =  $this->findAirportsWithinDistance->execute($location, 0, 300);
+        $allAirports = $this->findAirportsWithinDistance->execute($location, 0, 300);
 
         $numberToGenerate = 0;
 
