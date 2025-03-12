@@ -7,7 +7,13 @@ use Illuminate\Support\Collection;
 
 class FindAirportsWithinDistance
 {
-    public function execute(Airport $originAirport, int $minDistance, int $maxDistance, $toHub = false, $fuel = false, $limit = null): Collection
+    /**
+     * Find airports within a given distance of the origin airport
+     * @param Airport $originAirport
+     * @param mixed $minDistance in nautical miles
+     * @param mixed $maxDistance in nautical miles
+     */
+    public function execute(Airport $originAirport, $minDistance, $maxDistance, $toHub = false, $fuel = false, $limit = null): Collection
     {
         $q = Airport::inRangeOf($originAirport, $minDistance, $maxDistance);
         if ($toHub)
