@@ -90,7 +90,7 @@ class SubmitPirepController extends Controller
                 $pirep->aircraft_used = $request->aircraft_used;
                 $pirep->sim_used = $request->sim_used;
                 $pirep->bt_version = $agent;
-                $pirep->engine_on_start = $request->engine_hotstart;
+                $pirep->engine_active_start = $request->engine_hotstart;
                 $pirep->save();
 
                 if (!$pirep->is_empty) {
