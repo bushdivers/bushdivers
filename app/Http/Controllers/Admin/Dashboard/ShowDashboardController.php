@@ -139,9 +139,31 @@ class ShowDashboardController extends Controller
             ->limit(10)
             ->get();
 
+        // Top sim types
+        $simTypes = DB::table('pireps')
+            ->selectRaw('IFNULL(sim_used, \'Unknown\') AS id, count(*) as num')
+            ->whereRaw('block_on_time >= DATE_SUB(NOW(), INTERVAL ? DAY)', [$days])
+            ->groupBy('sim_used')
+            ->orderBy('num', 'desc')
+            ->limit(10)
+            ->get();
+
+        // Top BT versions
+        $btVersions = DB::table('pireps')
+            ->selectRaw('IFNULL(bt_version, \'Unknown\') AS id, count(*) as num')
+            ->whereRaw('block_on_time >= DATE_SUB(NOW(), INTERVAL ? DAY)', [$days])
+            ->groupBy('bt_version')
+            ->orderBy('num', 'desc')
+            ->limit(10)
+            ->get();
+
         return Inertia::render('Admin/Dashboard', [
             'stats' => $stats,
             'days' => $days,
+            'env' => [
+                'sim' => $simTypes,
+                'bt' => $btVersions,
+            ],
             'pilots' => [
                 'hours' => $pilots_hours,
                 'flights' => $pilots,

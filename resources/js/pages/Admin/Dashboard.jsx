@@ -18,7 +18,7 @@ import React from 'react'
 import DashTableCard from '../../components/admin/DashTableCard.jsx'
 import AdminLayout from '../../components/layout/AdminLayout.jsx'
 
-const Dashboard = ({ days, stats, pilots, airports, aircraft }) => {
+const Dashboard = ({ days, stats, pilots, airports, aircraft, env }) => {
   function onSetDays(e) {
     router.get('', { days: e.target.value })
   }
@@ -192,6 +192,26 @@ const Dashboard = ({ days, stats, pilots, airports, aircraft }) => {
                 {ac.registration} {ac.type} {ac.name}
               </>
             )}
+          </DashTableCard>
+        </GridItem>
+        <GridItem colSpan={[4, null, null, null, 2]}>
+          <DashTableCard
+            title="Simulator Usage"
+            itemName="Simulator"
+            unit="Flights"
+            data={env.sim}
+          >
+            {(item) => <>{item.id}</>}
+          </DashTableCard>
+        </GridItem>
+        <GridItem colSpan={[4, null, null, null, 2]}>
+          <DashTableCard
+            title="BushTracker Versions"
+            itemName="Version"
+            unit="Flights"
+            data={env.bt}
+          >
+            {(item) => <>{item.id}</>}
           </DashTableCard>
         </GridItem>
       </Grid>
