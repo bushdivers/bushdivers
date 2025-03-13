@@ -23,6 +23,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class SubmitPirepController extends Controller
@@ -41,8 +42,7 @@ class SubmitPirepController extends Controller
         SetPirepTotalScore $setPirepTotalScore,
         CheckTourProgress $checkTourProgress,
         CheckHubProgress $checkHubProgress
-    )
-    {
+    ) {
         $this->updateContractCargoProgress = $updateContractCargoProgress;
         $this->processPirepFinancials = $processPirepFinancials;
         $this->calculatePirepPoints = $calculatePirepPoints;
@@ -59,127 +59,73 @@ class SubmitPirepController extends Controller
      */
     public function __invoke(Request $request): JsonResponse
     {
-        $pirep = Pirep::find($request->pirep_id);
+        try
+        {
+            $pirep = Pirep::findOrFail($request->pirep_id);
 
-        $agent = $request->userAgent();
-        if (!preg_match('/^\w+\/\d{1,2}\.\d{1,2}\.\d{1,2}\.\d{1,2}$/', $agent))
-            $agent = null;
+            $agent = $request->userAgent();
+            if (!preg_match('/^\w+\/\d{1,2}\.\d{1,2}\.\d{1,2}\.\d{1,2}$/', $agent))
+                $agent = null;
 
-        try {
-            // calculate coordinate points in flight logs
-//            $distance = $pirepService->calculateTotalFlightDistance($pirep);
-            $startTime = Carbon::parse($request->block_off_time);
-            $endTime = Carbon::parse($request->block_on_time);
-            $duration = $startTime->diffInMinutes($endTime);
-        } catch (\Exception $e) {
-            Log::error("Pirep submit failed: " . $e->getMessage());
-            return response()->json(['message' => $e->getMessage()], 400);
-        }
+            DB::transaction(function () use ($request, $pirep, $agent) {
 
-        try {
-            // set pirep status to completed
-            $pirep->fuel_used = $request->fuel_used;
-            $pirep->distance = $request->distance;
-            $pirep->flight_time = $duration;
-            $pirep->landing_rate = $request->landing_rate;
-            $pirep->landing_pitch = $request->landing_pitch;
-            $pirep->landing_bank = $request->landing_bank;
-            $pirep->landing_lat = $request->landing_lat;
-            $pirep->landing_lon = $request->landing_lon;
-            $pirep->state = PirepState::ACCEPTED;
-            $pirep->status = PirepStatus::ARRIVED;
-            $pirep->submitted_at = Carbon::now('UTC');
-            $pirep->block_off_time = $startTime;
-            $pirep->block_on_time = $endTime;
-            $pirep->aircraft_used = $request->aircraft_used;
-            $pirep->sim_used = $request->sim_used;
-            $pirep->bt_version = $agent;
-            $pirep->save();
-        } catch (\Exception $e) {
-            Log::error("Pirep submit stage 2 failed: " . $e->getMessage());
-            $this->rollbackSubmission(1, $request);
-            return response()->json(['message' => $e->getMessage()], 500);
-        }
+                $startTime = Carbon::parse($request->block_off_time);
+                $endTime = Carbon::parse($request->block_on_time);
+                $duration = $startTime->diffInMinutes($endTime);
 
-        if (!$pirep->is_empty) {
-            try {
-                // update cargo and contract
-                $pc = PirepCargo::where('pirep_id', $pirep->id)->get();
-                foreach ($pc as $c) {
-                    $contractCargo = Contract::find($c->contract_cargo_id);
-                    $this->updateContractCargoProgress->execute($contractCargo->id, $pirep->destination_airport_id, $pirep->id);
+                // set pirep status to completed
+                $pirep->fuel_used = $request->fuel_used;
+                $pirep->distance = $request->distance;
+                $pirep->flight_time = $duration;
+                $pirep->landing_rate = $request->landing_rate;
+                $pirep->landing_pitch = $request->landing_pitch;
+                $pirep->landing_bank = $request->landing_bank;
+                $pirep->landing_lat = $request->landing_lat;
+                $pirep->landing_lon = $request->landing_lon;
+                $pirep->state = PirepState::ACCEPTED;
+                $pirep->status = PirepStatus::ARRIVED;
+                $pirep->submitted_at = Carbon::now('UTC');
+                $pirep->block_off_time = $startTime;
+                $pirep->block_on_time = $endTime;
+                $pirep->aircraft_used = $request->aircraft_used;
+                $pirep->sim_used = $request->sim_used;
+                $pirep->bt_version = $agent;
+                $pirep->engine_on_start = $request->engine_hotstart;
+                $pirep->save();
+
+                if (!$pirep->is_empty) {
+                    // update cargo and contract
+                    $pc = PirepCargo::where('pirep_id', $pirep->id)->get();
+                    foreach ($pc as $c) {
+                        $contractCargo = Contract::find($c->contract_cargo_id);
+                        $this->updateContractCargoProgress->execute($contractCargo->id, $pirep->destination_airport_id, $pirep->id);
+                    }
                     $this->checkHubProgress->execute($pirep->destination_airport_id);
                 }
-            } catch (\Exception $e) {
-                Log::error("Pirep submit stage 3 failed: " . $e->getMessage());
-                $this->rollbackSubmission(2, $request);
-                return response()->json(['message' => $e->getMessage()], 500);
-            }
+
+                if ($pirep->tour_id)
+                    $this->checkTourProgress->execute($pirep);
+
+                // process points and financials
+                $this->processPirepFinancials->execute($pirep);
+                $this->calculatePirepPoints->execute($pirep);
+                // add total to pirep
+                $this->setPirepTotalScore->execute($pirep);
+            }, 3);
+
+            // dispatch completed event (updates cargo/contract, resets aircraft, checks rank and awards)
+            PirepFiled::dispatch($pirep);
+
+            return response()->json(['message' => 'Pirep successfully submitted']);
         }
-
-        try {
-            if ($pirep->tour_id) {
-                $this->checkTourProgress->execute($pirep);
-            }
-            // process points and financials
-            $this->processPirepFinancials->execute($pirep);
-            $this->calculatePirepPoints->execute($pirep);
-            // add total to pirep
-            $this->setPirepTotalScore->execute($pirep);
-        } catch (\Exception $e) {
-            Log::error("Pirep submit stage 4 failed: " . $e->getMessage());
-            $this->rollbackSubmission(3, $request);
-            return response()->json(['message' => $e->getMessage()], 500);
+        catch (ModelNotFoundException $e)
+        {
+            return response()->json(['message' => 'Pirep not found'], 404);
         }
-
-        // dispatch completed event (updates cargo/contract, resets aircraft, checks rank and awards)
-        PirepFiled::dispatch($pirep);
-
-        return response()->json(['message' => 'Pirep successfully filed']);
-    }
-
-    protected function rollbackSubmission(int $stage, $pirep)
-    {
-        try {
-            // pirep reset
-            $p = Pirep::findOrFail($pirep->id);
-            if ($p->score) {
-                $score = $p->score;
-            }
-            $p->fuel_used = null;
-            $p->distance = null;
-            $p->flight_time = null;
-            $p->landing_rate = null;
-            $p->state = PirepState::IN_PROGRESS;
-            $p->status = PirepStatus::BOARDING;
-            $p->submitted_at = null;
-            $p->block_off_time = null;
-            $p->block_on_time = null;
-            $p->score = null;
-            $p->save();
-
-            // uncomplete contracts
-            $pc = PirepCargo::where('pirep_id', $pirep->id)->get();
-            foreach ($pc as $c) {
-                $contractCargo = Contract::find($c->contract_cargo_id);
-                $contractCargo->is_completed = false;
-                $contractCargo->completed_at = null;
-                $contractCargo->save();
-            }
-            // remove financials
-            AccountLedger::where('pirep_id', $pirep->id)->destroy();
-
-            // remove points
-            Point::where('pirep_id', $pirep->id)->destroy();
-
-            if ($score) {
-                $user = User::find($pirep->user_id);
-                $user->points = $user->points - $score;
-                $user->save();
-            }
-        } catch (ModelNotFoundException) {
-            return;
+        catch (\Exception $e)
+        {
+            Log::error($e->getMessage(), $e->getTrace());
+            return response()->json(['message' => 'An error occurred: ' . $e->getMessage()], 400);
         }
-
     }
 }
