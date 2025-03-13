@@ -61,6 +61,10 @@ class SubmitPirepController extends Controller
     {
         $pirep = Pirep::find($request->pirep_id);
 
+        $agent = $request->userAgent();
+        if (!preg_match('/^\w+\/\d{1,2}\.\d{1,2}\.\d{1,2}\.\d{1,2}$/', $agent))
+            $agent = null;
+
         try {
             // calculate coordinate points in flight logs
 //            $distance = $pirepService->calculateTotalFlightDistance($pirep);
@@ -89,6 +93,7 @@ class SubmitPirepController extends Controller
             $pirep->block_on_time = $endTime;
             $pirep->aircraft_used = $request->aircraft_used;
             $pirep->sim_used = $request->sim_used;
+            $pirep->bt_version = $agent;
             $pirep->save();
         } catch (\Exception $e) {
             Log::error("Pirep submit stage 2 failed: " . $e->getMessage());

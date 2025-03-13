@@ -82,6 +82,7 @@ class ProcessPirepSubmissionController extends Controller
             $pirep->block_on_time = Carbon::now('UTC');
             $pirep->is_manual = true;
             $pirep->sim_used = null;
+            $pirep->bt_version = 'Manual PIREP';
             $pirep->save();
 
             $pc = PirepCargo::where('pirep_id', $pirep->id)->get();
