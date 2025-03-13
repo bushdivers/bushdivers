@@ -73,7 +73,7 @@ class Kernel extends ConsoleKernel
             foreach ($inactivePireps as $inactivePirep) {
                 $this->removeSinglePirep->execute($inactivePirep);
             }
-            Log::info('Pirep tidy up was called');
+            Log::info('Pirep tidy up was called for '.count($inactivePireps).' pireps');
         })->hourly();
 
         $schedule->call(function () {
@@ -100,6 +100,7 @@ class Kernel extends ConsoleKernel
         })->daily();
 
         $schedule->command('auth:clear-resets')->hourly();
+        $schedule->command('va:clear-marketplace')->weekly();
     }
 
     /**
