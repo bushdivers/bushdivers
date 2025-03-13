@@ -33,9 +33,20 @@ class FindAirportsByDistanceTest extends TestCase
             'lat' => -5.82781,
             'lon' => 144.29953
         ]);
+        Airport::factory()->create([
+            'identifier' => 'AYFO',
+            'lat' => -6.50917,
+            'lon' => 143.07904
+        ]);
 
-        $airports = $this->findAirportsWithinDistance->execute($baseAirport, 1, 200);
-        $this->assertTrue($airports->count() > 0);
+        $airports = $this->findAirportsWithinDistance->execute($baseAirport, 1, 10);
+        $this->assertCount(0, $airports);
+        $airports = $this->findAirportsWithinDistance->execute($baseAirport, 1, 14);
+        $this->assertCount(1, $airports);
+        $airports = $this->findAirportsWithinDistance->execute($baseAirport, 1, 70);
+        $this->assertCount(1, $airports);
+        $airports = $this->findAirportsWithinDistance->execute($baseAirport, 1, 73);
+        $this->assertCount(2, $airports);
     }
 
     public function test_finds_no_airport_out_of_range(): void
@@ -51,7 +62,7 @@ class FindAirportsByDistanceTest extends TestCase
             'lon' => 144.29953
         ]);
         $airports = $this->findAirportsWithinDistance->execute($baseAirport, 201, 300);
-        $this->assertTrue($airports->count() === 0);
+        $this->assertCount(0, $airports);
     }
 
     public function test_finds_hub_in_range(): void
@@ -70,13 +81,13 @@ class FindAirportsByDistanceTest extends TestCase
         ]);
 
         Airport::factory()->create([
-            'identifier' => 'AYMH',
+            'identifier' => 'AYMH_',
             'lat' => -5.82781,
             'lon' => 144.29953,
             'is_hub' => true
         ]);
         $airports = $this->findAirportsWithinDistance->execute($baseAirport, 1, 200, true);
-        $this->assertTrue($airports->count() > 0);
+        $this->assertCount(1, $airports);
     }
 
 }
