@@ -6,25 +6,22 @@ use App\Models\Aircraft;
 use App\Models\AircraftEngine;
 use App\Models\Airport;
 use App\Models\Fleet;
-use App\Services\Airports\FindAirportsWithinDistance;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class GenerateAircraft
 {
-    protected FindAirportsWithinDistance $findAirportsWithinDistance;
     protected GenerateAircraftDetails $generateAircraftDetails;
 
-    public function __construct(FindAirportsWithinDistance $findAirportsWithinDistance, GenerateAircraftDetails $generateAircraftDetails)
+    public function __construct(GenerateAircraftDetails $generateAircraftDetails)
     {
-        $this->findAirportsWithinDistance = $findAirportsWithinDistance;
         $this->generateAircraftDetails = $generateAircraftDetails;
     }
 
     public function execute($type, Airport $location): void
     {
         $fleet = Fleet::find($type);
-        $allAirports = $this->findAirportsWithinDistance->execute($location, 0, 300);
+        $allAirports = Airport::inRangeOf($location, 0, 300)->get();
 
         $numberToGenerate = 0;
 

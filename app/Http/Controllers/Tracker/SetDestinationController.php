@@ -3,20 +3,14 @@
 namespace App\Http\Controllers\Tracker;
 
 use App\Http\Controllers\Controller;
+use App\Models\Airport;
 use App\Models\Pirep;
-use App\Services\Airports\FindAirportsByLatLon;
-use App\Services\AirportService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Location\Coordinate;
 
 class SetDestinationController extends Controller
 {
-    protected FindAirportsByLatLon $findAirportsByLatLon;
-
-    public function __construct(FindAirportsByLatLon $findAirportsByLatLon)
-    {
-        $this->findAirportsByLatLon = $findAirportsByLatLon;
-    }
 
     /**
      * Handle the incoming request.
@@ -28,7 +22,8 @@ class SetDestinationController extends Controller
     {
         // find nearest airport
         try {
-            $airport = $this->findAirportsByLatLon->execute($request->lat, $request->lon, 2);
+            $coord = new Coordinate($request->lat, $request->lon);
+            $airport = Airport::inRangeOf($coord, 0, 2)->orderBy('distance')->first();
         } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage()], 404);
         }

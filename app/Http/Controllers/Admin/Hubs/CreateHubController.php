@@ -11,7 +11,6 @@ use App\Models\Fleet;
 use App\Services\Aircraft\GenerateAircraftDetails;
 use App\Services\Airports\CalcCostOfHub;
 use App\Services\Airports\CalcDistanceBetweenPoints;
-use App\Services\Airports\FindAirportsWithinDistance;
 use App\Services\Contracts\GenerateContractDetails;
 use App\Services\Contracts\StoreContracts;
 use App\Services\Finance\AddAirlineTransaction;
@@ -20,7 +19,6 @@ use Illuminate\Http\Request;
 
 class CreateHubController extends Controller
 {
-    protected FindAirportsWithinDistance $findAirportsWithinDistance;
     protected GenerateAircraftDetails $generateAircraftDetails;
     protected GenerateContractDetails $generateContractDetails;
     protected StoreContracts $storeContracts;
@@ -29,7 +27,6 @@ class CreateHubController extends Controller
     protected CalcCostOfHub $calcCostOfHub;
     protected GetAirlineBalance $getAirlineBalance;
     public function __construct(
-        FindAirportsWithinDistance $findAirportsWithinDistance,
         GenerateAircraftDetails $generateAircraftDetails,
         GenerateContractDetails $generateContractDetails,
         StoreContracts $storeContracts,
@@ -39,7 +36,6 @@ class CreateHubController extends Controller
         GetAirlineBalance $getAirlineBalance
     )
     {
-        $this->findAirportsWithinDistance = $findAirportsWithinDistance;
         $this->generateAircraftDetails = $generateAircraftDetails;
         $this->generateContractDetails = $generateContractDetails;
         $this->storeContracts = $storeContracts;
@@ -69,7 +65,7 @@ class CreateHubController extends Controller
         $airport->hub_in_progress = true;
         $airport->save();
 
-        $allAirports =  $this->findAirportsWithinDistance->execute($airport, 100, 500);
+        $allAirports = Airport::inRangeOf($airport, 100, 500)->get();
         // create aircraft
         if ($request->aircraft) {
             foreach ($request->aircraft as $aircraft) {

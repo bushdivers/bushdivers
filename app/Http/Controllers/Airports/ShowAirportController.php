@@ -7,8 +7,6 @@ use App\Models\Aircraft;
 use App\Models\Airport;
 use App\Models\Contract;
 use App\Models\Enums\AircraftStatus;
-use App\Services\Airports\FindAirportsWithFuel;
-use App\Services\Airports\FindAirportsWithinDistance;
 use App\Services\Airports\GetMetarForAirport;
 use App\Services\Contracts\GenerateContracts;
 use App\Services\Contracts\GetNumberToGenerate;
@@ -27,15 +25,13 @@ class ShowAirportController extends Controller
     protected GenerateContracts $generateContracts;
     protected StoreContracts $storeContracts;
     protected GetNumberToGenerate $getNumberToGenerate;
-    protected FindAirportsWithinDistance $findAirportsWithinDistance;
 
-    public function __construct(GetMetarForAirport $getMetarForAirport, GenerateContracts $generateContracts, StoreContracts $storeContracts, GetNumberToGenerate $getNumberToGenerate, FindAirportsWithinDistance $findAirportsWithinDistance)
+    public function __construct(GetMetarForAirport $getMetarForAirport, GenerateContracts $generateContracts, StoreContracts $storeContracts, GetNumberToGenerate $getNumberToGenerate)
     {
         $this->getMetarForAirport = $getMetarForAirport;
         $this->generateContracts = $generateContracts;
         $this->storeContracts = $storeContracts;
         $this->getNumberToGenerate = $getNumberToGenerate;
-        $this->findAirportsWithinDistance = $findAirportsWithinDistance;
     }
 
     /**
@@ -56,7 +52,7 @@ class ShowAirportController extends Controller
             return redirect()->back()->with(['error' => 'Airport not found']);
         }
 
-        $nearestFuel = $this->findAirportsWithinDistance->execute($airport, 2, 500,false, true, 5);
+        $nearestFuel = Airport::inRangeOf($airport, 2, 500)->fuel()->orderBy('distance')->limit(5)->get();
         $companyAc = Aircraft::with(['fleet', 'engines'])
             ->where('owner_id', 0)
             ->where('status', AircraftStatus::ACTIVE)
