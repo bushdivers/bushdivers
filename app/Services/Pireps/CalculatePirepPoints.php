@@ -69,5 +69,10 @@ class CalculatePirepPoints
         // TODO: exceed 250 under 10,000ft
 
         // TODO: time compression penalty
+
+        if ($pirep->engine_active_start)
+        {
+            $this->storePirepPointsEntry->execute($pirep->id, PointsType::ENGINE_ACTIVE_STARTUP_LABEL, PointsType::ENGINE_ACTIVE_STARTUP);
+        }
     }
 }

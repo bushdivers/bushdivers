@@ -259,4 +259,38 @@ class CalculatePointsTest extends TestCase
             'points' => $expected
         ]);
     }
+
+    public function test_engine_active_start_penalty()
+    {
+        $pirep = Pirep::factory()->create([
+            'user_id' => $this->user->id,
+            'aircraft_id' => $this->aircraft->id,
+            'engine_active_start' => true,
+            'landing_rate' => 54.5,
+        ]);
+
+        $this->calculatePirepPoints->execute($pirep);
+        $this->assertDatabaseHas('points', [
+            'pirep_id' => $pirep->id,
+            'type_name' => PointsType::ENGINE_ACTIVE_STARTUP_LABEL,
+            'points' => PointsType::ENGINE_ACTIVE_STARTUP
+        ]);
+    }
+
+    public function test_engine_active_start_penalty_not_added()
+    {
+        $pirep = Pirep::factory()->create([
+            'user_id' => $this->user->id,
+            'aircraft_id' => $this->aircraft->id,
+            'engine_active_start' => false,
+            'landing_rate' => 54.5,
+        ]);
+
+        $this->calculatePirepPoints->execute($pirep);
+        $this->assertDatabaseMissing('points', [
+            'pirep_id' => $pirep->id,
+            'type_name' => PointsType::ENGINE_ACTIVE_STARTUP_LABEL,
+            'points' => PointsType::ENGINE_ACTIVE_STARTUP
+        ]);
+    }
 }

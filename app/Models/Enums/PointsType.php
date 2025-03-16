@@ -20,6 +20,7 @@ class PointsType
     public const LANDING_RATE_61_180 = 5;
     public const LANDING_RATE_181_400 = 1;
     public const LANDING_RATE_OVER_400 = -2;
+    public const ENGINE_ACTIVE_STARTUP = -1;
 
     public const COMPLETED_FLIGHT_LABEL = 'Flight completed';
     public const FIFTY_MILES_LABEL = 'Per 50nm';
@@ -37,4 +38,5 @@ class PointsType
     public const LANDING_RATE_61_180_LABEL = 'Landing rate 60fpm to 180fpm';
     public const LANDING_RATE_181_400_LABEL = 'Landing rate 181fpm to 500fpm';
     public const LANDING_RATE_OVER_400_LABEL = 'Landing rate over 500fpm';
+    public const ENGINE_ACTIVE_STARTUP_LABEL = 'Engine already active';
 }
