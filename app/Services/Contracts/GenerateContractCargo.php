@@ -16,18 +16,11 @@ class GenerateContractCargo
         $types = DB::table('cargo_types')->get();
         $cargo = $types->random();
         if ($cargo->type == 1) {
-            $qty = $this->skewedRandom($minCargo, $maxCargo);
+            $qty = random_int($minCargo, $maxCargo);
         } else {
-            $qty = $this->skewedRandom($minPax, $maxPax);
+            $qty = random_int($minPax, $maxPax);
         }
         return ['name' => $cargo->text, 'type' => $cargo->type, 'qty' => $qty];
     }
 
-    protected function skewedRandom($min, $max): float|object|int
-    {
-        // Adjust the power value to control the skewness
-        $skew = 1;
-        $offset = $max - $min + 1;
-        return floor($min + pow(lcg_value(), $skew) * $offset);
-    }
 }

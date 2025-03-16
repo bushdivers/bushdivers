@@ -56,6 +56,9 @@ class AirportTest extends TestCase
 
     public function test_finds_hub_in_range(): void
     {
+        $this->assertGreaterThan(0, Airport::inRangeOf($this->baseAirport, 1, 200)->count());
+        $this->assertEquals(0, Airport::inRangeOf($this->baseAirport, 1, 200)->hub()->count());
+
         Airport::factory()->create([
             'identifier' => 'AYMH_',
             'lat' => -5.82781,
@@ -85,5 +88,30 @@ class AirportTest extends TestCase
         $airport = Airport::inRangeOf($coord, 0, 3)->orderBy('distance')->first();
         $this->assertEquals(null, $airport);
     }
+
+    public function test_has_fuel_scope()
+    {
+        $airport = Airport::factory()->create([
+            'identifier' => 'AYMH_',
+            'lat' => -5.82781,
+            'lon' => 144.29953,
+            'has_jetfuel' => false,
+            'has_avgas' => false
+        ]);
+
+        $this->assertNotNull(Airport::where('id', $airport->id)->first());
+        $this->assertNull(Airport::where('id', $airport->id)->fuel()->first());
+
+        $airport->has_avgas = true;
+        $airport->save();
+        $this->assertNotNull(Airport::where('id', $airport->id)->fuel()->first());
+
+        $airport->has_jetfuel = true;
+        $airport->has_avgas = false;
+        $airport->save();
+        $this->assertNotNull(Airport::where('id', $airport->id)->fuel()->first());
+    }
+
+
 
 }

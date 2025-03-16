@@ -2,25 +2,23 @@
 
 namespace App\Services\Contracts;
 
-use App\Services\Airports\FindAirportsWithinDistance;
+use App\Models\Airport;
 
 class GenerateContracts
 {
     protected GenerateContractDetails $generateContractDetails;
-    protected FindAirportsWithinDistance $findAirportsWithinDistance;
 
-    public function __construct(GenerateContractDetails $generateContractDetails, FindAirportsWithinDistance $findAirportsWithinDistance)
+    public function __construct(GenerateContractDetails $generateContractDetails)
     {
         $this->generateContractDetails = $generateContractDetails;
-        $this->findAirportsWithinDistance = $findAirportsWithinDistance;
     }
 
-    public function execute($airport, $numberToGenerate, $toHub = false)
+    public function execute(Airport $airport, $numberToGenerate, $toHub = false)
     {
         // get airports
-        $nearbyAirports = $this->findAirportsWithinDistance->execute($airport, 2, 50, $toHub);
-        $midRangeAirports = $this->findAirportsWithinDistance->execute($airport, 51, 250, $toHub);
-        $furtherAfieldAirports = $this->findAirportsWithinDistance->execute($airport, 251, 650, $toHub);
+        $nearbyAirports = Airport::inRangeof($airport, 2, 75)->when($toHub, fn ($q) => $q->hub())->get();
+        $midRangeAirports = Airport::inRangeof($airport, 76, 250)->when($toHub, fn ($q) => $q->hub())->get();
+        $furtherAfieldAirports = Airport::inRangeof($airport, 251, 650)->when($toHub, fn ($q) => $q->hub())->get();
         $allAirports = $nearbyAirports->merge($midRangeAirports)->merge($furtherAfieldAirports);
 
         if ($allAirports->count() === 0) {
