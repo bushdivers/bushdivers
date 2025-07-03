@@ -1,5 +1,14 @@
-import { Box, Card, Flex, Heading, Tag } from '@chakra-ui/react'
-import { router, usePage } from '@inertiajs/react'
+import {
+  Alert,
+  AlertIcon,
+  Box,
+  Card,
+  Flex,
+  Heading,
+  Tag,
+  Text,
+} from '@chakra-ui/react'
+import { Link, router, usePage } from '@inertiajs/react'
 import axios from 'axios'
 import { useAtomValue } from 'jotai'
 import React from 'react'
@@ -55,6 +64,14 @@ const ContractList = ({ contracts, myContracts, sharedContracts }) => {
             <Heading size="sm">Available Contracts</Heading>
             <Tag colorScheme="green">Available</Tag>
           </Flex>
+          <Alert cursor="pointer" status="info" mt={2}>
+            <AlertIcon />
+            <Text size="sm">
+              <Link href="/contracts/experimental">
+                Try our experimental contract generator
+              </Link>
+            </Text>
+          </Alert>
           {contracts &&
             contracts.map((c) => (
               <ContractDetail

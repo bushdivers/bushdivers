@@ -94,6 +94,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/airports/{icao?}', \App\Http\Controllers\Airports\ShowAirportController::class)
         ->name('airport');
 
+
     Route::middleware('role:airport_manager')->group(function () {
         Route::post('/airports/maintenance/rename', \App\Http\Controllers\Airports\RenameAirportController::class)
         ->name('airport.rename');
@@ -149,6 +150,11 @@ Route::middleware('auth')->group(function () {
         ->name('aircraft.mine');
     Route::post('/marketplace/sell/{id}/{seller}', \App\Http\Controllers\MarketPlace\SellAircraftController::class)
         ->name('marketplace.sell');
+
+
+    // experimental contracts
+    Route::get('/contracts/experimental', \App\Http\Controllers\Contracts\Experimental\ShowContractGeneratorController::class)
+        ->name('contracts.generator');
 
 
     // Flights

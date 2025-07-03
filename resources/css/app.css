@@ -56,3 +56,122 @@
 .map-data-content {
   max-height: calc(100vh - 25rem);
 }
+
+.message-loader {
+  align-items: center;
+  border: 1px solid #c9cbcb;
+  border-radius: 15px;
+  display: flex;
+  height: 20px;
+  padding: 0 5px;
+  position: relative;
+  width: 45px;
+}
+.message-loader .loader-bar {
+  animation: chat-typing-bar 1.5s infinite;
+  border-radius: 5px;
+  height: 8px;
+  left: 5px;
+  position: absolute;
+}
+
+.message-loader-2 {
+  align-items: center;
+  border: 1px solid #c9cbcb;
+  border-radius: 15px;
+  display: flex;
+  height: 20px;
+  justify-content: space-between;
+  padding: 0 5px;
+  position: relative;
+  width: 45px;
+}
+.message-loader-2 .loader-bar-2 {
+  background: #c9cbcb;
+  border-radius: 5px;
+  height: 8px;
+  position: relative;
+  width: 8px;
+}
+.message-loader-2 .loader-bar-2:first-of-type {
+  animation: chat-typing-indicator 1.5s infinite;
+}
+.message-loader-2 .loader-bar-2:nth-of-type(2) {
+  animation: chat-typing-indicator 1.5s infinite 0.2s;
+}
+.message-loader-2 .loader-bar-2:nth-of-type(3) {
+  animation: chat-typing-indicator 1.5s infinite 0.4s;
+}
+
+@keyframes chat-typing-bar {
+  0% {
+    width: 8px;
+  }
+  25% {
+    width: calc(100% - 10px);
+  }
+  50% {
+    width: 8px;
+  }
+  75% {
+    width: calc(100% - 10px);
+  }
+  100% {
+    width: 8px;
+  }
+  25% {
+    left: 5px;
+  }
+  50% {
+    left: calc(100% - 13px);
+  }
+  75% {
+    left: 5px;
+  }
+  0% {
+    background: #ed8936;
+  }
+  50% {
+    background: #dd6b20;
+  }
+  100% {
+    background: #ed8936;
+  }
+}
+@keyframes chat-typing-indicator {
+  0% {
+    top: 0;
+  }
+  6.25% {
+    top: -1px;
+  }
+  12.5% {
+    top: 0;
+  }
+  18.75% {
+    top: 1px;
+  }
+  25% {
+    top: 0;
+  }
+  12.5% {
+    background: #dd6b20;
+  }
+}
+
+.chat-bubble {
+  padding: 1rem;
+  padding-top: 0.625rem;
+  padding-bottom: 0.625rem;
+  margin-left: 0.5rem;
+  flex-direction: column;
+  align-items: center;
+  border-color: #e5e7eb;
+  width: 100%;
+  font-weight: 400;
+  font-weight: 600;
+  color: #6b7280;
+  color: #111827;
+  background-color: #f3f4f6;
+  max-width: 320px;
+}

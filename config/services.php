@@ -40,4 +40,8 @@ return [
         'secret' => env('MAILJET_API_SECRET'),
     ],
 
+    'googleai' => [
+        'key' => env('GOOGLE_AI_KEY'),
+    ],
+
 ];

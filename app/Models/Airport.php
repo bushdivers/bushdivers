@@ -48,6 +48,11 @@ class Airport extends Model
         $query->where('has_avgas', true)->orWhere('has_jetfuel', true);
     }
 
+    public function scopeMinSize(Builder $query, int $minSize)
+    {
+        $query->where('size', '>=', $minSize);
+    }
+
 
 }
 

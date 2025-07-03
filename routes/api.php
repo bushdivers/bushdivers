@@ -42,6 +42,8 @@ Route::put('/admin/categories', \App\Http\Controllers\Admin\Resources\EditResour
     ->name('admin.categories.edit');
 Route::get('/tracker-version', \App\Http\Controllers\Tracker\GetTrackerVersionController::class)
     ->name('tracker.version');
+Route::post('/contracts/experimental', \App\Http\Controllers\Contracts\Experimental\ContractGeneratorController::class)
+    ->name('request.generator');
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/dispatch', \App\Http\Controllers\Tracker\GetActiveDispatchController::class);
