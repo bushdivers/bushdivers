@@ -20,6 +20,7 @@ class RoleSeeder extends Seeder
             ['id' => 3, 'role' => 'fleet_admin'],
             ['id' => 4, 'role' => 'airport_manager'],
             ['id' => 5, 'role' => 'tour_admin'],
+            ['id' => 6, 'role' => 'dispatcher'],
         ]);
     }
 }

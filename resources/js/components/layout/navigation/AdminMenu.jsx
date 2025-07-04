@@ -13,9 +13,16 @@ const AdminMenu = () => {
         <ChakraLink as={InertiaLink} href="/admin/dashboard">
           Dashboard
         </ChakraLink>
-        <ChakraLink as={InertiaLink} href="/admin/fleet">
-          Fleet
-        </ChakraLink>
+        {doesUserHaveRole(auth.user.user_roles, 'dispatcher') && (
+          <ChakraLink as={InertiaLink} href="/admin/dispatch">
+            Dispatch
+          </ChakraLink>
+        )}
+        {doesUserHaveRole(auth.user.user_roles, 'fleet_admin') && (
+          <ChakraLink as={InertiaLink} href="/admin/fleet">
+            Fleet
+          </ChakraLink>
+        )}
         {doesUserHaveRole(auth.user.user_roles, 'tour_admin') && (
           <ChakraLink as={InertiaLink} href="/admin/tours">
             Tours

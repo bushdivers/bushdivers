@@ -237,6 +237,13 @@ Route::middleware('auth')->group(function () {
             ->name('admin.mission.complete');
     });
 
+    Route::middleware('role:dispatcher')->group(function () {
+        Route::get('/admin/dispatch', \App\Http\Controllers\Admin\Dispatch\ShowCreateDispatchController::class)
+            ->name('admin.dispatch');
+        Route::post('/admin/dispatch', \App\Http\Controllers\Admin\Dispatch\CreateDispatchController::class)
+            ->name('admin.dispatch.create');
+    });
+
     Route::middleware('admin')->group(function () {
         Route::get('/admin/pireps', \App\Http\Controllers\Admin\Pireps\ShowPirepsListController::class)
             ->name('admin.pireps');
