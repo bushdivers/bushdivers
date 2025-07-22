@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Tracker;
 
 use App\Http\Controllers\Controller;
 use App\Models\Enums\PirepState;
+use App\Models\Enums\WeightConsts;
 use App\Models\Pirep;
 use App\Services\Dispatch\CalcCargoWeight;
 use App\Services\Dispatch\CalcPassengerCount;
@@ -20,8 +21,7 @@ class GetActiveDispatchController extends Controller
     public function __construct(
         CalcCargoWeight $calcCargoWeight,
         CalcPassengerCount $calcPassengerCount
-    )
-    {
+    ) {
         $this->calcPassengerCount = $calcPassengerCount;
         $this->calcCargoWeight = $calcCargoWeight;
     }
@@ -87,6 +87,7 @@ class GetActiveDispatchController extends Controller
             'fuel_type' => $dispatch->is_rental ? $dispatch->rental->fleet->fuel_type : $dispatch->aircraft->fleet->fuel_type,
             'cargo_weight' => $cargoWeight,
             'passenger_count' => $passengerCount,
+            'total_payload' => $cargoWeight + ($passengerCount + 1) * WeightConsts::PERSON_WEIGHT, // +1 for the pilot
             'is_empty' => $dispatch->is_empty,
             'tour' => $dispatch->tour->title ?? null
         ];
