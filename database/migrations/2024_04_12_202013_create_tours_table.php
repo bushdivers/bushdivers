@@ -31,5 +31,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('tours');
+
+        // Remove the tour_admin role if it exists
+        \Illuminate\Support\Facades\DB::table('roles')->where('role', 'tour_admin')->delete();
     }
 };
