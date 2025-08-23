@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class removeUnusedMarketplaceItemsTest extends TestCase
+class RemoveUnusedMarketplaceItemsTest extends TestCase
 {
     use RefreshDatabase;
 

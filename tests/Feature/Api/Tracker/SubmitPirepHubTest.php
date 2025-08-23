@@ -1,6 +1,6 @@
 <?php
 
-namespace Api\Tracker;
+namespace Tests\Feature\Api\Tracker;
 
 use App\Events\PirepFiled;
 use App\Models\Aircraft;

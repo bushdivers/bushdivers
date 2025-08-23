@@ -14,6 +14,7 @@ class PirepState
         self::DISPATCH => 'Dispatch',
         self::IN_PROGRESS => 'In Progress',
         self::ACCEPTED => 'Accepted',
-        self::REJECTED => 'Rejected'
+        self::REJECTED => 'Rejected',
+        self::REVIEW => 'Review',
     ];
 }

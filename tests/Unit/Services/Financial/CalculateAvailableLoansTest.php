@@ -1,6 +1,6 @@
 <?php
 
-namespace Services\Financial;
+namespace Tests\Unit\Services\Financial;
 
 use App\Services\Finance\CalculateAvailableLoans;
 use Tests\TestCase;

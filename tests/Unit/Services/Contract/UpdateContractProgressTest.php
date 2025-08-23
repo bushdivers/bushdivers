@@ -1,6 +1,6 @@
 <?php
 
-namespace Services\Contract;
+namespace Tests\Unit\Services\Contract;
 
 use App\Models\Airport;
 use App\Models\Contract;
