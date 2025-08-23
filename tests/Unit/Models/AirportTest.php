@@ -3,6 +3,7 @@
 namespace Tests\Unit\Models;
 
 use App\Models\Airport;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Location\Coordinate;
 use Tests\TestCase;
@@ -38,9 +39,6 @@ class AirportTest extends TestCase
         ]);
     }
 
-    /**
-     * A basic unit test example.
-     */
     public function test_finds_airport_in_range(): void
     {
         $this->assertEquals(0, Airport::inRangeOf($this->baseAirport, 1, 10)->count());
@@ -112,6 +110,36 @@ class AirportTest extends TestCase
         $this->assertNotNull(Airport::where('id', $airport->id)->fuel()->first());
     }
 
+
+    function test_default_scope()
+    {
+        $user = User::factory()->create();
+
+        $exclAirport = Airport::factory()->create([
+            'identifier' => 'EXCL1',
+            'lat' => -5.82781,
+            'lon' => 144.29953,
+            'user_id' => $user->id
+        ]);
+
+        $this->assertNotNull(Airport::where('id', $exclAirport->id)->withoutGlobalScopes()->first());
+        $this->assertNull(Airport::where('id', $exclAirport->id)->first());
+
+        $baseCount = Airport::count();
+        $this->assertEquals($baseCount + 1, Airport::withoutGlobalScopes()->count());
+
+        $exclAirport->user_id = null;
+        $exclAirport->save();
+        // Validate now included
+        $this->assertEquals($baseCount + 1, Airport::count());
+
+        // Set as third party
+        $exclAirport->is_thirdparty = true;
+        $exclAirport->save();
+
+        $this->assertEquals($baseCount, Airport::count());
+        $this->assertEquals($baseCount + 1, Airport::withoutGlobalScopes()->count());
+    }
 
 
 }

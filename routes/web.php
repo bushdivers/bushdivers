@@ -97,6 +97,20 @@ Route::middleware('auth')->group(function () {
     Route::middleware('role:airport_manager')->group(function () {
         Route::post('/airports/maintenance/rename', \App\Http\Controllers\Airports\RenameAirportController::class)
         ->name('airport.rename');
+
+        // Third-party airport management
+        Route::get('/admin/airports', \App\Http\Controllers\Admin\Airports\ShowAirportsController::class)
+            ->name('admin.airports');
+        Route::get('/admin/airports/create', \App\Http\Controllers\Admin\Airports\ShowCreateAirportController::class)
+            ->name('admin.airports.create');
+        Route::post('/admin/airports/create', \App\Http\Controllers\Admin\Airports\CreateAirportController::class)
+            ->name('admin.airports.store');
+        Route::get('/admin/airports/edit/{id}', \App\Http\Controllers\Admin\Airports\ShowEditAirportController::class)
+            ->name('admin.airports.edit');
+        Route::post('/admin/airports/edit/{id}', \App\Http\Controllers\Admin\Airports\UpdateAirportController::class)
+            ->name('admin.airports.update');
+        Route::delete('/admin/airports/{id}', \App\Http\Controllers\Admin\Airports\DeleteAirportController::class)
+            ->name('admin.airports.delete');
     });
 
     // Tours

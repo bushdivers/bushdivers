@@ -26,7 +26,7 @@ class ShowPirepController extends Controller
      */
     public function __invoke(Request $request, $pirep): Response
     {
-        $pcheck = Pirep::find($pirep);
+        $pcheck = Pirep::findOrFail($pirep);
 
         if (Auth::user()->is_admin) {
             if ($pcheck->is_rental) {

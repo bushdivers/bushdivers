@@ -74,5 +74,28 @@ class AirportSeeder extends Seeder
                 'jetfuel_price' => 4.00
             ]
         ]);
+
+        DB::table('airports')->insert([
+            [
+                'identifier' => 'AYGN',
+                'name' => 'Gurney',
+                'is_hub' => 0,
+                'lat' => -10.306832,
+                'lon' => 150.333499,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+                'longest_runway_surface' => 'A',
+                'longest_runway_length' => 5547,
+                'altitude' => 67,
+                'has_avgas' => true,
+                'avgas_qty' => 5000,
+                'avgas_price' => 4.00,
+                'has_jetfuel' => true,
+                'jetfuel_qty' => 5000,
+                'jetfuel_price' => 4.00,
+                'is_thirdparty' => true,
+            ],
+
+        ]);
     }
 }
