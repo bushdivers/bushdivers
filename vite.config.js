@@ -10,5 +10,16 @@ export default defineConfig({
   ],
   build: {
     sourcemap: true,
+    rollupOptions: {
+      onwarn: (warning, rollupWarn) => {
+        // Ignore specific warnings
+        if (
+          warning.code === 'MODULE_LEVEL_DIRECTIVE' &&
+          warning.message.includes('"use client"')
+        )
+          return
+        rollupWarn(warning)
+      },
+    },
   },
 })
