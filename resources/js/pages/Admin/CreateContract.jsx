@@ -111,11 +111,7 @@ const CreateContract = () => {
               <Button variant="outline" onClick={() => window.history.back()}>
                 Cancel
               </Button>
-              <Button
-                type="submit"
-                colorScheme="blue"
-                loadingText="Creating..."
-              >
+              <Button type="submit" loadingText="Creating...">
                 Create Contract
               </Button>
             </HStack>
@@ -129,8 +125,8 @@ const CreateContract = () => {
 CreateContract.layout = (page) => (
   <AdminLayout
     children={page}
-    title="Admin - Create Contract"
-    heading="Create Contract"
+    heading="Contract Management"
+    subHeading="Add new contract"
   />
 )
 

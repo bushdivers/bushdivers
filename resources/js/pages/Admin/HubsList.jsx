@@ -3,7 +3,6 @@ import {
   Button,
   Card,
   CardBody,
-  Flex,
   Table,
   TableContainer,
   Tbody,
@@ -21,12 +20,17 @@ import AdminLayout from '../../components/layout/AdminLayout.jsx'
 const HubsList = ({ hubs, fleet }) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   return (
-    <>
+    <AdminLayout
+      heading="Hub Management"
+      subHeading="Hub List"
+      actions={
+        <Button onClick={onOpen} size="sm">
+          Create Hub
+        </Button>
+      }
+    >
       <Card>
         <CardBody>
-          <Flex justifyContent="end">
-            <Button onClick={onOpen}>Create Hub</Button>
-          </Flex>
           {hubs && hubs.length > 0 && (
             // (
             <Box p={2}>
@@ -63,11 +67,8 @@ const HubsList = ({ hubs, fleet }) => {
         </CardBody>
       </Card>
       <CreateHubDetail isOpen={isOpen} onClose={onClose} fleet={fleet} />
-    </>
+    </AdminLayout>
   )
 }
 
-HubsList.layout = (page) => (
-  <AdminLayout children={page} title="Admin - Hubs" heading="Hub List" />
-)
 export default HubsList

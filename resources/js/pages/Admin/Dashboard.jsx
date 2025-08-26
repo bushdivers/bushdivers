@@ -24,10 +24,11 @@ const Dashboard = ({ days, stats, pilots, airports, aircraft, env }) => {
   }
 
   return (
-    <>
-      {}
-      <Grid templateColumns="repeat(4, 1fr)" gap={6}>
-        <GridItem colSpan={4}>
+    <AdminLayout
+      heading="Dashboard"
+      subHeading="VA Flight Statistics"
+      actions={
+        <Box>
           Date range:
           <Box display={'inline-block'}>
             <Select marginLeft="1em" defaultValue={days} onChange={onSetDays}>
@@ -39,7 +40,10 @@ const Dashboard = ({ days, stats, pilots, airports, aircraft, env }) => {
               <option value="90">90 days</option>
             </Select>
           </Box>
-        </GridItem>
+        </Box>
+      }
+    >
+      <Grid templateColumns="repeat(4, 1fr)" gap={6}>
         <GridItem colSpan={[2, null, null, null, 1]}>
           <Card>
             <CardBody>
@@ -215,12 +219,8 @@ const Dashboard = ({ days, stats, pilots, airports, aircraft, env }) => {
           </DashTableCard>
         </GridItem>
       </Grid>
-    </>
+    </AdminLayout>
   )
 }
-
-Dashboard.layout = (page) => (
-  <AdminLayout children={page} title="Admin - Dashboard" heading="Dashboard" />
-)
 
 export default Dashboard

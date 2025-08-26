@@ -68,90 +68,93 @@ const Pireps = ({ pireps }) => {
   }
 
   return (
-    <Card>
-      <CardBody>
-        {pireps.length === 0 ? (
-          <NoContent content={<EmptyData />} />
-        ) : (
-          <>
-            <Flex gap={2} alignItems="center">
-              <Box className="text-gray-700">Pirep Id</Box>
-              <Box>
-                <Input
-                  id="pirep"
-                  type="text"
-                  placeholder="Find pirep"
-                  className="form-input form"
-                  value={pirepId}
-                  onChange={handleChange}
-                />
-              </Box>
-              <Button onClick={() => handleSearch()}>Go</Button>
-            </Flex>
-            <TableContainer>
-              <Table>
-                <Thead>
-                  <Tr>
-                    <Th></Th>
-                    <Th>Departure</Th>
-                    <Th>Arrival</Th>
-                    <Th>Pilot</Th>
-                    <Th>State</Th>
-                    <Th>Date</Th>
-                    <Th></Th>
-                  </Tr>
-                </Thead>
-                <Tbody>
-                  {pireps.data.map((entry) => (
-                    <Tr key={entry.id}>
-                      <Td onClick={() => loadPirep(entry)}>
-                        <Link>View Details</Link>
-                        {entry.state === 5 && <Tag ml={2}>Review</Tag>}
-                      </Td>
-                      <Td>
-                        {entry.departure_airport_id}
-                        <br />
-                        <Text fontSize="xs">{entry.dep_airport.name}</Text>
-                      </Td>
-                      <Td>
-                        {entry.destination_airport_id}
-                        <br />
-                        <Text fontSize="xs">{entry.arr_airport.name}</Text>
-                      </Td>
-                      <Td>
-                        <Text>{entry.pilot.pilot_id}</Text>
-                        <Text fontSize="xs">{entry.pilot.private_name}</Text>
-                      </Td>
-                      <Td>{renderPirepState(entry.state)}</Td>
-                      <Td>
-                        {format(new Date(entry.submitted_at), 'dd LLL yyyy')}
-                      </Td>
-                      <Td>
-                        {entry.state === 5 && (
-                          <Button
-                            variant="ghost"
-                            size="xs"
-                            onClick={() => approvePirep(entry)}
-                          >
-                            <Icon as={Check} />
-                          </Button>
-                        )}
-                      </Td>
+    <AdminLayout
+      heading="Pirep Management"
+      subHeading="Pirep List"
+      actions={
+        <Flex gap={2} alignItems="center">
+          <Box className="text-gray-700">Pirep Id</Box>
+          <Box>
+            <Input
+              id="pirep"
+              type="text"
+              placeholder="Find pirep"
+              className="form-input form"
+              value={pirepId}
+              onChange={handleChange}
+            />
+          </Box>
+          <Button onClick={() => handleSearch()}>Go</Button>
+        </Flex>
+      }
+    >
+      <Card>
+        <CardBody>
+          {pireps.length === 0 ? (
+            <NoContent content={<EmptyData />} />
+          ) : (
+            <>
+              <TableContainer>
+                <Table>
+                  <Thead>
+                    <Tr>
+                      <Th></Th>
+                      <Th>Departure</Th>
+                      <Th>Arrival</Th>
+                      <Th>Pilot</Th>
+                      <Th>State</Th>
+                      <Th>Date</Th>
+                      <Th></Th>
                     </Tr>
-                  ))}
-                </Tbody>
-              </Table>
-            </TableContainer>
-            <Pagination pages={pireps} />
-          </>
-        )}
-      </CardBody>
-    </Card>
+                  </Thead>
+                  <Tbody>
+                    {pireps.data.map((entry) => (
+                      <Tr key={entry.id}>
+                        <Td onClick={() => loadPirep(entry)}>
+                          <Link>View Details</Link>
+                          {entry.state === 5 && <Tag ml={2}>Review</Tag>}
+                        </Td>
+                        <Td>
+                          {entry.departure_airport_id}
+                          <br />
+                          <Text fontSize="xs">{entry.dep_airport.name}</Text>
+                        </Td>
+                        <Td>
+                          {entry.destination_airport_id}
+                          <br />
+                          <Text fontSize="xs">{entry.arr_airport.name}</Text>
+                        </Td>
+                        <Td>
+                          <Text>{entry.pilot.pilot_id}</Text>
+                          <Text fontSize="xs">{entry.pilot.private_name}</Text>
+                        </Td>
+                        <Td>{renderPirepState(entry.state)}</Td>
+                        <Td>
+                          {format(new Date(entry.submitted_at), 'dd LLL yyyy')}
+                        </Td>
+                        <Td>
+                          {entry.state === 5 && (
+                            <Button
+                              variant="ghost"
+                              size="xs"
+                              onClick={() => approvePirep(entry)}
+                            >
+                              <Icon as={Check} />
+                            </Button>
+                          )}
+                        </Td>
+                      </Tr>
+                    ))}
+                  </Tbody>
+                </Table>
+              </TableContainer>
+              <Pagination pages={pireps} />
+            </>
+          )}
+        </CardBody>
+      </Card>
+    </AdminLayout>
   )
 }
-
-Pireps.layout = (page) => (
-  <AdminLayout children={page} title="Admin - Pireps" heading="Pireps" />
-)
 
 export default Pireps

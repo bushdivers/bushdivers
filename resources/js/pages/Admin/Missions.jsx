@@ -73,12 +73,17 @@ const Missions = ({ missions }) => {
   }
 
   return (
-    <>
+    <AdminLayout
+      heading="Mission Management"
+      subHeading="Missions List"
+      actions={
+        <Button onClick={onOpen} size="sm">
+          Add Mission
+        </Button>
+      }
+    >
       <Card>
         <CardBody>
-          <Flex justifyContent="end">
-            <Button onClick={onOpen}>Add Mission</Button>
-          </Flex>
           {missions?.length > 0 ? (
             <TableContainer>
               <Table>
@@ -185,15 +190,8 @@ const Missions = ({ missions }) => {
           </ModalFooter>
         </ModalContent>
       </Modal>
-    </>
+    </AdminLayout>
   )
 }
 
-Missions.layout = (page) => (
-  <AdminLayout
-    children={page}
-    title="Admin - Missions"
-    heading="Missions List"
-  />
-)
 export default Missions

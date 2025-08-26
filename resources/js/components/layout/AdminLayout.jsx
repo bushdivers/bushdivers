@@ -21,7 +21,13 @@ import ThemeToggle from './navigation/ThemeToggle.jsx'
 import UserStats from './navigation/UserStats.jsx'
 import SidebarContainer from './navigation/sidebar/SideBarContainer.jsx'
 
-const AdminLayout = ({ children, title, heading }) => {
+const AdminLayout = ({
+  children,
+  heading,
+  title = heading,
+  subHeading,
+  actions,
+}) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   return (
     <>
@@ -38,6 +44,12 @@ const AdminLayout = ({ children, title, heading }) => {
             </Heading>
             <AdminMenu />
           </Flex>
+          {subHeading && (
+            <Flex justifyContent="space-between" alignItems="center" mb={6}>
+              <Heading size="md">{subHeading}</Heading>
+              {actions}
+            </Flex>
+          )}
           <Box>{children}</Box>
         </Container>
       </Show>
@@ -62,6 +74,12 @@ const AdminLayout = ({ children, title, heading }) => {
 
           <Heading mb={4}>{title}</Heading>
           <AdminMenu />
+          {subHeading && (
+            <>
+              <Heading size="md">{subHeading}</Heading>
+              {actions}
+            </>
+          )}
           <Box>{children}</Box>
         </Box>
       </Show>

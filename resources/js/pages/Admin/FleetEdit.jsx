@@ -446,8 +446,8 @@ const FleetEdit = ({ fleet, manufacturers }) => {
 FleetEdit.layout = (page) => (
   <AdminLayout
     children={page}
-    title="Admin - Edit Fleet"
-    heading="Edit Fleet"
+    heading="Fleet Management"
+    subHeading={page.props.fleet ? 'Edit existing fleet' : 'Add new fleet'}
   />
 )
 

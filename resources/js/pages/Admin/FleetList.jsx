@@ -47,20 +47,12 @@ const FleetList = ({ fleet }) => {
   return (
     <Card>
       <CardBody>
-        <Flex justifyContent="space-between">
+        <Flex justifyContent="right">
           {fleet && fleet.length > 0 && (
-            <Button colorScheme="gray" onClick={toggleDetail}>
+            <Button colorScheme="gray" onClick={toggleDetail} size="sm">
               Toggle fleet aircraft details
             </Button>
           )}
-          <Flex gap={2}>
-            <Link href="/admin/fleet/create">
-              <Button>Add new fleet</Button>
-            </Link>
-            <Link href="/marketplace/admin">
-              <Button>Purchase VA Aircraft</Button>
-            </Link>
-          </Flex>
         </Flex>
         {!fleet && <NoContent content={<EmptyData />} />}
         {
@@ -126,7 +118,21 @@ const FleetList = ({ fleet }) => {
 }
 
 FleetList.layout = (page) => (
-  <AdminLayout children={page} title="Admin - Fleet" heading="Fleet List" />
+  <AdminLayout
+    children={page}
+    heading="Fleet Management"
+    subHeading="Fleet List"
+    actions={
+      <Flex gap={2}>
+        <Button as={Link} href="/admin/fleet/create" size="sm">
+          Add new fleet
+        </Button>
+        <Button as={Link} href="/marketplace/admin" size="sm">
+          Purchase VA Aircraft
+        </Button>
+      </Flex>
+    }
+  />
 )
 
 export default FleetList

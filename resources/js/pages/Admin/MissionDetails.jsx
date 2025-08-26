@@ -309,8 +309,8 @@ const MissionDetails = ({ mission, jobs }) => {
 MissionDetails.layout = (page) => (
   <AdminLayout
     children={page}
-    title="Admin - Mission Details"
-    heading="Missions Details"
+    heading="Mission Management"
+    subHeading="Mission Details"
   />
 )
 

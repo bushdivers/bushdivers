@@ -188,6 +188,10 @@ const TourDetail = ({ tour, fleet }) => {
   )
 }
 TourDetail.layout = (page) => (
-  <AdminLayout children={page} title="Admin - Tours" heading="Tour Details" />
+  <AdminLayout
+    children={page}
+    heading="Tour Management"
+    subHeading="Edit Tour Details"
+  />
 )
 export default TourDetail

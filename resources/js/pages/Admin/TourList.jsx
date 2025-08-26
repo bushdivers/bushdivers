@@ -74,12 +74,17 @@ const TourList = ({ tours }) => {
   }
 
   return (
-    <>
+    <AdminLayout
+      heading="Tour Management"
+      subHeading="Tour List"
+      actions={
+        <Button onClick={onOpen} size="sm">
+          Add Tour
+        </Button>
+      }
+    >
       <Card>
         <CardBody>
-          <Flex justifyContent="end">
-            <Button onClick={onOpen}>Add Tour</Button>
-          </Flex>
           {tours?.length > 0 ? (
             <TableContainer>
               <Table>
@@ -192,11 +197,8 @@ const TourList = ({ tours }) => {
           </ModalFooter>
         </ModalContent>
       </Modal>
-    </>
+    </AdminLayout>
   )
 }
 
-TourList.layout = (page) => (
-  <AdminLayout children={page} title="Admin - Tours" heading="Tour List" />
-)
 export default TourList
