@@ -52,6 +52,7 @@ const FleetEdit = ({ fleet, manufacturers }) => {
     used_low_price: fleet?.used_low_price ?? '',
     used_high_price: fleet?.used_high_price ?? '',
     can_purchase_new: fleet?.can_purchase_new ?? false,
+    rental_size: fleet?.rental_size > 0 ?? false,
   })
 
   function handleChange(e) {
@@ -430,6 +431,15 @@ const FleetEdit = ({ fleet, manufacturers }) => {
                   onChange={handleChange}
                 >
                   Can purchase new?
+                </Checkbox>
+                <Checkbox
+                  id="rental_size"
+                  value={values.rental_size}
+                  defaultChecked={values.rental_size > 0}
+                  my={2}
+                  onChange={handleChange}
+                >
+                  Rental requires large airport?
                 </Checkbox>
               </Box>
             </SimpleGrid>
