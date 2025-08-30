@@ -58,6 +58,12 @@ const UserSection = () => {
         <ChakraLink href="/jumpseat" as={InertiaLink}>
           <MenuItem>Jumpseat</MenuItem>
         </ChakraLink>
+        <ChakraLink
+          href={'/airports/' + auth.user.location.identifier}
+          as={InertiaLink}
+        >
+          <MenuItem>Current Airport</MenuItem>
+        </ChakraLink>
         <MenuDivider />
         <ChakraLink href="/logout" as={InertiaLink}>
           <MenuItem>Sign Out</MenuItem>
