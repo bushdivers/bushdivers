@@ -7,12 +7,14 @@ import {
   Grid,
   GridItem,
   Heading,
+  Icon,
   Radio,
   RadioGroup,
   Select,
   Stack,
 } from '@chakra-ui/react'
 import { router, usePage } from '@inertiajs/react'
+import { Anchor, Package } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 
 import Aircraft from '../../components/dispatch/Aircraft'
@@ -238,7 +240,13 @@ const Dispatch = ({ cargo, aircraft, airport, tours }) => {
 
   return (
     <div>
-      <Heading size="md">{`Dispatch - ${auth.user.current_airport_id}`}</Heading>
+      <Heading size="md">
+        {`Dispatch - ${airport.identifier} ${airport.name} `}
+        {airport.longest_runway_surface === 'W' && (
+          <Icon as={Anchor} color="blue.500" />
+        )}
+        {airport.is_thirdparty && <Icon as={Package} color="green.500" />}
+      </Heading>
       <Flex justifyContent="space-between" mt={4}>
         <Grid templateColumns="repeat(5, 1fr)" gap={4}>
           <GridItem colSpan={3}>

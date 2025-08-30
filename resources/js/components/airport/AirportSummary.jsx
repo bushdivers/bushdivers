@@ -10,7 +10,7 @@ import {
   Text,
 } from '@chakra-ui/react'
 import { router, usePage } from '@inertiajs/react'
-import { Anchor } from 'lucide-react'
+import { Anchor, Package } from 'lucide-react'
 import React from 'react'
 
 import { displayNumber } from '../../helpers/number.helpers.js'
@@ -53,6 +53,7 @@ const AirportSummary = ({ airport }) => {
             {airport.longest_runway_surface === 'W' && (
               <Icon as={Anchor} color="blue.500" />
             )}
+            {airport.is_thirdparty && <Icon as={Package} color="green.500" />}
           </Flex>
 
           {auth.user.user_roles.includes('airport_manager') && (

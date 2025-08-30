@@ -1,7 +1,7 @@
 import { Box, Card, CardBody, Flex, Icon, Tag, Text } from '@chakra-ui/react'
 import { Link } from '@inertiajs/react'
 import { format } from 'date-fns'
-import { Anchor, PlaneLanding, PlaneTakeoff } from 'lucide-react'
+import { Anchor, Package, PlaneLanding, PlaneTakeoff } from 'lucide-react'
 import React from 'react'
 
 const LogbookPrimary = ({ pirep }) => {
@@ -19,6 +19,9 @@ const LogbookPrimary = ({ pirep }) => {
                 {pirep.dep_airport.longest_runway_surface === 'W' && (
                   <Icon as={Anchor} color="blue.500" />
                 )}
+                {pirep.dep_airport.is_thirdparty && (
+                  <Icon as={Package} color="green.500" />
+                )}
               </Flex>
               <Text>{pirep.dep_airport.name}</Text>
               <Text>{format(new Date(pirep.block_off_time), 'kk:mm')}</Text>
@@ -31,6 +34,9 @@ const LogbookPrimary = ({ pirep }) => {
                 </Link>
                 {pirep.arr_airport.longest_runway_surface === 'W' && (
                   <Icon as={Anchor} color="blue.500" />
+                )}
+                {pirep.arr_airport.is_thirdparty && (
+                  <Icon as={Package} color="green.500" />
                 )}
               </Flex>
               <Text>{pirep.arr_airport.name}</Text>

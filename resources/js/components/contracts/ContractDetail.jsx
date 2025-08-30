@@ -11,7 +11,7 @@ import {
 import { Link } from '@inertiajs/react'
 import { formatDistanceToNowStrict } from 'date-fns'
 import { useAtom } from 'jotai'
-import { Anchor, ArrowUp, Check, Plane } from 'lucide-react'
+import { Anchor, ArrowUp, Check, Package, Plane } from 'lucide-react'
 import React from 'react'
 
 import { selectedContractAtom } from '../../state/contract.state.js'
@@ -59,6 +59,9 @@ const ContractDetail = ({ contract, action = null, type }) => {
             {contract.dep_airport.longest_runway_surface === 'W' && (
               <Icon as={Anchor} color="blue.500" />
             )}
+            {contract.dep_airport.is_thirdparty && (
+              <Icon as={Package} color="green.500" />
+            )}
             <Box p={1}>
               <Icon as={Plane} />
             </Box>
@@ -67,6 +70,9 @@ const ContractDetail = ({ contract, action = null, type }) => {
             </Link>
             {contract.arr_airport.longest_runway_surface === 'W' && (
               <Icon as={Anchor} color="blue.500" />
+            )}
+            {contract.arr_airport.is_thirdparty && (
+              <Icon as={Package} color="green.500" />
             )}
           </Flex>
           {type === 'available' ? (

@@ -15,7 +15,7 @@ import {
 } from '@chakra-ui/react'
 import { Link } from '@inertiajs/react'
 import { formatDistanceToNow } from 'date-fns'
-import { Anchor, Plane } from 'lucide-react'
+import { Anchor, Package, Plane } from 'lucide-react'
 import React from 'react'
 
 import CrewMap from '../../components/crew/CrewMap'
@@ -70,6 +70,9 @@ const Dashboard = ({ lastFlight, user, locations, distance }) => {
                     {lastFlight.dep_airport.longest_runway_surface === 'W' && (
                       <Icon as={Anchor} color="blue.500" />
                     )}
+                    {lastFlight.dep_airport.is_thirdparty && (
+                      <Icon as={Package} color="green.500" />
+                    )}
                   </Flex>
 
                   <ChakraLink
@@ -85,6 +88,9 @@ const Dashboard = ({ lastFlight, user, locations, distance }) => {
                     <Text fontSize="lg">{lastFlight.arr_airport.name}</Text>
                     {lastFlight.arr_airport.longest_runway_surface === 'W' && (
                       <Icon as={Anchor} color="blue.500" />
+                    )}
+                    {lastFlight.arr_airport.is_thirdparty && (
+                      <Icon as={Package} color="green.500" />
                     )}
                   </Flex>
                   <ChakraLink

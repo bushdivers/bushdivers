@@ -4,6 +4,7 @@ import {
   Card,
   Link as ChakraLink,
   Flex,
+  Icon,
   Menu,
   MenuButton,
   MenuDivider,
@@ -13,6 +14,7 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react'
 import { Link as InertiaLink, usePage } from '@inertiajs/react'
+import { Anchor, Package } from 'lucide-react'
 import React from 'react'
 
 import { displayNumber } from '../../../../helpers/number.helpers'
@@ -34,9 +36,17 @@ const UserSection = () => {
             </Flex>
           </Box>
           <Box>
-            <Flex direction="column">
+            <Flex direction="column" align="flex-end">
               <Text fontSize="xs">${displayNumber(auth.user.balance)}</Text>
-              <Text fontSize="xs">{auth.user.current_airport_id}</Text>
+              <Text fontSize="xs">
+                {auth.user.location.longest_runway_surface === 'W' && (
+                  <Icon as={Anchor} color="blue.500" />
+                )}
+                {auth.user.location.is_thirdparty && (
+                  <Icon as={Package} color="green.500" />
+                )}
+                {auth.user.location.identifier}
+              </Text>
             </Flex>
           </Box>
         </Flex>

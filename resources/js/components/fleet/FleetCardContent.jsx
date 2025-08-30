@@ -15,7 +15,7 @@ import {
   Tr,
 } from '@chakra-ui/react'
 import { Link, usePage } from '@inertiajs/react'
-import { Anchor, Wrench } from 'lucide-react'
+import { Anchor, Package, Wrench } from 'lucide-react'
 import React from 'react'
 
 import { displayFileSize } from '../../helpers/generic.helpers.js'
@@ -162,6 +162,9 @@ const FleetCardContent = ({ fleet }) => {
                           {aircraft.hub.longest_runway_surface === 'W' && (
                             <Icon as={Anchor} color="blue.500" />
                           )}
+                          {aircraft.hub.is_thirdparty && (
+                            <Icon as={Package} color="green.500" />
+                          )}
                         </Flex>
                       </Td>
                       <Td>
@@ -173,6 +176,9 @@ const FleetCardContent = ({ fleet }) => {
                           </Link>
                           {aircraft.location.longest_runway_surface === 'W' && (
                             <Icon as={Anchor} color="blue.500" />
+                          )}
+                          {aircraft.location.is_thirdparty && (
+                            <Icon as={Package} color="green.500" />
                           )}
                         </Flex>
                       </Td>

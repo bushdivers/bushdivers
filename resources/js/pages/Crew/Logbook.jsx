@@ -17,7 +17,7 @@ import {
   Tr,
 } from '@chakra-ui/react'
 import { Link as InertiaLink, router } from '@inertiajs/react'
-import { Anchor } from 'lucide-react'
+import { Anchor, Package } from 'lucide-react'
 import React from 'react'
 
 import Pagination from '../../components/elements/Pagination'
@@ -87,6 +87,9 @@ const Logbook = ({ logbook }) => {
                             </Box>
                             {entry.dep_airport.longest_runway_surface ===
                               'W' && <Icon as={Anchor} color="blue.500" />}
+                            {entry.dep_airport.is_thirdparty && (
+                              <Icon as={Package} color="green.500" />
+                            )}
                           </Flex>
                         </Td>
                         <Td>
@@ -100,6 +103,9 @@ const Logbook = ({ logbook }) => {
                             </Box>
                             {entry.arr_airport.longest_runway_surface ===
                               'W' && <Icon as={Anchor} color="blue.500" />}
+                            {entry.arr_airport.is_thirdparty && (
+                              <Icon as={Package} color="green.500" />
+                            )}
                           </Flex>
                         </Td>
                         <Td>

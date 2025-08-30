@@ -35,7 +35,15 @@ import {
 } from '@chakra-ui/react'
 import { router, usePage } from '@inertiajs/react'
 import axios from 'axios'
-import { Anchor, Archive, ArrowUp, Share2, Split, X } from 'lucide-react'
+import {
+  Anchor,
+  Archive,
+  ArrowUp,
+  Package,
+  Share2,
+  Split,
+  X,
+} from 'lucide-react'
 import React, { useState } from 'react'
 
 import { displayNumber } from '../../helpers/number.helpers.js'
@@ -216,12 +224,22 @@ const Cargo = (props) => {
                               onChange={() => props.handleCargoSelect(detail)}
                             />
                           </Td>
-                          <Td>{detail.current_airport_id}</Td>
+                          <Td>
+                            {detail.current_airport_id}{' '}
+                            {detail.current_airport.longest_runway_surface ===
+                              'W' && <Icon as={Anchor} color="blue.500" />}
+                            {detail.current_airport.is_thirdparty && (
+                              <Icon as={Package} color="green.500" />
+                            )}
+                          </Td>
                           <Td>
                             <Flex alignItems="center" gap={2}>
                               {detail.arr_airport_id}{' '}
                               {detail.arr_airport.longest_runway_surface ===
                                 'W' && <Icon as={Anchor} color="blue.500" />}
+                              {detail.arr_airport.is_thirdparty && (
+                                <Icon as={Package} color="green.500" />
+                              )}
                               <AvailableFuel
                                 airport={detail.arr_airport}
                                 stack={true}
@@ -420,6 +438,9 @@ const Cargo = (props) => {
                             {detail.arr_airport_id}{' '}
                             {detail.arr_airport.longest_runway_surface ===
                               'W' && <Icon as={Anchor} color="blue.500" />}
+                            {detail.arr_airport.is_thirdparty && (
+                              <Icon as={Package} color="green.500" />
+                            )}
                           </Flex>
                         </Td>
                         <Td>

@@ -3,6 +3,7 @@ import {
   Button,
   Card,
   CardBody,
+  Checkbox,
   Flex,
   FormControl,
   FormErrorMessage,
@@ -30,12 +31,14 @@ const Profile = ({ profile, rank, nextRank, awards }) => {
   const { errors } = usePage().props
   const [values, setValues] = useState({
     email: profile.email,
-    password: null,
+    password: '',
     name: profile.name,
     opt_in: profile.opt_in,
-    msfs_username: profile.msfs_username,
-    volanta_username: profile.volanta_username,
-    discord_username: profile.discord_username,
+    allow_thirdparty_airport: profile.allow_thirdparty_airport || false,
+    allow_campsite_airport: profile.allow_campsite_airport || false,
+    msfs_username: profile.msfs_username || '',
+    volanta_username: profile.volanta_username || '',
+    discord_username: profile.discord_username || '',
   })
 
   function handleChange(e) {
@@ -153,6 +156,72 @@ const Profile = ({ profile, rank, nextRank, awards }) => {
                     {errors?.discord_username}
                   </FormErrorMessage>
                 </FormControl>
+
+                <Box mt={4}>
+                  <Heading size="sm" mb={3}>
+                    Flight Options
+                  </Heading>
+
+                  <FormControl isInvalid={errors?.allow_thirdparty_airport}>
+                    <Checkbox
+                      id="allow_thirdparty_airport"
+                      isChecked={values.allow_thirdparty_airport}
+                      onChange={handleChange}
+                    >
+                      Allow Third-Party Airports
+                    </Checkbox>
+                    <Text fontSize="sm" color="gray.500" mt={1}>
+                      Enable destinations not included in the base simulator.
+                      Requires additional scenery mods to be installed.
+                      <br />
+                      <Text as="span" fontWeight="semibold">
+                        {' '}
+                        Note:
+                      </Text>{' '}
+                      Company fleet aircraft are restricted to base-game
+                      airports only.
+                    </Text>
+                    <FormErrorMessage>
+                      {errors?.allow_thirdparty_airport}
+                    </FormErrorMessage>
+                  </FormControl>
+
+                  <FormControl
+                    isInvalid={errors?.allow_campsite_airport}
+                    mt={3}
+                  >
+                    <Checkbox
+                      id="allow_campsite_airport"
+                      isChecked={values.allow_campsite_airport}
+                      onChange={handleChange}
+                    >
+                      Allow Campsite Landings
+                    </Checkbox>
+                    <Text fontSize="sm" color="gray.500" mt={1}>
+                      Permit landings at remote bush strips, campsites, and
+                      other unofficial locations for true backcountry flying.
+                      <br />
+                      <Text as="span" fontWeight="semibold">
+                        {' '}
+                        Note:
+                      </Text>{' '}
+                      Only one campsite can exist at a time. Creating a new
+                      campsite will remove the previous one and return any
+                      aircraft there to their last known airport.
+                      <br />
+                      <Text as="span" fontWeight="semibold">
+                        {' '}
+                        Note:
+                      </Text>{' '}
+                      Company fleet aircraft are restricted to base-game
+                      airports only.
+                    </Text>
+                    <FormErrorMessage>
+                      {errors?.allow_campsite_airport}
+                    </FormErrorMessage>
+                  </FormControl>
+                </Box>
+
                 <Flex mt={2} justifyContent="end">
                   <Button type="submit">Update profile</Button>
                 </Flex>
