@@ -53,6 +53,17 @@ class CreateDispatchController extends Controller
             return redirect()->back()->with(['error' => 'You do not own this aircraft']);
         }
 
+        $destAirport = Airport::forUser(Auth::user())->where('identifier', $request->destination)->first();
+        if (!$destAirport) {
+            return redirect()->back()->with(['error' => 'Destination airport not found']);
+        }
+        else if (!$isRental && $aircraft->owner_id == 0) {
+            // if not rental and not owner (ie, it's fleet), can't send to custom airports
+            if ($destAirport->user_id > 0 || $destAirport->is_thirdparty) {
+                return redirect()->back()->with(['error' => 'Can only dispatch fleet aircraft to base airports']);
+            }
+        }
+
         $actualFuelAdded = $request->fuel - $aircraft->fuel_onboard;
         // check fuel quantity
         // test for > 0, as have seen some instances of negative fuel at an airport

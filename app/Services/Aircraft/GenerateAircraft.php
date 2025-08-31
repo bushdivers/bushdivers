@@ -21,7 +21,7 @@ class GenerateAircraft
     public function execute($type, Airport $location): void
     {
         $fleet = Fleet::find($type);
-        $allAirports = Airport::inRangeOf($location, 0, 300)->get();
+        $allAirports = Airport::base()->inRangeOf($location, 0, 300)->get();
 
         $numberToGenerate = 0;
 

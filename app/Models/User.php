@@ -23,6 +23,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'allow_thirdparty_airport',
+        'allow_campsite_airport',
     ];
 
     /**

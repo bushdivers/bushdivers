@@ -9,6 +9,7 @@ use App\Models\Enums\ContractType;
 use App\Services\Contracts\GenerateContractDetails;
 use App\Services\Contracts\StoreContracts;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class CreateDispatchController extends Controller
@@ -31,8 +32,9 @@ class CreateDispatchController extends Controller
      */
     public function __invoke(AdminAddDispatch $request): RedirectResponse
     {
-        $origin = Airport::where('identifier', $request->source_airport_id)->firstOrFail();
-        $destination = Airport::where('identifier', $request->destination_airport_id)->firstOrFail();
+        // currently base only airports
+        $origin = Airport::base()->where('identifier', $request->source_airport_id)->firstOrFail();
+        $destination = Airport::base()->where('identifier', $request->destination_airport_id)->firstOrFail();
         $cargoQty = $request->cargo_qty;
         $cargo = DB::table('cargo_types')->where('type', ContractType::Cargo)->inRandomOrder()->first();
 

@@ -22,7 +22,7 @@ class AirportFactory extends Factory
     public function definition()
     {
         return [
-            'identifier' => 'AYMR',
+            'identifier' => $this->faker->unique()->lexify('????'),
             'name' => 'Moro',
             'country' => 'PG',
             'is_hub' => true,

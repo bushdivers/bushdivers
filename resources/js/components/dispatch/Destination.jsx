@@ -27,7 +27,7 @@ const Destination = (props) => {
     setAirport(null)
     setDistance(null)
     if (icao.length >= 3) {
-      const response = await axios.get(`/api/airport/search/${icao}`)
+      const response = await axios.get(`/api/airport/search/${icao}?user=1`)
       if (response.data.airport) {
         props.updateDestinationValue(response.data.airport.identifier)
         setAirportError(null)

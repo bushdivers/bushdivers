@@ -16,10 +16,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/aircraft/{icao}', \App\Http\Controllers\Fleet\GetAvailableAircraftController::class)
     ->name('fleet.available.aircraft');
-Route::get('/airport/search/{search}', \App\Http\Controllers\Airports\GetAirportFromSearchController::class)
-    ->name('airport.search');
-Route::get('/jumpseat/cost/{from}/{to}', \App\Http\Controllers\Airports\GetJumpseatCostController::class)
-    ->name('jumpseat.cost');
 Route::get('/flights/distance/{from}/{to}', \App\Http\Controllers\Dispatch\GetFlightDistanceController::class)
     ->name('flights.distance');
 Route::get('/liveflights', \App\Http\Controllers\Pireps\GetLiveFlightsController::class)
@@ -52,6 +48,13 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/pirep/reset', \App\Http\Controllers\Tracker\CancelPirepController::class);
     Route::post('/tracker/distance', \App\Http\Controllers\Tracker\CheckDistanceController::class);
     Route::post('/pirep/destination', \App\Http\Controllers\Tracker\SetDestinationController::class);
+});
+
+Route::middleware(['web', 'auth'])->group(function () {
+    Route::get('/jumpseat/cost/{from}/{to}', \App\Http\Controllers\Airports\GetJumpseatCostController::class)
+        ->name('jumpseat.cost');
+    Route::get('/airport/search/{search}', \App\Http\Controllers\Airports\GetAirportFromSearchController::class)
+        ->name('airport.search');
 });
 
 //Route::middleware('auth.schedule')->group(function () {

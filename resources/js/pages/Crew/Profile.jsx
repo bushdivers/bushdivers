@@ -188,6 +188,7 @@ const Profile = ({ profile, rank, nextRank, awards }) => {
 
                   <FormControl
                     isInvalid={errors?.allow_campsite_airport}
+                    visibility="hidden"
                     mt={3}
                   >
                     <Checkbox

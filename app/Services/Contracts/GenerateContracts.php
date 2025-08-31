@@ -16,9 +16,9 @@ class GenerateContracts
     public function execute(Airport $airport, $numberToGenerate, $toHub = false)
     {
         // get airports
-        $nearbyAirports = Airport::inRangeof($airport, 2, 75)->when($toHub, fn ($q) => $q->hub())->get();
-        $midRangeAirports = Airport::inRangeof($airport, 76, 250)->when($toHub, fn ($q) => $q->hub())->get();
-        $furtherAfieldAirports = Airport::inRangeof($airport, 251, 650)->when($toHub, fn ($q) => $q->hub())->get();
+        $nearbyAirports = Airport::base()->inRangeof($airport, 2, 75)->when($toHub, fn ($q) => $q->hub())->get();
+        $midRangeAirports = Airport::base()->inRangeof($airport, 76, 250)->when($toHub, fn ($q) => $q->hub())->get();
+        $furtherAfieldAirports = Airport::base()->inRangeof($airport, 251, 650)->when($toHub, fn ($q) => $q->hub())->get();
         $allAirports = $nearbyAirports->merge($midRangeAirports)->merge($furtherAfieldAirports);
 
         if ($allAirports->count() === 0) {

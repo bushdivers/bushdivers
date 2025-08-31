@@ -47,13 +47,14 @@ class CreateHubController extends Controller
 
     public function __invoke(Request $request): \Illuminate\Http\RedirectResponse
     {
+        // hubs must be base only
         $existingMission = CommunityJob::where('is_completed', 0)->where('is_published', 1)->count();
         $hubInProgress = Airport::where('hub_in_progress', 1)->count();
         if ($existingMission > 0 || $hubInProgress > 0) {
             return redirect()->back()->with(['error' => 'Mission/Hub already published.']);
         }
         // set airport as hub and in progress
-        $airport = Airport::where('identifier', $request->identifier)->first();
+        $airport = Airport::base()->where('identifier', $request->identifier)->first();
 
         $cost = $this->calcCostOfHub->execute($request->aircraft);
         $balance = $this->getAirlineBalance->execute();
@@ -65,7 +66,7 @@ class CreateHubController extends Controller
         $airport->hub_in_progress = true;
         $airport->save();
 
-        $allAirports = Airport::inRangeOf($airport, 100, 500)->get();
+        $allAirports = Airport::base()->inRangeOf($airport, 100, 500)->get();
         // create aircraft
         if ($request->aircraft) {
             foreach ($request->aircraft as $aircraft) {

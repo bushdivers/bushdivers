@@ -44,10 +44,7 @@ class Airport extends Model
 
     protected static function booted(): void
     {
-        static::addGlobalScope('baseOnly', function (Builder $builder) {
-            $builder->where('is_thirdparty', false)
-                    ->whereNull('user_id');
-        });
+
     }
 
     public function hubContracts()
@@ -97,9 +94,23 @@ class Airport extends Model
 
     public function scopeThirdParty(Builder $query)
     {
-        $query->withoutGlobalScope('baseOnly')->where('is_thirdparty', true);
+        $query->where('is_thirdparty', true);
     }
 
+    public function scopeForUser(Builder $query, User $user)
+    {
+        if (!$user->allow_thirdparty_airport)
+            $query->where('is_thirdparty', false);
+
+        $query->where(function($q) use ($user) {
+            $q->whereNull('user_id')->orWhere('user_id', $user->id);
+        });
+    }
+
+    public function scopeBase(Builder $query)
+    {
+        $query->where('is_thirdparty', false)->whereNull('user_id');
+    }
 
 }
 

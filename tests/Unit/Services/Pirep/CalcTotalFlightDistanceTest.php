@@ -50,7 +50,9 @@ class CalcTotalFlightDistanceTest extends TestCase
             'lon' => 143.65752
         ]);
 
-        Airport::factory()->create();
+        Airport::factory()->create([
+            'identifier' => 'AYMR'
+        ]);
         Airport::factory()->create([
             'identifier' => 'AYMN'
         ]);

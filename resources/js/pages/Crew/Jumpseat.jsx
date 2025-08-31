@@ -40,7 +40,9 @@ const Jumpseat = ({ user, balance }) => {
     setPrice(-1)
     setIcao(e.target.value)
     if (e.target.value.length >= 3) {
-      const response = await axios.get(`/api/airport/search/${e.target.value}`)
+      const response = await axios.get(
+        `/api/airport/search/${e.target.value}?user=1`
+      )
       if (response.data.airport) {
         setIsEdit(false)
         setAirport(

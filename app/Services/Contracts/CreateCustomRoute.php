@@ -34,8 +34,8 @@ class CreateCustomRoute
     public function execute($dep, $arr, $userId)
     {
         try {
-            $depAirport = Airport::where('identifier', $dep)->firstOrFail();
-            $arrAirport = Airport::where('identifier', $arr)->firstOrFail();
+            $depAirport = Airport::where('identifier', $dep)->whereNull('user_id')->firstOrFail();
+            $arrAirport = Airport::where('identifier', $arr)->whereNull('user_id')->firstOrFail();
 
             // contract info
             $distance = $this->calcDistanceBetweenPoints->execute($depAirport->lat, $depAirport->lon, $arrAirport->lat, $arrAirport->lon);

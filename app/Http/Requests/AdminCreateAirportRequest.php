@@ -34,7 +34,7 @@ class AdminCreateAirportRequest extends FormRequest
                 'alpha_num',
                 function ($attribute, $value, $fail) {
                     // Check if identifier exists in any airports (including third-party)
-                    if (Airport::withoutGlobalScope('baseOnly')->where('identifier', $value)->exists()) {
+                    if (Airport::where('identifier', $value)->exists()) {
                         $fail('The airport identifier already exists.');
                     }
                 },
@@ -49,7 +49,7 @@ class AdminCreateAirportRequest extends FormRequest
                 'between:-90,90',
                 function ($attribute, $value, $fail) use ($lon) {
                     $coord = new Coordinate($value, $lon);
-                    if (Airport::withoutGlobalScope('baseOnly')->inRangeOf($coord, 0, 2)->exists()) {
+                    if (Airport::whereNull('user_id')->inRangeOf($coord, 0, 2)->exists()) {
                         $fail('An airport already exists within 2nm of these coordinates.');
                     }
                 }

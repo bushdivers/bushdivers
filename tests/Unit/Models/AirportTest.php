@@ -111,7 +111,7 @@ class AirportTest extends TestCase
     }
 
 
-    function test_default_scope()
+    function test_scopes()
     {
         $user = User::factory()->create();
 
@@ -122,23 +122,23 @@ class AirportTest extends TestCase
             'user_id' => $user->id
         ]);
 
-        $this->assertNotNull(Airport::where('id', $exclAirport->id)->withoutGlobalScopes()->first());
-        $this->assertNull(Airport::where('id', $exclAirport->id)->first());
+        $this->assertNotNull(Airport::where('id', $exclAirport->id)->first());
+        $this->assertNull(Airport::where('id', $exclAirport->id)->base()->first());
 
-        $baseCount = Airport::count();
-        $this->assertEquals($baseCount + 1, Airport::withoutGlobalScopes()->count());
+        $baseCount = Airport::base()->count();
+        $this->assertEquals($baseCount + 1, Airport::count());
 
         $exclAirport->user_id = null;
         $exclAirport->save();
         // Validate now included
-        $this->assertEquals($baseCount + 1, Airport::count());
+        $this->assertEquals($baseCount + 1, Airport::base()->count());
 
         // Set as third party
         $exclAirport->is_thirdparty = true;
         $exclAirport->save();
 
-        $this->assertEquals($baseCount, Airport::count());
-        $this->assertEquals($baseCount + 1, Airport::withoutGlobalScopes()->count());
+        $this->assertEquals($baseCount, Airport::base()->count());
+        $this->assertEquals($baseCount + 1, Airport::count());
     }
 
 

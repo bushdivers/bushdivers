@@ -26,7 +26,7 @@ class CalcLandingFee
     public function execute($pirep)
     {
         $airport = Airport::where('identifier', $pirep->destination_airport_id)->first();
-        if ($airport->size == 0) return;
+        if ($airport->size == 0 || $airport->user_id > 0) return;
 
         if ($pirep->is_rental) {
             $aircraft = Rental::with('fleet')->find($pirep->aircraft_id);

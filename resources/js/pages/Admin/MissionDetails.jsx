@@ -117,10 +117,10 @@ const MissionDetails = ({ mission, jobs }) => {
     }
 
     const depAirportResponse = await axios.get(
-      `/api/airport/search/${jobDetails.departure}`
+      `/api/airport/search/${jobDetails.departure}?base=1`
     )
     const arrAirportResponse = await axios.get(
-      `/api/airport/search/${jobDetails.destination}`
+      `/api/airport/search/${jobDetails.destination}?base=1`
     )
 
     if (!depAirportResponse.data.airport) {

@@ -35,7 +35,9 @@ const CreateHubDetail = ({ isOpen, onClose, fleet }) => {
 
   async function handleAirportChange(e) {
     if (e.target.value.length >= 3) {
-      const response = await axios.get(`/api/airport/search/${e.target.value}`)
+      const response = await axios.get(
+        `/api/airport/search/${e.target.value}?base=1`
+      )
       if (response.data.airport) {
         setAirport(
           `${response.data.airport.identifier} - ${response.data.airport.name}`
