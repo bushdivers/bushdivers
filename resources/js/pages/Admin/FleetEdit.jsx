@@ -195,7 +195,7 @@ const FleetEdit = ({ fleet, manufacturers }) => {
                   </Select>
                 </FormControl>
                 <FormControl isInvalid={errors.tbo_mins}>
-                  <FormLabel htmlFor="tbo_mins">TBO (minutes)</FormLabel>
+                  <FormLabel htmlFor="tbo_mins">TBO (hours)</FormLabel>
                   <Input
                     id="tbo_mins"
                     value={values.tbo_mins}
@@ -423,24 +423,28 @@ const FleetEdit = ({ fleet, manufacturers }) => {
                     </FormErrorMessage>
                   )}
                 </FormControl>
-                <Checkbox
-                  id="can_purchase_new"
-                  value={values.can_purchase_new}
-                  defaultChecked={values.can_purchase_new}
-                  my={2}
-                  onChange={handleChange}
-                >
-                  Can purchase new?
-                </Checkbox>
-                <Checkbox
-                  id="rental_size"
-                  value={values.rental_size}
-                  defaultChecked={values.rental_size > 0}
-                  my={2}
-                  onChange={handleChange}
-                >
-                  Rental requires large airport?
-                </Checkbox>
+                <FormControl>
+                  <Checkbox
+                    id="can_purchase_new"
+                    value={values.can_purchase_new}
+                    defaultChecked={values.can_purchase_new}
+                    my={2}
+                    onChange={handleChange}
+                  >
+                    Can purchase new?
+                  </Checkbox>
+                </FormControl>
+                <FormControl>
+                  <Checkbox
+                    id="rental_size"
+                    value={values.rental_size}
+                    defaultChecked={values.rental_size > 0}
+                    my={2}
+                    onChange={handleChange}
+                  >
+                    Rental requires large airport?
+                  </Checkbox>
+                </FormControl>
               </Box>
             </SimpleGrid>
             <Flex justifyContent="right">

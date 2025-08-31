@@ -29,7 +29,7 @@ class AdminAddFleet extends FormRequest
             'manufacturer' => 'required',
             'powerplants' => 'required',
             'engines' => 'required|numeric',
-            'tbo_mins' => 'required|numeric',
+            'tbo_mins' => 'required|numeric|min:1',
             'fuel' => 'required|numeric',
             'zfw' => 'required|numeric',
             'mtow' => 'required|numeric',

@@ -36,7 +36,7 @@ class UpdateFleetController extends Controller
         $fleet->range = $request->range;
         $fleet->cruise_speed = $request->cruise;
         $fleet->size = $request->size;
-        $fleet->tbo_mins = $request->tbo_mins;
+        $fleet->tbo_mins = $request->tbo_mins * 60;
 
         $fleet->company_fleet = $request->company_fleet;
         $fleet->is_rental = $request->is_rental;
@@ -47,6 +47,7 @@ class UpdateFleetController extends Controller
         $fleet->used_high_price = $request->used_high_price;
         $fleet->manufacturer_id = $request->manufacturer_id;
         $fleet->can_purchase_new = $request->can_purchase_new;
+        $fleet->rental_size = $request->rental_size ? 1 : 0;
 
         $fleet->save();
 
