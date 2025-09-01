@@ -7,6 +7,7 @@ use App\Models\Contract;
 use App\Services\Contracts\StoreContracts;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SplitContractController extends Controller
 {
@@ -16,13 +17,17 @@ class SplitContractController extends Controller
     public function __invoke(Request $request): JsonResponse
     {
 
-        $existingContract = Contract::find($request->id);
+        $existingContract = Contract::findOrFail($request->id ?? 0);
+
+        if ($existingContract->user_id > 0 && $existingContract->user_id != Auth::id()) {
+            return \response()->json(['message' => 'You do not own this contract'], 403);
+        }
 
         if ($existingContract->active_pirep) {
             return \response()->json(['message' => 'Contract is in progress'], 422);
         }
 
-        $newQty = $request->qty;
+        $newQty = $request->qty ?? 0;
         $remainingQty = $existingContract->cargo_qty - $newQty;
 
         if ($newQty <= 0 || $remainingQty <= 0) {
@@ -39,7 +44,7 @@ class SplitContractController extends Controller
         $contract = new Contract();
         $contract->contract_type_id = 1;
         $contract->dep_airport_id = $existingContract->dep_airport_id;
-        $contract->current_airport_id = $existingContract->dep_airport_id;
+        $contract->current_airport_id = $existingContract->current_airport_id;
         $contract->arr_airport_id = $existingContract->arr_airport_id;
         $contract->distance = $existingContract->distance;
         $contract->contract_value = $remainingValue;

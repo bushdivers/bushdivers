@@ -26,7 +26,6 @@ Route::get('/resources/categories', \App\Http\Controllers\Admin\Resources\GetCat
     ->name('resources.categories');
 Route::post('/contracts/bid', \App\Http\Controllers\Contracts\BidForContractController::class)
     ->name('contracts.bid');
-Route::post('/contracts/split', \App\Http\Controllers\Contracts\SplitContractController::class)->name('contracts.split');
 Route::post('/contracts/share', \App\Http\Controllers\Contracts\ShareContractController::class)->name('contracts.share');
 Route::post('/contracts/assign', \App\Http\Controllers\Contracts\AssignContractController::class)
     ->name('contracts.assign');
@@ -55,6 +54,8 @@ Route::middleware(['web', 'auth'])->group(function () {
         ->name('jumpseat.cost');
     Route::get('/airport/search/{search}', \App\Http\Controllers\Airports\GetAirportFromSearchController::class)
         ->name('airport.search');
+
+    Route::post('/contracts/split', \App\Http\Controllers\Contracts\SplitContractController::class)->name('contracts.split');
 });
 
 //Route::middleware('auth.schedule')->group(function () {
