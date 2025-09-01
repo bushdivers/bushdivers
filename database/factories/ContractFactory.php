@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Airport;
 use App\Models\Contract;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -22,10 +23,14 @@ class ContractFactory extends Factory
      */
     public function definition()
     {
+        $arr = Airport::inRandomOrder()->first();
+        $dest = $arr ? Airport::whereNot('id', $arr->id)->inRandomOrder()->first() : null;
         return [
-            'dep_airport_id' => 'AYMR',
-            'current_airport_id' => 'AYMR',
-            'arr_airport_id' => 'AYMN',
+            'dep_airport_id' => $ap->identifier ?? Airport::factory()->create()->identifier,
+            'current_airport_id' => function (array $attributes) {
+                return $attributes['dep_airport_id'];
+            },
+            'arr_airport_id' => $dest->identifier ?? Airport::factory()->create()->identifier,
             'contract_type_id' => 1,
             'distance' => 54,
             'heading' => 45,

@@ -45,7 +45,8 @@ class CreateDispatchController extends Controller
             return redirect()->back()->with(['error' => 'Aircraft is part of another flight dispatch']);
         }
 
-        if ($aircraft->current_airport_id != Auth::user()->current_airport_id) {
+        // TODO
+        if ($aircraft->location->identifier != Auth::user()->current_airport_id) {
             return redirect()->back()->with(['error' => 'Aircraft is not at your current airport']);
         }
 

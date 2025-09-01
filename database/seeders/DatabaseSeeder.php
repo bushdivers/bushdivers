@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             //ContractCargoSeeder::class,
             CargoTypesSeeder::class,
             RankSeeder::class,
+            ManufacturerSeeder::class,
             FleetSeeder::class,
             AircraftSeeder::class,
             AirportSeeder::class,

@@ -18,6 +18,7 @@ use App\Models\TourUser;
 use App\Services\Dispatch\CalcCargoWeight;
 use App\Services\Dispatch\CalcFuelWeight;
 use App\Services\Dispatch\CalcPassengerCount;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
@@ -143,7 +144,9 @@ class ShowDispatchController extends Controller
         $fleetAc = Aircraft::with('fleet', 'engines')
             ->where('state', AircraftState::AVAILABLE)
             ->where('status', AircraftStatus::ACTIVE)
-            ->where('current_airport_id', $currentLocation)
+            ->whereHas('location', function (Builder $q) use ($currentLocation){
+                $q->whereIdentifier($currentLocation);
+            })
             ->where('owner_id', 0)
             ->where('is_ferry', false)
             ->get();
@@ -151,7 +154,9 @@ class ShowDispatchController extends Controller
         $ferryAc = Aircraft::with('fleet', 'engines')
             ->where('state', AircraftState::AVAILABLE)
             ->where('status', AircraftStatus::ACTIVE)
-            ->where('current_airport_id', $currentLocation)
+            ->whereHas('location', function (Builder $q) use ($currentLocation) {
+                $q->whereIdentifier($currentLocation);
+            })
             ->where('owner_id', 0)
             ->where('is_ferry', true)
             ->where('ferry_user_id', Auth::user()->id)
@@ -160,12 +165,16 @@ class ShowDispatchController extends Controller
         $rentalAc = Rental::with('fleet')
             ->where('user_id', Auth::user()->id)
             ->where('is_active', true)
-            ->where('current_airport_id', $currentLocation)
+            ->whereHas('location', function (Builder $q) use ($currentLocation) {
+                $q->whereIdentifier($currentLocation);
+            })
             ->get();
 
         $privateAc = Aircraft::with('fleet', 'engines')
             ->where('owner_id', Auth::user()->id)
-            ->where('current_airport_id', $currentLocation)
+            ->whereHas('location', function (Builder $q) use ($currentLocation) {
+                $q->whereIdentifier($currentLocation);
+            })
             ->get();
 
         return collect($fleetAc)->merge($rentalAc)->merge($privateAc)->merge($ferryAc);

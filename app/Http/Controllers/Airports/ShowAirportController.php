@@ -53,12 +53,12 @@ class ShowAirportController extends Controller
         }
 
         $nearestFuel = Airport::inRangeOf($airport, 2, 500)->fuel()->orderBy('distance')->limit(5)->get();
-        $companyAc = Aircraft::with(['fleet', 'engines'])
+        $companyAc = Aircraft::with(['fleet', 'engines', 'hub', 'location'])
             ->where('owner_id', 0)
             ->where('status', AircraftStatus::ACTIVE)
             ->get();
 
-        $privateAc = Aircraft::with(['fleet', 'engines'])
+        $privateAc = Aircraft::with(['fleet', 'engines', 'hub', 'location'])
             ->where('owner_id', Auth::user()->id)
             ->where('status', AircraftStatus::ACTIVE)
             ->get();

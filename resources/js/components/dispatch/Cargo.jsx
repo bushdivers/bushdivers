@@ -102,13 +102,12 @@ const Cargo = (props) => {
     const data = {
       id: contractId,
       qty: parseInt(sliderCargoValue),
-      userId: auth.user.id,
     }
     try {
       await axios.post('/api/contracts/split', data)
       router.reload()
     } catch (e) {
-      if (e.response.status === 422) {
+      if (e.response.status >= 400) {
         toast({
           title: e.response.data.message,
           status: 'error',

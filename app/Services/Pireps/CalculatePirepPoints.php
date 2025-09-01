@@ -7,6 +7,7 @@ use App\Models\Enums\AirlineTransactionTypes;
 use App\Models\Enums\FinancialConsts;
 use App\Models\Enums\PointsType;
 use App\Models\Enums\TransactionTypes;
+use App\Models\Pirep;
 use App\Services\Finance\AddAirlineTransaction;
 use App\Services\Finance\AddUserTransaction;
 
@@ -30,7 +31,7 @@ class CalculatePirepPoints
         $this->calculateLandingRatePoints = $calculateLandingRatePoints;
     }
 
-    public function execute($pirep)
+    public function execute(Pirep $pirep)
     {
         // completed flight
         $this->storePirepPointsEntry->execute($pirep->id, PointsType::COMPLETED_FLIGHT_LABEL, PointsType::COMPLETED_FLIGHT);
@@ -38,7 +39,7 @@ class CalculatePirepPoints
         // hub
         if (!$pirep->is_rental) {
             $aircraft = Aircraft::find($pirep->aircraft_id);
-            if ($pirep->destination_airport_id == $aircraft->hub_id && $aircraft->owner_id == 0) {
+            if ($pirep->arrAirport->id == $aircraft->hub_id && $aircraft->owner_id == 0) {
                 $this->storePirepPointsEntry->execute($pirep->id, PointsType::HOME_HUB_LABEL, PointsType::HOME_HUB);
                 $this->addUserTransaction->execute($pirep->user_id, TransactionTypes::Bonus, FinancialConsts::HubBonus,
                     $pirep->id);

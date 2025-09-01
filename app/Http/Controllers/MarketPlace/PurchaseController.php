@@ -39,11 +39,15 @@ class PurchaseController extends Controller
      */
     public function __invoke(Request $request, $buyer)
     {
+        if ($buyer === 'admin' && !Auth::user()->hasRole('fleet_admin')) {
+            return redirect()->back()->with(['error' => 'You do not have permission to access this area']);
+        }
+
         if ($request->purchaseType == 'new') {
             $request->validate([
                 'purchaseType' => 'required',
                 'hub' => 'required',
-                'reg' => 'required|max:8|unique:aircraft,registration',
+                'reg' => 'required|min:2|max:8|unique:aircraft,registration',
             ]);
         } else {
             $request->validate([

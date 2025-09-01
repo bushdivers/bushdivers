@@ -3,6 +3,7 @@
 namespace Tests\Unit\Services\Pirep;
 
 use App\Models\Aircraft;
+use App\Models\Airport;
 use App\Models\Contract;
 use App\Models\ContractCargo;
 use App\Models\Fleet;
@@ -44,11 +45,21 @@ class SetPirepScoreTest extends TestCase
             'points' => 49,
             'created_at' => Carbon::now()->addYears(-2)
         ]);
-        $this->fleet = Fleet::factory()->create();
+
+        $aymr = Airport::factory()->create([
+            'identifier' => 'AYMR',
+            'lat' => -6.36188,
+            'lon' => 143.23070
+        ]);
+        $aymn = Airport::factory()->create([
+            'identifier' => 'AYMN',
+            'lat' => -5.20708,
+            'lon' => 144.78500
+        ]);
+
         $this->aircraft = Aircraft::factory()->create([
-            'fleet_id' => $this->fleet->id,
             'fuel_onboard' => 50,
-            'current_airport_id' => 'AYMR',
+            'current_airport_id' => $aymr->id,
             'user_id' => $this->user->id
         ]);
         DB::table('cargo_types')->insert([

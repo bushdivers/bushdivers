@@ -42,7 +42,7 @@ const AirportAircraft = ({ aircraft }) => {
                   <td>
                     {ac.fleet.manufacturer} {ac.fleet.name} ({ac.fleet.type})
                   </td>
-                  <td>{ac.hub_id}</td>
+                  <td>{ac.hub.identifier}</td>
                   <td>{ac.fuel_onboard.toLocaleString(navigator.language)}</td>
                   <td>{renderAircraftStatus(ac.state)}</td>
                 </tr>

@@ -73,8 +73,8 @@ const MyAircraft = ({ aircraft, rentals }) => {
                         </Link>
                       </Td>
                       <Td>{ac.fleet.type}</Td>
-                      <Td>{ac.current_airport_id}</Td>
-                      <Td>{ac.hub_id}</Td>
+                      <Td>{ac.location.identifier}</Td>
+                      <Td>{ac.hub.identifier}</Td>
                       <Td>
                         {convertMinuteDecimalToHoursAndMinutes(
                           ac.flight_time_mins
@@ -124,8 +124,8 @@ const MyAircraft = ({ aircraft, rentals }) => {
                     <Tr key={ac.id}>
                       <Td>{ac.registration}</Td>
                       <Td>{ac.fleet.type}</Td>
-                      <Td>{ac.current_airport_id}</Td>
-                      <Td>{ac.hub_id}</Td>
+                      <Td>{ac.location.identifier}</Td>
+                      <Td>{ac.hub.identifier}</Td>
                       <Td>${ac.fleet.rental_cost}</Td>
                     </Tr>
                   ))}

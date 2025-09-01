@@ -13,4 +13,14 @@ class Rental extends Model
     {
         return $this->belongsTo(Fleet::class);
     }
+
+    public function location()
+    {
+        return $this->belongsTo(Airport::class, 'current_airport_id', 'identifier');
+    }
+
+    public function hub()
+    {
+        return $this->belongsTo(Airport::class, 'rental_airport_id', 'identifier');
+    }
 }

@@ -27,6 +27,10 @@ class CreateAircraftTest extends TestCase
             'lat' => -6.36188,
             'lon' => 143.23070
         ]);
+        $this->airport = Airport::factory()->create([
+            'identifier' => 'EGBS',
+            'is_hub' => true
+        ]);
         $this->createAircraft = $this->app->make(CreateAircraft::class);
     }
 

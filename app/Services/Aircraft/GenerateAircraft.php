@@ -55,7 +55,7 @@ class GenerateAircraft
         $numberToGenerate = round(($popularityScore + $sizeScore) / 2);
 
 
-        $allIdentifiers = $allAirports->pluck('identifier');
+        $allIdentifiers = $allAirports->pluck('id');
         $currentAircraftAvailable = Aircraft::where('fleet_id', $fleet->id)
             ->where('owner_id', null)
             ->whereIn('current_airport_id', $allIdentifiers)

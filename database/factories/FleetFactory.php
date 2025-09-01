@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Airport;
 use App\Models\Fleet;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -45,7 +46,7 @@ class FleetFactory extends Factory
             'new_price' => 2000000,
             'used_low_price' => 600000,
             'used_high_price' => 1000000,
-            'hq' => 'KBEC'
+            'hq' => fn() => Airport::first() ?: Airport::factory(),
         ];
     }
 }

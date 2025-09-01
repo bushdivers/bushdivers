@@ -3,6 +3,7 @@
 namespace Tests\Unit\Services\Aircraft;
 
 use App\Models\Aircraft;
+use App\Models\Airport;
 use App\Models\Fleet;
 use App\Models\User;
 use App\Services\Aircraft\UpdateAircraftFerry;
@@ -30,14 +31,18 @@ class UpdateAircraftFerryTest extends TestCase
         $fleet = Fleet::factory()->create([
             'size' => 'S'
         ]);
+        $airport = Airport::factory()->create([
+            'identifier' => 'EGCC',
+            'is_hub' => true
+        ]);
         $aircraft = Aircraft::factory()->create([
             'is_ferry' => true,
             'ferry_user_id' => $this->user->id,
-            'hub_id' => 'EGCC',
+            'hub_id' => $airport->id,
             'fleet_id' => $fleet->id,
             'ferry_distance' => 100
         ]);
-        $this->updateAircraftFerry->execute($aircraft->id, 'EGCC');
+        $this->updateAircraftFerry->execute($aircraft->id, $airport->identifier);
         $aircraft->refresh();
         $this->assertEquals(0, $aircraft->is_ferry);
         $this->assertNull($aircraft->ferry_user_id);
@@ -48,14 +53,18 @@ class UpdateAircraftFerryTest extends TestCase
         $fleet = Fleet::factory()->create([
             'size' => 'S'
         ]);
+        $airport = Airport::factory()->create([
+            'identifier' => 'EGCC',
+            'is_hub' => true
+        ]);
         $aircraft = Aircraft::factory()->create([
             'is_ferry' => true,
             'ferry_user_id' => $this->user->id,
-            'hub_id' => 'EGCC',
+            'hub_id' => $airport->id,
             'fleet_id' => $fleet->id,
             'ferry_distance' => 100
         ]);
-        $this->updateAircraftFerry->execute($aircraft->id, 'EGCC');
+        $this->updateAircraftFerry->execute($aircraft->id, $airport->identifier);
         $this->assertDatabaseHas('user_accounts', [
                 'user_id' => $this->user->id,
                 'total' => 2160
@@ -67,14 +76,22 @@ class UpdateAircraftFerryTest extends TestCase
         $fleet = Fleet::factory()->create([
             'size' => 'S'
         ]);
+        $airport = Airport::factory()->create([
+            'identifier' => 'EGCA',
+            'is_hub' => true
+        ]);
+        $airport2 = Airport::factory()->create([
+            'identifier' => 'EGCC',
+            'is_hub' => true
+        ]);
         $aircraft = Aircraft::factory()->create([
             'is_ferry' => true,
             'ferry_user_id' => $this->user->id,
-            'hub_id' => 'EGCA',
+            'hub_id' => $airport->id,
             'fleet_id' => $fleet->id
         ]);
 
-        $this->updateAircraftFerry->execute($aircraft->id, 'EGCC');
+        $this->updateAircraftFerry->execute($aircraft->id, $airport2->identifier);
         $aircraft->refresh();
         $this->assertEquals(1, $aircraft->is_ferry);
         $this->assertNotNull($aircraft->ferry_user_id);

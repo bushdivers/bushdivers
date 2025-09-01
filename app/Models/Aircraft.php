@@ -31,12 +31,12 @@ class Aircraft extends Model
 
     public function location()
     {
-        return $this->belongsTo(Airport::class, 'current_airport_id', 'identifier');
+        return $this->belongsTo(Airport::class, 'current_airport_id');
     }
 
     public function hub()
     {
-        return $this->belongsTo(Airport::class, 'hub_id', 'identifier');
+        return $this->belongsTo(Airport::class, 'hub_id');
     }
 
     public function pireps()

@@ -140,7 +140,7 @@ const Aircraft = ({ aircraft, maintenanceStatus, pireps }) => {
   const handleRelocate = (aircraft) => {
     const dest = window.prompt(
       'Enter ICAO of destination airport',
-      aircraft.hub_id
+      aircraft.hub.identifier
     )
     if (!dest || dest.length < 2) return
 
@@ -211,8 +211,8 @@ const Aircraft = ({ aircraft, maintenanceStatus, pireps }) => {
         <Card>
           <CardBody>
             <StatDisplay
-              stat={aircraft.current_airport_id}
-              link={'/airports/' + aircraft.current_airport_id}
+              stat={aircraft.location.identifier}
+              link={'/airports/' + aircraft.location.identifier}
               title="Current Location"
             />
           </CardBody>
@@ -220,8 +220,8 @@ const Aircraft = ({ aircraft, maintenanceStatus, pireps }) => {
         <Card>
           <CardBody>
             <StatDisplay
-              stat={aircraft.hub_id}
-              link={'/airports/' + aircraft.hub_id}
+              stat={aircraft.hub.identifier}
+              link={'/airports/' + aircraft.hub.identifier}
               title="Home Hub"
             />
           </CardBody>

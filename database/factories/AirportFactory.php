@@ -22,10 +22,11 @@ class AirportFactory extends Factory
     public function definition()
     {
         return [
-            'identifier' => $this->faker->unique()->lexify('????'),
-            'name' => 'Moro',
+            'identifier' => $this->faker->unique()->bothify('??#??'),
+            'name' => $this->faker->city.' Airport',
             'country' => 'PG',
             'is_hub' => true,
+            'is_thirdparty' => false,
             'lat' => -6.36188,
             'lon' => 143.23070,
             'altitude' => 100,

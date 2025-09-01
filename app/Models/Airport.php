@@ -54,7 +54,7 @@ class Airport extends Model
 
     public function ferryFlights()
     {
-        return $this->hasMany(Aircraft::class, 'hub_id', 'identifier');
+        return $this->hasMany(Aircraft::class, 'hub_id');
     }
 
     public function scopeWithRangeTo(Builder $query, Airport|Coordinate $to)

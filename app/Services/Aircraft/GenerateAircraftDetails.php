@@ -4,6 +4,7 @@ namespace App\Services\Aircraft;
 
 use App\Models\Aircraft;
 use App\Models\AircraftEngine;
+use App\Models\Airport;
 use Carbon\Carbon;
 
 class GenerateAircraftDetails
@@ -15,7 +16,7 @@ class GenerateAircraftDetails
         $this->findAvailableReg = $findAvailableReg;
     }
 
-    public function execute($fleet, $airport, $locale = null, $ferry = null, $hub = null): void
+    public function execute($fleet, Airport $airport, $locale = null, $ferry = null, $hub = null): void
     {
         $reg = $this->findAvailableReg->execute($locale);
         $randInspection = rand(20,350);
@@ -25,8 +26,8 @@ class GenerateAircraftDetails
 
         $ac = new Aircraft();
         $ac->fleet_id = $fleet->id;
-        $ac->current_airport_id = $airport->identifier;
-        $ac->hub_id = $hub ?: $airport->identifier;
+        $ac->current_airport_id = $airport->id;
+        $ac->hub_id = $hub->id ?? $airport->id;
         $ac->last_lat = $airport->lat;
         $ac->last_lon = $airport->lon;
         $ac->registration = $reg;

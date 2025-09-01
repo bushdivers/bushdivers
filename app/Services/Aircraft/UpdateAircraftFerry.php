@@ -3,6 +3,7 @@
 namespace App\Services\Aircraft;
 
 use App\Models\Aircraft;
+use App\Models\Airport;
 use App\Models\Enums\ContractValueTypes;
 use App\Models\Enums\TransactionTypes;
 use App\Services\Finance\AddUserTransaction;
@@ -14,10 +15,13 @@ class UpdateAircraftFerry
     {
         $this->addUserTransaction = $addUserTransaction;
     }
-    public function execute($aircraftId, $airportId)
+
+    public function execute($aircraftId, string $airportId)
     {
+        // TODO: swap to airport id rather than identifier - relies on pirep migration
         $ac = Aircraft::with('fleet')->find($aircraftId);
-        if ($ac->hub_id === $airportId && $ac->is_ferry) {
+        $hub = Airport::where('identifier', $airportId)->first();
+        if ($ac->hub_id === $hub->id && $ac->is_ferry) {
             // pay user
             $sizeMultiplier = match ($ac->fleet->size) {
                 'S' => 1.5,

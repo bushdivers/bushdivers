@@ -6,7 +6,7 @@ use App\Models\AccountLedger;
 
 class AddAirlineTransaction
 {
-    public function execute(int $type, float $total, string $memo = null, $pirepId = null, $method = 'debit')
+    public function execute(int $type, float $total, string|null $memo = null, $pirepId = null, $method = 'debit')
     {
         $transactionTotal = 0;
         if ($method == 'debit') {

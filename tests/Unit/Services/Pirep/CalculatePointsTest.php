@@ -3,6 +3,7 @@
 namespace Tests\Unit\Services\Pirep;
 
 use App\Models\Aircraft;
+use App\Models\Airport;
 use App\Models\Contract;
 use App\Models\ContractCargo;
 use App\Models\Enums\AirlineTransactionTypes;
@@ -34,6 +35,7 @@ class CalculatePointsTest extends TestCase
     protected Model $fleet;
     protected Model $aircraft;
     protected Model $booking;
+    protected Model $aymr, $aymn;
     protected CalculatePirepPoints $calculatePirepPoints;
 
     public function setUp(): void
@@ -48,12 +50,23 @@ class CalculatePointsTest extends TestCase
             'created_at' => Carbon::now()->addYears(-2)
         ]);
         $this->fleet = Fleet::factory()->create();
+        $this->aymn = Airport::factory()->create([
+            'identifier' => 'AYMN',
+            'lat' => -5.20708,
+            'lon' => 144.78500
+        ]);
+        $this->aymr = Airport::factory()->create([
+            'identifier' => 'AYMR',
+            'lat' => -6.36188,
+            'lon' => 143.23070,
+            'is_hub' => true
+        ]);
         $this->aircraft = Aircraft::factory()->create([
             'fleet_id' => $this->fleet->id,
             'fuel_onboard' => 50,
-            'current_airport_id' => 'AYMN',
+            'current_airport_id' => $this->aymn->id,
             'user_id' => $this->user->id,
-            'hub_id' => 'AYMR'
+            'hub_id' => $this->aymr->id
         ]);
         DB::table('cargo_types')->insert([
             ['type' => 1, 'text' => 'Solar Panels'],
@@ -74,7 +87,7 @@ class CalculatePointsTest extends TestCase
             'departure_airport_id' => 'AYMN',
             'landing_rate' => 54.5,
             'aircraft_id' => $this->aircraft
-        ]);
+        ])->load('arrAirport', 'depAirport');
 
         $this->pirepCargo = PirepCargo::factory()->create([
             'pirep_id' => $this->pirep->id,
@@ -178,6 +191,13 @@ class CalculatePointsTest extends TestCase
 
     public function test_hub_points_for_flight_exc_hub()
     {
+        Airport::factory()->create([
+            'identifier' => 'EGSS',
+        ]);
+        Airport::factory()->create([
+            'identifier' => 'EGLL',
+        ]);
+
         $contract = Contract::factory()->create([
             'contract_value' => 250.00,
             'dep_airport_id' => 'EGLL',
@@ -191,7 +211,7 @@ class CalculatePointsTest extends TestCase
             'departure_airport_id' => $contract->dep_airport_id,
             'destination_airport_id' => $contract->arr_airport_id,
             'landing_rate' => 54.5
-        ]);
+        ])->load('arrAirport', 'depAirport');
 
         $pirepCargo = PirepCargo::factory()->create([
             'pirep_id' => $pirep->id,

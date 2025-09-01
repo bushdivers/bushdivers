@@ -156,8 +156,8 @@ const FleetCardContent = ({ fleet }) => {
                       </Td>
                       <Td>
                         <Flex alignItems="center" gap={2}>
-                          <Link href={`/airports/${aircraft.hub_id}`}>
-                            {aircraft.hub_id}
+                          <Link href={`/airports/${aircraft.hub.identifier}`}>
+                            {aircraft.hub.identifier}
                           </Link>
                           {aircraft.hub.longest_runway_surface === 'W' && (
                             <Icon as={Anchor} color="blue.500" />
@@ -170,9 +170,9 @@ const FleetCardContent = ({ fleet }) => {
                       <Td>
                         <Flex alignItems="center" gap={2}>
                           <Link
-                            href={`/airports/${aircraft.current_airport_id}`}
+                            href={`/airports/${aircraft.location.identifier}`}
                           >
-                            {aircraft.current_airport_id}
+                            {aircraft.location.identifier}
                           </Link>
                           {aircraft.location.longest_runway_surface === 'W' && (
                             <Icon as={Anchor} color="blue.500" />

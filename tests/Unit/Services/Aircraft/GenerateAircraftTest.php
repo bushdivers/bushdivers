@@ -99,7 +99,7 @@ class GenerateAircraftTest extends TestCase
 
     public function test_aircraft_generated_based_on_available_aircraft_successfully()
     {
-        Airport::factory()->create([
+        $airport = Airport::factory()->create([
             'identifier' => 'AYMN',
             'country' => 'PG',
             'lat' => -6.14617,
@@ -115,8 +115,11 @@ class GenerateAircraftTest extends TestCase
             'fleet_id' => $fleet->id,
             'owner_id' => null,
             'sale_price' => 10000,
-            'current_airport_id' => 'AYMN'
+            'current_airport_id' => $airport->id,
+            'hub_id' => $this->currentAirport->id
         ]);
+
+        $this->assertDatabaseCount('aircraft', 1);
 
         $this->generateAircraft->execute($fleet->id, $this->currentAirport);
         $this->assertDatabaseHas('aircraft', [

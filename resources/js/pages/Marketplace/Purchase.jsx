@@ -40,9 +40,9 @@ const Purchase = ({ aircraft, purchaseType, buyer, hubs }) => {
     setHubError(null)
     setRegError(null)
 
-    if (reg == null || reg.length > 7) {
+    if (reg == null || reg.length > 8) {
       setRegError(
-        'Registration must be at least 1 character and no more than 7'
+        'Registration must be at least 1 character and no more than 8'
       )
       return
     }

@@ -28,7 +28,7 @@ class RelocateMaintenanceController extends Controller
         $aircraft = Aircraft::find($request->aircraft);
 
         if (!$aircraft || $aircraft->state != AircraftState::AVAILABLE)
-            return redirect()->back()->with(['error' => 'Unable to move - aircraft not available']);
+            return redirect()->back()->with(['error' => 'Unable to move - aircraft in use']);
 
         $destination = Airport::where('identifier', strtoupper($request->dest))->first();
         if (!$destination)

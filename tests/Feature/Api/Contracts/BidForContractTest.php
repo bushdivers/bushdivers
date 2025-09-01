@@ -75,11 +75,6 @@ class BidForContractTest extends TestCase
 
     public function test_fuel_contract_is_removed()
     {
-        $airport = Airport::factory()->create([
-            'identifier' => 'AYMN',
-            'avgas_qty' => 10,
-            'is_hub' => false
-        ]);
         $contract = Contract::factory()->create([
             'dep_airport_id' => 'AYMN',
             'is_fuel' => true,

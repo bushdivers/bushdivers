@@ -3,6 +3,8 @@
 namespace Database\Factories;
 
 use App\Models\Aircraft;
+use App\Models\Airport;
+use App\Models\Fleet;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class AircraftFactory extends Factory
@@ -22,13 +24,17 @@ class AircraftFactory extends Factory
     public function definition()
     {
         return [
-            'current_airport_id' => 'AYMR',
+            'current_airport_id' => fn() => Airport::factory()->create(['name' => 'Factory Airport', 'is_hub' => true]),
             'registration' => 'P2-BDA',
             'fuel_onboard' => 26.8,
             'state' => 1,
             'status' => 1,
-            'hub_id' => 'AYMR',
-            'flight_time_mins' => 0
+            'hub_id' => function (array $attr) {
+                $ap = Airport::find($attr['current_airport_id']);
+                return ($ap && $ap->is_hub) ? $ap : Airport::factory()->create(['name' => 'Factory Hub', 'is_hub' => true]);
+            },
+            'flight_time_mins' => 0,
+            'fleet_id' => Fleet::factory()
         ];
     }
 }

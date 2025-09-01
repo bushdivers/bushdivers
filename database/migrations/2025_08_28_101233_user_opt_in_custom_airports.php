@@ -15,6 +15,10 @@ return new class extends Migration
             $table->boolean('allow_thirdparty_airport')->default(false)->after('points');
             $table->boolean('allow_campsite_airport')->default(false)->after('allow_thirdparty_airport');
         });
+
+        Schema::table('airports', function (Blueprint $table) {
+            $table->string('identifier', 15)->unique()->change(); // lengthen to handle 'BDV0001'
+        });
     }
 
     /**

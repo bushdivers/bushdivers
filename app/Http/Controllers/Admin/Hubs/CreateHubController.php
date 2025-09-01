@@ -74,7 +74,7 @@ class CreateHubController extends Controller
                 while ($i <= $aircraft['qty']) {
                     $acAirport = $allAirports->where('size', '>=', 3)->random(1);
                     $fleet = Fleet::find($aircraft['fleet_id']);
-                    $this->generateAircraftDetails->execute($fleet, $acAirport[0], $acAirport[0]->country_code, true, $airport->identifier);
+                    $this->generateAircraftDetails->execute($fleet, $acAirport[0], $acAirport[0]->country_code, true, $airport);
                     $i++;
                 }
             }

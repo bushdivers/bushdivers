@@ -52,7 +52,7 @@ const FleetEdit = ({ fleet, manufacturers }) => {
     used_low_price: fleet?.used_low_price ?? '',
     used_high_price: fleet?.used_high_price ?? '',
     can_purchase_new: fleet?.can_purchase_new ?? false,
-    rental_size: fleet?.rental_size > 0 ?? false,
+    rental_size: fleet?.rental_size > 0,
   })
 
   function handleChange(e) {

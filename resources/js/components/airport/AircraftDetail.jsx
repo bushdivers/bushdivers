@@ -62,7 +62,7 @@ const AircraftDetail = ({ aircraft, airport }) => {
       <Flex mt={2} alignItems="center" justifyContent="space-between">
         <Flex alignItems="center" gap={2}>
           <Icon boxSize={4} as={MapPin} />
-          <Text size="lg">{aircraft.current_airport_id}</Text>
+          <Text size="lg">{aircraft.location.identifier}</Text>
           <Text size="lg">
             {displayNumber(
               getDistance(

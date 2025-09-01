@@ -13,21 +13,6 @@ use App\Services\Finance\AddUserTransaction;
 
 class EndRental
 {
-//    protected UpdateAircraftLocation $updateAircraftLocation;
-//    protected UpdateAircraftState $updateAircraftState;
-//    protected AddUserTransaction $addUserTransaction;
-//
-//    public function __construct(
-//        UpdateAircraftLocation $updateAircraftLocation,
-//        UpdateAircraftState $updateAircraftState,
-//        AddUserTransaction $addUserTransaction
-//    )
-//    {
-//        $this->updateAircraftLocation = $updateAircraftLocation;
-//        $this->updateAircraftState = $updateAircraftState;
-//        $this->addUserTransaction = $addUserTransaction;
-//    }
-
     public function execute($rentalId, $userId)
     {
         $aircraft = Rental::find($rentalId);

@@ -20,6 +20,7 @@ class FleetSeeder extends Seeder
                 'id' => 1,
                 'type' => 'C208',
                 'manufacturer' => 'Cessna',
+                'manufacturer_id' => 1,
                 'name' => 'Grand Caravan',
                 'powerplants' => 'Pratt & Whitney',
                 'number_of_engines' => 1,
@@ -43,6 +44,9 @@ class FleetSeeder extends Seeder
                 'is_rental' => false,
                 'rental_image' => '',
                 'rental_size' => 2,
+                'new_price' => 1400000,
+                'used_high_price' => 1200000,
+                'used_low_price' => 900000,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ],

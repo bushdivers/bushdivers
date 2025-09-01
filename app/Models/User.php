@@ -38,7 +38,14 @@ class User extends Authenticatable
         'reset_token',
         'api_token',
         'email',
-        'name'
+        'name',
+        'user_roles',
+        'roles',
+        'balance',
+        'loan',
+        'opt_in',
+        'is_admin',
+
     ];
 
     /**
@@ -102,7 +109,7 @@ class User extends Authenticatable
 
     public function hasRole(string $role): bool
     {
-        return in_array($role, $this->user_roles);
+        return $this->is_admin || in_array($role, $this->user_roles);
     }
 
     public function getBalanceAttribute()

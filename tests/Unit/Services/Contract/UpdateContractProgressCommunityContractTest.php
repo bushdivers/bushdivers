@@ -35,6 +35,8 @@ class UpdateContractProgressCommunityContractTest extends TestCase
         ]);
         $contract = Contract::factory()->create([
             'community_job_contract_id' => $communityContract->id,
+            'dep_airport_id' => 'AYMR',
+            'arr_airport_id' => 'AYMN',
             'contract_type_id' => 3,
             'payload' => 100,
             'cargo_type' => 1,
@@ -53,6 +55,8 @@ class UpdateContractProgressCommunityContractTest extends TestCase
         ]);
         $contract1 = Contract::factory()->create([
             'community_job_contract_id' => $communityContract->id,
+            'dep_airport_id' => 'AYMR',
+            'arr_airport_id' => 'AYMN',
             'contract_type_id' => 3,
             'payload' => 50,
             'cargo_type' => 1,
@@ -60,6 +64,8 @@ class UpdateContractProgressCommunityContractTest extends TestCase
         ]);
         Contract::factory()->create([
             'community_job_contract_id' => $communityContract->id,
+            'dep_airport_id' => 'AYMR',
+            'arr_airport_id' => 'AYMN',
             'contract_type_id' => 3,
             'payload' => 50,
             'cargo_type' => 1,

@@ -5,6 +5,7 @@ namespace Tests\Unit\Services\Aircraft;
 use App\Models\Aircraft;
 use App\Models\AircraftEngine;
 use App\Models\Enums\MaintenanceTypes;
+use App\Models\Fleet;
 use App\Services\Aircraft\ResetAircraftMaintenanceTimes;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -30,10 +31,11 @@ class ResetAircraftMaintenanceTimesTest extends TestCase
     public function test_reset_100hr()
     {
         $aircraft = Aircraft::factory()->create([
-            'fleet_id' => 1
+            'fleet_id' => Fleet::factory()
         ]);
         $aircraftEngine = AircraftEngine::factory()->create([
-            'aircraft_id' => $aircraft->id
+            'aircraft_id' => $aircraft->id,
+            'mins_since_100hr' => 50,
         ]);
         $this->resetAircraftMaintenanceTimes->execute($aircraft->id, MaintenanceTypes::Maintenance100hr, $aircraftEngine->id);
         $aircraftEngine->refresh();
@@ -43,10 +45,12 @@ class ResetAircraftMaintenanceTimesTest extends TestCase
     public function test_reset_tbo()
     {
         $aircraft = Aircraft::factory()->create([
-            'fleet_id' => 1
+            'fleet_id' => Fleet::factory()
         ]);
         $aircraftEngine = AircraftEngine::factory()->create([
-            'aircraft_id' => $aircraft->id
+            'aircraft_id' => $aircraft->id,
+            'wear' => 5,
+            'mins_since_tbo' => 500
         ]);
         $this->resetAircraftMaintenanceTimes->execute($aircraft->id, MaintenanceTypes::MaintenanceTBO, $aircraftEngine->id);
         $aircraftEngine->refresh();
@@ -57,7 +61,8 @@ class ResetAircraftMaintenanceTimesTest extends TestCase
     public function test_reset_annual()
     {
         $aircraft = Aircraft::factory()->create([
-            'fleet_id' => 1
+            'fleet_id' => Fleet::factory(),
+            'last_inspected_at' => Carbon::now()->subYear()
         ]);
         $this->resetAircraftMaintenanceTimes->execute($aircraft->id, MaintenanceTypes::Annual);
         $aircraft->refresh();

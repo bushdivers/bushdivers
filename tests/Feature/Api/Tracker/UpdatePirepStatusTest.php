@@ -43,11 +43,18 @@ class UpdatePirepStatusTest extends TestCase
             'points' => 49,
             'created_at' => Carbon::now()->addYears(-2)
         ]);
+        $aymr = Airport::factory()->create([
+            'identifier' => 'AYMR'
+        ]);
+        Airport::factory()->create([
+            'identifier' => 'AYMN'
+        ]);
+
         $this->fleet = Fleet::factory()->create();
         $this->aircraft = Aircraft::factory()->create([
             'fleet_id' => $this->fleet->id,
             'fuel_onboard' => 50,
-            'current_airport_id' => 'AYMR',
+            'current_airport_id' => $aymr->id,
             'user_id' => $this->user->id
         ]);
         DB::table('cargo_types')->insert([
@@ -75,12 +82,6 @@ class UpdatePirepStatusTest extends TestCase
             'contract_cargo_id' => $this->contract->id
         ]);
 
-        Airport::factory()->create([
-            'identifier' => 'AYMR'
-        ]);
-        Airport::factory()->create([
-            'identifier' => 'AYMN'
-        ]);
 
         FlightLog::factory()->create([
             'pirep_id' => $this->pirep->id,

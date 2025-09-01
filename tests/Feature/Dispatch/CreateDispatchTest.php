@@ -34,14 +34,13 @@ class CreateDispatchTest extends TestCase
     {
         parent::setUp();
 
-
         $this->origin = Airport::factory()->create(['identifier' => 'YSSY', 'is_hub' => false]);
         $this->destination = Airport::factory()->create(['identifier' => 'YMML', 'is_hub' => false]);
 
         $fleet = Fleet::factory()->create(['fuel_type' => FuelType::AVGAS, 'type' => 'AA01']);
-        $this->aircraftOrigin = Aircraft::factory()->create(['fleet_id' => $fleet->id, 'registration' => 'VH-XYZ', 'fuel_onboard' => 0, 'current_airport_id' => $this->origin->identifier]);
+        $this->aircraftOrigin = Aircraft::factory()->create(['fleet_id' => $fleet->id, 'registration' => 'VH-XYZ', 'fuel_onboard' => 0, 'current_airport_id' => $this->origin]);
         $fleet = Fleet::factory()->create(['fuel_type' => FuelType::JET, 'type' => 'AA02']);
-        $this->aircraftDestination = Aircraft::factory()->create(['fleet_id' => $fleet->id, 'registration' => 'VH-ABC', 'fuel_onboard' => 0, 'current_airport_id' => $this->destination->identifier]);
+        $this->aircraftDestination = Aircraft::factory()->create(['fleet_id' => $fleet->id, 'registration' => 'VH-ABC', 'fuel_onboard' => 0, 'current_airport_id' => $this->destination]);
 
         $this->user = User::factory()->create(['current_airport_id' => $this->origin->identifier]);
     }
