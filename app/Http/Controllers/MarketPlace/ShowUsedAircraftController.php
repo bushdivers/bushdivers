@@ -39,7 +39,7 @@ class ShowUsedAircraftController extends Controller
         $this->generateAircraft->execute($fleet, $currentLocation);
 
         $allAirports = Airport::inRangeOf($currentLocation, 0, 300)->get();
-        $allAirportsId = $allAirports->pluck('identifier');
+        $allAirportsId = $allAirports->pluck('id');
         $currentAircraftForSale = Aircraft::with('location', 'fleet', 'engines')
             ->where('owner_id', null)
             ->where('fleet_id', $fleet)

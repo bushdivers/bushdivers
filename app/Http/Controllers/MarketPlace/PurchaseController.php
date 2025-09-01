@@ -47,12 +47,15 @@ class PurchaseController extends Controller
             $request->validate([
                 'purchaseType' => 'required',
                 'hub' => 'required',
-                'reg' => 'required|min:2|max:8|unique:aircraft,registration',
+                'reg' => 'required|min:2|max:8',
+                'deliveryIcao' => 'required',
             ]);
         } else {
             $request->validate([
                 'purchaseType' => 'required',
-                'hub' => 'required'
+                'hub' => 'required',
+                'reg' => 'required|min:2|max:8',
+                'id' => 'required|exists:aircraft,id',
             ]);
         }
         $hub = Airport::where('identifier', $request->hub)->first();
@@ -73,9 +76,12 @@ class PurchaseController extends Controller
 
         if ($request->purchaseType == 'new') {
             $currentAirport = Airport::where('identifier', $request->deliveryIcao)->first();
+            if (!$currentAirport) {
+                return redirect()->back()->with(['error' => 'Delivery airport does not exist']);
+            }
             $aircraft = $this->createAircraft->execute($request->all(), $buyer === 'admin' ? null : Auth::user(), $currentAirport);
         } else {
-            $aircraft = Aircraft::find($request->id);
+            $aircraft = Aircraft::with('location')->find($request->id);
             if ($request->reg != $aircraft->registration) {
                 $aircraftCount = Aircraft::where('registration', $request->reg)
                     ->count();
@@ -84,12 +90,11 @@ class PurchaseController extends Controller
                 }
             }
 
-            $currentAirport = Airport::where('identifier', $aircraft->current_airport_id)->first();
-            $aircraft->last_lat = $currentAirport->lat;
-            $aircraft->last_lon = $currentAirport->lon;
+            $aircraft->last_lat = $aircraft->location->lat;
+            $aircraft->last_lon = $aircraft->location->lon;
 
             $aircraft->owner_id = $buyer === 'admin' ? 0 : Auth::user()->id;
-            $aircraft->hub_id = $request->hub;
+            $aircraft->hub_id = $hub->id;
             $aircraft->registration = $request->reg;
             $aircraft->save();
         }

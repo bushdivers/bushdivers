@@ -89,7 +89,7 @@ const UsedAircraft = ({ aircraft, currentLocation, fleet, buyer }) => {
                         </Flex>
                       </Td>
                       <Td>
-                        {ac.current_airport_id} <br />
+                        {ac.location.identifier} <br />
                         <span className="text-sm">{ac.location.name}</span>
                       </Td>
                       <Td>{ac.distance} nm</Td>
