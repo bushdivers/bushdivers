@@ -37,7 +37,7 @@ class ShowRentalAircraftController extends Controller
                 ->get();
         }
 
-        $myRentals = Rental::with('fleet')
+        $myRentals = Rental::with(['fleet', 'location', 'hub'])
             ->where('user_id', Auth::user()->id)
             ->where('is_active', true)
             ->get();

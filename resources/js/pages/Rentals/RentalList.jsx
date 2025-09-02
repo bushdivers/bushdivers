@@ -97,13 +97,13 @@ const RentalList = ({ aircraft, myRentals, currentAirport }) => {
                             {ac.fleet.type})
                           </Td>
                           <Td>
-                            <Link href={`airports/${ac.current_airport_id}`}>
-                              {ac.current_airport_id}
+                            <Link href={`airports/${ac.location.identifier}`}>
+                              {ac.location.identifier}
                             </Link>
                           </Td>
                           <Td>
-                            <Link href={`airports/${ac.rental_airport_id}`}>
-                              {ac.rental_airport_id}
+                            <Link href={`airports/${ac.hub.identifier}`}>
+                              {ac.hub.identifier}
                             </Link>
                           </Td>
                           <Td>${ac.fleet.rental_cost}</Td>

@@ -105,11 +105,11 @@ const HubJob = ({ hub }) => {
                   </Td>
                   <Td>
                     <ChakraLink
-                      href={`/airports/${ferry.current_airport_id}`}
+                      href={`/airports/${ferry.location.identifier}`}
                       as={InertiaLink}
                       color="orange.500"
                     >
-                      {ferry.current_airport_id}
+                      {ferry.location.identifier}
                     </ChakraLink>
                   </Td>
                   <Td>

@@ -20,11 +20,11 @@ class StartRental
     {
         $airport = Airport::where('identifier', $icao)->first();
 
-        $existingRental = Rental::where('current_airport_id', $icao)->where('fleet_id', $id)->where('is_active', false)->first();
+        $existingRental = Rental::where('current_airport_id', $airport->id)->where('fleet_id', $id)->where('is_active', false)->first();
         if ($existingRental) {
             $existingRental->user_id = $userId;
             $existingRental->is_active = true;
-            $existingRental->rental_airport_id = $icao;
+            $existingRental->rental_airport_id = $airport->id;
             $existingRental->save();
         } else {
             $reg = $this->findAvailableReg($airport->country);
@@ -33,8 +33,8 @@ class StartRental
             $rental->registration = $reg;
             $rental->user_id = $userId;
             $rental->fleet_id = $id;
-            $rental->current_airport_id = $icao;
-            $rental->rental_airport_id = $icao;
+            $rental->current_airport_id = $airport->id;
+            $rental->rental_airport_id = $airport->id;
             $rental->save();
         }
 

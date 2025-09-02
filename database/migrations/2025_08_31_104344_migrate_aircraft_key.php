@@ -17,16 +17,16 @@ return new class extends Migration
             $table->foreignIdFor(\App\Models\Airport::class, 'current_airport_id')->after('fleet_id');
 
             $table->renameColumn('hub_id', 'hub_identifier');
-            $table->foreignIdFor(\App\Models\Airport::class, 'hub_id')->nullable()->after('current_airport_id');
+            $table->foreignIdFor(\App\Models\Airport::class, 'hub_id')->after('current_airport_id');
 
             $table->foreign('fleet_id')->references('id')->on('fleets')->restrictOnDelete();
         });
 
         $defaultAirportId = DB::table('airports')->where('identifier', 'AYMR')->value('id');
         DB::update('UPDATE aircraft a JOIN airports ap ON a.current_airport_identifier = ap.identifier SET a.current_airport_id = ap.id WHERE a.current_airport_identifier IS NOT NULL');
-        DB::update('UPDATE aircraft SET current_airport_id = ? WHERE current_airport_id IS NULL', [$defaultAirportId]);
+        DB::update('UPDATE aircraft SET current_airport_id = ? WHERE IFNULL(current_airport_id,0) = 0', [$defaultAirportId]);
         DB::update('UPDATE aircraft a JOIN airports ap ON a.hub_identifier = ap.identifier SET a.hub_id = ap.id WHERE a.hub_identifier IS NOT NULL');
-        DB::update('UPDATE aircraft SET hub_id = ? WHERE hub_id IS NULL', [$defaultAirportId]);
+        DB::update('UPDATE aircraft SET hub_id = ? WHERE IFNULL(hub_id,0) = 0', [$defaultAirportId]);
 
         Schema::table('aircraft', function (Blueprint $table) {
             $table->dropColumn('current_airport_identifier');

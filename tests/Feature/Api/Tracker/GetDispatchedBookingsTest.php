@@ -68,7 +68,7 @@ class GetDispatchedBookingsTest extends TestCase
             'contract_value' => 250.00,
             'dep_airport_id' => 'AYMR',
             'arr_airport_id' => 'AYMN'
-        ]);
+        ])->load('depAirport');
 
     }
 
@@ -217,7 +217,7 @@ class GetDispatchedBookingsTest extends TestCase
     public function test_returns_bookings_for_rental_aircraft()
     {
         $rental = Rental::factory()->create([
-            'current_airport_id' => $this->contract->dep_airport_id,
+            'current_airport_id' => $this->contract->depAirport->id,
             'user_id' => $this->user->id,
             'fleet_id' => $this->fleet->id
         ]);

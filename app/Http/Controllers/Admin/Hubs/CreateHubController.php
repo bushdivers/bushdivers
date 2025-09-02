@@ -51,7 +51,7 @@ class CreateHubController extends Controller
         $existingMission = CommunityJob::where('is_completed', 0)->where('is_published', 1)->count();
         $hubInProgress = Airport::where('hub_in_progress', 1)->count();
         if ($existingMission > 0 || $hubInProgress > 0) {
-            return redirect()->back()->with(['error' => 'Mission/Hub already published.']);
+            return redirect()->back()->with(['error' => 'A community mission already in progress.']);
         }
         // set airport as hub and in progress
         $airport = Airport::base()->where('identifier', $request->identifier)->first();

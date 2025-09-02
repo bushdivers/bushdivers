@@ -98,7 +98,7 @@ const MissionJob = ({ mission, fleet }) => {
                         fleet.map((ac) => (
                           <Tr key={ac.id}>
                             <Td>{ac.fleet.type}</Td>
-                            <Td>{ac.current_airport_id}</Td>
+                            <Td>{ac.location.identifier}</Td>
                             <Td>
                               {ac.state === 1 ? 'Available' : 'Not Available'}
                             </Td>

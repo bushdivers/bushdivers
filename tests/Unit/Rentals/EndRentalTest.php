@@ -3,6 +3,7 @@
 namespace Tests\Unit\Rentals;
 
 use App\Models\Aircraft;
+use App\Models\Airport;
 use App\Models\Enums\TransactionTypes;
 use App\Models\Fleet;
 use App\Models\Rental;
@@ -31,18 +32,26 @@ class EndRentalTest extends TestCase
 
         $this->user = User::factory()->create();
 
+        $aymr = Airport::factory()->create([
+            'identifier' => 'AYMR',
+            'is_hub' => true
+        ]);
+        $aymh = Airport::factory()->create([
+            'identifier' => 'AYMH'
+        ]);
+
         $this->aircraftHome = Rental::factory()->create([
             'fleet_id' => $this->fleet->id,
-            'current_airport_id' => 'AYMR',
-            'rental_airport_id' => 'AYMR',
+            'current_airport_id' => $aymr->id,
+            'rental_airport_id' => $aymr->id,
             'user_id' => $this->user->id,
             'registration' => 'N12345'
         ]);
 
         $this->aircraftAway = Rental::factory()->create([
             'fleet_id' => $this->fleet->id,
-            'current_airport_id' => 'AYMH',
-            'rental_airport_id' => 'AYMR',
+            'current_airport_id' => $aymh->id,
+            'rental_airport_id' => $aymr->id,
             'user_id' => $this->user->id,
             'registration' => 'N1234A'
         ]);

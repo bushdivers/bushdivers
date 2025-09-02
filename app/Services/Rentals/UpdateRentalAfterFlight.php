@@ -2,6 +2,7 @@
 
 namespace App\Services\Rentals;
 
+use App\Models\Airport;
 use App\Models\Rental;
 
 class UpdateRentalAfterFlight
@@ -10,7 +11,7 @@ class UpdateRentalAfterFlight
     {
         $rental = Rental::find($id);
         $rental->fuel_onboard = $rental->fuel_onboard - $fuel;
-        $rental->current_airport_id = $location;
+        $rental->current_airport_id = Airport::whereIdentifier($location)->first()->id;
         $rental->save();
     }
 }

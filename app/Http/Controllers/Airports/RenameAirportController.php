@@ -50,9 +50,6 @@ class RenameAirportController extends Controller
                 $airport->identifier = $newIcao;
                 $airport->save();
 
-                DB::update("UPDATE aircraft SET current_airport_id = ? WHERE current_airport_id = ?", [$newIcao, $oldIcao]);
-                DB::update("UPDATE aircraft SET hub_id = ? WHERE hub_id = ?", [$newIcao, $oldIcao]);
-
                 DB::update("UPDATE contracts SET dep_airport_id = ? WHERE dep_airport_id = ?", [$newIcao, $oldIcao]);
                 DB::update("UPDATE contracts SET arr_airport_id = ? WHERE arr_airport_id = ?", [$newIcao, $oldIcao]);
                 DB::update("UPDATE contracts SET current_airport_id = ? WHERE current_airport_id = ?", [$newIcao, $oldIcao]);

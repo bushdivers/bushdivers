@@ -24,7 +24,7 @@ class ShowCommunityController extends Controller
             },
             'ferryFlights' => function($query) {
                 $query->where('is_ferry', true);
-            }, 'ferryFlights.fleet'])
+            }, 'ferryFlights.fleet', 'ferryFlights.location'])
         ->where('is_hub', true)
         ->where('hub_in_progress', true)
         ->first();
@@ -34,8 +34,9 @@ class ShowCommunityController extends Controller
         if ($mission) {
             $fleet = Aircraft::where('owner_id', 0)->with(['fleet' => function($q) {
                 $q->orderBy('type', 'asc');
-            }])
-                ->orderBy('current_airport_id', 'asc')
+            }, 'location'])
+                ->withAggregate('location', 'identifier')
+                ->orderBy('location_identifier', 'asc')
                 ->orderBy('fleet_id', 'asc')
                 ->get();
         }
