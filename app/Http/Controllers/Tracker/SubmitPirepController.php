@@ -23,6 +23,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -61,7 +62,7 @@ class SubmitPirepController extends Controller
     {
         try
         {
-            $pirep = Pirep::findOrFail($request->pirep_id);
+            $pirep = Pirep::where('user_id', Auth::id())->findOrFail($request->pirep_id);
 
             $agent = $request->userAgent();
             if (!preg_match('/^\w+\/\d{1,2}\.\d{1,2}\.\d{1,2}\.\d{1,2}$/', $agent))

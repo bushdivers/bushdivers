@@ -20,7 +20,7 @@ class CancelDispatchController extends Controller
      */
     public function __invoke(Request $request, RemoveSinglePirep $removeSinglePirep): RedirectResponse
     {
-        $pirep = Pirep::find($request->pirep);
+        $pirep = Pirep::where('user_id', Auth::id())->find($request->pirep);
 
         if (!$pirep) {
             return redirect()->back()->with(['error' => 'Flight already cancelled or no longer exists']);

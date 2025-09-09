@@ -45,7 +45,15 @@ class GenerateContractDetailsTest extends TestCase
             'lon' => 143.07904,
             'altitude' => 100
         ]);
-        $this->origin = Airport::factory()->create();
+        $this->origin = Airport::factory()->create([
+            'identifier' => 'AYMR',
+            'name' => 'Moro',
+            'country' => 'PG',
+            'is_hub' => false,
+            'lat' => -6.36188,
+            'lon' => 143.23070,
+            'altitude' => 100
+        ]);
         $this->generateContractDetails = $this->app->make(GenerateContractDetails::class);
     }
     /**

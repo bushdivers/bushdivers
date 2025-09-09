@@ -26,8 +26,8 @@ class GetFlightDistanceController extends Controller
      */
     public function __invoke(Request $request, $from, $to): JsonResponse
     {
-        $dep = Airport::where('identifier', $from)->first();
-        $arr = Airport::where('identifier', $to)->first();
+        $dep = Airport::where('identifier', $from)->firstOrFail();
+        $arr = Airport::where('identifier', $to)->firstOrFail();
         $distance = $this->calcDistanceBetweenPoints->execute($dep->lat, $dep->lon, $arr->lat, $arr->lon);
 
         return response()->json(['distance' => $distance]);

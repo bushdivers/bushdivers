@@ -22,7 +22,7 @@ class GetDispatchCargoController extends Controller
     {
         $dispatch = Pirep::where('user_id', Auth::user()->id)
             ->where('state', PirepState::DISPATCH)
-            ->first();
+            ->firstOrFail();
 
         $cargo = DB::table('pirep_cargos')
             ->join('contracts', 'pirep_cargos.contract_cargo_id', '=', 'contracts.id')

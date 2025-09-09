@@ -23,7 +23,7 @@ class FleetFactory extends Factory
     public function definition()
     {
         return [
-            'type' => 'C208',
+            'type' => $this->faker->unique()->bothify('??###'),
             'name' => 'Grand Caravan',
             'manufacturer' => 'Cessna',
             'Powerplants' => 'Pratt and Whitney',

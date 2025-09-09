@@ -96,6 +96,7 @@ class CheckTourProgressTest extends TestCase
             'tour_id' => $this->tour->id,
             'departure_airport_id' => 'AYMN',
             'destination_airport_id' => 'AYYM',
+            'aircraft_id' => $this->pirep->aircraft_id
         ]);
         $this->checkTourProgress->execute($firstPirep);
         $this->tourUser->refresh();

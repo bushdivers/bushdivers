@@ -37,4 +37,19 @@ class AircraftFactory extends Factory
             'fleet_id' => Fleet::factory()
         ];
     }
+
+    public function atAirport(Airport $airport): static
+    {
+        return $this->state(fn() => [
+            'current_airport_id' => $airport->id,
+            'hub_id' => $airport->id,
+        ]);
+    }
+
+    public function hub(Airport $airport): static
+    {
+        return $this->state(fn() => [
+            'hub_id' => $airport->id,
+        ]);
+    }
 }

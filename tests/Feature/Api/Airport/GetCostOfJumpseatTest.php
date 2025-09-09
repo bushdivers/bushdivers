@@ -30,7 +30,12 @@ class GetCostOfJumpseatTest extends TestCase
             'created_at' => Carbon::now()->addYears(-2)
         ]);
 
-        $this->fromAirport = Airport::factory()->create();
+        $this->fromAirport = Airport::factory()->create([
+            'identifier' => 'AYMR',
+            'name' => 'Moro',
+            'lat' => -6.36188,
+            'lon' => 143.23070,
+        ]);
         $this->toAirport = Airport::factory()->create([
             'identifier' => 'AYMN',
             'name' => 'Mendi',

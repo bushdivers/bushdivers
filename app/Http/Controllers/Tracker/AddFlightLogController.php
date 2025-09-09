@@ -10,6 +10,7 @@ use App\Models\Pirep;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AddFlightLogController extends Controller
 {
@@ -21,7 +22,7 @@ class AddFlightLogController extends Controller
      */
     public function __invoke(Request $request): JsonResponse
     {
-        $pirep = Pirep::findOrFail($request->pirep_id);
+        $pirep = Pirep::where('user_id', Auth::id())->findOrFail($request->pirep_id);
         $logs = FlightLog::where('pirep_id', $request->pirep_id)->get();
         if ($logs->count() < 1) {
             $pirep->state = PirepState::IN_PROGRESS;
