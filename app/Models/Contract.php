@@ -45,4 +45,10 @@ class Contract extends Model
     {
         return $this->belongsTo(Aircraft::class);
     }
+
+    public function communityJobContract()
+    {
+        return $this->belongsTo(CommunityJobContract::class);
+    }
+
 }

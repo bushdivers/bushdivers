@@ -16,4 +16,10 @@ class CommunityJobContract extends Model
     {
         return $this->hasMany(Contract::class);
     }
+
+    public function communityJob()
+    {
+        return $this->belongsTo(CommunityJob::class);
+    }
+
 }

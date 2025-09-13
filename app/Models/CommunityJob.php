@@ -9,7 +9,11 @@ class CommunityJob extends Model
 {
     use HasFactory;
 
-    protected $casts = ['is_published' => 'boolean','is_completed' => 'boolean'];
+    protected $casts = [
+        'is_published' => 'boolean',
+        'is_completed' => 'boolean',
+        'allow_private' => 'boolean'
+    ];
 
     public function jobs()
     {

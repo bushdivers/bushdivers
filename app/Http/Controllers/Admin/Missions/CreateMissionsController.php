@@ -16,6 +16,7 @@ class CreateMissionsController extends Controller
         $mission = new CommunityJob();
         $mission->name = $request->name;
         $mission->description = '';
+        $mission->allow_private = false;
         $mission->save();
 
         return redirect()->route('admin.mission.details', $mission->id);

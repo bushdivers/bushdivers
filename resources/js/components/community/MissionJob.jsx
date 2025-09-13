@@ -32,10 +32,16 @@ const MissionJob = ({ mission, fleet }) => {
                   }}
                 ></Box>
               </Box>
-              <Text my={2} fontSize="sm" as="i" color="red.500">
-                Remember, you can only fly fleet aircraft. See current fleet
-                status to the right
-              </Text>
+              {(!mission.allow_private && (
+                <Text my={2} fontSize="sm" as="i" color="red.500">
+                  Only fleet aircraft may be used for this mission. See current
+                  fleet status to the right.
+                </Text>
+              )) || (
+                <Text my={2} fontSize="sm" as="i" color="green.500">
+                  Private and rental aircraft are permitted for this mission.
+                </Text>
+              )}
             </CardBody>
           </Card>
           <Card mt={2}>

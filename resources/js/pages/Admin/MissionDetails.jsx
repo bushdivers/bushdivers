@@ -3,6 +3,7 @@ import {
   Button,
   Card,
   CardBody,
+  Checkbox,
   Flex,
   FormControl,
   FormLabel,
@@ -40,6 +41,7 @@ const MissionDetails = ({ mission, jobs }) => {
   const [missionDetails, setMissionDetails] = useState({
     name: mission.name,
     description: mission.description,
+    allow_private: mission.allow_private,
   })
   const [jobDetails, setJobDetails] = useState({
     departure: '',
@@ -53,9 +55,12 @@ const MissionDetails = ({ mission, jobs }) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   function handleMissionChange(e) {
+    const value =
+      e.target.type === 'checkbox' ? e.target.checked : e.target.value
+
     setMissionDetails({
       ...missionDetails,
-      [e.target.id]: e.target.value,
+      [e.target.id]: value,
     })
   }
 
@@ -174,6 +179,15 @@ const MissionDetails = ({ mission, jobs }) => {
                   onChange={handleMissionChange}
                   id="description"
                 />
+              </FormControl>
+              <FormControl mt={3}>
+                <Checkbox
+                  id="allow_private"
+                  isChecked={missionDetails.allow_private}
+                  onChange={handleMissionChange}
+                >
+                  Allow Private Aircraft
+                </Checkbox>
               </FormControl>
               <Flex mt={2} justifyContent="end">
                 <Button size="sm" onClick={() => saveMission()}>

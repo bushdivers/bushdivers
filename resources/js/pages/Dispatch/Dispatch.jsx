@@ -189,9 +189,13 @@ const Dispatch = ({ cargo, aircraft, airport, tours }) => {
 
     if (
       selectedCargo.length > 0 &&
-      selectedCargo.filter((c) => c.community_job_contract_id !== null).length >
-        0
+      selectedCargo.filter(
+        (c) =>
+          c.community_job_contract?.community_job?.id != null &&
+          !(c.community_job_contract?.community_job?.allow_private ?? false)
+      ).length > 0
     ) {
+      console.log(selectedAircraft)
       if (selectedAircraft.owner_id !== 0) {
         alert(
           'This aircraft is not compatible with a community contract. please select a fleet plane'

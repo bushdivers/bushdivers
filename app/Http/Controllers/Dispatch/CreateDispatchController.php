@@ -72,6 +72,17 @@ class CreateDispatchController extends Controller
             return redirect()->back()->with(['error' => 'Not enough fuel at airport to fuel aircraft']);
         }
 
+        $contracts = Contract::with(['communityJobContract.communityJob'])->find($request->cargo) ?? [];
+        foreach ($contracts as $contract) {
+            $isCommunity = $contract->communityJobContract != null;
+            $isPrivateAllowed = $contract->communityJobContract?->communityJob?->allow_private ?? false;
+            if ($isCommunity && !$isPrivateAllowed) {
+                if ($aircraft->owner_id !== 0) {
+                    return redirect()->back()->with(['error' => 'This community contract can only be used with fleet aircraft.']);
+                }
+            }
+        }
+
         // create draft pirep with destination and detail
         $pirep = new Pirep();
         $pirep->id = Uuid::uuid4();
@@ -95,7 +106,7 @@ class CreateDispatchController extends Controller
         if (!$request->is_empty) {
             // add contract cargo to pirep_cargos
             foreach ($request->cargo as $cargo) {
-                $contract = Contract::find($cargo);
+                $contract = $contracts->find($cargo);
 
                 // Prevent assigning contracts that don't exist
                 if (!$contract)

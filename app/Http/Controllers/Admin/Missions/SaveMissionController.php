@@ -16,6 +16,7 @@ class SaveMissionController extends Controller
         $mission = CommunityJob::find($id);
         $mission->name = $request->name;
         $mission->description = $request->description;
+        $mission->allow_private = $request->allow_private ?? false;
         $mission->save();
         return redirect()->back()->with('success', 'Mission updated successfully');
     }
