@@ -34,12 +34,12 @@ class RelocateMaintenanceController extends Controller
         if (!$destination)
             return redirect()->back()->with(['error' => 'Unable to move - destination not found']);
 
-        $aircraft->current_airport_id = $destination->identifier;
+        $aircraft->current_airport_id = $destination->id;
         $aircraft->last_lat = $destination->lat;
         $aircraft->last_lon = $destination->lon;
 
         if ($aircraft->save())
-            return redirect()->back()->with(['success' => 'Maintenance performed successfully']);
+            return redirect()->back()->with(['success' => 'Aircraft relocated successfully']);
         else
             return redirect()->back()->with(['error' => 'Error moving aircraft']);
     }
