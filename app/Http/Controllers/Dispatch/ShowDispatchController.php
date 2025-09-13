@@ -98,69 +98,45 @@ class ShowDispatchController extends Controller
 
     protected function getCargoForDispatch($currentLocation, $userId): array
     {
-        $userCargoAtAirport = Contract::with('currentAirport', 'depAirport', 'arrAirport')
+        $cargoAtAirport = Contract::with('currentAirport', 'depAirport', 'arrAirport', 'communityJobContract.communityJob')
             ->where('current_airport_id', $currentLocation)
             ->where('is_completed', false)
-            ->where('user_id', $userId)
+            ->where(function ($q) use ($userId) {
+                $q->where('is_shared', true)
+                    ->orWhere('user_id', $userId);
+            })
             ->orderBy('heading')
             ->orderBy('arr_airport_id')
             ->get();
 
-        $sharedCargoAtAirport = Contract::with('currentAirport', 'depAirport', 'arrAirport')
-            ->where('current_airport_id', $currentLocation)
+        $cargoElsewhere = Contract::with('currentAirport', 'depAirport', 'arrAirport')
+            ->where('current_airport_id', '<>', $currentLocation)
             ->where('is_completed', false)
-            ->where('is_shared', true)
+            ->where(function ($q) use ($userId) {
+                $q->where('is_shared', true)
+                    ->orWhere('user_id', $userId);
+            })
             ->where('active_pirep', null)
             ->orderBy('heading')
             ->orderBy('arr_airport_id')
             ->get();
-
-        $cargoAtAirport = $userCargoAtAirport->merge($sharedCargoAtAirport);
-
-        $myCargoElsewhere = Contract::with('currentAirport', 'depAirport', 'arrAirport')
-            ->where('current_airport_id', '<>', $currentLocation)
-            ->where('is_completed', false)
-            ->where('is_shared', true)
-            ->where('active_pirep', null)
-            ->orderBy('heading')
-            ->orderBy('arr_airport_id')
-            ->get();
-
-        $sharedCargoElsewhere = Contract::with('currentAirport', 'depAirport', 'arrAirport')
-            ->where('current_airport_id', '<>', $currentLocation)
-            ->where('is_completed', false)
-            ->where('user_id', $userId)
-            ->orderBy('heading')
-            ->orderBy('arr_airport_id')
-            ->get();
-
-        $cargoElsewhere = $myCargoElsewhere->merge($sharedCargoElsewhere);
 
         return ['cargoAtAirport' => $cargoAtAirport, 'cargoElsewhere' => $cargoElsewhere];
     }
 
     protected function getAircraftForDispatch($currentLocation): Collection
     {
-        $fleetAc = Aircraft::with('fleet', 'engines')
-            ->where('state', AircraftState::AVAILABLE)
-            ->where('status', AircraftStatus::ACTIVE)
-            ->whereHas('location', function (Builder $q) use ($currentLocation){
-                $q->whereIdentifier($currentLocation);
-            })
-            ->where('owner_id', 0)
-            ->where('is_ferry', false)
-            ->get();
-
-        $ferryAc = Aircraft::with('fleet', 'engines')
+        $aircraft = Aircraft::with(['fleet', 'engines'])
             ->where('state', AircraftState::AVAILABLE)
             ->where('status', AircraftStatus::ACTIVE)
             ->whereHas('location', function (Builder $q) use ($currentLocation) {
                 $q->whereIdentifier($currentLocation);
             })
-            ->where('owner_id', 0)
-            ->where('is_ferry', true)
-            ->where('ferry_user_id', Auth::user()->id)
-            ->get();
+            ->where(function ($baseQ) {
+                $baseQ->where(fn ($q) => $q->where('owner_id', 0)->where('is_ferry', false)) // fleet
+                    ->orWhere(fn ($q) => $q->where('owner_id', 0)->where('is_ferry', true)->where('ferry_user_id', Auth::user()->id)) // ferry
+                    ->orWhere(fn ($q) => $q->where('owner_id', Auth::user()->id)); // private
+            })->get();
 
         $rentalAc = Rental::with('fleet')
             ->where('user_id', Auth::user()->id)
@@ -170,13 +146,6 @@ class ShowDispatchController extends Controller
             })
             ->get();
 
-        $privateAc = Aircraft::with('fleet', 'engines')
-            ->where('owner_id', Auth::user()->id)
-            ->whereHas('location', function (Builder $q) use ($currentLocation) {
-                $q->whereIdentifier($currentLocation);
-            })
-            ->get();
-
-        return collect($fleetAc)->merge($rentalAc)->merge($privateAc)->merge($ferryAc);
+        return $aircraft->merge($rentalAc);
     }
 }
