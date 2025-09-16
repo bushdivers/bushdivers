@@ -154,6 +154,16 @@ const MissionDetails = ({ mission, jobs }) => {
     router.post(`/admin/missions/jobs/${jobId}/toggle-recurring`)
   }
 
+  function injectJobToContracts(jobId) {
+    if (
+      confirm(
+        'Are you sure you want to dispatch a copy this job into the contracts list?'
+      )
+    ) {
+      router.post(`/admin/missions/jobs/${jobId}/inject`)
+    }
+  }
+
   return (
     <>
       <Card>
@@ -265,15 +275,25 @@ const MissionDetails = ({ mission, jobs }) => {
                         </Flex>
                       </Td>
                       <Td>
-                        {!mission.is_published && (
-                          <Button
-                            colorScheme="gray"
-                            onClick={() => deleteJob(job.id)}
-                            size="xs"
-                          >
-                            Remove
-                          </Button>
-                        )}
+                        <Flex gap={2}>
+                          {!mission.is_published && (
+                            <Button
+                              colorScheme="gray"
+                              onClick={() => deleteJob(job.id)}
+                              size="xs"
+                            >
+                              Remove
+                            </Button>
+                          )}
+                          {mission.is_published && (
+                            <Button
+                              onClick={() => injectJobToContracts(job.id)}
+                              size="xs"
+                            >
+                              Create contract
+                            </Button>
+                          )}
+                        </Flex>
                       </Td>
                     </Tr>
                   ))}
