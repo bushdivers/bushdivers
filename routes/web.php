@@ -245,6 +245,8 @@ Route::middleware('auth')->group(function () {
             ->name('admin.mission.add.job');
         Route::delete('/admin/missions/jobs/{id}', \App\Http\Controllers\Admin\Missions\DeleteJobController::class)
             ->name('admin.mission.delete.job');
+        Route::post('/admin/missions/jobs/{id}/toggle-recurring', \App\Http\Controllers\Admin\Missions\ToggleJobRecurringController::class)
+            ->name('admin.mission.job.toggle.recurring');
         Route::post('/admin/missions/{id}/publish', \App\Http\Controllers\Admin\Missions\PublishMissionController::class)
             ->name('admin.mission.publish');
         Route::post('/admin/missions/{id}/complete', \App\Http\Controllers\Admin\Missions\CompleteMissionController::class)

@@ -10,7 +10,8 @@ class CommunityJobContract extends Model
     use HasFactory;
 
     protected $casts = [
-        'is_completed' => 'boolean'
+        'is_completed' => 'boolean',
+        'is_recurring' => 'boolean'
     ];
     public function contracts()
     {

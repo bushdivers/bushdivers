@@ -150,6 +150,10 @@ const MissionDetails = ({ mission, jobs }) => {
     }
   }
 
+  function toggleJobRecurring(jobId) {
+    router.post(`/admin/missions/jobs/${jobId}/toggle-recurring`)
+  }
+
   return (
     <>
       <Card>
@@ -248,7 +252,18 @@ const MissionDetails = ({ mission, jobs }) => {
                           ? `${job.cargo} ${job.payload} lbs`
                           : `${job.pax} ${job.cargo}`}
                       </Td>
-                      <Td>{job.is_recurring ? 'Yes' : 'No'}</Td>
+                      <Td>
+                        <Flex alignItems="center" gap={2}>
+                          {job.is_recurring ? 'Yes' : 'No'}
+                          <Button
+                            size="xs"
+                            colorScheme={job.is_recurring ? 'red' : 'green'}
+                            onClick={() => toggleJobRecurring(job.id)}
+                          >
+                            {job.is_recurring ? 'Disable' : 'Enable'}
+                          </Button>
+                        </Flex>
+                      </Td>
                       <Td>
                         {!mission.is_published && (
                           <Button
