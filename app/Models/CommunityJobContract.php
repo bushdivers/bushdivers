@@ -22,4 +22,14 @@ class CommunityJobContract extends Model
         return $this->belongsTo(CommunityJob::class);
     }
 
+    public function departureAirport()
+    {
+        return $this->belongsTo(Airport::class, 'dep_airport_id', 'identifier');
+    }
+
+    public function arrivalAirport()
+    {
+        return $this->belongsTo(Airport::class, 'arr_airport_id', 'identifier');
+    }
+
 }

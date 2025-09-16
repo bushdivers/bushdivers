@@ -16,7 +16,7 @@ class MissionDetailsController extends Controller
     public function __invoke($id)
     {
         $mission = CommunityJob::find($id);
-        $jobs = CommunityJobContract::where('community_job_id', $id)->get();
+        $jobs = CommunityJobContract::with(['departureAirport', 'arrivalAirport'])->where('community_job_id', $id)->get();
         return Inertia::render('Admin/MissionDetails', ['mission' => $mission, 'jobs' => $jobs]);
     }
 }

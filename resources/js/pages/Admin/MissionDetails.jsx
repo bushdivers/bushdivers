@@ -8,6 +8,7 @@ import {
   FormControl,
   FormLabel,
   Heading,
+  Icon,
   Input,
   Modal,
   ModalBody,
@@ -31,6 +32,7 @@ import {
 } from '@chakra-ui/react'
 import { router } from '@inertiajs/react'
 import axios from 'axios'
+import { Anchor, Package } from 'lucide-react'
 import React, { useState } from 'react'
 import showdown from 'showdown'
 
@@ -223,8 +225,24 @@ const MissionDetails = ({ mission, jobs }) => {
                 <Tbody>
                   {jobs.map((job) => (
                     <Tr key={job.id}>
-                      <Td>{job.dep_airport_id}</Td>
-                      <Td>{job.arr_airport_id}</Td>
+                      <Td>
+                        {job.departure_airport.identifier}
+                        {job.departure_airport.longest_runway_surface ===
+                          'W' && <Icon as={Anchor} color="blue.500" />}
+                        {job.departure_airport.is_thirdparty && (
+                          <Icon as={Package} color="green.500" />
+                        )}
+                      </Td>
+                      <Td>
+                        {job.arrival_airport.identifier}
+                        {job.arrival_airport.longest_runway_surface === 'W' && (
+                          <Icon as={Anchor} color="blue.500" />
+                        )}
+
+                        {job.arrival_airport.is_thirdparty && (
+                          <Icon as={Package} color="green.500" />
+                        )}
+                      </Td>
                       <Td>
                         {job.cargo_type === 1
                           ? `${job.cargo} ${job.payload} lbs`
