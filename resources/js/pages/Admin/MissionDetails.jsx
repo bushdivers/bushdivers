@@ -52,6 +52,7 @@ const MissionDetails = ({ mission, jobs }) => {
     cargo: '',
     qty: 0,
     recurring: '0',
+    inject_immediately: false,
   })
 
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -67,9 +68,12 @@ const MissionDetails = ({ mission, jobs }) => {
   }
 
   function handleJobChange(e) {
+    const value =
+      e.target.type === 'checkbox' ? e.target.checked : e.target.value
+
     setJobDetails({
       ...jobDetails,
-      [e.target.id]: e.target.value,
+      [e.target.id]: value,
     })
   }
 
@@ -98,6 +102,7 @@ const MissionDetails = ({ mission, jobs }) => {
       cargo: '',
       qty: 0,
       recurring: '0',
+      inject_immediately: false,
     })
     setNewJobError(null)
     onClose()
@@ -218,7 +223,7 @@ const MissionDetails = ({ mission, jobs }) => {
         <CardBody>
           <Flex justifyContent="space-between">
             <Heading size="md">Jobs</Heading>
-            {!mission.is_published && (
+            {!mission.is_completed && (
               <Button onClick={onOpen} size="sm">
                 Add Job
               </Button>
@@ -285,7 +290,7 @@ const MissionDetails = ({ mission, jobs }) => {
                               Remove
                             </Button>
                           )}
-                          {mission.is_published && (
+                          {mission.is_published && !mission.is_completed && (
                             <Button
                               onClick={() => injectJobToContracts(job.id)}
                               size="xs"
@@ -343,7 +348,7 @@ const MissionDetails = ({ mission, jobs }) => {
             </FormControl>
             <FormControl>
               <FormLabel>Cargo Qty</FormLabel>
-              <Input onChange={handleJobChange} id="qty" />
+              <Input onChange={handleJobChange} id="qty" type="number" />
             </FormControl>
             <FormControl>
               <FormLabel>Recurs Daily?</FormLabel>
@@ -352,6 +357,17 @@ const MissionDetails = ({ mission, jobs }) => {
                 <option value="1">Yes</option>
               </Select>
             </FormControl>
+            {mission.is_published && (
+              <FormControl mt={3}>
+                <Checkbox
+                  id="inject_immediately"
+                  isChecked={jobDetails.inject_immediately}
+                  onChange={handleJobChange}
+                >
+                  Immediately create new contract for this job
+                </Checkbox>
+              </FormControl>
+            )}
           </ModalBody>
 
           <ModalFooter>
