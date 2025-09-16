@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin\Missions;
 
 use App\Http\Controllers\Controller;
+use App\Models\Airport;
 use App\Models\CommunityJobContract;
 use Illuminate\Http\Request;
 
@@ -13,9 +14,11 @@ class AddJobController extends Controller
      */
     public function __invoke(Request $request, $id)
     {
+        $depAirport = Airport::where('identifier', $request->departure)->firstOrfail();
+        $arrAirport = Airport::where('identifier', $request->destination)->firstOrfail();
         $job = new CommunityJobContract();
-        $job->dep_airport_id = $request->departure;
-        $job->arr_airport_id = $request->destination;
+        $job->dep_airport_id = $depAirport->identifier;
+        $job->arr_airport_id = $arrAirport->identifier;
         $job->cargo_type = $request->cargo_type;
         $job->payload = $request->cargo_type == 1 ? $request->qty : null;
         $job->pax = $request->cargo_type == 2 ? $request->qty : null;
