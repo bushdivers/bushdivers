@@ -33,7 +33,7 @@ class UpdateProfileController extends Controller
         $user->msfs_username = $request->msfs_username;
         $user->volanta_username = $request->volanta_username;
         $user->discord_username = $request->discord_username;
-        $user->opt_in = $request->opt_in;
+        $user->opt_in = $request->opt_in ?? false;
         $user->allow_thirdparty_airport = $request->allow_thirdparty_airport ?? false;
         $user->allow_campsite_airport = $request->allow_campsite_airport ?? false;
         if (isset($request->password)) {
