@@ -48,7 +48,7 @@ class CsvBulkUploadService
 
         foreach ($records as $lineNumber => $record) {
             $results['total_rows']++;
-            $rowNumber = $lineNumber + 2; // Account for header and 0-indexing
+            $rowNumber = $lineNumber + 1; // Account for header
 
             try {
                 $processingResult = $rowProcessor($record, $rowNumber, $context);

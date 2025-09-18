@@ -96,7 +96,7 @@ Route::middleware('auth')->group(function () {
 
     Route::middleware('role:airport_manager')->group(function () {
         Route::post('/airports/maintenance/rename', \App\Http\Controllers\Airports\RenameAirportController::class)
-        ->name('airport.rename');
+            ->name('airport.rename');
 
         // Third-party airport management
         Route::get('/admin/airports', \App\Http\Controllers\Admin\Airports\ShowAirportsController::class)
@@ -105,6 +105,8 @@ Route::middleware('auth')->group(function () {
             ->name('admin.airports.create');
         Route::post('/admin/airports/create', \App\Http\Controllers\Admin\Airports\CreateAirportController::class)
             ->name('admin.airports.store');
+        Route::post('/admin/airports/bulk-upload', \App\Http\Controllers\Admin\Airports\BulkUploadAirportsController::class)
+            ->name('admin.airports.bulk-upload');
         Route::get('/admin/airports/edit/{id}', \App\Http\Controllers\Admin\Airports\ShowEditAirportController::class)
             ->name('admin.airports.edit');
         Route::post('/admin/airports/edit/{id}', \App\Http\Controllers\Admin\Airports\UpdateAirportController::class)
@@ -125,7 +127,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/community', \App\Http\Controllers\Community\ShowCommunityController::class)
         ->name('community');
 
-
     // Aircraft/Fleet
     Route::get('/aircraft/{id}', \App\Http\Controllers\Fleet\ShowAircraftController::class)
         ->name('aircraft');
@@ -137,7 +138,7 @@ Route::middleware('auth')->group(function () {
         ->name('rentals.end');
 
     Route::post('/aircraft/maintenance', \App\Http\Controllers\Fleet\PerformMaintenanceController::class)
-    ->name('aircraft.maintenance');
+        ->name('aircraft.maintenance');
 
     Route::get('/bushdivers-hq', \App\Http\Controllers\GetHqController::class)->name('hq');
 
@@ -164,7 +165,6 @@ Route::middleware('auth')->group(function () {
     Route::post('/marketplace/sell/{id}/{seller}', \App\Http\Controllers\MarketPlace\SellAircraftController::class)
         ->name('marketplace.sell');
 
-
     // Flights
     Route::get('/available-contracts', \App\Http\Controllers\Contracts\ShowActiveContractsController::class)
         ->name('bids');
@@ -176,8 +176,8 @@ Route::middleware('auth')->group(function () {
         ->name('dispatch.create');
     Route::post('/dispatch/cancel', \App\Http\Controllers\Dispatch\CancelDispatchController::class)
         ->name('dispatch.cancel');
-//    Route::post('/contracts/bid', \App\Http\Controllers\Contracts\BidForContractController::class)
-//        ->name('contracts.bid');
+    //    Route::post('/contracts/bid', \App\Http\Controllers\Contracts\BidForContractController::class)
+    //        ->name('contracts.bid');
     Route::post('/contracts/custom', \App\Http\Controllers\Contracts\CreateCustomRouteController::class)
         ->name('contracts.custom');
     Route::post('/contracts/fuel', \App\Http\Controllers\Contracts\CreateFuelCargoContractController::class)
@@ -188,12 +188,12 @@ Route::middleware('auth')->group(function () {
         ->name('pireps.process');
 
     // Temporary tie to fleet_admin until generic 'admin' role exists capturing all subroles
-    Route::middleware('role:fleet_admin')->group(function() {
+    Route::middleware('role:fleet_admin')->group(function () {
         Route::get('/admin/dashboard', \App\Http\Controllers\Admin\Dashboard\ShowDashboardController::class)
             ->name('admin.dashboard');
     });
 
-    Route::middleware('role:fleet_admin')->group(function() {
+    Route::middleware('role:fleet_admin')->group(function () {
         Route::get('/admin/fleet', \App\Http\Controllers\Admin\Fleet\ShowFleetListController::class)
             ->name('admin.fleet');
         Route::get('/admin/fleet/create', \App\Http\Controllers\Admin\Fleet\ShowCreateFleetController::class)
@@ -212,9 +212,9 @@ Route::middleware('auth')->group(function () {
             ->name('admin.fleet.upload');
     });
 
-    Route::middleware('role:tour_admin')->group(function() {
-       Route::get('/admin/tours', \App\Http\Controllers\Admin\Tours\ShowToursController::class)
-           ->name('admin.tours');
+    Route::middleware('role:tour_admin')->group(function () {
+        Route::get('/admin/tours', \App\Http\Controllers\Admin\Tours\ShowToursController::class)
+            ->name('admin.tours');
         Route::post('/admin/tours', \App\Http\Controllers\Admin\Tours\CreateTourController::class)
             ->name('admin.tours.create');
         Route::get('/admin/tours/{id}', \App\Http\Controllers\Admin\Tours\ShowTourDetailController::class)
@@ -288,6 +288,5 @@ Route::middleware('auth')->group(function () {
         Route::post('/admin/hubs/create', \App\Http\Controllers\Admin\Hubs\CreateHubController::class)
             ->name('admin.hubs.create');
     });
-
 
 });

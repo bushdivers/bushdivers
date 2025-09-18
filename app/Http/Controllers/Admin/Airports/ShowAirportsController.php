@@ -13,7 +13,6 @@ class ShowAirportsController extends Controller
     /**
      * Handle the incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function __invoke(Request $request): Response
@@ -23,7 +22,8 @@ class ShowAirportsController extends Controller
             ->paginate(20);
 
         return Inertia::render('Admin/Airports', [
-            'airports' => $airports
+            'airports' => $airports,
+            'bulkUploadResults' => session('bulkUploadResults'),
         ]);
     }
 }

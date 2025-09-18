@@ -29,7 +29,7 @@ class CommunityMissionJobTest extends TestCase
             'name' => 'Test Departure Airport',
             'lat' => -5.8269,
             'lon' => 144.2956,
-            'magnetic_variance' => 0
+            'magnetic_variance' => 0,
         ]);
 
         Airport::factory()->create([
@@ -37,7 +37,7 @@ class CommunityMissionJobTest extends TestCase
             'name' => 'Test Arrival Airport',
             'lat' => -6.0824,
             'lon' => 145.3918,
-            'magnetic_variance' => 0
+            'magnetic_variance' => 0,
         ]);
 
         // Create admin user with tour_admin role
@@ -49,14 +49,14 @@ class CommunityMissionJobTest extends TestCase
         $this->publishedMission = CommunityJob::factory()->create([
             'name' => 'Published Mission',
             'description' => 'Test Description',
-            'is_published' => true
+            'is_published' => true,
         ]);
 
         // Create unpublished mission
         $this->unpublishedMission = CommunityJob::factory()->create([
             'name' => 'Unpublished Mission',
             'description' => 'Test Description',
-            'is_published' => false
+            'is_published' => false,
         ]);
     }
 
@@ -69,7 +69,7 @@ class CommunityMissionJobTest extends TestCase
             'cargo' => 'Medical Supplies',
             'qty' => 1000,
             'recurring' => 0,
-            'inject_immediately' => false
+            'inject_immediately' => false,
         ];
 
         // Ensure no jobs or contracts exist initially
@@ -106,7 +106,7 @@ class CommunityMissionJobTest extends TestCase
             'cargo' => 'Medical Supplies',
             'qty' => 1000,
             'recurring' => 0,
-            'inject_immediately' => true
+            'inject_immediately' => true,
         ];
 
         // Ensure no jobs or contracts exist initially
@@ -149,7 +149,7 @@ class CommunityMissionJobTest extends TestCase
             'cargo' => 'Medical Supplies',
             'qty' => 1000,
             'recurring' => 0,
-            'inject_immediately' => true // This should be ignored for unpublished mission
+            'inject_immediately' => true, // This should be ignored for unpublished mission
         ];
 
         // Ensure no jobs or contracts exist initially
@@ -178,7 +178,7 @@ class CommunityMissionJobTest extends TestCase
             'cargo' => 'Passengers',
             'qty' => 25,
             'recurring' => 1,
-            'inject_immediately' => true
+            'inject_immediately' => true,
         ];
 
         // Make request to add passenger job with injection

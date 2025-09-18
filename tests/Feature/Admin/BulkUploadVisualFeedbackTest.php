@@ -8,7 +8,6 @@ use App\Models\Role;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class BulkUploadVisualFeedbackTest extends TestCase
@@ -30,7 +29,7 @@ class BulkUploadVisualFeedbackTest extends TestCase
         // Create a mission
         $this->mission = CommunityJob::factory()->create([
             'name' => 'Test Mission',
-            'is_published' => true
+            'is_published' => true,
         ]);
 
         // Create test airports for the bulk upload
@@ -51,7 +50,7 @@ class BulkUploadVisualFeedbackTest extends TestCase
         $response = $this->actingAs($this->user)
             ->post("/admin/missions/{$this->mission->id}/jobs/bulk-upload", [
                 'file' => $file,
-                'inject_immediately' => '0'
+                'inject_immediately' => '0',
             ]);
 
         // Should redirect back to mission details
@@ -87,7 +86,7 @@ class BulkUploadVisualFeedbackTest extends TestCase
         $this->actingAs($this->user)
             ->post("/admin/missions/{$this->mission->id}/jobs/bulk-upload", [
                 'file' => $file,
-                'inject_immediately' => '0'
+                'inject_immediately' => '0',
             ]);
 
         // First request should have results
