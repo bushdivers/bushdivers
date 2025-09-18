@@ -28,6 +28,7 @@ import {
   Th,
   Thead,
   Tr,
+  VStack,
   useDisclosure,
 } from '@chakra-ui/react'
 import { router } from '@inertiajs/react'
@@ -36,9 +37,11 @@ import { Anchor, Package } from 'lucide-react'
 import React, { useState } from 'react'
 import showdown from 'showdown'
 
+import BulkUploadModal from '../../components/elements/BulkUploadModal.jsx'
+import BulkUploadResults from '../../components/elements/BulkUploadResults.jsx'
 import AdminLayout from '../../components/layout/AdminLayout.jsx'
 
-const MissionDetails = ({ mission, jobs }) => {
+const MissionDetails = ({ mission, jobs, bulkUploadResults }) => {
   const [newJobError, setNewJobError] = useState(null)
   const [missionDetails, setMissionDetails] = useState({
     name: mission.name,
@@ -56,6 +59,11 @@ const MissionDetails = ({ mission, jobs }) => {
   })
 
   const { isOpen, onOpen, onClose } = useDisclosure()
+  const {
+    isOpen: isBulkUploadOpen,
+    onOpen: onBulkUploadOpen,
+    onClose: onBulkUploadClose,
+  } = useDisclosure()
 
   function handleMissionChange(e) {
     const value =
@@ -224,11 +232,23 @@ const MissionDetails = ({ mission, jobs }) => {
           <Flex justifyContent="space-between">
             <Heading size="md">Jobs</Heading>
             {!mission.is_completed && (
-              <Button onClick={onOpen} size="sm">
-                Add Job
-              </Button>
+              <Flex gap={2}>
+                <Button onClick={onBulkUploadOpen} size="sm" variant="outline">
+                  Bulk Upload
+                </Button>
+                <Button onClick={onOpen} size="sm">
+                  Add Job
+                </Button>
+              </Flex>
             )}
           </Flex>
+
+          <BulkUploadResults
+            results={bulkUploadResults}
+            title="Bulk Upload Results"
+            successMessage="job(s) successfully created and added to the mission"
+          />
+
           {jobs?.length > 0 ? (
             <TableContainer>
               <Table>
@@ -385,6 +405,39 @@ const MissionDetails = ({ mission, jobs }) => {
           </ModalFooter>
         </ModalContent>
       </Modal>
+
+      <BulkUploadModal
+        isOpen={isBulkUploadOpen}
+        onClose={onBulkUploadClose}
+        title="Bulk Upload Jobs"
+        uploadUrl={`/admin/missions/${mission.id}/jobs/bulk-upload`}
+        formatDescription={
+          <VStack align="start">
+            <Text>Upload a CSV file with the following columns:</Text>
+            <Text fontFamily="monospace">
+              departure_icao, arrival_icao, cargo_type, cargo, qty, is_recurring
+            </Text>
+            <Text fontSize="xs">cargo_type: 1=payload, 2=passengers</Text>
+          </VStack>
+        }
+        additionalFields={
+          mission.is_published
+            ? (data, updateData, isUploading) => (
+                <FormControl mt={3}>
+                  <Checkbox
+                    isChecked={data.inject_immediately || false}
+                    onChange={(e) =>
+                      updateData('inject_immediately', e.target.checked)
+                    }
+                    disabled={isUploading}
+                  >
+                    Immediately create contracts for uploaded jobs
+                  </Checkbox>
+                </FormControl>
+              )
+            : null
+        }
+      />
     </>
   )
 }
