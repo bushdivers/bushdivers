@@ -3,6 +3,7 @@
 namespace App\Services\User;
 
 use App\Models\User;
+use App\Models\Airport;
 use Illuminate\Support\Facades\Hash;
 
 class CreateUser
@@ -13,7 +14,7 @@ class CreateUser
         $user->name = $name;
         $user->email = $email;
         $user->password = Hash::make($password);
-        $user->current_airport_id = 'AYMR';
+        $user->current_airport_id = Airport::whereIdentifier('AYMR')->first()->id;
         $user->toc_accepted = true;
         $user->opt_in = false;
         $user->rank_id = 1;
