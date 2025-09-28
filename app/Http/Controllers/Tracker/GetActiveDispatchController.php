@@ -74,12 +74,12 @@ class GetActiveDispatchController extends Controller
 
         $data = [
             'id' => $dispatch->id,
-            'departure_airport_id' => $dispatch->departure_airport_id,
+            'departure_airport_id' => $dispatch->depAirport->identifier,
             'departure_airport_lat' => $dispatch->depAirport->lat,
             'departure_airport_lon' => $dispatch->depAirport->lon,
             'destination_airport_lat' => $dispatch->arrAirport->lat,
             'destination_airport_lon' => $dispatch->arrAirport->lon,
-            'destination_airport_id' => $dispatch->destination_airport_id,
+            'destination_airport_id' => $dispatch->arrAirport->identifier,
             'name' => $dispatch->is_rental ? $dispatch->rental->fleet->manufacturer . ' ' . $dispatch->rental->fleet->name : $dispatch->aircraft->fleet->manufacturer . ' ' . $dispatch->aircraft->fleet->name,
             'aircraft_type' => $dispatch->is_rental ? $dispatch->rental->fleet->type : $dispatch->aircraft->fleet->type,
             'registration' => $dispatch->is_rental ? $dispatch->rental->registration : $dispatch->aircraft->registration,
