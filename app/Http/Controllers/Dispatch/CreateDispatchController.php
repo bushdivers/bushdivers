@@ -130,7 +130,7 @@ class CreateDispatchController extends Controller
             } elseif ($aircraft->owner_id != 0) {
                 $addUserTransaction->execute(Auth::user()->id, TransactionTypes::FlightFeesFuel, -$request->fuel_price);
             } else {
-                $addAirlineTransaction->execute(AirlineTransactionTypes::FuelFees, -$request->fuel_price, 'Fuel '.$actualFuelAdded.' at '.Auth::user()->current_airport_id, null, 'debit');
+                $addAirlineTransaction->execute(AirlineTransactionTypes::FuelFees, -$request->fuel_price, 'Fuel '.$actualFuelAdded.' at '.Auth::user()->location->identifier, null, 'debit');
             }
             // decrement fuel from airport
             $updateFuelAtAirport->execute($currentLocation, $actualFuelAdded, $aircraft->fleet->fuel_type, 'decrement');

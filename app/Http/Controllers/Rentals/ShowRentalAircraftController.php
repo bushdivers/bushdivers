@@ -23,7 +23,7 @@ class ShowRentalAircraftController extends Controller
      */
     public function __invoke(Request $request): Response
     {
-        $currentLocation = Airport::where('identifier', Auth::user()->current_airport_id)->first();
+        $currentLocation = Airport::find(Auth::user()->current_airport_id);
         $aircraft = null;
         if ($currentLocation->has_avgas && $currentLocation->has_jetfuel) {
             $aircraft = Fleet::where('is_rental', true)->get();

@@ -26,7 +26,7 @@ class RentAircraftController extends Controller
      */
     public function __invoke(Request $request): RedirectResponse
     {
-        if ($this->startRental->execute($request->aircraft, Auth::user()->id, Auth::user()->current_airport_id)) {
+        if ($this->startRental->execute($request->aircraft, Auth::user()->id, Auth::user()->location->identifier)) {
             return redirect()->to('/rentals')->with(['success' => 'Aircraft rented']);
         } else {
             return redirect()->back()->with(['error' => 'Insufficient funds']);

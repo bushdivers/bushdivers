@@ -39,7 +39,7 @@ class ProcessJumpseatController extends Controller
 
         $hubs = Airport::where('is_hub', true)->get();
         $hubs = $hubs->pluck('icao');
-        if ($hubs->contains(Auth::user()->current_airport_id) && $hubs->contains($request->icao)) {
+        if ($hubs->contains(Auth::user()->location->identifier) && $hubs->contains($request->icao)) {
             $isCost = false;
         }
 

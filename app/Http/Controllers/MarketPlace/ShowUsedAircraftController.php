@@ -33,7 +33,7 @@ class ShowUsedAircraftController extends Controller
      */
     public function __invoke($fleet, $buyer): Response
     {
-        $currentLocation = Airport::where('identifier', Auth::user()->current_airport_id)->first();
+        $currentLocation = Airport::find(Auth::user()->current_airport_id);
         $fleetDetail = Fleet::find($fleet);
 
         $this->generateAircraft->execute($fleet, $currentLocation);
