@@ -88,16 +88,16 @@ class SubmitPirepHubTest extends TestCase
         $this->contract = Contract::factory()->create([
             'contract_value' => 250.00,
             'contract_type_id' => 5,
-            'dep_airport_id' => 'AYMR',
-            'arr_airport_id' => 'AYMN',
-            'current_airport_id' => 'AYMR',
-            'airport' => 'AYMN'
+            'dep_airport_id' => $aymr->id,
+            'arr_airport_id' => $aymn->id,
+            'current_airport_id' => $aymr->id,
+            'hub_airport_id' => $aymn->id
         ]);
 
         $this->pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,
-            'destination_airport_id' => 'AYMN',
-            'departure_airport_id' => $this->contract->dep_airport_id,
+            'destination_airport_id' => $aymn->identifier,
+            'departure_airport_id' => $aymr->identifier,
             'aircraft_id' => $this->aircraft->id,
             'current_lat' => -6.14617,
             'current_lon' => 143.65733

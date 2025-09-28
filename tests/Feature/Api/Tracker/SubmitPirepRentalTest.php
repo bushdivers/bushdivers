@@ -76,14 +76,14 @@ class SubmitPirepRentalTest extends TestCase
 
         $this->contract = Contract::factory()->create([
             'contract_value' => 250.00,
-            'dep_airport_id' => 'AYMR',
-            'arr_airport_id' => 'AYMN'
+            'dep_airport_id' => $this->aymr->id,
+            'arr_airport_id' => $this->aymn->id
         ]);
 
         $this->pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,
-            'destination_airport_id' => $this->contract->arr_airport_id,
-            'departure_airport_id' => $this->contract->dep_airport_id,
+            'destination_airport_id' => 'AYMN' ?? $this->contract->arr_airport_id,
+            'departure_airport_id' => 'AYMR' ?? $this->contract->dep_airport_id,
             'aircraft_id' => $this->aircraft->id,
             'current_lat' => -6.14617,
             'current_lon' => 143.65733,

@@ -53,8 +53,8 @@ const ContractDetail = ({ contract, action = null, type }) => {
       <Box>
         <Flex justifyContent="space-between" gap={1}>
           <Flex alignItems="center" gap={1}>
-            <Link href={`/airports/${contract.current_airport_id}`}>
-              <Text fontSize="lg">{contract.current_airport_id}</Text>
+            <Link href={`/airports/${contract.current_airport.identifier}`}>
+              <Text fontSize="lg">{contract.current_airport.identifier}</Text>
             </Link>
             {contract.dep_airport.longest_runway_surface === 'W' && (
               <Icon as={Anchor} color="blue.500" />

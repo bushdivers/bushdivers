@@ -55,8 +55,8 @@ class CreateFuelCargoContractTest extends TestCase
     {
         $this->createFuelContract->execute($this->airport1->identifier, $this->airport2->identifier, 10, 1, 50, 1);
         $this->assertDatabaseHas('contracts', [
-            'dep_airport_id' => $this->airport1->identifier,
-            'arr_airport_id' => $this->airport2->identifier,
+            'dep_airport_id' => $this->airport1->id,
+            'arr_airport_id' => $this->airport2->id,
             'is_available' => 0,
             'is_fuel' => true,
             'user_id' => 1
@@ -70,8 +70,8 @@ class CreateFuelCargoContractTest extends TestCase
         $fuelValue = round(($normalValue / 2) + 2000);
         $this->createFuelContract->execute($this->airport1->identifier, $this->airport2->identifier, 10, 1, 3500, 1);
         $this->assertDatabaseHas('contracts', [
-            'dep_airport_id' => $this->airport1->identifier,
-            'arr_airport_id' => $this->airport2->identifier,
+            'dep_airport_id' => $this->airport1->id,
+            'arr_airport_id' => $this->airport2->id,
             'is_available' => 0,
             'is_fuel' => true,
             'user_id' => 1,

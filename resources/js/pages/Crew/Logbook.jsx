@@ -79,33 +79,33 @@ const Logbook = ({ logbook }) => {
                         <Td>
                           <Flex alignItems="center" gap={2}>
                             <Box>
-                              {entry.departure_airport_id}
+                              {entry.departure_airport_id}{' '}
+                              {entry.dep_airport.longest_runway_surface ===
+                                'W' && <Icon as={Anchor} color="blue.500" />}
+                              {entry.dep_airport.is_thirdparty && (
+                                <Icon as={Package} color="green.500" />
+                              )}
                               <br />
                               <Text fontSize="xs">
                                 {entry.dep_airport.name}
                               </Text>
                             </Box>
-                            {entry.dep_airport.longest_runway_surface ===
-                              'W' && <Icon as={Anchor} color="blue.500" />}
-                            {entry.dep_airport.is_thirdparty && (
-                              <Icon as={Package} color="green.500" />
-                            )}
                           </Flex>
                         </Td>
                         <Td>
                           <Flex alignItems="center" gap={2}>
                             <Box>
-                              {entry.destination_airport_id}
+                              {entry.destination_airport_id}{' '}
+                              {entry.arr_airport.longest_runway_surface ===
+                                'W' && <Icon as={Anchor} color="blue.500" />}
+                              {entry.arr_airport.is_thirdparty && (
+                                <Icon as={Package} color="green.500" />
+                              )}
                               <br />
                               <Text fontSize="xs">
                                 {entry.arr_airport.name}
                               </Text>
                             </Box>
-                            {entry.arr_airport.longest_runway_surface ===
-                              'W' && <Icon as={Anchor} color="blue.500" />}
-                            {entry.arr_airport.is_thirdparty && (
-                              <Icon as={Package} color="green.500" />
-                            )}
                           </Flex>
                         </Td>
                         <Td>

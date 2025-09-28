@@ -2,10 +2,12 @@
 
 namespace App\Services\Contracts;
 
+use App\Models\Airport;
 use App\Models\CommunityJob;
 use App\Models\CommunityJobContract;
 use App\Models\Contract;
 use App\Models\ContractCargo;
+use App\Models\Pirep;
 use App\Services\Airports\UpdateFuelAtAirport;
 use Carbon\Carbon;
 
@@ -18,21 +20,20 @@ class UpdateContractCargoProgress
         $this->updateFuelAtAirport = $updateFuelAtAirport;
     }
 
-    public function execute($cargo, string $icao, $pirepId = null)
+    public function execute(Contract $contractCargo, Airport $airport, Pirep $pirep)
     {
-        $contractCargo = Contract::find($cargo);
-        $contractCargo->current_airport_id = $icao;
+        $contractCargo->current_airport_id = $airport->id;
         $contractCargo->active_pirep = null;
 
         // check if cargo item is completed
 
-        if ($icao == $contractCargo->arr_airport_id) {
+        if ($airport->id == $contractCargo->arr_airport_id) {
             $contractCargo->is_completed = true;
-            $contractCargo->completed_pirep = $pirepId;
+            $contractCargo->completed_pirep = $pirep->id;
             $contractCargo->completed_at = Carbon::now();
 
             if ($contractCargo->is_fuel) {
-                $this->updateFuelAtAirport->execute($icao, $contractCargo->fuel_qty, $contractCargo->fuel_type, 'increment');
+                $this->updateFuelAtAirport->execute($airport, $contractCargo->fuel_qty, $contractCargo->fuel_type, 'increment');
             }
             if ($contractCargo->community_job_contract_id != null) {
                 $communityJobCargo = CommunityJobContract::find($contractCargo->community_job_contract_id);

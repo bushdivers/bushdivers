@@ -21,7 +21,7 @@ import {
   Tr,
 } from '@chakra-ui/react'
 import { Link, router } from '@inertiajs/react'
-import { ArrowUp } from 'lucide-react'
+import { Anchor, ArrowUp, Package } from 'lucide-react'
 import React from 'react'
 
 import DispatchSummary from '../../components/dispatch/DispatchSummary'
@@ -88,8 +88,15 @@ const ActiveDispatch = ({
                         {cargo.map((detail) => (
                           <Tr key={detail.id}>
                             <Td>{detail.id}</Td>
-                            <Td>{detail.current_airport_id}</Td>
-                            <Td>{detail.arr_airport_id}</Td>
+                            <Td>
+                              {detail.current_airport.identifier}
+                              {detail.current_airport.longest_runway_surface ===
+                                'W' && <Icon as={Anchor} color="blue.500" />}
+                              {detail.current_airport.is_thirdparty && (
+                                <Icon as={Package} color="green.500" />
+                              )}
+                            </Td>
+                            <Td>{detail.arr_airport.identifier}</Td>
                             <Td>{detail.distance} nm</Td>
                             <Td>
                               <Flex alignItems="center">

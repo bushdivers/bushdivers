@@ -64,7 +64,7 @@ class ShowAirportController extends Controller
             ->get();
 
         // get contracts
-        $contracts = $this->getContracts($icao);
+        $contracts = $this->getContracts($airport);
 
         if ($contracts->count() <= 20) {
             $numToGenerate = $this->getNumberToGenerate->execute($airport, $contracts->count());
@@ -74,7 +74,7 @@ class ShowAirportController extends Controller
                     $this->storeContracts->execute($newContracts);
                 }
             }
-            $contracts = $this->getContracts($icao);
+            $contracts = $this->getContracts($airport);
         }
 
         $myContracts = Contract::with(['depAirport', 'currentAirport', 'arrAirport'])
@@ -102,10 +102,10 @@ class ShowAirportController extends Controller
         ]);
     }
 
-    protected function getContracts(string $icao)
+    protected function getContracts(Airport $airport)
     {
         return Contract::with(['depAirport', 'currentAirport', 'arrAirport'])
-            ->where('dep_airport_id', $icao)
+            ->where('dep_airport_id', $airport->id)
             ->where('is_available', true)
             ->whereRaw('expires_at >= Now()')
             ->orderBy('distance')

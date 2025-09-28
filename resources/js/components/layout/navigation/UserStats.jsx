@@ -14,9 +14,9 @@ const UserStats = () => {
       </Flex>
       <ChakraLink
         as={InertiaLink}
-        href={`/airports/${auth.user.current_airport_id}`}
+        href={`/airports/${auth.user.location.identifier}`}
       >
-        <Text fontSize="xs">{auth.user.current_airport_id}</Text>
+        <Text fontSize="xs">{auth.user.location.identifier}</Text>
       </ChakraLink>
     </Flex>
   )

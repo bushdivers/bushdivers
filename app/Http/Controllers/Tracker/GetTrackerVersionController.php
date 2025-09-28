@@ -22,7 +22,7 @@ class GetTrackerVersionController extends Controller
                 $v = substr($v, 1);
 
             foreach ($release['assets'] as $asset) {
-                if (strpos($asset['name'], $v) !== false && str_starts_with(strtolower($asset['name']), 'bushtracker')) {
+                if (strpos($asset['name'], $v) !== false && (str_starts_with(strtolower($asset['name']), 'bushtracker') || str_starts_with(strtolower($asset['name']), 'bushdiverstracker'))) {
                     return [
                         'version' => $v,
                         'url' => $asset['browser_download_url'],

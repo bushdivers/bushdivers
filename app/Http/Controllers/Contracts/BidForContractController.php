@@ -23,10 +23,10 @@ class BidForContractController extends Controller
      */
     public function __invoke(Request $request, UpdateFuelAtAirport $updateFuelAtAirport, GenerateContracts $generateContracts, StoreContracts $storeContracts): JsonResponse
     {
-        $contract = Contract::findOrFail($request->id);
+        $contract = Contract::with(['depAirport'])->findOrFail($request->id);
         if ($request->action == 'remove') {
             if ($contract->is_fuel) {
-                $updateFuelAtAirport->execute($contract->dep_airport_id, $contract->fuel_qty, $contract->fuel_type,
+                $updateFuelAtAirport->execute($contract->depAirport, $contract->fuel_qty, $contract->fuel_type,
                     'increment');
                 $contract->delete();
                 return \response()->json(['message' => 'Contract updated']);
@@ -35,7 +35,7 @@ class BidForContractController extends Controller
             $contract->is_available = true;
             $contract->user_id = null;
             $contract->save();
-            Cache::forget($contract->dep_airport_id.'-contracts');
+            Cache::forget($contract->depAirport->id.'-contracts');
         } else {
 
             // update contract for user
@@ -44,10 +44,10 @@ class BidForContractController extends Controller
             $contract->save();
 
             // generate return to hub
-            $airport = Airport::where('identifier', $contract->arr_airport_id)->firstOrFail();
+            $airport = Airport::findOrFail($contract->arr_airport_id);
             if (!$airport->is_hub) {
                 $airportContracts = Contract::with('arrAirport')
-                    ->where('dep_airport_id', $airport->identifier)
+                    ->where('dep_airport_id', $airport->id)
                     ->where('is_available', true)
                     ->whereHas('arrAirport', function ($query) {
                         $query->where('is_hub', true);

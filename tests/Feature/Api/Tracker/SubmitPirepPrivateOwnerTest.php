@@ -50,6 +50,7 @@ class SubmitPirepPrivateOwnerTest extends TestCase
         ]);
 
         $this->user = User::factory()->create([
+            'current_airport_id' => $this->aymr->id,
             'rank_id' => 1,
             'flights_time' => 299,
             'points' => 49,
@@ -76,15 +77,15 @@ class SubmitPirepPrivateOwnerTest extends TestCase
 
         $this->contract = Contract::factory()->create([
             'contract_value' => 250.00,
-            'dep_airport_id' => 'AYMR',
-            'arr_airport_id' => 'AYMN',
-            'current_airport_id' => 'AYMR',
+            'dep_airport_id' => $this->aymr->id,
+            'arr_airport_id' => $this->aymn->id,
+            'current_airport_id' => $this->aymr->id,
         ]);
 
         $this->pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,
-            'destination_airport_id' => $this->contract->arr_airport_id,
-            'departure_airport_id' => $this->contract->dep_airport_id,
+            'destination_airport_id' => 'AYMN' ?? $this->contract->arr_airport_id,
+            'departure_airport_id' => 'AYMR' ?? $this->contract->dep_airport_id,
             'aircraft_id' => $this->aircraft->id,
             'current_lat' => -6.14617,
             'current_lon' => 143.65733
@@ -264,13 +265,13 @@ class SubmitPirepPrivateOwnerTest extends TestCase
 
         $this->assertDatabaseHas('users', [
             'id' => $this->user->id,
-            'current_airport_id' => $this->aymr->identifier
+            'current_airport_id' => $this->aymr->id
         ]);
         $this->postJson('/api/pirep/submit', $data);
 
         $this->assertDatabaseHas('users', [
             'id' => $this->user->id,
-            'current_airport_id' => $this->aymn->identifier
+            'current_airport_id' => $this->aymn->id
         ]);
     }
 
@@ -295,14 +296,14 @@ class SubmitPirepPrivateOwnerTest extends TestCase
 
         $this->assertDatabaseHas('contracts', [
             'id' => $this->contract->id,
-            'current_airport_id' => $this->aymr->identifier
+            'current_airport_id' => $this->aymr->id
         ]);
 
         $this->postJson('/api/pirep/submit', $data);
 
         $this->assertDatabaseHas('contracts', [
             'id' => $this->contract->id,
-            'current_airport_id' => $this->aymn->identifier
+            'current_airport_id' => $this->aymn->id
         ]);
     }
 

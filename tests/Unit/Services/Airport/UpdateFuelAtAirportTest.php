@@ -27,7 +27,7 @@ class UpdateFuelAtAirportTest extends TestCase
             'is_hub' => true,
             'avgas_qty' => null
         ]);
-        $this->updateFuelAtAirport->execute($airport->identifier, 10, 1, 'decrement');
+        $this->updateFuelAtAirport->execute($airport, 10, 1, 'decrement');
         $airport->refresh();
         $this->assertNull($airport->avgas_qty);
     }
@@ -38,7 +38,7 @@ class UpdateFuelAtAirportTest extends TestCase
             'is_hub' => false,
             'avgas_qty' => 100
         ]);
-        $this->updateFuelAtAirport->execute($airport->identifier, 10, 1, 'decrement');
+        $this->updateFuelAtAirport->execute($airport, 10, 1, 'decrement');
         $airport->refresh();
         $this->assertEquals(90, $airport->avgas_qty);
     }
@@ -49,7 +49,7 @@ class UpdateFuelAtAirportTest extends TestCase
             'is_hub' => false,
             'avgas_qty' => 100
         ]);
-        $this->updateFuelAtAirport->execute($airport->identifier, 10, 1, 'increment');
+        $this->updateFuelAtAirport->execute($airport, 10, 1, 'increment');
         $airport->refresh();
         $this->assertEquals(110, $airport->avgas_qty);
     }
@@ -60,7 +60,7 @@ class UpdateFuelAtAirportTest extends TestCase
             'is_hub' => false,
             'jetfuel_qty' => 100
         ]);
-        $this->updateFuelAtAirport->execute($airport->identifier, 10, 2, 'decrement');
+        $this->updateFuelAtAirport->execute($airport, 10, 2, 'decrement');
         $airport->refresh();
         $this->assertEquals(90, $airport->jetfuel_qty);
     }
@@ -71,7 +71,7 @@ class UpdateFuelAtAirportTest extends TestCase
             'is_hub' => false,
             'jetfuel_qty' => 100
         ]);
-        $this->updateFuelAtAirport->execute($airport->identifier, 10, 2, 'increment');
+        $this->updateFuelAtAirport->execute($airport, 10, 2, 'increment');
         $airport->refresh();
         $this->assertEquals(110, $airport->jetfuel_qty);
     }

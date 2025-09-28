@@ -6,9 +6,8 @@ use App\Models\Airport;
 
 class UpdateFuelAtAirport
 {
-    public function execute(string $airportIdentifier, int $fuel, int $fuelType, string $action)
+    public function execute(Airport $airport, int $fuel, int $fuelType, string $action)
     {
-        $airport = Airport::where('identifier', $airportIdentifier)->firstOrFail();
         if ($airport->is_hub) return;
         if ($fuelType == 1) {
             $action == 'increment' ? $airport->avgas_qty += $fuel : $airport->avgas_qty -= $fuel;

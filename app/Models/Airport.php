@@ -49,7 +49,7 @@ class Airport extends Model
 
     public function hubContracts()
     {
-        return $this->hasMany(Contract::class, 'airport', 'identifier');
+        return $this->hasMany(Contract::class, 'hub_airport_id');
     }
 
     public function ferryFlights()
@@ -71,7 +71,7 @@ class Airport extends Model
 
     public function scopeInRangeOf(Builder $query, Airport|Coordinate $from, $min, $max)
     {
-        // Distances in NM
+        $max = max($min, $max - 0.001);
 
         // Duplicating the calc fields keeps it as simple select without subqueries, etc
         $lat = $from instanceof Coordinate ? $from->getLat() : $from->lat;
@@ -79,7 +79,7 @@ class Airport extends Model
 
         $query->withRangeTo($from)
             //->selectRaw('airports.*, 3440 * ACOS(COS(RADIANS(?)) * COS(RADIANS(lat)) * COS(RADIANS(?) - RADIANS(lon)) + SIN(RADIANS(?)) * SIN(RADIANS(lat))) as distance', [$lat, $lon, $lat])
-            ->whereRaw('FLOOR(3440 * ACOS(COS(RADIANS(?)) * COS(RADIANS(lat)) * COS(RADIANS(?) - RADIANS(lon)) + SIN(RADIANS(?)) * SIN(RADIANS(lat)))) between ? AND (? - 0.001)', [$lat, $lon, $lat, $min, $max]);
+            ->whereRaw('FLOOR(3440 * ACOS(COS(RADIANS(?)) * COS(RADIANS(lat)) * COS(RADIANS(?) - RADIANS(lon)) + SIN(RADIANS(?)) * SIN(RADIANS(lat)))) between ? AND ?', [$lat, $lon, $lat, $min, $max]);
     }
 
     public function scopeHub(Builder $query)

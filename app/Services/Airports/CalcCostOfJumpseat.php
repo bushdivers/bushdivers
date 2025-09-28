@@ -14,10 +14,10 @@ class CalcCostOfJumpseat
         $this->calcDistanceBetweenPoints = $calcDistanceBetweenPoints;
     }
 
-    public function execute(string $from, string $to): array
+    public function execute(string $fromIcao, string $toIcao): array
     {
-        $start = Airport::where('identifier', $from)->firstOrFail();
-        $end = Airport::where('identifier', $to)->firstOrFail();
+        $start = Airport::where('identifier', $fromIcao)->firstOrFail();
+        $end = Airport::where('identifier', $toIcao)->firstOrFail();
 
         $distance = $this->calcDistanceBetweenPoints->execute($start->lat, $start->lon, $end->lat, $end->lon);
 

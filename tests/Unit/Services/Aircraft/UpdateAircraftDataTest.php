@@ -80,8 +80,8 @@ class UpdateAircraftDataTest extends TestCase
 
         $this->contract = Contract::factory()->create([
             'contract_value' => 250.00,
-            'dep_airport_id' => 'AYMR',
-            'arr_airport_id' => 'AYMN'
+            'dep_airport_id' => $this->aymr->id,
+            'arr_airport_id' => $this->aymn->id,
         ]);
 
         $this->pirep = Pirep::factory()->create([

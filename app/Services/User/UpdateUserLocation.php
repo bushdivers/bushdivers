@@ -2,6 +2,7 @@
 
 namespace App\Services\User;
 
+use App\Models\Airport;
 use App\Models\User;
 
 class UpdateUserLocation
@@ -9,7 +10,7 @@ class UpdateUserLocation
     public function execute($icao, $userId)
     {
         $user = User::find($userId);
-        $user->current_airport_id = $icao;
+        $user->current_airport_id = Airport::whereIdentifier($icao)->first()->id;
         $user->save();
     }
 }

@@ -93,15 +93,15 @@ class SubmitPirepTest extends TestCase
 
         $this->contract = Contract::factory()->create([
             'contract_value' => 250.00,
-            'dep_airport_id' => 'AYMR',
-            'arr_airport_id' => 'AYMN',
-            'current_airport_id' => 'AYMR',
+            'dep_airport_id' => $this->aymr->id,
+            'arr_airport_id' => $this->aymn->id,
+            'current_airport_id' => $this->aymr->id,
         ]);
 
         $this->pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,
-            'destination_airport_id' => $this->contract->arr_airport_id,
-            'departure_airport_id' => $this->contract->dep_airport_id,
+            'destination_airport_id' => 'AYMN' ?? $this->contract->arr_airport_id,
+            'departure_airport_id' => 'AYMR' ?? $this->contract->dep_airport_id,
             'aircraft_id' => $this->aircraft->id,
             'current_lat' => -6.14617,
             'current_lon' => 143.65733
@@ -182,8 +182,8 @@ class SubmitPirepTest extends TestCase
 
         $pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,
-            'destination_airport_id' => $this->contract->arr_airport_id,
-            'departure_airport_id' => $this->contract->dep_airport_id,
+            'destination_airport_id' => 'AYMN' ?? $this->contract->arr_airport_id,
+            'departure_airport_id' => 'AYMR' ?? $this->contract->dep_airport_id,
             'aircraft_id' => $this->aircraft,
             'current_lat' => -6.14617,
             'current_lon' => 143.65733,
@@ -530,7 +530,7 @@ class SubmitPirepTest extends TestCase
         $this->assertDatabaseHas('contracts', [
             'id' => $this->contract->id,
             'is_completed' => true,
-            'current_airport_id' => $this->pirep->destination_airport_id
+            'current_airport_id' => $this->aymn->id ?? $this->pirep->destination_airport_id
         ]);
     }
 
@@ -539,7 +539,7 @@ class SubmitPirepTest extends TestCase
         $pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,
             'destination_airport_id' => 'AYTE',
-            'departure_airport_id' => $this->contract->dep_airport_id,
+            'departure_airport_id' => 'AYMR' ?? $this->contract->dep_airport_id,
             'aircraft_id' => $this->aircraft
         ]);
 
@@ -570,7 +570,7 @@ class SubmitPirepTest extends TestCase
         $this->assertDatabaseHas('contracts', [
             'id' => $this->contract->id,
             'is_completed' => false,
-            'current_airport_id' => 'AYTE',
+            'current_airport_id' => $this->ayte->id,
             'user_id' => null
         ]);
     }
@@ -606,15 +606,15 @@ class SubmitPirepTest extends TestCase
     {
         $contract1 = Contract::factory()->create([
             'contract_value' => 250.00,
-            'dep_airport_id' => 'AYMR',
-            'arr_airport_id' => 'AYMN',
+            'dep_airport_id' => $this->aymr->id,
+            'arr_airport_id' => $this->aymn->id,
             'user_id' => $this->user->id
         ]);
 
         $contract2 = Contract::factory()->create([
             'contract_value' => 400.00,
-            'dep_airport_id' => 'AYMR',
-            'arr_airport_id' => 'AYMN',
+            'dep_airport_id' => $this->aymr->id,
+            'arr_airport_id' => $this->aymn->id,
             'user_id' => $this->user->id
         ]);
 
@@ -668,20 +668,20 @@ class SubmitPirepTest extends TestCase
     {
         $contract1 = Contract::factory()->create([
             'contract_value' => 250.00,
-            'dep_airport_id' => 'AYMR',
-            'arr_airport_id' => 'AYMN'
+            'dep_airport_id' => $this->aymr->id,
+            'arr_airport_id' => $this->aymn->id
         ]);
 
         $contract2 = Contract::factory()->create([
             'contract_value' => 400.00,
-            'dep_airport_id' => 'AYMR',
-            'arr_airport_id' => 'AYMN'
+            'dep_airport_id' => $this->aymr->id,
+            'arr_airport_id' => $this->aymn->id
         ]);
 
         $pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,
             'destination_airport_id' => 'WAVG',
-            'departure_airport_id' => $contract1->dep_airport_id,
+            'departure_airport_id' => 'AYMR' ?? $contract1->dep_airport_id,
             'aircraft_id' => $this->aircraft
         ]);
 
@@ -728,20 +728,20 @@ class SubmitPirepTest extends TestCase
     {
         $contract1 = Contract::factory()->create([
             'contract_value' => 250.00,
-            'dep_airport_id' => 'AYMR',
-            'arr_airport_id' => 'AYMN'
+            'dep_airport_id' => $this->aymr->id,
+            'arr_airport_id' => $this->aymn->id,
         ]);
 
         $contract2 = Contract::factory()->create([
             'contract_value' => 400.00,
-            'dep_airport_id' => 'AYMR',
-            'arr_airport_id' => 'WAVG'
+            'dep_airport_id' => $this->aymr->id,
+            'arr_airport_id' => $this->wavg->id,
         ]);
 
         $pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,
-            'destination_airport_id' => $contract1->arr_airport_id,
-            'departure_airport_id' => $contract1->dep_airport_id,
+            'destination_airport_id' => 'AYMN' ?? $contract1->arr_airport_id,
+            'departure_airport_id' => 'AYMR' ?? $contract1->dep_airport_id,
             'aircraft_id' => $this->aircraft
         ]);
 

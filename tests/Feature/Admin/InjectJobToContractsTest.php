@@ -27,7 +27,7 @@ class InjectJobToContractsTest extends TestCase
         parent::setUp();
 
         // Create required airports
-        Airport::factory()->create([
+        $aymr = Airport::factory()->create([
             'identifier' => 'AYMR',
             'name' => 'Test Departure Airport',
             'lat' => -5.8269,
@@ -35,7 +35,7 @@ class InjectJobToContractsTest extends TestCase
             'magnetic_variance' => 0
         ]);
 
-        Airport::factory()->create([
+        $aymn = Airport::factory()->create([
             'identifier' => 'AYMN',
             'name' => 'Test Arrival Airport',
             'lat' => -6.0824,
@@ -68,8 +68,8 @@ class InjectJobToContractsTest extends TestCase
         // Create job for published mission
         $this->publishedJob = CommunityJobContract::factory()->create([
             'community_job_id' => $this->publishedMission->id,
-            'dep_airport_id' => 'AYMR',
-            'arr_airport_id' => 'AYMN',
+            'dep_airport_id' => $aymr->id,
+            'arr_airport_id' => $aymn->id,
             'cargo_type' => 1,
             'payload' => 1000,
             'cargo' => 'Medical Supplies'
@@ -78,8 +78,8 @@ class InjectJobToContractsTest extends TestCase
         // Create job for unpublished mission
         $this->unpublishedJob = CommunityJobContract::factory()->create([
             'community_job_id' => $this->unpublishedMission->id,
-            'dep_airport_id' => 'AYMR',
-            'arr_airport_id' => 'AYMN',
+            'dep_airport_id' => $aymr->id,
+            'arr_airport_id' => $aymn->id,
             'cargo_type' => 1,
             'payload' => 500,
             'cargo' => 'Emergency Supplies'
@@ -175,8 +175,8 @@ class InjectJobToContractsTest extends TestCase
         // Create a passenger job
         $passengerJob = CommunityJobContract::factory()->create([
             'community_job_id' => $this->publishedMission->id,
-            'dep_airport_id' => 'AYMR',
-            'arr_airport_id' => 'AYMN',
+            'dep_airport_id' => $this->publishedJob->dep_airport_id,
+            'arr_airport_id' => $this->publishedJob->arr_airport_id,
             'cargo_type' => 2,
             'pax' => 15,
             'cargo' => 'Passengers'

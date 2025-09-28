@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Admin;
 
+use App\Models\Airport;
 use App\Models\CommunityJob;
 use App\Models\CommunityJobContract;
 use App\Models\Role;
@@ -41,8 +42,8 @@ class ToggleJobRecurringTest extends TestCase
         $this->job = CommunityJobContract::factory()->create([
             'community_job_id' => $this->mission->id,
             'is_recurring' => false,
-            'dep_airport_id' => 'AYMR',
-            'arr_airport_id' => 'AYMN'
+            'dep_airport_id' => Airport::factory()->create(['identifier' => 'AYMR']),
+            'arr_airport_id' => Airport::factory()->create(['identifier' => 'AYMN'])
         ]);
     }
 

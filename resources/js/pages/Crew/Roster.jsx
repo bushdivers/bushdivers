@@ -100,10 +100,10 @@ const Roster = ({ roster }) => {
                       </td>
                       <td>
                         <Link
-                          href={`/airports/${user.current_airport_id}`}
+                          href={`/airports/${user.location.identifier}`}
                           className="text-xs"
                         >
-                          {user.current_airport_id}
+                          {user.location.identifier}
                         </Link>
                         <br />
                         <span className="text-xs">{user.location.name}</span>

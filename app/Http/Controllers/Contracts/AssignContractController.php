@@ -19,7 +19,10 @@ class AssignContractController extends Controller
      */
     public function __invoke(Request $request, StoreContracts $storeContracts): JsonResponse
     {
-        $contract = Contract::findOrFail($request->id);
+        $contract = Contract::with(['depAirport', 'arrAirport'])->find($request->id);
+        if (!$contract) {
+            return \response()->json(['message' => 'Contract not found'], 404);
+        }
 
         if ($request->action == 'assign') {
             if ($request->qty < $contract->cargo_qty) {
@@ -27,9 +30,10 @@ class AssignContractController extends Controller
                 $newValue = $contract->contract_value / ($contract->cargo_qty / $newContractQty);
                 $updatedValue = $contract->contract_value / ($contract->cargo_qty / $request->qty);
                 // create new contract
+
                 $storeContracts->execute([[
-                    'departure' => $contract->dep_airport_id,
-                    'destination' => $contract->arr_airport_id,
+                    'departure' => $contract->depAirport,
+                    'destination' => $contract->arrAirport,
                     'distance' => $contract->distance,
                     'heading' => $contract->heading,
                     'contract_value' => $newValue,

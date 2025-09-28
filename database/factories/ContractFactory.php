@@ -23,14 +23,14 @@ class ContractFactory extends Factory
      */
     public function definition()
     {
-        $arr = Airport::inRandomOrder()->first();
-        $dest = $arr ? Airport::whereNot('id', $arr->id)->inRandomOrder()->first() : null;
+        $ap = Airport::inRandomOrder()->first();
+        $dest = $ap ? Airport::whereNot('id', $ap->id)->inRandomOrder()->first() : null;
         return [
-            'dep_airport_id' => $ap->identifier ?? Airport::factory()->create()->identifier,
+            'dep_airport_id' => $ap->id ?? Airport::factory()->create()->id,
             'current_airport_id' => function (array $attributes) {
                 return $attributes['dep_airport_id'];
             },
-            'arr_airport_id' => $dest->identifier ?? Airport::factory()->create()->identifier,
+            'arr_airport_id' => $dest->id ?? Airport::factory()->create()->id,
             'contract_type_id' => 1,
             'distance' => 54,
             'heading' => 45,

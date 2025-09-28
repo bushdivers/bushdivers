@@ -293,7 +293,7 @@ const Dispatch = ({ cargo, aircraft, airport, tours }) => {
           </GridItem>
           <GridItem colStart={4} colEnd={6}>
             <Destination
-              currentAirport={auth.user.current_airport_id}
+              currentAirport={auth.user.location.identifier}
               updateDestinationValue={setDestination}
             />
             <Fuel

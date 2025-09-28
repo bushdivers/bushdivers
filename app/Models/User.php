@@ -131,7 +131,7 @@ class User extends Authenticatable
 
     public function location()
     {
-        return $this->belongsTo(Airport::class, 'current_airport_id', 'identifier');
+        return $this->belongsTo(Airport::class, 'current_airport_id');
     }
 
     public function roles()

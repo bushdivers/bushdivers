@@ -77,9 +77,9 @@ class CalculatePointsTest extends TestCase
 
         $this->contract = Contract::factory()->create([
             'contract_value' => 250.00,
-            'dep_airport_id' => 'AYMN',
-            'arr_airport_id' => 'AYMR',
-            'current_airport_id' => 'AYMN'
+            'dep_airport_id' => $this->aymn->id,
+            'arr_airport_id' => $this->aymr->id,
+            'current_airport_id' => $this->aymn->id,
         ]);
         $this->pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,
@@ -191,25 +191,25 @@ class CalculatePointsTest extends TestCase
 
     public function test_hub_points_for_flight_exc_hub()
     {
-        Airport::factory()->create([
+        $egss = Airport::factory()->create([
             'identifier' => 'EGSS',
         ]);
-        Airport::factory()->create([
+        $egll = Airport::factory()->create([
             'identifier' => 'EGLL',
         ]);
 
         $contract = Contract::factory()->create([
             'contract_value' => 250.00,
-            'dep_airport_id' => 'EGLL',
-            'arr_airport_id' => 'EGSS',
-            'current_airport_id' => 'EGLL',
+            'dep_airport_id' => $egll->id,
+            'arr_airport_id' => $egss->id,
+            'current_airport_id' => $egll->id,
         ]);
 
         $pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,
             'aircraft_id' => $this->aircraft->id,
-            'departure_airport_id' => $contract->dep_airport_id,
-            'destination_airport_id' => $contract->arr_airport_id,
+            'departure_airport_id' => 'EGLL' ?? $contract->dep_airport_id,
+            'destination_airport_id' => 'EGSS' ?? $contract->arr_airport_id,
             'landing_rate' => 54.5
         ])->load('arrAirport', 'depAirport');
 

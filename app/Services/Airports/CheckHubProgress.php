@@ -7,19 +7,18 @@ use App\Models\Contract;
 
 class CheckHubProgress
 {
-    public function execute($hub)
+    public function execute(Airport $hub)
     {
-        $airport = Airport::where('identifier', $hub)->first();
-        if ($airport->hub_in_progress && $airport->is_hub) {
+        if ($hub->hub_in_progress && $hub->is_hub) {
             // check all contracts are completed
-            $hubContractsCount = Contract::where('airport', $hub)->where('is_completed', false)->count();
+            $hubContractsCount = Contract::where('hub_airport_id', $hub->id)->where('is_completed', false)->count();
             if ($hubContractsCount === 0){
-                $airport->hub_in_progress = false;
-                $airport->has_avgas = true;
-                $airport->has_jetfuel = true;
-                $airport->avgas_qty = null;
-                $airport->jetfuel_qty = null;
-                $airport->save();
+                $hub->hub_in_progress = false;
+                $hub->has_avgas = true;
+                $hub->has_jetfuel = true;
+                $hub->avgas_qty = null;
+                $hub->jetfuel_qty = null;
+                $hub->save();
             }
         }
     }

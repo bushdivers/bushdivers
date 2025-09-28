@@ -91,8 +91,8 @@ class BulkUploadJobsController extends Controller
 
         // Create the job contract
         $job = new CommunityJobContract();
-        $job->dep_airport_id = $depAirport->identifier;
-        $job->arr_airport_id = $arrAirport->identifier;
+        $job->dep_airport_id = $depAirport->id;
+        $job->arr_airport_id = $arrAirport->id;
         $job->cargo_type = (int) $row['cargo_type'];
         if ($job->cargo_type == 1) {
             $job->payload = (int) $row['qty'];

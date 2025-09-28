@@ -73,7 +73,7 @@ class CreateFuelContract
                 'fuel_qty' => $qty,
                 'fuel_type' => $fuelType
             ]];
-            $this->updateFuelAtAirport->execute($departure, $qty, $fuelType, 'decrement');
+            $this->updateFuelAtAirport->execute($depAirport, $qty, $fuelType, 'decrement');
             $this->storeContract->execute($data, false, false, $userId);
         } catch (ModelNotFoundException $e) {
             throw new ModelNotFoundException();

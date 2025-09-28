@@ -28,17 +28,17 @@ class Contract extends Model
 
     public function depAirport()
     {
-        return $this->belongsTo(Airport::class, 'dep_airport_id', 'identifier');
+        return $this->belongsTo(Airport::class, 'dep_airport_id');
     }
 
     public function arrAirport()
     {
-        return $this->belongsTo(Airport::class, 'arr_airport_id', 'identifier');
+        return $this->belongsTo(Airport::class, 'arr_airport_id');
     }
 
     public function currentAirport()
     {
-        return $this->belongsTo(Airport::class, 'current_airport_id', 'identifier');
+        return $this->belongsTo(Airport::class, 'current_airport_id');
     }
 
     public function aircraft()

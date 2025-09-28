@@ -5,7 +5,7 @@ import React, { useState } from 'react'
 const CustomContract = ({ hideSection }) => {
   const { auth } = usePage().props
   const [error, setError] = useState(null)
-  const [dep, setDep] = useState(auth.user.current_airport_id)
+  const [dep, setDep] = useState(auth.user.location.identifier)
   const [arr, setArr] = useState('')
 
   const handleChangeDep = (e) => {

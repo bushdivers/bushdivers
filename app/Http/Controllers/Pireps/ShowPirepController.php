@@ -54,7 +54,7 @@ class ShowPirepController extends Controller
 
         $pc = PirepCargo::where('pirep_id', $pirep)->pluck('contract_cargo_id');
 
-        $cargo = Contract::whereIn('id', $pc)->get();
+        $cargo = Contract::with(['depAirport', 'arrAirport'])->whereIn('id', $pc)->get();
         $points = Point::where('pirep_id', $pirep)->where('points', '>', 0)->get();
 
         $logs = FlightLog::where('pirep_id', $pirep)->orderBy('created_at')->get();

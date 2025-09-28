@@ -16,7 +16,7 @@ class CreateDispatchTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected Model $user;
+    protected User $user;
     protected Model $aircraftOrigin;
     protected Model $aircraftDestination;
 
@@ -42,7 +42,7 @@ class CreateDispatchTest extends TestCase
         $fleet = Fleet::factory()->create(['fuel_type' => FuelType::JET, 'type' => 'AA02']);
         $this->aircraftDestination = Aircraft::factory()->create(['fleet_id' => $fleet->id, 'registration' => 'VH-ABC', 'fuel_onboard' => 0, 'current_airport_id' => $this->destination]);
 
-        $this->user = User::factory()->create(['current_airport_id' => $this->origin->identifier]);
+        $this->user = User::factory()->create(['current_airport_id' => $this->origin->id]);
     }
 
     public function test_authentication_required()
@@ -110,7 +110,7 @@ class CreateDispatchTest extends TestCase
             'tour' => null,
         ];
 
-        $this->user->current_airport_id = $this->origin->identifier;
+        $this->user->current_airport_id = $this->origin->id;
         $this->user->save();
 
         $this->origin->avgas_qty = 0;
@@ -138,7 +138,7 @@ class CreateDispatchTest extends TestCase
             'tour' => null,
         ];
 
-        $this->user->current_airport_id = $this->origin->identifier;
+        $this->user->current_airport_id = $this->origin->id;
         $this->user->save();
 
         $this->aircraftOrigin->fleet->fuel_type = FuelType::JET;

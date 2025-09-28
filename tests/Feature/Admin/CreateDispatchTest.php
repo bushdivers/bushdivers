@@ -74,8 +74,8 @@ class CreateDispatchTest extends TestCase
         $response->assertRedirect();
         $response->assertsessionHas('success');
         $this->assertDatabaseHas('contracts', [
-            'dep_airport_id' => $this->airport->identifier,
-            'arr_airport_id' => $this->destinationAirport->identifier,
+            'dep_airport_id' => $this->airport->id,
+            'arr_airport_id' => $this->destinationAirport->id,
             'cargo_qty' => 100,
         ]);
     }

@@ -3,6 +3,7 @@
 namespace App\Services\Contracts;
 
 use App\Models\Airport;
+use App\Models\CommunityJobContract;
 use App\Services\Airports\CalcBearingBetweenPoints;
 use App\Services\Airports\CalcDistanceBetweenPoints;
 use Carbon\Carbon;
@@ -21,10 +22,10 @@ class CreateCommunityContract
         $this->calcContractValue = $calcContractValue;
         $this->storeContracts = $storeContracts;
     }
-    public function execute($job)
+    public function execute(CommunityJobContract $job)
     {
-        $depAirport = Airport::where('identifier', $job->dep_airport_id)->first();
-        $arrAirport = Airport::where('identifier', $job->arr_airport_id)->first();
+        $depAirport = Airport::find($job->dep_airport_id);
+        $arrAirport = Airport::find($job->arr_airport_id);
         $cargo = ['name' => $job->cargo, 'type' => $job->cargo_type, 'qty' => $job->cargo_type == 1 ? $job->payload : $job->pax];
 
         // contract info

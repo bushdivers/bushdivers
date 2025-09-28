@@ -35,7 +35,7 @@ const NavMenuItems = () => {
         <NavItem
           icon={FileSearch}
           text="Find Contracts"
-          to={`/airports/${auth.user.current_airport_id}`}
+          to={`/airports/${auth.user.location.identifier}`}
         />
         <NavItem icon={Route} text="Tours" to="/tours" />
         <NavItem icon={Plane} text="My Aircraft" to="/my-aircraft" />

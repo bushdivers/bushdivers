@@ -3,6 +3,7 @@ import {
   Card,
   CardBody,
   CardHeader,
+  Icon,
   Table,
   TableContainer,
   Tbody,
@@ -12,6 +13,7 @@ import {
   Thead,
   Tr,
 } from '@chakra-ui/react'
+import { Anchor, Package } from 'lucide-react'
 import React from 'react'
 
 const PirepCargo = (props) => {
@@ -37,8 +39,24 @@ const PirepCargo = (props) => {
                 {props.cargo.map((detail) => (
                   <Tr key={detail.id}>
                     <Td>{detail.id}</Td>
-                    <Td>{detail.dep_airport_id}</Td>
-                    <Td>{detail.arr_airport_id}</Td>
+                    <Td>
+                      {detail.dep_airport.identifier}
+                      {detail.dep_airport.longest_runway_surface === 'W' && (
+                        <Icon as={Anchor} color="blue.500" />
+                      )}
+                      {detail.dep_airport.is_thirdparty && (
+                        <Icon as={Package} color="green.500" />
+                      )}
+                    </Td>
+                    <Td>
+                      {detail.arr_airport.identifier}
+                      {detail.arr_airport.longest_runway_surface === 'W' && (
+                        <Icon as={Anchor} color="blue.500" />
+                      )}
+                      {detail.arr_airport.is_thirdparty && (
+                        <Icon as={Package} color="green.500" />
+                      )}
+                    </Td>
                     <Td>
                       {detail.distance.toLocaleString(navigator.language)}
                     </Td>

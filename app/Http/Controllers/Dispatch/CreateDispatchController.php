@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Aircraft;
 use App\Models\Airport;
 use App\Models\Contract;
-use App\Models\ContractCargo;
 use App\Models\Enums\AircraftState;
 use App\Models\Enums\AirlineTransactionTypes;
 use App\Models\Enums\FuelType;
@@ -37,7 +36,7 @@ class CreateDispatchController extends Controller
         // check aircraft is available
         $isRental = false;
         $aircraft = Aircraft::with('fleet')->where('registration', $request->aircraft)->first();
-        $currentLocation = Airport::where('identifier', Auth::user()->current_airport_id)->first();
+        $currentLocation = Airport::find(Auth::user()->current_airport_id);
         if (!$aircraft) {
             $aircraft = Rental::with('fleet')->where('registration', $request->aircraft)->first();
             $isRental = true;
@@ -46,7 +45,7 @@ class CreateDispatchController extends Controller
         }
 
         // TODO
-        if ($aircraft->location->identifier != Auth::user()->current_airport_id) {
+        if ($aircraft->current_airport_id != Auth::user()->current_airport_id) {
             return redirect()->back()->with(['error' => 'Aircraft is not at your current airport']);
         }
 
@@ -57,8 +56,7 @@ class CreateDispatchController extends Controller
         $destAirport = Airport::forUser(Auth::user())->where('identifier', $request->destination)->first();
         if (!$destAirport) {
             return redirect()->back()->with(['error' => 'Destination airport not found']);
-        }
-        else if (!$isRental && $aircraft->owner_id == 0) {
+        } elseif (!$isRental && $aircraft->owner_id == 0) {
             // if not rental and not owner (ie, it's fleet), can't send to custom airports
             if ($destAirport->user_id > 0 || $destAirport->is_thirdparty) {
                 return redirect()->back()->with(['error' => 'Can only dispatch fleet aircraft to base airports']);
@@ -88,7 +86,7 @@ class CreateDispatchController extends Controller
         $pirep->id = Uuid::uuid4();
         $pirep->user_id = Auth::user()->id;
         $pirep->aircraft_id = $aircraft->id;
-        $pirep->departure_airport_id = Auth::user()->current_airport_id;
+        $pirep->departure_airport_id = $currentLocation->identifier;
         $pirep->destination_airport_id = $request->destination;
         $pirep->planned_fuel = $request->fuel;
         $pirep->state = PirepState::DISPATCH;
@@ -109,8 +107,9 @@ class CreateDispatchController extends Controller
                 $contract = $contracts->find($cargo);
 
                 // Prevent assigning contracts that don't exist
-                if (!$contract)
+                if (!$contract) {
                     continue;
+                }
 
                 $pirepCargo = new PirepCargo();
                 $pirepCargo->contract_cargo_id = $cargo;
@@ -134,7 +133,7 @@ class CreateDispatchController extends Controller
                 $addAirlineTransaction->execute(AirlineTransactionTypes::FuelFees, -$request->fuel_price, 'Fuel '.$actualFuelAdded.' at '.Auth::user()->current_airport_id, null, 'debit');
             }
             // decrement fuel from airport
-            $updateFuelAtAirport->execute(Auth::user()->current_airport_id, $actualFuelAdded, $aircraft->fleet->fuel_type, 'decrement');
+            $updateFuelAtAirport->execute($currentLocation, $actualFuelAdded, $aircraft->fleet->fuel_type, 'decrement');
         }
 
         // update aircraft for user and fuel

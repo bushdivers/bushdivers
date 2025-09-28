@@ -59,7 +59,8 @@ class ShowDispatchController extends Controller
         if ($pirep) {
             $pc = PirepCargo::where('pirep_id', $pirep->id)->pluck('contract_cargo_id');
 
-            $cargo = Contract::whereIn('id', $pc)
+            $cargo = Contract::with(['currentAirport', 'arrAirport'])
+                ->whereIn('id', $pc)
                 ->get();
 
 //            $cargo = $this->getCargoForActiveDispatch($pc);
@@ -83,23 +84,23 @@ class ShowDispatchController extends Controller
             ]);
         }
 
-        $cargo = $this->getCargoForDispatch(Auth::user()->current_airport_id, Auth::user()->id);
-//        $aircraft = Aircraft::with('fleet')->find($pirep->aircraft_id);
-        $aircraft = $this->getAircraftForDispatch(Auth::user()->current_airport_id);
-        $airport = Airport::where('identifier', Auth::user()->current_airport_id)->first();
+        $currentAirport = Airport::findOrFail(Auth::user()->current_airport_id);
+
+        $cargo = $this->getCargoForDispatch($currentAirport, Auth::user()->id);
+        $aircraft = $this->getAircraftForDispatch($currentAirport);
         $tours = Tour::with('aircraft.fleet', 'participants')
             ->whereHas('participants', function ($q) {
                 return $q->where('user_id', Auth::user()->id)->where('is_completed', false);
             })
             ->get();
 
-        return Inertia::render('Dispatch/Dispatch', ['cargo' => $cargo, 'aircraft' => $aircraft, 'airport' => $airport, 'tours' => $tours]);
+        return Inertia::render('Dispatch/Dispatch', ['cargo' => $cargo, 'aircraft' => $aircraft, 'airport' => $currentAirport, 'tours' => $tours]);
     }
 
-    protected function getCargoForDispatch($currentLocation, $userId): array
+    protected function getCargoForDispatch(Airport $currentLocation, $userId): array
     {
         $cargoAtAirport = Contract::with('currentAirport', 'depAirport', 'arrAirport', 'communityJobContract.communityJob')
-            ->where('current_airport_id', $currentLocation)
+            ->where('current_airport_id', $currentLocation->id)
             ->where('is_completed', false)
             ->where(function ($q) use ($userId) {
                 $q->where('is_shared', true)
@@ -110,7 +111,7 @@ class ShowDispatchController extends Controller
             ->get();
 
         $cargoElsewhere = Contract::with('currentAirport', 'depAirport', 'arrAirport')
-            ->where('current_airport_id', '<>', $currentLocation)
+            ->where('current_airport_id', '<>', $currentLocation->id)
             ->where('is_completed', false)
             ->where(function ($q) use ($userId) {
                 $q->where('is_shared', true)
@@ -124,14 +125,12 @@ class ShowDispatchController extends Controller
         return ['cargoAtAirport' => $cargoAtAirport, 'cargoElsewhere' => $cargoElsewhere];
     }
 
-    protected function getAircraftForDispatch($currentLocation): Collection
+    protected function getAircraftForDispatch(Airport $currentLocation): Collection
     {
         $aircraft = Aircraft::with(['fleet', 'engines'])
             ->where('state', AircraftState::AVAILABLE)
             ->where('status', AircraftStatus::ACTIVE)
-            ->whereHas('location', function (Builder $q) use ($currentLocation) {
-                $q->whereIdentifier($currentLocation);
-            })
+            ->where('current_airport_id', $currentLocation->id)
             ->where(function ($baseQ) {
                 $baseQ->where(fn ($q) => $q->where('owner_id', 0)->where('is_ferry', false)) // fleet
                     ->orWhere(fn ($q) => $q->where('owner_id', 0)->where('is_ferry', true)->where('ferry_user_id', Auth::user()->id)) // ferry
@@ -141,9 +140,7 @@ class ShowDispatchController extends Controller
         $rentalAc = Rental::with('fleet')
             ->where('user_id', Auth::user()->id)
             ->where('is_active', true)
-            ->whereHas('location', function (Builder $q) use ($currentLocation) {
-                $q->whereIdentifier($currentLocation);
-            })
+            ->where('current_airport_id', $currentLocation->id)
             ->get();
 
         return $aircraft->merge($rentalAc);

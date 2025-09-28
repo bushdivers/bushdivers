@@ -22,6 +22,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class ProcessPirepSubmissionController extends Controller
 {
@@ -59,48 +60,52 @@ class ProcessPirepSubmissionController extends Controller
     public function __invoke(ManualPirepRequest $request): RedirectResponse
     {
         try {
-            $pirep = Pirep::where('id', $request->pirep_id)
+            $pirep = Pirep::with(['arrAirport'])
+                ->where('id', $request->pirep_id)
                 ->where('user_id', Auth::user()->id)
                 ->whereIn('state', [PirepState::DISPATCH, PirepState::IN_PROGRESS])
                 ->firstOrFail();
 
-
             $blockOffTime = Carbon::now('UTC')->subMinutes($request->flight_time_mins);
 
-            $pirep->fuel_used = abs($request->fuel_used);
-            $pirep->distance = $request->distance;
-            $pirep->flight_time = $request->flight_time_mins;
-            $pirep->landing_rate = 0;
-            $pirep->landing_pitch = 0;
-            $pirep->landing_bank = 0;
-            $pirep->landing_lat = $pirep->current_lat;
-            $pirep->landing_lon = $pirep->current_lon;
-            $pirep->state = PirepState::REVIEW;
-            $pirep->status = PirepStatus::ARRIVED;
-            $pirep->submitted_at = Carbon::now('UTC');
-            $pirep->block_off_time = $blockOffTime;
-            $pirep->block_on_time = Carbon::now('UTC');
-            $pirep->is_manual = true;
-            $pirep->sim_used = null;
-            $pirep->bt_version = 'Manual PIREP';
-            $pirep->save();
+            DB::transaction(function () use ($pirep, $blockOffTime, $request) {
+                // lock the pirep row for
 
-            $pc = PirepCargo::where('pirep_id', $pirep->id)->get();
-            foreach ($pc as $c) {
-                $contractCargo = Contract::find($c->contract_cargo_id);
-                $this->updateContractCargoProgress->execute($contractCargo->id, $pirep->destination_airport_id, $pirep->id);
-                $this->checkHubProgress->execute($pirep->destination_airport_id);
-            }
+                $pirep->fuel_used = abs($request->fuel_used);
+                $pirep->distance = $request->distance;
+                $pirep->flight_time = $request->flight_time_mins;
+                $pirep->landing_rate = 0;
+                $pirep->landing_pitch = 0;
+                $pirep->landing_bank = 0;
+                $pirep->landing_lat = $pirep->current_lat;
+                $pirep->landing_lon = $pirep->current_lon;
+                $pirep->state = PirepState::REVIEW;
+                $pirep->status = PirepStatus::ARRIVED;
+                $pirep->submitted_at = Carbon::now('UTC');
+                $pirep->block_off_time = $blockOffTime;
+                $pirep->block_on_time = Carbon::now('UTC');
+                $pirep->is_manual = true;
+                $pirep->sim_used = null;
+                $pirep->bt_version = 'Manual PIREP';
+                $pirep->save();
 
-            // process points and financials
-            if ($pirep->tour_id) {
-                $this->checkTourProgress->execute($pirep);
-            }
-            $this->processPirepFinancials->execute($pirep);
-            $this->calculatePirepPoints->execute($pirep);
-            // add total to pirep
-            $this->setPirepTotalScore->execute($pirep);
+                $pc = PirepCargo::where('pirep_id', $pirep->id)->get();
+                foreach ($pc as $c) {
+                    $contractCargo = Contract::find($c->contract_cargo_id);
+                    $this->updateContractCargoProgress->execute($contractCargo, $pirep->arrAirport, $pirep);
+                    $this->checkHubProgress->execute($pirep->arrAirport);
+                }
 
+                // process points and financials
+                if ($pirep->tour_id) {
+                    $this->checkTourProgress->execute($pirep);
+                }
+                $this->processPirepFinancials->execute($pirep);
+                $this->calculatePirepPoints->execute($pirep);
+                // add total to pirep
+                $this->setPirepTotalScore->execute($pirep);
+
+            }, 3);
             PirepFiled::dispatch($pirep);
         } catch (ModelNotFoundException) {
             return redirect()->back()->with(['error' => 'Incorrect dispatch/pirep id']);

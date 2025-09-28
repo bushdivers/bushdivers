@@ -51,7 +51,7 @@ const Jumpseat = ({ user, balance }) => {
         setTransfer(response.data.airport.identifier)
         setError(null)
         const priceResp = await axios.get(
-          `/api/jumpseat/cost/${user.current_airport_id}/${response.data.airport.identifier}`
+          `/api/jumpseat/cost/${user.location.identifier}/${response.data.airport.identifier}`
         )
         if (priceResp.status === 200) {
           setPrice(priceResp.data.cost)

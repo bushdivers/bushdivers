@@ -62,7 +62,7 @@ class SubmitPirepController extends Controller
     {
         try
         {
-            $pirep = Pirep::where('user_id', Auth::id())->findOrFail($request->pirep_id);
+            $pirep = Pirep::with(['arrAirport'])->where('user_id', Auth::id())->findOrFail($request->pirep_id);
 
             $agent = $request->userAgent();
             if (!preg_match('/^\w+\/\d{1,2}\.\d{1,2}\.\d{1,2}\.\d{1,2}$/', $agent))
@@ -99,9 +99,9 @@ class SubmitPirepController extends Controller
                     $pc = PirepCargo::where('pirep_id', $pirep->id)->get();
                     foreach ($pc as $c) {
                         $contractCargo = Contract::find($c->contract_cargo_id);
-                        $this->updateContractCargoProgress->execute($contractCargo->id, $pirep->destination_airport_id, $pirep->id);
+                        $this->updateContractCargoProgress->execute($contractCargo, $pirep->arrAirport, $pirep);
                     }
-                    $this->checkHubProgress->execute($pirep->destination_airport_id);
+                    $this->checkHubProgress->execute($pirep->arrAirport);
                 }
 
                 if ($pirep->tour_id)

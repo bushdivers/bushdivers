@@ -32,11 +32,11 @@ class CheckHubProgressTest extends TestCase
     public function test_hub_opened(): void
     {
         $contract = Contract::factory()->create([
-            'arr_airport_id' => 'EGCC',
+            'arr_airport_id' => $this->airport->id,
             'is_completed' => true,
-            'airport' => 'EGCC'
+            'hub_airport_id' => $this->airport->id
         ]);
-        $this->checkHubProgress->execute('EGCC');
+        $this->checkHubProgress->execute($this->airport);
         $this->airport->refresh();
         $this->assertEquals(0,$this->airport->hub_in_progress);
     }
@@ -44,11 +44,11 @@ class CheckHubProgressTest extends TestCase
     public function test_hub_not_opened(): void
     {
         $contract = Contract::factory()->create([
-            'arr_airport_id' => 'EGCC',
+            'arr_airport_id' => $this->airport->id,
             'is_completed' => false,
-            'airport' => 'EGCC'
+            'hub_airport_id' => $this->airport->id
         ]);
-        $this->checkHubProgress->execute('EGCC');
+        $this->checkHubProgress->execute($this->airport);
         $this->airport->refresh();
         $this->assertEquals(1,$this->airport->hub_in_progress);
     }

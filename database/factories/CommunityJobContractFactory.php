@@ -17,8 +17,8 @@ class CommunityJobContractFactory extends Factory
     public function definition(): array
     {
         return [
-            'dep_airport_id' => 'AYMR',
-            'arr_airport_id' => 'AYMN',
+            //'dep_airport_id' => 'AYMR',
+            //'arr_airport_id' => 'AYMN',
             'cargo_type' => 1,
             'payload' => 100,
             'remaining_payload' => 100,

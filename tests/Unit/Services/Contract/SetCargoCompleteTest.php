@@ -2,8 +2,10 @@
 
 namespace Tests\Unit\Services\Contract;
 
+use App\Models\Airport;
 use App\Models\Contract;
 use App\Models\ContractCargo;
+use App\Models\Pirep;
 use App\Services\Contracts\UpdateContractCargoProgress;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -15,7 +17,8 @@ class SetCargoCompleteTest extends TestCase
     use RefreshDatabase;
 
     protected UpdateContractCargoProgress $updateContractCargoProgress;
-    protected Model $contract;
+    protected Contract $contract;
+    protected Pirep $pirep;
 
     protected function setUp(): void
     {
@@ -28,7 +31,8 @@ class SetCargoCompleteTest extends TestCase
         ]);
         $this->updateContractCargoProgress = $this->app->make(UpdateContractCargoProgress::class);
 
-        $this->contract = Contract::factory()->create();
+        $this->contract = Contract::factory()->create()->load('arrAirport');
+        $this->pirep = Pirep::factory()->create();
     }
     /**
      * A basic unit test example.
@@ -37,28 +41,31 @@ class SetCargoCompleteTest extends TestCase
      */
     public function test_cargo_is_completed()
     {
-        $this->updateContractCargoProgress->execute($this->contract->id, $this->contract->arr_airport_id);
+        $this->updateContractCargoProgress->execute($this->contract, $this->contract->arrAirport, $this->pirep);
         $this->assertDatabaseHas('contracts', [
             'id' => $this->contract->id,
-            'is_completed' => true
+            'is_completed' => true,
+            'completed_pirep' => $this->pirep->id,
         ]);
     }
 
     public function test_cargo_is_not_completed_when_at_different_airport()
     {
-        $this->updateContractCargoProgress->execute($this->contract->id, 'KLAX');
+        $otherAirport = Airport::factory()->create();
+        $this->updateContractCargoProgress->execute($this->contract, $otherAirport, $this->pirep);
         $this->assertDatabaseHas('contracts', [
             'id' => $this->contract->id,
-            'is_completed' => false
+            'is_completed' => false,
         ]);
     }
 
     public function test_cargo_location_is_updated()
     {
-        $this->updateContractCargoProgress->execute($this->contract->id, 'AYMR');
+        $otherAirport = Airport::factory()->create();
+        $this->updateContractCargoProgress->execute($this->contract, $otherAirport, $this->pirep);
         $this->assertDatabaseHas('contracts', [
             'id' => $this->contract->id,
-            'current_airport_id' => 'AYMR'
+            'current_airport_id' => $otherAirport->id
         ]);
     }
 }

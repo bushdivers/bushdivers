@@ -50,10 +50,6 @@ class RenameAirportController extends Controller
                 $airport->identifier = $newIcao;
                 $airport->save();
 
-                DB::update("UPDATE contracts SET dep_airport_id = ? WHERE dep_airport_id = ?", [$newIcao, $oldIcao]);
-                DB::update("UPDATE contracts SET arr_airport_id = ? WHERE arr_airport_id = ?", [$newIcao, $oldIcao]);
-                DB::update("UPDATE contracts SET current_airport_id = ? WHERE current_airport_id = ?", [$newIcao, $oldIcao]);
-
                 DB::update("UPDATE pireps SET departure_airport_id = ? WHERE departure_airport_id = ?", [$newIcao, $oldIcao]);
                 DB::update("UPDATE pireps SET destination_airport_id = ? WHERE destination_airport_id = ?", [$newIcao, $oldIcao]);
 
@@ -61,9 +57,6 @@ class RenameAirportController extends Controller
                 DB::update("UPDATE tour_checkpoints SET `checkpoint` = ? WHERE `checkpoint` = ?", [$newIcao, $oldIcao]);
                 DB::update("UPDATE tour_checkpoint_users SET `checkpoint` = ? WHERE `checkpoint` = ?", [$newIcao, $oldIcao]);
                 DB::update("UPDATE tour_users SET `next_checkpoint` = ? WHERE `next_checkpoint` = ?", [$newIcao, $oldIcao]);
-
-                DB::update("UPDATE users SET current_airport_id = ? WHERE current_airport_id = ?", [$newIcao, $oldIcao]);
-
             });
         }
         catch (\Exception $e) {

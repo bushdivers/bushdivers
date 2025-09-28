@@ -63,8 +63,8 @@ class BulkUploadJobsTest extends TestCase
         $this->assertDatabaseCount('community_job_contracts', 2);
 
         $job1 = CommunityJobContract::where('cargo', 'Electronics')->first();
-        $this->assertEquals('KJFK', $job1->dep_airport_id);
-        $this->assertEquals('KLAX', $job1->arr_airport_id);
+        $this->assertEquals($this->departureAirport->id, $job1->dep_airport_id);
+        $this->assertEquals($this->arrivalAirport->id, $job1->arr_airport_id);
         $this->assertEquals(1, $job1->cargo_type);
         $this->assertEquals(500, $job1->payload);
         $this->assertFalse($job1->is_recurring);
@@ -139,6 +139,7 @@ class BulkUploadJobsTest extends TestCase
 
     public function test_bulk_upload_requires_tour_admin_role()
     {
+        /** @var User */
         $regularUser = User::factory()->create();
 
         $file = UploadedFile::fake()->create('jobs.csv');

@@ -124,11 +124,11 @@ const RentalList = ({ aircraft, myRentals, currentAirport }) => {
       <Heading size="md" className="my-2">
         {currentAirport.is_hub || currentAirport.size >= 4 ? (
           <Box>
-            Aircraft Available for Rental - {auth.user.current_airport_id}
+            Aircraft Available for Rental - {auth.user.location.identifier}
           </Box>
         ) : (
           <Box>
-            {auth.user.current_airport_id} -{' '}
+            {auth.user.location.identifier} -{' '}
             <Text fontSize="sm" color="red.500">
               You must be at a hub or large airport to rent aircraft
             </Text>

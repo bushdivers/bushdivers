@@ -2,6 +2,7 @@
 
 namespace App\Services\Contracts;
 
+use App\Models\Airport;
 use App\Models\Contract;
 use App\Models\ContractCargo;
 use App\Models\ContractInfo;
@@ -16,11 +17,18 @@ class StoreContracts
             if (!$contractInfo)
                 continue;
 
+            // TODO: migrate to a more rigid structure
+            $depAirport = $contractInfo['departure'] instanceof Airport ? $contractInfo['departure'] : Airport::where('identifier', $contractInfo['departure'])->first();
+            $arrAirport = $contractInfo['destination'] instanceof Airport ? $contractInfo['destination'] : Airport::where('identifier', $contractInfo['destination'])->first();
+            if ($airport != null) {
+                $airport = Airport::where('identifier', $airport)->first()->id;
+            }
+
             $contract = new Contract();
             $contract->contract_type_id = $type;
-            $contract->dep_airport_id = $contractInfo['departure'];
-            $contract->current_airport_id = $contractInfo['departure'];
-            $contract->arr_airport_id = $contractInfo['destination'];
+            $contract->dep_airport_id = $depAirport->id;
+            $contract->current_airport_id = $depAirport->id;
+            $contract->arr_airport_id = $arrAirport->id;
             $contract->distance = $contractInfo['distance'];
             $contract->contract_value = $contractInfo['contract_value'];
             $contract->cargo_type = $contractInfo['cargo_type'];
@@ -29,7 +37,7 @@ class StoreContracts
             $contract->heading = $contractInfo['heading'];
             $contract->expires_at = $contractInfo['expires_at'];
             $contract->is_available = $isAvailable;
-            $contract->airport = $airport;
+            $contract->hub_airport_id = $airport;
             $contract->is_shared = $isShared;
             $contract->community_job_contract_id = $jobId;
             if ($contractInfo['cargo_type'] == 1) {

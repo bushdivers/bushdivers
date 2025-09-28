@@ -224,7 +224,7 @@ const Cargo = (props) => {
                             />
                           </Td>
                           <Td>
-                            {detail.current_airport_id}{' '}
+                            {detail.current_airport.identifier}{' '}
                             {detail.current_airport.longest_runway_surface ===
                               'W' && <Icon as={Anchor} color="blue.500" />}
                             {detail.current_airport.is_thirdparty && (
@@ -233,7 +233,7 @@ const Cargo = (props) => {
                           </Td>
                           <Td>
                             <Flex alignItems="center" gap={2}>
-                              {detail.arr_airport_id}{' '}
+                              {detail.arr_airport.identifier}{' '}
                               {detail.arr_airport.longest_runway_surface ===
                                 'W' && <Icon as={Anchor} color="blue.500" />}
                               {detail.arr_airport.is_thirdparty && (
@@ -289,7 +289,7 @@ const Cargo = (props) => {
                           <Td>
                             <Flex align="center" gap={1}>
                               {detail.is_shared ? <Tag>Shared</Tag> : <></>}
-                              {detail.airport ? <Tag>Hub</Tag> : <></>}
+                              {detail.hub_airport_id ? <Tag>Hub</Tag> : <></>}
                               {detail.community_job_contract_id ? (
                                 <Tag>Community</Tag>
                               ) : (
@@ -431,10 +431,17 @@ const Cargo = (props) => {
                   <Tbody>
                     {props.cargo.cargoElsewhere.map((detail) => (
                       <Tr key={detail.id}>
-                        <Td>{detail.current_airport_id}</Td>
+                        <Td>
+                          {detail.current_airport.identifier}{' '}
+                          {detail.current_airport.longest_runway_surface ===
+                            'W' && <Icon as={Anchor} color="blue.500" />}
+                          {detail.current_airport.is_thirdparty && (
+                            <Icon as={Package} color="green.500" />
+                          )}
+                        </Td>
                         <Td>
                           <Flex alignItems="center" gap={2}>
-                            {detail.arr_airport_id}{' '}
+                            {detail.arr_airport.identifier}{' '}
                             {detail.arr_airport.longest_runway_surface ===
                               'W' && <Icon as={Anchor} color="blue.500" />}
                             {detail.arr_airport.is_thirdparty && (

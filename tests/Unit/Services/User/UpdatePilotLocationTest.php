@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Services\User;
 
+use App\Models\Airport;
 use App\Models\User;
 use App\Services\User\UpdateUserLocation;
 use Illuminate\Database\Eloquent\Model;
@@ -30,9 +31,10 @@ class UpdatePilotLocationTest extends TestCase
     public function test_pilot_location_updates_correctly()
     {
         $icao = 'EGLL';
+        $ap = Airport::factory()->create(['identifier' => $icao]);
         $this->updateUserLocation->execute($icao, $this->user->id);
         $this->assertDatabaseHas('users', [
-            'current_airport_id' => $icao
+            'current_airport_id' => $ap->id
         ]);
     }
 }

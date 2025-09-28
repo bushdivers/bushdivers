@@ -18,13 +18,15 @@ class CommunityMissionJobTest extends TestCase
     protected User $admin;
     protected CommunityJob $publishedMission;
     protected CommunityJob $unpublishedMission;
+    protected Airport $aymr;
+    protected Airport $aymn;
 
     protected function setUp(): void
     {
         parent::setUp();
 
         // Create required airports
-        Airport::factory()->create([
+        $this->aymr = Airport::factory()->create([
             'identifier' => 'AYMR',
             'name' => 'Test Departure Airport',
             'lat' => -5.8269,
@@ -32,7 +34,7 @@ class CommunityMissionJobTest extends TestCase
             'magnetic_variance' => 0,
         ]);
 
-        Airport::factory()->create([
+        $this->aymn = Airport::factory()->create([
             'identifier' => 'AYMN',
             'name' => 'Test Arrival Airport',
             'lat' => -6.0824,
@@ -90,8 +92,8 @@ class CommunityMissionJobTest extends TestCase
 
         // Verify job details
         $job = CommunityJobContract::first();
-        $this->assertEquals('AYMR', $job->dep_airport_id);
-        $this->assertEquals('AYMN', $job->arr_airport_id);
+        $this->assertEquals($this->aymr->id, $job->dep_airport_id);
+        $this->assertEquals($this->aymn->id, $job->arr_airport_id);
         $this->assertEquals(1, $job->cargo_type);
         $this->assertEquals('Medical Supplies', $job->cargo);
         $this->assertEquals(1000, $job->payload);
@@ -127,13 +129,13 @@ class CommunityMissionJobTest extends TestCase
 
         // Verify job details
         $job = CommunityJobContract::first();
-        $this->assertEquals('AYMR', $job->dep_airport_id);
-        $this->assertEquals('AYMN', $job->arr_airport_id);
+        $this->assertEquals($this->aymr->id, $job->dep_airport_id);
+        $this->assertEquals($this->aymn->id, $job->arr_airport_id);
 
         // Verify contract details
         $contract = Contract::first();
-        $this->assertEquals('AYMR', $contract->dep_airport_id);
-        $this->assertEquals('AYMN', $contract->arr_airport_id);
+        $this->assertEquals($this->aymr->id, $contract->dep_airport_id);
+        $this->assertEquals($this->aymn->id, $contract->arr_airport_id);
         $this->assertEquals('Medical Supplies', $contract->cargo);
         $this->assertEquals(1, $contract->cargo_type);
         $this->assertEquals(1000, $contract->cargo_qty);

@@ -43,12 +43,12 @@ class GetDispatchedBookingsTest extends TestCase
             'identifier' => 'AYMR'
         ]);
 
-        Airport::factory()->create([
+        $aymn = Airport::factory()->create([
             'identifier' => 'AYMN'
         ]);
 
         $this->user = User::factory()->create([
-            'current_airport_id' => 'AYMR'
+            'current_airport_id' => $aymr->id
         ]);
         $this->fleet = Fleet::factory()->create();
         $this->aircraft = Aircraft::factory()->create([
@@ -66,8 +66,8 @@ class GetDispatchedBookingsTest extends TestCase
 
         $this->contract = Contract::factory()->create([
             'contract_value' => 250.00,
-            'dep_airport_id' => 'AYMR',
-            'arr_airport_id' => 'AYMN'
+            'dep_airport_id' => $aymr->id,
+            'arr_airport_id' => $aymn->id,
         ])->load('depAirport');
 
     }
@@ -82,8 +82,8 @@ class GetDispatchedBookingsTest extends TestCase
     {
         $this->pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,
-            'destination_airport_id' => $this->contract->arr_airport_id,
-            'departure_airport_id' => $this->contract->dep_airport_id,
+            'destination_airport_id' => 'AYMN' ?? $this->contract->arr_airport_id,
+            'departure_airport_id' => 'AYMR' ?? $this->contract->dep_airport_id,
             'aircraft_id' => $this->aircraft
         ]);
 
@@ -106,8 +106,8 @@ class GetDispatchedBookingsTest extends TestCase
     {
         $this->pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,
-            'destination_airport_id' => $this->contract->arr_airport_id,
-            'departure_airport_id' => $this->contract->dep_airport_id,
+            'destination_airport_id' => 'AYMN' ?? $this->contract->arr_airport_id,
+            'departure_airport_id' => 'AYMR' ?? $this->contract->dep_airport_id,
             'aircraft_id' => $this->aircraft,
             'is_empty' => 1
         ]);
@@ -126,8 +126,8 @@ class GetDispatchedBookingsTest extends TestCase
     {
         $this->pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,
-            'destination_airport_id' => $this->contract->arr_airport_id,
-            'departure_airport_id' => $this->contract->dep_airport_id,
+            'destination_airport_id' => 'AYMN' ?? $this->contract->arr_airport_id,
+            'departure_airport_id' => 'AYMR' ?? $this->contract->dep_airport_id,
             'aircraft_id' => $this->aircraft
         ]);
 
@@ -150,8 +150,8 @@ class GetDispatchedBookingsTest extends TestCase
     {
         $this->pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,
-            'destination_airport_id' => $this->contract->arr_airport_id,
-            'departure_airport_id' => $this->contract->dep_airport_id,
+            'destination_airport_id' => 'AYMN' ?? $this->contract->arr_airport_id,
+            'departure_airport_id' => 'AYMR' ?? $this->contract->dep_airport_id,
             'aircraft_id' => $this->aircraft
         ]);
 
@@ -174,8 +174,8 @@ class GetDispatchedBookingsTest extends TestCase
     {
         $this->pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,
-            'destination_airport_id' => $this->contract->arr_airport_id,
-            'departure_airport_id' => $this->contract->dep_airport_id,
+            'destination_airport_id' => 'AYMN' ?? $this->contract->arr_airport_id,
+            'departure_airport_id' => 'AYMR' ?? $this->contract->dep_airport_id,
             'aircraft_id' => $this->aircraft
         ]);
 
@@ -217,14 +217,14 @@ class GetDispatchedBookingsTest extends TestCase
     public function test_returns_bookings_for_rental_aircraft()
     {
         $rental = Rental::factory()->create([
-            'current_airport_id' => $this->contract->depAirport->id,
+            'current_airport_id' => $this->contract->dep_airport_id,
             'user_id' => $this->user->id,
             'fleet_id' => $this->fleet->id
         ]);
         $this->pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,
-            'destination_airport_id' => $this->contract->arr_airport_id,
-            'departure_airport_id' => $this->contract->dep_airport_id,
+            'destination_airport_id' => 'AYMN' ?? $this->contract->arr_airport_id,
+            'departure_airport_id' => 'AYMR' ?? $this->contract->dep_airport_id,
             'aircraft_id' => $rental->id,
             'is_rental' => true
         ]);
