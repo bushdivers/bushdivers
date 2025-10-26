@@ -47,7 +47,7 @@ class PurchaseController extends Controller
             $request->validate([
                 'purchaseType' => 'required',
                 'hub' => 'required',
-                'reg' => 'required|min:2|max:8',
+                'reg' => 'required|min:2|max:8|unique:aircraft,registration',
                 'deliveryIcao' => 'required',
             ]);
         } else {
