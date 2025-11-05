@@ -67,7 +67,7 @@ class CreateFuelCargoContractTest extends TestCase
     {
         $distance = $this->calcDistanceBetweenPoints->execute($this->airport1->lat, $this->airport1->lon, $this->airport2->lat, $this->airport2->lon);
         $normalValue = $this->calcContractValue->execute(1, 3500, $distance);
-        $fuelValue = round(($normalValue / 2) + 2000);
+        $fuelValue = round(($normalValue / 2) + 1750);
         $this->createFuelContract->execute($this->airport1->identifier, $this->airport2->identifier, 10, 1, 3500, 1);
         $this->assertDatabaseHas('contracts', [
             'dep_airport_id' => $this->airport1->id,

@@ -52,12 +52,16 @@ class CreateFuelContract
             ];
 
             $value = $this->calcContractValue->execute($cargo['type'], $cargo['qty'], $distance);
-            if ($weight > 3200) {
-                $value = round(round($value / 2) + 2000);
-            }
+
+            //These figures should give generally continous step function at 100nm
             if ($weight > 10000) {
-                $value = round(round($value / 10) + 4000);
+                $value = round(($value / 10) + 6700);
             }
+            else if ($weight > 3200) {
+                $value = round(($value / 2) + 1750);
+            }
+
+
             // add contract
             $data = [[
                 'departure' => $depAirport->identifier,
