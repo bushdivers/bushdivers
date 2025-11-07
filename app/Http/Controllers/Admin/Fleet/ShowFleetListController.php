@@ -20,7 +20,7 @@ class ShowFleetListController extends Controller
     {
         $fleet = Fleet::with(['aircraft' => function($q){
             $q->where('owner_id', 0);
-        }, 'aircraft.engines'])->get();
+        }, 'aircraft.engines', 'aircraft.location'])->get();
 
         $fleet->each(function ($f) {
             $f->aircraft->each->setRelation('fleet', $f);

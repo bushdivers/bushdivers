@@ -21,7 +21,7 @@ const FleetAircraft = (props) => {
       {props.fleet.aircraft.map((detail) => (
         <tr key={detail.id} className="bg-gray-50">
           <td>{detail.registration}</td>
-          <td>Current Location: {detail.current_airport_id}</td>
+          <td>Current Location: {detail.location.identifier}</td>
           <td>
             <div className="flex items-center">
               <Button
