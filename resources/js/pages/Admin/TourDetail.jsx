@@ -36,7 +36,7 @@ const TourDetail = ({ tour, fleet }) => {
   const [tourDetails, setTourDetails] = useState({
     title: tour.title,
     description: tour.description,
-    start: tour.start_airport_id,
+    start: tour.starting_airport.identifier,
   })
 
   function handleTourChange(e) {

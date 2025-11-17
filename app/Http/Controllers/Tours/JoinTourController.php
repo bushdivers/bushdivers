@@ -22,7 +22,7 @@ class JoinTourController extends Controller
         TourUser::create([
             'tour_id' => $tour->id,
             'user_id' => Auth::user()->id,
-            'next_checkpoint' => $initialCheckpoint->checkpoint
+            'next_airport_id' => $initialCheckpoint->checkpoint_airport_id
         ]);
         // add user checkpoints
         foreach ($tour->checkpoints as $checkpoint) {
@@ -30,7 +30,7 @@ class JoinTourController extends Controller
                 'tour_id' => $tour->id,
                 'user_id' => Auth::user()->id,
                 'section' => $checkpoint->section,
-                'checkpoint' => $checkpoint->checkpoint
+                'checkpoint_airport_id' => $checkpoint->checkpoint_airport_id
             ]);
         }
         return redirect()->back()->with('success', 'You have joined ' . $tour->title);

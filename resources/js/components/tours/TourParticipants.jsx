@@ -20,7 +20,7 @@ const TourParticipants = ({ tour }) => {
                 <Box>
                   {p.user.pilot_id} {p.user.private_name}
                 </Box>
-                <Box>{p.next_checkpoint}</Box>
+                <Box>{p.next_airport.identifier}</Box>
                 <TourProgress progress={p.progress} />
                 {p.is_completed ? (
                   <Icon color="green.500" as={BadgeCheck} />

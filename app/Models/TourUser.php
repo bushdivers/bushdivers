@@ -9,7 +9,7 @@ class TourUser extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['tour_id', 'user_id', 'next_checkpoint'];
+    protected $fillable = ['tour_id', 'user_id', 'next_airport_id'];
 
     public function user()
     {
@@ -19,5 +19,10 @@ class TourUser extends Model
     public function tours()
     {
         return $this->hasMany(Tour::class);
+    }
+
+    public function nextAirport()
+    {
+        return $this->belongsTo(Airport::class, 'next_airport_id');
     }
 }

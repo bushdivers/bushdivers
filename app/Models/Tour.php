@@ -31,6 +31,6 @@ class Tour extends Model
 
     public function startingAirport()
     {
-        return $this->belongsTo(Airport::class, 'start_airport_id', 'identifier');
+        return $this->belongsTo(Airport::class, 'start_airport_id');
     }
 }

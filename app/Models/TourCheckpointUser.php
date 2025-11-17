@@ -13,11 +13,11 @@ class TourCheckpointUser extends Model
         'tour_id',
         'user_id',
         'section',
-        'checkpoint'
+        'checkpoint_airport_id'
     ];
 
     public function airport()
     {
-        return $this->belongsTo(Airport::class, 'checkpoint', 'identifier');
+        return $this->belongsTo(Airport::class, 'checkpoint_airport_id');
     }
 }

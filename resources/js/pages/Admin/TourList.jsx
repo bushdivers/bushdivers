@@ -105,7 +105,7 @@ const TourList = ({ tours }) => {
                     <Tr key={tour.id}>
                       <Td>{tour.id}</Td>
                       <Td>{tour.title}</Td>
-                      <Td>{tour.start_airport_id}</Td>
+                      <Td>{tour.starting_airport.identifier}</Td>
                       <Td>{tour.checkpoints?.length}</Td>
                       <Td>{tour.aircraft?.length}</Td>
                       <Td>{tour.participants?.length}</Td>

@@ -41,7 +41,7 @@ class SubmitPirepTourTest extends TestCase
     protected Model $tourUser;
     protected Model $tourCheckpointUser;
     protected Model $tourCheckpointUser1;
-    protected Model $aymr, $aymn, $wavg;
+    protected Airport $aymr, $aymn, $aymh, $wavg;
 
     public function setUp(): void
     {
@@ -55,6 +55,9 @@ class SubmitPirepTourTest extends TestCase
         ]);
         $this->wavg = Airport::factory()->create([
             'identifier' => 'WAVG'
+        ]);
+        $this->aymh = Airport::factory()->create([
+            'identifier' => 'AYMH'
         ]);
 
 
@@ -98,26 +101,26 @@ class SubmitPirepTourTest extends TestCase
             'title' => 'test',
             'description' => 'test',
             'award_id' => 1,
-            'start_airport_id' => 'AYMR'
+            'start_airport_id' => $this->aymr->id
         ]);
 
         $this->tourUser = TourUser::factory()->create([
             'user_id' => $this->user->id,
             'tour_id' => $this->tour->id,
-            'next_checkpoint' => 'WAVG'
+            'next_airport_id' => $this->wavg->id
         ]);
 
         $this->tourCheckpointUser = TourCheckpointUser::factory()->create([
             'user_id' => $this->user->id,
             'tour_id' => $this->tour->id,
             'section' => 1,
-            'checkpoint' => 'WAVG'
+            'checkpoint_airport_id' => $this->wavg->id
         ]);
         $this->tourCheckpointUser1 = TourCheckpointUser::factory()->create([
             'user_id' => $this->user->id,
             'tour_id' => $this->tour->id,
             'section' => 2,
-            'checkpoint' => 'AYMH'
+            'checkpoint_airport_id' => $this->aymh->id
         ]);
 
         $this->pirep = Pirep::factory()->create([
@@ -210,18 +213,18 @@ class SubmitPirepTourTest extends TestCase
         $this->assertDatabaseMissing('tour_users', [
             'user_id' => $this->user->id,
             'tour_id' => $this->tour->id,
-            'next_checkpoint' => 'AYMH'
+            'next_airport_id' => $this->aymh->id
         ]);
         $this->assertDatabaseMissing('tour_checkpoint_users', [
             'user_id' => $this->user->id,
             'tour_id' => $this->tour->id,
-            'checkpoint' => 'WAVG',
+            'checkpoint_airport_id' => $this->wavg->id,
             'is_completed' => true
         ]);
         $this->assertDatabaseHas('tour_checkpoint_users', [
             'user_id' => $this->user->id,
             'tour_id' => $this->tour->id,
-            'checkpoint' => 'WAVG',
+            'checkpoint_airport_id' => $this->wavg->id,
             'is_completed' => false
         ]);
     }
@@ -250,12 +253,12 @@ class SubmitPirepTourTest extends TestCase
         $this->assertDatabaseHas('tour_users', [
             'user_id' => $this->user->id,
             'tour_id' => $this->tour->id,
-            'next_checkpoint' => 'AYMH'
+            'next_airport_id' => $this->aymh->id
         ]);
         $this->assertDatabaseHas('tour_checkpoint_users', [
             'user_id' => $this->user->id,
             'tour_id' => $this->tour->id,
-            'checkpoint' => 'WAVG',
+            'checkpoint_airport_id' => $this->wavg->id,
             'is_completed' => true
         ]);
     }

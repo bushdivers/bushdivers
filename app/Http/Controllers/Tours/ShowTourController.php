@@ -18,7 +18,7 @@ class ShowTourController extends Controller
     public function __invoke(Request $request)
     {
         // get list of tours
-        $tour = Tour::with(['startingAirport', 'checkpoints.airport', 'participants.user', 'aircraft.fleet'])
+        $tour = Tour::with(['startingAirport', 'checkpoints.airport', 'participants.nextAirport', 'participants.user', 'aircraft.fleet'])
             ->where('id', $request->id)
             ->first();
         $checkpoints = $tour->checkpoints->sortBy('section')->values()->all();

@@ -18,7 +18,7 @@ class ShowToursController extends Controller
      */
     public function __invoke(Request $request): Response
     {
-        $tours = Tour::with('aircraft', 'participants', 'checkpoints')->get();
+        $tours = Tour::with('aircraft', 'participants', 'checkpoints', 'startingAirport')->get();
         return Inertia::render('Admin/TourList', ['tours' => $tours]);
     }
 }

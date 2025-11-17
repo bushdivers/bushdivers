@@ -21,10 +21,11 @@ class CheckTourProgress
     public function execute(Pirep $pirep)
     {
         // get tour
+        $pirep->load('arrAirport');
         $tour = Tour::find($pirep->tour_id);
         $tourUser = TourUser::where('user_id', $pirep->user_id)->where('tour_id', $pirep->tour_id)->first();
 
-        if ($pirep->destination_airport_id == $tourUser->next_checkpoint) {
+        if ($pirep->arrAirport->id == $tourUser->next_airport_id) {
             $tourUserCheckpoints = TourCheckpointUser::where('user_id', $pirep->user_id)
                 ->where('tour_id', $pirep->tour_id)
                 ->get();
@@ -34,7 +35,7 @@ class CheckTourProgress
             // set checkpoint as completed
             $flightCheckpoint = TourCheckpointUser::where('user_id', $pirep->user_id)
                 ->where('tour_id', $pirep->tour_id)
-                ->where('checkpoint', $pirep->destination_airport_id)
+                ->where('checkpoint_airport_id', $pirep->arrAirport->id)
                 ->first();
             $flightCheckpoint->is_completed = true;
             $flightCheckpoint->completed_at = Carbon::now();
@@ -42,7 +43,7 @@ class CheckTourProgress
 
             $nextCheckpoint = TourCheckpointUser::where('user_id', $pirep->user_id)->where('is_completed', false)->where('tour_id', $pirep->tour_id)->orderBy('section')->first();
             if ($nextCheckpoint) {
-                $tourUser->next_checkpoint = $nextCheckpoint->checkpoint;
+                $tourUser->next_airport_id = $nextCheckpoint->checkpoint_airport_id;
             } else {
                 // completed tour
                 $tourUser->is_completed = true;

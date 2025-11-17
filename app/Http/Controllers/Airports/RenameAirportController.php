@@ -52,11 +52,6 @@ class RenameAirportController extends Controller
 
                 DB::update("UPDATE pireps SET departure_airport_id = ? WHERE departure_airport_id = ?", [$newIcao, $oldIcao]);
                 DB::update("UPDATE pireps SET destination_airport_id = ? WHERE destination_airport_id = ?", [$newIcao, $oldIcao]);
-
-                DB::update("UPDATE tours SET start_airport_id = ? WHERE start_airport_id = ?", [$newIcao, $oldIcao]);
-                DB::update("UPDATE tour_checkpoints SET `checkpoint` = ? WHERE `checkpoint` = ?", [$newIcao, $oldIcao]);
-                DB::update("UPDATE tour_checkpoint_users SET `checkpoint` = ? WHERE `checkpoint` = ?", [$newIcao, $oldIcao]);
-                DB::update("UPDATE tour_users SET `next_checkpoint` = ? WHERE `next_checkpoint` = ?", [$newIcao, $oldIcao]);
             });
         }
         catch (\Exception $e) {

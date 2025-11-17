@@ -15,7 +15,7 @@ class ShowTourDetailController extends Controller
      */
     public function __invoke(Request $request)
     {
-        $tour = Tour::with('aircraft.fleet', 'checkpoints.airport')->find($request->id);
+        $tour = Tour::with('aircraft.fleet', 'checkpoints.airport', 'startingAirport')->find($request->id);
         $fleet = Fleet::whereNotIn('id', $tour->aircraft->pluck('fleet_id'))->get();
         return Inertia::render('Admin/TourDetail', ['tour' => $tour, 'fleet' => $fleet]);
     }
