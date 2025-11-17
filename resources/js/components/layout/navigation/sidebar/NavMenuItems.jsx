@@ -62,7 +62,7 @@ const NavMenuItems = () => {
           isExternal
           icon={Download}
           text="Bush Tracker"
-          to="https://bushdivers-resource.s3.amazonaws.com/bush-tracker/BushTracker.zip"
+          to="/download"
         />
       </Box>
     </Box>

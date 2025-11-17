@@ -23,6 +23,9 @@ Route::get('/privacy', function () {
 Route::get('/supporters', \App\Http\Controllers\General\ShowSupportersController::class)
     ->name('supporters');
 
+Route::get('/download', \App\Http\Controllers\Tracker\DownloadTrackerController::class)
+    ->name('download');
+
 // Auth
 Route::get('/register', \App\Http\Controllers\Auth\ShowRegisterFormController::class)
     ->name('register.index');

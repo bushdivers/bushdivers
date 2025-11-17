@@ -3,35 +3,14 @@
 namespace App\Http\Controllers\Tracker;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Http;
+use App\Services\General\TrackerUrl;
 
 class GetTrackerVersionController extends Controller
 {
-    public function __invoke()
+    public function __invoke(TrackerUrl $trackerUrl)
     {
         // Cache the version data for 12 hours, but refresh after 6
-        $verData = Cache::flexible('tracker.version', [6 * 60 * 60, 12 * 60 * 60], function () {
-            $release = Http::acceptJson()->get('https://api.github.com/repos/bushdivers/bushtracker/releases/latest');
-
-            if ($release->failed())
-                return null;
-
-            $v = $release['tag_name'];
-            if ($v[0] === 'v')
-                $v = substr($v, 1);
-
-            foreach ($release['assets'] as $asset) {
-                if (strpos($asset['name'], $v) !== false && (str_starts_with(strtolower($asset['name']), 'bushtracker') || str_starts_with(strtolower($asset['name']), 'bushdiverstracker'))) {
-                    return [
-                        'version' => $v,
-                        'url' => $asset['browser_download_url'],
-                    ];
-                }
-            }
-
-            return null;
-        });
+        $verData = $trackerUrl->execute();
 
         if (empty($verData) || !isset($verData['version']))
             return response()->noContent(404);
