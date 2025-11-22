@@ -162,7 +162,7 @@ const TourDetail = ({ tour, fleet }) => {
                         <Box py={1} px={2} rounded="md" bgColor="gray.200">
                           {c.section}
                         </Box>{' '}
-                        {c.checkpoint} {c.airport.name}
+                        {c.airport.identifier} {c.airport.name}
                       </Flex>
                     </Card>
                   ))}

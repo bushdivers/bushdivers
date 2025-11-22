@@ -24,7 +24,8 @@ const TourCheckpoints = ({
               <Card my={1} p={2} key={c.id}>
                 <Flex justifyContent="space-between" alignItems="center">
                   <Box>
-                    <Tag>{c.section}</Tag> {c.checkpoint} {c.airport.name}
+                    <Tag>{c.section}</Tag> {c.airport.identifier}{' '}
+                    {c.airport.name}
                   </Box>
                   <Box>
                     {c.is_completed ? (
@@ -43,7 +44,7 @@ const TourCheckpoints = ({
                   <Box py={1} px={2} rounded="md" bgColor="gray.200">
                     {c.section}
                   </Box>{' '}
-                  {c.checkpoint} {c.airport.name}
+                  {c.airport.identifier} {c.airport.name}
                 </Flex>
               </Card>
             ))}
