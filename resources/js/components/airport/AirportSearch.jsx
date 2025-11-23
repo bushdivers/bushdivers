@@ -16,19 +16,26 @@ const AirportSearch = () => {
   }
 
   return (
-    <Flex gap={1} ml={4}>
-      <Input
-        value={airportSearch}
-        onChange={handleSearchChange}
-        placeholder="Search ICAO"
-        size="sm"
-        type="text"
-        bgColor={useColorModeValue('white', 'gray.800')}
-      />
-      <Button size="sm" onClick={() => handleAirportSearch(airportSearch)}>
-        <Icon as={Search} />
-      </Button>
-    </Flex>
+    <form
+      onSubmit={(e) => {
+        e.preventDefault()
+        handleAirportSearch()
+      }}
+    >
+      <Flex gap={1} ml={4}>
+        <Input
+          value={airportSearch}
+          onChange={handleSearchChange}
+          placeholder="Search ICAO"
+          size="sm"
+          type="text"
+          bgColor={useColorModeValue('white', 'gray.800')}
+        />
+        <Button type="submit" size="sm">
+          <Icon as={Search} />
+        </Button>
+      </Flex>
+    </form>
   )
 }
 
