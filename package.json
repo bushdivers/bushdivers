@@ -7,7 +7,7 @@
         "dev": "vite",
         "build": "vite build",
         "lint": "npx eslint resources/js/ --ext .js,.jsx",
-        "prepare": "husky install"
+        "prepare": "husky install || true"
     },
     "devDependencies": {
         "@trivago/prettier-plugin-sort-imports": "^4.3.0",
