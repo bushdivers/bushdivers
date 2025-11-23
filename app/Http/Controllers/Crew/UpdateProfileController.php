@@ -35,6 +35,7 @@ class UpdateProfileController extends Controller
         $user->discord_username = $request->discord_username;
         $user->opt_in = $request->opt_in ?? false;
         $user->allow_thirdparty_airport = $request->allow_thirdparty_airport ?? false;
+        $user->allow_thirdparty_hub = $request->allow_thirdparty_hub ?? false;
         $user->allow_campsite_airport = $request->allow_campsite_airport ?? false;
         if (isset($request->password)) {
             if (strlen($request->password) < 6) {

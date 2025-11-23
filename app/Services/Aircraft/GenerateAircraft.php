@@ -3,11 +3,9 @@
 namespace App\Services\Aircraft;
 
 use App\Models\Aircraft;
-use App\Models\AircraftEngine;
 use App\Models\Airport;
 use App\Models\Fleet;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class GenerateAircraft
 {
@@ -21,7 +19,7 @@ class GenerateAircraft
     public function execute($type, Airport $location): void
     {
         $fleet = Fleet::find($type);
-        $allAirports = Airport::base()->inRangeOf($location, 0, 300)->get();
+        $allAirports = Airport::base(Auth::user())->inRangeOf($location, 0, 300)->get();
 
         $numberToGenerate = 0;
 

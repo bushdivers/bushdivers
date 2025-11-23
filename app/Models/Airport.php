@@ -84,7 +84,7 @@ class Airport extends Model
 
     public function scopeHub(Builder $query)
     {
-        $query->where('is_hub', true);
+        $query->where('is_hub', true)->where('hub_in_progress', false);
     }
 
     public function scopeFuel(Builder $query)
@@ -99,17 +99,40 @@ class Airport extends Model
 
     public function scopeForUser(Builder $query, User $user)
     {
+        // If we're not allowing third party airports
         if (!$user->allow_thirdparty_airport)
-            $query->where('is_thirdparty', false);
+        {
+            // If we're also not allowing third party hubs
+            if (!$user->allow_thirdparty_hub)
+                $query->where('is_thirdparty', false);
+            else // we are allowing third party hubs
+                $query->where(function($q) {
+                    // Need to filter out third party but not hubs
+                    $q->where('is_thirdparty', false)->orWhere('is_hub', true);
+                });
+        }
+        //otherwise, we're allowing all third party (incl hubs) airports, so no filter needed
 
         $query->where(function($q) use ($user) {
             $q->whereNull('user_id')->orWhere('user_id', $user->id);
         });
     }
 
-    public function scopeBase(Builder $query)
+    /**
+     * Scope a query to only include base airports (not third party, no user).
+     * If user provided, optionally enable hub based on user settings.
+     */
+    public function scopeBase(Builder $query, User|null $user = null)
     {
-        $query->where('is_thirdparty', false)->whereNull('user_id');
+        $query->whereNull('user_id');
+
+        $query->where(function ($q) use ($user) {
+            $q->where('is_thirdparty', false);
+
+            if ($user && $user->allow_thirdparty_hub) {
+                $q->orWhere('is_hub', true);
+            }
+        });
     }
 
 }

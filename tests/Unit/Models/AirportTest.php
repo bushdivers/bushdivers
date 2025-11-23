@@ -125,19 +125,19 @@ class AirportTest extends TestCase
         $this->assertNotNull(Airport::where('id', $exclAirport->id)->first());
         $this->assertNull(Airport::where('id', $exclAirport->id)->base()->first());
 
-        $baseCount = Airport::base()->count();
+        $baseCount = Airport::base($user)->count();
         $this->assertEquals($baseCount + 1, Airport::count());
 
         $exclAirport->user_id = null;
         $exclAirport->save();
         // Validate now included
-        $this->assertEquals($baseCount + 1, Airport::base()->count());
+        $this->assertEquals($baseCount + 1, Airport::base($user)->count());
 
         // Set as third party
         $exclAirport->is_thirdparty = true;
         $exclAirport->save();
 
-        $this->assertEquals($baseCount, Airport::base()->count());
+        $this->assertEquals($baseCount, Airport::base($user)->count());
         $this->assertEquals($baseCount + 1, Airport::count());
     }
 

@@ -35,6 +35,7 @@ const Profile = ({ profile, rank, nextRank, awards }) => {
     name: profile.name,
     opt_in: profile.opt_in,
     allow_thirdparty_airport: profile.allow_thirdparty_airport || false,
+    allow_thirdparty_hub: profile.allow_thirdparty_hub || false,
     allow_campsite_airport: profile.allow_campsite_airport || false,
     msfs_username: profile.msfs_username || '',
     volanta_username: profile.volanta_username || '',
@@ -45,6 +46,7 @@ const Profile = ({ profile, rank, nextRank, awards }) => {
     const key = e.target.id
     const value =
       e.target.type === 'checkbox' ? e.target.checked : e.target.value
+
     setValues((values) => ({
       ...values,
       [key]: value,
@@ -162,24 +164,46 @@ const Profile = ({ profile, rank, nextRank, awards }) => {
                     Flight Options
                   </Heading>
 
-                  <FormControl isInvalid={errors?.allow_thirdparty_airport}>
+                  <FormControl isInvalid={errors?.allow_thirdparty_hub}>
+                    <Checkbox
+                      id="allow_thirdparty_hub"
+                      isChecked={values.allow_thirdparty_hub}
+                      onChange={handleChange}
+                    >
+                      Allow Third-Party Airport Hubs
+                    </Checkbox>
+                    <Text fontSize="sm" color="gray.500" mt={1}>
+                      Enable BushDivers hubs located at third-party airports not
+                      included in the base simulator. Requires additional
+                      scenery mods to be installed.
+                    </Text>
+                    <FormErrorMessage>
+                      {errors?.allow_thirdparty_hub}
+                    </FormErrorMessage>
+                  </FormControl>
+
+                  <FormControl
+                    isInvalid={errors?.allow_thirdparty_airport}
+                    mt={4}
+                  >
                     <Checkbox
                       id="allow_thirdparty_airport"
                       isChecked={values.allow_thirdparty_airport}
                       onChange={handleChange}
                     >
-                      Allow Third-Party Airports
+                      Allow Other Third-Party Airports
                     </Checkbox>
                     <Text fontSize="sm" color="gray.500" mt={1}>
-                      Enable destinations not included in the base simulator.
-                      Requires additional scenery mods to be installed.
+                      Enable other third-party airports not included in the base
+                      simulator. Requires additional scenery mods to be
+                      installed.
                       <br />
                       <Text as="span" fontWeight="semibold">
                         {' '}
                         Note:
                       </Text>{' '}
-                      Company fleet aircraft are restricted to base-game
-                      airports only.
+                      Company fleet aircraft cannot be dispatched to third-party
+                      airports.
                     </Text>
                     <FormErrorMessage>
                       {errors?.allow_thirdparty_airport}
@@ -214,8 +238,7 @@ const Profile = ({ profile, rank, nextRank, awards }) => {
                         {' '}
                         Note:
                       </Text>{' '}
-                      Company fleet aircraft are restricted to base-game
-                      airports only.
+                      Company fleet aircraft cannot create campsite locations.
                     </Text>
                     <FormErrorMessage>
                       {errors?.allow_campsite_airport}

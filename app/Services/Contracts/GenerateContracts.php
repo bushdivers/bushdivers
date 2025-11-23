@@ -3,6 +3,7 @@
 namespace App\Services\Contracts;
 
 use App\Models\Airport;
+use Illuminate\Support\Facades\Auth;
 
 class GenerateContracts
 {
@@ -15,10 +16,11 @@ class GenerateContracts
 
     public function execute(Airport $airport, $numberToGenerate, $toHub = false)
     {
+        $user = Auth::user();
         // get airports
-        $nearbyAirports = Airport::base()->inRangeof($airport, 2, 75)->when($toHub, fn ($q) => $q->hub())->get();
-        $midRangeAirports = Airport::base()->inRangeof($airport, 76, 250)->when($toHub, fn ($q) => $q->hub())->get();
-        $furtherAfieldAirports = Airport::base()->inRangeof($airport, 251, 650)->when($toHub, fn ($q) => $q->hub())->get();
+        $nearbyAirports = Airport::base($user)->inRangeof($airport, 2, 75)->when($toHub, fn ($q) => $q->hub())->get();
+        $midRangeAirports = Airport::base($user)->inRangeof($airport, 76, 250)->when($toHub, fn ($q) => $q->hub())->get();
+        $furtherAfieldAirports = Airport::base($user)->inRangeof($airport, 251, 650)->when($toHub, fn ($q) => $q->hub())->get();
         $allAirports = $nearbyAirports->merge($midRangeAirports)->merge($furtherAfieldAirports);
 
         if ($allAirports->count() === 0) {

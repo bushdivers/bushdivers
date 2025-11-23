@@ -1,4 +1,6 @@
-import { Box, Card, CardBody, useColorMode } from '@chakra-ui/react'
+import { Box, Card, CardBody, Icon, useColorMode } from '@chakra-ui/react'
+import { Link } from '@inertiajs/react'
+import { Anchor, Package } from 'lucide-react'
 import maplibre from 'maplibre-gl'
 import React, { useEffect, useRef, useState } from 'react'
 import { Map, Marker, Popup } from 'react-map-gl'
@@ -45,7 +47,7 @@ const HubMap = ({ hubs, onIsVisible }) => {
                 e.originalEvent.stopPropagation()
                 handleClick(loc)
               }}
-              key={loc.identifier}
+              key={loc.id}
               color="#f97316"
               scale={0.75}
               longitude={loc.lon}
@@ -60,8 +62,21 @@ const HubMap = ({ hubs, onIsVisible }) => {
             anchor="top"
             onClose={() => setSelectedMarker(null)}
           >
-            <Card>
-              <CardBody>{selectedMarker.identifier}</CardBody>
+            <Card boxShadow={'none'}>
+              <CardBody p={2} pb={0}>
+                <Box fontSize="md">
+                  <Link href={`/airports/${selectedMarker.identifier}`}>
+                    {selectedMarker.identifier}
+                  </Link>{' '}
+                  {selectedMarker.longest_runway_surface === 'W' && (
+                    <Icon as={Anchor} color="blue.500" />
+                  )}
+                  {selectedMarker.is_thirdparty && (
+                    <Icon as={Package} color="green.500" />
+                  )}
+                </Box>
+                <Box>{selectedMarker.name}</Box>
+              </CardBody>
             </Card>
           </Popup>
         )}

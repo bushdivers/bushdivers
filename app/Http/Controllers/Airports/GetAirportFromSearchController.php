@@ -21,7 +21,7 @@ class GetAirportFromSearchController extends Controller
     {
         // @TODO: depending on instance, sometimes may or may not want third-party airports
         $airport = Airport::when($request->get('base', false), function (Builder $q) {
-                $q->base();
+                $q->base(Auth::user());
             })
             ->when($request->get('user', false) && Auth::user(), function (Builder $q) {
                 $q->forUser(Auth::user());

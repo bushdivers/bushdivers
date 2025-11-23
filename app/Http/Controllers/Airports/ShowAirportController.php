@@ -104,7 +104,10 @@ class ShowAirportController extends Controller
 
     protected function getContracts(Airport $airport)
     {
+        $user = Auth::user();
+        // Filter dest to user preferences. Current/dep doesn't matter since either the user is already there (regardless of choice), or they haven't found the airport to fly to
         return Contract::with(['depAirport', 'currentAirport', 'arrAirport'])
+            ->whereHas('arrAirport', fn($q) => $q->forUser($user))
             ->where('dep_airport_id', $airport->id)
             ->where('is_available', true)
             ->whereRaw('expires_at >= Now()')

@@ -29,7 +29,7 @@ class SetDestinationController extends Controller
 
             $coord = new Coordinate($request->lat, $request->lon);
             $airport = Airport::when($baseOnly, function (Builder $query) {
-                $query->base();
+                $query->base(Auth::user());
             })->when(!$baseOnly, function (Builder $query) {
                 $query->forUser(Auth::user());
             })->inRangeOf($coord, 0, 2)->orderBy('distance')->first();
