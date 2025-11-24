@@ -48,33 +48,44 @@ const LogbookPrimary = ({ pirep }) => {
               alignItems="center"
             >
               <Flex direction="column">
-                <Text>
-                  {pirep.is_rental ? (
-                    <>
-                      {pirep.rental.fleet.manufacturer}{' '}
-                      {pirep.rental.fleet.name}
-                    </>
-                  ) : (
-                    <>
-                      {pirep.aircraft.fleet.manufacturer}{' '}
-                      {pirep.aircraft.fleet.name}
-                    </>
-                  )}
-                </Text>
-                <Box>
-                  {pirep.is_rental ? (
-                    <Text fontSize="sm">
-                      {pirep.rental.registration} ({pirep.rental.fleet.type})
+                {!pirep.rental && !pirep.aircraft ? (
+                  <Text align="center">
+                    Aircraft sold
+                    <br />
+                    or unavailable
+                  </Text>
+                ) : (
+                  <>
+                    <Text>
+                      {pirep.is_rental ? (
+                        <>
+                          {pirep.rental.fleet.manufacturer}{' '}
+                          {pirep.rental.fleet.name}
+                        </>
+                      ) : (
+                        <>
+                          {pirep.aircraft.fleet.manufacturer}{' '}
+                          {pirep.aircraft.fleet.name}
+                        </>
+                      )}
                     </Text>
-                  ) : (
-                    <Link href={`/aircraft/${pirep.aircraft.id}`}>
-                      <Text>
-                        {pirep.aircraft.registration} (
-                        {pirep.aircraft.fleet.type})
-                      </Text>
-                    </Link>
-                  )}
-                </Box>
+                    <Box>
+                      {pirep.is_rental ? (
+                        <Text fontSize="sm">
+                          {pirep.rental.registration} ({pirep.rental.fleet.type}
+                          )
+                        </Text>
+                      ) : (
+                        <Link href={`/aircraft/${pirep.aircraft.id}`}>
+                          <Text>
+                            {pirep.aircraft.registration} (
+                            {pirep.aircraft.fleet.type})
+                          </Text>
+                        </Link>
+                      )}
+                    </Box>
+                  </>
+                )}
               </Flex>
               {pirep.tour_id && (
                 <Tag size="sm" ml={2}>
