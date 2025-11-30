@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Enums\AircraftType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
@@ -9,6 +10,11 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 class Fleet extends Model
 {
     use HasFactory;
+
+    protected $casts = [
+        'aircraft_type' => AircraftType::class,
+        'has_floats' => 'boolean',
+    ];
 
     public function aircraft()
     {

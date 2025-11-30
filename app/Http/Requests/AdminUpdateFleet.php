@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Enums\AircraftType;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class AdminUpdateFleet extends FormRequest
 {
@@ -27,6 +29,8 @@ class AdminUpdateFleet extends FormRequest
             'type' => 'required',
             'name' => 'required',
             'manufacturer' => 'required',
+            'aircraft_type' => ['required', Rule::enum(AircraftType::class)],
+            'has_floats' => 'required|boolean',
             'powerplants' => 'required',
             'engines' => 'required|numeric',
             'tbo_mins' => 'required|numeric|min:1',

@@ -31,6 +31,8 @@ const FleetEdit = ({ fleet, manufacturers }) => {
     name: fleet?.name ?? '',
     manufacturer: fleet?.manufacturer ?? '',
     manufacturer_id: fleet?.manufacturer_id ?? '0',
+    aircraft_type: fleet?.aircraft_type ?? '',
+    has_floats: fleet?.has_floats ?? false,
     powerplants: fleet?.powerplants ?? '',
     engines: fleet?.number_of_engines ?? '',
     tbo_mins: fleet?.tbo_mins ?? '0',
@@ -161,6 +163,39 @@ const FleetEdit = ({ fleet, manufacturers }) => {
                   />
                   {errors.manufacturer && (
                     <FormErrorMessage>{errors.manufacturer}</FormErrorMessage>
+                  )}
+                </FormControl>
+                <FormControl isInvalid={errors.aircraft_type}>
+                  <FormLabel htmlFor="aircraft_type">Aircraft Type</FormLabel>
+                  <Flex>
+                    <Select
+                      id="aircraft_type"
+                      value={values.aircraft_type}
+                      onChange={handleChange}
+                    >
+                      <option value="0">Other</option>
+
+                      <option value="1">Piston Single</option>
+                      <option value="2">Piston Twin</option>
+                      <option value="5">Turboprop Single</option>
+                      <option value="6">Turboprop Twin</option>
+
+                      <option value="11">Jet</option>
+                      <option value="15">Heli Single</option>
+                      <option value="16">Heli Twin</option>
+                    </Select>
+                    <Checkbox
+                      id="has_floats"
+                      value={values.has_floats}
+                      defaultChecked={values.has_floats}
+                      ml={4}
+                      onChange={handleChange}
+                    >
+                      Has&nbsp;float option?
+                    </Checkbox>
+                  </Flex>
+                  {errors.aircraft_type && (
+                    <FormErrorMessage>{errors.aircraft_type}</FormErrorMessage>
                   )}
                 </FormControl>
                 <FormControl isInvalid={errors.powerplants}>

@@ -23,6 +23,8 @@ class CreateFleetController extends Controller
         $fleet->type = $request->type;
         $fleet->name = $request->name;
         $fleet->manufacturer = $request->manufacturer;
+        $fleet->aircraft_type = $request->aircraft_type;
+        $fleet->has_floats = $request->has_floats;
         $fleet->powerplants = $request->powerplants;
         $fleet->number_of_engines = $request->engines;
         $fleet->crew_required = 1;
