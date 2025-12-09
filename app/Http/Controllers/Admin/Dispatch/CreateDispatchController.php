@@ -33,12 +33,8 @@ class CreateDispatchController extends Controller
     public function __invoke(AdminAddDispatch $request): RedirectResponse
     {
         // currently base only airports
-        $origin = Airport::where('identifier', $request->source_airport_id)->where(function ($q) {
-            $q->where('is_thirdparty', false)->orWhere('is_hub', true);
-        })->firstOrFail();
-        $destination = Airport::where('identifier', $request->destination_airport_id)->where(function ($q) {
-            $q->where('is_thirdparty', false)->orWhere('is_hub', true);
-        })->firstOrFail();
+        $origin = Airport::where('identifier', $request->source_airport_id)->firstOrFail();
+        $destination = Airport::where('identifier', $request->destination_airport_id)->firstOrFail();
         $cargoQty = $request->cargo_qty;
         $cargo = DB::table('cargo_types')->where('type', ContractType::Cargo)->inRandomOrder()->first();
 
