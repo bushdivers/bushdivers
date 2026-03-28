@@ -11,6 +11,8 @@ import {
   Heading,
   Image,
   Input,
+  InputGroup,
+  InputRightAddon,
   Link,
   Select,
   SimpleGrid,
@@ -23,8 +25,15 @@ import AdminUpload from '../../components/admin/AdminUpload.jsx'
 import AdminLayout from '../../components/layout/AdminLayout.jsx'
 import { displayFileSize } from '../../helpers/generic.helpers.js'
 
+const getFuelLbsPerGal = (fuelType) => (fuelType === '1' ? 5.99 : 6.79)
+
+const toLbs = (gal, fuel) =>
+  gal === '' ? '' : String(Math.round(gal * getFuelLbsPerGal(fuel) * 100) / 100)
+
+const toGal = (lbs, fuel) =>
+  lbs === '' ? '' : String(Math.floor(parseFloat(lbs) / getFuelLbsPerGal(fuel)))
+
 const FleetEdit = ({ fleet, manufacturers }) => {
-  console.log(fleet?.can_purchase_new)
   const { errors } = usePage().props
   const [values, setValues] = useState({
     type: fleet?.type,
@@ -42,6 +51,8 @@ const FleetEdit = ({ fleet, manufacturers }) => {
     cargo: fleet?.cargo_capacity ?? '',
     pax: fleet?.pax_capacity ?? '',
     fuelCapacity: fleet?.fuel_capacity ?? '',
+    fuelCapacityLbs:
+      getFuelLbsPerGal(fleet?.fuel_type ?? '1') * (fleet?.fuel_capacity ?? 0),
     ceiling: fleet?.service_ceiling ?? '',
     range: fleet?.range ?? '',
     cruise: fleet?.cruise_speed ?? '',
@@ -61,6 +72,37 @@ const FleetEdit = ({ fleet, manufacturers }) => {
     const key = e.target.id
     const value =
       e.target.type === 'checkbox' ? e.target.checked : e.target.value
+
+    if (key === 'fuel') {
+      setValues((v) => ({
+        ...v,
+        fuel: value,
+        fuelCapacityLbs: toLbs(v.fuelCapacity, value),
+      }))
+      return
+    }
+
+    if (key === 'fuelCapacity') {
+      if (!/^\d*$/.test(value)) return
+      const gal = value
+      setValues((v) => ({
+        ...v,
+        fuelCapacity: gal,
+        fuelCapacityLbs: toLbs(gal, v.fuel),
+      }))
+      return
+    }
+
+    if (key === 'fuelCapacityLbs') {
+      if (!/^\d*\.?\d*$/.test(value)) return
+      setValues((v) => ({
+        ...v,
+        fuelCapacityLbs: value,
+        fuelCapacity: toGal(value, v.fuel),
+      }))
+      return
+    }
+
     setValues((values) => ({
       ...values,
       [key]: value,
@@ -292,15 +334,31 @@ const FleetEdit = ({ fleet, manufacturers }) => {
                   )}
                 </FormControl>
                 <FormControl isInvalid={errors.fuelCapacity}>
-                  <FormLabel htmlFor="fuelCapacity">
-                    Fuel capacity (gal)
-                  </FormLabel>
-                  <Input
-                    id="fuelCapacity"
-                    value={values.fuelCapacity}
-                    onChange={handleChange}
-                    type="text"
-                  />
+                  <FormLabel htmlFor="fuelCapacity">Fuel capacity</FormLabel>
+                  <Flex gap={3}>
+                    <Box flex={1}>
+                      <InputGroup>
+                        <Input
+                          id="fuelCapacity"
+                          value={values.fuelCapacity}
+                          onChange={handleChange}
+                          type="text"
+                        />
+                        <InputRightAddon>gal</InputRightAddon>
+                      </InputGroup>
+                    </Box>
+                    <Box flex={1}>
+                      <InputGroup>
+                        <Input
+                          id="fuelCapacityLbs"
+                          value={values.fuelCapacityLbs}
+                          onChange={handleChange}
+                          type="text"
+                        />
+                        <InputRightAddon>lbs</InputRightAddon>
+                      </InputGroup>
+                    </Box>
+                  </Flex>
                   {errors.fuelCapacity && (
                     <FormErrorMessage>{errors.fuelCapacity}</FormErrorMessage>
                   )}
