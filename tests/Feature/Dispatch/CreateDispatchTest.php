@@ -6,6 +6,7 @@ use App\Models\Aircraft;
 use App\Models\Airport;
 use App\Models\Enums\FuelType;
 use App\Models\Fleet;
+use App\Models\FleetVariant;
 use App\Models\Pirep;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
@@ -23,6 +24,8 @@ class CreateDispatchTest extends TestCase
     protected Model $origin;
     protected Model $destination;
     protected Model $alternate;
+    protected FleetVariant $variantOrigin;
+    protected FleetVariant $variantDestination;
 
     protected function cancelPirep(): void
     {
@@ -39,8 +42,10 @@ class CreateDispatchTest extends TestCase
 
         $fleet = Fleet::factory()->create(['fuel_type' => FuelType::AVGAS, 'type' => 'AA01']);
         $this->aircraftOrigin = Aircraft::factory()->create(['fleet_id' => $fleet->id, 'registration' => 'VH-XYZ', 'fuel_onboard' => 0, 'current_airport_id' => $this->origin]);
+        $this->variantOrigin = $fleet->variants()->first();
         $fleet = Fleet::factory()->create(['fuel_type' => FuelType::JET, 'type' => 'AA02']);
         $this->aircraftDestination = Aircraft::factory()->create(['fleet_id' => $fleet->id, 'registration' => 'VH-ABC', 'fuel_onboard' => 0, 'current_airport_id' => $this->destination]);
+        $this->variantDestination = $fleet->variants()->first();
 
         $this->user = User::factory()->create(['current_airport_id' => $this->origin->id]);
     }
@@ -55,6 +60,7 @@ class CreateDispatchTest extends TestCase
     {
         $body = [
             'aircraft' => $this->aircraftDestination->registration,
+            'fleet_variant_id' => $this->variantDestination->id,
             'fuel' => 0,
             'fuel_price' => 1.00,
             'destination' => $this->destination->identifier,
@@ -66,6 +72,7 @@ class CreateDispatchTest extends TestCase
         $response->assertSessionHas('error');
 
         $body['aircraft'] = $this->aircraftOrigin->registration;
+        $body['fleet_variant_id'] = $this->variantOrigin->id;
         $response = $this->actingAs($this->user)->post(route('dispatch.create'), $body);
         $response->assertSessionHas('success');
     }
@@ -74,6 +81,7 @@ class CreateDispatchTest extends TestCase
     {
         $body = [
             'aircraft' => $this->aircraftOrigin->registration,
+            'fleet_variant_id' => $this->variantOrigin->id,
             'fuel' => 0,
             'fuel_price' => 1.00,
             'destination' => $this->destination->identifier,
@@ -103,6 +111,7 @@ class CreateDispatchTest extends TestCase
     {
         $body = [
             'aircraft' => $this->aircraftOrigin->registration,
+            'fleet_variant_id' => $this->variantOrigin->id,
             'fuel' => 100,
             'fuel_price' => 1.00,
             'destination' => $this->destination->identifier,
@@ -131,6 +140,7 @@ class CreateDispatchTest extends TestCase
     {
         $body = [
             'aircraft' => $this->aircraftOrigin->registration,
+            'fleet_variant_id' => $this->variantOrigin->id,
             'fuel' => 100,
             'fuel_price' => 1.00,
             'destination' => $this->destination->identifier,
@@ -162,6 +172,39 @@ class CreateDispatchTest extends TestCase
 
     }
 
+    public function test_invalid_variant_rejected()
+    {
+        $body = [
+            'aircraft' => $this->aircraftOrigin->registration,
+            'fleet_variant_id' => $this->variantDestination->id, // belongs to a different fleet
+            'fuel' => 0,
+            'fuel_price' => 1.00,
+            'destination' => $this->destination->identifier,
+            'is_empty' => true,
+            'tour' => null,
+        ];
 
+        $response = $this->actingAs($this->user)->post(route('dispatch.create'), $body);
+        $response->assertSessionHas('error');
+    }
+
+    public function test_variant_stored_on_pirep()
+    {
+        $body = [
+            'aircraft' => $this->aircraftOrigin->registration,
+            'fleet_variant_id' => $this->variantOrigin->id,
+            'fuel' => 0,
+            'fuel_price' => 1.00,
+            'destination' => $this->destination->identifier,
+            'is_empty' => true,
+            'tour' => null,
+        ];
+
+        $response = $this->actingAs($this->user)->post(route('dispatch.create'), $body);
+        $response->assertSessionHas('success');
+
+        $pirep = Pirep::where('user_id', $this->user->id)->latest()->first();
+        $this->assertEquals($this->variantOrigin->id, $pirep->fleet_variant_id);
+    }
 
 }

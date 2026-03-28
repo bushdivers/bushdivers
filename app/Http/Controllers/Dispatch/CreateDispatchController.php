@@ -12,6 +12,7 @@ use App\Models\Enums\FuelType;
 use App\Models\Enums\PirepState;
 use App\Models\Enums\PirepStatus;
 use App\Models\Enums\TransactionTypes;
+use App\Models\FleetVariant;
 use App\Models\Pirep;
 use App\Models\PirepCargo;
 use App\Models\Rental;
@@ -51,6 +52,13 @@ class CreateDispatchController extends Controller
 
         if ($aircraft->owner_id > 0 && $aircraft->owner_id != Auth::user()->id && $aircraft->ferry_user_id != Auth::user()->id) {
             return redirect()->back()->with(['error' => 'You do not own this aircraft']);
+        }
+
+        $variant = FleetVariant::where('id', $request->fleet_variant_id)
+            ->where('fleet_id', $aircraft->fleet_id)
+            ->first();
+        if (!$variant) {
+            return redirect()->back()->with(['error' => 'Invalid aircraft variant selected']);
         }
 
         $destAirport = Airport::forUser(Auth::user())->where('identifier', $request->destination)->first();
@@ -94,6 +102,7 @@ class CreateDispatchController extends Controller
         $pirep->is_empty = $request->is_empty;
         $pirep->is_rental = $isRental;
         $pirep->tour_id = $request->tour;
+        $pirep->fleet_variant_id = $variant->id;
         $pirep->current_lat = $currentLocation->lat;
         $pirep->current_lon = $currentLocation->lon;
         $pirep->current_altitude = $currentLocation->altitude;

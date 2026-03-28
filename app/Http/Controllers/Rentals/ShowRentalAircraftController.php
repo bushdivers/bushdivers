@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Airport;
 use App\Models\Fleet;
 use App\Models\Rental;
-use App\Models\Enums\AircraftState;
 use App\Models\Enums\FuelType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -26,13 +25,13 @@ class ShowRentalAircraftController extends Controller
         $currentLocation = Airport::find(Auth::user()->current_airport_id);
         $aircraft = null;
         if ($currentLocation->has_avgas && $currentLocation->has_jetfuel) {
-            $aircraft = Fleet::where('is_rental', true)->get();
-        } else if ($currentLocation->has_avgas && !$currentLocation->has_jetfuel) {
-            $aircraft = Fleet::where('is_rental', true)
+            $aircraft = Fleet::whereHas('variants')->where('is_rental', true)->get();
+        } elseif ($currentLocation->has_avgas && !$currentLocation->has_jetfuel) {
+            $aircraft = Fleet::whereHas('variants')->where('is_rental', true)
                 ->where('fuel_type', FuelType::AVGAS)
                 ->get();
-        } else if ($currentLocation->has_jetfuel && !$currentLocation->has_avgas) {
-            $aircraft = Fleet::where('is_rental', true)
+        } elseif ($currentLocation->has_jetfuel && !$currentLocation->has_avgas) {
+            $aircraft = Fleet::whereHas('variants')->where('is_rental', true)
                 ->where('fuel_type', FuelType::JET)
                 ->get();
         }

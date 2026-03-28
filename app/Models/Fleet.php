@@ -30,4 +30,14 @@ class Fleet extends Model
     {
         return $this->morphMany(Upload::class, 'uploadable');
     }
+
+    public function variants()
+    {
+        return $this->hasMany(FleetVariant::class);
+    }
+
+    public function defaultVariant()
+    {
+        return $this->hasOne(FleetVariant::class)->where('is_default', true);
+    }
 }

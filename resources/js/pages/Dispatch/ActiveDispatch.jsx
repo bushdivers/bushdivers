@@ -143,6 +143,7 @@ const ActiveDispatch = ({
               <DispatchSummary
                 selectedAircraft={aircraft}
                 selectedCargo={cargo}
+                variant={pirep.variant ?? null}
                 personWeight={personWeight}
                 cargoWeight={cargoWeight}
                 fuelWeight={fuelWeight}

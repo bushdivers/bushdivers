@@ -30,6 +30,7 @@ const Dispatch = ({ cargo, aircraft, airport, tours }) => {
   const [avgasWeight] = useState(5.99)
   const [jetFuelWeight] = useState(6.79)
   const [selectedAircraft, setSelectedAircraft] = useState('')
+  const [selectedVariant, setSelectedVariant] = useState(null)
   const [selectedCargo, setSelectedCargo] = useState([])
   const [fuel, setFuel] = useState(0)
   const [fuelPrice, setFuelPrice] = useState(0.0)
@@ -51,9 +52,13 @@ const Dispatch = ({ cargo, aircraft, airport, tours }) => {
   }
 
   function handleAircraftSelect(ac) {
-    setSelectedAircraft(
-      aircraft.find((a) => a.registration === ac.registration)
-    )
+    const found = aircraft.find((a) => a.registration === ac.registration)
+    setSelectedAircraft(found)
+    const defVariant =
+      found?.fleet?.variants?.find((v) => v.is_default) ??
+      found?.fleet?.variants?.[0] ??
+      null
+    setSelectedVariant(defVariant)
     setFuel(ac.fuel_onboard)
     if (ac.maintenance_status || ac.total_condition <= 25) {
       window.alert(
@@ -117,9 +122,11 @@ const Dispatch = ({ cargo, aircraft, airport, tours }) => {
 
   function handleUpdateFuel(qty, price) {
     setError(null)
-    if (qty > selectedAircraft.fleet.fuel_capacity) {
+    const fuelCap =
+      selectedVariant?.fuel_capacity ?? selectedAircraft.fleet.fuel_capacity
+    if (qty > fuelCap) {
       setError('Cannot specify more than the aircraft fuel capacity')
-      setFuel(selectedAircraft.fleet.fuel_capacity)
+      setFuel(fuelCap)
       return
     }
     if (
@@ -158,6 +165,7 @@ const Dispatch = ({ cargo, aircraft, airport, tours }) => {
 
     const data = {
       aircraft: selectedAircraft.registration,
+      fleet_variant_id: selectedVariant?.id,
       destination,
       fuel,
       fuel_price: fuelPrice,
@@ -204,6 +212,13 @@ const Dispatch = ({ cargo, aircraft, airport, tours }) => {
       }
     }
 
+    if (selectedVariant && fuel > selectedVariant.fuel_capacity) {
+      alert(
+        "Fuel load exceeds the selected variant's tank capacity. Please reduce fuel before dispatching."
+      )
+      return
+    }
+
     if (deadHead && selectedAircraft && fuel > 0 && destination) {
       sendDispatch()
       return
@@ -214,11 +229,12 @@ const Dispatch = ({ cargo, aircraft, airport, tours }) => {
       fuel > 0 &&
       destination
     ) {
+      const variant = selectedVariant
       if (
-        passengerCount > selectedAircraft.fleet.pax_capacity ||
-        cargoWeight > selectedAircraft.fleet.cargo_capacity ||
+        passengerCount > (variant?.pax_capacity ?? 0) ||
+        cargoWeight > (variant?.cargo_capacity ?? 0) ||
         personWeight + fuelWeight + cargoWeight >
-          selectedAircraft.fleet.mtow - selectedAircraft.fleet.zfw
+          (variant?.mtow ?? 0) - (variant?.zfw ?? 0)
       ) {
         alert('You are overweight!')
         return
@@ -283,6 +299,32 @@ const Dispatch = ({ cargo, aircraft, airport, tours }) => {
               selectedAircraft={selectedAircraft}
               handleAircraftSelect={handleAircraftSelect}
             />
+            {selectedAircraft &&
+              selectedAircraft.fleet?.variants?.length > 1 && (
+                <Card mb={2}>
+                  <CardBody>
+                    <FormControl>
+                      <FormLabel>Variant</FormLabel>
+                      <Select
+                        size="sm"
+                        value={selectedVariant?.id ?? ''}
+                        onChange={(e) => {
+                          const v = selectedAircraft.fleet.variants.find(
+                            (v) => String(v.id) === e.target.value
+                          )
+                          setSelectedVariant(v ?? null)
+                        }}
+                      >
+                        {selectedAircraft.fleet.variants.map((v) => (
+                          <option key={v.id} value={v.id}>
+                            {v.name}
+                          </option>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  </CardBody>
+                </Card>
+              )}
             <Cargo
               cargo={cargo}
               selectedCargo={selectedCargo}
@@ -299,6 +341,7 @@ const Dispatch = ({ cargo, aircraft, airport, tours }) => {
             <Fuel
               airport={airport}
               selectedAircraft={selectedAircraft}
+              variant={selectedVariant}
               fuel={fuel}
               fuelWeight={fuelWeight}
               handleUpdateFuel={handleUpdateFuel}
@@ -306,6 +349,7 @@ const Dispatch = ({ cargo, aircraft, airport, tours }) => {
             />
             <DispatchSummary
               selectedAircraft={selectedAircraft}
+              variant={selectedVariant}
               selectedCargo={selectedCargo}
               personWeight={personWeight}
               cargoWeight={cargoWeight}

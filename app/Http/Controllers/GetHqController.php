@@ -18,7 +18,8 @@ class GetHqController extends Controller
     {
         $finances = $getFinanceData->execute();
 
-        $fleet = Fleet::with(['uploads', 'aircraft' => function ($q) {
+        $fleet = Fleet::with(['uploads', 'defaultVariant',
+        'aircraft' => function ($q) {
             $q->where('owner_id', 0);
             $q->where('is_ferry', false);
             $q->where('status', AircraftStatus::ACTIVE);

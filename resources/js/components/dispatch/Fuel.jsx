@@ -56,16 +56,14 @@ const Fuel = (props) => {
 
   useEffect(() => {
     if (props.selectedAircraft) {
-      setMaxFuel(parseInt(props.selectedAircraft.fleet.fuel_capacity))
+      const fuelCap = props.variant?.fuel_capacity ?? 0
+      setMaxFuel(parseInt(fuelCap))
       setFuelPrice(0.0)
       setFuelAmount(props.selectedAircraft.fuel_onboard)
-      const perc =
-        (props.selectedAircraft.fuel_onboard /
-          props.selectedAircraft.fleet.fuel_capacity) *
-        100
+      const perc = (props.selectedAircraft.fuel_onboard / fuelCap) * 100
       setSliderValue(perc)
     }
-  }, [props.selectedAircraft])
+  }, [props.selectedAircraft, props.variant])
 
   function updateFuelPrice() {
     if (props.selectedAircraft) {
@@ -84,18 +82,14 @@ const Fuel = (props) => {
   function onSliderChange(val) {
     val = Math.max(val, 5)
     setSliderValue(val)
-    if (val > 0)
-      setFuelAmount(
-        Math.round(
-          (val / 100.0) * props.selectedAircraft.fleet.fuel_capacity,
-          2
-        )
-      )
+    const fuelCap = props.variant?.fuel_capacity ?? 0
+    if (val > 0) setFuelAmount(Math.round((val / 100.0) * fuelCap, 2))
   }
 
   function onNumberChange(val) {
     setFuelAmount(val)
-    setSliderValue((val / props.selectedAircraft.fleet.fuel_capacity) * 100)
+    const fuelCap = props.variant?.fuel_capacity ?? 0
+    setSliderValue((val / fuelCap) * 100)
   }
 
   function shouldWeRenderAddFuel() {
@@ -185,13 +179,17 @@ const Fuel = (props) => {
         </CardHeader>
         <CardBody>
           <Box>
-            <Text>
-              Useable Fuel (gal): {props.selectedAircraft?.fleet?.fuel_capacity}
-            </Text>
+            <Text>Useable Fuel (gal): {props.variant?.fuel_capacity ?? 0}</Text>
             <Flex justifyContent="space-between" alignItems="end">
               <Box>
                 <Flex alignItems="center" gap={2}>
-                  <Text>
+                  <Text
+                    color={
+                      props.fuel > (props.variant?.fuel_capacity ?? Infinity)
+                        ? 'red.500'
+                        : undefined
+                    }
+                  >
                     Current Fuel (gal):{' '}
                     {displayNumber(props.fuel !== null ? props.fuel : '')}
                   </Text>

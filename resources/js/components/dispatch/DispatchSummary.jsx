@@ -43,8 +43,8 @@ const DispatchSummary = (props) => {
                 <Text>
                   {props.selectedAircraft.registration} -{' '}
                   {props.selectedAircraft.fleet.manufacturer}{' '}
-                  {props.selectedAircraft.fleet.name} (
-                  {props.selectedAircraft.fleet.type}){' '}
+                  {props.selectedAircraft.fleet.name}{' '}
+                  {props.selectedAircraft.fleet.type}{' '}
                   {props.pirep && props.pirep.is_rental ? (
                     <Tag>Rental</Tag>
                   ) : (
@@ -70,8 +70,7 @@ const DispatchSummary = (props) => {
                   color={
                     props.selectedAircraft &&
                     props.personWeight + props.fuelWeight + props.cargoWeight >
-                      props.selectedAircraft.fleet.mtow -
-                        props.selectedAircraft.fleet.zfw
+                      (props.variant?.mtow ?? 0) - (props.variant?.zfw ?? 0)
                       ? 'red.300'
                       : ''
                   }
@@ -81,9 +80,7 @@ const DispatchSummary = (props) => {
                     props.fuelWeight +
                     props.cargoWeight
                   ).toFixed(2)}{' '}
-                  lbs /{' '}
-                  {props.selectedAircraft.fleet.mtow -
-                    props.selectedAircraft.fleet.zfw}{' '}
+                  lbs / {(props.variant?.mtow ?? 0) - (props.variant?.zfw ?? 0)}{' '}
                   lbs
                 </Text>
               )}
@@ -94,14 +91,13 @@ const DispatchSummary = (props) => {
                 <Text
                   color={
                     props.selectedAircraft &&
-                    props.cargoWeight >
-                      props.selectedAircraft.fleet.cargo_capacity
+                    props.cargoWeight > (props.variant?.cargo_capacity ?? 0)
                       ? 'red.300'
                       : ''
                   }
                 >
-                  {props.cargoWeight} lbs /{' '}
-                  {props.selectedAircraft.fleet.cargo_capacity} lbs
+                  {props.cargoWeight} lbs / {props.variant?.cargo_capacity ?? 0}{' '}
+                  lbs
                 </Text>
               )}
             </Box>
@@ -111,14 +107,12 @@ const DispatchSummary = (props) => {
                 <Text
                   color={
                     props.selectedAircraft &&
-                    props.passengerCount >
-                      props.selectedAircraft.fleet.pax_capacity
+                    props.passengerCount > (props.variant?.pax_capacity ?? 0)
                       ? 'red.300'
                       : ''
                   }
                 >
-                  {props.passengerCount} /{' '}
-                  {props.selectedAircraft.fleet.pax_capacity}
+                  {props.passengerCount} / {props.variant?.pax_capacity ?? 0}
                 </Text>
               )}
             </Box>

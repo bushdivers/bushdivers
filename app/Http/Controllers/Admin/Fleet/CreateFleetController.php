@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\Fleet;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AdminAddFleet;
 use App\Models\Fleet;
+use App\Models\FleetVariant;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -30,13 +31,7 @@ class CreateFleetController extends Controller
         $fleet->crew_required = 1;
         $fleet->cabin_crew_required = 0;
         $fleet->fuel_type = $request->fuel;
-        $fleet->zfw = $request->zfw;
-        $fleet->mtow = $request->mtow;
-        $fleet->cargo_capacity = $request->cargo;
-        $fleet->pax_capacity = $request->pax;
-        $fleet->fuel_capacity = $request->fuelCapacity;
         $fleet->service_ceiling = $request->ceiling;
-        $fleet->range = $request->range;
         $fleet->cruise_speed = $request->cruise;
         $fleet->image_url = '';
         $fleet->size = $request->size;
@@ -44,7 +39,7 @@ class CreateFleetController extends Controller
 
         $fleet->company_fleet = $request->company_fleet;
         $fleet->is_rental = $request->is_rental;
-        $fleet->rental_cost = $request->rental_cost;
+        $fleet->rental_cost = $request->rental_cost ?? 0;
         $fleet->hq = Str::upper($request->hq);
         $fleet->new_price = $request->new_price;
         $fleet->used_low_price = $request->used_low_price;
@@ -55,6 +50,6 @@ class CreateFleetController extends Controller
 
         $fleet->save();
 
-        return redirect()->route('admin.fleet')->with(['success' => 'Fleet added']);
+        return redirect()->route('admin.fleet.variant.create', $fleet->id)->with(['success' => 'Fleet added — please configure a variant']);
     }
 }

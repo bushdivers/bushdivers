@@ -18,9 +18,9 @@ class ShowUpdateFleetController extends Controller
      */
     public function __invoke(Request $request, $id): Response
     {
-        $fleet = Fleet::with('uploads')->find($id);
+        $fleet = Fleet::with(['uploads', 'variants'])->find($id);
         $fleet->tbo_mins = $fleet->tbo_mins / 60;
         $mfg = \App\Models\Manufacturer::all();
-        return Inertia::render('Admin/FleetEdit', ['fleet' => $fleet, 'manufacturers' => $mfg]);
+        return Inertia::render('Admin/FleetEdit', ['fleet' => $fleet, 'manufacturers' => $mfg, 'variants' => $fleet->variants]);
     }
 }

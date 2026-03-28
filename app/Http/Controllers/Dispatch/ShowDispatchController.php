@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Aircraft;
 use App\Models\Airport;
 use App\Models\Contract;
-use App\Models\ContractCargo;
 use App\Models\Enums\AircraftState;
 use App\Models\Enums\AircraftStatus;
 use App\Models\Enums\PirepState;
@@ -14,11 +13,9 @@ use App\Models\Pirep;
 use App\Models\PirepCargo;
 use App\Models\Rental;
 use App\Models\Tour;
-use App\Models\TourUser;
 use App\Services\Dispatch\CalcCargoWeight;
 use App\Services\Dispatch\CalcFuelWeight;
 use App\Services\Dispatch\CalcPassengerCount;
-use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
@@ -35,8 +32,7 @@ class ShowDispatchController extends Controller
         CalcCargoWeight $calcCargoWeight,
         CalcPassengerCount $calcPassengerCount,
         CalcFuelWeight $calcFuelWeight
-    )
-    {
+    ) {
         $this->calcCargoWeight = $calcCargoWeight;
         $this->calcPassengerCount = $calcPassengerCount;
         $this->calcFuelWeight = $calcFuelWeight;
@@ -51,7 +47,7 @@ class ShowDispatchController extends Controller
     public function __invoke(Request $request): Response
     {
         // check for existing Pirep
-        $pirep = Pirep::with('tour')
+        $pirep = Pirep::with('tour', 'variant')
             ->where('user_id', Auth::user()->id)
             ->whereNotIn('state', [PirepState::ACCEPTED, PirepState::REVIEW])
             ->first();
@@ -63,12 +59,14 @@ class ShowDispatchController extends Controller
                 ->whereIn('id', $pc)
                 ->get();
 
-//            $cargo = $this->getCargoForActiveDispatch($pc);
+            //            $cargo = $this->getCargoForActiveDispatch($pc);
             if ($pirep->is_rental) {
                 $aircraft = Rental::with('fleet')->find($pirep->aircraft_id);
             } else {
                 $aircraft = Aircraft::with('fleet')->find($pirep->aircraft_id);
             }
+
+            $variant = $pirep->variant;
 
             $cargoWeight = $this->calcCargoWeight->execute($cargo);
             $passengerCount = $this->calcPassengerCount->execute($cargo);
@@ -127,7 +125,7 @@ class ShowDispatchController extends Controller
 
     protected function getAircraftForDispatch(Airport $currentLocation): Collection
     {
-        $aircraft = Aircraft::with(['fleet', 'engines'])
+        $aircraft = Aircraft::with(['fleet.variants', 'engines'])
             ->where('state', AircraftState::AVAILABLE)
             ->where('status', AircraftStatus::ACTIVE)
             ->where('current_airport_id', $currentLocation->id)
@@ -137,7 +135,7 @@ class ShowDispatchController extends Controller
                     ->orWhere(fn ($q) => $q->where('owner_id', Auth::user()->id)); // private
             })->get();
 
-        $rentalAc = Rental::with('fleet')
+        $rentalAc = Rental::with('fleet.variants')
             ->where('user_id', Auth::user()->id)
             ->where('is_active', true)
             ->where('current_airport_id', $currentLocation->id)

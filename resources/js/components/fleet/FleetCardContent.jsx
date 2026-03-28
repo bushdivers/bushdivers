@@ -88,7 +88,10 @@ const FleetCardContent = ({ fleet }) => {
                 Fuel Capacity:
               </Text>
               <Text>
-                {fleet.fuel_capacity.toLocaleString(navigator.language)} gal
+                {(fleet.default_variant?.fuel_capacity ?? 0).toLocaleString(
+                  navigator.language
+                )}{' '}
+                gal
               </Text>
             </Box>
           </Flex>
@@ -104,7 +107,12 @@ const FleetCardContent = ({ fleet }) => {
             <Text as="b" className="text-md font-bold text-base">
               Max Range:{' '}
             </Text>
-            <Text>{fleet.range.toLocaleString(navigator.language)} nm</Text>
+            <Text>
+              {(fleet.default_variant?.range ?? 0).toLocaleString(
+                navigator.language
+              )}{' '}
+              nm
+            </Text>
           </Box>
           <Box className="mr-8">
             <Text as="b" className="text-md font-bold text-base">
@@ -118,14 +126,17 @@ const FleetCardContent = ({ fleet }) => {
             <Text as="b" className="text-md font-bold text-base">
               PAX Capacity:
             </Text>
-            <Text>{fleet.pax_capacity}</Text>
+            <Text>{fleet.default_variant?.pax_capacity ?? 0}</Text>
           </Box>
           <Box className="mr-8">
             <Text as="b" className="text-md font-bold text-base">
               Cargo Capacity:
             </Text>
             <Text>
-              {fleet.cargo_capacity.toLocaleString(navigator.language)} lbs
+              {(fleet.default_variant?.cargo_capacity ?? 0).toLocaleString(
+                navigator.language
+              )}{' '}
+              lbs
             </Text>
           </Box>
         </Box>

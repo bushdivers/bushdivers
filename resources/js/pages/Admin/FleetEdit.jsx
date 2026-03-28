@@ -1,14 +1,17 @@
 import {
+  Badge,
   Box,
   Button,
   Card,
   CardBody,
+  CardHeader,
   Checkbox,
   Flex,
   FormControl,
   FormErrorMessage,
   FormLabel,
   Heading,
+  Icon,
   Image,
   Input,
   InputGroup,
@@ -16,27 +19,27 @@ import {
   Link,
   Select,
   SimpleGrid,
+  Table,
+  TableContainer,
+  Tbody,
+  Td,
   Text,
+  Th,
+  Thead,
+  Tr,
 } from '@chakra-ui/react'
-import { router, usePage } from '@inertiajs/react'
+import { Link as InertiaLink, router, usePage } from '@inertiajs/react'
+import { Pen, Trash2 } from 'lucide-react'
 import React, { useState } from 'react'
 
 import AdminUpload from '../../components/admin/AdminUpload.jsx'
 import AdminLayout from '../../components/layout/AdminLayout.jsx'
 import { displayFileSize } from '../../helpers/generic.helpers.js'
 
-const getFuelLbsPerGal = (fuelType) => (fuelType === '1' ? 5.99 : 6.79)
-
-const toLbs = (gal, fuel) =>
-  gal === '' ? '' : String(Math.round(gal * getFuelLbsPerGal(fuel) * 100) / 100)
-
-const toGal = (lbs, fuel) =>
-  lbs === '' ? '' : String(Math.floor(parseFloat(lbs) / getFuelLbsPerGal(fuel)))
-
-const FleetEdit = ({ fleet, manufacturers }) => {
+const FleetEdit = ({ fleet, manufacturers, variants }) => {
   const { errors } = usePage().props
   const [values, setValues] = useState({
-    type: fleet?.type,
+    type: fleet?.type ?? '',
     name: fleet?.name ?? '',
     manufacturer: fleet?.manufacturer ?? '',
     manufacturer_id: fleet?.manufacturer_id ?? '0',
@@ -46,15 +49,7 @@ const FleetEdit = ({ fleet, manufacturers }) => {
     engines: fleet?.number_of_engines ?? '',
     tbo_mins: fleet?.tbo_mins ?? '0',
     fuel: fleet?.fuel_type ?? '1',
-    zfw: fleet?.zfw ?? '',
-    mtow: fleet?.mtow ?? '',
-    cargo: fleet?.cargo_capacity ?? '',
-    pax: fleet?.pax_capacity ?? '',
-    fuelCapacity: fleet?.fuel_capacity ?? '',
-    fuelCapacityLbs:
-      getFuelLbsPerGal(fleet?.fuel_type ?? '1') * (fleet?.fuel_capacity ?? 0),
     ceiling: fleet?.service_ceiling ?? '',
-    range: fleet?.range ?? '',
     cruise: fleet?.cruise_speed ?? '',
     size: fleet?.size ?? 'S',
     company_fleet: fleet?.company_fleet ?? '0',
@@ -74,32 +69,7 @@ const FleetEdit = ({ fleet, manufacturers }) => {
       e.target.type === 'checkbox' ? e.target.checked : e.target.value
 
     if (key === 'fuel') {
-      setValues((v) => ({
-        ...v,
-        fuel: value,
-        fuelCapacityLbs: toLbs(v.fuelCapacity, value),
-      }))
-      return
-    }
-
-    if (key === 'fuelCapacity') {
-      if (!/^\d*$/.test(value)) return
-      const gal = value
-      setValues((v) => ({
-        ...v,
-        fuelCapacity: gal,
-        fuelCapacityLbs: toLbs(gal, v.fuel),
-      }))
-      return
-    }
-
-    if (key === 'fuelCapacityLbs') {
-      if (!/^\d*\.?\d*$/.test(value)) return
-      setValues((v) => ({
-        ...v,
-        fuelCapacityLbs: value,
-        fuelCapacity: toGal(value, v.fuel),
-      }))
+      setValues((v) => ({ ...v, fuel: value }))
       return
     }
 
@@ -240,30 +210,35 @@ const FleetEdit = ({ fleet, manufacturers }) => {
                     <FormErrorMessage>{errors.aircraft_type}</FormErrorMessage>
                   )}
                 </FormControl>
-                <FormControl isInvalid={errors.powerplants}>
-                  <FormLabel htmlFor="powerplants">Engine type</FormLabel>
-                  <Input
-                    id="powerplants"
-                    value={values.powerplants}
-                    onChange={handleChange}
-                    type="text"
-                  />
-                  {errors.powerplants && (
-                    <FormErrorMessage>{errors.powerplants}</FormErrorMessage>
-                  )}
-                </FormControl>
-                <FormControl isInvalid={errors.engines}>
-                  <FormLabel htmlFor="engines">Number of engines</FormLabel>
-                  <Input
-                    id="engines"
-                    value={values.engines}
-                    onChange={handleChange}
-                    type="text"
-                  />
-                  {errors.engines && (
-                    <FormErrorMessage>{errors.engines}</FormErrorMessage>
-                  )}
-                </FormControl>
+                <Flex gap={3}>
+                  <FormControl flex={1} isInvalid={errors.engines}>
+                    <FormLabel htmlFor="engines">Engines</FormLabel>
+                    <InputGroup>
+                      <Input
+                        id="engines"
+                        value={values.engines}
+                        onChange={handleChange}
+                        type="text"
+                      />
+                      <InputRightAddon>x</InputRightAddon>
+                    </InputGroup>
+                    {errors.engines && (
+                      <FormErrorMessage>{errors.engines}</FormErrorMessage>
+                    )}
+                  </FormControl>
+                  <FormControl flex={2} isInvalid={errors.powerplants}>
+                    <FormLabel htmlFor="powerplants">Engine type</FormLabel>
+                    <Input
+                      id="powerplants"
+                      value={values.powerplants}
+                      onChange={handleChange}
+                      type="text"
+                    />
+                    {errors.powerplants && (
+                      <FormErrorMessage>{errors.powerplants}</FormErrorMessage>
+                    )}
+                  </FormControl>
+                </Flex>
                 <FormControl>
                   <FormLabel htmlFor="fuel">Fuel type</FormLabel>
                   <Select id="fuel" value={values.fuel} onChange={handleChange}>
@@ -283,86 +258,6 @@ const FleetEdit = ({ fleet, manufacturers }) => {
                     <FormErrorMessage>{errors.tbo_mins}</FormErrorMessage>
                   )}
                 </FormControl>
-                <FormControl isInvalid={errors.zfw}>
-                  <FormLabel htmlFor="zfw">
-                    Zero fuel weight / empty weight (lbs)
-                  </FormLabel>
-                  <Input
-                    id="zfw"
-                    value={values.zfw}
-                    onChange={handleChange}
-                    type="text"
-                  />
-                  {errors.zfw && (
-                    <FormErrorMessage>{errors.zfw}</FormErrorMessage>
-                  )}
-                </FormControl>
-                <FormControl isInvalid={errors.mtow}>
-                  <FormLabel htmlFor="mtow">MTOW (lbs)</FormLabel>
-                  <Input
-                    id="mtow"
-                    value={values.mtow}
-                    onChange={handleChange}
-                    type="text"
-                  />
-                  {errors.mtow && (
-                    <FormErrorMessage>{errors.mtow}</FormErrorMessage>
-                  )}
-                </FormControl>
-                <FormControl isInvalid={errors.cargo}>
-                  <FormLabel htmlFor="cargo">Cargo capacity (lbs)</FormLabel>
-                  <Input
-                    id="cargo"
-                    value={values.cargo}
-                    onChange={handleChange}
-                    type="text"
-                  />
-                  {errors.cargo && (
-                    <FormErrorMessage>{errors.cargo}</FormErrorMessage>
-                  )}
-                </FormControl>
-                <FormControl isInvalid={errors.pax}>
-                  <FormLabel htmlFor="pax">Passenger capacity</FormLabel>
-                  <Input
-                    id="pax"
-                    value={values.pax}
-                    onChange={handleChange}
-                    type="text"
-                  />
-                  {errors.pax && (
-                    <FormErrorMessage>{errors.pax}</FormErrorMessage>
-                  )}
-                </FormControl>
-                <FormControl isInvalid={errors.fuelCapacity}>
-                  <FormLabel htmlFor="fuelCapacity">Fuel capacity</FormLabel>
-                  <Flex gap={3}>
-                    <Box flex={1}>
-                      <InputGroup>
-                        <Input
-                          id="fuelCapacity"
-                          value={values.fuelCapacity}
-                          onChange={handleChange}
-                          type="text"
-                        />
-                        <InputRightAddon>gal</InputRightAddon>
-                      </InputGroup>
-                    </Box>
-                    <Box flex={1}>
-                      <InputGroup>
-                        <Input
-                          id="fuelCapacityLbs"
-                          value={values.fuelCapacityLbs}
-                          onChange={handleChange}
-                          type="text"
-                        />
-                        <InputRightAddon>lbs</InputRightAddon>
-                      </InputGroup>
-                    </Box>
-                  </Flex>
-                  {errors.fuelCapacity && (
-                    <FormErrorMessage>{errors.fuelCapacity}</FormErrorMessage>
-                  )}
-                </FormControl>
                 <FormControl isInvalid={errors.ceiling}>
                   <FormLabel htmlFor="ceiling">Service ceiling (ft)</FormLabel>
                   <Input
@@ -373,18 +268,6 @@ const FleetEdit = ({ fleet, manufacturers }) => {
                   />
                   {errors.ceiling && (
                     <FormErrorMessage>{errors.ceiling}</FormErrorMessage>
-                  )}
-                </FormControl>
-                <FormControl isInvalid={errors.range}>
-                  <FormLabel htmlFor="range">Range (nm)</FormLabel>
-                  <Input
-                    id="range"
-                    value={values.range}
-                    onChange={handleChange}
-                    type="text"
-                  />
-                  {errors.range && (
-                    <FormErrorMessage>{errors.range}</FormErrorMessage>
                   )}
                 </FormControl>
                 <FormControl isInvalid={errors.cruise}>
@@ -546,6 +429,88 @@ const FleetEdit = ({ fleet, manufacturers }) => {
           </form>
         </CardBody>
       </Card>
+      {fleet && variants !== undefined && (
+        <Card mt={4}>
+          <CardHeader>
+            <Flex justifyContent="space-between" alignItems="center">
+              <Heading size="md">Variants</Heading>
+              <Button
+                as={InertiaLink}
+                href={`/admin/fleet/${fleet.id}/variants/create`}
+                size="sm"
+              >
+                Add Variant
+              </Button>
+            </Flex>
+          </CardHeader>
+          <CardBody>
+            {variants.length === 0 ? (
+              <Text color="orange.400">
+                No variants configured — this fleet will be hidden from the
+                marketplace and rental list until at least one variant is added.
+              </Text>
+            ) : (
+              <TableContainer>
+                <Table size="sm">
+                  <Thead>
+                    <Tr>
+                      <Th>Name</Th>
+                      <Th>Default</Th>
+                      <Th>PAX</Th>
+                      <Th>Cargo (lbs)</Th>
+                      <Th>Fuel (gal)</Th>
+                      <Th>Range (nm)</Th>
+                      <Th>MTOW (lbs)</Th>
+                      <Th>ZFW (lbs)</Th>
+                      <Th>Actions</Th>
+                    </Tr>
+                  </Thead>
+                  <Tbody>
+                    {variants.map((v) => (
+                      <Tr key={v.id}>
+                        <Td>{v.name}</Td>
+                        <Td>
+                          {v.is_default && (
+                            <Badge colorScheme="green">Default</Badge>
+                          )}
+                        </Td>
+                        <Td>{v.pax_capacity}</Td>
+                        <Td>{v.cargo_capacity?.toLocaleString()}</Td>
+                        <Td>{v.fuel_capacity}</Td>
+                        <Td>{v.range?.toLocaleString()}</Td>
+                        <Td>{v.mtow?.toLocaleString()}</Td>
+                        <Td>{v.zfw?.toLocaleString()}</Td>
+                        <Td>
+                          <Flex alignItems="center" gap={2}>
+                            <Link
+                              as={InertiaLink}
+                              href={`/admin/fleet/${fleet.id}/variants/${v.id}/edit`}
+                            >
+                              <Button variant="ghost" size="xs">
+                                <Icon as={Pen} />
+                              </Button>
+                            </Link>
+                            {variants.length > 1 && (
+                              <Link
+                                as={InertiaLink}
+                                href={`/admin/fleet/${fleet.id}/variants/${v.id}/delete`}
+                              >
+                                <Button variant="ghost" size="xs">
+                                  <Icon as={Trash2} />
+                                </Button>
+                              </Link>
+                            )}
+                          </Flex>
+                        </Td>
+                      </Tr>
+                    ))}
+                  </Tbody>
+                </Table>
+              </TableContainer>
+            )}
+          </CardBody>
+        </Card>
+      )}
     </>
   )
 }

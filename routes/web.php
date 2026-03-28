@@ -58,10 +58,6 @@ Route::middleware('auth')->group(function () {
         ->name('flights.map');
     Route::get('/ranks', \App\Http\Controllers\General\ShowRanksController::class)
         ->name('ranks');
-    Route::get('/staff', \App\Http\Controllers\General\ShowStaffController::class)
-        ->name('staff');
-    Route::get('/fleet', \App\Http\Controllers\Fleet\ShowFleetController::class)
-        ->name('fleet');
 
     // Crew
     Route::get('/dashboard', \App\Http\Controllers\Crew\ShowDashboardController::class)
@@ -89,9 +85,6 @@ Route::middleware('auth')->group(function () {
         ->name('resources');
     Route::post('/resources', \App\Http\Controllers\Resources\AddResourceController::class)
         ->name('resources.add');
-
-    Route::get('/fleet-aircraft', \App\Http\Controllers\Fleet\ShowFleetAircraftController::class)
-        ->name('fleet.aircraft');
 
     // Airports
     Route::get('/airports/{icao?}', \App\Http\Controllers\Airports\ShowAirportController::class)
@@ -213,6 +206,18 @@ Route::middleware('auth')->group(function () {
             ->name('admin.aircraft.delete');
         Route::post('/admin/fleet/upload', \App\Http\Controllers\Admin\Fleet\FleetUploadController::class)
             ->name('admin.fleet.upload');
+
+        // Fleet variants
+        Route::get('/admin/fleet/{id}/variants/create', \App\Http\Controllers\Admin\Fleet\ShowCreateFleetVariantController::class)
+            ->name('admin.fleet.variant.create');
+        Route::post('/admin/fleet/{id}/variants', \App\Http\Controllers\Admin\Fleet\CreateFleetVariantController::class)
+            ->name('admin.fleet.variant.store');
+        Route::get('/admin/fleet/{id}/variants/{variantId}/edit', \App\Http\Controllers\Admin\Fleet\ShowUpdateFleetVariantController::class)
+            ->name('admin.fleet.variant.edit');
+        Route::post('/admin/fleet/{id}/variants/{variantId}', \App\Http\Controllers\Admin\Fleet\UpdateFleetVariantController::class)
+            ->name('admin.fleet.variant.update');
+        Route::get('/admin/fleet/{id}/variants/{variantId}/delete', \App\Http\Controllers\Admin\Fleet\DeleteFleetVariantController::class)
+            ->name('admin.fleet.variant.delete');
     });
 
     Route::middleware('role:tour_admin')->group(function () {

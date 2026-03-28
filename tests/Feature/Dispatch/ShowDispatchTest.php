@@ -4,17 +4,13 @@ namespace Tests\Feature\Dispatch;
 
 use App\Models\Aircraft;
 use App\Models\Airport;
-use App\Models\Contract;
 use App\Models\Enums\AircraftState;
 use App\Models\Enums\AircraftStatus;
 use App\Models\Enums\FuelType;
 use App\Models\Enums\PirepState;
 use App\Models\Fleet;
 use App\Models\Pirep;
-use App\Models\PirepCargo;
-use App\Models\Rental;
 use App\Models\Tour;
-use App\Models\TourUser;
 use App\Models\User;
 use Database\Seeders\CargoTypesSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -55,8 +51,6 @@ class ShowDispatchTest extends TestCase
         $this->fleet = Fleet::factory()->create([
             'fuel_type' => FuelType::AVGAS,
             'type' => 'C172',
-            'fuel_capacity' => 200,
-            'cargo_capacity' => 100,
         ]);
 
         $this->aircraft = Aircraft::factory()->create([

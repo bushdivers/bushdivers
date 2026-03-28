@@ -35,13 +35,7 @@ class AdminUpdateFleet extends FormRequest
             'engines' => 'required|numeric',
             'tbo_mins' => 'required|numeric|min:1',
             'fuel' => 'required|numeric',
-            'zfw' => 'required|numeric',
-            'mtow' => 'required|numeric',
-            'cargo' => 'required|numeric',
-            'pax' => 'required|numeric',
-            'fuelCapacity' => 'required|numeric',
             'ceiling' => 'required|numeric',
-            'range' => 'required|numeric',
             'cruise' => 'required|numeric',
             'size' => 'required',
 

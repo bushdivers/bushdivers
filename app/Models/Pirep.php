@@ -51,4 +51,9 @@ class Pirep extends Model
     {
         return $this->belongsTo(Tour::class);
     }
+
+    public function variant()
+    {
+        return $this->belongsTo(FleetVariant::class, 'fleet_variant_id');
+    }
 }
