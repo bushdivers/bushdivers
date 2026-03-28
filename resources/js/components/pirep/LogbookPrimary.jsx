@@ -13,8 +13,8 @@ const LogbookPrimary = ({ pirep }) => {
             <Flex direction="column" alignItems="center">
               <Icon w={6} h={6} as={PlaneTakeoff} />
               <Flex direction="row" alignItems="center" gap={2}>
-                <Link href={`/airports/${pirep.departure_airport_id}`}>
-                  <Text fontSize="xl">{pirep.departure_airport_id}</Text>
+                <Link href={`/airports/${pirep.dep_airport.identifier}`}>
+                  <Text fontSize="xl">{pirep.dep_airport.identifier}</Text>
                 </Link>
                 {pirep.dep_airport.longest_runway_surface === 'W' && (
                   <Icon as={Anchor} color="blue.500" />
@@ -29,8 +29,8 @@ const LogbookPrimary = ({ pirep }) => {
             <Flex direction="column" alignItems="center">
               <Icon w={6} h={6} as={PlaneLanding} />
               <Flex direction="row" alignItems="center" gap={2}>
-                <Link href={`/airports/${pirep.destination_airport_id}`}>
-                  <Text fontSize="xl">{pirep.destination_airport_id}</Text>
+                <Link href={`/airports/${pirep.arr_airport.identifier}`}>
+                  <Text fontSize="xl">{pirep.arr_airport.identifier}</Text>
                 </Link>
                 {pirep.arr_airport.longest_runway_surface === 'W' && (
                   <Icon as={Anchor} color="blue.500" />

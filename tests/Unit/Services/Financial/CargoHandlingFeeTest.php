@@ -6,7 +6,6 @@ use App\Models\Aircraft;
 use App\Models\AirlineFees;
 use App\Models\Airport;
 use App\Models\Contract;
-use App\Models\ContractCargo;
 use App\Models\Enums\AirlineTransactionTypes;
 use App\Models\Enums\TransactionTypes;
 use App\Models\Fleet;
@@ -69,7 +68,7 @@ class CargoHandlingFeeTest extends TestCase
         ]);
 
         $this->pirep = Pirep::factory()->create([
-            'destination_airport_id' => $this->airport->identifier,
+            'arrival_airport_id' => $this->airport->id,
             'aircraft_id' => $this->aircraft
         ]);
         $this->pirepCargo = PirepCargo::factory()->create([
@@ -98,7 +97,7 @@ class CargoHandlingFeeTest extends TestCase
     public function test_cargo_calculated_for_rental()
     {
         $pirep = Pirep::factory()->create([
-            'destination_airport_id' => $this->airport->identifier,
+            'arrival_airport_id' => $this->airport->id,
             'aircraft_id' => $this->aircraftRental->id,
             'is_rental' => true
         ]);
@@ -122,7 +121,7 @@ class CargoHandlingFeeTest extends TestCase
     public function test_cargo_calculated_for_private()
     {
         $pirep = Pirep::factory()->create([
-            'destination_airport_id' => $this->airport->identifier,
+            'arrival_airport_id' => $this->airport->id,
             'aircraft_id' => $this->aircraftPrivate->id
         ]);
         PirepCargo::factory()->create([
@@ -148,7 +147,7 @@ class CargoHandlingFeeTest extends TestCase
             'size' => 1
         ]);
         $pirep = Pirep::factory()->create([
-            'destination_airport_id' => $airport->identifier,
+            'arrival_airport_id' => $airport->id,
             'user_id' => $this->user->id,
             'aircraft_id' => $this->aircraft->id
         ]);

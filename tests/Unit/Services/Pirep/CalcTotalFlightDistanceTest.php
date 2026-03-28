@@ -4,14 +4,12 @@ namespace Tests\Unit\Services\Pirep;
 
 use App\Models\Airport;
 use App\Models\Contract;
-use App\Models\ContractCargo;
 use App\Models\FlightLog;
 use App\Models\Pirep;
 use App\Models\PirepCargo;
 use App\Services\Pireps\CalculateTotalFlightDistance;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
 class CalcTotalFlightDistanceTest extends TestCase
@@ -32,7 +30,20 @@ class CalcTotalFlightDistanceTest extends TestCase
 
         $this->contract = Contract::factory()->create();
 
-        $this->pirep = Pirep::factory()->create();
+        $depAirport = Airport::factory()->create([
+            'identifier' => 'AYMR',
+            'lat' => -6.36188,
+            'lon' => 143.23070,
+        ]);
+
+        $arrAirport = Airport::factory()->create([
+            'identifier' => 'AYMN'
+        ]);
+
+        $this->pirep = Pirep::factory()->create([
+            'departure_airport_id' => $depAirport->id,
+            'arrival_airport_id' => $arrAirport->id,
+        ]);
         $this->pirepCargo = PirepCargo::factory()->create([
             'pirep_id' => $this->pirep->id,
             'contract_cargo_id' => $this->contract->id
@@ -48,15 +59,6 @@ class CalcTotalFlightDistanceTest extends TestCase
             'pirep_id' => $this->pirep->id,
             'lat' => -6.14477,
             'lon' => 143.65752
-        ]);
-
-        Airport::factory()->create([
-            'identifier' => 'AYMR',
-            'lat' => -6.36188,
-            'lon' => 143.23070,
-        ]);
-        Airport::factory()->create([
-            'identifier' => 'AYMN'
         ]);
 
     }

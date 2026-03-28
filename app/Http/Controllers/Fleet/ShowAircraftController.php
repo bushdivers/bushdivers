@@ -30,7 +30,7 @@ class ShowAircraftController extends Controller
     public function __invoke(Request $request, $id): Response
     {
         $aircraft = Aircraft::with('fleet', 'engines', 'maintenance', 'location', 'hub')->findOrFail($id);
-        $pireps = Pirep::where('aircraft_id', $id)->where('is_rental', false)->orderBy('submitted_at', 'desc')->get();
+        $pireps = Pirep::with(['arrAirport', 'depAirport'])->where('aircraft_id', $id)->where('is_rental', false)->orderBy('submitted_at', 'desc')->get();
         // $hubs = Airport::where('is_hub', true)->get();
         $maintenanceStatus = $this->checkAircraftMaintenanceStatus->execute($aircraft);
 

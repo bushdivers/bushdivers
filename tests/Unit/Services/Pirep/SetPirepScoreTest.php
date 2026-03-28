@@ -5,8 +5,6 @@ namespace Tests\Unit\Services\Pirep;
 use App\Models\Aircraft;
 use App\Models\Airport;
 use App\Models\Contract;
-use App\Models\ContractCargo;
-use App\Models\Fleet;
 use App\Models\Pirep;
 use App\Models\PirepCargo;
 use App\Models\User;
@@ -15,7 +13,6 @@ use App\Services\Pireps\SetPirepTotalScore;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
@@ -78,8 +75,8 @@ class SetPirepScoreTest extends TestCase
 
         $this->pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,
-            'destination_airport_id' => 'AYMN' ?? $this->contract->arr_airport_id,
-            'departure_airport_id' => 'AYMR' ?? $this->contract->dep_airport_id,
+            'arrival_airport_id' => $aymn->id,
+            'departure_airport_id' => $aymr->id,
             'aircraft_id' => $this->aircraft,
             'flight_time' => 60,
             'landing_rate' => 54.5

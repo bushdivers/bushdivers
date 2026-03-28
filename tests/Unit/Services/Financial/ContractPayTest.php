@@ -6,7 +6,6 @@ use App\Models\Aircraft;
 use App\Models\AirlineFees;
 use App\Models\Airport;
 use App\Models\Contract;
-use App\Models\ContractCargo;
 use App\Models\Enums\AirlineTransactionTypes;
 use App\Models\Enums\FinancialConsts;
 use App\Models\Enums\TransactionTypes;
@@ -23,7 +22,6 @@ use Tests\TestCase;
 
 class ContractPayTest extends TestCase
 {
-
     use RefreshDatabase;
 
     protected CalcContractPay $calcContractPay;
@@ -60,7 +58,7 @@ class ContractPayTest extends TestCase
 
         $this->pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,
-            'destination_airport_id' => $this->airport->identifier,
+            'arrival_airport_id' => $this->airport->id,
             'aircraft_id' => $this->aircraft->id
         ]);
         $this->contract = Contract::factory()->create([

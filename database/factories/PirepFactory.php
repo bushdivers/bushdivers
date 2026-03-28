@@ -3,7 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Aircraft;
-use App\Models\Enums\FlightType;
+use App\Models\Airport;
 use App\Models\Enums\PirepState;
 use App\Models\Pirep;
 use App\Models\User;
@@ -31,22 +31,22 @@ class PirepFactory extends Factory
             'planned_fuel' => 50,
             'aircraft_id' => Aircraft::factory(),
             'user_id' => User::factory(),
-            'destination_airport_id' => 'AYMN',
-            'departure_airport_id' => 'AYMR',
+            'arrival_airport_id' => Airport::factory(),
+            'departure_airport_id' => Airport::factory(),
             'is_rental' => false
         ];
     }
 
     public function inProgress(): static
     {
-        return static::state(fn() =>  [
+        return static::state(fn () =>  [
             'state' => PirepState::IN_PROGRESS,
         ]);
     }
 
     public function complete(): static
     {
-        return static::state(fn() =>  [
+        return static::state(fn () =>  [
             'state' => PirepState::ACCEPTED,
             'fuel_used' => $this->faker->numberBetween(20, 50),
             'flight_time' => $this->faker->numberBetween(30, 180),

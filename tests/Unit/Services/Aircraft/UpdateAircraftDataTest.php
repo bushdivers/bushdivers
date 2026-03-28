@@ -5,7 +5,6 @@ namespace Tests\Unit\Services\Aircraft;
 use App\Models\Aircraft;
 use App\Models\Airport;
 use App\Models\Contract;
-use App\Models\ContractCargo;
 use App\Models\Enums\AircraftState;
 use App\Models\Fleet;
 use App\Models\Pirep;
@@ -19,7 +18,6 @@ use App\Services\Aircraft\UpdateAircraftState;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
@@ -35,7 +33,8 @@ class UpdateAircraftDataTest extends TestCase
     protected Model $fleet;
     protected Model $aircraft;
     protected Model $booking;
-    protected Model $aymr, $aymn;
+    protected Model $aymr;
+    protected Model $aymn;
     protected UpdateAircraftState $updateAircraftState;
     protected UpdateAircraftFuel $updateAircraftFuel;
     protected UpdateAircraftHours $updateAircraftHours;
@@ -86,7 +85,7 @@ class UpdateAircraftDataTest extends TestCase
 
         $this->pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,
-            'destination_airport_id' => $this->contract->arr_airport_id,
+            'arrival_airport_id' => $this->contract->arr_airport_id,
             'departure_airport_id' => $this->contract->dep_airport_id,
             'aircraft_id' => $this->aircraft
         ]);

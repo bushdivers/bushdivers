@@ -94,8 +94,8 @@ class CreateDispatchController extends Controller
         $pirep->id = Uuid::uuid4();
         $pirep->user_id = Auth::user()->id;
         $pirep->aircraft_id = $aircraft->id;
-        $pirep->departure_airport_id = $currentLocation->identifier;
-        $pirep->destination_airport_id = $request->destination;
+        $pirep->departure_airport_id = $currentLocation->id;
+        $pirep->arrival_airport_id = $destAirport->id;
         $pirep->planned_fuel = $request->fuel;
         $pirep->state = PirepState::DISPATCH;
         $pirep->status = PirepStatus::PREFLIGHT;

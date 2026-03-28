@@ -56,7 +56,7 @@ class CheckAwardStatus
                         ->where('user_id', $userId)
                         ->where('state', PirepState::ACCEPTED)
                         ->distinct()
-                        ->count('destination_airport_id');
+                        ->count('arrival_airport_id');
                     if ($airports > $award->value && !$awardAchieved) {
                         $this->addAwardToUser->execute($userId, $award->id);
                     }

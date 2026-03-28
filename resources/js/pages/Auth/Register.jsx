@@ -55,54 +55,56 @@ const Register = () => {
           <Heading size="lg">Register</Heading>
         </CardHeader>
         <CardBody>
-          <FormControl my={2} isInvalid={errors?.name}>
-            <FormLabel>
-              <Text>Name</Text>
-            </FormLabel>
-            <Input
-              value={values.name}
-              type="text"
-              id="name"
-              placeholder="Name"
-              onChange={handleChange}
-            />
-            <FormErrorMessage>{errors?.name}</FormErrorMessage>
-          </FormControl>
-          <FormControl my={2} isInvalid={errors?.email}>
-            <FormLabel>
-              <Text>Email address</Text>
-            </FormLabel>
-            <Input
-              value={values.email}
-              type="email"
-              id="email"
-              placeholder="Email"
-              onChange={handleChange}
-            />
-            <FormErrorMessage>{errors?.email}</FormErrorMessage>
-          </FormControl>
-          <FormControl my={2} isInvalid={errors?.password}>
-            <FormLabel>
-              <Text>Password</Text>
-            </FormLabel>
-            <Input
-              value={values.password}
-              type="password"
-              id="password"
-              placeholder="Password"
-              onChange={handleChange}
-            />
-            <FormErrorMessage>{errors?.password}</FormErrorMessage>
-          </FormControl>
-          <Button width="100%" onClick={(e) => handleSubmit(e)}>
-            Register
-          </Button>
-          <Text mt={2}>
-            By registering you agree to our{' '}
-            <ChakraLink color="orange.500" as={Link} href="/privacy">
-              privacy policy
-            </ChakraLink>
-          </Text>
+          <form onSubmit={handleSubmit}>
+            <FormControl my={2} isInvalid={errors?.name}>
+              <FormLabel>
+                <Text>Name</Text>
+              </FormLabel>
+              <Input
+                value={values.name}
+                type="text"
+                id="name"
+                placeholder="Name"
+                onChange={handleChange}
+              />
+              <FormErrorMessage>{errors?.name}</FormErrorMessage>
+            </FormControl>
+            <FormControl my={2} isInvalid={errors?.email}>
+              <FormLabel>
+                <Text>Email address</Text>
+              </FormLabel>
+              <Input
+                value={values.email}
+                type="email"
+                id="email"
+                placeholder="Email"
+                onChange={handleChange}
+              />
+              <FormErrorMessage>{errors?.email}</FormErrorMessage>
+            </FormControl>
+            <FormControl my={2} isInvalid={errors?.password}>
+              <FormLabel>
+                <Text>Password</Text>
+              </FormLabel>
+              <Input
+                value={values.password}
+                type="password"
+                id="password"
+                placeholder="Password"
+                onChange={handleChange}
+              />
+              <FormErrorMessage>{errors?.password}</FormErrorMessage>
+            </FormControl>
+            <Button width="100%" type="submit">
+              Register
+            </Button>
+            <Text mt={2}>
+              By registering you agree to our{' '}
+              <ChakraLink color="orange.500" as={Link} href="/privacy">
+                privacy policy
+              </ChakraLink>
+            </Text>
+          </form>
         </CardBody>
       </Card>
       <Box className="mt-2">

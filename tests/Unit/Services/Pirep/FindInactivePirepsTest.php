@@ -5,17 +5,13 @@ namespace Tests\Unit\Services\Pirep;
 use App\Models\Aircraft;
 use App\Models\Airport;
 use App\Models\Contract;
-use App\Models\ContractCargo;
 use App\Models\Enums\PirepState;
-use App\Models\Fleet;
 use App\Models\Pirep;
-use App\Models\PirepCargo;
 use App\Models\User;
 use App\Services\Pireps\FindInactivePireps;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
 class FindInactivePirepsTest extends TestCase
@@ -26,7 +22,8 @@ class FindInactivePirepsTest extends TestCase
     protected Model $pirep;
     protected Model $contract;
     protected Model $aircraft;
-    protected Model $aymr, $aymn;
+    protected Model $aymr;
+    protected Model $aymn;
     protected FindInactivePireps $findInactivePireps;
 
     public function setUp(): void
@@ -73,8 +70,8 @@ class FindInactivePirepsTest extends TestCase
     {
         $this->pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,
-            'destination_airport_id' => 'AYMN' ?? $this->contract->arr_airport_id,
-            'departure_airport_id' => 'AYMR' ?? $this->contract->dep_airport_id,
+            'arrival_airport_id' => $this->aymn->id,
+            'departure_airport_id' => $this->aymr->id,
             'aircraft_id' => $this->aircraft->id,
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
@@ -88,14 +85,13 @@ class FindInactivePirepsTest extends TestCase
 
     public function test_pirep_not_returned_when_active_flight_had_recent_update()
     {
-        $this->pirep = Pirep::factory()->create([
+        $pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,
-            'destination_airport_id' => 'AYMN' ?? $this->contract->arr_airport_id,
-            'departure_airport_id' => 'AYMR' ?? $this->contract->dep_airport_id,
-            'aircraft_id' => $this->aircraft->id,
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now(),
-            'state' => PirepState::IN_PROGRESS
+            'arrival_airport_id' => $this->aymn->id,
+            'departure_airport_id' => $this->aymr->id,
+            'aircraft_id' => $this->aircraft,
+            'state' => PirepState::IN_PROGRESS,
+            'created_at' => now()->subDays(1),
         ]);
 
         $pireps = $this->findInactivePireps->execute();
@@ -107,8 +103,8 @@ class FindInactivePirepsTest extends TestCase
     {
         $this->pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,
-            'destination_airport_id' => 'AYMN' ?? $this->contract->arr_airport_id,
-            'departure_airport_id' => 'AYMR' ?? $this->contract->dep_airport_id,
+            'arrival_airport_id' => $this->aymn->id,
+            'departure_airport_id' => $this->aymr->id,
             'aircraft_id' => $this->aircraft->id,
             'created_at' => Carbon::now()->subHours(5),
             'updated_at' => Carbon::now()->subHours(3),
@@ -124,8 +120,8 @@ class FindInactivePirepsTest extends TestCase
     {
         $this->pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,
-            'destination_airport_id' => 'AYMN' ?? $this->contract->arr_airport_id,
-            'departure_airport_id' => 'AYMR' ?? $this->contract->dep_airport_id,
+            'arrival_airport_id' => $this->aymn->id,
+            'departure_airport_id' => $this->aymr->id,
             'aircraft_id' => $this->aircraft->id,
             'created_at' => Carbon::now()->subHours(12),
             'updated_at' => Carbon::now()->subHours(12),

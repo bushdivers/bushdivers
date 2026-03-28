@@ -19,7 +19,6 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Laravel\Sanctum\Sanctum;
@@ -30,8 +29,10 @@ class SubmitPirepTourTest extends TestCase
     use RefreshDatabase;
 
     protected Model $user;
-    protected Model $pirep, $pirep2;
-    protected Model $pirepCargo, $pirepCargo2;
+    protected Model $pirep;
+    protected Model $pirep2;
+    protected Model $pirepCargo;
+    protected Model $pirepCargo2;
     protected Model $contract;
     protected Model $fleet;
     protected Model $aircraft;
@@ -41,7 +42,10 @@ class SubmitPirepTourTest extends TestCase
     protected Model $tourUser;
     protected Model $tourCheckpointUser;
     protected Model $tourCheckpointUser1;
-    protected Airport $aymr, $aymn, $aymh, $wavg;
+    protected Airport $aymr;
+    protected Airport $aymn;
+    protected Airport $aymh;
+    protected Airport $wavg;
 
     public function setUp(): void
     {
@@ -125,8 +129,8 @@ class SubmitPirepTourTest extends TestCase
 
         $this->pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,
-            'destination_airport_id' => 'AYMN' ?? $this->contract->arr_airport_id,
-            'departure_airport_id' => 'AYMR' ?? $this->contract->dep_airport_id,
+            'arrival_airport_id' => $this->aymn->id,
+            'departure_airport_id' => $this->aymr->id,
             'aircraft_id' => $this->aircraft->id,
             'current_lat' => -6.14617,
             'current_lon' => 143.65733,
@@ -135,8 +139,8 @@ class SubmitPirepTourTest extends TestCase
 
         $this->pirep2 = Pirep::factory()->create([
             'user_id' => $this->user->id,
-            'destination_airport_id' => 'WAVG',
-            'departure_airport_id' => 'AYMR',
+            'arrival_airport_id' => $this->wavg->id,
+            'departure_airport_id' => $this->aymr->id,
             'aircraft_id' => $this->aircraft->id,
             'current_lat' => -6.14617,
             'current_lon' => 143.65733,
@@ -205,7 +209,7 @@ class SubmitPirepTourTest extends TestCase
             'fuel_used' => 25,
             'distance' => 76,
             'landing_rate' => 149.12,
-            'block_off_time'=> $startTime,
+            'block_off_time' => $startTime,
             'block_on_time' => $endTime
         ];
 
@@ -245,7 +249,7 @@ class SubmitPirepTourTest extends TestCase
             'fuel_used' => 25,
             'distance' => 76,
             'landing_rate' => 149.12,
-            'block_off_time'=> $startTime,
+            'block_off_time' => $startTime,
             'block_on_time' => $endTime
         ];
 

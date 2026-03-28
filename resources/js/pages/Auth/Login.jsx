@@ -55,40 +55,42 @@ const Login = () => {
           <Heading size="lg">Login</Heading>
         </CardHeader>
         <CardBody>
-          <FormControl my={2} isInvalid={errors?.email}>
-            <FormLabel>
-              <Text>Email address</Text>
-            </FormLabel>
-            <Input
-              value={values.email}
-              type="email"
-              id="email"
-              placeholder="Email"
-              onChange={handleChange}
-            />
-            <FormErrorMessage>{errors?.email}</FormErrorMessage>
-          </FormControl>
-          <FormControl my={2} isInvalid={errors?.password}>
-            <FormLabel>
-              <Text>Password</Text>
-            </FormLabel>
-            <Input
-              value={values.password}
-              type="password"
-              id="password"
-              placeholder="Password"
-              onChange={handleChange}
-            />
-            <FormErrorMessage>{errors?.password}</FormErrorMessage>
-          </FormControl>
-          <Flex mb={4} justifyContent="right">
-            <ChakraLink as={Link} href="/password">
-              <Text size="xs">Forgotten password?</Text>
-            </ChakraLink>
-          </Flex>
-          <Button width="100%" onClick={(e) => handleSubmit(e)}>
-            Login
-          </Button>
+          <form onSubmit={handleSubmit}>
+            <FormControl my={2} isInvalid={errors?.email}>
+              <FormLabel>
+                <Text>Email address</Text>
+              </FormLabel>
+              <Input
+                value={values.email}
+                type="email"
+                id="email"
+                placeholder="Email"
+                onChange={handleChange}
+              />
+              <FormErrorMessage>{errors?.email}</FormErrorMessage>
+            </FormControl>
+            <FormControl my={2} isInvalid={errors?.password}>
+              <FormLabel>
+                <Text>Password</Text>
+              </FormLabel>
+              <Input
+                value={values.password}
+                type="password"
+                id="password"
+                placeholder="Password"
+                onChange={handleChange}
+              />
+              <FormErrorMessage>{errors?.password}</FormErrorMessage>
+            </FormControl>
+            <Flex mb={4} justifyContent="right">
+              <ChakraLink as={Link} href="/password">
+                <Text size="xs">Forgotten password?</Text>
+              </ChakraLink>
+            </Flex>
+            <Button type="submit" width="100%">
+              Login
+            </Button>
+          </form>
         </CardBody>
       </Card>
       <Box className="mt-2">

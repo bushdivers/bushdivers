@@ -31,7 +31,7 @@ const DispatchSummary = (props) => {
           <Heading size="sm">
             Planned Destination:{' '}
             {props.pirep ? (
-              <Text>{props.pirep.destination_airport_id}</Text>
+              <Text>{props.pirep.arr_airport.identifier}</Text>
             ) : (
               <Text>{props.destination}</Text>
             )}

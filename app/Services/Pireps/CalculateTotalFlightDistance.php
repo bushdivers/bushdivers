@@ -2,7 +2,6 @@
 
 namespace App\Services\Pireps;
 
-use App\Models\Airport;
 use App\Models\FlightLog;
 use App\Services\Airports\CalcDistanceBetweenPoints;
 
@@ -21,7 +20,8 @@ class CalculateTotalFlightDistance
         $first = true;
 
         // find lat/lon for departure
-        $dep = Airport::where('identifier', $pirep->departure_airport_id)->first();
+        $pirep->load('depAirport');
+        $dep = $pirep->depAirport;
         $startLat = $dep->lat;
         $startLon = $dep->lon;
         //get initial leg

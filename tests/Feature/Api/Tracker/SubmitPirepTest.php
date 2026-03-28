@@ -12,7 +12,6 @@ use App\Models\Enums\AircraftState;
 use App\Models\Enums\AirlineTransactionTypes;
 use App\Models\Enums\FinancialConsts;
 use App\Models\Enums\PointsType;
-use App\Models\Enums\TransactionTypes;
 use App\Models\Fleet;
 use App\Models\FlightLog;
 use App\Models\Pirep;
@@ -21,7 +20,6 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
@@ -40,7 +38,10 @@ class SubmitPirepTest extends TestCase
     protected Model $aircraft;
     protected Model $booking;
     protected Model $aircraftEngine;
-    protected Model $aymr, $aymn, $wavg, $ayte;
+    protected Model $aymr;
+    protected Model $aymn;
+    protected Model $wavg;
+    protected Model $ayte;
 
     public function setUp(): void
     {
@@ -100,8 +101,8 @@ class SubmitPirepTest extends TestCase
 
         $this->pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,
-            'destination_airport_id' => 'AYMN' ?? $this->contract->arr_airport_id,
-            'departure_airport_id' => 'AYMR' ?? $this->contract->dep_airport_id,
+            'arrival_airport_id' => $this->aymn->id,
+            'departure_airport_id' => $this->aymr->id,
             'aircraft_id' => $this->aircraft->id,
             'current_lat' => -6.14617,
             'current_lon' => 143.65733
@@ -164,7 +165,7 @@ class SubmitPirepTest extends TestCase
             'fuel_used' => 25,
             'distance' => 76,
             'landing_rate' => 149.12,
-            'block_off_time'=> $startTime,
+            'block_off_time' => $startTime,
             'block_on_time' => $endTime,
             'sim_used' => 'MSFS2020'
         ];
@@ -182,8 +183,8 @@ class SubmitPirepTest extends TestCase
 
         $pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,
-            'destination_airport_id' => 'AYMN' ?? $this->contract->arr_airport_id,
-            'departure_airport_id' => 'AYMR' ?? $this->contract->dep_airport_id,
+            'arrival_airport_id' => $this->aymn->id,
+            'departure_airport_id' => $this->aymr->id,
             'aircraft_id' => $this->aircraft,
             'current_lat' => -6.14617,
             'current_lon' => 143.65733,
@@ -198,7 +199,7 @@ class SubmitPirepTest extends TestCase
             'fuel_used' => 25,
             'distance' => 76,
             'landing_rate' => -149.12,
-            'block_off_time'=> $startTime,
+            'block_off_time' => $startTime,
             'block_on_time' => $endTime
         ];
 
@@ -225,7 +226,7 @@ class SubmitPirepTest extends TestCase
             'fuel_used' => 25,
             'distance' => 76,
             'landing_rate' => -149.12,
-            'block_off_time'=> $startTime,
+            'block_off_time' => $startTime,
             'block_on_time' => $endTime
         ];
 
@@ -256,7 +257,7 @@ class SubmitPirepTest extends TestCase
             'landing_pitch' => 5.12,
             'landing_lat' => -6.50818,
             'landing_lon' => 143.07856,
-            'block_off_time'=> $startTime,
+            'block_off_time' => $startTime,
             'block_on_time' => $endTime
         ];
 
@@ -286,7 +287,7 @@ class SubmitPirepTest extends TestCase
             'landing_pitch' => 5.12,
             'landing_lat' => -6.50818,
             'landing_lon' => 143.07856,
-            'block_off_time'=> $startTime,
+            'block_off_time' => $startTime,
             'block_on_time' => $endTime
         ];
 
@@ -314,7 +315,7 @@ class SubmitPirepTest extends TestCase
             'fuel_used' => 25,
             'distance' => 76,
             'landing_rate' => -149.12,
-            'block_off_time'=> $startTime,
+            'block_off_time' => $startTime,
             'block_on_time' => $endTime
         ];
 
@@ -337,7 +338,7 @@ class SubmitPirepTest extends TestCase
             'fuel_used' => 25,
             'distance' => 76,
             'landing_rate' => -149.12,
-            'block_off_time'=> $startTime,
+            'block_off_time' => $startTime,
             'block_on_time' => $endTime
         ];
 
@@ -365,7 +366,7 @@ class SubmitPirepTest extends TestCase
             'fuel_used' => 25,
             'distance' => 100,
             'landing_rate' => 30.25,
-            'block_off_time'=> $startTime,
+            'block_off_time' => $startTime,
             'block_on_time' => $endTime
         ];
 
@@ -400,7 +401,7 @@ class SubmitPirepTest extends TestCase
             'fuel_used' => 25,
             'distance' => 76,
             'landing_rate' => -149.12,
-            'block_off_time'=> $startTime,
+            'block_off_time' => $startTime,
             'block_on_time' => $endTime
         ];
 
@@ -430,7 +431,7 @@ class SubmitPirepTest extends TestCase
             'fuel_used' => 25,
             'distance' => 76,
             'landing_rate' => -149.12,
-            'block_off_time'=> $startTime,
+            'block_off_time' => $startTime,
             'block_on_time' => $endTime
         ];
 
@@ -469,7 +470,7 @@ class SubmitPirepTest extends TestCase
             'fuel_used' => 25,
             'distance' => 76,
             'landing_rate' => -149.12,
-            'block_off_time'=> $startTime,
+            'block_off_time' => $startTime,
             'block_on_time' => $endTime
         ];
 
@@ -495,7 +496,7 @@ class SubmitPirepTest extends TestCase
             'fuel_used' => 25,
             'distance' => 76,
             'landing_rate' => -149.12,
-            'block_off_time'=> $startTime,
+            'block_off_time' => $startTime,
             'block_on_time' => $endTime
         ];
 
@@ -521,7 +522,7 @@ class SubmitPirepTest extends TestCase
             'fuel_used' => 25,
             'distance' => 76,
             'landing_rate' => -149.12,
-            'block_off_time'=> $startTime,
+            'block_off_time' => $startTime,
             'block_on_time' => $endTime
         ];
 
@@ -538,8 +539,8 @@ class SubmitPirepTest extends TestCase
     {
         $pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,
-            'destination_airport_id' => 'AYTE',
-            'departure_airport_id' => 'AYMR' ?? $this->contract->dep_airport_id,
+            'arrival_airport_id' => $this->ayte->id,
+            'departure_airport_id' => $this->aymr->id,
             'aircraft_id' => $this->aircraft
         ]);
 
@@ -561,7 +562,7 @@ class SubmitPirepTest extends TestCase
             'fuel_used' => 25,
             'distance' => 76,
             'landing_rate' => -149.12,
-            'block_off_time'=> $startTime,
+            'block_off_time' => $startTime,
             'block_on_time' => $endTime
         ];
 
@@ -589,7 +590,7 @@ class SubmitPirepTest extends TestCase
             'fuel_used' => 25,
             'distance' => 76,
             'landing_rate' => -149.12,
-            'block_off_time'=> $startTime,
+            'block_off_time' => $startTime,
             'block_on_time' => $endTime
         ];
 
@@ -620,8 +621,8 @@ class SubmitPirepTest extends TestCase
 
         $p = Pirep::factory()->create([
             'user_id' => $this->user->id,
-            'destination_airport_id' => 'AYMN',
-            'departure_airport_id' => 'AYMR',
+            'arrival_airport_id' => $this->aymn->id,
+            'departure_airport_id' => $this->aymr->id,
             'aircraft_id' => $this->aircraft
         ]);
 
@@ -647,7 +648,7 @@ class SubmitPirepTest extends TestCase
             'fuel_used' => 25,
             'distance' => 76,
             'landing_rate' => -149.12,
-            'block_off_time'=> $startTime,
+            'block_off_time' => $startTime,
             'block_on_time' => $endTime
         ];
 
@@ -680,8 +681,8 @@ class SubmitPirepTest extends TestCase
 
         $pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,
-            'destination_airport_id' => 'WAVG',
-            'departure_airport_id' => 'AYMR' ?? $contract1->dep_airport_id,
+            'arrival_airport_id' => $this->wavg->id,
+            'departure_airport_id' => $this->aymr->id,
             'aircraft_id' => $this->aircraft
         ]);
 
@@ -707,7 +708,7 @@ class SubmitPirepTest extends TestCase
             'fuel_used' => 25,
             'distance' => 76,
             'landing_rate' => -149.12,
-            'block_off_time'=> $startTime,
+            'block_off_time' => $startTime,
             'block_on_time' => $endTime
         ];
 
@@ -740,8 +741,8 @@ class SubmitPirepTest extends TestCase
 
         $pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,
-            'destination_airport_id' => 'AYMN' ?? $contract1->arr_airport_id,
-            'departure_airport_id' => 'AYMR' ?? $contract1->dep_airport_id,
+            'arrival_airport_id' => $this->aymn->id,
+            'departure_airport_id' => $this->aymr->id,
             'aircraft_id' => $this->aircraft
         ]);
 
@@ -767,7 +768,7 @@ class SubmitPirepTest extends TestCase
             'fuel_used' => 25,
             'distance' => 76,
             'landing_rate' => -149.12,
-            'block_off_time'=> $startTime,
+            'block_off_time' => $startTime,
             'block_on_time' => $endTime
         ];
 
@@ -798,7 +799,7 @@ class SubmitPirepTest extends TestCase
             'fuel_used' => 25,
             'distance' => 76,
             'landing_rate' => -149.12,
-            'block_off_time'=> $startTime,
+            'block_off_time' => $startTime,
             'block_on_time' => $endTime
         ];
 
@@ -821,7 +822,7 @@ class SubmitPirepTest extends TestCase
             'fuel_used' => 25,
             'distance' => 76,
             'landing_rate' => -149.12,
-            'block_off_time'=> $startTime,
+            'block_off_time' => $startTime,
             'block_on_time' => $endTime
         ];
 
@@ -845,7 +846,7 @@ class SubmitPirepTest extends TestCase
             'fuel_used' => 25,
             'distance' => 76,
             'landing_rate' => -149.12,
-            'block_off_time'=> $startTime,
+            'block_off_time' => $startTime,
             'block_on_time' => $endTime
         ];
 
@@ -855,7 +856,7 @@ class SubmitPirepTest extends TestCase
         $this->aircraftEngine->refresh();
         $this->aircraft->refresh();
 
-        $this->assertEquals($previous+45, $this->aircraftEngine->mins_since_100hr);
-        $this->assertEquals($previous+45, $this->aircraftEngine->mins_since_tbo);
+        $this->assertEquals($previous + 45, $this->aircraftEngine->mins_since_100hr);
+        $this->assertEquals($previous + 45, $this->aircraftEngine->mins_since_tbo);
     }
 }

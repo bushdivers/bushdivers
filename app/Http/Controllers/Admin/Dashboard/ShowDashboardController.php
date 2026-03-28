@@ -20,8 +20,9 @@ class ShowDashboardController extends Controller
     public function __invoke(Request $request): Response
     {
         $days = intval($request->get('days', 7));
-        if ($days == 0)
+        if ($days == 0) {
             $days = 7;
+        }
 
         $stats = Pirep::whereRaw('block_on_time >= DATE_SUB(NOW(), INTERVAL ? DAY)', [$days])
             ->selectRaw('count(*) as flights')
@@ -38,11 +39,13 @@ class ShowDashboardController extends Controller
 
         // Unique airport count is distinct result of unioned two columns
         $ap = DB::select(
-                'select count(distinct airport_id) as total_airports from (
+            'select count(distinct airport_id) as total_airports from (
                                 select departure_airport_id AS airport_id from pireps
                                  where block_on_time >= DATE_SUB(NOW(), INTERVAL ? DAY)
-                          union select destination_airport_id AS airport_id from pireps where block_on_time >= DATE_SUB(NOW(), INTERVAL ? DAY)
-                        ) as airports', [$days, $days]);
+                          union select arrival_airport_id AS airport_id from pireps where block_on_time >= DATE_SUB(NOW(), INTERVAL ? DAY)
+                        ) as airports',
+            [$days, $days]
+        );
 
         $stats['airports'] = $ap[0]->total_airports;
 
@@ -65,7 +68,7 @@ class ShowDashboardController extends Controller
         // Get top departure airports
         $departuresIcao = DB::table('pireps')
             ->selectRaw('airports.identifier as id, count(*) as num, flag')
-            ->join('airports', 'departure_airport_id', '=', 'airports.identifier')
+            ->join('airports', 'departure_airport_id', '=', 'airports.id')
             ->whereRaw('block_on_time >= DATE_SUB(NOW(), INTERVAL ? DAY)', [$days])
             ->groupBy('airports.identifier', 'flag')
             ->orderBy('num', 'desc')
@@ -75,7 +78,7 @@ class ShowDashboardController extends Controller
         // Get top arrival airports
         $arrivalsIcao = DB::table('pireps')
             ->selectRaw('airports.identifier as id, count(*) as num, flag')
-            ->join('airports', 'destination_airport_id', '=', 'airports.identifier')
+            ->join('airports', 'arrival_airport_id', '=', 'airports.id')
             ->whereRaw('block_on_time >= DATE_SUB(NOW(), INTERVAL ? DAY)', [$days])
             ->groupBy('airports.identifier', 'flag')
             ->orderBy('num', 'desc')
@@ -85,7 +88,7 @@ class ShowDashboardController extends Controller
         // Get top departure airports
         $departures = DB::table('pireps')
             ->selectRaw('IFNULL(airports.country_code, \'NULL\') as id, airports.country, count(*) as num, flag')
-            ->join('airports', 'departure_airport_id', '=', 'airports.identifier')
+            ->join('airports', 'departure_airport_id', '=', 'airports.id')
             ->whereRaw('block_on_time >= DATE_SUB(NOW(), INTERVAL ? DAY)', [$days])
             ->groupBy('airports.country_code', 'airports.country', 'flag')
             ->orderBy('num', 'desc')
@@ -95,7 +98,7 @@ class ShowDashboardController extends Controller
         // Get top arrival airports
         $arrivals = DB::table('pireps')
             ->selectRaw('IFNULL(airports.country_code, \'NULL\') as id, airports.country, count(*) as num, flag')
-            ->join('airports', 'destination_airport_id', '=', 'airports.identifier')
+            ->join('airports', 'arrival_airport_id', '=', 'airports.id')
             ->whereRaw('block_on_time >= DATE_SUB(NOW(), INTERVAL ? DAY)', [$days])
             ->groupBy('airports.country_code', 'airports.country', 'flag')
             ->orderBy('num', 'desc')

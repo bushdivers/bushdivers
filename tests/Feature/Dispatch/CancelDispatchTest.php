@@ -68,8 +68,8 @@ class CancelDispatchTest extends TestCase
         $this->pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,
             'aircraft_id' => $this->aircraft->id,
-            'departure_airport_id' => $this->origin->identifier,
-            'destination_airport_id' => $this->destination->identifier,
+            'departure_airport_id' => $this->origin->id,
+            'arrival_airport_id' => $this->destination->id,
             'state' => PirepState::DISPATCH,
         ]);
     }

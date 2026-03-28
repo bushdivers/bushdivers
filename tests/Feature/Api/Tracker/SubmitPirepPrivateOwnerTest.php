@@ -18,7 +18,6 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Laravel\Sanctum\Sanctum;
@@ -36,7 +35,8 @@ class SubmitPirepPrivateOwnerTest extends TestCase
     protected Model $fleet;
     protected Model $aircraft;
     protected Model $booking;
-    protected Model $aymr, $aymn;
+    protected Model $aymr;
+    protected Model $aymn;
 
     public function setUp(): void
     {
@@ -84,8 +84,8 @@ class SubmitPirepPrivateOwnerTest extends TestCase
 
         $this->pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,
-            'destination_airport_id' => 'AYMN' ?? $this->contract->arr_airport_id,
-            'departure_airport_id' => 'AYMR' ?? $this->contract->dep_airport_id,
+            'arrival_airport_id' => $this->aymn->id,
+            'departure_airport_id' => $this->aymr->id,
             'aircraft_id' => $this->aircraft->id,
             'current_lat' => -6.14617,
             'current_lon' => 143.65733
@@ -141,7 +141,7 @@ class SubmitPirepPrivateOwnerTest extends TestCase
             'fuel_used' => 25,
             'distance' => 76,
             'landing_rate' => -149.12,
-            'block_off_time'=> $startTime,
+            'block_off_time' => $startTime,
             'block_on_time' => $endTime
         ];
         $this->withoutExceptionHandling();
@@ -164,7 +164,7 @@ class SubmitPirepPrivateOwnerTest extends TestCase
             'fuel_used' => 25,
             'distance' => 76,
             'landing_rate' => -149.12,
-            'block_off_time'=> $startTime,
+            'block_off_time' => $startTime,
             'block_on_time' => $endTime
         ];
 
@@ -193,7 +193,7 @@ class SubmitPirepPrivateOwnerTest extends TestCase
             'fuel_used' => 25,
             'distance' => 76,
             'landing_rate' => -149.12,
-            'block_off_time'=> $startTime,
+            'block_off_time' => $startTime,
             'block_on_time' => $endTime
         ];
 
@@ -230,7 +230,7 @@ class SubmitPirepPrivateOwnerTest extends TestCase
             'fuel_used' => 25,
             'distance' => 76,
             'landing_rate' => -149.12,
-            'block_off_time'=> $startTime,
+            'block_off_time' => $startTime,
             'block_on_time' => $endTime
         ];
 
@@ -259,7 +259,7 @@ class SubmitPirepPrivateOwnerTest extends TestCase
             'fuel_used' => 25,
             'distance' => 76,
             'landing_rate' => -149.12,
-            'block_off_time'=> $startTime,
+            'block_off_time' => $startTime,
             'block_on_time' => $endTime
         ];
 
@@ -290,7 +290,7 @@ class SubmitPirepPrivateOwnerTest extends TestCase
             'fuel_used' => 25,
             'distance' => 76,
             'landing_rate' => -149.12,
-            'block_off_time'=> $startTime,
+            'block_off_time' => $startTime,
             'block_on_time' => $endTime
         ];
 
@@ -323,7 +323,7 @@ class SubmitPirepPrivateOwnerTest extends TestCase
             'fuel_used' => 25,
             'distance' => 76,
             'landing_rate' => -149.12,
-            'block_off_time'=> $startTime,
+            'block_off_time' => $startTime,
             'block_on_time' => $endTime
         ];
 

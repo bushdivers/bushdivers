@@ -4,14 +4,11 @@ namespace Tests\Feature\Api\Tracker;
 
 use App\Models\Aircraft;
 use App\Models\Airport;
-use App\Models\Fleet;
 use App\Models\Pirep;
 use App\Models\User;
 use Carbon\Carbon;
-use Database\Factories\FleetFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
@@ -60,8 +57,8 @@ class UpdatePirepDestinationTest extends TestCase
 
         $this->pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,
-            'destination_airport_id' => $this->airport2->identifier,
-            'departure_airport_id' => 'AYMN',
+            'arrival_airport_id' => $this->airport2->id,
+            'departure_airport_id' => $this->airport1->id,
             'aircraft_id' => $aircraft->id,
         ]);
     }
@@ -130,7 +127,7 @@ class UpdatePirepDestinationTest extends TestCase
 
         $this->assertDatabaseHas('pireps', [
             'id' => $this->pirep->id,
-            'destination_airport_id' => 'AYMR'
+            'arrival_airport_id' => $this->airport1->id
         ]);
     }
 
@@ -215,7 +212,7 @@ class UpdatePirepDestinationTest extends TestCase
         $response->assertStatus(200);
         $this->assertDatabaseHas('pireps', [
             'id' => $this->pirep->id,
-            'destination_airport_id' => 'AYMR'
+            'arrival_airport_id' => Airport::where('identifier', 'AYMR')->first()->id
         ]);
 
         $this->user->allow_thirdparty_airport = true;
@@ -224,7 +221,7 @@ class UpdatePirepDestinationTest extends TestCase
         $response = $this->postJson('/api/pirep/destination', $data);
         $this->assertDatabaseHas('pireps', [
             'id' => $this->pirep->id,
-            'destination_airport_id' => 'TP01'
+            'arrival_airport_id' => $thirdpartyAirport->id
         ]);
     }
 }

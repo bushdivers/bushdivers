@@ -5,13 +5,10 @@ namespace Tests\Unit\Services\Financial;
 use App\Models\Aircraft;
 use App\Models\AirlineFees;
 use App\Models\Airport;
-use App\Models\Contract;
-use App\Models\ContractCargo;
 use App\Models\Enums\AirlineTransactionTypes;
 use App\Models\Enums\TransactionTypes;
 use App\Models\Fleet;
 use App\Models\Pirep;
-use App\Models\PirepCargo;
 use App\Models\Rental;
 use App\Models\User;
 use App\Services\Finance\CalcLandingFee;
@@ -82,7 +79,7 @@ class LandingFeeTest extends TestCase
     {
         $pirep = Pirep::factory()->create([
             'aircraft_id' => $this->aircraftSmall->id,
-            'destination_airport_id' => $this->airport->identifier
+            'arrival_airport_id' => $this->airport->id
         ]);
         $this->calcLandingFee->execute($pirep);
         $this->assertDatabaseHas('account_ledgers', [
@@ -104,7 +101,7 @@ class LandingFeeTest extends TestCase
 
         $pirep = Pirep::factory()->create([
             'aircraft_id' => $aircraft->id,
-            'destination_airport_id' => $this->airport->identifier,
+            'arrival_airport_id' => $this->airport->id,
             'is_rental' => true
         ]);
         $this->calcLandingFee->execute($pirep);
@@ -128,7 +125,7 @@ class LandingFeeTest extends TestCase
 
         $pirep = Pirep::factory()->create([
             'aircraft_id' => $aircraft->id,
-            'destination_airport_id' => $this->airport->identifier
+            'arrival_airport_id' => $this->airport->id
         ]);
         $this->calcLandingFee->execute($pirep);
         $this->assertDatabaseMissing('account_ledgers', [
@@ -146,7 +143,7 @@ class LandingFeeTest extends TestCase
     {
         $pirep = Pirep::factory()->create([
             'aircraft_id' => $this->aircraftMedium->id,
-            'destination_airport_id' => $this->airport->identifier
+            'arrival_airport_id' => $this->airport->id
         ]);
         $this->calcLandingFee->execute($pirep);
         $this->assertDatabaseHas('account_ledgers', [
@@ -161,7 +158,7 @@ class LandingFeeTest extends TestCase
     {
         $pirep = Pirep::factory()->create([
             'aircraft_id' => $this->aircraftLarge->id,
-            'destination_airport_id' => $this->airport->identifier
+            'arrival_airport_id' => $this->airport->id
         ]);
         $this->calcLandingFee->execute($pirep);
         $this->assertDatabaseHas('account_ledgers', [
@@ -181,7 +178,7 @@ class LandingFeeTest extends TestCase
 
         $pirep = Pirep::factory()->create([
             'aircraft_id' => $this->aircraftLarge->id,
-            'destination_airport_id' => $airport->identifier
+            'arrival_airport_id' => $airport->id
         ]);
         $this->calcLandingFee->execute($pirep);
         $this->assertDatabaseMissing('account_ledgers', [

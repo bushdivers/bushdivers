@@ -2,17 +2,12 @@
 
 namespace Tests\Feature\Api\Tracker;
 
-use App\Events\PirepFiled;
 use App\Models\Aircraft;
 use App\Models\AircraftEngine;
 use App\Models\AirlineFees;
 use App\Models\Airport;
 use App\Models\Contract;
-use App\Models\Enums\AircraftState;
 use App\Models\Enums\AirlineTransactionTypes;
-use App\Models\Enums\FinancialConsts;
-use App\Models\Enums\PointsType;
-use App\Models\Enums\TransactionTypes;
 use App\Models\Fleet;
 use App\Models\FlightLog;
 use App\Models\Pirep;
@@ -21,10 +16,8 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Event;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
@@ -96,8 +89,8 @@ class SubmitPirepHubTest extends TestCase
 
         $this->pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,
-            'destination_airport_id' => $aymn->identifier,
-            'departure_airport_id' => $aymr->identifier,
+            'arrival_airport_id' => $aymn->id,
+            'departure_airport_id' => $aymr->id,
             'aircraft_id' => $this->aircraft->id,
             'current_lat' => -6.14617,
             'current_lon' => 143.65733
@@ -159,7 +152,7 @@ class SubmitPirepHubTest extends TestCase
             'fuel_used' => 25,
             'distance' => 76,
             'landing_rate' => 149.12,
-            'block_off_time'=> $startTime,
+            'block_off_time' => $startTime,
             'block_on_time' => $endTime
         ];
 

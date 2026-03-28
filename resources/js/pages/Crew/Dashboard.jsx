@@ -78,9 +78,9 @@ const Dashboard = ({ lastFlight, user, locations, distance }) => {
                   <ChakraLink
                     color="orange.400"
                     as={Link}
-                    href={`/airports/${lastFlight.departure_airport_id}`}
+                    href={`/airports/${lastFlight.dep_airport.identifier}`}
                   >
-                    {lastFlight.departure_airport_id}
+                    {lastFlight.dep_airport.identifier}
                   </ChakraLink>
                 </Box>
                 <Box mt={2}>
@@ -96,9 +96,9 @@ const Dashboard = ({ lastFlight, user, locations, distance }) => {
                   <ChakraLink
                     color="orange.400"
                     as={Link}
-                    href={`/airports/${lastFlight.destination_airport_id}`}
+                    href={`/airports/${lastFlight.arr_airport.identifier}`}
                   >
-                    {lastFlight.destination_airport_id}
+                    {lastFlight.arr_airport.identifier}
                   </ChakraLink>
                 </Box>
                 <Flex alignItems="center" mt={2} gap={2}>

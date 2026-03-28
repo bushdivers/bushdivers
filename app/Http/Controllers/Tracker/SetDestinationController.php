@@ -13,7 +13,6 @@ use Location\Coordinate;
 
 class SetDestinationController extends Controller
 {
-
     /**
      * Handle the incoming request.
      *
@@ -44,9 +43,9 @@ class SetDestinationController extends Controller
         }
 
         if ($airport != null) {
-            // update piirep destination to new icao
+            // update pirep destination to new icao
 
-            $pirep->destination_airport_id = $airport->identifier;
+            $pirep->arrival_airport_id = $airport->id;
             $pirep->save();
 
             // return icao

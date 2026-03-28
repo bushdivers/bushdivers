@@ -18,7 +18,7 @@ import {
   Tr,
 } from '@chakra-ui/react'
 import { Link as InertiaLink } from '@inertiajs/react'
-import { CheckCircle } from 'lucide-react'
+import { Anchor, CheckCircle, Package } from 'lucide-react'
 import React from 'react'
 
 const HubJob = ({ hub }) => {
@@ -59,20 +59,32 @@ const HubJob = ({ hub }) => {
                   </Td>
                   <Td>
                     <ChakraLink
-                      href={`/airports/${contract.dep_airport_id}`}
+                      href={`/airports/${contract.dep_airport.identifier}`}
                       as={InertiaLink}
                       color="orange.500"
                     >
-                      {contract.dep_airport_id}
+                      {contract.dep_airport.identifier}
+                      {contract.dep_airport.longest_runway_surface === 'W' && (
+                        <Icon as={Anchor} color="blue.500" />
+                      )}
+                      {contract.dep_airport.is_thirdparty && (
+                        <Icon as={Package} color="green.500" />
+                      )}
                     </ChakraLink>
                   </Td>
                   <Td>
                     <ChakraLink
-                      href={`/airports/${contract.current_airport_id}`}
+                      href={`/airports/${contract.current_airport.identifier}`}
                       as={InertiaLink}
                       color="orange.500"
                     >
-                      {contract.current_airport_id}
+                      {contract.current_airport.identifier}
+                      {contract.dep_airport.longest_runway_surface === 'W' && (
+                        <Icon as={Anchor} color="blue.500" />
+                      )}
+                      {contract.dep_airport.is_thirdparty && (
+                        <Icon as={Package} color="green.500" />
+                      )}
                     </ChakraLink>
                   </Td>
                   <Td>
@@ -110,6 +122,12 @@ const HubJob = ({ hub }) => {
                       color="orange.500"
                     >
                       {ferry.location.identifier}
+                      {ferry.location.longest_runway_surface === 'W' && (
+                        <Icon as={Anchor} color="blue.500" />
+                      )}
+                      {ferry.location.is_thirdparty && (
+                        <Icon as={Package} color="green.500" />
+                      )}
                     </ChakraLink>
                   </Td>
                   <Td>

@@ -39,12 +39,12 @@ class Pirep extends Model
 
     public function depAirport()
     {
-        return $this->belongsTo(Airport::class, 'departure_airport_id', 'identifier');
+        return $this->belongsTo(Airport::class, 'departure_airport_id', 'id');
     }
 
     public function arrAirport()
     {
-        return $this->belongsTo(Airport::class, 'destination_airport_id', 'identifier');
+        return $this->belongsTo(Airport::class, 'arrival_airport_id', 'id');
     }
 
     public function tour()

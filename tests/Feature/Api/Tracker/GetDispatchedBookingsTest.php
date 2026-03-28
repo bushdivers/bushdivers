@@ -4,22 +4,16 @@ namespace Tests\Feature\Api\Tracker;
 
 use App\Models\Aircraft;
 use App\Models\Airport;
-use App\Models\Booking;
 use App\Models\Contract;
-use App\Models\ContractCargo;
 use App\Models\Fleet;
-use App\Models\Flight;
-use App\Models\FlightLog;
 use App\Models\Pirep;
 use App\Models\PirepCargo;
 use App\Models\Rental;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\DB;
 use Laravel\Sanctum\Sanctum;
-use PhpParser\Node\Expr\AssignOp\Mod;
 use Tests\TestCase;
 
 class GetDispatchedBookingsTest extends TestCase
@@ -82,8 +76,8 @@ class GetDispatchedBookingsTest extends TestCase
     {
         $this->pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,
-            'destination_airport_id' => 'AYMN' ?? $this->contract->arr_airport_id,
-            'departure_airport_id' => 'AYMR' ?? $this->contract->dep_airport_id,
+            'arrival_airport_id' => $this->contract->arr_airport_id,
+            'departure_airport_id' => $this->contract->dep_airport_id,
             'aircraft_id' => $this->aircraft
         ]);
 
@@ -99,15 +93,15 @@ class GetDispatchedBookingsTest extends TestCase
 
         $response = $this->getJson('/api/dispatch');
         $response->assertStatus(200);
-        $response->assertJsonFragment(['departure_airport_id' => $this->pirep->departure_airport_id]);
+        $response->assertJsonFragment(['departure_airport_id' => $this->pirep->depAirport->identifier]);
     }
 
     public function test_returns_bookings_when_dead_heading()
     {
         $this->pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,
-            'destination_airport_id' => 'AYMN' ?? $this->contract->arr_airport_id,
-            'departure_airport_id' => 'AYMR' ?? $this->contract->dep_airport_id,
+            'arrival_airport_id' => $this->contract->arr_airport_id,
+            'departure_airport_id' => $this->contract->dep_airport_id,
             'aircraft_id' => $this->aircraft,
             'is_empty' => 1
         ]);
@@ -126,8 +120,8 @@ class GetDispatchedBookingsTest extends TestCase
     {
         $this->pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,
-            'destination_airport_id' => 'AYMN' ?? $this->contract->arr_airport_id,
-            'departure_airport_id' => 'AYMR' ?? $this->contract->dep_airport_id,
+            'arrival_airport_id' => $this->contract->arr_airport_id,
+            'departure_airport_id' => $this->contract->dep_airport_id,
             'aircraft_id' => $this->aircraft
         ]);
 
@@ -150,8 +144,8 @@ class GetDispatchedBookingsTest extends TestCase
     {
         $this->pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,
-            'destination_airport_id' => 'AYMN' ?? $this->contract->arr_airport_id,
-            'departure_airport_id' => 'AYMR' ?? $this->contract->dep_airport_id,
+            'arrival_airport_id' => $this->contract->arr_airport_id,
+            'departure_airport_id' => $this->contract->dep_airport_id,
             'aircraft_id' => $this->aircraft
         ]);
 
@@ -174,8 +168,8 @@ class GetDispatchedBookingsTest extends TestCase
     {
         $this->pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,
-            'destination_airport_id' => 'AYMN' ?? $this->contract->arr_airport_id,
-            'departure_airport_id' => 'AYMR' ?? $this->contract->dep_airport_id,
+            'arrival_airport_id' => $this->contract->arr_airport_id,
+            'departure_airport_id' => $this->contract->dep_airport_id,
             'aircraft_id' => $this->aircraft
         ]);
 
@@ -223,8 +217,8 @@ class GetDispatchedBookingsTest extends TestCase
         ]);
         $this->pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,
-            'destination_airport_id' => 'AYMN' ?? $this->contract->arr_airport_id,
-            'departure_airport_id' => 'AYMR' ?? $this->contract->dep_airport_id,
+            'arrival_airport_id' => $this->contract->arr_airport_id,
+            'departure_airport_id' => $this->contract->dep_airport_id,
             'aircraft_id' => $rental->id,
             'is_rental' => true
         ]);
@@ -241,6 +235,6 @@ class GetDispatchedBookingsTest extends TestCase
 
         $response = $this->getJson('/api/dispatch');
         $response->assertStatus(200);
-        $response->assertJsonFragment(['departure_airport_id' => $this->pirep->departure_airport_id]);
+        $response->assertJsonFragment(['departure_airport_id' => $this->pirep->depAirport->identifier]);
     }
 }

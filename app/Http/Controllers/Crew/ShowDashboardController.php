@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Crew;
 use App\Http\Controllers\Controller;
 use App\Models\Enums\PirepState;
 use App\Models\Pirep;
-use App\Models\Rank;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -45,10 +44,10 @@ class ShowDashboardController extends Controller
         }
 
         $locations = DB::table('airports')
-            ->join('pireps', function($join){
-                $join->on('airports.identifier', '=', 'pireps.departure_airport_id')
-                    ->orOn('airports.identifier', '=', 'pireps.destination_airport_id');
-             })
+            ->join('pireps', function ($join) {
+                $join->on('airports.id', '=', 'pireps.departure_airport_id')
+                    ->orOn('airports.id', '=', 'pireps.arrival_airport_id');
+            })
             ->select('airports.identifier', 'airports.name', 'airports.lon', 'airports.lat')
             ->where('pireps.user_id', Auth::user()->id)
             ->where('pireps.state', PirepState::ACCEPTED)

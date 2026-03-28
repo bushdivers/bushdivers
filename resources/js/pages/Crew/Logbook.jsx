@@ -79,7 +79,7 @@ const Logbook = ({ logbook }) => {
                         <Td>
                           <Flex alignItems="center" gap={2}>
                             <Box>
-                              {entry.departure_airport_id}{' '}
+                              {entry.dep_airport.identifier}{' '}
                               {entry.dep_airport.longest_runway_surface ===
                                 'W' && <Icon as={Anchor} color="blue.500" />}
                               {entry.dep_airport.is_thirdparty && (
@@ -95,7 +95,7 @@ const Logbook = ({ logbook }) => {
                         <Td>
                           <Flex alignItems="center" gap={2}>
                             <Box>
-                              {entry.destination_airport_id}{' '}
+                              {entry.arr_airport.identifier}{' '}
                               {entry.arr_airport.longest_runway_surface ===
                                 'W' && <Icon as={Anchor} color="blue.500" />}
                               {entry.arr_airport.is_thirdparty && (

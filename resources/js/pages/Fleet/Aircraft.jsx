@@ -469,8 +469,8 @@ const Aircraft = ({ aircraft, maintenanceStatus, pireps }) => {
                     pireps.map((pirep) => (
                       <Tr key={pirep.id}>
                         <Td>{pirep.submitted_at}</Td>
-                        <Td>{pirep.departure_airport_id}</Td>
-                        <Td>{pirep.destination_airport_id}</Td>
+                        <Td>{pirep.dep_airport.identifier}</Td>
+                        <Td>{pirep.arr_airport.identifier}</Td>
                         <Td>{pirep.distance}</Td>
                         <Td>
                           {convertMinuteDecimalToHoursAndMinutes(

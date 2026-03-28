@@ -115,12 +115,12 @@ const Pireps = ({ pireps }) => {
                           {entry.state === 5 && <Tag ml={2}>Review</Tag>}
                         </Td>
                         <Td>
-                          {entry.departure_airport_id}
+                          {entry.dep_airport.identifier}
                           <br />
                           <Text fontSize="xs">{entry.dep_airport.name}</Text>
                         </Td>
                         <Td>
-                          {entry.destination_airport_id}
+                          {entry.arr_airport.identifier}
                           <br />
                           <Text fontSize="xs">{entry.arr_airport.name}</Text>
                         </Td>

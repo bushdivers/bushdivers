@@ -14,9 +14,6 @@ use App\Services\Aircraft\UpdateAircraftLocation;
 use App\Services\Aircraft\UpdateAircraftMaintenanceTimes;
 use App\Services\Aircraft\UpdateAircraftState;
 use App\Services\Rentals\UpdateRentalAfterFlight;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
-use Tests\Unit\Services\Aircraft\UpdateAircraftDataTest;
 
 class UpdateAircraft
 {
@@ -44,8 +41,7 @@ class UpdateAircraft
         UpdateRentalAfterFlight $updateRentalAfterFlight,
         ProcessAircraftCondition $processAircraftCondition,
         UpdateAircraftFerry $updateAircraftFerry
-    )
-    {
+    ) {
         $this->updateAircraftState = $updateAircraftState;
         $this->updateAircraftFuel = $updateAircraftFuel;
         $this->updateAircraftHours = $updateAircraftHours;
@@ -65,19 +61,19 @@ class UpdateAircraft
      */
     public function handle(PirepFiled $event)
     {
-//        $aircraft = Aircraft::find($event->pirep->aircraft_id);
+        //        $aircraft = Aircraft::find($event->pirep->aircraft_id);
 
         if (!$event->pirep->is_rental) {
             $this->updateAircraftState->execute($event->pirep->aircraft_id, AircraftState::AVAILABLE);
             $this->updateAircraftFuel->execute($event->pirep->aircraft_id, $event->pirep->fuel_used);
             $this->updateAircraftHours->execute($event->pirep->aircraft_id, $event->pirep->flight_time);
-            $this->updateAircraftLocation->execute($event->pirep->aircraft_id, $event->pirep->destination_airport_id, $event->pirep->current_lat, $event->pirep->current_lon);
+            $this->updateAircraftLocation->execute($event->pirep->aircraft_id, $event->pirep->arrAirport->identifier, $event->pirep->current_lat, $event->pirep->current_lon);
             $this->updateAircraftLastFlight->execute($event->pirep->aircraft_id, $event->pirep->submitted_at);
             $this->updateAircraftMaintenanceTimes->execute($event->pirep->aircraft_id, $event->pirep->flight_time);
             $this->processAircraftCondition->execute($event->pirep->aircraft_id, $event->pirep->landing_rate);
-            $this->updateAircraftFerry->execute($event->pirep->aircraft_id, $event->pirep->destination_airport_id);
+            $this->updateAircraftFerry->execute($event->pirep->aircraft_id, $event->pirep->arrAirport->identifier);
         } else {
-            $this->updateRentalAfterFlight->execute($event->pirep->aircraft_id, $event->pirep->fuel_used, $event->pirep->destination_airport_id);
+            $this->updateRentalAfterFlight->execute($event->pirep->aircraft_id, $event->pirep->fuel_used, $event->pirep->arrAirport->identifier);
         }
     }
 }

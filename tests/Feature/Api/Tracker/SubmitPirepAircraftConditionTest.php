@@ -7,7 +7,6 @@ use App\Models\AircraftEngine;
 use App\Models\AirlineFees;
 use App\Models\Airport;
 use App\Models\Contract;
-use App\Models\ContractCargo;
 use App\Models\Enums\AirlineTransactionTypes;
 use App\Models\Fleet;
 use App\Models\FlightLog;
@@ -17,7 +16,6 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Laravel\Sanctum\Sanctum;
@@ -85,8 +83,8 @@ class SubmitPirepAircraftConditionTest extends TestCase
 
         $this->pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,
-            'destination_airport_id' => 'AYMN' ?? $this->contract->arr_airport_id,
-            'departure_airport_id' => 'AYMR' ?? $this->contract->dep_airport_id,
+            'arrival_airport_id' => $aymn->id,
+            'departure_airport_id' => $aymr->id,
             'aircraft_id' => $this->aircraft->id,
             'current_lat' => -6.14617,
             'current_lon' => 143.65733
@@ -147,7 +145,7 @@ class SubmitPirepAircraftConditionTest extends TestCase
             'fuel_used' => 25,
             'distance' => 76,
             'landing_rate' => 149.12,
-            'block_off_time'=> $startTime,
+            'block_off_time' => $startTime,
             'block_on_time' => $endTime
         ];
         $this->postJson('/api/pirep/submit', $data);
@@ -178,7 +176,7 @@ class SubmitPirepAircraftConditionTest extends TestCase
             'fuel_used' => 25,
             'distance' => 76,
             'landing_rate' => 210.00,
-            'block_off_time'=> $startTime,
+            'block_off_time' => $startTime,
             'block_on_time' => $endTime
         ];
         $this->postJson('/api/pirep/submit', $data);
@@ -209,7 +207,7 @@ class SubmitPirepAircraftConditionTest extends TestCase
             'fuel_used' => 25,
             'distance' => 76,
             'landing_rate' => 380.00,
-            'block_off_time'=> $startTime,
+            'block_off_time' => $startTime,
             'block_on_time' => $endTime
         ];
         $this->postJson('/api/pirep/submit', $data);

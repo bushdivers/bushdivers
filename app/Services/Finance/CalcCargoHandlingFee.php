@@ -4,9 +4,7 @@ namespace App\Services\Finance;
 
 use App\Models\Aircraft;
 use App\Models\AirlineFees;
-use App\Models\Airport;
 use App\Models\Contract;
-use App\Models\ContractCargo;
 use App\Models\Enums\AirlineTransactionTypes;
 use App\Models\Enums\ContractType;
 use App\Models\Enums\TransactionTypes;
@@ -22,16 +20,18 @@ class CalcCargoHandlingFee
     public function __construct(
         AddAirlineTransaction $addAirlineTransaction,
         AddUserTransaction $addUserTransaction
-    )
-    {
+    ) {
         $this->addAirlineTransaction = $addAirlineTransaction;
         $this->addUserTransaction = $addUserTransaction;
     }
 
     public function execute($pirep)
     {
-        $airport = Airport::where('identifier', $pirep->destination_airport_id)->first();
-        if ($airport->size == 0) return;
+        $pirep->load('arrAirport');
+        $airport = $pirep->arrAirport;
+        if ($airport->size == 0) {
+            return;
+        }
         if ($pirep->is_rental) {
             $aircraft = Rental::with('fleet')->find($pirep->aircraft_id);
         } else {
@@ -45,7 +45,7 @@ class CalcCargoHandlingFee
             $cargo = Contract::find($c->contract_cargo_id);
             if ($cargo->cargo_type == ContractType::Cargo) {
                 $weight += $cargo->cargo_qty;
-            } else if ($cargo->cargo_type == ContractType::Passenger) {
+            } elseif ($cargo->cargo_type == ContractType::Passenger) {
                 $weight = $cargo->cargo_qty * WeightConsts::PERSON_WEIGHT;
             }
         }

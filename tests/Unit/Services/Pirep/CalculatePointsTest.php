@@ -5,7 +5,6 @@ namespace Tests\Unit\Services\Pirep;
 use App\Models\Aircraft;
 use App\Models\Airport;
 use App\Models\Contract;
-use App\Models\ContractCargo;
 use App\Models\Enums\AirlineTransactionTypes;
 use App\Models\Enums\FinancialConsts;
 use App\Models\Enums\PointsType;
@@ -19,9 +18,7 @@ use App\Services\Pireps\CalculatePirepPoints;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Event;
 use Tests\TestCase;
 
 class CalculatePointsTest extends TestCase
@@ -35,7 +32,8 @@ class CalculatePointsTest extends TestCase
     protected Model $fleet;
     protected Model $aircraft;
     protected Model $booking;
-    protected Model $aymr, $aymn;
+    protected Model $aymr;
+    protected Model $aymn;
     protected CalculatePirepPoints $calculatePirepPoints;
 
     public function setUp(): void
@@ -83,8 +81,8 @@ class CalculatePointsTest extends TestCase
         ]);
         $this->pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,
-            'destination_airport_id' => 'AYMR',
-            'departure_airport_id' => 'AYMN',
+            'arrival_airport_id' => $this->aymr->id,
+            'departure_airport_id' => $this->aymn->id,
             'landing_rate' => 54.5,
             'aircraft_id' => $this->aircraft
         ])->load('arrAirport', 'depAirport');
@@ -111,10 +109,10 @@ class CalculatePointsTest extends TestCase
 
     public function test_hub_points_for_flight_inc_hub()
     {
-//        $pirep = Pirep::factory()->create([
-//            'user_id' => $this->user->id,
-//            'aircraft_id' => $this->aircraft->id
-//        ]);
+        //        $pirep = Pirep::factory()->create([
+        //            'user_id' => $this->user->id,
+        //            'aircraft_id' => $this->aircraft->id
+        //        ]);
         $this->calculatePirepPoints->execute($this->pirep);
         $this->assertDatabaseHas('points', [
             'pirep_id' => $this->pirep->id,
@@ -125,10 +123,10 @@ class CalculatePointsTest extends TestCase
 
     public function test_hub_bonus_for_flight_inc_hub()
     {
-//        $pirep = Pirep::factory()->create([
-//            'user_id' => $this->user->id,
-//            'aircraft_id' => $this->aircraft->id
-//        ]);
+        //        $pirep = Pirep::factory()->create([
+        //            'user_id' => $this->user->id,
+        //            'aircraft_id' => $this->aircraft->id
+        //        ]);
         $this->calculatePirepPoints->execute($this->pirep);
         $this->assertDatabaseHas('user_accounts', [
             'user_id' => $this->pirep->user_id,
@@ -208,8 +206,8 @@ class CalculatePointsTest extends TestCase
         $pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,
             'aircraft_id' => $this->aircraft->id,
-            'departure_airport_id' => 'EGLL' ?? $contract->dep_airport_id,
-            'destination_airport_id' => 'EGSS' ?? $contract->arr_airport_id,
+            'departure_airport_id' => $egll->id,
+            'arrival_airport_id' => $egss->id,
             'landing_rate' => 54.5
         ])->load('arrAirport', 'depAirport');
 

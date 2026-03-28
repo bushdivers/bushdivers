@@ -20,7 +20,8 @@ class ShowCommunityController extends Controller
         // current community jobs
         // hubs
         $hub = Airport::with(['hubContracts' => function($query) {
-                $query->where('contract_type_id', 5);
+                $query->where('contract_type_id', 5)
+                    ->with(['depAirport', 'arrAirport', 'currentAirport']);
             },
             'ferryFlights' => function($query) {
                 $query->where('is_ferry', true);
@@ -29,7 +30,7 @@ class ShowCommunityController extends Controller
         ->where('hub_in_progress', true)
         ->first();
 
-        $mission  = CommunityJob::with('jobs')->where('is_published', 1)->where('is_completed', 0)->first();
+        $mission  = CommunityJob::with(['jobs', 'jobs.departureAirport', 'jobs.arrivalAirport'])->where('is_published', 1)->where('is_completed', 0)->first();
         $fleet = null;
         if ($mission) {
             $fleet = Aircraft::where('owner_id', 0)->with(['fleet' => function($q) {

@@ -28,7 +28,11 @@ class CheckTourProgressTest extends TestCase
     protected Model $anotherTourCheckpointUser;
     protected Model $anotherTourCheckpointUser1;
 
-    protected Airport $aymr, $aymn, $aymh, $wavg, $ayym;
+    protected Airport $aymr;
+    protected Airport $aymn;
+    protected Airport $aymh;
+    protected Airport $wavg;
+    protected Airport $ayym;
 
     protected Model $pirep;
 
@@ -91,8 +95,8 @@ class CheckTourProgressTest extends TestCase
         $this->pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,
             'tour_id' => $this->tour->id,
-            'departure_airport_id' => 'AYYM',
-            'destination_airport_id' => 'WAVG',
+            'departure_airport_id' => $this->ayym->id,
+            'arrival_airport_id' => $this->wavg->id,
         ]);
     }
 
@@ -104,8 +108,8 @@ class CheckTourProgressTest extends TestCase
         $firstPirep = Pirep::factory()->create([
             'user_id' => $this->user->id,
             'tour_id' => $this->tour->id,
-            'departure_airport_id' => 'AYMN',
-            'destination_airport_id' => 'AYYM',
+            'departure_airport_id' => $this->aymn->id,
+            'arrival_airport_id' => $this->ayym->id,
             'aircraft_id' => $this->pirep->aircraft_id
         ]);
         $this->checkTourProgress->execute($firstPirep);
@@ -122,7 +126,7 @@ class CheckTourProgressTest extends TestCase
 
     public function test_nothing_happens_if_not_checkpoint(): void
     {
-        $this->pirep->destination_airport_id = 'AYMN';
+        $this->pirep->arrival_airport_id = $this->aymn->id;
         $this->pirep->save();
         $this->checkTourProgress->execute($this->pirep);
         $this->tourUser->refresh();
@@ -199,7 +203,7 @@ class CheckTourProgressTest extends TestCase
         $this->tourUser->save();
         $this->tourCheckpointUser->is_completed = true;
         $this->tourCheckpointUser->save();
-        $this->pirep->destination_airport_id = 'AYMH';
+        $this->pirep->arrival_airport_id = $this->aymh->id;
         $this->pirep->save();
         $this->checkTourProgress->execute($this->pirep);
         $this->tourUser->refresh();
@@ -212,7 +216,7 @@ class CheckTourProgressTest extends TestCase
         $this->tourUser->save();
         $this->tourCheckpointUser->is_completed = true;
         $this->tourCheckpointUser->save();
-        $this->pirep->destination_airport_id = 'AYMH';
+        $this->pirep->arrival_airport_id = $this->aymh->id;
         $this->pirep->save();
         $this->checkTourProgress->execute($this->pirep);
 
