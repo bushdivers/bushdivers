@@ -45,7 +45,7 @@ const Home = ({ stats }) => {
       <Box textAlign="center" mt={8}>
         <Flex alignItems="center" justifyContent="center" my={6}>
           <Stat>
-            <StatLabel>Total Flight</StatLabel>
+            <StatLabel>Total Flights</StatLabel>
             <StatNumber>{stats?.flights}</StatNumber>
           </Stat>
           <Stat>
