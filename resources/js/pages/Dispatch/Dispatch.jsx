@@ -55,6 +55,7 @@ const Dispatch = ({ cargo, aircraft, airport, tours }) => {
     const found = aircraft.find((a) => a.registration === ac.registration)
     setSelectedAircraft(found)
     const defVariant =
+      found?.fleet?.variants?.find((v) => v.id === found.fleet_variant_id) ??
       found?.fleet?.variants?.find((v) => v.is_default) ??
       found?.fleet?.variants?.[0] ??
       null

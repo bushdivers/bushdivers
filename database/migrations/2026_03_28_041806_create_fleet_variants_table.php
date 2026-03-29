@@ -25,7 +25,7 @@ return new class () extends Migration {
         // Seed a default variant from every existing fleet row
         DB::statement("
             INSERT INTO fleet_variants (fleet_id, name, is_default, pax_capacity, cargo_capacity, fuel_capacity, `range`, mtow, zfw, created_at, updated_at)
-            SELECT id, 'Standard', 1, pax_capacity, cargo_capacity, fuel_capacity, `range`, mtow, zfw, NOW(), NOW()
+            SELECT id, 'Base', 1, pax_capacity, cargo_capacity, fuel_capacity, `range`, mtow, zfw, NOW(), NOW()
             FROM fleets
         ");
 

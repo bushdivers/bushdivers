@@ -14,6 +14,11 @@ class Rental extends Model
         return $this->belongsTo(Fleet::class);
     }
 
+    public function lastVariant()
+    {
+        return $this->belongsTo(FleetVariant::class, 'fleet_variant_id');
+    }
+
     public function location()
     {
         return $this->belongsTo(Airport::class, 'current_airport_id');

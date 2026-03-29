@@ -148,11 +148,13 @@ class CreateDispatchController extends Controller
         // update aircraft for user and fuel
         if (!$isRental) {
             $aircraft->fuel_onboard = $request->fuel;
+            $aircraft->fleet_variant_id = $variant->id;
             $aircraft->user_id = Auth::user()->id;
             $aircraft->state = AircraftState::BOOKED;
             $aircraft->save();
         } else {
             $aircraft->fuel_onboard = $request->fuel;
+            $aircraft->fleet_variant_id = $variant->id;
             $aircraft->save();
         }
 

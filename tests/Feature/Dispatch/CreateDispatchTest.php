@@ -207,4 +207,55 @@ class CreateDispatchTest extends TestCase
         $this->assertEquals($this->variantOrigin->id, $pirep->fleet_variant_id);
     }
 
+    public function test_aircraft_remembers_variant_after_dispatch()
+    {
+        $body = [
+            'aircraft' => $this->aircraftOrigin->registration,
+            'fleet_variant_id' => $this->variantOrigin->id,
+            'fuel' => 0,
+            'fuel_price' => 1.00,
+            'destination' => $this->destination->identifier,
+            'is_empty' => true,
+            'tour' => null,
+        ];
+
+        $this->actingAs($this->user)->post(route('dispatch.create'), $body);
+
+        $this->assertDatabaseHas('aircraft', [
+            'id' => $this->aircraftOrigin->id,
+            'fleet_variant_id' => $this->variantOrigin->id,
+        ]);
+    }
+
+    public function test_rental_remembers_variant_after_dispatch()
+    {
+        $fleet = Fleet::factory()->create(['fuel_type' => FuelType::AVGAS, 'type' => 'RN01']);
+        $variant = $fleet->variants()->first();
+        $rental = \App\Models\Rental::factory()->create([
+            'fleet_id' => $fleet->id,
+            'user_id' => $this->user->id,
+            'registration' => 'VH-RNT',
+            'current_airport_id' => $this->origin->id,
+            'rental_airport_id' => $this->origin->id,
+            'fuel_onboard' => 0,
+        ]);
+
+        $body = [
+            'aircraft' => $rental->registration,
+            'fleet_variant_id' => $variant->id,
+            'fuel' => 0,
+            'fuel_price' => 1.00,
+            'destination' => $this->destination->identifier,
+            'is_empty' => true,
+            'tour' => null,
+        ];
+
+        $this->actingAs($this->user)->post(route('dispatch.create'), $body);
+
+        $this->assertDatabaseHas('rentals', [
+            'id' => $rental->id,
+            'fleet_variant_id' => $variant->id,
+        ]);
+    }
+
 }
