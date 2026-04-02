@@ -146,11 +146,19 @@ const RentalList = ({ aircraft, myRentals, currentAirport }) => {
                 </Heading>
                 <Box mt={1}>${displayNumber(ac.rental_cost)} per hour </Box>
                 <Box my={2}>
-                  <Text>Cargo (lbs): {displayNumber(ac.cargo_capacity)}</Text>
-                  <Text>Pax: {ac.pax_capacity}</Text>
-                  <Text>Fuel (gal): {displayNumber(ac.fuel_capacity)}</Text>
+                  <Text>
+                    Cargo (lbs):{' '}
+                    {displayNumber(ac.default_variant.cargo_capacity)}
+                  </Text>
+                  <Text>Pax: {ac.default_variant.pax_capacity}</Text>
+                  <Text>
+                    Fuel (gal):{' '}
+                    {displayNumber(ac.default_variant.fuel_capacity)}
+                  </Text>
                   <Text>Cruise (kts): {ac.cruise_speed}</Text>
-                  <Text>Range (nm): {displayNumber(ac.range)}</Text>
+                  <Text>
+                    Range (nm): {displayNumber(ac.default_variant.range)}
+                  </Text>
                 </Box>
                 {renderRentalButton(ac)}
               </CardBody>

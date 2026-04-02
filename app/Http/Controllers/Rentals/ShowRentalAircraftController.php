@@ -25,13 +25,13 @@ class ShowRentalAircraftController extends Controller
         $currentLocation = Airport::find(Auth::user()->current_airport_id);
         $aircraft = null;
         if ($currentLocation->has_avgas && $currentLocation->has_jetfuel) {
-            $aircraft = Fleet::whereHas('variants')->where('is_rental', true)->get();
+            $aircraft = Fleet::with('defaultVariant')->whereHas('variants')->where('is_rental', true)->get();
         } elseif ($currentLocation->has_avgas && !$currentLocation->has_jetfuel) {
-            $aircraft = Fleet::whereHas('variants')->where('is_rental', true)
+            $aircraft = Fleet::with('defaultVariant')->whereHas('variants')->where('is_rental', true)
                 ->where('fuel_type', FuelType::AVGAS)
                 ->get();
         } elseif ($currentLocation->has_jetfuel && !$currentLocation->has_avgas) {
-            $aircraft = Fleet::whereHas('variants')->where('is_rental', true)
+            $aircraft = Fleet::with('defaultVariant')->whereHas('variants')->where('is_rental', true)
                 ->where('fuel_type', FuelType::JET)
                 ->get();
         }

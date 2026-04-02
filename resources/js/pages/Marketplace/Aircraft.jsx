@@ -55,18 +55,22 @@ const Aircraft = ({ fleet, buyer }) => {
                       )}
                     </Box>
                     <Box>
-                      Fuel Capacity: {displayNumber(f.fuel_capacity)} gal
+                      Fuel Capacity:{' '}
+                      {displayNumber(f.default_variant.fuel_capacity)} gal
                     </Box>
-                    <Box>ZFW: {displayNumber(f.zfw)} lbs</Box>
-                    <Box>MTOW: {displayNumber(f.mtow)} lbs</Box>
+                    <Box>ZFW: {displayNumber(f.default_variant.zfw)} lbs</Box>
+                    <Box>MTOW: {displayNumber(f.default_variant.mtow)} lbs</Box>
                     <Box>
-                      Cargo Capacity: {displayNumber(f.cargo_capacity)} lbs
+                      Cargo Capacity:{' '}
+                      {displayNumber(f.default_variant.cargo_capacity)} lbs
                     </Box>
-                    <Box>PAX Capacity: {f.pax_capacity}</Box>
+                    <Box>PAX Capacity: {f.default_variant.pax_capacity}</Box>
                     <Box>
                       Service Ceiling: {displayNumber(f.service_ceiling)} ft
                     </Box>
-                    <Box>Range: {displayNumber(f.range)} nm</Box>
+                    <Box>
+                      Range: {displayNumber(f.default_variant.range)} nm
+                    </Box>
                     <Box>Cruise Speed: {f.cruise_speed} KIAS</Box>
                   </Flex>
                   <Flex gap={2}>
