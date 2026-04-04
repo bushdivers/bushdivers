@@ -41,11 +41,12 @@ class AdminAddFleet extends FormRequest
 
             'company_fleet' => 'required|boolean',
             'is_rental' => 'required|boolean',
-            'rental_price' => 'exclude_if:is_rental,false|numeric',
-            'hq' => 'exclude_if:is_rental,false|required|exists:airports,identifier',
-            'new_price' => 'exclude_if:is_rental,false|required|numeric|gte:used_high_price',
-            'used_low_price' => 'exclude_if:is_rental,false|required|numeric',
-            'used_high_price' => 'exclude_if:is_rental,false|required|numeric|gte:used_low_price'
+            'rental_price' => 'required_if:is_rental,true|numeric',
+            'hq' => 'required|exists:airports,identifier',
+            'can_purchase_new' => 'boolean',
+            'new_price' => 'nullable|required_if:can_purchase_new,true|numeric|gte:used_high_price|gt:0',
+            'used_low_price' => 'nullable|required_with:used_high_price|numeric',
+            'used_high_price' => 'nullable|required_with:used_low_price|numeric|gte:used_low_price'
         ];
     }
 }

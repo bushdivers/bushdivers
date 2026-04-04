@@ -19,7 +19,7 @@ class ShowPurchaseUsedController extends Controller
      */
     public function __invoke($id, $buyer): Response
     {
-        $aircraft = Aircraft::with('fleet')->find($id);
+        $aircraft = Aircraft::with(['fleet', 'fleet.hq'])->find($id);
         $hubs = Airport::where('is_hub', true)->orderBy('identifier')->get();
         return Inertia::render('Marketplace/Purchase', ['aircraft' => $aircraft, 'purchaseType' => 'used', 'hubs' => $hubs, 'buyer' => $buyer]);
     }

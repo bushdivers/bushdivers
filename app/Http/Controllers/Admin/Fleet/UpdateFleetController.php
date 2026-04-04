@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\Fleet;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AdminUpdateFleet;
+use App\Models\Airport;
 use App\Models\Fleet;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -19,6 +20,8 @@ class UpdateFleetController extends Controller
      */
     public function __invoke(AdminUpdateFleet $request, $id): RedirectResponse
     {
+        $hq = Airport::where('identifier', Str::upper($request->hq))->firstOrFail();
+
         $fleet = Fleet::find($id);
         $fleet->name = $request->name;
         $fleet->manufacturer = $request->manufacturer;
@@ -37,7 +40,7 @@ class UpdateFleetController extends Controller
         $fleet->company_fleet = $request->company_fleet;
         $fleet->is_rental = $request->is_rental;
         $fleet->rental_cost = $request->rental_cost ?? 0;
-        $fleet->hq = Str::upper($request->hq);
+        $fleet->hq_airport_id = $hq->id;
         $fleet->new_price = $request->new_price;
         $fleet->used_low_price = $request->used_low_price;
         $fleet->used_high_price = $request->used_high_price;

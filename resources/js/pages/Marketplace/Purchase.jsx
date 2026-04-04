@@ -8,13 +8,15 @@ import UsedPurchase from '../../components/marketplace/UsedPurchase.jsx'
 
 const Purchase = ({ aircraft, purchaseType, buyer, hubs }) => {
   const { auth } = usePage().props
-  const [hub, setHub] = useState(null)
+  const [hub, setHub] = useState('')
   const [hubError, setHubError] = useState(null)
   const [reg, setReg] = useState(
     purchaseType === 'used' ? aircraft.registration : ''
   )
   const [regError, setRegError] = useState(null)
-  const [deliveryLocation, setDeliveryLocation] = useState(aircraft.hq)
+  const [deliveryLocation, setDeliveryLocation] = useState(
+    aircraft.hq?.identifier ?? ''
+  ) // aircraft is fleet object for new purchases
   const [error, setError] = useState(null)
 
   const handleHubChange = (e) => {
@@ -47,7 +49,7 @@ const Purchase = ({ aircraft, purchaseType, buyer, hubs }) => {
       return
     }
 
-    if (hub == null) {
+    if (hub == null || hub.length === 0) {
       setHubError('Please enter home hub ICAO')
       return
     }

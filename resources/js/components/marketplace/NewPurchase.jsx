@@ -46,7 +46,7 @@ const NewPurchase = ({
     setAirport(null)
     setIcao('')
     if (!e.target.checked) setPrice(0.0)
-    updateDelivery(aircraft.hq)
+    updateDelivery(aircraft.hq.identifier)
   }
 
   const handleChange = async (e) => {
@@ -64,7 +64,7 @@ const NewPurchase = ({
         updateDelivery(response.data.airport.identifier)
         setError(null)
         const priceResp = await axios.get(
-          `/api/jumpseat/cost/${aircraft.hq}/${response.data.airport.identifier}`
+          `/api/jumpseat/cost/${aircraft.hq.identifier}/${response.data.airport.identifier}`
         )
         if (priceResp.status === 200) {
           const p = priceResp.data.cost * 10
@@ -121,10 +121,10 @@ const NewPurchase = ({
               </Text>
             )}
           </Box>
-          {!deliver && <Text mt={2}>Deliver to {aircraft.hq}</Text>}
+          {!deliver && <Text mt={2}>Deliver to {aircraft.hq.identifier}</Text>}
           {deliver && airport && (
             <Text mt={2}>
-              Deliver from: {aircraft.hq} to: {airport}
+              Deliver from: {aircraft.hq.identifier} to: {airport}
             </Text>
           )}
           <Box width="200px">

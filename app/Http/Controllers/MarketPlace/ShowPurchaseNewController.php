@@ -19,7 +19,7 @@ class ShowPurchaseNewController extends Controller
      */
     public function __invoke(Request $request, $fleetId, $buyer): Response
     {
-        $fleet = Fleet::find($fleetId);
+        $fleet = Fleet::with(['hq'])->find($fleetId);
         $hubs = Airport::where('is_hub', true)->orderBy('identifier')->get();
         return Inertia::render('Marketplace/Purchase', ['aircraft' => $fleet, 'purchaseType' => 'new', 'buyer' => $buyer, 'hubs' => $hubs]);
     }

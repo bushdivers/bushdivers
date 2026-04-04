@@ -26,6 +26,11 @@ class Fleet extends Model
         return $this->belongsTo(Manufacturer::class);
     }
 
+    public function hq()
+    {
+        return $this->belongsTo(Airport::class, 'hq_airport_id');
+    }
+
     public function uploads(): MorphMany
     {
         return $this->morphMany(Upload::class, 'uploadable');

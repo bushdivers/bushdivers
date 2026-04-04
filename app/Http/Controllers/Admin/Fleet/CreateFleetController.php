@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\Fleet;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AdminAddFleet;
+use App\Models\Airport;
 use App\Models\Fleet;
 use App\Models\FleetVariant;
 use Illuminate\Http\RedirectResponse;
@@ -20,6 +21,8 @@ class CreateFleetController extends Controller
      */
     public function __invoke(AdminAddFleet $request): RedirectResponse
     {
+        $hq = Airport::where('identifier', Str::upper($request->hq))->firstOrFail();
+
         $fleet = new Fleet();
         $fleet->type = $request->type;
         $fleet->name = $request->name;
@@ -40,7 +43,7 @@ class CreateFleetController extends Controller
         $fleet->company_fleet = $request->company_fleet;
         $fleet->is_rental = $request->is_rental;
         $fleet->rental_cost = $request->rental_cost ?? 0;
-        $fleet->hq = Str::upper($request->hq);
+        $fleet->hq_airport_id = $hq->id;
         $fleet->new_price = $request->new_price;
         $fleet->used_low_price = $request->used_low_price;
         $fleet->used_high_price = $request->used_high_price;

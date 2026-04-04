@@ -55,7 +55,7 @@ const FleetEdit = ({ fleet, manufacturers, variants }) => {
     company_fleet: fleet?.company_fleet ?? '0',
     is_rental: fleet?.is_rental ?? '0',
     rental_cost: fleet?.rental_cost ?? '',
-    hq: fleet?.hq ?? '',
+    hq: fleet?.hq?.identifier ?? '',
     new_price: fleet?.new_price ?? '',
     used_low_price: fleet?.used_low_price ?? '',
     used_high_price: fleet?.used_high_price ?? '',
