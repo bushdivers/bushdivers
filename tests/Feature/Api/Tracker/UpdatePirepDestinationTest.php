@@ -29,7 +29,10 @@ class UpdatePirepDestinationTest extends TestCase
             'rank_id' => 1,
             'flights_time' => 299,
             'points' => 49,
-            'created_at' => Carbon::now()->addYears(-2)
+            'created_at' => Carbon::now()->addYears(-2),
+            'allow_thirdparty_airport' => false,
+            'allow_thirdparty_hub' => false,
+            'allow_campsite_airport' => false,
         ]);
         $this->airport1 = Airport::factory()->create([
             'identifier' => 'AYMR',
@@ -153,6 +156,7 @@ class UpdatePirepDestinationTest extends TestCase
     public function test_fleet_only_at_base_airport()
     {
         $this->airport1->is_thirdparty = true;
+        $this->airport1->is_hub = false;
         $this->airport1->save();
 
         $this->user->allow_thirdparty_airport = true;
@@ -183,6 +187,7 @@ class UpdatePirepDestinationTest extends TestCase
             'identifier' => 'TP01',
             'name' => 'Third Party Airport',
             'is_thirdparty' => true,
+            'is_hub' => false,
             'lat' => -6.36288,
             'lon' => 143.24070,
             'altitude' => 100

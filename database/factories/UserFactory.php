@@ -27,12 +27,19 @@ class UserFactory extends Factory
             'name' => $this->faker->name(),
             'email' => $this->faker->unique()->safeEmail(),
             'email_verified_at' => now(),
-            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            'password' => $this->faker->password(), // password
             'remember_token' => Str::random(10),
+
             'current_airport_id' => Airport::inRandomOrder()->first() ?: Airport::factory(),
+            'allow_thirdparty_airport' => false,
+            'allow_thirdparty_hub' => false,
+            'allow_campsite_airport' => false,
+
             'toc_accepted' => true,
             'opt_in' => false,
+            'points' => 0,
             'rank_id' => 1,
+            'is_admin' => false,
             'loan' => 0.00
         ];
     }

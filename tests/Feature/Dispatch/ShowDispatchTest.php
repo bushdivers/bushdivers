@@ -240,7 +240,7 @@ class ShowDispatchTest extends TestCase
     public function test_dispatch_page_with_user_at_different_airport()
     {
         // Move user to different airport
-        $this->user->update(['current_airport_id' => $this->destination->identifier]);
+        $this->user->update(['current_airport_id' => $this->destination->id]);
 
         $response = $this->actingAs($this->user)->get('/dispatch');
 

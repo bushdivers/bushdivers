@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
 
@@ -27,5 +28,7 @@ class AppServiceProvider extends ServiceProvider
         Validator::extend('boolstring', function ($attribute, $value, $parameters, $validator) {
             return in_array(strtolower($value), ['true', 'false']);
         }, 'The :attribute field must be string "true" or "false".');
+
+        Model::shouldBeStrict(!app()->isProduction());
     }
 }

@@ -23,6 +23,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+
+        'current_airport_id',
+
         'allow_thirdparty_airport',
         'allow_thirdparty_hub',
         'allow_campsite_airport',
