@@ -101,6 +101,10 @@ class Kernel extends ConsoleKernel
 
         $schedule->command('auth:clear-resets')->hourly();
         $schedule->command('va:clear-marketplace')->weekly();
+
+        if (config('telescope.enabled', false)) {
+            $schedule->command('telescope:prune --hours=48')->daily();
+        }
     }
 
     /**

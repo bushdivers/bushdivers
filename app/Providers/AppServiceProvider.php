@@ -30,5 +30,10 @@ class AppServiceProvider extends ServiceProvider
         }, 'The :attribute field must be string "true" or "false".');
 
         Model::shouldBeStrict(!app()->isProduction());
+
+        if (app()->isLocal() && class_exists(\Laravel\Telescope\TelescopeServiceProvider::class)) {
+            $this->app->register(\Laravel\Telescope\TelescopeServiceProvider::class);
+            $this->app->register(\App\Providers\TelescopeServiceProvider::class);
+        }
     }
 }
