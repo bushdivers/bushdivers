@@ -19,4 +19,13 @@ class CommunityJob extends Model
     {
         return $this->hasMany(CommunityJobContract::class);
     }
+
+    protected static function booted()
+    {
+        static::deleting(function (CommunityJob $job) {
+            if ($job->is_published) {
+                throw new \Exception('Cannot delete a published job');
+            }
+        });
+    }
 }

@@ -67,6 +67,11 @@ class Aircraft extends Model
         $this->attributes['wear'] = max(0, min(100, $value));
     }
 
+    public function setFuelOnboardAttribute($value)
+    {
+        $this->attributes['fuel_onboard'] = max(0, $value);
+    }
+
     public function getMaintenanceStatusAttribute()
     {
         $oneYearAgo = Carbon::now()->subYear();

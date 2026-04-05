@@ -33,4 +33,9 @@ class CommunityJobContract extends Model
         return $this->belongsTo(Airport::class, 'arr_airport_id');
     }
 
+    public function setRemainingPayloadAttribute($value)
+    {
+        $this->attributes['remaining_payload'] = max($value, 0);
+    }
+
 }
