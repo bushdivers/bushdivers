@@ -6,7 +6,6 @@ use App\Models\Airport;
 use App\Models\Enums\TransactionTypes;
 use App\Models\Fleet;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\DB;
@@ -16,8 +15,8 @@ class PurchaseTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected Model $user;
-    protected Model $fleet;
+    protected User $user;
+    protected Fleet $fleet;
 
     protected function setUp(): void
     {
@@ -85,8 +84,8 @@ class PurchaseTest extends TestCase
         ];
         $response = $this->actingAs($this->user)->post('/marketplace/purchase/user', $data);
 
-        $response->assertStatus(302);
-        $this->followRedirects($response)->assertSee('Insufficient funds');
+        $response->assertRedirectBack()->assertSessionHas('error', 'Insufficient funds');
+
         // assert user transaction does not exist
         $this->assertDatabaseMissing('user_accounts', [
             'user_id' => $this->user->id,

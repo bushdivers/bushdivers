@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Enums\CargoType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -11,7 +12,8 @@ class CommunityJobContract extends Model
 
     protected $casts = [
         'is_completed' => 'boolean',
-        'is_recurring' => 'boolean'
+        'is_recurring' => 'boolean',
+        'cargo_type' => CargoType::class
     ];
     public function contracts()
     {

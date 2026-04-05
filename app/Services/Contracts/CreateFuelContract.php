@@ -3,7 +3,7 @@
 namespace App\Services\Contracts;
 
 use App\Models\Airport;
-use App\Models\Enums\ContractType;
+use App\Models\Enums\CargoType;
 use App\Services\Airports\CalcBearingBetweenPoints;
 use App\Services\Airports\CalcDistanceBetweenPoints;
 use App\Services\Airports\UpdateFuelAtAirport;
@@ -46,7 +46,7 @@ class CreateFuelContract
             $fuelString = $fuelType === 1 ? '100LL' : 'Jet Fuel';
             // cargo info
             $cargo = [
-                'type' => ContractType::Cargo,
+                'type' => CargoType::Cargo,
                 'qty' => $weight,
                 'name' => $qty.' gal '.$fuelString.' Fuel'
             ];

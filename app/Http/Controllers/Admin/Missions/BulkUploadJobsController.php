@@ -7,8 +7,10 @@ use App\Http\Controllers\Traits\HandlesBulkUpload;
 use App\Models\Airport;
 use App\Models\CommunityJob;
 use App\Models\CommunityJobContract;
+use App\Models\Enums\CargoType;
 use App\Services\Contracts\CreateCommunityContract;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class BulkUploadJobsController extends Controller
 {
@@ -65,7 +67,10 @@ class BulkUploadJobsController extends Controller
                     }
                 },
             ],
-            'cargo_type' => 'required|in:1,2',
+            'cargo_type' => [
+                'required',
+                Rule::enum(CargoType::class),
+            ],
             'cargo' => 'required|string|max:255',
             'qty' => 'required|integer|min:1',
             'is_recurring' => 'required|boolstring',
@@ -94,12 +99,12 @@ class BulkUploadJobsController extends Controller
         $job->dep_airport_id = $depAirport->id;
         $job->arr_airport_id = $arrAirport->id;
         $job->cargo_type = (int) $row['cargo_type'];
-        if ($job->cargo_type == 1) {
+        if ($job->cargo_type == CargoType::Cargo) {
             $job->payload = (int) $row['qty'];
-            $job->remaining_payload = $job->cargo_type == 1 ? (int) $row['qty'] : null;
+            $job->remaining_payload = $job->cargo_type == CargoType::Cargo ? (int) $row['qty'] : null;
         } else {
             $job->pax = (int) $row['qty'];
-            $job->remaining_pax = $job->cargo_type == 2 ? (int) $row['qty'] : null;
+            $job->remaining_pax = $job->cargo_type == CargoType::Passenger ? (int) $row['qty'] : null;
         }
 
         $job->cargo = $row['cargo'];

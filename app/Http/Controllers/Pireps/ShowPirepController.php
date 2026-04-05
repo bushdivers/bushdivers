@@ -26,31 +26,20 @@ class ShowPirepController extends Controller
      */
     public function __invoke(Request $request, $pirep): Response
     {
-        $pcheck = Pirep::findOrFail($pirep);
-
-        if (Auth::user()->is_admin) {
-            if ($pcheck->is_rental) {
-                $p = Pirep::with('depAirport', 'arrAirport', 'rental', 'rental.fleet', 'pilot', 'tour')
-                    ->where('id', $pirep)
-                    ->first();
-            } else {
-                $p = Pirep::with('depAirport', 'arrAirport', 'aircraft', 'aircraft.fleet', 'pilot', 'tour')
-                    ->where('id', $pirep)
-                    ->first();
-            }
-        } else {
-            if ($pcheck->is_rental) {
-                $p = Pirep::with('depAirport', 'arrAirport', 'rental', 'rental.fleet', 'tour')
-                    ->where('id', $pirep)
-                    ->where('user_id', Auth::user()->id)
-                    ->first();
-            } else {
-                $p = Pirep::with('depAirport', 'arrAirport', 'aircraft', 'aircraft.fleet', 'tour')
-                    ->where('id', $pirep)
-                    ->where('user_id', Auth::user()->id)
-                    ->first();
-            }
+        $p = Pirep::with('depAirport', 'arrAirport', 'tour')
+                ->where('id', $pirep)
+                ->where('user_id', Auth::user()->id)
+                ->first();
+        if ($p && $p->is_rental) {
+            $p->load('rental', 'rental.fleet');
+        } elseif ($p) {
+            $p->load('aircraft', 'aircraft.fleet');
         }
+
+        if (Auth::user()->is_admin)
+            $p->load('pilot');
+
+
 
         $pc = PirepCargo::where('pirep_id', $pirep)->pluck('contract_cargo_id');
 

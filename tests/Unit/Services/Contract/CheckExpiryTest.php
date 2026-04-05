@@ -59,14 +59,15 @@ class CheckExpiryTest extends TestCase
 
     public function test_assigned_contract_is_not_closed()
     {
+        $userId = User::factory()->create()->id;
         $contract = Contract::factory()->create([
             'is_available' => false,
-            'user_id' => 1,
+            'user_id' => $userId,
             'expires_at' => Carbon::now()->subDays(10)
         ]);
         $this->checkForExpiry->execute();
         $contract->refresh();
-        $this->assertEquals(1, $contract->user_id);
+        $this->assertEquals($userId, $contract->user_id);
         $this->assertDatabaseCount('contracts', 1);
     }
 

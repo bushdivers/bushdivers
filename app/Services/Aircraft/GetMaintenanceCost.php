@@ -7,7 +7,7 @@ use App\Models\Enums\MaintenanceTypes;
 
 class GetMaintenanceCost
 {
-    public function execute($typeId, $aircraftSize): float
+    public function execute(int $typeId, $aircraftSize): float
     {
         $cost = 0.00;
         if ($typeId == MaintenanceTypes::Maintenance100hr) {

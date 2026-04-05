@@ -6,6 +6,7 @@ use App\Models\Airport;
 use App\Models\CommunityJob;
 use App\Models\CommunityJobContract;
 use App\Models\Contract;
+use App\Models\Enums\CargoType;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -70,7 +71,7 @@ class InjectJobToContractsTest extends TestCase
             'community_job_id' => $this->publishedMission->id,
             'dep_airport_id' => $aymr->id,
             'arr_airport_id' => $aymn->id,
-            'cargo_type' => 1,
+            'cargo_type' => CargoType::Cargo,
             'payload' => 1000,
             'cargo' => 'Medical Supplies'
         ]);
@@ -80,7 +81,7 @@ class InjectJobToContractsTest extends TestCase
             'community_job_id' => $this->unpublishedMission->id,
             'dep_airport_id' => $aymr->id,
             'arr_airport_id' => $aymn->id,
-            'cargo_type' => 1,
+            'cargo_type' => CargoType::Cargo,
             'payload' => 500,
             'cargo' => 'Emergency Supplies'
         ]);
@@ -177,7 +178,7 @@ class InjectJobToContractsTest extends TestCase
             'community_job_id' => $this->publishedMission->id,
             'dep_airport_id' => $this->publishedJob->dep_airport_id,
             'arr_airport_id' => $this->publishedJob->arr_airport_id,
-            'cargo_type' => 2,
+            'cargo_type' => CargoType::Passenger,
             'pax' => 15,
             'cargo' => 'Passengers'
         ]);
@@ -192,7 +193,7 @@ class InjectJobToContractsTest extends TestCase
 
         // Assert contract was created with passenger data
         $contract = Contract::first();
-        $this->assertEquals(2, $contract->cargo_type);
+        $this->assertEquals(CargoType::Passenger, $contract->cargo_type);
         $this->assertEquals(15, $contract->cargo_qty);
         $this->assertEquals('Passengers', $contract->cargo);
     }

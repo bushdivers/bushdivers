@@ -32,7 +32,6 @@ return new class extends Migration
     {
         Schema::table('flight_logs', function (Blueprint $table) {
             $table->dropForeign(['pirep_id']);
-            $table->dropIndex('flight_logs_pirep_id_foreign');
         });
         //
     }

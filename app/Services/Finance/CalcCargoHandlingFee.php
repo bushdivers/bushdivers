@@ -6,6 +6,7 @@ use App\Models\Aircraft;
 use App\Models\AirlineFees;
 use App\Models\Contract;
 use App\Models\Enums\AirlineTransactionTypes;
+use App\Models\Enums\CargoType;
 use App\Models\Enums\ContractType;
 use App\Models\Enums\TransactionTypes;
 use App\Models\Enums\WeightConsts;
@@ -44,9 +45,9 @@ class CalcCargoHandlingFee
         $weight = 0;
         foreach ($pc as $c) {
             $cargo = Contract::find($c->contract_cargo_id);
-            if ($cargo->cargo_type == ContractType::Cargo) {
+            if ($cargo->cargo_type == CargoType::Cargo) {
                 $weight += $cargo->cargo_qty;
-            } elseif ($cargo->cargo_type == ContractType::Passenger) {
+            } elseif ($cargo->cargo_type == CargoType::Passenger) {
                 $weight = $cargo->cargo_qty * WeightConsts::PERSON_WEIGHT;
             }
         }

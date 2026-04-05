@@ -8,6 +8,7 @@ use App\Models\Enums\PirepState;
 use App\Models\Pirep;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -19,8 +20,12 @@ class ShowHomeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function __invoke(Request $request): Response
+    public function __invoke(Request $request): \Illuminate\Http\RedirectResponse | Response
     {
+        if (Auth::check()) {
+            return redirect()->route('dashboard');
+        }
+
         $flights = Pirep::where('state', PirepState::ACCEPTED)->get();
         $flightCount = $flights->count();
         $hours = $flights->sum('flight_time');

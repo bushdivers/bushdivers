@@ -122,7 +122,7 @@ class ResetCareerTest extends TestCase
             'type' => 1
         ]);
         DB::table('user_accounts')->insert([
-            'user_id' => 200,
+            'user_id' => User::factory()->create()->id,
             'total' => 100.00,
             'type' => 1
         ]);

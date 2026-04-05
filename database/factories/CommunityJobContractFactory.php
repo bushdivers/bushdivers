@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Enums\CargoType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -19,7 +20,7 @@ class CommunityJobContractFactory extends Factory
         return [
             //'dep_airport_id' => 'AYMR',
             //'arr_airport_id' => 'AYMN',
-            'cargo_type' => 1,
+            'cargo_type' => CargoType::Cargo,
             'payload' => 100,
             'remaining_payload' => 100,
             'cargo' => fake()->words(1, true)

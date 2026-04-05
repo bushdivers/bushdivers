@@ -13,7 +13,7 @@ class DeleteMissionController extends Controller
      */
     public function __invoke(Request $request, $id)
     {
-        $mission = CommunityJob::find($id);
+        $mission = CommunityJob::findOrFail($id);
         $mission->delete();
         return redirect()->back()->with('success', 'Mission deleted successfully');
     }

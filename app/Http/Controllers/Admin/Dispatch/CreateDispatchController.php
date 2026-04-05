@@ -5,12 +5,11 @@ namespace App\Http\Controllers\Admin\Dispatch;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AdminAddDispatch;
 use App\Models\Airport;
-use App\Models\Enums\ContractType;
+use App\Models\CargoType;
+use App\Models\Enums\CargoType as CargoTypeEnum;
 use App\Services\Contracts\GenerateContractDetails;
 use App\Services\Contracts\StoreContracts;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 
 class CreateDispatchController extends Controller
 {
@@ -36,7 +35,7 @@ class CreateDispatchController extends Controller
         $origin = Airport::where('identifier', $request->source_airport_id)->firstOrFail();
         $destination = Airport::where('identifier', $request->destination_airport_id)->firstOrFail();
         $cargoQty = $request->cargo_qty;
-        $cargo = DB::table('cargo_types')->where('type', ContractType::Cargo)->inRandomOrder()->first();
+        $cargo = CargoType::where('type', CargoTypeEnum::Cargo)->inRandomOrder()->first();
 
         // Generate contract details
         $contractDetails = $this->generateContractDetails->execute($origin, $destination, ['name' => $cargo->text, 'type' => $cargo->type, 'qty' => $cargoQty]);

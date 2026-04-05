@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Airport;
 use App\Models\CommunityJob;
 use App\Models\CommunityJobContract;
+use App\Models\Enums\CargoType;
 use App\Services\Contracts\CreateCommunityContract;
 use Illuminate\Http\Request;
 
@@ -34,14 +35,19 @@ class AddJobController extends Controller
             return redirect()->back()->with(['error' => 'Destination airport not found.']);
         }
 
+        $cargo_type = CargoType::tryFrom($request->cargo_type);
+        if (!$cargo_type) {
+            return redirect()->back()->with(['error' => 'Invalid cargo type.']);
+        }
+
         $job = new CommunityJobContract();
         $job->dep_airport_id = $from->id;
         $job->arr_airport_id = $to->id;
-        $job->cargo_type = $request->cargo_type;
-        $job->payload = $request->cargo_type == 1 ? $request->qty : null;
-        $job->pax = $request->cargo_type == 2 ? $request->qty : null;
-        $job->remaining_payload = $request->cargo_type == 1 ? $request->qty : null;
-        $job->remaining_pax = $request->cargo_type == 2 ? $request->qty : null;
+        $job->cargo_type = $cargo_type;
+        $job->payload = $cargo_type == CargoType::Cargo ? $request->qty : null;
+        $job->pax = $cargo_type == CargoType::Passenger ? $request->qty : null;
+        $job->remaining_payload = $cargo_type == CargoType::Cargo ? $request->qty : null;
+        $job->remaining_pax = $cargo_type == CargoType::Passenger ? $request->qty : null;
         $job->cargo = $request->cargo;
         $job->is_recurring = $request->recurring;
         $job->community_job_id = $id;

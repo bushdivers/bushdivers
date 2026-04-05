@@ -3,8 +3,7 @@
 namespace App\Services\Contracts;
 
 use App\Models\Airport;
-use App\Models\ContractInfo;
-use App\Models\Enums\ContractType;
+use App\Models\Enums\CargoType;
 use App\Services\Airports\CalcBearingBetweenPoints;
 use App\Services\Airports\CalcDistanceBetweenPoints;
 use Carbon\Carbon;
@@ -43,7 +42,7 @@ class CreateCustomRoute
 
             // cargo info
             $cargo = [
-                'type' => ContractType::Cargo,
+                'type' => CargoType::Cargo,
                 'qty' => 300,
                 'name' => 'Second hand goods'
             ];

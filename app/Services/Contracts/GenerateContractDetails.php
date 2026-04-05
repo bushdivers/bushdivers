@@ -9,26 +9,14 @@ use Illuminate\Support\Facades\Log;
 
 class GenerateContractDetails
 {
-//    protected StoreContracts $storeContract;
-    protected GenerateContractCargo $generateContractCargo;
-    protected CalcContractValue $calcContractValue;
-    protected CalcDistanceBetweenPoints $calcDistanceBetweenPoints;
-    protected CalcBearingBetweenPoints $calcBearingBetweenPoints;
 
     public function __construct(
-//        StoreContracts $storeContract,
-        GenerateContractCargo $generateContractCargo,
-        CalcContractValue $calcContractValue,
-        CalcDistanceBetweenPoints $calcDistanceBetweenPoints,
-        CalcBearingBetweenPoints $calcBearingBetweenPoints
+        protected GenerateContractCargo $generateContractCargo,
+        protected CalcContractValue $calcContractValue,
+        protected CalcDistanceBetweenPoints $calcDistanceBetweenPoints,
+        protected CalcBearingBetweenPoints $calcBearingBetweenPoints
     )
-    {
-//        $this->storeContract = $storeContract;
-        $this->generateContractCargo = $generateContractCargo;
-        $this->calcContractValue = $calcContractValue;
-        $this->calcDistanceBetweenPoints = $calcDistanceBetweenPoints;
-        $this->calcBearingBetweenPoints = $calcBearingBetweenPoints;
-    }
+    { }
 
     public function execute($origin, $airport, $preDefinedCargo = null): array
     {

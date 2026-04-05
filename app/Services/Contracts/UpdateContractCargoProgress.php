@@ -7,6 +7,7 @@ use App\Models\CommunityJob;
 use App\Models\CommunityJobContract;
 use App\Models\Contract;
 use App\Models\ContractCargo;
+use App\Models\Enums\CargoType;
 use App\Models\Pirep;
 use App\Services\Airports\UpdateFuelAtAirport;
 use Carbon\Carbon;
@@ -39,7 +40,7 @@ class UpdateContractCargoProgress
                 $communityJobCargo = CommunityJobContract::find($contractCargo->community_job_contract_id);
                 $communityJob = CommunityJob::find($communityJobCargo->community_job_id);
                 if (!$communityJob->is_completed) {
-                    if ($communityJobCargo->cargo_type == 1) {
+                    if ($communityJobCargo->cargo_type == CargoType::Cargo) {
                         $communityJobCargo->remaining_payload = $communityJobCargo->remaining_payload - $contractCargo->cargo_qty;
                         if ($communityJobCargo->remaining_payload == 0) {
                             $communityJobCargo->is_completed = true;

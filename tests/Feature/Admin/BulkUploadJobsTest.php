@@ -5,6 +5,7 @@ namespace Tests\Feature\Admin;
 use App\Models\Airport;
 use App\Models\CommunityJob;
 use App\Models\CommunityJobContract;
+use App\Models\Enums\CargoType;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -65,12 +66,12 @@ class BulkUploadJobsTest extends TestCase
         $job1 = CommunityJobContract::where('cargo', 'Electronics')->first();
         $this->assertEquals($this->departureAirport->id, $job1->dep_airport_id);
         $this->assertEquals($this->arrivalAirport->id, $job1->arr_airport_id);
-        $this->assertEquals(1, $job1->cargo_type);
+        $this->assertEquals(CargoType::Cargo, $job1->cargo_type);
         $this->assertEquals(500, $job1->payload);
         $this->assertFalse($job1->is_recurring);
 
         $job2 = CommunityJobContract::where('cargo', 'Passengers')->first();
-        $this->assertEquals(2, $job2->cargo_type);
+        $this->assertEquals(CargoType::Passenger, $job2->cargo_type);
         $this->assertEquals(120, $job2->pax);
         $this->assertTrue($job2->is_recurring);
     }

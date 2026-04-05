@@ -6,6 +6,7 @@ use App\Models\Airport;
 use App\Models\CommunityJob;
 use App\Models\CommunityJobContract;
 use App\Models\Contract;
+use App\Models\Enums\CargoType;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -67,7 +68,7 @@ class CommunityMissionJobTest extends TestCase
         $jobData = [
             'departure' => 'AYMR',
             'destination' => 'AYMN',
-            'cargo_type' => 1,
+            'cargo_type' => CargoType::Cargo->value,
             'cargo' => 'Medical Supplies',
             'qty' => 1000,
             'recurring' => 0,
@@ -94,7 +95,7 @@ class CommunityMissionJobTest extends TestCase
         $job = CommunityJobContract::first();
         $this->assertEquals($this->aymr->id, $job->dep_airport_id);
         $this->assertEquals($this->aymn->id, $job->arr_airport_id);
-        $this->assertEquals(1, $job->cargo_type);
+        $this->assertEquals(CargoType::Cargo, $job->cargo_type);
         $this->assertEquals('Medical Supplies', $job->cargo);
         $this->assertEquals(1000, $job->payload);
     }
@@ -104,7 +105,7 @@ class CommunityMissionJobTest extends TestCase
         $jobData = [
             'departure' => 'AYMR',
             'destination' => 'AYMN',
-            'cargo_type' => 1,
+            'cargo_type' => CargoType::Cargo->value,
             'cargo' => 'Medical Supplies',
             'qty' => 1000,
             'recurring' => 0,
@@ -137,7 +138,7 @@ class CommunityMissionJobTest extends TestCase
         $this->assertEquals($this->aymr->id, $contract->dep_airport_id);
         $this->assertEquals($this->aymn->id, $contract->arr_airport_id);
         $this->assertEquals('Medical Supplies', $contract->cargo);
-        $this->assertEquals(1, $contract->cargo_type);
+        $this->assertEquals(CargoType::Cargo, $contract->cargo_type);
         $this->assertEquals(1000, $contract->cargo_qty);
         $this->assertEquals($job->id, $contract->community_job_contract_id);
     }
@@ -147,7 +148,7 @@ class CommunityMissionJobTest extends TestCase
         $jobData = [
             'departure' => 'AYMR',
             'destination' => 'AYMN',
-            'cargo_type' => 1,
+            'cargo_type' => CargoType::Cargo->value,
             'cargo' => 'Medical Supplies',
             'qty' => 1000,
             'recurring' => 0,
@@ -176,7 +177,7 @@ class CommunityMissionJobTest extends TestCase
         $jobData = [
             'departure' => 'AYMR',
             'destination' => 'AYMN',
-            'cargo_type' => 2,
+            'cargo_type' => CargoType::Passenger->value,
             'cargo' => 'Passengers',
             'qty' => 25,
             'recurring' => 1,
@@ -197,13 +198,13 @@ class CommunityMissionJobTest extends TestCase
 
         // Verify passenger job details
         $job = CommunityJobContract::first();
-        $this->assertEquals(2, $job->cargo_type);
+        $this->assertEquals(CargoType::Passenger, $job->cargo_type);
         $this->assertEquals(25, $job->pax);
         $this->assertEquals(true, $job->is_recurring);
 
         // Verify passenger contract details
         $contract = Contract::first();
-        $this->assertEquals(2, $contract->cargo_type);
+        $this->assertEquals(CargoType::Passenger, $contract->cargo_type);
         $this->assertEquals(25, $contract->cargo_qty);
         $this->assertEquals('Passengers', $contract->cargo);
     }

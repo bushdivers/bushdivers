@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Contracts;
 
 use App\Http\Controllers\Controller;
 use App\Models\Contract;
+use App\Models\Enums\CargoType;
 use App\Services\Contracts\StoreContracts;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -55,7 +56,7 @@ class SplitContractController extends Controller
         $contract->expires_at = $existingContract->expires_at;
         $contract->is_available = false;
         $contract->is_shared = $existingContract->is_shared;
-        if ($existingContract->cargo_type == 1) {
+        if ($existingContract->cargo_type == CargoType::Cargo) {
             $existingContract->payload = $newQty;
             $contract->payload = $remainingQty;
         } else {

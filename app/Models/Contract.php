@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Enums\CargoType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -9,7 +10,11 @@ class Contract extends Model
 {
     use HasFactory;
 
-    protected $casts = ['expires_at', 'completed_at'];
+    protected $casts = [
+        'expires_at' => 'datetime',
+        'completed_at' => 'datetime',
+        'cargo_type' => CargoType::class
+    ];
 
     protected $fillable = [
         'contract_value',
