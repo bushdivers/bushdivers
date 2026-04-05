@@ -25,7 +25,7 @@ class AircraftFactory extends Factory
     {
         return [
             'current_airport_id' => fn() => Airport::factory()->create(['name' => 'Factory Airport', 'is_hub' => true]),
-            'registration' => 'P2-BDA',
+            'registration' => $this->faker->unique()->bothify('P2-???'),
             'fuel_onboard' => 26.8,
             'state' => 1,
             'status' => 1,

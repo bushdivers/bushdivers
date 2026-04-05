@@ -16,7 +16,10 @@ class Aircraft extends Model
     ];
 
     protected $fillable = [
-        'owner_id'
+        'owner_id',
+        'fleet_id',
+        'current_airport_id',
+        'wear'
     ];
 
     protected $casts = [
@@ -57,6 +60,11 @@ class Aircraft extends Model
     public function maintenance()
     {
         return $this->hasMany(MaintenanceLog::class)->orderBy('created_at', 'desc');
+    }
+
+    public function setWearAttribute($value)
+    {
+        $this->attributes['wear'] = max(0, min(100, $value));
     }
 
     public function getMaintenanceStatusAttribute()

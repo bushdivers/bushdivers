@@ -3,6 +3,7 @@
 namespace App\Services\Pireps;
 
 use App\Models\FlightLog;
+use App\Models\Pirep;
 use App\Services\Airports\CalcDistanceBetweenPoints;
 
 class CalculateTotalFlightDistance
@@ -14,13 +15,13 @@ class CalculateTotalFlightDistance
         $this->calcDistanceBetweenPoints = $calcDistanceBetweenPoints;
     }
 
-    public function execute($pirep): float
+    public function execute(Pirep $pirep): float
     {
         $distance = 0;
         $first = true;
 
         // find lat/lon for departure
-        $pirep->load('depAirport');
+        $pirep->loadMissing('depAirport');
         $dep = $pirep->depAirport;
         $startLat = $dep->lat;
         $startLon = $dep->lon;

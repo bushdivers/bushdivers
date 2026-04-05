@@ -42,7 +42,7 @@ class UpdateAircraftFerryTest extends TestCase
             'fleet_id' => $fleet->id,
             'ferry_distance' => 100
         ]);
-        $this->updateAircraftFerry->execute($aircraft->id, $airport->identifier);
+        $this->updateAircraftFerry->execute($aircraft, $airport);
         $aircraft->refresh();
         $this->assertEquals(0, $aircraft->is_ferry);
         $this->assertNull($aircraft->ferry_user_id);
@@ -64,7 +64,7 @@ class UpdateAircraftFerryTest extends TestCase
             'fleet_id' => $fleet->id,
             'ferry_distance' => 100
         ]);
-        $this->updateAircraftFerry->execute($aircraft->id, $airport->identifier);
+        $this->updateAircraftFerry->execute($aircraft, $airport);
         $this->assertDatabaseHas('user_accounts', [
                 'user_id' => $this->user->id,
                 'total' => 2160
@@ -91,7 +91,7 @@ class UpdateAircraftFerryTest extends TestCase
             'fleet_id' => $fleet->id
         ]);
 
-        $this->updateAircraftFerry->execute($aircraft->id, $airport2->identifier);
+        $this->updateAircraftFerry->execute($aircraft, $airport2);
         $aircraft->refresh();
         $this->assertEquals(1, $aircraft->is_ferry);
         $this->assertNotNull($aircraft->ferry_user_id);

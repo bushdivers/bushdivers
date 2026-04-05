@@ -23,7 +23,6 @@ use Illuminate\Support\Facades\DB;
 class PerformMaintenanceController extends Controller
 {
     protected ResetAircraftMaintenanceTimes $resetAircraftMaintenanceTimes;
-    protected UpdateAircraftCondition $updateAircraftCondition;
     protected AddMaintenanceLog $addMaintenanceLog;
     protected AddAirlineTransaction $addAirlineTransaction;
     protected AddUserTransaction $addUserTransaction;
@@ -34,8 +33,7 @@ class PerformMaintenanceController extends Controller
         AddMaintenanceLog $addMaintenanceLog,
         AddAirlineTransaction $addAirlineTransaction,
         AddUserTransaction $addUserTransaction,
-        GetMaintenanceCost $getMaintenanceCost,
-        UpdateAircraftCondition $updateAircraftCondition
+        GetMaintenanceCost $getMaintenanceCost
     )
     {
         $this->resetAircraftMaintenanceTimes = $resetAircraftMaintenanceTimes;
@@ -43,7 +41,6 @@ class PerformMaintenanceController extends Controller
         $this->addAirlineTransaction = $addAirlineTransaction;
         $this->addUserTransaction = $addUserTransaction;
         $this->getMaintenanceCost = $getMaintenanceCost;
-        $this->updateAircraftCondition = $updateAircraftCondition;
     }
 
     /**
@@ -65,7 +62,7 @@ class PerformMaintenanceController extends Controller
         // get cost
         $cost = $this->getMaintenanceCost->execute($request->type, $aircraft->fleet->size);
 
-        if ($request->type == 4) {
+        if ($request->type == MaintenanceTypes::GeneralMaintenance) {
             if ($aircraft->wear < 70 && $aircraft->wear >= 45) {
                 $cost = $cost * 1.75;
             }
@@ -74,7 +71,7 @@ class PerformMaintenanceController extends Controller
             }
         }
 
-        if ($request->type == 5) {
+        if ($request->type == MaintenanceTypes::EngineMaintenance) {
             if ($engine->wear < 70 && $engine->wear >= 45) {
                 $cost = $cost * 1.75;
             }
@@ -100,8 +97,11 @@ class PerformMaintenanceController extends Controller
                 return redirect()->back()->with(['error' => 'Insufficient funds to perform maintenance']);
             }
         }
-        if ($request->type == 4 || $request->type == 5) {
-            $this->updateAircraftCondition->execute($request->aircraft, $request->type, 100, $request->engine);
+        if ($request->type == MaintenanceTypes::GeneralMaintenance) {
+            $aircraft->update(['wear' => 100]);
+        }
+        else if ($request->type == MaintenanceTypes::EngineMaintenance) {
+            $aircraft->engines()->update(['wear' => 100]);
         } else {
             // process maintenance
             $this->resetAircraftMaintenanceTimes->execute($request->aircraft, $request->type, $request->engine);

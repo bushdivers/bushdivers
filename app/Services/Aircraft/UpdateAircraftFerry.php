@@ -16,11 +16,9 @@ class UpdateAircraftFerry
         $this->addUserTransaction = $addUserTransaction;
     }
 
-    public function execute($aircraftId, string $airportId)
+    public function execute(Aircraft $ac, Airport $hub)
     {
-        // TODO: swap to airport id rather than identifier - relies on pirep migration
-        $ac = Aircraft::with('fleet')->find($aircraftId);
-        $hub = Airport::where('identifier', $airportId)->first();
+
         if ($ac->hub_id === $hub->id && $ac->is_ferry) {
             // pay user
             $sizeMultiplier = match ($ac->fleet->size) {

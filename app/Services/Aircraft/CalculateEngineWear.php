@@ -2,9 +2,11 @@
 
 namespace App\Services\Aircraft;
 
+use App\Models\AircraftEngine;
+
 class CalculateEngineWear
 {
-    public function execute($engine)
+    public function execute(AircraftEngine $engine)
     {
         $wearMultiplier = 0.5;
         if ($engine->wear < 75 && $engine->wear >= 60) {

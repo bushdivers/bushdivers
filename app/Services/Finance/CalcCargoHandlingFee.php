@@ -9,6 +9,7 @@ use App\Models\Enums\AirlineTransactionTypes;
 use App\Models\Enums\ContractType;
 use App\Models\Enums\TransactionTypes;
 use App\Models\Enums\WeightConsts;
+use App\Models\Pirep;
 use App\Models\PirepCargo;
 use App\Models\Rental;
 
@@ -25,9 +26,9 @@ class CalcCargoHandlingFee
         $this->addUserTransaction = $addUserTransaction;
     }
 
-    public function execute($pirep)
+    public function execute(Pirep $pirep)
     {
-        $pirep->load('arrAirport');
+        $pirep->loadMissing('arrAirport');
         $airport = $pirep->arrAirport;
         if ($airport->size == 0) {
             return;

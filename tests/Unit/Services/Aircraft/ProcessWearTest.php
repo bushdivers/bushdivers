@@ -6,8 +6,6 @@ use App\Models\Aircraft;
 use App\Models\AircraftEngine;
 use App\Models\Fleet;
 use App\Services\Aircraft\ProcessAircraftCondition;
-use App\Services\Aircraft\UpdateAircraftCondition;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -15,9 +13,9 @@ class ProcessWearTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected Model $aircraft;
-    protected Model $aircraftEngine;
-    protected Model $fleet;
+    protected Aircraft $aircraft;
+    protected AircraftEngine $aircraftEngine;
+    protected Fleet $fleet;
     protected ProcessAircraftCondition $processAircraftCondition;
 
     protected function setUp(): void
@@ -44,7 +42,7 @@ class ProcessWearTest extends TestCase
             'wear' => 100
         ]);
 
-        $this->processAircraftCondition->execute($aircraft->id);
+        $this->processAircraftCondition->execute($aircraft);
 
         $aircraft->refresh();
         $aircraftEngine->refresh();

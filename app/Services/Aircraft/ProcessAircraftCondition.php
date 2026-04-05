@@ -10,19 +10,16 @@ class ProcessAircraftCondition
 {
     protected CalculateEngineWear $calculateEngineWear;
     protected CalculateAircraftWear $calculateAircraftWear;
-    protected UpdateAircraftCondition $updateAircraftCondition;
 
-    public function __construct(CalculateAircraftWear $calculateAircraftWear, CalculateEngineWear $calculateEngineWear, UpdateAircraftCondition $updateAircraftCondition)
+    public function __construct(CalculateAircraftWear $calculateAircraftWear, CalculateEngineWear $calculateEngineWear)
     {
         $this->calculateEngineWear = $calculateEngineWear;
         $this->calculateAircraftWear = $calculateAircraftWear;
-        $this->updateAircraftCondition = $updateAircraftCondition;
     }
 
-    public function execute($aircraftId, $landingRate = 0)
+    public function execute(Aircraft $aircraft, $landingRate = 0)
     {
-        $aircraft = Aircraft::find($aircraftId);
-        $engines = AircraftEngine::where('aircraft_id', $aircraftId)->get();
+        $aircraft->loadMissing('engines');
 
         $aircraftWear = $this->calculateAircraftWear->execute($aircraft);
         if ($landingRate >= 200 && $landingRate < 350) {
@@ -30,11 +27,14 @@ class ProcessAircraftCondition
         } elseif ($landingRate >= 350) {
             $aircraftWear = round($aircraftWear * 2.5);
         }
-        $this->updateAircraftCondition->execute($aircraftId, MaintenanceTypes::GeneralMaintenance, $aircraft->wear - $aircraftWear);
 
-        foreach ($engines as $engine) {
+        $aircraft->wear -= $aircraftWear;
+        $aircraft->save();
+
+        foreach ($aircraft->engines as $engine) {
             $engineWear = $this->calculateEngineWear->execute($engine);
-            $this->updateAircraftCondition->execute($aircraftId, MaintenanceTypes::EngineMaintenance, $engine->wear - $engineWear, $engine->id);
+            $engine->wear -= $engineWear;
+            $engine->save();
         }
     }
 }

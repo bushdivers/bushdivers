@@ -18,7 +18,6 @@ use App\Models\Pirep;
 use App\Models\PirepCargo;
 use App\Models\User;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
@@ -30,18 +29,17 @@ class SubmitPirepTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected Model $user;
-    protected Model $pirep;
-    protected Model $pirepCargo;
-    protected Model $contract;
-    protected Model $fleet;
-    protected Model $aircraft;
-    protected Model $booking;
-    protected Model $aircraftEngine;
-    protected Model $aymr;
-    protected Model $aymn;
-    protected Model $wavg;
-    protected Model $ayte;
+    protected User $user;
+    protected Pirep $pirep;
+    protected PirepCargo $pirepCargo;
+    protected Contract $contract;
+    protected Fleet $fleet;
+    protected Aircraft $aircraft;
+    protected AircraftEngine $aircraftEngine;
+    protected Airport $aymr;
+    protected Airport $aymn;
+    protected Airport $wavg;
+    protected Airport $ayte;
 
     public function setUp(): void
     {

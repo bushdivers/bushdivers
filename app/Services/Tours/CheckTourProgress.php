@@ -21,7 +21,7 @@ class CheckTourProgress
     public function execute(Pirep $pirep)
     {
         // get tour
-        $pirep->load('arrAirport');
+        $pirep->loadMissing('arrAirport');
         $tour = Tour::find($pirep->tour_id);
         $tourUser = TourUser::where('user_id', $pirep->user_id)->where('tour_id', $pirep->tour_id)->first();
 

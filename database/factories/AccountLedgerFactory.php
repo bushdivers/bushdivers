@@ -22,7 +22,8 @@ class AccountLedgerFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'transaction_type' => 1,
+            'total' => 0,
         ];
     }
 }
