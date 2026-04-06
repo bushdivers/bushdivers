@@ -3,19 +3,19 @@
 namespace App\Services\Contracts;
 
 use App\Models\Airport;
+use App\Models\CommunityJobContract;
 use App\Models\Contract;
-use App\Models\ContractCargo;
-use App\Models\ContractInfo;
 use App\Models\Enums\ContractType;
-use Carbon\Carbon;
+use App\Models\User;
 
 class StoreContracts
 {
-    public function execute($data, $isAvailable = true, $isCustom = false, $userId = null, $type = 1, $airport = null, $isShared = false, $jobId = null)
+    public function execute($data, $isAvailable = true, $isCustom = false, ?User $user = null, ContractType $type = ContractType::General, ?Airport $airport = null, $isShared = false, ?CommunityJobContract $jobId = null)
     {
         foreach ($data as $contractInfo) {
-            if (!$contractInfo)
+            if (!$contractInfo) {
                 continue;
+            }
 
             // TODO: migrate to a more rigid structure
             $depAirport = $contractInfo['departure'] instanceof Airport ? $contractInfo['departure'] : Airport::where('identifier', $contractInfo['departure'])->first();
@@ -39,18 +39,18 @@ class StoreContracts
             $contract->is_available = $isAvailable;
             $contract->hub_airport_id = $airport;
             $contract->is_shared = $isShared;
-            $contract->community_job_contract_id = $jobId;
+            $contract->community_job_contract_id = $jobId->id ?? null;
             if ($contractInfo['cargo_type'] == 1) {
                 $contract->payload = $contractInfo['cargo_qty'];
             } else {
                 $contract->pax = $contractInfo['cargo_qty'];
             }
             if ($isCustom) {
-                $contract->user_id = $userId;
+                $contract->user_id = $user->id ?? null;
                 $contract->is_custom = true;
             }
             if ($contractInfo['is_fuel']) {
-                $contract->user_id = $userId;
+                $contract->user_id = $user->id ?? null;
                 $contract->is_fuel = true;
                 $contract->fuel_qty = $contractInfo['fuel_qty'];
                 $contract->fuel_type = $contractInfo['fuel_type'];

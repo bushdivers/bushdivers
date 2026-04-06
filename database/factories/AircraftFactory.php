@@ -24,7 +24,7 @@ class AircraftFactory extends Factory
     public function definition()
     {
         return [
-            'current_airport_id' => fn() => Airport::factory()->create(['name' => 'Factory Airport', 'is_hub' => true]),
+            'current_airport_id' => fn () => Airport::factory()->create(['name' => 'Factory Airport', 'is_hub' => true]),
             'registration' => $this->faker->unique()->bothify('P2-???'),
             'fuel_onboard' => 26.8,
             'state' => 1,
@@ -40,7 +40,7 @@ class AircraftFactory extends Factory
 
     public function atAirport(Airport $airport): static
     {
-        return $this->state(fn() => [
+        return $this->state(fn () => [
             'current_airport_id' => $airport->id,
             'hub_id' => $airport->id,
         ]);
@@ -48,7 +48,7 @@ class AircraftFactory extends Factory
 
     public function hub(Airport $airport): static
     {
-        return $this->state(fn() => [
+        return $this->state(fn () => [
             'hub_id' => $airport->id,
         ]);
     }

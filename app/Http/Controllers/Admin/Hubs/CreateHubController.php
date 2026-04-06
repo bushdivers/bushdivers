@@ -7,6 +7,7 @@ use App\Models\Aircraft;
 use App\Models\Airport;
 use App\Models\CommunityJob;
 use App\Models\Enums\AirlineTransactionTypes;
+use App\Models\Enums\ContractType;
 use App\Models\Fleet;
 use App\Services\Aircraft\GenerateAircraftDetails;
 use App\Services\Airports\CalcCostOfHub;
@@ -34,8 +35,7 @@ class CreateHubController extends Controller
         CalcDistanceBetweenPoints $calcDistanceBetweenPoints,
         CalcCostOfHub $calcCostOfHub,
         GetAirlineBalance $getAirlineBalance
-    )
-    {
+    ) {
         $this->generateAircraftDetails = $generateAircraftDetails;
         $this->generateContractDetails = $generateContractDetails;
         $this->storeContracts = $storeContracts;
@@ -93,26 +93,26 @@ class CreateHubController extends Controller
         $originAirport = $allAirports->where('size', '>=', 3)->random(1);
         $materialCargo = ['name' => 'Building Materials - '.$airport->identifier, 'type' => 1, 'qty' => 30000];
         $materialContract = $this->generateContractDetails->execute($originAirport[0], $airport, $materialCargo);
-        $this->storeContracts->execute([$materialContract], false, false, null, 5, $airport->identifier, true);
+        $this->storeContracts->execute([$materialContract], false, false, null, ContractType::Hub, $airport, true);
         $this->addAirlineTransaction->execute(AirlineTransactionTypes::GeneralExpenditure, 60000, 'Hub Building Materials '.$airport->identifier, null, 'debit');
 
         // supplies 15000
         $originAirport = $allAirports->where('size', '>=', 3)->random(1);
         $supplyCargo = ['name' => 'Supplies - '.$airport->identifier, 'type' => 1, 'qty' => 15000];
         $supplyContract = $this->generateContractDetails->execute($originAirport[0], $airport, $supplyCargo);
-        $this->storeContracts->execute([$supplyContract], false, false, null, 5, $airport->identifier, true);
+        $this->storeContracts->execute([$supplyContract], false, false, null, ContractType::Hub, $airport, true);
         $this->addAirlineTransaction->execute(AirlineTransactionTypes::GeneralExpenditure, 30000, 'Hub Supplies '.$airport->identifier, null, 'debit');
         // contractors 10
         $originAirport = $allAirports->where('size', '>=', 3)->random(1);
         $contractorCargo = ['name' => 'Contractors - '.$airport->identifier, 'type' => 2, 'qty' => 10];
         $contractorContract = $this->generateContractDetails->execute($originAirport[0], $airport, $contractorCargo);
-        $this->storeContracts->execute([$contractorContract], false, false, null, 5, $airport->identifier, true);
+        $this->storeContracts->execute([$contractorContract], false, false, null, ContractType::Hub, $airport, true);
         $this->addAirlineTransaction->execute(AirlineTransactionTypes::GeneralExpenditure, 30000, 'Hub Contractors '.$airport->identifier, null, 'debit');
         // staff 3
         $originAirport = $allAirports->where('size', '>=', 3)->random(1);
         $staffCargo = ['name' => 'Hub Staff - '.$airport->identifier, 'type' => 2, 'qty' => 3];
         $staffContract = $this->generateContractDetails->execute($originAirport[0], $airport, $staffCargo);
-        $this->storeContracts->execute([$staffContract], false, false, null, 5, $airport->identifier, true);
+        $this->storeContracts->execute([$staffContract], false, false, null, ContractType::Hub, $airport, true);
 
         return redirect()->back()->with('success', 'Hub created successfully');
     }

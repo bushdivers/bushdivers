@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Enums\CargoType;
+use App\Models\Enums\ContractType as ContractTypEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -13,6 +14,7 @@ class Contract extends Model
     protected $casts = [
         'expires_at' => 'datetime',
         'completed_at' => 'datetime',
+        'contract_type_id' => ContractTypEnum::class,
         'cargo_type' => CargoType::class
     ];
 
@@ -28,7 +30,7 @@ class Contract extends Model
 
     public function type()
     {
-        return $this->belongsTo(ContractType::class);
+        return $this->belongsTo(ContractType::class, 'contract_type_id');
     }
 
     public function depAirport()

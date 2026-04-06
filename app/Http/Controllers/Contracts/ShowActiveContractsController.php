@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Contracts;
 
 use App\Http\Controllers\Controller;
 use App\Models\Contract;
+use App\Models\Enums\ContractType;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -20,32 +21,32 @@ class ShowActiveContractsController extends Controller
      */
     public function __invoke(Request $request): Response
     {
-//        $customContracts = Contract::with('depAirport', 'arrAirport')
-//            ->where('is_completed', false)
-//            ->where('is_available', false)
-//            ->where('user_id', Auth::user()->id)
-//            ->orderBy('dep_airport_id', 'asc')
-//            ->orderBy('heading', 'asc')
-//            ->get();
+        //        $customContracts = Contract::with('depAirport', 'arrAirport')
+        //            ->where('is_completed', false)
+        //            ->where('is_available', false)
+        //            ->where('user_id', Auth::user()->id)
+        //            ->orderBy('dep_airport_id', 'asc')
+        //            ->orderBy('heading', 'asc')
+        //            ->get();
 
         $contracts = Contract::with('depAirport', 'arrAirport', 'currentAirport')
             ->where('is_completed', false)
             ->where('is_available', false)
             ->where('is_custom', false)
-            ->where('contract_type_id', 1)
+            ->where('contract_type_id', ContractType::General)
 //            ->where('user_id', null)
             ->orderBy('dep_airport_id', 'asc')
             ->orderBy('heading', 'asc')
             ->get();
 
-//        $community = Contract::with('depAirport', 'arrAirport')
-//            ->where('is_completed', false)
-//            ->where('is_available', false)
-//            ->where('contract_type_id', 3)
-//            ->where('user_id', null)
-//            ->orderBy('dep_airport_id', 'asc')
-//            ->orderBy('heading', 'asc')
-//            ->get();
+        //        $community = Contract::with('depAirport', 'arrAirport')
+        //            ->where('is_completed', false)
+        //            ->where('is_available', false)
+        //            ->where('contract_type_id', 3)
+        //            ->where('user_id', null)
+        //            ->orderBy('dep_airport_id', 'asc')
+        //            ->orderBy('heading', 'asc')
+        //            ->get();
 
         $user = User::find(Auth::user()->id);
         $location = $user->location;

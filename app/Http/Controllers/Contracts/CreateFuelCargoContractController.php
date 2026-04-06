@@ -25,7 +25,7 @@ class CreateFuelCargoContractController extends Controller
             if ($airport->is_hub) {
                 return redirect()->back()->with(['error' => 'Cannot create fuel cargo contract for a hub']);
             }
-            $this->createFuelContract->execute(Auth::user()->location->identifier, strtoupper($request->destination), $request->qty, $request->fuel_type, $request->weight, Auth::user()->id);
+            $this->createFuelContract->execute(Auth::user()->location, $airport, $request->qty, $request->fuel_type, $request->weight, Auth::user());
             return redirect()->back()->with(['success' => 'Fuel cargo contract created']);
         } catch (ModelNotFoundException $exception) {
             return redirect()->back()->with(['error' => 'Airport not found']);

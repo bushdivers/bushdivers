@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Contracts;
 use App\Http\Controllers\Controller;
 use App\Models\Contract;
 use App\Models\Enums\CargoType;
-use App\Services\Contracts\StoreContracts;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -43,7 +42,7 @@ class SplitContractController extends Controller
         $existingContract->contract_value = $newValue;
 
         $contract = new Contract();
-        $contract->contract_type_id = 1;
+        $contract->contract_type_id = $existingContract->contract_type_id;
         $contract->dep_airport_id = $existingContract->dep_airport_id;
         $contract->current_airport_id = $existingContract->current_airport_id;
         $contract->arr_airport_id = $existingContract->arr_airport_id;

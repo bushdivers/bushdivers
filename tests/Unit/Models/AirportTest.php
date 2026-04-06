@@ -111,7 +111,7 @@ class AirportTest extends TestCase
     }
 
 
-    function test_scopes()
+    public function test_scopes()
     {
         $user = User::factory()->create();
 

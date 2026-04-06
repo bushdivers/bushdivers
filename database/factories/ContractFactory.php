@@ -4,8 +4,8 @@ namespace Database\Factories;
 
 use App\Models\Airport;
 use App\Models\Contract;
-use App\Models\ContractType;
 use App\Models\Enums\CargoType;
+use App\Models\Enums\ContractType;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -33,7 +33,7 @@ class ContractFactory extends Factory
                 return $attributes['dep_airport_id'];
             },
             'arr_airport_id' => $dest->id ?? Airport::factory()->create()->id,
-            'contract_type_id' => ContractType::firstOrCreate(['contract_type' => 'Passenger'])->id,
+            'contract_type_id' => ContractType::General,
             'distance' => 54,
             'heading' => 45,
             'payload' => 100,
@@ -43,5 +43,5 @@ class ContractFactory extends Factory
             'cargo_qty' => 100,
             'expires_at' => Carbon::now()->addDays(5)
         ];
-     }
+    }
 }

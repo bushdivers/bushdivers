@@ -6,7 +6,6 @@ use App\Models\Airport;
 use App\Models\CommunityJob;
 use App\Models\CommunityJobContract;
 use App\Models\Contract;
-use App\Models\ContractCargo;
 use App\Models\Enums\CargoType;
 use App\Models\Pirep;
 use App\Services\Airports\UpdateFuelAtAirport;

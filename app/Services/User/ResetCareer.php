@@ -20,7 +20,7 @@ class ResetCareer
         $this->addUserTransaction = $addUserTransaction;
     }
 
-    public function execute(int $userId, ): void
+    public function execute(int $userId): void
     {
         // user loan reset
         $user = User::find($userId);

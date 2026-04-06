@@ -7,7 +7,6 @@ use App\Models\Contract;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Laravel\Sanctum\Sanctum;
 use Ramsey\Uuid\Uuid;
 use Tests\TestCase;
@@ -151,7 +150,7 @@ class SplitContractTest extends TestCase
         $response->assertJson(['message' => 'Contract is in progress']);
     }
 
-    function test_only_split_own_contracts()
+    public function test_only_split_own_contracts()
     {
         $otherUser = User::factory()->create();
         $data = [

@@ -11,7 +11,6 @@ use App\Services\Contracts\CreateFuelContract;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
-use Tests\Unit\Services\Contract\CalculateContractValueTest;
 
 class CreateFuelCargoContractTest extends TestCase
 {
@@ -57,7 +56,7 @@ class CreateFuelCargoContractTest extends TestCase
      */
     public function test_contract_created(): void
     {
-        $this->createFuelContract->execute($this->airport1->identifier, $this->airport2->identifier, 10, 1, 50, $this->user->id);
+        $this->createFuelContract->execute($this->airport1, $this->airport2, 10, 1, 50, $this->user);
         $this->assertDatabaseHas('contracts', [
             'dep_airport_id' => $this->airport1->id,
             'arr_airport_id' => $this->airport2->id,
@@ -72,7 +71,7 @@ class CreateFuelCargoContractTest extends TestCase
         $distance = $this->calcDistanceBetweenPoints->execute($this->airport1->lat, $this->airport1->lon, $this->airport2->lat, $this->airport2->lon);
         $normalValue = $this->calcContractValue->execute(CargoType::Cargo, 3500, $distance);
         $fuelValue = round(($normalValue / 2) + 1750);
-        $this->createFuelContract->execute($this->airport1->identifier, $this->airport2->identifier, 10, 1, 3500, $this->user->id);
+        $this->createFuelContract->execute($this->airport1, $this->airport2, 10, 1, 3500, $this->user);
         $this->assertDatabaseHas('contracts', [
             'dep_airport_id' => $this->airport1->id,
             'arr_airport_id' => $this->airport2->id,
@@ -85,7 +84,7 @@ class CreateFuelCargoContractTest extends TestCase
 
     public function test_fuel_decremented_from_airport(): void
     {
-        $this->createFuelContract->execute($this->airport1->identifier, $this->airport2->identifier, 10, 1, 50, $this->user->id);
+        $this->createFuelContract->execute($this->airport1, $this->airport2, 10, 1, 50, $this->user);
         $this->assertDatabaseHas('airports', [
             'identifier' => $this->airport1->identifier,
             'avgas_qty' => 90

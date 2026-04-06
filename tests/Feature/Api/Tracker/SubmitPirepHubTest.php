@@ -8,6 +8,7 @@ use App\Models\AirlineFees;
 use App\Models\Airport;
 use App\Models\Contract;
 use App\Models\Enums\AirlineTransactionTypes;
+use App\Models\Enums\ContractType;
 use App\Models\Fleet;
 use App\Models\FlightLog;
 use App\Models\Pirep;
@@ -83,7 +84,7 @@ class SubmitPirepHubTest extends TestCase
 
         $this->contract = Contract::factory()->create([
             'contract_value' => 250.00,
-            'contract_type_id' => 5,
+            'contract_type_id' => ContractType::Hub,
             'dep_airport_id' => $aymr->id,
             'arr_airport_id' => $aymn->id,
             'current_airport_id' => $aymr->id,

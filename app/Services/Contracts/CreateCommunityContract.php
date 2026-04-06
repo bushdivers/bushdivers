@@ -5,6 +5,7 @@ namespace App\Services\Contracts;
 use App\Models\Airport;
 use App\Models\CommunityJobContract;
 use App\Models\Enums\CargoType;
+use App\Models\Enums\ContractType;
 use App\Services\Airports\CalcBearingBetweenPoints;
 use App\Services\Airports\CalcDistanceBetweenPoints;
 use Carbon\Carbon;
@@ -16,7 +17,8 @@ class CreateCommunityContract
         protected StoreContracts $storeContracts,
         protected CalcBearingBetweenPoints $calcBearingBetweenPoints,
         protected CalcContractValue $calcContractValue
-    ) {}
+    ) {
+    }
 
     public function execute(CommunityJobContract $job)
     {
@@ -42,6 +44,6 @@ class CreateCommunityContract
             'expires_at' => Carbon::now()->addDays(7),
             'is_fuel' => false
         ]];
-        $this->storeContracts->execute($data, false, false, null, 3, null, true, $job->id);
+        $this->storeContracts->execute($data, false, false, null, ContractType::Community, null, true, $job);
     }
 }

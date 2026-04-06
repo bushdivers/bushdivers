@@ -3,7 +3,6 @@
 namespace Tests\Unit\Services\Contract;
 
 use App\Models\Contract;
-use App\Models\ContractCargo;
 use App\Models\User;
 use App\Services\Contracts\CheckForExpiry;
 use Carbon\Carbon;

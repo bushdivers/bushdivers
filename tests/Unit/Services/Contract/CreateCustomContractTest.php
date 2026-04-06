@@ -51,7 +51,7 @@ class CreateCustomContractTest extends TestCase
      */
     public function test_contract_generates_successfully()
     {
-        $this->createCustomRoute->execute($this->airport1->identifier, $this->airport2->identifier, $this->user->id);
+        $this->createCustomRoute->execute($this->airport1->identifier, $this->airport2->identifier, $this->user);
         $this->assertDatabaseHas('contracts', [
             'dep_airport_id' => $this->airport1->id,
             'arr_airport_id' => $this->airport2->id,

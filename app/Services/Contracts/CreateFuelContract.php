@@ -4,6 +4,7 @@ namespace App\Services\Contracts;
 
 use App\Models\Airport;
 use App\Models\Enums\CargoType;
+use App\Models\User;
 use App\Services\Airports\CalcBearingBetweenPoints;
 use App\Services\Airports\CalcDistanceBetweenPoints;
 use App\Services\Airports\UpdateFuelAtAirport;
@@ -25,20 +26,16 @@ class CreateFuelContract
         CalcBearingBetweenPoints $calcBearingBetweenPoints,
         CalcContractValue $calcContractValue,
         UpdateFuelAtAirport $updateFuelAtAirport
-    )
-    {
+    ) {
         $this->storeContract = $storeContract;
         $this->calcDistanceBetweenPoints = $calcDistanceBetweenPoints;
         $this->calcBearingBetweenPoints = $calcBearingBetweenPoints;
         $this->calcContractValue = $calcContractValue;
         $this->updateFuelAtAirport = $updateFuelAtAirport;
     }
-    public function execute(string $departure, string $destination, int $qty, int $fuelType, int $weight, $userId): void
+    public function execute(Airport $depAirport, Airport $arrAirport, int $qty, int $fuelType, int $weight, ?User $userId): void
     {
         try {
-            $depAirport = Airport::where('identifier', $departure)->firstOrFail();
-            $arrAirport = Airport::where('identifier', $destination)->firstOrFail();
-
             // contract info
             $distance = $this->calcDistanceBetweenPoints->execute($depAirport->lat, $depAirport->lon, $arrAirport->lat, $arrAirport->lon);
             $heading = $this->calcBearingBetweenPoints->execute($depAirport->lat, $depAirport->lon, $arrAirport->lat, $arrAirport->lon, $depAirport->magnetic_variance);
@@ -56,8 +53,7 @@ class CreateFuelContract
             //These figures should give generally continous step function at 100nm
             if ($weight > 10000) {
                 $value = round(($value / 10) + 6700);
-            }
-            else if ($weight > 3200) {
+            } elseif ($weight > 3200) {
                 $value = round(($value / 2) + 1750);
             }
 

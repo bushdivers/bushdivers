@@ -4,11 +4,11 @@ namespace App\Services\Contracts;
 
 use App\Models\Airport;
 use App\Models\Enums\CargoType;
+use App\Models\User;
 use App\Services\Airports\CalcBearingBetweenPoints;
 use App\Services\Airports\CalcDistanceBetweenPoints;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Support\Facades\Auth;
 
 class CreateCustomRoute
 {
@@ -22,15 +22,14 @@ class CreateCustomRoute
         CalcDistanceBetweenPoints $calcDistanceBetweenPoints,
         CalcBearingBetweenPoints $calcBearingBetweenPoints,
         CalcContractValue $calcContractValue
-    )
-    {
+    ) {
         $this->storeContract = $storeContract;
         $this->calcDistanceBetweenPoints = $calcDistanceBetweenPoints;
         $this->calcBearingBetweenPoints = $calcBearingBetweenPoints;
         $this->calcContractValue = $calcContractValue;
     }
 
-    public function execute($dep, $arr, $userId)
+    public function execute(string $dep, string $arr, User $user)
     {
         try {
             $depAirport = Airport::where('identifier', $dep)->whereNull('user_id')->firstOrFail();
@@ -64,7 +63,7 @@ class CreateCustomRoute
             ]];
 
 
-            $this->storeContract->execute($data, false, true, $userId);
+            $this->storeContract->execute($data, false, true, $user);
         } catch (ModelNotFoundException $e) {
             throw new ModelNotFoundException();
         }

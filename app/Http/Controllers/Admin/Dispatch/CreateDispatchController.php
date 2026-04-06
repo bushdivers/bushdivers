@@ -35,12 +35,14 @@ class CreateDispatchController extends Controller
         $origin = Airport::where('identifier', $request->source_airport_id)->firstOrFail();
         $destination = Airport::where('identifier', $request->destination_airport_id)->firstOrFail();
         $cargoQty = $request->cargo_qty;
-        $cargo = CargoType::where('type', CargoTypeEnum::Cargo)->inRandomOrder()->first();
+        /** @var CargoType $cargo */
+        $cargo = CargoType::where('type', CargoTypeEnum::Cargo)->inRandomOrder()->firstOrFail();
 
         // Generate contract details
         $contractDetails = $this->generateContractDetails->execute($origin, $destination, ['name' => $cargo->text, 'type' => $cargo->type, 'qty' => $cargoQty]);
-        if (!$contractDetails || empty($contractDetails))
+        if (!$contractDetails || empty($contractDetails)) {
             return redirect()->back()->with(['error' => 'Failed to generate contract details']);
+        }
 
         // Store the contract
         $this->storeContracts->execute([$contractDetails]);

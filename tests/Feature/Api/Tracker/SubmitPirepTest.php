@@ -10,6 +10,7 @@ use App\Models\Airport;
 use App\Models\Contract;
 use App\Models\Enums\AircraftState;
 use App\Models\Enums\AirlineTransactionTypes;
+use App\Models\Enums\CargoType;
 use App\Models\Enums\FinancialConsts;
 use App\Models\Enums\PointsType;
 use App\Models\Fleet;
@@ -84,10 +85,10 @@ class SubmitPirepTest extends TestCase
         ]);
 
         DB::table('cargo_types')->insert([
-            ['type' => 1, 'text' => 'Solar Panels'],
-            ['type' => 1, 'text' => 'Building materials'],
-            ['type' => 2, 'text' => 'Medics'],
-            ['type' => 2, 'text' => 'Locals'],
+            ['type' => CargoType::Cargo, 'text' => 'Solar Panels'],
+            ['type' => CargoType::Cargo, 'text' => 'Building materials'],
+            ['type' => CargoType::Passenger, 'text' => 'Medics'],
+            ['type' => CargoType::Passenger, 'text' => 'Locals'],
         ]);
 
         $this->contract = Contract::factory()->create([

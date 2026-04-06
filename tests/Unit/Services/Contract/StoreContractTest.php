@@ -13,7 +13,8 @@ class StoreContractTest extends TestCase
     use RefreshDatabase;
 
     protected StoreContracts $storeContracts;
-    protected Airport $aymr, $aymh;
+    protected Airport $aymr;
+    protected Airport $aymh;
 
     protected function setUp(): void
     {

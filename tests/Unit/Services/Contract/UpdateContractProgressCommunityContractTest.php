@@ -7,6 +7,7 @@ use App\Models\CommunityJob;
 use App\Models\CommunityJobContract;
 use App\Models\Contract;
 use App\Models\Enums\CargoType;
+use App\Models\Enums\ContractType;
 use App\Models\Pirep;
 use App\Services\Contracts\UpdateContractCargoProgress;
 use Illuminate\Database\Eloquent\Model;
@@ -19,7 +20,8 @@ class UpdateContractProgressCommunityContractTest extends TestCase
 
     protected UpdateContractCargoProgress $updateContractCargoProgress;
     protected Model $communityJob;
-    protected Airport $aymr, $aymn;
+    protected Airport $aymr;
+    protected Airport $aymn;
     protected Pirep $pirep;
 
     protected function setUp(): void
@@ -52,7 +54,7 @@ class UpdateContractProgressCommunityContractTest extends TestCase
             'community_job_contract_id' => $communityContract->id,
             'dep_airport_id' => $this->aymr->id,
             'arr_airport_id' => $this->aymn->id,
-            'contract_type_id' => 3,
+            'contract_type_id' => ContractType::Community,
             'payload' => 100,
             'cargo_type' => CargoType::Cargo,
             'cargo_qty' => 100
@@ -74,7 +76,7 @@ class UpdateContractProgressCommunityContractTest extends TestCase
             'community_job_contract_id' => $communityContract->id,
             'dep_airport_id' => $this->aymr->id,
             'arr_airport_id' => $this->aymn->id,
-            'contract_type_id' => 3,
+            'contract_type_id' => ContractType::Community,
             'payload' => 50,
             'cargo_type' => CargoType::Cargo,
             'cargo_qty' => 50
@@ -83,7 +85,7 @@ class UpdateContractProgressCommunityContractTest extends TestCase
             'community_job_contract_id' => $communityContract->id,
             'dep_airport_id' => $this->aymr->id,
             'arr_airport_id' => $this->aymn->id,
-            'contract_type_id' => 3,
+            'contract_type_id' => ContractType::Community,
             'payload' => 50,
             'cargo_type' => CargoType::Cargo,
             'cargo_qty' => 50

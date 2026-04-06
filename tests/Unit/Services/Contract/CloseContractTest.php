@@ -3,7 +3,6 @@
 namespace Tests\Unit\Services\Contract;
 
 use App\Models\Contract;
-use App\Models\ContractCargo;
 use App\Services\Contracts\CloseContract;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
