@@ -23,6 +23,8 @@ class FlightLogFactory extends Factory
     public function definition()
     {
         return [
+            'lat' => $this->faker->latitude(),
+            'lon' => $this->faker->longitude(),
             'distance' => 0,
             'heading' => 0,
             'altitude' => 0,

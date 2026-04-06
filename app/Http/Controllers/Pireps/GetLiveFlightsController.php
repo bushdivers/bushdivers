@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Pireps;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\PirepIVAOCollection;
+use App\Http\Resources\PirepLiveMapResource;
 use App\Models\Enums\PirepState;
 use App\Models\Pirep;
 use Illuminate\Http\JsonResponse;
@@ -16,7 +17,7 @@ class GetLiveFlightsController extends Controller
     public function __invoke(Request $request): JsonResponse
     {
         $flights = $this->getLiveFlights();
-        return response()->json(['flights' => $flights]);
+        return response()->json(['flights' => PirepLiveMapResource::collection($flights)]);
     }
 
     // Whazzup response based on IVAO JSON format

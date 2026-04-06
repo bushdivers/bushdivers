@@ -3,7 +3,9 @@
 namespace Database\Factories;
 
 use App\Models\Airport;
+use App\Models\Fleet;
 use App\Models\Rental;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class RentalFactory extends Factory
@@ -24,6 +26,8 @@ class RentalFactory extends Factory
     {
         return [
             'registration' => 'N123R',
+            'fleet_id' => Fleet::factory(),
+            'user_id' => User::factory(),
             'current_airport_id' => Airport::factory(),
             'rental_airport_id' => fn(array $attr) => $attr['current_airport_id'],
         ];
