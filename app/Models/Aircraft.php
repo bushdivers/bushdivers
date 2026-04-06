@@ -78,6 +78,7 @@ class Aircraft extends Model
         if ($this->last_inspected_at && $this->last_inspected_at->lessThan($oneYearAgo)) {
             return true;
         }
+
         // check tbo and 100hr
         foreach ($this->engines as $engine) {
             if ($engine->mins_since_tbo >= $this->fleet->tbo_mins) {
@@ -93,9 +94,8 @@ class Aircraft extends Model
 
     public function getTotalConditionAttribute()
     {
-        $engines = AircraftEngine::where('aircraft_id', $this->id)->get();
-        $numEngines = $engines->count();
-        $totalEngineWear = $engines->sum('wear');
+        $numEngines = $this->engines->count();
+        $totalEngineWear = $this->engines->sum('wear');
         $total = $this->wear + $totalEngineWear;
         return round($total / ($numEngines + 1));
     }

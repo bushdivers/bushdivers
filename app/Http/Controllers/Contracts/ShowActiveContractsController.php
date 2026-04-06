@@ -48,8 +48,7 @@ class ShowActiveContractsController extends Controller
         //            ->orderBy('heading', 'asc')
         //            ->get();
 
-        $user = User::find(Auth::user()->id);
-        $location = $user->location;
+        $location = Auth::user()->location;
 
         return Inertia::render('Contracts/MyContracts', ['contracts' => $contracts, 'location' => $location]);
     }

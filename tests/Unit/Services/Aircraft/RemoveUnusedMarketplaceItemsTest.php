@@ -38,7 +38,12 @@ class RemoveUnusedMarketplaceItemsTest extends TestCase
     {
         $this->assertEquals(0, Aircraft::count());
 
-        $ap = Airport::factory()->create()->first();
+        $ap = Airport::factory()->create([
+                   'size' => 5
+            ]);
+        Airport::factory()->nearby($ap)->create([
+            'size' => 5
+        ]);
 
         $this->generateAircraft->execute($this->fleet->id, $ap);
 

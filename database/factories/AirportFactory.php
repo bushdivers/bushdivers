@@ -58,4 +58,18 @@ class AirportFactory extends Factory
             ];
         });
     }
+
+    public function nearby(Airport $airport, int $maxDistanceNM = 50): static
+    {
+        return $this->state(function (array $attributes) use ($airport, $maxDistanceNM) {
+            $distanceInDegrees = $maxDistanceNM / 60; // Rough conversion from nautical miles to degrees
+            $lat = $airport->lat + $this->faker->randomFloat(6, -$distanceInDegrees, $distanceInDegrees);
+            $lon = $airport->lon + $this->faker->randomFloat(6, -$distanceInDegrees, $distanceInDegrees);
+
+            return [
+                'lat' => $lat,
+                'lon' => $lon,
+            ];
+        });
+    }
 }
