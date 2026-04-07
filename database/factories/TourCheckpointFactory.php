@@ -17,7 +17,8 @@ class TourCheckpointFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'section' => 1,
+            'checkpoint_airport_id' => \App\Models\Airport::factory(),
         ];
     }
 }

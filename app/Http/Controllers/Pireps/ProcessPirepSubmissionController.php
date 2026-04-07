@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Pireps;
 use App\Events\PirepFiled;
 use App\Http\Requests\ManualPirepRequest;
 use App\Models\Contract;
-use App\Models\ContractCargo;
 use App\Models\Enums\PirepState;
 use App\Models\Enums\PirepStatus;
 use App\Models\Pirep;
@@ -19,10 +18,10 @@ use App\Services\Tours\CheckTourProgress;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class ProcessPirepSubmissionController extends Controller
 {
@@ -41,8 +40,7 @@ class ProcessPirepSubmissionController extends Controller
         SetPirepTotalScore $setPirepTotalScore,
         CheckTourProgress $checkTourProgress,
         CheckHubProgress $checkHubProgress
-    )
-    {
+    ) {
         $this->updateContractCargoProgress = $updateContractCargoProgress;
         $this->processPirepFinancials = $processPirepFinancials;
         $this->calculatePirepPoints = $calculatePirepPoints;
@@ -109,7 +107,12 @@ class ProcessPirepSubmissionController extends Controller
             PirepFiled::dispatch($pirep);
         } catch (ModelNotFoundException) {
             return redirect()->back()->with(['error' => 'Incorrect dispatch/pirep id']);
-        } catch (\Exception) {
+        } catch (\Exception $e) {
+            Log::warning('Error processing manual pirep submission', [
+                'user_id' => Auth::user()->id,
+                'pirep_id' => $request->pirep_id,
+                'error' => $e->getMessage(),
+            ]);
             return redirect()->back()->with(['error' => 'Cannot process pirep']);
         }
 

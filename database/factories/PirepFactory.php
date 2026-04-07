@@ -8,7 +8,6 @@ use App\Models\Enums\PirepState;
 use App\Models\Pirep;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Ramsey\Uuid\Uuid;
 
 class PirepFactory extends Factory
 {
@@ -27,7 +26,7 @@ class PirepFactory extends Factory
     public function definition()
     {
         return [
-            'id' => Uuid::uuid4(),
+            'id' => $this->faker->uuid(),
             'planned_fuel' => 50,
             'aircraft_id' => Aircraft::factory(),
             'user_id' => User::factory(),

@@ -17,7 +17,10 @@ class TourFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'title' => $this->faker->words(3, true),
+            'description' => $this->faker->sentence(),
+            'is_published' => true,
+            'start_airport_id' => \App\Models\Airport::factory(),
         ];
     }
 }

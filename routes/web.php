@@ -162,10 +162,6 @@ Route::middleware('auth')->group(function () {
         ->name('marketplace.sell');
 
     // Flights
-    Route::get('/available-contracts', \App\Http\Controllers\Contracts\ShowActiveContractsController::class)
-        ->name('bids');
-    Route::get('/completed-contracts', \App\Http\Controllers\Contracts\ShowCompletedContractsController::class)
-        ->name('contracts.completed');
     Route::get('/dispatch', \App\Http\Controllers\Dispatch\ShowDispatchController::class)
         ->name('dispatch');
     Route::post('/dispatch', \App\Http\Controllers\Dispatch\CreateDispatchController::class)
@@ -181,7 +177,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/pireps/submit', \App\Http\Controllers\Pireps\ShowPirepSubmissionController::class)
         ->name('pireps.submit');
     Route::post('/pireps/submit', \App\Http\Controllers\Pireps\ProcessPirepSubmissionController::class)
-        ->name('pireps.process');
+        ->name('pireps.process'); // Manual pirep acceptance
 
     // Temporary tie to fleet_admin until generic 'admin' role exists capturing all subroles
     Route::middleware('role:fleet_admin')->group(function () {

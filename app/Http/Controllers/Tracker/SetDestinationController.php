@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Tracker;
 use App\Http\Controllers\Controller;
 use App\Models\Airport;
 use App\Models\Pirep;
-use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
