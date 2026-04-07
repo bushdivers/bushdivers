@@ -66,7 +66,10 @@ class Airport extends Model
         $lon = $to instanceof Coordinate ? $to->getLng() : $to->lon;
 
         return $query
-            ->selectRaw('airports.*, 3440 * ACOS(COS(RADIANS(?)) * COS(RADIANS(lat)) * COS(RADIANS(?) - RADIANS(lon)) + SIN(RADIANS(?)) * SIN(RADIANS(lat))) as distance', [$lat, $lon, $lat]);
+            ->selectRaw('airports.*,
+             3440 * ACOS(
+                COS(RADIANS(?)) * COS(RADIANS(lat)) * COS(RADIANS(?) - RADIANS(lon)) +
+                 SIN(RADIANS(?)) * SIN(RADIANS(lat))) as distance', [$lat, $lon, $lat]);
     }
 
     public function scopeInRangeOf(Builder $query, Airport|Coordinate $from, $min, $max)
@@ -77,8 +80,16 @@ class Airport extends Model
         $lat = $from instanceof Coordinate ? $from->getLat() : $from->lat;
         $lon = $from instanceof Coordinate ? $from->getLng() : $from->lon;
 
+        // Approximate bounding box to reduce
+        $latRange = $max / 60; // 1 degree latitude is ~60 NM, so convert to degrees for lat range
+
+
         $query->withRangeTo($from)
-            //->selectRaw('airports.*, 3440 * ACOS(COS(RADIANS(?)) * COS(RADIANS(lat)) * COS(RADIANS(?) - RADIANS(lon)) + SIN(RADIANS(?)) * SIN(RADIANS(lat))) as distance', [$lat, $lon, $lat])
+            ->whereBetween('lat', [$lat - $latRange, $lat + $latRange])
+            ->when(abs($lat) < 85, function ($q) use ($lon, $lat, $max) {
+                $lonRange = abs($max / (60 * cos(deg2rad($lat)))); // adjust longitude range based on latitude
+                $q->whereBetween('lon', [$lon - $lonRange, $lon + $lonRange]);
+            })
             ->whereRaw('FLOOR(3440 * ACOS(COS(RADIANS(?)) * COS(RADIANS(lat)) * COS(RADIANS(?) - RADIANS(lon)) + SIN(RADIANS(?)) * SIN(RADIANS(lat)))) between ? AND ?', [$lat, $lon, $lat, $min, $max]);
     }
 
@@ -100,20 +111,20 @@ class Airport extends Model
     public function scopeForUser(Builder $query, User $user)
     {
         // If we're not allowing third party airports
-        if (!$user->allow_thirdparty_airport)
-        {
+        if (!$user->allow_thirdparty_airport) {
             // If we're also not allowing third party hubs
-            if (!$user->allow_thirdparty_hub)
+            if (!$user->allow_thirdparty_hub) {
                 $query->where('is_thirdparty', false);
-            else // we are allowing third party hubs
-                $query->where(function($q) {
+            } else { // we are allowing third party hubs
+                $query->where(function ($q) {
                     // Need to filter out third party but not hubs
                     $q->where('is_thirdparty', false)->orWhere('is_hub', true);
                 });
+            }
         }
         //otherwise, we're allowing all third party (incl hubs) airports, so no filter needed
 
-        $query->where(function($q) use ($user) {
+        $query->where(function ($q) use ($user) {
             $q->whereNull('user_id')->orWhere('user_id', $user->id);
         });
     }
@@ -136,4 +147,3 @@ class Airport extends Model
     }
 
 }
-
