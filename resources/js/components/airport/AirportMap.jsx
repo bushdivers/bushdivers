@@ -3,7 +3,7 @@ import { usePage } from '@inertiajs/react'
 import { useAtomValue } from 'jotai'
 import { PlaneLanding, PlaneTakeoff } from 'lucide-react'
 import maplibre from 'maplibre-gl'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import Map, { Layer, Marker, Popup, Source } from 'react-map-gl'
 
 import {
@@ -29,13 +29,11 @@ import PanelContainer from './panels/PanelContainer.jsx'
 
 function AirportMap({
   airport,
-  fleet,
   aircraft,
   contracts,
   metar,
   fuel,
-  myContracts,
-  sharedContracts,
+  userContracts,
 }) {
   const { colorMode } = useColorMode()
   const [routeData, setRouteData] = useState(null)
@@ -45,62 +43,58 @@ function AirportMap({
   const filters = useAtomValue(contractFiltersAtom)
   const contractMapLayers = useAtomValue(contractMapLayersAtom)
   const contractMapStyle = useAtomValue(contractMapStyleAtom)
-  const [filteredContracts, setFilteredContracts] = useState(contracts)
   const { auth } = usePage().props
+
+  const fleet = useMemo(
+    () => aircraft.filter((ac) => ac.owner_id === 0),
+    [aircraft]
+  )
+  const privateAc = useMemo(
+    () => aircraft.filter((ac) => ac.owner_id !== 0),
+    [aircraft]
+  )
+  const myContracts = useMemo(
+    () => userContracts.filter((c) => c.user_id === auth.user.id),
+    [userContracts]
+  )
+  const sharedContracts = useMemo(
+    () => userContracts.filter((c) => c.user_id === null && c.is_shared),
+    [userContracts]
+  )
+
+  const filteredContracts = useMemo(() => {
+    const distanceFiltered = (() => {
+      switch (filters.distance) {
+        case '0':
+          return contracts
+        case '60':
+          return contracts.filter((c) => c.distance < 60)
+        case '100':
+          return contracts.filter((c) => c.distance < 100 && c.distance >= 60)
+        case '300':
+          return contracts.filter((c) => c.distance >= 100)
+        default:
+          return contracts
+      }
+    })()
+
+    switch (filters.payload) {
+      case '1000':
+        return distanceFiltered.filter((c) => c.payload < 1000)
+      case '3000':
+        return distanceFiltered.filter(
+          (c) => c.payload < 3000 && c.payload >= 1000
+        )
+      case '10000':
+        return distanceFiltered.filter((c) => c.payload >= 3000)
+      default:
+        return distanceFiltered
+    }
+  }, [contracts, filters])
 
   useEffect(() => {
     setRouteData(null)
-    applyFilters()
   }, [contracts])
-
-  useEffect(() => {
-    applyFilters()
-  }, [filters])
-
-  const applyFilters = () => {
-    let distanceFiltered = null
-    let newContracts = null
-    switch (filters.distance) {
-      case '0':
-        distanceFiltered = contracts
-        break
-      case '60':
-        distanceFiltered = contracts.filter((c) => c.distance < 60)
-        break
-      case '100':
-        distanceFiltered = contracts.filter(
-          (c) => c.distance < 100 && c.distance >= 60
-        )
-        break
-      case '300':
-        distanceFiltered = contracts.filter((c) => c.distance >= 100)
-        break
-      default:
-        distanceFiltered = contracts
-        break
-    }
-    switch (filters.payload) {
-      case '0':
-        newContracts = distanceFiltered
-        break
-      case '1000':
-        newContracts = distanceFiltered.filter((c) => c.payload < 1000)
-        break
-      case '3000':
-        newContracts = distanceFiltered.filter(
-          (c) => c.payload < 3000 && c.payload >= 1000
-        )
-        break
-      case '10000':
-        newContracts = distanceFiltered.filter((c) => c.payload >= 3000)
-        break
-      default:
-        newContracts = distanceFiltered
-        break
-    }
-    // console.log(newContracts)
-    setFilteredContracts(newContracts)
-  }
 
   useEffect(() => {
     if (selectedContract) {
@@ -292,8 +286,8 @@ function AirportMap({
             </Marker>
           ))}
         {contractMapLayers.myAircraft &&
-          aircraft &&
-          aircraft.map((ac) => (
+          privateAc &&
+          privateAc.map((ac) => (
             <Marker
               onClick={() => handleAircraftSelection(ac)}
               key={ac.id}
@@ -340,10 +334,14 @@ function AirportMap({
             <AircraftList airport={airport} fleet={fleet} />
           )}
           {contractMapLayers.myAircraft && !contractMapLayers.fleet && (
-            <AircraftList airport={airport} aircraft={aircraft} />
+            <AircraftList airport={airport} aircraft={privateAc} />
           )}
           {contractMapLayers.myAircraft && contractMapLayers.fleet && (
-            <AircraftList airport={airport} fleet={fleet} aircraft={aircraft} />
+            <AircraftList
+              airport={airport}
+              fleet={fleet}
+              aircraft={privateAc}
+            />
           )}
         </DetailsContainer>
       </Map>

@@ -5,13 +5,11 @@ import AppLayout from '../../components/layout/AppLayout'
 
 const AirportDetail = ({
   airport,
-  fleet,
   aircraft,
   contracts,
   metar,
   fuel,
-  myContracts,
-  sharedContracts,
+  userContracts,
 }) => {
   const [currentMapStyle] = useState('')
 
@@ -20,14 +18,12 @@ const AirportDetail = ({
       <AirportMap
         airport={airport}
         metar={metar}
-        fleet={fleet}
         aircraft={aircraft}
         contracts={contracts}
         size="full"
         updatedMapStyle={currentMapStyle}
         fuel={fuel}
-        myContracts={myContracts}
-        sharedContracts={sharedContracts}
+        userContracts={userContracts}
       />
     </div>
   )

@@ -11,7 +11,6 @@ use App\Services\Airports\GetMetarForAirport;
 use App\Services\Contracts\GenerateContracts;
 use App\Services\Contracts\GetNumberToGenerate;
 use App\Services\Contracts\StoreContracts;
-use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -20,7 +19,6 @@ use Inertia\Response;
 
 class ShowAirportController extends Controller
 {
-
     protected GetMetarForAirport $getMetarForAirport;
     protected GenerateContracts $generateContracts;
     protected StoreContracts $storeContracts;
@@ -42,8 +40,9 @@ class ShowAirportController extends Controller
      */
     public function __invoke(Request $request, $icao = null): Response | RedirectResponse
     {
-        if (!$icao)
+        if (!$icao) {
             return redirect()->back()->with(['error' => 'Airport not found']);
+        }
 
         $icao = strtoupper($icao);
         $airport = Airport::where('identifier', $icao)->first();
@@ -53,13 +52,8 @@ class ShowAirportController extends Controller
         }
 
         $nearestFuel = Airport::inRangeOf($airport, 2, 500)->fuel()->orderBy('distance')->limit(5)->get();
-        $companyAc = Aircraft::with(['fleet', 'engines', 'hub', 'location'])
-            ->where('owner_id', 0)
-            ->where('status', AircraftStatus::ACTIVE)
-            ->get();
-
-        $privateAc = Aircraft::with(['fleet', 'engines', 'hub', 'location'])
-            ->where('owner_id', Auth::user()->id)
+        $aircraft = Aircraft::with(['fleet', 'engines', 'hub', 'location'])
+            ->whereIn('owner_id', [0, Auth::id()])
             ->where('status', AircraftStatus::ACTIVE)
             ->get();
 
@@ -77,28 +71,19 @@ class ShowAirportController extends Controller
             $contracts = $this->getContracts($airport);
         }
 
-        $myContracts = Contract::with(['depAirport', 'currentAirport', 'arrAirport'])
-            ->where('user_id', Auth::user()->id)
-            ->where('is_completed', false)
-            ->orderBy('distance')
-            ->get();
-
-        $sharedContracts = Contract::with(['depAirport', 'currentAirport', 'arrAirport'])
-            ->where('user_id', null)
-            ->where('is_shared', true)
+        $userContracts = Contract::with(['depAirport', 'currentAirport', 'arrAirport'])
+            ->where(fn ($q) => $q->where('user_id', Auth::id())->orWhere(fn ($q) => $q->whereNull('user_id')->where('is_shared', true)))
             ->where('is_completed', false)
             ->orderBy('distance')
             ->get();
 
         return Inertia::render('Airports/AirportDetail', [
             'airport' => $airport,
-            'fleet' => $companyAc,
-            'aircraft' => $privateAc,
+            'aircraft' => $aircraft,
             'contracts' => $contracts,
-            'metar' => Inertia::defer(fn() => $this->getMetarForAirport->execute($icao)),
+            'metar' => Inertia::defer(fn () => $this->getMetarForAirport->execute($icao)),
             'fuel' => $nearestFuel,
-            'myContracts' => $myContracts,
-            'sharedContracts' => $sharedContracts
+            'userContracts' => $userContracts,
         ]);
     }
 
@@ -107,7 +92,7 @@ class ShowAirportController extends Controller
         $user = Auth::user();
         // Filter dest to user preferences. Current/dep doesn't matter since either the user is already there (regardless of choice), or they haven't found the airport to fly to
         return Contract::with(['depAirport', 'currentAirport', 'arrAirport'])
-            ->whereHas('arrAirport', fn($q) => $q->forUser($user))
+            ->whereHas('arrAirport', fn ($q) => $q->forUser($user))
             ->where('dep_airport_id', $airport->id)
             ->where('is_available', true)
             ->whereRaw('expires_at >= Now()')
