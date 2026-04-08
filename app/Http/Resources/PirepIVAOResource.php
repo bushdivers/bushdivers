@@ -54,7 +54,7 @@ class PirepIVAOResource extends JsonResource
             ],
             'lastTrack' => [
                 'altitude' => $this->current_altitude,
-                'groundSpeed' => $this->latestLog->ground_speed ?? 0,
+                'groundSpeed' => $this->logs->last()->ground_speed ?? 0,
                 'heading' => $this->current_heading,
                 'latitude' => $this->current_lat,
                 'longitude' => $this->current_lon,
