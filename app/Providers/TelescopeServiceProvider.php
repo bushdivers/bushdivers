@@ -26,6 +26,12 @@ class TelescopeServiceProvider extends TelescopeApplicationServiceProvider
                 return false;
             }
 
+            if ($entry->type == EntryType::REQUEST) {
+                if (str_starts_with($entry->content['uri'], '/.well-known/') || str_starts_with($entry->content['uri'], '/_')) {
+                    return false;
+                }
+            }
+
             return $isLocal ||
                    $entry->isReportableException() ||
                    $entry->isFailedRequest() ||
