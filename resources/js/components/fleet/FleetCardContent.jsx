@@ -7,6 +7,7 @@ import {
   Image,
   Table,
   TableContainer,
+  Tag,
   Tbody,
   Td,
   Text,
@@ -15,10 +16,11 @@ import {
   Tr,
 } from '@chakra-ui/react'
 import { Link, usePage } from '@inertiajs/react'
-import { Anchor, Package, Wrench } from 'lucide-react'
+import { Anchor, Globe, Package, Wrench } from 'lucide-react'
 import React from 'react'
 
 import { displayFileSize } from '../../helpers/generic.helpers.js'
+import { SimTypeColors } from '../../helpers/simtype.helpers.js'
 import AircraftCondition from './AircraftCondition'
 
 const FleetCardContent = ({ fleet }) => {
@@ -52,11 +54,30 @@ const FleetCardContent = ({ fleet }) => {
           <Image w={300} borderRadius="md" src={fleet.image_url} />
           {fleet.uploads?.length > 0 ? (
             fleet.uploads.map((u) => (
-              <Flex gap={2} key={u.id}>
-                <a target="_blank" rel="noreferrer" href={u.url}>
+              <Flex gap={2} key={u.id} alignItems="center">
+                <a
+                  target="_blank"
+                  rel="noreferrer"
+                  href={u.url}
+                  title={u.author ? u.display_name + ' by ' + u.author : ''}
+                >
                   {u.display_name}
                 </a>
-                <Text>{displayFileSize(u.size)}</Text>
+                {u.size != null ? (
+                  <Text>{displayFileSize(u.size)}</Text>
+                ) : (
+                  <Icon as={Globe} />
+                )}
+                {u.sim_type?.map((type) => (
+                  <Tag
+                    key={type}
+                    size="sm"
+                    colorScheme={SimTypeColors[type] ?? 'gray'}
+                    textTransform="uppercase"
+                  >
+                    {type}
+                  </Tag>
+                ))}
               </Flex>
             ))
           ) : (

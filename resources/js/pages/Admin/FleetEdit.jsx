@@ -32,12 +32,58 @@ import { Link as InertiaLink, router, usePage } from '@inertiajs/react'
 import { Pen, Trash2 } from 'lucide-react'
 import React, { useState } from 'react'
 
-import AdminUpload from '../../components/admin/AdminUpload.jsx'
+import LiveryDialog from '../../components/admin/EditUploadDialog.jsx'
 import AdminLayout from '../../components/layout/AdminLayout.jsx'
 import { displayFileSize } from '../../helpers/generic.helpers.js'
 
 const FleetEdit = ({ fleet, manufacturers, variants }) => {
   const { errors } = usePage().props
+  const [editingUpload, setEditingUpload] = useState(null)
+  const [addingLivery, setAddingLivery] = useState(false)
+
+  function ImageUpload({ uploadType }) {
+    const [file, setFile] = useState(null)
+    return (
+      <form
+        onSubmit={(e) => {
+          e.preventDefault()
+          router.post(
+            '/admin/fleet/upload',
+            {
+              upload_type: uploadType,
+              uploaded_file: file,
+              entity_id: fleet.id,
+              entity_type: 'fleet',
+            },
+            {
+              forceFormData: true,
+            }
+          )
+        }}
+      >
+        <Input
+          type="file"
+          accept=".png,.jpg,.jpeg"
+          size="sm"
+          mt={2}
+          onChange={(e) => setFile(e.target.files[0])}
+          sx={{
+            '::file-selector-button': {
+              height: 8,
+              padding: 0,
+              mr: 3,
+              background: 'none',
+              border: 'none',
+              fontWeight: 'bold',
+            },
+          }}
+        />
+        <Button size="xs" type="submit" mt={1}>
+          Upload
+        </Button>
+      </form>
+    )
+  }
   const [values, setValues] = useState({
     type: fleet?.type ?? '',
     name: fleet?.name ?? '',
@@ -92,48 +138,72 @@ const FleetEdit = ({ fleet, manufacturers, variants }) => {
       {fleet && (
         <Card mb={2}>
           <CardBody>
-            <SimpleGrid columns={2} gap={10}>
+            <SimpleGrid columns={3} gap={6}>
               <Box>
-                <AdminUpload type="fleet" id={fleet.id} />
+                <Heading size="sm" mb={2}>
+                  Fleet Image
+                </Heading>
+                {fleet.image_url && (
+                  <Link href={fleet.image_url} target="_blank">
+                    <Image src={fleet.image_url} width={250} mb={1} />
+                  </Link>
+                )}
+                <ImageUpload uploadType="fleet" />
               </Box>
               <Box>
-                <Heading mb={2} size="md">
-                  Images
+                <Heading size="sm" mb={2}>
+                  Marketplace Image
                 </Heading>
-                <Flex gap={4}>
-                  <Flex direction="column" gap={1}>
-                    <Heading size="sm">Fleet Image</Heading>
-                    <Link href={fleet.image_url} target="_blank">
-                      <Image src={fleet.image_url} width={250} />
-                    </Link>
-                  </Flex>
-                  <Flex direction="column" gap={1}>
-                    <Heading size="sm">Marketplace Image</Heading>
-                    <Link href={fleet.rental_image} target="_blank">
-                      <Image src={fleet.rental_image} width={250} />
-                    </Link>
-                  </Flex>
+                {fleet.rental_image && (
+                  <Link href={fleet.rental_image} target="_blank">
+                    <Image src={fleet.rental_image} width={250} mb={1} />
+                  </Link>
+                )}
+                <ImageUpload uploadType="marketplace" />
+              </Box>
+              <Box>
+                <Flex alignItems="center" justify="space-between" mb={2}>
+                  <Heading size="sm">Livery Files</Heading>
+                  <Button size="xs" onClick={() => setAddingLivery(true)}>
+                    Add Livery
+                  </Button>
                 </Flex>
-                <Box mt={2}>
-                  <Heading size="md">Livery Files</Heading>
-                  {fleet.uploads?.length > 0 ? (
-                    fleet.uploads.map((u) => (
-                      <Flex gap={2} key={u.id}>
-                        <Link target="_blank" href={u.url}>
-                          {u.display_name}
-                        </Link>
-                        <Text>{displayFileSize(u.size)}</Text>
-                      </Flex>
-                    ))
-                  ) : (
-                    <Text>No Liveries</Text>
-                  )}
-                </Box>
+                {fleet.uploads?.length > 0 ? (
+                  fleet.uploads.map((u) => (
+                    <Flex gap={2} key={u.id} alignItems="center">
+                      <Link target="_blank" href={u.url}>
+                        {u.display_name}
+                      </Link>
+                      <Text>{displayFileSize(u.size)}</Text>
+                      <Button
+                        size="xs"
+                        variant="ghost"
+                        onClick={() => setEditingUpload(u)}
+                      >
+                        <Icon as={Pen} />
+                      </Button>
+                    </Flex>
+                  ))
+                ) : (
+                  <Text>No Liveries</Text>
+                )}
               </Box>
             </SimpleGrid>
           </CardBody>
         </Card>
       )}
+      <LiveryDialog
+        fleetId={fleet?.id}
+        upload={null}
+        isOpen={addingLivery}
+        onClose={() => setAddingLivery(false)}
+      />
+      <LiveryDialog
+        fleetId={fleet?.id}
+        upload={editingUpload}
+        isOpen={editingUpload !== null}
+        onClose={() => setEditingUpload(null)}
+      />
       <Card>
         <CardBody>
           <form onSubmit={handleSubmit}>

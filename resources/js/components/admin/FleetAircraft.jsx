@@ -19,7 +19,7 @@ const FleetAircraft = (props) => {
   return (
     <>
       {props.fleet.aircraft.map((detail) => (
-        <tr key={detail.id} className="bg-gray-50">
+        <tr key={`${props.fleet.id}-${detail.id}`} className="bg-gray-50">
           <td>{detail.registration}</td>
           <td>Current Location: {detail.location.identifier}</td>
           <td>

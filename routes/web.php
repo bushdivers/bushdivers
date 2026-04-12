@@ -203,6 +203,11 @@ Route::middleware('auth')->group(function () {
         Route::post('/admin/fleet/upload', \App\Http\Controllers\Admin\Fleet\FleetUploadController::class)
             ->name('admin.fleet.upload');
 
+        Route::post('/admin/fleet/{id}/liveries', \App\Http\Controllers\Admin\Fleet\CreateLiveryController::class)
+            ->name('admin.fleet.livery.store');
+        Route::post('/admin/uploads/{id}', \App\Http\Controllers\Admin\UpdateLiveryController::class)
+            ->name('admin.upload.update');
+
         // Fleet variants
         Route::get('/admin/fleet/{id}/variants/create', \App\Http\Controllers\Admin\Fleet\ShowCreateFleetVariantController::class)
             ->name('admin.fleet.variant.create');
