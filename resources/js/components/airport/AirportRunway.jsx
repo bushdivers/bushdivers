@@ -1,34 +1,7 @@
 import { Box, Card, CardBody } from '@chakra-ui/react'
 import React from 'react'
 
-const renderRunwayText = (surface) => {
-  switch (surface) {
-    case 'A':
-      return 'Asphalt'
-    case 'B':
-      return 'Bituminous'
-    case 'C':
-      return 'Concrete'
-    case 'CE':
-      return 'Cement'
-    case 'CR':
-      return 'Water'
-    case 'G':
-      return 'Grass'
-    case 'GR':
-      return 'Gravel'
-    case 'M':
-      return 'Macadam'
-    case 'S':
-      return 'Sand'
-    case 'T':
-      return 'Tarmac'
-    case 'W':
-      return 'Water'
-    default:
-      return 'Unknown'
-  }
-}
+import { runwaySurface as renderRunwayText } from '../../helpers/airport.helpers.js'
 
 function AirportRunway({ airport }) {
   return (

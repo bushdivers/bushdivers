@@ -18,6 +18,7 @@ import { formatDistanceToNow } from 'date-fns'
 import { Anchor, Package, Plane } from 'lucide-react'
 import React from 'react'
 
+import AirportLabel from '../../components/airport/AirportLabel'
 import CrewMap from '../../components/crew/CrewMap'
 import AppLayout from '../../components/layout/AppLayout'
 import {
@@ -75,13 +76,7 @@ const Dashboard = ({ lastFlight, user, locations, distance }) => {
                     )}
                   </Flex>
 
-                  <ChakraLink
-                    color="orange.400"
-                    as={Link}
-                    href={`/airports/${lastFlight.dep_airport.identifier}`}
-                  >
-                    {lastFlight.dep_airport.identifier}
-                  </ChakraLink>
+                  <AirportLabel airport={lastFlight.dep_airport} />
                 </Box>
                 <Box mt={2}>
                   <Flex alignItems="center" gap={2}>
@@ -93,13 +88,7 @@ const Dashboard = ({ lastFlight, user, locations, distance }) => {
                       <Icon as={Package} color="green.500" />
                     )}
                   </Flex>
-                  <ChakraLink
-                    color="orange.400"
-                    as={Link}
-                    href={`/airports/${lastFlight.arr_airport.identifier}`}
-                  >
-                    {lastFlight.arr_airport.identifier}
-                  </ChakraLink>
+                  <AirportLabel airport={lastFlight.arr_airport} />
                 </Box>
                 <Flex alignItems="center" mt={2} gap={2}>
                   <Icon as={Plane} />

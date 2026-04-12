@@ -8,13 +8,13 @@ import {
   Text,
   useColorModeValue,
 } from '@chakra-ui/react'
-import { Link } from '@inertiajs/react'
 import { formatDistanceToNowStrict } from 'date-fns'
 import { useAtom } from 'jotai'
-import { Anchor, ArrowUp, Check, Package, Plane } from 'lucide-react'
+import { ArrowUp, Check, Plane } from 'lucide-react'
 import React from 'react'
 
 import { selectedContractAtom } from '../../state/contract.state.js'
+import AirportLabel from '../airport/AirportLabel.jsx'
 import AvailableFuel from '../airport/AvailableFuel.jsx'
 import Tooltip from '../elements/Tooltip'
 
@@ -53,27 +53,11 @@ const ContractDetail = ({ contract, action = null, type }) => {
       <Box>
         <Flex justifyContent="space-between" gap={1}>
           <Flex alignItems="center" gap={1}>
-            <Link href={`/airports/${contract.current_airport.identifier}`}>
-              <Text fontSize="lg">{contract.current_airport.identifier}</Text>
-            </Link>
-            {contract.dep_airport.longest_runway_surface === 'W' && (
-              <Icon as={Anchor} color="blue.500" />
-            )}
-            {contract.dep_airport.is_thirdparty && (
-              <Icon as={Package} color="green.500" />
-            )}
+            <AirportLabel airport={contract.dep_airport} size="lg" />
             <Box p={1}>
               <Icon as={Plane} />
             </Box>
-            <Link href={`/airports/${contract.arr_airport.identifier}`}>
-              <Text fontSize="lg">{contract.arr_airport.identifier}</Text>
-            </Link>
-            {contract.arr_airport.longest_runway_surface === 'W' && (
-              <Icon as={Anchor} color="blue.500" />
-            )}
-            {contract.arr_airport.is_thirdparty && (
-              <Icon as={Package} color="green.500" />
-            )}
+            <AirportLabel airport={contract.arr_airport} size="lg" />
           </Flex>
           {type === 'available' ? (
             <Box>
