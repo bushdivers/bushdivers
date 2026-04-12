@@ -28,6 +28,7 @@ class CreateFleetVariantController extends Controller
             'range' => $request->range,
             'mtow' => $request->mtow,
             'zfw' => $request->zfw,
+            'sim_type' => $request->sim_type ?? [],
         ]);
 
         return redirect()->route('admin.fleet.edit', $fleet->id)->with(['success' => 'Variant added']);

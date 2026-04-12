@@ -462,6 +462,7 @@ const FleetEdit = ({ fleet, manufacturers, variants }) => {
                       <Th>Range (nm)</Th>
                       <Th>MTOW (lbs)</Th>
                       <Th>ZFW (lbs)</Th>
+                      <Th>Sim</Th>
                       <Th>Actions</Th>
                     </Tr>
                   </Thead>
@@ -480,6 +481,11 @@ const FleetEdit = ({ fleet, manufacturers, variants }) => {
                         <Td>{v.range?.toLocaleString()}</Td>
                         <Td>{v.mtow?.toLocaleString()}</Td>
                         <Td>{v.zfw?.toLocaleString()}</Td>
+                        <Td textTransform="uppercase">
+                          {v.sim_type?.length > 0
+                            ? v.sim_type.join(', ')
+                            : 'N/A'}
+                        </Td>
                         <Td>
                           <Flex alignItems="center" gap={2}>
                             <Link

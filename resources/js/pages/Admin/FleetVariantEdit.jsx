@@ -11,11 +11,17 @@ import {
   Input,
   InputGroup,
   InputRightAddon,
+  Tag,
 } from '@chakra-ui/react'
 import { Link, router, usePage } from '@inertiajs/react'
 import React, { useState } from 'react'
 
 import AdminLayout from '../../components/layout/AdminLayout.jsx'
+import {
+  SimType,
+  SimTypeColors,
+  SimTypeNames,
+} from '../../helpers/simtype.helpers.js'
 
 const getFuelLbsPerGal = (fuelType) => (fuelType === 1 ? 5.99 : 6.79)
 
@@ -36,6 +42,7 @@ const FleetVariantEdit = ({ fleet, variant }) => {
   const [values, setValues] = useState({
     name: variant?.name ?? '',
     is_default: variant?.is_default ?? false,
+    sim_type: variant?.sim_type ?? [],
     pax_capacity: variant?.pax_capacity ?? '',
     cargo_capacity: variant?.cargo_capacity ?? '',
     fuel_capacity: variant?.fuel_capacity ?? '',
@@ -83,6 +90,7 @@ const FleetVariantEdit = ({ fleet, variant }) => {
     router.post(url, {
       name: values.name,
       is_default: values.is_default,
+      sim_type: values.sim_type,
       pax_capacity: values.pax_capacity,
       cargo_capacity: values.cargo_capacity,
       fuel_capacity: values.fuel_capacity,
@@ -124,6 +132,33 @@ const FleetVariantEdit = ({ fleet, variant }) => {
             >
               Default variant (used for fleet/marketplace display)
             </Checkbox>
+          </FormControl>
+          <FormControl mb={3}>
+            <FormLabel>Simulator Version</FormLabel>
+            <Flex gap={3}>
+              {Object.entries(SimType).map(([key, value]) => (
+                <Checkbox
+                  key={key}
+                  isChecked={values.sim_type.includes(value)}
+                  onChange={(e) => {
+                    const next = e.target.checked
+                      ? [...values.sim_type, value]
+                      : values.sim_type.filter((s) => s !== value)
+                    setValues((v) => ({ ...v, sim_type: next }))
+                  }}
+                >
+                  <Tag size="sm" colorScheme={SimTypeColors[value] ?? 'gray'}>
+                    {SimTypeNames[value] ?? value}
+                  </Tag>
+                </Checkbox>
+              ))}
+            </Flex>
+            <Flex mt={1} gap={2} alignItems="center">
+              <Box fontSize="xs" color="gray.500">
+                If no items selected, variant will be shown as compatible with
+                all simulators. Leave blank if variant is not sim specific.
+              </Box>
+            </Flex>
           </FormControl>
           <FormControl isInvalid={errors.pax_capacity} mb={3}>
             <FormLabel htmlFor="pax_capacity">Passenger Capacity</FormLabel>

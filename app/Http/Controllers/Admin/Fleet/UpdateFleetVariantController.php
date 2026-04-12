@@ -33,6 +33,7 @@ class UpdateFleetVariantController extends Controller
         $variant->range = $request->range;
         $variant->mtow = $request->mtow;
         $variant->zfw = $request->zfw;
+        $variant->sim_type = $request->sim_type ?? [];
         $variant->save();
 
         return redirect()->route('admin.fleet.edit', $fleet->id)->with(['success' => 'Variant updated']);

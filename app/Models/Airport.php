@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use App\Models\Enums\SimType;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\AsEnumCollection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Location\Coordinate;
@@ -35,12 +37,16 @@ class Airport extends Model
         'point'
     ];
 
-    protected $casts = [
-        'has_avgas' => 'boolean',
-        'has_jetfuel' => 'boolean',
-        'is_hub' => 'boolean',
-        'is_thirdparty' => 'boolean',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'has_avgas' => 'boolean',
+            'has_jetfuel' => 'boolean',
+            'is_hub' => 'boolean',
+            'is_thirdparty' => 'boolean',
+            'sim_type' => AsEnumCollection::of(SimType::class),
+        ];
+    }
 
     protected static function booted(): void
     {
@@ -90,7 +96,7 @@ class Airport extends Model
                 $lonRange = abs($max / (60 * cos(deg2rad($lat)))); // adjust longitude range based on latitude
                 $q->whereBetween('lon', [$lon - $lonRange, $lon + $lonRange]);
             })
-            ->whereRaw('FLOOR(3440 * ACOS(COS(RADIANS(?)) * COS(RADIANS(lat)) * COS(RADIANS(?) - RADIANS(lon)) + SIN(RADIANS(?)) * SIN(RADIANS(lat)))) between ? AND ?', [$lat, $lon, $lat, $min, $max]);
+            ->whereRaw('3440 * ACOS(COS(RADIANS(?)) * COS(RADIANS(lat)) * COS(RADIANS(?) - RADIANS(lon)) + SIN(RADIANS(?)) * SIN(RADIANS(lat))) between ? AND ?', [$lat, $lon, $lat, $min, $max]);
     }
 
     public function scopeHub(Builder $query)

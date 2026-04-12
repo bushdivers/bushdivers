@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Enums\SimType;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Enum;
 
 class AdminFleetVariantRequest extends FormRequest
 {
@@ -22,6 +24,8 @@ class AdminFleetVariantRequest extends FormRequest
             'range' => 'required|numeric|min:1',
             'mtow' => 'required|numeric|min:1',
             'zfw' => 'required|numeric|min:1|lte:mtow',
+            'sim_type' => 'nullable|array',
+            'sim_type.*' => [new Enum(SimType::class)],
         ];
     }
 }

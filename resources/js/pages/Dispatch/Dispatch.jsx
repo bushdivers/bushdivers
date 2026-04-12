@@ -23,6 +23,7 @@ import Destination from '../../components/dispatch/Destination'
 import DispatchSummary from '../../components/dispatch/DispatchSummary'
 import Fuel from '../../components/dispatch/Fuel'
 import AppLayout from '../../components/layout/AppLayout'
+import { SimTypeNames } from '../../helpers/simtype.helpers.js'
 
 const Dispatch = ({ cargo, aircraft, airport, tours }) => {
   const { auth } = usePage().props
@@ -319,6 +320,11 @@ const Dispatch = ({ cargo, aircraft, airport, tours }) => {
                         {selectedAircraft.fleet.variants.map((v) => (
                           <option key={v.id} value={v.id}>
                             {v.name}
+                            {v.is_default && ' (Default)'}
+                            {v.sim_type?.length > 0 &&
+                              ` (${v.sim_type
+                                .map((t) => SimTypeNames[t] ?? t)
+                                .join(', ')})`}
                           </option>
                         ))}
                       </Select>
