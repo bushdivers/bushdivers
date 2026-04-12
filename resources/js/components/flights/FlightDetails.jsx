@@ -162,7 +162,7 @@ const FlightDetails = ({ flights }) => {
               <Heading size="xs">Aircraft Type</Heading>
               <Text fontSize="xs">
                 (
-                {selectedFlight.is_rental
+                {selectedFlight.rental
                   ? selectedFlight.rental.fleet.type
                   : selectedFlight.aircraft.fleet.type}
                 )
@@ -170,7 +170,7 @@ const FlightDetails = ({ flights }) => {
             </Flex>
             <Flex justifyContent="space-between">
               <Text fontSize="sm">
-                {selectedFlight.is_rental
+                {selectedFlight.rental
                   ? selectedFlight.rental.fleet.manufacturer +
                     ' ' +
                     selectedFlight.rental.fleet.name
@@ -179,7 +179,7 @@ const FlightDetails = ({ flights }) => {
                     selectedFlight.aircraft.fleet.name}
               </Text>
               <Text fontSize="sm">
-                {selectedFlight.is_rental
+                {selectedFlight.rental
                   ? selectedFlight.rental.registration
                   : selectedFlight.aircraft.registration}
               </Text>
