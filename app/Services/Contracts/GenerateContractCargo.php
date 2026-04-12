@@ -16,7 +16,7 @@ class GenerateContractCargo
         $qty = 0;
         $types = DB::table('cargo_types')->get();
         $cargo = $types->random();
-        if ($cargo->type == CargoType::Cargo) {
+        if ($cargo->type == CargoType::Cargo->value) {
             $qty = random_int($minCargo, $maxCargo);
         } else {
             $qty = random_int($minPax, $maxPax);
