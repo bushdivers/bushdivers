@@ -224,10 +224,10 @@ const Cargo = (props) => {
                             />
                           </Td>
                           <Td>
-                            {detail.current_airport.identifier}{' '}
-                            {detail.current_airport.longest_runway_surface ===
+                            {props.currentAirport.identifier}{' '}
+                            {props.currentAirport.longest_runway_surface ===
                               'W' && <Icon as={Anchor} color="blue.500" />}
-                            {detail.current_airport.is_thirdparty && (
+                            {props.currentAirport.is_thirdparty && (
                               <Icon as={Package} color="green.500" />
                             )}
                           </Td>

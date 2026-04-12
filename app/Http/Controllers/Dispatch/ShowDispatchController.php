@@ -97,7 +97,7 @@ class ShowDispatchController extends Controller
 
     protected function getCargoForDispatch(Airport $currentLocation, $userId): array
     {
-        $cargoAtAirport = Contract::with('currentAirport', 'depAirport', 'arrAirport', 'communityJobContract.communityJob')
+        $cargoAtAirport = Contract::with('arrAirport', 'communityJobContract.communityJob')
             ->where('current_airport_id', $currentLocation->id)
             ->where('is_completed', false)
             ->where(function ($q) use ($userId) {
@@ -108,7 +108,7 @@ class ShowDispatchController extends Controller
             ->orderBy('arr_airport_id')
             ->get();
 
-        $cargoElsewhere = Contract::with('currentAirport', 'depAirport', 'arrAirport')
+        $cargoElsewhere = Contract::with('currentAirport', 'arrAirport')
             ->where('current_airport_id', '<>', $currentLocation->id)
             ->where('is_completed', false)
             ->where(function ($q) use ($userId) {

@@ -334,6 +334,7 @@ const Dispatch = ({ cargo, aircraft, airport, tours }) => {
               )}
             <Cargo
               cargo={cargo}
+              currentAirport={airport}
               selectedCargo={selectedCargo}
               handleCargoSelect={handleCargoSelect}
               deadHead={deadHead}
