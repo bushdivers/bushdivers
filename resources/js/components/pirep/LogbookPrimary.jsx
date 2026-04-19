@@ -1,8 +1,10 @@
 import { Box, Card, CardBody, Flex, Icon, Tag, Text } from '@chakra-ui/react'
 import { Link } from '@inertiajs/react'
 import { format } from 'date-fns'
-import { Anchor, Package, PlaneLanding, PlaneTakeoff } from 'lucide-react'
+import { PlaneLanding, PlaneTakeoff } from 'lucide-react'
 import React from 'react'
+
+import AirportLabel from '../airport/AirportLabel.jsx'
 
 const LogbookPrimary = ({ pirep }) => {
   return (
@@ -12,33 +14,13 @@ const LogbookPrimary = ({ pirep }) => {
           <Flex justifyContent="space-between">
             <Flex direction="column" alignItems="center">
               <Icon w={6} h={6} as={PlaneTakeoff} />
-              <Flex direction="row" alignItems="center" gap={2}>
-                <Link href={`/airports/${pirep.dep_airport.identifier}`}>
-                  <Text fontSize="xl">{pirep.dep_airport.identifier}</Text>
-                </Link>
-                {pirep.dep_airport.longest_runway_surface === 'W' && (
-                  <Icon as={Anchor} color="blue.500" />
-                )}
-                {pirep.dep_airport.is_thirdparty && (
-                  <Icon as={Package} color="green.500" />
-                )}
-              </Flex>
+              <AirportLabel airport={pirep.dep_airport} size="xl" />
               <Text>{pirep.dep_airport.name}</Text>
               <Text>{format(new Date(pirep.block_off_time), 'kk:mm')}</Text>
             </Flex>
             <Flex direction="column" alignItems="center">
               <Icon w={6} h={6} as={PlaneLanding} />
-              <Flex direction="row" alignItems="center" gap={2}>
-                <Link href={`/airports/${pirep.arr_airport.identifier}`}>
-                  <Text fontSize="xl">{pirep.arr_airport.identifier}</Text>
-                </Link>
-                {pirep.arr_airport.longest_runway_surface === 'W' && (
-                  <Icon as={Anchor} color="blue.500" />
-                )}
-                {pirep.arr_airport.is_thirdparty && (
-                  <Icon as={Package} color="green.500" />
-                )}
-              </Flex>
+              <AirportLabel airport={pirep.arr_airport} size="xl" />
               <Text>{pirep.arr_airport.name}</Text>
               <Text>{format(new Date(pirep.block_on_time), 'kk:mm')}</Text>
             </Flex>

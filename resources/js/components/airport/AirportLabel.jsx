@@ -1,5 +1,6 @@
 import {
   Badge,
+  Box,
   Link as ChakraLink,
   Divider,
   Flex,
@@ -7,9 +8,7 @@ import {
   Image,
   Popover,
   PopoverArrow,
-  PopoverBody,
   PopoverContent,
-  PopoverHeader,
   PopoverTrigger,
   Tag,
   Text,
@@ -21,7 +20,7 @@ import React from 'react'
 import { runwaySurface } from '../../helpers/airport.helpers.js'
 import { SimTypeColors } from '../../helpers/simtype.helpers.js'
 
-const AirportPopoverContent = ({ airport }) => {
+const AirportPopoverDetails = ({ airport }) => {
   const isWater = airport.longest_runway_surface === 'W'
   const hasRunwayDetail = airport.longest_runway_length != null
   const hasFuel = airport.has_avgas || airport.has_jetfuel
@@ -33,16 +32,8 @@ const AirportPopoverContent = ({ airport }) => {
   const hasPhysical = airport.altitude != null || hasRunwayDetail
 
   return (
-    <PopoverContent
-      fontSize="xs"
-      w="280px"
-      boxShadow="xl"
-      cursor="default"
-      _dark={{ bg: 'gray.700' }}
-      onClick={(e) => e.stopPropagation()}
-    >
-      <PopoverArrow />
-      <PopoverHeader>
+    <>
+      <Box px={4} py={2} borderBottomWidth="1px">
         <Flex justifyContent="space-between" alignItems="center" gap={2}>
           <Flex direction="column" minW={0}>
             <Text fontSize="sm" fontWeight="bold" noOfLines={1}>
@@ -70,8 +61,8 @@ const AirportPopoverContent = ({ airport }) => {
             )}
           </Flex>
         </Flex>
-      </PopoverHeader>
-      <PopoverBody>
+      </Box>
+      <Box p={4}>
         <Flex direction="column" gap={1.5}>
           {/* Characteristics: flags + physical on one section, one divider above fuel */}
           {(hasFlags || hasPhysical) && (
@@ -157,7 +148,41 @@ const AirportPopoverContent = ({ airport }) => {
             </>
           )}
         </Flex>
-      </PopoverBody>
+      </Box>
+    </>
+  )
+}
+
+export const AirportPopoverPanel = ({ airport }) => {
+  return (
+    <Box
+      fontSize="xs"
+      w="280px"
+      boxShadow="xl"
+      rounded="md"
+      overflow="hidden"
+      cursor="default"
+      bg="white"
+      _dark={{ bg: 'gray.700' }}
+      onClick={(e) => e.stopPropagation()}
+    >
+      <AirportPopoverDetails airport={airport} />
+    </Box>
+  )
+}
+
+export const AirportPopoverContent = ({ airport }) => {
+  return (
+    <PopoverContent
+      fontSize="xs"
+      w="280px"
+      boxShadow="xl"
+      cursor="default"
+      _dark={{ bg: 'gray.700' }}
+      onClick={(e) => e.stopPropagation()}
+    >
+      <PopoverArrow />
+      <AirportPopoverDetails airport={airport} />
     </PopoverContent>
   )
 }

@@ -2,12 +2,16 @@ import { Box, Flex, Text } from '@chakra-ui/react'
 import { Link } from '@inertiajs/react'
 import React from 'react'
 
-const StatDisplay = ({ stat, title, link = false }) => {
+import AirportLabel from '../airport/AirportLabel.jsx'
+
+const StatDisplay = ({ stat, title, link = false, airport = null }) => {
   return (
     <Box>
       <Flex alignItems="center" direction="column">
         <Text fontSize="sm">{title}</Text>
-        {!link ? (
+        {airport ? (
+          <AirportLabel airport={airport} size="xl" />
+        ) : !link ? (
           <Text fontSize="xl">{stat}</Text>
         ) : (
           <>

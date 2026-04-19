@@ -16,6 +16,8 @@ import {
 import DOMPurify from 'dompurify'
 import React from 'react'
 
+import AirportLabel from '../airport/AirportLabel.jsx'
+
 const MissionJob = ({ mission, fleet }) => {
   return (
     <>
@@ -65,8 +67,20 @@ const MissionJob = ({ mission, fleet }) => {
                     <Tbody>
                       {mission.jobs.map((job) => (
                         <Tr key={job.id}>
-                          <Td>{job.dep_airport_id}</Td>
-                          <Td>{job.arr_airport_id}</Td>
+                          <Td>
+                            {job.departure_airport ? (
+                              <AirportLabel airport={job.departure_airport} />
+                            ) : (
+                              job.dep_airport_id
+                            )}
+                          </Td>
+                          <Td>
+                            {job.arrival_airport ? (
+                              <AirportLabel airport={job.arrival_airport} />
+                            ) : (
+                              job.arr_airport_id
+                            )}
+                          </Td>
                           <Td>{job.cargo}</Td>
                           <Td>
                             {job.cargo_type === 1

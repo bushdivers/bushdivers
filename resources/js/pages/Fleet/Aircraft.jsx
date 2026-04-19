@@ -254,20 +254,12 @@ const Aircraft = ({ aircraft, maintenanceStatus, pireps }) => {
         </Card>
         <Card>
           <CardBody>
-            <StatDisplay
-              stat={aircraft.location.identifier}
-              link={'/airports/' + aircraft.location.identifier}
-              title="Current Location"
-            />
+            <StatDisplay airport={aircraft.location} title="Current Location" />
           </CardBody>
         </Card>
         <Card>
           <CardBody>
-            <StatDisplay
-              stat={aircraft.hub.identifier}
-              link={'/airports/' + aircraft.hub.identifier}
-              title="Home Hub"
-            />
+            <StatDisplay airport={aircraft.hub} title="Home Hub" />
           </CardBody>
         </Card>
         <Card>

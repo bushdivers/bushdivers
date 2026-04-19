@@ -1,15 +1,14 @@
-import { Box, Card, CardBody, Icon, useColorMode } from '@chakra-ui/react'
-import { Link } from '@inertiajs/react'
-import { Anchor, Package } from 'lucide-react'
+import { Box, useColorMode } from '@chakra-ui/react'
 import maplibre from 'maplibre-gl'
 import React, { useEffect, useRef, useState } from 'react'
-import { Map, Marker, Popup } from 'react-map-gl'
+import { Map, Marker } from 'react-map-gl'
 
 import {
   mapboxToken,
   parseMapStyle,
   transformRequest,
 } from '../../helpers/geo.helpers.js'
+import { AirportPopoverPanel } from './AirportLabel.jsx'
 
 const HubMap = ({ hubs, onIsVisible }) => {
   const [selectedMarker, setSelectedMarker] = useState(null)
@@ -39,6 +38,7 @@ const HubMap = ({ hubs, onIsVisible }) => {
         }}
         mapStyle={parseMapStyle(colorMode)}
         transformRequest={transformRequest}
+        onClick={() => setSelectedMarker(null)}
       >
         {hubs.length > 0 &&
           hubs.map((loc) => (
@@ -56,29 +56,14 @@ const HubMap = ({ hubs, onIsVisible }) => {
             />
           ))}
         {selectedMarker && (
-          <Popup
+          <Marker
             longitude={Number(selectedMarker.lon)}
             latitude={Number(selectedMarker.lat)}
             anchor="top"
-            onClose={() => setSelectedMarker(null)}
+            offset={[0, -12]}
           >
-            <Card boxShadow={'none'}>
-              <CardBody p={2} pb={0}>
-                <Box fontSize="md">
-                  <Link href={`/airports/${selectedMarker.identifier}`}>
-                    {selectedMarker.identifier}
-                  </Link>{' '}
-                  {selectedMarker.longest_runway_surface === 'W' && (
-                    <Icon as={Anchor} color="blue.500" />
-                  )}
-                  {selectedMarker.is_thirdparty && (
-                    <Icon as={Package} color="green.500" />
-                  )}
-                </Box>
-                <Box>{selectedMarker.name}</Box>
-              </CardBody>
-            </Card>
-          </Popup>
+            <AirportPopoverPanel airport={selectedMarker} />
+          </Marker>
         )}
       </Map>
     </Box>

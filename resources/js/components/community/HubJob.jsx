@@ -2,7 +2,6 @@ import {
   Box,
   Card,
   CardBody,
-  Link as ChakraLink,
   Flex,
   Heading,
   Icon,
@@ -17,9 +16,10 @@ import {
   Thead,
   Tr,
 } from '@chakra-ui/react'
-import { Link as InertiaLink } from '@inertiajs/react'
-import { Anchor, CheckCircle, Package } from 'lucide-react'
+import { CheckCircle } from 'lucide-react'
 import React from 'react'
+
+import AirportLabel from '../airport/AirportLabel.jsx'
 
 const HubJob = ({ hub }) => {
   return (
@@ -58,34 +58,14 @@ const HubJob = ({ hub }) => {
                     {contract.cargo_qty} x {contract.cargo}
                   </Td>
                   <Td>
-                    <ChakraLink
-                      href={`/airports/${contract.dep_airport.identifier}`}
-                      as={InertiaLink}
-                      color="orange.500"
-                    >
-                      {contract.dep_airport.identifier}
-                      {contract.dep_airport.longest_runway_surface === 'W' && (
-                        <Icon as={Anchor} color="blue.500" />
-                      )}
-                      {contract.dep_airport.is_thirdparty && (
-                        <Icon as={Package} color="green.500" />
-                      )}
-                    </ChakraLink>
+                    {contract.dep_airport ? (
+                      <AirportLabel airport={contract.dep_airport} />
+                    ) : null}
                   </Td>
                   <Td>
-                    <ChakraLink
-                      href={`/airports/${contract.current_airport.identifier}`}
-                      as={InertiaLink}
-                      color="orange.500"
-                    >
-                      {contract.current_airport.identifier}
-                      {contract.dep_airport.longest_runway_surface === 'W' && (
-                        <Icon as={Anchor} color="blue.500" />
-                      )}
-                      {contract.dep_airport.is_thirdparty && (
-                        <Icon as={Package} color="green.500" />
-                      )}
-                    </ChakraLink>
+                    {contract.current_airport ? (
+                      <AirportLabel airport={contract.current_airport} />
+                    ) : null}
                   </Td>
                   <Td>
                     {contract.is_completed ? (
@@ -116,19 +96,9 @@ const HubJob = ({ hub }) => {
                     {ferry.registration} {ferry.fleet.type} - {ferry.fleet.name}
                   </Td>
                   <Td>
-                    <ChakraLink
-                      href={`/airports/${ferry.location.identifier}`}
-                      as={InertiaLink}
-                      color="orange.500"
-                    >
-                      {ferry.location.identifier}
-                      {ferry.location.longest_runway_surface === 'W' && (
-                        <Icon as={Anchor} color="blue.500" />
-                      )}
-                      {ferry.location.is_thirdparty && (
-                        <Icon as={Package} color="green.500" />
-                      )}
-                    </ChakraLink>
+                    {ferry.location ? (
+                      <AirportLabel airport={ferry.location} />
+                    ) : null}
                   </Td>
                   <Td>
                     {ferry.ferry_user_id

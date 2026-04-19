@@ -19,6 +19,7 @@ import axios from 'axios'
 import { Wrench } from 'lucide-react'
 import React from 'react'
 
+import AirportLabel from '../../components/airport/AirportLabel.jsx'
 import { useMessageBox } from '../../components/elements/MessageBoxProvider.jsx'
 import AircraftCondition from '../../components/fleet/AircraftCondition'
 import AppLayout from '../../components/layout/AppLayout'
@@ -80,8 +81,12 @@ const MyAircraft = ({ aircraft, rentals }) => {
                         </Link>
                       </Td>
                       <Td>{ac.fleet.type}</Td>
-                      <Td>{ac.location.identifier}</Td>
-                      <Td>{ac.hub.identifier}</Td>
+                      <Td>
+                        <AirportLabel airport={ac.location} />
+                      </Td>
+                      <Td>
+                        <AirportLabel airport={ac.hub} />
+                      </Td>
                       <Td>
                         {convertMinuteDecimalToHoursAndMinutes(
                           ac.flight_time_mins
@@ -131,8 +136,12 @@ const MyAircraft = ({ aircraft, rentals }) => {
                     <Tr key={ac.id}>
                       <Td>{ac.registration}</Td>
                       <Td>{ac.fleet.type}</Td>
-                      <Td>{ac.location.identifier}</Td>
-                      <Td>{ac.hub.identifier}</Td>
+                      <Td>
+                        <AirportLabel airport={ac.location} />
+                      </Td>
+                      <Td>
+                        <AirportLabel airport={ac.hub} />
+                      </Td>
                       <Td>${ac.fleet.rental_cost}</Td>
                     </Tr>
                   ))}
