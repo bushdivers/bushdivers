@@ -6,6 +6,7 @@ import { ErrorBoundary } from 'react-error-boundary'
 
 import '../css/app.css'
 import './bootstrap'
+import { MessageBoxProvider } from './components/elements/MessageBoxProvider'
 import { postError } from './helpers/error.helpers'
 import Error from './pages/General/Error'
 import theme from './theme'
@@ -29,7 +30,9 @@ createInertiaApp({
           onError={postError}
           fallbackRender={() => <Error status={500} />}
         >
-          <App {...props} />
+          <MessageBoxProvider>
+            <App {...props} />
+          </MessageBoxProvider>
         </ErrorBoundary>
       </ChakraProvider>
     )

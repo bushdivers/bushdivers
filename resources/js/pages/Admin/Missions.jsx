@@ -28,10 +28,12 @@ import {
 import { Link, router } from '@inertiajs/react'
 import React, { useState } from 'react'
 
+import { useMessageBox } from '../../components/elements/MessageBoxProvider.jsx'
 import AdminLayout from '../../components/layout/AdminLayout.jsx'
 
 const Missions = ({ missions }) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
+  const messageBox = useMessageBox()
   const [newMissionError, setNewMissionError] = useState(null)
   const [newMission, setNewMission] = useState({
     name: '',
@@ -54,20 +56,42 @@ const Missions = ({ missions }) => {
     onClose()
   }
 
-  function deleteMission(mission) {
-    if (confirm('Are you sure you want to delete this mission?')) {
+  async function deleteMission(mission) {
+    const accepted = await messageBox.confirm({
+      title: 'Delete Mission',
+      description: 'Are you sure you want to delete this mission?',
+      status: 'warning',
+      confirmText: 'Delete',
+      confirmColorScheme: 'red',
+    })
+
+    if (accepted) {
       router.delete(`/admin/missions/${mission.id}`)
     }
   }
 
-  function publishMission(id) {
-    if (confirm('Are you sure you want to publish this mission?')) {
+  async function publishMission(id) {
+    const accepted = await messageBox.confirm({
+      title: 'Publish Mission',
+      description: 'Are you sure you want to publish this mission?',
+      status: 'warning',
+      confirmText: 'Publish',
+    })
+
+    if (accepted) {
       router.post(`/admin/missions/${id}/publish`)
     }
   }
 
-  function completeMission(id) {
-    if (confirm('Are you sure you want to complete this mission?')) {
+  async function completeMission(id) {
+    const accepted = await messageBox.confirm({
+      title: 'Complete Mission',
+      description: 'Are you sure you want to complete this mission?',
+      status: 'warning',
+      confirmText: 'Complete',
+    })
+
+    if (accepted) {
       router.post(`/admin/missions/${id}/complete`)
     }
   }

@@ -25,6 +25,7 @@ import { Anchor, ArrowUp, Package } from 'lucide-react'
 import React from 'react'
 
 import DispatchSummary from '../../components/dispatch/DispatchSummary'
+import { useMessageBox } from '../../components/elements/MessageBoxProvider.jsx'
 import AppLayout from '../../components/layout/AppLayout'
 import { displayNumber, personWeight } from '../../helpers/number.helpers'
 
@@ -36,11 +37,18 @@ const ActiveDispatch = ({
   passengerCount,
   pirep,
 }) => {
-  function handleCancel() {
-    const res = window.confirm(
-      'You have an active flight, if you cancel now you will lose all progress'
-    )
-    if (res) {
+  const messageBox = useMessageBox()
+
+  async function handleCancel() {
+    const accepted = await messageBox.confirm({
+      title: 'Cancel Active Dispatch',
+      description:
+        'You have an active flight. If you cancel now you will lose all progress.',
+      status: 'warning',
+      confirmText: 'Cancel Dispatch',
+      confirmColorScheme: 'red',
+    })
+    if (accepted) {
       router.post('/dispatch/cancel', { pirep: pirep.id })
     }
   }

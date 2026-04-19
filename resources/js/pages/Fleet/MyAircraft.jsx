@@ -19,19 +19,26 @@ import axios from 'axios'
 import { Wrench } from 'lucide-react'
 import React from 'react'
 
+import { useMessageBox } from '../../components/elements/MessageBoxProvider.jsx'
 import AircraftCondition from '../../components/fleet/AircraftCondition'
 import AppLayout from '../../components/layout/AppLayout'
 import { convertMinuteDecimalToHoursAndMinutes } from '../../helpers/date.helpers'
 
 const MyAircraft = ({ aircraft, rentals }) => {
+  const messageBox = useMessageBox()
+
   const handleSale = async (ac) => {
     const res = await axios.get(`/api/aircraft/price/${ac.id}`)
     if (res.status === 200) {
-      if (
-        window.confirm(
-          `Are you sure you want to sell your aircraft ${ac.registration} for $${res.data.price}?`
-        )
-      ) {
+      const accepted = await messageBox.confirm({
+        title: 'Confirm Aircraft Sale',
+        description: `Are you sure you want to sell your aircraft ${ac.registration} for $${res.data.price}?`,
+        status: 'warning',
+        confirmText: 'Sell Aircraft',
+        confirmColorScheme: 'red',
+      })
+
+      if (accepted) {
         router.post(`/marketplace/sell/${ac.id}/user`)
       }
     }

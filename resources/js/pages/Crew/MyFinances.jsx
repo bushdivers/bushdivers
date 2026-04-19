@@ -14,11 +14,13 @@ import {
   Th,
   Thead,
   Tr,
+  useToast,
 } from '@chakra-ui/react'
 import { router, usePage } from '@inertiajs/react'
 import { format } from 'date-fns'
 import React from 'react'
 
+import { useMessageBox } from '../../components/elements/MessageBoxProvider.jsx'
 import Pagination from '../../components/elements/Pagination'
 import AppLayout from '../../components/layout/AppLayout'
 import { displayNumber } from '../../helpers/number.helpers'
@@ -60,30 +62,78 @@ const renderTransactionType = (transactionType) => {
 
 const MyFinances = ({ accounts, balance, loanAvailable }) => {
   const { auth } = usePage().props
+  const toast = useToast()
+  const messageBox = useMessageBox()
 
-  function handleBorrowClick() {
-    const value = window.prompt('Enter amount to borrow')
+  async function handleBorrowClick() {
+    const value = await messageBox.prompt({
+      title: 'Borrow Funds',
+      description: 'Enter amount to borrow.',
+      label: 'Amount',
+      placeholder: '0.00',
+      requireValue: true,
+      confirmText: 'Borrow',
+      status: 'info',
+    })
+
+    if (value == null) {
+      return
+    }
+
     const floatValue = parseFloat(value)
+
     if (floatValue > loanAvailable) {
-      window.alert(
-        'Amount to borrow must be less than or equal to available amount'
-      )
+      toast({
+        title: 'Invalid Borrow Amount',
+        description:
+          'Amount to borrow must be less than or equal to available amount.',
+        status: 'warning',
+        isClosable: true,
+      })
     } else if (!floatValue) {
-      window.alert('Invalid amount entered')
+      toast({
+        title: 'Invalid Amount',
+        description: 'Invalid amount entered.',
+        status: 'warning',
+        isClosable: true,
+      })
     } else {
       router.post('/loans', { loanAmount: floatValue, transaction: 'borrow' })
     }
   }
 
-  function handleRepayClick() {
-    const value = window.prompt('Enter amount to repay')
+  async function handleRepayClick() {
+    const value = await messageBox.prompt({
+      title: 'Repay Loan',
+      description: 'Enter amount to repay.',
+      label: 'Amount',
+      placeholder: '0.00',
+      requireValue: true,
+      confirmText: 'Repay',
+      status: 'info',
+    })
+
+    if (value == null) {
+      return
+    }
+
     const floatValue = parseFloat(value)
+
     if (floatValue > auth.user.loan) {
-      window.alert(
-        'Amount to repay must be less than or equal to current amount'
-      )
+      toast({
+        title: 'Invalid Repayment Amount',
+        description:
+          'Amount to repay must be less than or equal to current amount.',
+        status: 'warning',
+        isClosable: true,
+      })
     } else if (!floatValue) {
-      window.alert('Invalid amount entered')
+      toast({
+        title: 'Invalid Amount',
+        description: 'Invalid amount entered.',
+        status: 'warning',
+        isClosable: true,
+      })
     } else {
       router.post('/loans', { loanAmount: floatValue, transaction: 'repay' })
     }

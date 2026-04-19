@@ -24,11 +24,13 @@ import { CheckCircle2 } from 'lucide-react'
 import React, { useState } from 'react'
 
 import ApiKey from '../../components/crew/ApiKey'
+import { useMessageBox } from '../../components/elements/MessageBoxProvider.jsx'
 import AppLayout from '../../components/layout/AppLayout'
 import { convertMinuteDecimalToHoursAndMinutes } from '../../helpers/date.helpers'
 
 const Profile = ({ profile, rank, nextRank, awards }) => {
   const { errors } = usePage().props
+  const messageBox = useMessageBox()
   const [values, setValues] = useState({
     email: profile.email,
     password: '',
@@ -58,12 +60,17 @@ const Profile = ({ profile, rank, nextRank, awards }) => {
     router.put('/profile', values)
   }
 
-  function handleResetCareer() {
-    if (
-      window.confirm(
-        'Are you sure you want to reset your career, this will clear your finance history and any owned aircraft?'
-      )
-    ) {
+  async function handleResetCareer() {
+    const accepted = await messageBox.confirm({
+      title: 'Reset Career',
+      description:
+        'Are you sure you want to reset your career? This will clear your finance history and any owned aircraft.',
+      status: 'warning',
+      confirmText: 'Reset Career',
+      confirmColorScheme: 'red',
+    })
+
+    if (accepted) {
       router.post('/profile/reset')
     }
   }

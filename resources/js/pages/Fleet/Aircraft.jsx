@@ -17,12 +17,14 @@ import {
   Th,
   Thead,
   Tr,
+  useToast,
 } from '@chakra-ui/react'
 import { router, usePage } from '@inertiajs/react'
 import { format } from 'date-fns'
 import { Wrench } from 'lucide-react'
 import React from 'react'
 
+import { useMessageBox } from '../../components/elements/MessageBoxProvider.jsx'
 import StatDisplay from '../../components/elements/StatDisplay.jsx'
 import AircraftCondition from '../../components/fleet/AircraftCondition'
 import AircraftMap from '../../components/fleet/AircraftMap'
@@ -31,6 +33,8 @@ import { convertMinuteDecimalToHoursAndMinutes } from '../../helpers/date.helper
 
 const Aircraft = ({ aircraft, maintenanceStatus, pireps }) => {
   const { auth } = usePage().props
+  const toast = useToast()
+  const messageBox = useMessageBox()
 
   const calculateDistanceFlown = (p) => {
     return p.reduce((a, pirep) => {
@@ -65,10 +69,15 @@ const Aircraft = ({ aircraft, maintenanceStatus, pireps }) => {
     if (aircraft.location.is_hub || aircraft.location.size >= 3) return true
   }
 
-  const handleTBO = (aircraft, engine) => {
+  const handleTBO = async (aircraft, engine) => {
     const res = checkAircraftAtHub(aircraft)
     if (!res) {
-      window.alert('Maintenance is not available at this airport')
+      toast({
+        title: 'Maintenance Unavailable',
+        description: 'Maintenance is not available at this airport.',
+        status: 'warning',
+        isClosable: true,
+      })
       return
     }
     let cost = 0.0
@@ -83,9 +92,12 @@ const Aircraft = ({ aircraft, maintenanceStatus, pireps }) => {
         cost = 60000.0
         break
     }
-    const accept = window.confirm(
-      `TBO will cost $${cost}, do you want to proceed?`
-    )
+    const accept = await messageBox.confirm({
+      title: 'Confirm TBO Inspection',
+      description: `TBO will cost $${cost}, do you want to proceed?`,
+      status: 'warning',
+      confirmText: 'Proceed',
+    })
     if (!accept) return
     const data = {
       aircraft: aircraft.id,
@@ -96,16 +108,24 @@ const Aircraft = ({ aircraft, maintenanceStatus, pireps }) => {
     router.post('/aircraft/maintenance', data)
   }
   //
-  const handle100hr = (aircraft, engine) => {
+  const handle100hr = async (aircraft, engine) => {
     const res = checkAircraftAtHub(aircraft)
     if (!res) {
-      window.alert('Maintenance is not available at this airport')
+      toast({
+        title: 'Maintenance Unavailable',
+        description: 'Maintenance is not available at this airport.',
+        status: 'warning',
+        isClosable: true,
+      })
       return
     }
 
-    const accept = window.confirm(
-      '100 hour check will cost $2000.00, do you want to proceed?'
-    )
+    const accept = await messageBox.confirm({
+      title: 'Confirm 100-Hour Check',
+      description: '100 hour check will cost $2000.00, do you want to proceed?',
+      status: 'warning',
+      confirmText: 'Proceed',
+    })
     if (!accept) return
 
     const data = {
@@ -117,16 +137,25 @@ const Aircraft = ({ aircraft, maintenanceStatus, pireps }) => {
     router.post('/aircraft/maintenance', data)
   }
 
-  const handleAnnual = (aircraft) => {
+  const handleAnnual = async (aircraft) => {
     const res = checkAircraftAtHub(aircraft)
     if (!res) {
-      window.alert('Maintenance is not available at this airport')
+      toast({
+        title: 'Maintenance Unavailable',
+        description: 'Maintenance is not available at this airport.',
+        status: 'warning',
+        isClosable: true,
+      })
       return
     }
 
-    const accept = window.confirm(
-      'Annual airframe check will cost $2000.00, do you want to proceed?'
-    )
+    const accept = await messageBox.confirm({
+      title: 'Confirm Annual Inspection',
+      description:
+        'Annual airframe check will cost $2000.00, do you want to proceed?',
+      status: 'warning',
+      confirmText: 'Proceed',
+    })
     if (!accept) return
 
     const data = {
@@ -137,11 +166,18 @@ const Aircraft = ({ aircraft, maintenanceStatus, pireps }) => {
     router.post('/aircraft/maintenance', data)
   }
 
-  const handleRelocate = (aircraft) => {
-    const dest = window.prompt(
-      'Enter ICAO of destination airport',
-      aircraft.hub.identifier
-    )
+  const handleRelocate = async (aircraft) => {
+    const dest = await messageBox.prompt({
+      title: 'Relocate Aircraft',
+      description: 'Enter ICAO of destination airport.',
+      label: 'Destination ICAO',
+      defaultValue: aircraft.hub.identifier,
+      placeholder: 'e.g. CYVR',
+      requireValue: true,
+      confirmText: 'Relocate',
+      status: 'info',
+    })
+
     if (!dest || dest.length < 2) return
 
     const data = {
@@ -152,21 +188,29 @@ const Aircraft = ({ aircraft, maintenanceStatus, pireps }) => {
     router.post('/aircraft/maintenance/relocate', data)
   }
 
-  const handleGeneralMaintenance = (
+  const handleGeneralMaintenance = async (
     aircraft,
     maintenanceType,
     engine = null
   ) => {
     const res = checkAircraftAtHub(aircraft)
     if (!res) {
-      window.alert('Maintenance is not available at this airport')
+      toast({
+        title: 'Maintenance Unavailable',
+        description: 'Maintenance is not available at this airport.',
+        status: 'warning',
+        isClosable: true,
+      })
       return
     }
-    const accept = window.confirm(
-      `Are you sure you want to proceed with ${
+    const accept = await messageBox.confirm({
+      title: 'Confirm Maintenance',
+      description: `Are you sure you want to proceed with ${
         maintenanceType === 4 ? 'General' : 'Engine'
-      } maintenance?`
-    )
+      } maintenance?`,
+      status: 'warning',
+      confirmText: 'Proceed',
+    })
     if (!accept) return
 
     const data = {

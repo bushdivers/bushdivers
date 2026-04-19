@@ -29,10 +29,12 @@ import {
 import { Link, router } from '@inertiajs/react'
 import React, { useState } from 'react'
 
+import { useMessageBox } from '../../components/elements/MessageBoxProvider.jsx'
 import AdminLayout from '../../components/layout/AdminLayout.jsx'
 
 const TourList = ({ tours }) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
+  const messageBox = useMessageBox()
   const [newTourError, setNewTourError] = useState(null)
   const [newTour, setNewTour] = useState({
     title: '',
@@ -61,14 +63,29 @@ const TourList = ({ tours }) => {
     onClose()
   }
 
-  function deleteTour(tour) {
-    if (confirm('Are you sure you want to delete this tour?')) {
+  async function deleteTour(tour) {
+    const accepted = await messageBox.confirm({
+      title: 'Delete Tour',
+      description: 'Are you sure you want to delete this tour?',
+      status: 'warning',
+      confirmText: 'Delete',
+      confirmColorScheme: 'red',
+    })
+
+    if (accepted) {
       router.delete(`/admin/tours/${tour.id}`)
     }
   }
 
-  function publishTour(id) {
-    if (confirm('Are you sure you want to publish this tour?')) {
+  async function publishTour(id) {
+    const accepted = await messageBox.confirm({
+      title: 'Publish Tour',
+      description: 'Are you sure you want to publish this tour?',
+      status: 'warning',
+      confirmText: 'Publish',
+    })
+
+    if (accepted) {
       router.post(`/admin/tours/${id}/publish`)
     }
   }

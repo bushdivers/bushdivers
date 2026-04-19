@@ -12,6 +12,7 @@ import {
   RadioGroup,
   Select,
   Stack,
+  useToast,
 } from '@chakra-ui/react'
 import { router, usePage } from '@inertiajs/react'
 import { Anchor, Package } from 'lucide-react'
@@ -27,6 +28,7 @@ import { SimTypeNames } from '../../helpers/simtype.helpers.js'
 
 const Dispatch = ({ cargo, aircraft, airport, tours }) => {
   const { auth } = usePage().props
+  const toast = useToast()
   const [personWeight] = useState(170.0)
   const [avgasWeight] = useState(5.99)
   const [jetFuelWeight] = useState(6.79)
@@ -52,7 +54,7 @@ const Dispatch = ({ cargo, aircraft, airport, tours }) => {
     }
   }
 
-  function handleAircraftSelect(ac) {
+  async function handleAircraftSelect(ac) {
     const found = aircraft.find((a) => a.registration === ac.registration)
     setSelectedAircraft(found)
     const defVariant =
@@ -63,9 +65,13 @@ const Dispatch = ({ cargo, aircraft, airport, tours }) => {
     setSelectedVariant(defVariant)
     setFuel(ac.fuel_onboard)
     if (ac.maintenance_status || ac.total_condition <= 25) {
-      window.alert(
-        'This aircraft is in need of maintenance, and therefore cannot be used for commercial purposes - please head to nearest size 4+ airport or hub for repairs.'
-      )
+      toast({
+        title: 'Aircraft Requires Maintenance',
+        description:
+          'This aircraft is in need of maintenance, and therefore cannot be used for commercial purposes. Please head to nearest size 4+ airport or hub for repairs.',
+        status: 'warning',
+        isClosable: true,
+      })
       setDeadHead(true)
     } else {
       setDeadHead(false)
@@ -178,9 +184,14 @@ const Dispatch = ({ cargo, aircraft, airport, tours }) => {
     router.post('/dispatch', data)
   }
 
-  function handleSubmitDispatch() {
+  async function handleSubmitDispatch() {
     if (flightType === null) {
-      alert('Please select a flight type')
+      toast({
+        title: 'Flight Type Required',
+        description: 'Please select a flight type.',
+        status: 'warning',
+        isClosable: true,
+      })
       return
     }
     if (flightType === 'tour') {
@@ -192,7 +203,12 @@ const Dispatch = ({ cargo, aircraft, airport, tours }) => {
         compatibleAircraft.length === 0 ||
         selectedAircraft.owner_id === 0
       ) {
-        alert('This aircraft is not compatible with the tour flight')
+        toast({
+          title: 'Incompatible Aircraft',
+          description: 'This aircraft is not compatible with the tour flight.',
+          status: 'warning',
+          isClosable: true,
+        })
         return
       }
     }
@@ -207,17 +223,25 @@ const Dispatch = ({ cargo, aircraft, airport, tours }) => {
     ) {
       console.log(selectedAircraft)
       if (selectedAircraft.owner_id !== 0) {
-        alert(
-          'This aircraft is not compatible with a community contract. please select a fleet plane'
-        )
+        toast({
+          title: 'Incompatible Aircraft',
+          description:
+            'This aircraft is not compatible with a community contract. Please select a fleet plane.',
+          status: 'warning',
+          isClosable: true,
+        })
         return
       }
     }
 
     if (selectedVariant && fuel > selectedVariant.fuel_capacity) {
-      alert(
-        "Fuel load exceeds the selected variant's tank capacity. Please reduce fuel before dispatching."
-      )
+      toast({
+        title: 'Fuel Capacity Exceeded',
+        description:
+          "Fuel load exceeds the selected variant's tank capacity. Please reduce fuel before dispatching.",
+        status: 'warning',
+        isClosable: true,
+      })
       return
     }
 
@@ -238,12 +262,23 @@ const Dispatch = ({ cargo, aircraft, airport, tours }) => {
         personWeight + fuelWeight + cargoWeight >
           (variant?.mtow ?? 0) - (variant?.zfw ?? 0)
       ) {
-        alert('You are overweight!')
+        toast({
+          title: 'Weight Limit Exceeded',
+          description: 'You are overweight.',
+          status: 'warning',
+          isClosable: true,
+        })
         return
       }
       sendDispatch()
     } else {
-      alert('Please make sure you have selected an aircraft, cargo, and fuel')
+      toast({
+        title: 'Missing Dispatch Data',
+        description:
+          'Please make sure you have selected an aircraft, cargo, and fuel.',
+        status: 'warning',
+        isClosable: true,
+      })
     }
   }
 

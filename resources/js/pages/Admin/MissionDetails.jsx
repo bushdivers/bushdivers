@@ -39,10 +39,13 @@ import showdown from 'showdown'
 
 import BulkUploadModal from '../../components/elements/BulkUploadModal.jsx'
 import BulkUploadResults from '../../components/elements/BulkUploadResults.jsx'
+import { useMessageBox } from '../../components/elements/MessageBoxProvider.jsx'
 import AdminLayout from '../../components/layout/AdminLayout.jsx'
 
 const MissionDetails = ({ mission, jobs, bulkUploadResults }) => {
   const [newJobError, setNewJobError] = useState(null)
+  const [missionError, setMissionError] = useState(null)
+  const messageBox = useMessageBox()
   const [missionDetails, setMissionDetails] = useState({
     name: mission.name,
     description: mission.description,
@@ -69,6 +72,7 @@ const MissionDetails = ({ mission, jobs, bulkUploadResults }) => {
     const value =
       e.target.type === 'checkbox' ? e.target.checked : e.target.value
 
+    setMissionError(null)
     setMissionDetails({
       ...missionDetails,
       [e.target.id]: value,
@@ -87,17 +91,25 @@ const MissionDetails = ({ mission, jobs, bulkUploadResults }) => {
 
   async function saveMission() {
     if (missionDetails.name === '' || missionDetails.description === '') {
-      alert('Please ensure all fields are filled in')
+      setMissionError('Please ensure all fields are filled in')
       return
     }
+    setMissionError(null)
     const converter = new showdown.Converter()
     missionDetails.description = await converter.makeHtml(
       missionDetails.description
     )
     router.post(`/admin/missions/${mission.id}`, missionDetails)
   }
-  function publishMission() {
-    if (confirm('Are you sure you want to publish this tour?')) {
+  async function publishMission() {
+    const accepted = await messageBox.confirm({
+      title: 'Publish Mission',
+      description: 'Are you sure you want to publish this mission?',
+      status: 'warning',
+      confirmText: 'Publish',
+    })
+
+    if (accepted) {
       router.post(`/admin/missions/${mission.id}/publish`)
     }
   }
@@ -116,8 +128,16 @@ const MissionDetails = ({ mission, jobs, bulkUploadResults }) => {
     onClose()
   }
 
-  function deleteJob(id) {
-    if (confirm('Are you sure you want to remove this Job?')) {
+  async function deleteJob(id) {
+    const accepted = await messageBox.confirm({
+      title: 'Remove Mission Job',
+      description: 'Are you sure you want to remove this job?',
+      status: 'warning',
+      confirmText: 'Remove',
+      confirmColorScheme: 'red',
+    })
+
+    if (accepted) {
       router.delete(`/admin/missions/jobs/${id}`)
     }
   }
@@ -157,8 +177,15 @@ const MissionDetails = ({ mission, jobs, bulkUploadResults }) => {
     clearForm()
   }
 
-  function completeMission() {
-    if (confirm('Are you sure you want to complete this mission?')) {
+  async function completeMission() {
+    const accepted = await messageBox.confirm({
+      title: 'Complete Mission',
+      description: 'Are you sure you want to complete this mission?',
+      status: 'warning',
+      confirmText: 'Complete',
+    })
+
+    if (accepted) {
       router.post(`/admin/missions/${mission.id}/complete`)
     }
   }
@@ -167,12 +194,16 @@ const MissionDetails = ({ mission, jobs, bulkUploadResults }) => {
     router.post(`/admin/missions/jobs/${jobId}/toggle-recurring`)
   }
 
-  function injectJobToContracts(jobId) {
-    if (
-      confirm(
-        'Are you sure you want to dispatch a copy this job into the contracts list?'
-      )
-    ) {
+  async function injectJobToContracts(jobId) {
+    const accepted = await messageBox.confirm({
+      title: 'Create Contract',
+      description:
+        'Are you sure you want to dispatch a copy of this job into the contracts list?',
+      status: 'warning',
+      confirmText: 'Create Contract',
+    })
+
+    if (accepted) {
       router.post(`/admin/missions/jobs/${jobId}/inject`)
     }
   }
@@ -193,6 +224,9 @@ const MissionDetails = ({ mission, jobs, bulkUploadResults }) => {
           )}
           <SimpleGrid columns={2} gap={4}>
             <Box p={2}>
+              {missionError ? (
+                <Text color="red.500">{missionError}</Text>
+              ) : null}
               <FormControl>
                 <FormLabel>Name</FormLabel>
                 <Input

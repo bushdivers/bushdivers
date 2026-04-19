@@ -1,4 +1,4 @@
-import { Box, Text } from '@chakra-ui/react'
+import { Box, Text, useToast } from '@chakra-ui/react'
 import { router, usePage } from '@inertiajs/react'
 import React, { useState } from 'react'
 
@@ -8,6 +8,7 @@ import UsedPurchase from '../../components/marketplace/UsedPurchase.jsx'
 
 const Purchase = ({ aircraft, purchaseType, buyer, hubs }) => {
   const { auth } = usePage().props
+  const toast = useToast()
   const [hub, setHub] = useState('')
   const [hubError, setHubError] = useState(null)
   const [reg, setReg] = useState(
@@ -37,7 +38,7 @@ const Purchase = ({ aircraft, purchaseType, buyer, hubs }) => {
     setDeliveryLocation(location)
   }
 
-  const purchase = (price) => {
+  const purchase = async (price) => {
     setError(null)
     setHubError(null)
     setRegError(null)
@@ -55,7 +56,12 @@ const Purchase = ({ aircraft, purchaseType, buyer, hubs }) => {
     }
 
     if (buyer === 'user' && parseFloat(price) > auth.user.balance) {
-      window.alert('You do not have sufficient funds')
+      toast({
+        title: 'Insufficient Funds',
+        description: 'You do not have sufficient funds.',
+        status: 'error',
+        isClosable: true,
+      })
       return
     }
     const data = {

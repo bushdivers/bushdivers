@@ -17,19 +17,29 @@ import React from 'react'
 
 import { runwaySurface } from '../../helpers/airport.helpers.js'
 import { SimTypeColors } from '../../helpers/simtype.helpers.js'
+import { useMessageBox } from '../elements/MessageBoxProvider.jsx'
 import AirportSearch from './AirportSearch.jsx'
 
 const AirportSummary = ({ airport }) => {
   const { auth } = usePage().props
+  const messageBox = useMessageBox()
   const isWater = airport.longest_runway_surface === 'W'
   const hasSimTypes = airport.sim_type?.length > 0
 
-  function renameAirport(airport) {
-    const newIcao = window.prompt(
-      'Enter new ICAO code for this airport',
-      airport
-    )
-    if (newIcao.length <= 2) return
+  async function renameAirport(airport) {
+    const newIcao = await messageBox.prompt({
+      title: 'Rename Airport',
+      description: 'Enter new ICAO code for this airport.',
+      label: 'ICAO Code',
+      defaultValue: airport,
+      placeholder: 'e.g. KSEA',
+      requireValue: true,
+      confirmText: 'Rename',
+      confirmColorScheme: 'blue',
+      status: 'info',
+    })
+
+    if (!newIcao || newIcao.length <= 2) return
 
     router.post('/airports/maintenance/rename', { airport, newIcao })
   }

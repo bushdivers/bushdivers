@@ -18,6 +18,7 @@ import { Pen, Trash2 } from 'lucide-react'
 import React, { useState } from 'react'
 
 import FleetAircraft from '../../components/admin/FleetAircraft'
+import { useMessageBox } from '../../components/elements/MessageBoxProvider.jsx'
 import NoContent from '../../components/elements/NoContent'
 import AdminLayout from '../../components/layout/AdminLayout.jsx'
 
@@ -32,13 +33,20 @@ const EmptyData = () => {
 
 const FleetList = ({ fleet }) => {
   const [showDetail, setShowDetail] = useState(false)
+  const messageBox = useMessageBox()
 
   const toggleDetail = () => {
     setShowDetail(!showDetail)
   }
 
-  const handleDelete = (id) => {
-    const accept = window.confirm('Are you sure you wish to delete this fleet?')
+  const handleDelete = async (id) => {
+    const accept = await messageBox.confirm({
+      title: 'Delete Fleet',
+      description: 'Are you sure you wish to delete this fleet?',
+      status: 'warning',
+      confirmText: 'Delete',
+      confirmColorScheme: 'red',
+    })
     if (!accept) return
 
     router.delete(`/admin/fleet/delete/${id}`)

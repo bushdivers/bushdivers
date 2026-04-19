@@ -86,11 +86,21 @@ const Cargo = (props) => {
       props.selectedCargo.length > 0 &&
       props.selectedCargo.find((sc) => sc.id === contractId)
     ) {
-      alert('Cannot split when cargo is selected!')
+      toast({
+        title: 'Cannot Split Contract',
+        description: 'Cannot split when cargo is selected.',
+        status: 'warning',
+        isClosable: true,
+      })
       return
     }
     if (sliderCargoValue < 1) {
-      alert('Cannot have zero cargo!')
+      toast({
+        title: 'Invalid Cargo Amount',
+        description: 'Cannot have zero cargo.',
+        status: 'warning',
+        isClosable: true,
+      })
       return
     }
     const data = {

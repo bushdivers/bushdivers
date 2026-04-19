@@ -19,17 +19,23 @@ import {
 import { Link, router, usePage } from '@inertiajs/react'
 import React from 'react'
 
+import { useMessageBox } from '../../components/elements/MessageBoxProvider.jsx'
 import AppLayout from '../../components/layout/AppLayout'
 import { displayNumber } from '../../helpers/number.helpers.js'
 
 const RentalList = ({ aircraft, myRentals, currentAirport }) => {
   const { auth } = usePage().props
+  const messageBox = useMessageBox()
 
-  const handleRental = (ac) => {
-    const confirm = window.confirm(
-      `Confirm you would like to rent a ${ac.manufacturer} ${ac.name} for $${ac.rental_cost}ph`
-    )
-    if (confirm) {
+  const handleRental = async (ac) => {
+    const accepted = await messageBox.confirm({
+      title: 'Confirm Rental',
+      description: `Confirm you would like to rent a ${ac.manufacturer} ${ac.name} for $${ac.rental_cost} per hour.`,
+      status: 'warning',
+      confirmText: 'Rent Aircraft',
+    })
+
+    if (accepted) {
       router.post('/rentals', { aircraft: ac.id })
     }
   }

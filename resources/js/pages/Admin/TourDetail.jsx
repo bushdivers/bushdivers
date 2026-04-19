@@ -20,9 +20,11 @@ import React, { useState } from 'react'
 
 import TourAddCheckpointModal from '../../components/admin/TourAddCheckpointModal.jsx'
 import TourAddFleetModal from '../../components/admin/TourAddFleetModal.jsx'
+import { useMessageBox } from '../../components/elements/MessageBoxProvider.jsx'
 import AdminLayout from '../../components/layout/AdminLayout.jsx'
 
 const TourDetail = ({ tour, fleet }) => {
+  const messageBox = useMessageBox()
   const {
     isOpen: isFleetOpen,
     onOpen: onFleetOpen,
@@ -50,8 +52,15 @@ const TourDetail = ({ tour, fleet }) => {
     router.post(`/admin/tours/${tour.id}`, tourDetails)
   }
 
-  function publishTour() {
-    if (confirm('Are you sure you want to publish this tour?')) {
+  async function publishTour() {
+    const accepted = await messageBox.confirm({
+      title: 'Publish Tour',
+      description: 'Are you sure you want to publish this tour?',
+      status: 'warning',
+      confirmText: 'Publish',
+    })
+
+    if (accepted) {
       router.post(`/admin/tours/${tour.id}/publish`)
     }
   }
