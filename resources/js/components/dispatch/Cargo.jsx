@@ -18,7 +18,6 @@ import {
   PopoverTrigger,
   Slider,
   SliderFilledTrack,
-  SliderMark,
   SliderThumb,
   SliderTrack,
   Table,
@@ -63,25 +62,20 @@ const EmptyData = (props) => {
 const Cargo = (props) => {
   const toast = useToast()
   const [cargoForSplit, setCargoForSplit] = useState(null)
-  const [sliderValue, setSliderValue] = useState(100)
   const [sliderCargoValue, setSliderCargoValue] = useState(null)
   const { auth } = usePage().props
   const [showCustom, setShowCustom] = useState(false)
 
-  function updateSlideValue(val, cargo) {
-    setSliderValue(val)
-    if (val > 0) setSliderCargoValue((val / 100) * cargo)
+  function updateSlideValue(val) {
+    setSliderCargoValue(val)
   }
 
   function handleSplitClick(cargo) {
+    const step = cargo.min_cargo_split ?? 1
+    const half = Math.round(cargo.cargo_qty / 2 / step) * step
+    const clamped = Math.min(Math.max(half, step), cargo.cargo_qty - step)
     if (cargoForSplit !== cargo.id) {
-      setSliderCargoValue(cargo.cargo_qty)
-    } else {
-      if (sliderCargoValue !== cargo.cargo_qty) {
-        setSliderCargoValue(sliderCargoValue)
-      } else {
-        setSliderCargoValue(cargo.cargo_qty)
-      }
+      setSliderCargoValue(clamped)
     }
     setCargoForSplit(cargo.id)
   }
@@ -149,12 +143,6 @@ const Cargo = (props) => {
     await axios.post('/api/contracts/bid', data)
 
     router.reload()
-  }
-
-  const labelStyles = {
-    mt: '2',
-    ml: '-2.5',
-    fontSize: 'sm',
   }
 
   return (
@@ -306,87 +294,115 @@ const Cargo = (props) => {
                                   </Button>
                                 </Tooltip>
                               )}
-                              {!detail.is_fuel && (
-                                <Popover>
-                                  <Tooltip
-                                    label="Split contract"
-                                    placement="top"
-                                  >
-                                    {/* random box hack needed as worked around to tooltip and popover*/}
-                                    <Box display="inline-block">
-                                      <PopoverTrigger>
-                                        <Button
-                                          onClick={() =>
-                                            handleSplitClick(detail)
-                                          }
-                                          size="xs"
-                                          colorScheme="gray"
-                                        >
-                                          <Icon as={Split} />
-                                        </Button>
-                                      </PopoverTrigger>
-                                    </Box>
-                                  </Tooltip>
-                                  <PopoverContent>
-                                    <PopoverArrow />
-                                    <PopoverCloseButton />
-                                    <PopoverHeader>
-                                      Split Contract
-                                    </PopoverHeader>
-                                    <PopoverBody>
-                                      <Slider
-                                        defaultValue={sliderValue}
-                                        my={2}
-                                        min={5}
-                                        max={100}
-                                        step={5}
-                                        aria-label="slider-ex-6"
-                                        onChange={(val) =>
-                                          updateSlideValue(
-                                            val,
-                                            detail.cargo_qty
-                                          )
+                              {!detail.is_fuel &&
+                                (() => {
+                                  const step = detail.min_cargo_split ?? 1
+                                  const canSplit = detail.cargo_qty >= step * 2
+                                  return (
+                                    <Popover>
+                                      <Tooltip
+                                        label={
+                                          canSplit
+                                            ? 'Split contract'
+                                            : `Min split is ${step} units`
                                         }
+                                        placement="top"
                                       >
-                                        <SliderMark value={25} {...labelStyles}>
-                                          25%
-                                        </SliderMark>
-                                        <SliderMark value={50} {...labelStyles}>
-                                          50%
-                                        </SliderMark>
-                                        <SliderMark value={75} {...labelStyles}>
-                                          75%
-                                        </SliderMark>
-                                        <SliderTrack>
-                                          <SliderFilledTrack />
-                                        </SliderTrack>
-                                        <SliderThumb />
-                                      </Slider>
-                                    </PopoverBody>
-                                    <PopoverFooter>
-                                      <Flex
-                                        justifyContent="space-between"
-                                        alignItems="center"
-                                      >
-                                        <Button
-                                          onClick={() =>
-                                            splitContract(detail.id)
-                                          }
-                                          size="sm"
-                                        >
-                                          Save Split
-                                        </Button>
-                                        <Text>
-                                          {displayNumber(
-                                            parseInt(sliderCargoValue),
-                                            false
-                                          )}
-                                        </Text>
-                                      </Flex>
-                                    </PopoverFooter>
-                                  </PopoverContent>
-                                </Popover>
-                              )}
+                                        {/* random box hack needed as worked around to tooltip and popover*/}
+                                        <Box display="inline-block">
+                                          <PopoverTrigger>
+                                            <Button
+                                              onClick={() =>
+                                                canSplit &&
+                                                handleSplitClick(detail)
+                                              }
+                                              isDisabled={!canSplit}
+                                              size="xs"
+                                              colorScheme="gray"
+                                            >
+                                              <Icon as={Split} />
+                                            </Button>
+                                          </PopoverTrigger>
+                                        </Box>
+                                      </Tooltip>
+                                      <PopoverContent>
+                                        <PopoverArrow />
+                                        <PopoverCloseButton />
+                                        <PopoverHeader>
+                                          Split Contract
+                                        </PopoverHeader>
+                                        <PopoverBody>
+                                          {(() => {
+                                            const minVal = step
+                                            const maxVal = Math.max(
+                                              detail.cargo_qty - step,
+                                              step
+                                            )
+                                            return (
+                                              <Slider
+                                                value={
+                                                  sliderCargoValue ?? minVal
+                                                }
+                                                my={2}
+                                                min={minVal}
+                                                max={maxVal}
+                                                step={step}
+                                                aria-label="split-slider"
+                                                onChange={(val) =>
+                                                  updateSlideValue(val)
+                                                }
+                                              >
+                                                <SliderTrack>
+                                                  <SliderFilledTrack />
+                                                </SliderTrack>
+                                                <SliderThumb />
+                                              </Slider>
+                                            )
+                                          })()}
+                                        </PopoverBody>
+                                        <PopoverFooter>
+                                          <Flex
+                                            justifyContent="space-between"
+                                            alignItems="center"
+                                          >
+                                            <Button
+                                              onClick={() =>
+                                                splitContract(detail.id)
+                                              }
+                                              size="sm"
+                                            >
+                                              Save Split
+                                            </Button>
+                                            <Text>
+                                              {displayNumber(
+                                                parseInt(sliderCargoValue),
+                                                false
+                                              )}
+                                              {detail.cargo_type === 1
+                                                ? ' lbs'
+                                                : ' pax'}
+                                              {step > 1 && (
+                                                <Text
+                                                  as="span"
+                                                  fontSize="xs"
+                                                  color="gray.500"
+                                                  ml={1}
+                                                >
+                                                  (
+                                                  {Math.round(
+                                                    parseInt(sliderCargoValue) /
+                                                      step
+                                                  )}{' '}
+                                                  units)
+                                                </Text>
+                                              )}
+                                            </Text>
+                                          </Flex>
+                                        </PopoverFooter>
+                                      </PopoverContent>
+                                    </Popover>
+                                  )
+                                })()}
                               {!detail.is_shared && (
                                 <Tooltip
                                   label="Cancel contract"

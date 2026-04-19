@@ -18,6 +18,11 @@ const AdminMenu = () => {
             Dispatch
           </ChakraLink>
         )}
+        {doesUserHaveRole(auth.user.user_roles, 'dispatcher') && (
+          <ChakraLink as={InertiaLink} href="/admin/cargo-types">
+            Cargo Types
+          </ChakraLink>
+        )}
         {doesUserHaveRole(auth.user.user_roles, 'fleet_admin') && (
           <ChakraLink as={InertiaLink} href="/admin/fleet">
             Fleet

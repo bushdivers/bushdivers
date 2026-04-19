@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Dispatch;
 use App\Http\Controllers\Controller;
 use App\Models\Aircraft;
 use App\Models\Airport;
+use App\Models\CargoType;
 use App\Models\Contract;
 use App\Models\Enums\AircraftState;
 use App\Models\Enums\AircraftStatus;
@@ -107,6 +108,11 @@ class ShowDispatchController extends Controller
             ->orderBy('heading')
             ->orderBy('arr_airport_id')
             ->get();
+
+        $minSplits = CargoType::pluck('min_cargo_split', 'text');
+        $cargoAtAirport->each(function ($contract) use ($minSplits) {
+            $contract->min_cargo_split = $minSplits->get($contract->cargo, 1);
+        });
 
         $cargoElsewhere = Contract::with('currentAirport', 'arrAirport')
             ->where('current_airport_id', '<>', $currentLocation->id)

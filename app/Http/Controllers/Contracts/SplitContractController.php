@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Contracts;
 
 use App\Http\Controllers\Controller;
 use App\Models\Contract;
-use App\Models\Enums\CargoType;
+use App\Models\Enums\CargoType as CargoTypeEnum;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -34,6 +34,12 @@ class SplitContractController extends Controller
             return \response()->json(['message' => 'Split too small'], 422);
         }
 
+        $minSplit = \App\Models\CargoType::where('text', $existingContract->cargo)->value('min_cargo_split') ?? 1;
+
+        if ($newQty < $minSplit || $remainingQty < $minSplit) {
+            return \response()->json(['message' => "Each split must be at least {$minSplit} units"], 422);
+        }
+
         $splitPercentage = ($newQty / $existingContract->cargo_qty) * 100;
         $newValue = round(($splitPercentage / 100) * $existingContract->contract_value, 2);
         $remainingValue = round($existingContract->contract_value - $newValue, 2);
@@ -55,7 +61,7 @@ class SplitContractController extends Controller
         $contract->expires_at = $existingContract->expires_at;
         $contract->is_available = false;
         $contract->is_shared = $existingContract->is_shared;
-        if ($existingContract->cargo_type == CargoType::Cargo) {
+        if ($existingContract->cargo_type == CargoTypeEnum::Cargo) {
             $existingContract->payload = $newQty;
             $contract->payload = $remainingQty;
         } else {

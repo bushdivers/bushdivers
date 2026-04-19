@@ -3,6 +3,7 @@
 namespace Tests\Feature\Api\Contracts;
 
 use App\Models\Airport;
+use App\Models\CargoType;
 use App\Models\Contract;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
@@ -169,5 +170,68 @@ class SplitContractTest extends TestCase
         ];
         $response = $this->postJson('/api/contracts/split', $data);
         $response->assertStatus(403);
+    }
+
+    public function test_split_below_min_cargo_split_fails(): void
+    {
+        CargoType::create(['text' => 'Test', 'type' => 1, 'min_cargo_split' => 500]);
+
+        $contract = Contract::factory()->create([
+            'cargo_qty' => 3800,
+            'cargo_type' => 1,
+            'payload' => 3800,
+            'contract_value' => 6525,
+            'cargo' => 'Test',
+        ]);
+
+        $response = $this->postJson('/api/contracts/split', [
+            'id' => $contract->id,
+            'qty' => 100,
+        ]);
+
+        $response->assertStatus(422);
+        $response->assertJson(['message' => 'Each split must be at least 500 units']);
+    }
+
+    public function test_split_respects_min_cargo_split_on_remainder(): void
+    {
+        CargoType::create(['text' => 'Test', 'type' => 1, 'min_cargo_split' => 500]);
+
+        $contract = Contract::factory()->create([
+            'cargo_qty' => 3800,
+            'cargo_type' => 1,
+            'payload' => 3800,
+            'contract_value' => 6525,
+            'cargo' => 'Test',
+        ]);
+
+        // qty=3400 leaves only 400 remaining, below min of 500
+        $response = $this->postJson('/api/contracts/split', [
+            'id' => $contract->id,
+            'qty' => 3400,
+        ]);
+
+        $response->assertStatus(422);
+        $response->assertJson(['message' => 'Each split must be at least 500 units']);
+    }
+
+    public function test_split_at_min_cargo_split_succeeds(): void
+    {
+        CargoType::create(['text' => 'Test', 'type' => 1, 'min_cargo_split' => 500]);
+
+        $contract = Contract::factory()->create([
+            'cargo_qty' => 3800,
+            'cargo_type' => 1,
+            'payload' => 3800,
+            'contract_value' => 6525,
+            'cargo' => 'Test',
+        ]);
+
+        $response = $this->postJson('/api/contracts/split', [
+            'id' => $contract->id,
+            'qty' => 500,
+        ]);
+
+        $response->assertStatus(200);
     }
 }

@@ -13,15 +13,25 @@ class GenerateContractCargo
         $maxCargo = 20000;
         $minPax = 1;
         $maxPax = 20;
-        $qty = 0;
-        $types = DB::table('cargo_types')->get();
-        $cargo = $types->random();
-        if ($cargo->type == CargoType::Cargo->value) {
-            $qty = random_int($minCargo, $maxCargo);
-        } else {
-            $qty = random_int($minPax, $maxPax);
+        $cargo = DB::table('cargo_types')->inRandomOrder()->first();
+        $step = max(1, (int) ($cargo->min_cargo_split ?? 1));
+
+        $qty = match ($cargo->type) {
+            CargoType::Cargo->value => random_int($minCargo, $maxCargo),
+            CargoType::Passenger->value => random_int($minPax, $maxPax),
+            default => throw new \Exception("Unknown cargo type: {$cargo->type}"),
+        };
+
+        if ($step > 1) {
+            $qty = (int) (round($qty / $step) * $step);
+            $qty = max($qty, $step);
         }
-        return ['name' => $cargo->text, 'type' => CargoType::from($cargo->type), 'qty' => $qty];
+
+        return [
+            'name' => $cargo->text,
+            'type' => CargoType::from($cargo->type),
+            'qty' => $qty
+        ];
     }
 
 }

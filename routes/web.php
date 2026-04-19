@@ -271,6 +271,15 @@ Route::middleware('auth')->group(function () {
             ->name('admin.dispatch');
         Route::post('/admin/dispatch', \App\Http\Controllers\Admin\Dispatch\CreateDispatchController::class)
             ->name('admin.dispatch.create');
+
+        Route::get('/admin/cargo-types', \App\Http\Controllers\Admin\Dispatch\ShowCargoTypesController::class)
+            ->name('admin.cargo-types');
+        Route::post('/admin/cargo-types', \App\Http\Controllers\Admin\Dispatch\StoreCargoTypeController::class)
+            ->name('admin.cargo-types.store');
+        Route::put('/admin/cargo-types/{id}', \App\Http\Controllers\Admin\Dispatch\UpdateCargoTypeController::class)
+            ->name('admin.cargo-types.update');
+        Route::delete('/admin/cargo-types/{id}', \App\Http\Controllers\Admin\Dispatch\DeleteCargoTypeController::class)
+            ->name('admin.cargo-types.delete');
     });
 
     Route::middleware('admin')->group(function () {
