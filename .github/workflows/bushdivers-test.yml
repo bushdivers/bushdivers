@@ -1,5 +1,6 @@
 name: Bushdivers Pre-Deploy
-
+permissions:
+  contents: read
 on:
   push:
     branches:
