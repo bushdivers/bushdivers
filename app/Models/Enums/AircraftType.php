@@ -14,4 +14,18 @@ enum AircraftType: int
     case JET_TWIN = 11;
     case HELI_SINGLE = 15;
     case HELI_TWIN = 16;
+
+    public function label(): string
+    {
+        return match($this) {
+            self::OTHER => 'Other',
+            self::PISTON_SINGLE => 'Piston Single',
+            self::PISTON_TWIN => 'Piston Twin',
+            self::TURBOPROP_SINGLE => 'Turboprop Single',
+            self::TURBOPROP_TWIN => 'Turboprop Twin',
+            self::JET_TWIN => 'Jet Twin',
+            self::HELI_SINGLE => 'Heli Single',
+            self::HELI_TWIN => 'Heli Twin',
+        };
+    }
 }

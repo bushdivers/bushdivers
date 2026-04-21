@@ -146,8 +146,6 @@ Route::middleware('auth')->group(function () {
     // marketplace
     Route::get('/marketplace/{buyer}', \App\Http\Controllers\MarketPlace\ShowMarketPlaceController::class)
         ->name('marketplace');
-    Route::get('/marketplace/list/{manufacturer}/{buyer}', \App\Http\Controllers\MarketPlace\ShowManufacturerController::class)
-        ->name('marketplace.manufacture');
     Route::get('/marketplace/purchase/new/{fleet}/{buyer}', \App\Http\Controllers\MarketPlace\ShowPurchaseNewController::class)
         ->name('marketplace.new');
     Route::get('/marketplace/list/used/{fleet}/{buyer}', \App\Http\Controllers\MarketPlace\ShowUsedAircraftController::class)

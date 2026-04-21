@@ -2,9 +2,7 @@
 
 namespace App\Http\Middleware;
 
-use App\Models\Booking;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
@@ -43,7 +41,7 @@ class HandleInertiaRequests extends Middleware
             'flash.error' => fn () => $request->session()->get('error'),
             'auth.user' => fn () => $request->user()
                 ? $request->user()->only('id', 'name', 'email', 'private_name', 'pilot_id', 'current_airport_id', 'points', 'is_admin', 'user_roles', 'rank', 'balance', 'loan', 'location')
-                : null
+                : null,
         ]);
     }
 }
