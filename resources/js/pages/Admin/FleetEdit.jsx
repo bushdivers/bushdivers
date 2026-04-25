@@ -90,7 +90,7 @@ const FleetEdit = ({ fleet, manufacturers, variants }) => {
           </FormLabel>
           <Input
             size="xs"
-            placeholder="e.g. Pilot BDV0123"
+            placeholder="e.g. Pilot BDV0000"
             value={credit}
             onChange={(e) => setCredit(e.target.value)}
           />
@@ -158,7 +158,7 @@ const FleetEdit = ({ fleet, manufacturers, variants }) => {
             <SimpleGrid columns={3} gap={6}>
               <Box>
                 <Heading size="sm" mb={2}>
-                  Fleet Image
+                  Flight Image
                 </Heading>
                 {fleet.image_url && (
                   <Link href={fleet.image_url} target="_blank">
@@ -169,7 +169,7 @@ const FleetEdit = ({ fleet, manufacturers, variants }) => {
               </Box>
               <Box>
                 <Heading size="sm" mb={2}>
-                  Marketplace Image
+                  Showroom Image
                 </Heading>
                 {fleet.rental_image && (
                   <Link href={fleet.rental_image} target="_blank">
