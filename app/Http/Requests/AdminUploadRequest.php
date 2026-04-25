@@ -23,7 +23,8 @@ class AdminUploadRequest extends FormRequest
     {
         return [
             'upload_type' => 'required|string',
-            'uploaded_file' => 'required',
+            'uploaded_file' => 'nullable|file|mimes:png,jpg,jpeg',
+            'image_credit' => 'nullable|string|max:255',
             'entity_id' => 'required',
             'entity_type' => 'required',
         ];

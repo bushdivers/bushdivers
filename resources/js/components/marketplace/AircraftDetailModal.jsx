@@ -51,14 +51,31 @@ const AircraftDetailModal = ({ fleet, isOpen, onClose, actions }) => {
       <ModalOverlay />
       <ModalContent>
         {fleet.rental_image ? (
-          <Image
-            src={fleet.rental_image}
-            alt={fleet.name}
-            w="100%"
-            h="220px"
-            objectFit="cover"
-            borderTopRadius="md"
-          />
+          <Box position="relative">
+            <Image
+              src={fleet.rental_image}
+              alt={fleet.name}
+              w="100%"
+              h="220px"
+              objectFit="cover"
+              borderTopRadius="md"
+            />
+            {!!fleet.rental_image_credit && (
+              <Box
+                position="absolute"
+                bottom={2}
+                right={2}
+                bg="blackAlpha.500"
+                borderRadius="md"
+                px={2}
+                py={1}
+              >
+                <Text fontSize="2xs" color="whiteAlpha.800">
+                  Photo: {fleet.rental_image_credit}
+                </Text>
+              </Box>
+            )}
+          </Box>
         ) : (
           <Flex
             w="100%"

@@ -43,6 +43,11 @@ const FleetEdit = ({ fleet, manufacturers, variants }) => {
 
   function ImageUpload({ uploadType }) {
     const [file, setFile] = useState(null)
+    const existingCredit =
+      uploadType === 'marketplace'
+        ? fleet?.rental_image_credit
+        : fleet?.fleet_image_credit
+    const [credit, setCredit] = useState(existingCredit ?? '')
     return (
       <form
         onSubmit={(e) => {
@@ -52,6 +57,7 @@ const FleetEdit = ({ fleet, manufacturers, variants }) => {
             {
               upload_type: uploadType,
               uploaded_file: file,
+              image_credit: credit,
               entity_id: fleet.id,
               entity_type: 'fleet',
             },
@@ -78,8 +84,19 @@ const FleetEdit = ({ fleet, manufacturers, variants }) => {
             },
           }}
         />
-        <Button size="xs" type="submit" mt={1}>
-          Upload
+        <FormControl mt={2}>
+          <FormLabel fontSize="xs" mb={1}>
+            Photo credit
+          </FormLabel>
+          <Input
+            size="xs"
+            placeholder="e.g. Pilot BDV0123"
+            value={credit}
+            onChange={(e) => setCredit(e.target.value)}
+          />
+        </FormControl>
+        <Button size="xs" type="submit" mt={2}>
+          Save
         </Button>
       </form>
     )

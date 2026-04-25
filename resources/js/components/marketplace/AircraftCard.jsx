@@ -4,7 +4,7 @@ import React from 'react'
 
 import { displayNumber } from '../../helpers/number.helpers.js'
 
-const AircraftCard = ({ fleet, onClick }) => {
+const AircraftCard = ({ fleet, onClick, footer }) => {
   const { aircraftTypes } = usePage().props
   const typeLabel =
     (aircraftTypes ?? []).find((t) => t.value === fleet.aircraft_type)?.label ??
@@ -122,25 +122,31 @@ const AircraftCard = ({ fleet, onClick }) => {
         </Flex>
 
         <Flex mt={3} direction="column" gap={0.5}>
-          {!!fleet.can_purchase_new && (
-            <Text
-              fontWeight="semibold"
-              fontSize="sm"
-              color="orange.500"
-              _dark={{ color: 'orange.200' }}
-            >
-              New from ${displayNumber(fleet.new_price)}
-            </Text>
-          )}
-          {fleet.used_low_price > 0 && (
-            <Text
-              fontWeight="semibold"
-              fontSize="sm"
-              color="orange.500"
-              _dark={{ color: 'orange.200' }}
-            >
-              Used from ${displayNumber(fleet.used_low_price)}
-            </Text>
+          {footer !== undefined ? (
+            footer
+          ) : (
+            <>
+              {!!fleet.can_purchase_new && (
+                <Text
+                  fontWeight="semibold"
+                  fontSize="sm"
+                  color="orange.500"
+                  _dark={{ color: 'orange.200' }}
+                >
+                  New from ${displayNumber(fleet.new_price)}
+                </Text>
+              )}
+              {fleet.used_low_price > 0 && (
+                <Text
+                  fontWeight="semibold"
+                  fontSize="sm"
+                  color="orange.500"
+                  _dark={{ color: 'orange.200' }}
+                >
+                  Used from ${displayNumber(fleet.used_low_price)}
+                </Text>
+              )}
+            </>
           )}
         </Flex>
       </CardBody>

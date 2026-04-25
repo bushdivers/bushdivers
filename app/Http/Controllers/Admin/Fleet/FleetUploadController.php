@@ -17,36 +17,41 @@ class FleetUploadController extends Controller
     public function __invoke(AdminUploadRequest $request)
     {
         $file = $request->file('uploaded_file');
-        $originalName = $file->getClientOriginalName();
-        $newName = Carbon::now()->timestamp . '-' . $originalName;
+        $entity = Fleet::find($request->entity_id);
+
+        if ($file) {
+            $newName = Carbon::now()->timestamp . '-' . $file->getClientOriginalName();
+        }
+
         switch ($request->upload_type) {
-            case "fleet":
-                $path = Storage::disk('s3')->putFileAs('fleet/bushdivers', $file, $newName);
-                if ($path) {
-                    $path = Storage::disk('s3')->url($path);
-                    $entity = Fleet::find($request->entity_id);
-                    $entity->image_url = $path;
-                    $entity->save();
-                } else {
-                    redirect()->back()->with('error', 'File uploaded failed');
+            case 'fleet':
+                if ($file) {
+                    $path = Storage::disk('s3')->putFileAs('fleet/bushdivers', $file, $newName);
+                    if ($path) {
+                        $entity->image_url = Storage::disk('s3')->url($path);
+                    } else {
+                        return redirect()->back()->with('error', 'File upload failed');
+                    }
                 }
+                $entity->fleet_image_credit = $request->image_credit;
+                $entity->save();
                 break;
-            case "marketplace":
-                $path = Storage::disk('s3')->putFileAs('fleet/marketplace', $file, $newName);
-                if ($path) {
-                    $path = Storage::disk('s3')->url($path);
-                    $entity = Fleet::find($request->entity_id);
-                    $entity->rental_image = $path;
-                    $entity->save();
-                } else {
-                    redirect()->back()->with('error', 'File uploaded failed');
+            case 'marketplace':
+                if ($file) {
+                    $path = Storage::disk('s3')->putFileAs('fleet/marketplace', $file, $newName);
+                    if ($path) {
+                        $entity->rental_image = Storage::disk('s3')->url($path);
+                    } else {
+                        return redirect()->back()->with('error', 'File upload failed');
+                    }
                 }
+                $entity->rental_image_credit = $request->image_credit;
+                $entity->save();
                 break;
             default:
-                redirect()->back()->with('error', 'File uploaded failed');
-                break;
+                return redirect()->back()->with('error', 'File upload failed');
         }
-        // return
-        redirect()->back()->with('success', 'File uploaded successfully');
+
+        return redirect()->back()->with('success', 'File uploaded successfully');
     }
 }
