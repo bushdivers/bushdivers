@@ -38,7 +38,8 @@ class ShowRentalAircraftController extends Controller
                 ->get();
         }
 
-        $aircraft->makeHidden(['used_low_price', 'used_high_price', 'can_purchase_new', 'new_price']);
+        if ($aircraft)
+            $aircraft->makeHidden(['used_low_price', 'used_high_price', 'can_purchase_new', 'new_price']);
 
         $myRentals = Rental::with(['fleet', 'location', 'hub'])
             ->where('user_id', Auth::user()->id)
