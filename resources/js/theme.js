@@ -10,9 +10,20 @@ import { mode } from '@chakra-ui/theme-tools'
 // 3. extend the theme
 const theme = extendTheme(
   {
-    initialColorMode: 'light',
-    useSystemColorMode: false,
+    config: { initialColorMode: 'light', useSystemColorMode: false },
     components: {
+      Alert: {
+        variants: {
+          subtle: (props) => ({
+            container: {
+              bg: mode(
+                `${props.colorScheme}.100`,
+                `${props.colorScheme}.800`
+              )(props),
+            },
+          }),
+        },
+      },
       Link: {
         defaultProps: {
           color: 'orange.500', //mode('orange.500', 'orange.300'),
