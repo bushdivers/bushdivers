@@ -1,4 +1,4 @@
-import { Button } from '@chakra-ui/react'
+import { Button, Td, Tr } from '@chakra-ui/react'
 import { router } from '@inertiajs/react'
 import axios from 'axios'
 import React from 'react'
@@ -27,21 +27,20 @@ const FleetAircraft = (props) => {
   return (
     <>
       {props.fleet.aircraft.map((detail) => (
-        <tr key={`${props.fleet.id}-${detail.id}`} className="bg-gray-50">
-          <td>{detail.registration}</td>
-          <td>Current Location: {detail.location.identifier}</td>
-          <td>
-            <div className="flex items-center">
-              <Button
-                onClick={() => handleSale(detail)}
-                variant="ghost"
-                size="xs"
-              >
-                Sell
-              </Button>
-            </div>
-          </td>
-        </tr>
+        <Tr key={`${props.fleet.id}-${detail.id}`} className="bg-gray-50">
+          <Td />
+          <Td>{detail.registration}</Td>
+          <Td colSpan="2">Current Location: {detail.location.identifier}</Td>
+          <Td>
+            <Button
+              onClick={() => handleSale(detail)}
+              variant="ghost"
+              size="xs"
+            >
+              Sell
+            </Button>
+          </Td>
+        </Tr>
       ))}
     </>
   )

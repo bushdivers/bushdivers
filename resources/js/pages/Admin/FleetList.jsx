@@ -74,8 +74,7 @@ const FleetList = ({ fleet }) => {
                     <Tr className="">
                       <Th>Id</Th>
                       <Th>Type</Th>
-                      <Th>Manufacturer</Th>
-                      <Th>Name</Th>
+                      <Th>Aircraft</Th>
                       <Th>Qty</Th>
                       <Th>VA Fleet</Th>
                       <Th>Can Rent</Th>
@@ -90,8 +89,11 @@ const FleetList = ({ fleet }) => {
                           <Tr key={f.id}>
                             <Td>{f.id}</Td>
                             <Td>{f.type}</Td>
-                            <Td>{f.manufacturer}</Td>
-                            <Td>{f.name}</Td>
+                            <Td>
+                              {f.manufacturer}
+                              <br />
+                              {f.name}
+                            </Td>
                             <Td>{f.aircraft.length}</Td>
                             <Td>{f.company_fleet ? 'Yes' : 'No'}</Td>
                             <Td>{f.is_rental ? 'Yes' : 'No'}</Td>
