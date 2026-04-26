@@ -19,6 +19,7 @@ import { Image, ImageOff, Pen, Trash2 } from 'lucide-react'
 import React, { useState } from 'react'
 
 import FleetAircraft from '../../components/admin/FleetAircraft'
+import ManufacturerDialog from '../../components/admin/ManufacturerDialog.jsx'
 import { useMessageBox } from '../../components/elements/MessageBoxProvider.jsx'
 import NoContent from '../../components/elements/NoContent'
 import AdminLayout from '../../components/layout/AdminLayout.jsx'
@@ -32,8 +33,9 @@ const EmptyData = () => {
   )
 }
 
-const FleetList = ({ fleet }) => {
+const FleetList = ({ fleet, manufacturers }) => {
   const [showDetail, setShowDetail] = useState(false)
+  const [managingManufacturers, setManagingManufacturers] = useState(false)
   const messageBox = useMessageBox()
 
   const toggleDetail = () => {
@@ -55,8 +57,21 @@ const FleetList = ({ fleet }) => {
 
   return (
     <Card>
+      <ManufacturerDialog
+        manufacturers={manufacturers ?? []}
+        isOpen={managingManufacturers}
+        onClose={() => setManagingManufacturers(false)}
+      />
+
       <CardBody>
-        <Flex justifyContent="right">
+        <Flex justifyContent="space-between" alignItems="center" mb={2}>
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={() => setManagingManufacturers(true)}
+          >
+            Manage Manufacturers
+          </Button>
           {fleet && fleet.length > 0 && (
             <Button colorScheme="gray" onClick={toggleDetail} size="sm">
               Toggle fleet aircraft details

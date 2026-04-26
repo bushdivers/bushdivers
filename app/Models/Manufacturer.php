@@ -11,8 +11,8 @@ class Manufacturer extends Model
 
     protected $fillable = ['name', 'logo_url'];
 
-    public function aircraft()
+    public function fleet()
     {
-        $this->hasMany(Fleet::class);
+        return $this->hasMany(Fleet::class);
     }
 }

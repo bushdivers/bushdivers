@@ -201,6 +201,13 @@ Route::middleware('auth')->group(function () {
         Route::post('/admin/fleet/upload', \App\Http\Controllers\Admin\Fleet\FleetUploadController::class)
             ->name('admin.fleet.upload');
 
+        Route::post('/admin/manufacturers', \App\Http\Controllers\Admin\Fleet\StoreManufacturerController::class)
+            ->name('admin.manufacturers.store');
+        Route::patch('/admin/manufacturers/{manufacturer}', \App\Http\Controllers\Admin\Fleet\UpdateManufacturerController::class)
+            ->name('admin.manufacturers.update');
+        Route::delete('/admin/manufacturers/{manufacturer}', \App\Http\Controllers\Admin\Fleet\DestroyManufacturerController::class)
+            ->name('admin.manufacturers.destroy');
+
         Route::post('/admin/fleet/{id}/liveries', \App\Http\Controllers\Admin\Fleet\CreateLiveryController::class)
             ->name('admin.fleet.livery.store');
         Route::post('/admin/uploads/{id}', \App\Http\Controllers\Admin\UpdateLiveryController::class)
