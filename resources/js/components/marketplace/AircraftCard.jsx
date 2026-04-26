@@ -22,28 +22,51 @@ const AircraftCard = ({ fleet, onClick, footer }) => {
       overflow="hidden"
     >
       <Box position="relative">
-        {fleet.rental_image ? (
-          <Image
-            src={fleet.rental_image}
-            alt={fleet.name}
-            w="100%"
-            h="180px"
-            objectFit="cover"
-          />
-        ) : (
-          <Flex
-            w="100%"
-            h="180px"
-            bg="gray.100"
-            _dark={{ bg: 'gray.700' }}
-            alignItems="center"
-            justifyContent="center"
-          >
-            <Text color="gray.400" fontSize="sm">
-              No image
-            </Text>
-          </Flex>
-        )}
+        {(() => {
+          const src = fleet.image_url || fleet.rental_image
+          const credit = fleet.image_url
+            ? fleet.fleet_image_credit
+            : fleet.rental_image_credit
+          return src ? (
+            <>
+              <Image
+                src={src}
+                alt={fleet.name}
+                w="100%"
+                h="180px"
+                objectFit="cover"
+              />
+              {!!credit && (
+                <Box
+                  position="absolute"
+                  bottom={fleet.manufacturer?.logo_url ? 10 : 2}
+                  right={2}
+                  bg="blackAlpha.500"
+                  borderRadius="md"
+                  px={1.5}
+                  py={0.5}
+                >
+                  <Text fontSize="2xs" color="whiteAlpha.800">
+                    Photo: {credit}
+                  </Text>
+                </Box>
+              )}
+            </>
+          ) : (
+            <Flex
+              w="100%"
+              h="180px"
+              bg="gray.100"
+              _dark={{ bg: 'gray.700' }}
+              alignItems="center"
+              justifyContent="center"
+            >
+              <Text color="gray.400" fontSize="sm">
+                No image
+              </Text>
+            </Flex>
+          )
+        })()}
 
         {fleet.manufacturer?.logo_url && (
           <Box

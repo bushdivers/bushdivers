@@ -50,47 +50,53 @@ const AircraftDetailModal = ({ fleet, isOpen, onClose, actions }) => {
     <Modal isOpen={isOpen} onClose={onClose} size="2xl" scrollBehavior="inside">
       <ModalOverlay />
       <ModalContent>
-        {fleet.rental_image ? (
-          <Box position="relative">
-            <Image
-              src={fleet.rental_image}
-              alt={fleet.name}
+        {(() => {
+          const src = fleet.image_url || fleet.rental_image
+          const credit = fleet.image_url
+            ? fleet.fleet_image_credit
+            : fleet.rental_image_credit
+          return src ? (
+            <Box position="relative">
+              <Image
+                src={src}
+                alt={fleet.name}
+                w="100%"
+                h="220px"
+                objectFit="cover"
+                borderTopRadius="md"
+              />
+              {!!credit && (
+                <Box
+                  position="absolute"
+                  bottom={2}
+                  right={2}
+                  bg="blackAlpha.500"
+                  borderRadius="md"
+                  px={2}
+                  py={1}
+                >
+                  <Text fontSize="2xs" color="whiteAlpha.800">
+                    Photo: {credit}
+                  </Text>
+                </Box>
+              )}
+            </Box>
+          ) : (
+            <Flex
               w="100%"
-              h="220px"
-              objectFit="cover"
+              h="100px"
+              bg="gray.100"
+              _dark={{ bg: 'gray.700' }}
+              alignItems="center"
+              justifyContent="center"
               borderTopRadius="md"
-            />
-            {!!fleet.rental_image_credit && (
-              <Box
-                position="absolute"
-                bottom={2}
-                right={2}
-                bg="blackAlpha.500"
-                borderRadius="md"
-                px={2}
-                py={1}
-              >
-                <Text fontSize="2xs" color="whiteAlpha.800">
-                  Photo: {fleet.rental_image_credit}
-                </Text>
-              </Box>
-            )}
-          </Box>
-        ) : (
-          <Flex
-            w="100%"
-            h="100px"
-            bg="gray.100"
-            _dark={{ bg: 'gray.700' }}
-            alignItems="center"
-            justifyContent="center"
-            borderTopRadius="md"
-          >
-            <Text color="gray.400" fontSize="sm">
-              No image available
-            </Text>
-          </Flex>
-        )}
+            >
+              <Text color="gray.400" fontSize="sm">
+                No image available
+              </Text>
+            </Flex>
+          )
+        })()}
 
         <ModalHeader pb={1}>
           <Flex alignItems="center" gap={3}>
