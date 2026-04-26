@@ -41,7 +41,7 @@ class AdminUpdateFleet extends FormRequest
 
             'company_fleet' => 'required|boolean',
             'is_rental' => 'required|boolean',
-            'rental_price' => 'required_if:is_rental,true|numeric',
+            'rental_cost' => 'required_if:is_rental,true|numeric',
             'hq' => 'required|exists:airports,identifier',
             'can_purchase_new' => 'boolean',
             'new_price' => 'nullable|required_if:can_purchase_new,true|numeric|gte:used_high_price|gt:0',
