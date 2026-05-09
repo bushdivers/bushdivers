@@ -4,16 +4,12 @@ namespace App\Services\Pireps;
 
 use App\Models\FlightLog;
 use App\Models\Pirep;
-use App\Services\Airports\CalcDistanceBetweenPoints;
+use Location\Coordinate;
 
 class CalculateTotalFlightDistance
 {
-    protected CalcDistanceBetweenPoints $calcDistanceBetweenPoints;
-
-    public function __construct(CalcDistanceBetweenPoints $calcDistanceBetweenPoints)
-    {
-        $this->calcDistanceBetweenPoints = $calcDistanceBetweenPoints;
-    }
+    public function __construct()
+    { }
 
     public function execute(Pirep $pirep): float
     {
@@ -28,26 +24,22 @@ class CalculateTotalFlightDistance
         //get initial leg
 
 
-        $lastLat = 0.00;
-        $lastLon = 0.00;
+        $lastCoord = $dep->getCoordinate();
 
         // find flight logs for pirep
+        /** @var FlightLog[] $logs */
         $logs = FlightLog::where('pirep_id', $pirep->id)->get();
-        $i = 1;
+
         foreach ($logs as $log) {
             // loop through logs and tally up distance between each point
             if ($first) {
-                $distance += $this->calcDistanceBetweenPoints->execute($startLat, $startLon, $log->lat, $log->lon);
+                $distance += $dep->distanceTo($log);
                 $first = false;
             } else {
-                $distance += $this->calcDistanceBetweenPoints->execute($lastLat, $lastLon, $log->lat, $log->lon);
+                $distance += $log->distanceTo($lastCoord);
             }
 
-            if ($i < $logs->count()) {
-                $lastLat = $log->lat;
-                $lastLon = $log->lon;
-            }
-            $i++;
+            $lastCoord = $log->getCoordinate();
         }
 
         return $distance;

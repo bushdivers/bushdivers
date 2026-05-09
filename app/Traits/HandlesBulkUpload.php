@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Traits;
+namespace App\Traits;
 
 use App\Services\CsvBulkUploadService;
 use Illuminate\Http\RedirectResponse;

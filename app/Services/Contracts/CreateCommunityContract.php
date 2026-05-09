@@ -7,13 +7,11 @@ use App\Models\CommunityJobContract;
 use App\Models\Enums\CargoType;
 use App\Models\Enums\ContractType;
 use App\Services\Airports\CalcBearingBetweenPoints;
-use App\Services\Airports\CalcDistanceBetweenPoints;
 use Carbon\Carbon;
 
 class CreateCommunityContract
 {
     public function __construct(
-        protected CalcDistanceBetweenPoints $calcDistanceBetweenPoints,
         protected StoreContracts $storeContracts,
         protected CalcBearingBetweenPoints $calcBearingBetweenPoints,
         protected CalcContractValue $calcContractValue
@@ -27,7 +25,7 @@ class CreateCommunityContract
         $cargo = ['name' => $job->cargo, 'type' => $job->cargo_type, 'qty' => $job->cargo_type == CargoType::Cargo ? $job->payload : $job->pax];
 
         // contract info
-        $distance = $this->calcDistanceBetweenPoints->execute($depAirport->lat, $depAirport->lon, $arrAirport->lat, $arrAirport->lon);
+        $distance = $depAirport->distanceTo($arrAirport);
         $heading = $this->calcBearingBetweenPoints->execute($depAirport->lat, $depAirport->lon, $arrAirport->lat, $arrAirport->lon, $depAirport->magnetic_variance);
 
         $value = $this->calcContractValue->execute($cargo['type'], $cargo['qty'], $distance);

@@ -11,7 +11,6 @@ use App\Models\Enums\ContractType;
 use App\Models\Fleet;
 use App\Services\Aircraft\GenerateAircraftDetails;
 use App\Services\Airports\CalcCostOfHub;
-use App\Services\Airports\CalcDistanceBetweenPoints;
 use App\Services\Contracts\GenerateContractDetails;
 use App\Services\Contracts\StoreContracts;
 use App\Services\Finance\AddAirlineTransaction;
@@ -24,7 +23,6 @@ class CreateHubController extends Controller
     protected GenerateContractDetails $generateContractDetails;
     protected StoreContracts $storeContracts;
     protected AddAirlineTransaction $addAirlineTransaction;
-    protected CalcDistanceBetweenPoints $calcDistanceBetweenPoints;
     protected CalcCostOfHub $calcCostOfHub;
     protected GetAirlineBalance $getAirlineBalance;
     public function __construct(
@@ -32,7 +30,6 @@ class CreateHubController extends Controller
         GenerateContractDetails $generateContractDetails,
         StoreContracts $storeContracts,
         AddAirlineTransaction $addAirlineTransaction,
-        CalcDistanceBetweenPoints $calcDistanceBetweenPoints,
         CalcCostOfHub $calcCostOfHub,
         GetAirlineBalance $getAirlineBalance
     ) {
@@ -40,7 +37,6 @@ class CreateHubController extends Controller
         $this->generateContractDetails = $generateContractDetails;
         $this->storeContracts = $storeContracts;
         $this->addAirlineTransaction = $addAirlineTransaction;
-        $this->calcDistanceBetweenPoints = $calcDistanceBetweenPoints;
         $this->calcCostOfHub = $calcCostOfHub;
         $this->getAirlineBalance = $getAirlineBalance;
     }
@@ -81,7 +77,7 @@ class CreateHubController extends Controller
             $createdAC = Aircraft::where('hub_id', $airport->identifier)->where('is_ferry', true)->get();
             foreach ($createdAC as $ac) {
                 $currentLocation = Airport::where('identifier', $ac->current_airport_id)->first();
-                $distance = $this->calcDistanceBetweenPoints->execute($currentLocation->lat, $currentLocation->lon, $airport->lat, $airport->lon);
+                $distance = $currentLocation->distanceTo($createdAC);
                 $ac->ferry_distance = $distance;
                 $ac->save();
                 $this->addAirlineTransaction->execute(AirlineTransactionTypes::GeneralExpenditure, $ac->sale_price, 'AC Purchase '.$ac->registration, null, 'debit');

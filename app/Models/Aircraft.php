@@ -2,13 +2,16 @@
 
 namespace App\Models;
 
+use App\Contracts\IsLocatable;
+use App\Models\Concerns\HasLocation;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Location\Coordinate;
 
-class Aircraft extends Model
+class Aircraft extends Model implements IsLocatable
 {
-    use HasFactory;
+    use HasFactory, HasLocation;
 
     protected $appends = [
         'maintenance_status',
@@ -98,5 +101,10 @@ class Aircraft extends Model
         $totalEngineWear = $this->engines->sum('wear');
         $total = $this->wear + $totalEngineWear;
         return round($total / ($numEngines + 1));
+    }
+
+    public function getCoordinate(): Coordinate
+    {
+        return new Coordinate($this->last_lat, $this->last_lon);
     }
 }

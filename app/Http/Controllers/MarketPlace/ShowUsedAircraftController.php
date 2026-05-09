@@ -7,7 +7,6 @@ use App\Models\Aircraft;
 use App\Models\Airport;
 use App\Models\Fleet;
 use App\Services\Aircraft\GenerateAircraft;
-use App\Services\Airports\CalcDistanceBetweenPoints;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -16,12 +15,10 @@ use Inertia\Response;
 
 class ShowUsedAircraftController extends Controller
 {
-    protected CalcDistanceBetweenPoints $calcDistanceBetweenPoints;
     protected GenerateAircraft $generateAircraft;
 
-    public function __construct(CalcDistanceBetweenPoints $calcDistanceBetweenPoints, GenerateAircraft $generateAircraft)
+    public function __construct(GenerateAircraft $generateAircraft)
     {
-        $this->calcDistanceBetweenPoints = $calcDistanceBetweenPoints;
         $this->generateAircraft = $generateAircraft;
     }
 

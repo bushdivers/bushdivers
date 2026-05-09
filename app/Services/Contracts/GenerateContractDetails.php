@@ -4,7 +4,6 @@ namespace App\Services\Contracts;
 
 use App\Models\Airport;
 use App\Services\Airports\CalcBearingBetweenPoints;
-use App\Services\Airports\CalcDistanceBetweenPoints;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 
@@ -13,7 +12,6 @@ class GenerateContractDetails
     public function __construct(
         protected GenerateContractCargo $generateContractCargo,
         protected CalcContractValue $calcContractValue,
-        protected CalcDistanceBetweenPoints $calcDistanceBetweenPoints,
         protected CalcBearingBetweenPoints $calcBearingBetweenPoints
     ) {
     }
@@ -29,7 +27,7 @@ class GenerateContractDetails
             }
 
             // get distance and heading
-            $distance = $this->calcDistanceBetweenPoints->execute($origin->lat, $origin->lon, $airport->lat, $airport->lon);
+            $distance = $origin->distanceTo($airport);
             $heading = $this->calcBearingBetweenPoints->execute($origin->lat, $origin->lon, $airport->lat, $airport->lon, $airport->magnetic_variance);
             $expiry = Carbon::now()->addDays(rand(1, 8));
             $expiryMultiplier = match (true) {

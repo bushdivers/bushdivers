@@ -2,16 +2,18 @@
 
 namespace App\Models;
 
+use App\Contracts\IsLocatable;
 use App\Models\Enums\SimType;
+use App\Models\Concerns\HasLocation;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\AsEnumCollection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Location\Coordinate;
 
-class Airport extends Model
+class Airport extends Model implements IsLocatable
 {
-    use HasFactory;
+    use HasFactory, HasLocation;
 
     protected $fillable = [
         'identifier',
@@ -152,4 +154,8 @@ class Airport extends Model
         });
     }
 
+    public function getCoordinate(): Coordinate
+    {
+        return new Coordinate($this->lat, $this->lon);
+    }
 }

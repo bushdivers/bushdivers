@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin\Missions;
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Traits\HandlesBulkUpload;
+use App\Traits\HandlesBulkUpload;
 use App\Models\Airport;
 use App\Models\CommunityJob;
 use App\Models\CommunityJobContract;

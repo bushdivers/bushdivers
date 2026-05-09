@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Admin\Airports;
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Traits\HandlesBulkUpload;
+use App\Traits\HandlesBulkUpload;
 use App\Models\Airport;
 use App\Models\Enums\AirportRunwaySurface;
-use App\Services\Airports\CalcDistanceBetweenPoints;
+use App\Models\Enums\DistanceConsts;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Location\Coordinate;
@@ -15,9 +15,7 @@ class BulkUploadAirportsController extends Controller
 {
     use HandlesBulkUpload;
 
-    public function __construct(
-        protected CalcDistanceBetweenPoints $calcDistanceBetweenPoints
-    ) {}
+    public function __construct( ) {}
 
     public function __invoke(Request $request)
     {
@@ -93,10 +91,9 @@ class BulkUploadAirportsController extends Controller
 
                                 // Check if coordinates are too close to other coordinates in this upload file
                                 foreach ($sharedState->coordinateCache as $existingCoord) {
-                                    $distance = $this->calcDistanceBetweenPoints->execute($value, $lon, $existingCoord->getLat(), $existingCoord->getLng());
+                                    $distance =  \App\Models\Concerns\HasLocation::distanceBetween($currentCoord, $existingCoord);
                                     if ($distance < 2) {
                                         $fail("Coordinates ({$value}, {$lon}) are within 2nm of another airport in this upload file at ({$existingCoord->getLat()}, {$existingCoord->getLng()}).");
-
                                         return;
                                     }
                                 }
@@ -104,7 +101,6 @@ class BulkUploadAirportsController extends Controller
                                 // Check if coordinates are too close to existing airports
                                 if ($nearAirport = Airport::whereNull('user_id')->inRangeOf($currentCoord, 0, 2)->first()) {
                                     $fail("ICAO {$nearAirport->identifier} already exists within 2nm of coordinates ({$value}, {$lon}).");
-
                                     return;
                                 }
 

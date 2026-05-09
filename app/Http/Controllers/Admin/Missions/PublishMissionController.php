@@ -6,13 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Airport;
 use App\Models\CommunityJob;
 use App\Models\CommunityJobContract;
-use App\Models\Enums\ContractType;
-use App\Services\Airports\CalcBearingBetweenPoints;
-use App\Services\Airports\CalcDistanceBetweenPoints;
-use App\Services\Contracts\CalcContractValue;
 use App\Services\Contracts\CreateCommunityContract;
-use App\Services\Contracts\GenerateContractDetails;
-use App\Services\Contracts\StoreContracts;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
