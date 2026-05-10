@@ -3,11 +3,12 @@
 namespace App\Services\Aircraft;
 
 use App\Models\Aircraft;
+use App\Models\Rental;
 use Log;
 
 class FindAvailableRegistration
 {
-    public function execute(?string $country): string
+    public function execute(?string $country, bool $isRental = false): string
     {
         $reg = '';
 
@@ -26,7 +27,15 @@ class FindAvailableRegistration
 
         for ($i = 0; $i < $maxAttempts; $i++) {
             $reg = $this->generateRegistration($template);
-            $exists = Aircraft::where('registration', $reg)->exists();
+
+            $exists = true;
+            if ($isRental) {
+                $reg .= '-R';
+                $exists = Rental::where('registration', $reg)->exists();
+            } else {
+                $exists = Aircraft::where('registration', $reg)->exists();
+            }
+
             if (!$exists) {
                 return $reg;
             }

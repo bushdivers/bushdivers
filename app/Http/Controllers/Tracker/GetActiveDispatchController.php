@@ -90,7 +90,11 @@ class GetActiveDispatchController extends Controller
             'destination_airport_id' => $dispatch->arrAirport->identifier,
             'name' => $dispatch->is_rental ? $dispatch->rental->fleet->manufacturer . ' ' . $dispatch->rental->fleet->name : $dispatch->aircraft->fleet->manufacturer . ' ' . $dispatch->aircraft->fleet->name,
             'aircraft_type' => $dispatch->is_rental ? $dispatch->rental->fleet->type : $dispatch->aircraft->fleet->type,
-            'registration' => $dispatch->is_rental ? $dispatch->rental->registration : $dispatch->aircraft->registration,
+            'registration' => $dispatch->is_rental
+                ? (str_ends_with($dispatch->rental->registration, '-R')
+                    ? substr($dispatch->rental->registration, 0, -2)
+                    : $dispatch->rental->registration)
+                : $dispatch->aircraft->registration,
             'planned_fuel' => $dispatch->planned_fuel,
             'fuel_type' => $dispatch->is_rental ? $dispatch->rental->fleet->fuel_type : $dispatch->aircraft->fleet->fuel_type,
             'cargo_weight' => $cargoWeight,

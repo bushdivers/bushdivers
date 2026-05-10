@@ -35,12 +35,12 @@ class StartRentalTest extends TestCase
 
         $this->usHub = Airport::factory()->create([
             'identifier' => 'PAMX',
-            'country' => 'US'
+            'country_code' => 'US'
         ]);
 
         $this->pngHub = Airport::factory()->create([
             'identifier' => 'AYMR',
-            'country' => 'PG'
+            'country_code' => 'PG'
         ]);
 
         $this->startRental = $this->app->make(StartRental::class);
@@ -76,14 +76,15 @@ class StartRentalTest extends TestCase
     {
         $this->startRental->execute($this->fleet->id, $this->user->id, 'PAMX');
         $rental = Rental::where('user_id', $this->user->id)->first();
-
-        $this->assertMatchesRegularExpression('/([N])([0-9]){4}([R])/', $rental->registration);
+        $this->assertStringStartsWith('N', $rental->registration);
+        $this->assertStringEndsWith('-R', $rental->registration);
     }
 
     public function test_registration_generated_png()
     {
         $this->startRental->execute($this->fleet->id, $this->user->id, 'AYMR');
         $rental = Rental::where('user_id', $this->user->id)->first();
-        $this->assertMatchesRegularExpression('/([P])([2])([\-])([R])([0-9]){3}/', $rental->registration);
+        $this->assertStringStartsWith('P2-', $rental->registration);
+        $this->assertStringEndsWith('-R', $rental->registration);
     }
 }

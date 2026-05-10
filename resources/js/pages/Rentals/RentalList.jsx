@@ -38,10 +38,19 @@ const RentalList = ({ aircraft, myRentals, currentAirport }) => {
       } ${ac.name} for $${ac.rental_cost} per hour.`,
       status: 'warning',
       confirmText: 'Rent Aircraft',
+      confirmColorScheme: 'blue',
     })
 
     if (accepted) {
-      router.post('/rentals', { aircraft: ac.id })
+      router.post(
+        '/rentals',
+        { aircraft: ac.id },
+        {
+          onSuccess: () => {
+            setSelectedFleet(null)
+          },
+        }
+      )
     }
   }
 

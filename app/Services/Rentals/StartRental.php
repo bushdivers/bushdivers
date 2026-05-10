@@ -7,6 +7,7 @@ use App\Models\Airport;
 use App\Models\Enums\TransactionTypes;
 use App\Models\Fleet;
 use App\Models\Rental;
+use App\Services\Aircraft\FindAvailableRegistration;
 use App\Services\Finance\AddUserTransaction;
 use App\Services\Finance\GetUserBalance;
 use Illuminate\Support\Facades\Auth;
@@ -15,6 +16,9 @@ class StartRental
 {
     protected string $reg = '';
 
+    public function __construct(protected FindAvailableRegistration $findAvailableRegistration)
+    {
+    }
 
     public function execute($id, $userId, $icao): bool
     {
@@ -27,7 +31,7 @@ class StartRental
             $existingRental->rental_airport_id = $airport->id;
             $existingRental->save();
         } else {
-            $reg = $this->findAvailableReg($airport->country);
+            $reg = $this->findAvailableRegistration->execute($airport->country_code, true);
 
             $rental = new Rental();
             $rental->registration = $reg;
@@ -39,38 +43,5 @@ class StartRental
         }
 
         return true;
-    }
-
-    protected function findAvailableReg(?string $country): string
-    {
-        $valid = false;
-        $reg = '';
-        if ($country == 'PG' || $country == 'ID') {
-           $qty = 3;
-        } else {
-            $qty = 4;
-        }
-
-        while ($valid == false) {
-            $num = [];
-            if ($country == 'PG' || $country == 'ID') {
-                for ($i = 0; $i < $qty; $i++) {
-                    $num[$i] = mt_rand(0, 9);
-                }
-                $reg = 'P2-R'.$num[0].$num[1].$num[2];
-            } else {
-                for ($i = 0; $i < $qty; $i++) {
-                    $num[$i] = mt_rand(0, 9);
-                }
-                $reg = 'N'.$num[0].$num[1].$num[2].$num[3].'R';
-            }
-
-            $rental = Rental::where('registration', $reg)
-                ->count();
-            if ($rental == 0) {
-                $valid = true;
-            }
-        }
-        return $reg;
     }
 }
