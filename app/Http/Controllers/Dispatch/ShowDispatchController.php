@@ -87,13 +87,18 @@ class ShowDispatchController extends Controller
 
         $cargo = $this->getCargoForDispatch($currentAirport, Auth::user()->id);
         $aircraft = $this->getAircraftForDispatch($currentAirport);
-        $tours = Tour::with('aircraft.fleet', 'participants')
+        $tours = Tour::with('aircraft.fleet')
             ->whereHas('participants', function ($q) {
                 return $q->where('user_id', Auth::user()->id)->where('is_completed', false);
             })
             ->get();
 
-        return Inertia::render('Dispatch/Dispatch', ['cargo' => $cargo, 'aircraft' => $aircraft, 'airport' => $currentAirport, 'tours' => $tours]);
+        // Supply last pirep for new flight prefill if we're still at that location
+        $lastPirep = Auth::user()->latestPirep()->first();
+        if ($lastPirep && Auth::user()->current_airport_id != $lastPirep->arrival_airport_id)
+            $lastPirep = null;
+
+        return Inertia::render('Dispatch/Dispatch', ['cargo' => $cargo, 'aircraft' => $aircraft, 'airport' => $currentAirport, 'tours' => $tours, 'lastPirep' => $lastPirep]);
     }
 
     protected function getCargoForDispatch(Airport $currentLocation, $userId): array

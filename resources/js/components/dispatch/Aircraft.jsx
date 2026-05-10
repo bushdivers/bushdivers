@@ -117,9 +117,13 @@ const Aircraft = (props) => {
                         {ac.fuel_onboard.toLocaleString(navigator.language)}
                       </Td>
                       <Td>
-                        <AircraftCondition
-                          aircraftCondition={ac.total_condition}
-                        />
+                        {ac.rental_airport_id ? (
+                          'N/A'
+                        ) : (
+                          <AircraftCondition
+                            aircraftCondition={ac.total_condition}
+                          />
+                        )}
                       </Td>
                     </Tr>
                   ))}

@@ -26,7 +26,7 @@ import Fuel from '../../components/dispatch/Fuel'
 import AppLayout from '../../components/layout/AppLayout'
 import { SimTypeNames } from '../../helpers/simtype.helpers.js'
 
-const Dispatch = ({ cargo, aircraft, airport, tours }) => {
+const Dispatch = ({ cargo, aircraft, airport, tours, lastPirep }) => {
   const { auth } = usePage().props
   const toast = useToast()
   const [personWeight] = useState(170.0)
@@ -294,6 +294,35 @@ const Dispatch = ({ cargo, aircraft, airport, tours }) => {
     const tour = tours.filter((t) => t.id == e.target.value)
     setSelectedTour(tour[0] ?? null)
   }
+
+  useEffect(() => {
+    // Last pirep only supplied if user is at that end location
+    if (lastPirep) {
+      if (lastPirep.tour_id) {
+        const tour = tours.find((t) => t.id === lastPirep.tour_id)
+        if (tour) {
+          setFlightType('tour')
+          setSelectedTour(tour)
+        } else {
+          setFlightType('standard')
+        }
+      } else {
+        setFlightType('standard')
+      }
+
+      const ac = lastPirep.is_rental
+        ? aircraft.find(
+            (a) => a.id == lastPirep.aircraft_id && a.rental_airport_id
+          )
+        : aircraft.find(
+            (a) => a.id == lastPirep.aircraft_id && !a.rental_airport_id
+          )
+
+      if (ac) {
+        handleAircraftSelect(ac)
+      }
+    } else setFlightType('standard')
+  }, [lastPirep])
 
   return (
     <div>

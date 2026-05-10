@@ -137,4 +137,14 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Loan::class);
     }
+
+    public function latestPirep()
+    {
+        return $this->hasOne(Pirep::class)->latestOfMany('submitted_at');
+    }
+
+    public function pireps()
+    {
+        return $this->hasMany(Pirep::class)->orderBy('submitted_at', 'desc');
+    }
 }
