@@ -16,6 +16,7 @@ use App\Services\Contracts\StoreContracts;
 use App\Services\Finance\AddAirlineTransaction;
 use App\Services\Finance\GetAirlineBalance;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class CreateHubController extends Controller
 {
@@ -65,15 +66,21 @@ class CreateHubController extends Controller
         $allAirports = Airport::base()->inRangeOf($airport, 100, 500)->get();
         // create aircraft
         if ($request->aircraft) {
-            foreach ($request->aircraft as $aircraft) {
-                $i = 1;
-                while ($i <= $aircraft['qty']) {
-                    $acAirport = $allAirports->where('size', '>=', 3)->random(1);
-                    $fleet = Fleet::find($aircraft['fleet_id']);
-                    $this->generateAircraftDetails->execute($fleet, $acAirport[0], $acAirport[0]->country_code, true, $airport);
-                    $i++;
+            try {
+                foreach ($request->aircraft as $aircraft) {
+                    $i = 1;
+                    while ($i <= $aircraft['qty']) {
+                        $acAirport = $allAirports->where('size', '>=', 3)->random(1);
+                        $fleet = Fleet::find($aircraft['fleet_id']);
+                        $this->generateAircraftDetails->execute($fleet, $acAirport[0], $acAirport[0]->country_code, true, $airport);
+                        $i++;
+                    }
                 }
             }
+            catch (\Exception $e) {
+                Log::error("Unable to create all aircraft for hub. Error: ".$e->getMessage());
+            }
+
             $createdAC = Aircraft::where('hub_id', $airport->identifier)->where('is_ferry', true)->get();
             foreach ($createdAC as $ac) {
                 $currentLocation = Airport::where('identifier', $ac->current_airport_id)->first();

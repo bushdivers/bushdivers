@@ -6,6 +6,7 @@ use App\Models\Aircraft;
 use App\Models\Airport;
 use App\Models\Fleet;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class GenerateAircraft
 {
@@ -63,10 +64,15 @@ class GenerateAircraft
 
         if ($numberToGenerate > 0) {
             $i = 1;
-            while ($i <= $numberToGenerate) {
-                $destAirport = $allAirports->where('size', '>=', 3)->random(1);
-                $this->generateAircraftDetails->execute($fleet, $destAirport[0], $destAirport[0]->country_code);
-                $i++;
+            try {
+                while ($i <= $numberToGenerate) {
+                    $destAirport = $allAirports->where('size', '>=', 3)->random(1);
+                    $this->generateAircraftDetails->execute($fleet, $destAirport[0], $destAirport[0]->country_code);
+                    $i++;
+                }
+            }
+            catch (\Exception $e) {
+                Log::error("Unable to generate all aircraft. Error: ".$e->getMessage());
             }
         }
     }

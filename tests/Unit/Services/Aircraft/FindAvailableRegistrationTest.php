@@ -23,18 +23,18 @@ class FindAvailableRegistrationTest extends TestCase
     public function test_PNG_Registration_Generated(): void
     {
         $reg = $this->findAvailableRegistration->execute('PG');
-        $this->assertStringContainsString('P2', $reg);
+        $this->assertStringContainsString('P2-', $reg);
     }
 
     public function test_PNG_ID_Registration_Generated(): void
     {
         $reg = $this->findAvailableRegistration->execute('ID');
-        $this->assertStringContainsString('P2', $reg);
+        $this->assertStringContainsString('PK-', $reg);
     }
 
-    public function test_Nbased_Registration_Generated(): void
+    public function test_fallback_Registration_Generated(): void
     {
-        $reg = $this->findAvailableRegistration->execute('GB');
-        $this->assertStringContainsString('N', $reg);
+        $reg = $this->findAvailableRegistration->execute('ZZ');
+        $this->assertStringContainsString('N-', $reg);
     }
 }
