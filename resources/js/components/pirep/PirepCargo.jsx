@@ -30,7 +30,7 @@ const PirepCargo = (props) => {
                   <Th>Pick Up</Th>
                   <Th>Destination</Th>
                   <Th>Distance</Th>
-                  <Th>Heading</Th>
+                  <Th>Bearing</Th>
                   <Th>Type</Th>
                   <Th>Cargo</Th>
                 </Tr>
@@ -60,7 +60,7 @@ const PirepCargo = (props) => {
                     <Td>
                       {detail.distance.toLocaleString(navigator.language)}
                     </Td>
-                    <Td>{detail.heading}</Td>
+                    <Td>{String(detail.heading).padStart(3, '0')}</Td>
                     <Td>{detail.cargo_type === 1 ? 'Cargo' : 'Passenger'}</Td>
                     <Td>
                       {detail.cargo_type === 1 ? (

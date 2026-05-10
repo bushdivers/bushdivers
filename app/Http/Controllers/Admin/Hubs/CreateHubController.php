@@ -77,7 +77,7 @@ class CreateHubController extends Controller
             $createdAC = Aircraft::where('hub_id', $airport->identifier)->where('is_ferry', true)->get();
             foreach ($createdAC as $ac) {
                 $currentLocation = Airport::where('identifier', $ac->current_airport_id)->first();
-                $distance = $currentLocation->distanceTo($createdAC);
+                $distance = $currentLocation->distanceTo($ac);
                 $ac->ferry_distance = $distance;
                 $ac->save();
                 $this->addAirlineTransaction->execute(AirlineTransactionTypes::GeneralExpenditure, $ac->sale_price, 'AC Purchase '.$ac->registration, null, 'debit');

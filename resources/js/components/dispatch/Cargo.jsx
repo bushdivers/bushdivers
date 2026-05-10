@@ -197,7 +197,7 @@ const Cargo = (props) => {
                         <Th>Current</Th>
                         <Th>Arrival</Th>
                         <Th>Distance</Th>
-                        <Th>Heading</Th>
+                        <Th>Bearing</Th>
                         <Th>Cargo</Th>
                         <Th>Value</Th>
                         <Th></Th>
@@ -249,7 +249,9 @@ const Cargo = (props) => {
                           </Td>
                           <Td>
                             <Flex alignItems="center">
-                              <Box className="mr-2">{detail.heading}</Box>
+                              <Box className="mr-2">
+                                {String(detail.heading).padStart(3, '0')}
+                              </Box>
                               <Box
                                 style={{
                                   transform: `rotate(${detail.heading}deg)`,
@@ -449,7 +451,7 @@ const Cargo = (props) => {
                       <Th>Current</Th>
                       <Th>Arrival</Th>
                       <Th>Distance</Th>
-                      <Th>Heading</Th>
+                      <Th>Bearing</Th>
                       <Th>Cargo</Th>
                       <Th></Th>
                     </Tr>
@@ -481,7 +483,9 @@ const Cargo = (props) => {
                         </Td>
                         <Td>
                           <Flex alignItems="center">
-                            <Box className="mr-2">{detail.heading}</Box>
+                            <Box className="mr-2">
+                              {String(detail.heading).padStart(3, '0')}
+                            </Box>
                             <Box
                               style={{
                                 transform: `rotate(${detail.heading}deg)`,

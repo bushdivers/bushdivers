@@ -108,7 +108,9 @@ const ActiveDispatch = ({
                             <Td>{detail.distance} nm</Td>
                             <Td>
                               <Flex alignItems="center">
-                                <span className="mr-2">{detail.heading}</span>
+                                <span className="mr-2">
+                                  {String(detail.heading).padStart(3, '0')}
+                                </span>
                                 <span
                                   style={{
                                     transform: `rotate(${detail.heading}deg)`,

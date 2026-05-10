@@ -2,12 +2,13 @@
 
 namespace Tests\Unit\Services\Airport;
 
-use App\Services\Airports\CalcBearingBetweenPoints;
+use App\Models\Airport;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class AirportBearingTest extends TestCase
 {
-
+    use RefreshDatabase;
     /**
      * A basic unit test example.
      *
@@ -15,15 +16,47 @@ class AirportBearingTest extends TestCase
      */
     public function test_bearing_between_moro_and_MH()
     {
-        $calcBearing = $this->app->make(CalcBearingBetweenPoints::class);
-        $heading = $calcBearing->execute(-6.36188, 143.23070, -5.82781, 144.29953, 5.51567);
-        $this->assertEquals(57, $heading);
+        $moro = Airport::factory()->create([
+            'identifier' => 'AYMR',
+            'country' => 'PG',
+            'is_hub' => false,
+            'lat' => -6.36188,
+            'lon' => 143.23070,
+            'altitude' => 100
+        ]);
+        $mh = Airport::factory()->create([
+            'identifier' => 'AYMH',
+            'country' => 'PG',
+            'is_hub' => false,
+            'lat' => -5.82781,
+            'lon' => 144.29953,
+            'altitude' => 100
+        ]);
+
+        $heading = $moro->bearingTo($mh);
+        $this->assertEquals(63, $heading); // 63.3
     }
 
     public function test_bearing_between_ayfo_and_aymr()
     {
-        $calcBearing = $this->app->make(CalcBearingBetweenPoints::class);
-        $heading = $calcBearing->execute(-6.50917, 143.07904, -6.36188, 143.23070, 5.33706);
-        $this->assertEquals(40, $heading);
+        $ayfo = Airport::factory()->create([
+            'identifier' => 'AYFO',
+            'country' => 'PG',
+            'is_hub' => false,
+            'lat' => -6.50917,
+            'lon' => 143.07904,
+            'altitude' => 100
+        ]);
+        $aymr = Airport::factory()->create([
+            'identifier' => 'AYMR',
+            'country' => 'PG',
+            'is_hub' => false,
+            'lat' => -6.36188,
+            'lon' => 143.23070,
+            'altitude' => 100
+        ]);
+
+        $heading = $ayfo->bearingTo($aymr);
+        $this->assertEquals(46, $heading); // 45.7
     }
 }

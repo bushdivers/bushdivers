@@ -65,6 +65,6 @@ class GenerateContractDetailsTest extends TestCase
     public function test_contract_generates_successfully()
     {
         $contracts = $this->generateContractDetails->execute($this->origin, $this->airport2);
-        $this->assertEquals(225, $contracts['heading']);
+        $this->assertEquals(226, $contracts['heading']); // 225.7
     }
 }

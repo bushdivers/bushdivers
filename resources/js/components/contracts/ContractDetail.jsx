@@ -95,7 +95,9 @@ const ContractDetail = ({ contract, action = null, type }) => {
                 <Box style={{ transform: `rotate(${contract.heading}deg)` }}>
                   <Icon as={ArrowUp} />
                 </Box>
-                <Box ml={1}>{contract.heading}&deg;</Box>
+                <Box ml={1}>
+                  {String(contract.heading).padStart(3, '0')}&deg;
+                </Box>
               </Flex>
             </Flex>
             <Flex gap={4}>

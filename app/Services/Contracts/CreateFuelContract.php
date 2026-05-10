@@ -5,7 +5,6 @@ namespace App\Services\Contracts;
 use App\Models\Airport;
 use App\Models\Enums\CargoType;
 use App\Models\User;
-use App\Services\Airports\CalcBearingBetweenPoints;
 use App\Services\Airports\UpdateFuelAtAirport;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -13,19 +12,16 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 class CreateFuelContract
 {
     protected StoreContracts $storeContract;
-    protected CalcBearingBetweenPoints $calcBearingBetweenPoints;
     protected CalcContractValue $calcContractValue;
 
     protected UpdateFuelAtAirport $updateFuelAtAirport;
 
     public function __construct(
         StoreContracts $storeContract,
-        CalcBearingBetweenPoints $calcBearingBetweenPoints,
         CalcContractValue $calcContractValue,
         UpdateFuelAtAirport $updateFuelAtAirport
     ) {
         $this->storeContract = $storeContract;
-        $this->calcBearingBetweenPoints = $calcBearingBetweenPoints;
         $this->calcContractValue = $calcContractValue;
         $this->updateFuelAtAirport = $updateFuelAtAirport;
     }
@@ -34,7 +30,7 @@ class CreateFuelContract
         try {
             // contract info
             $distance = $depAirport->distanceTo($arrAirport);
-            $heading = $this->calcBearingBetweenPoints->execute($depAirport->lat, $depAirport->lon, $arrAirport->lat, $arrAirport->lon, $depAirport->magnetic_variance);
+            $heading = $depAirport->bearingTo($arrAirport);
 
             $fuelString = $fuelType === 1 ? '100LL' : 'Jet Fuel';
             // cargo info

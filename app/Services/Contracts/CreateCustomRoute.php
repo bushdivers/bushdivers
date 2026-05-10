@@ -5,23 +5,19 @@ namespace App\Services\Contracts;
 use App\Models\Airport;
 use App\Models\Enums\CargoType;
 use App\Models\User;
-use App\Services\Airports\CalcBearingBetweenPoints;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class CreateCustomRoute
 {
     protected StoreContracts $storeContract;
-    protected CalcBearingBetweenPoints $calcBearingBetweenPoints;
     protected CalcContractValue $calcContractValue;
 
     public function __construct(
         StoreContracts $storeContract,
-        CalcBearingBetweenPoints $calcBearingBetweenPoints,
         CalcContractValue $calcContractValue
     ) {
         $this->storeContract = $storeContract;
-        $this->calcBearingBetweenPoints = $calcBearingBetweenPoints;
         $this->calcContractValue = $calcContractValue;
     }
 
@@ -33,7 +29,7 @@ class CreateCustomRoute
 
             // contract info
             $distance = $depAirport->distanceTo($arrAirport);
-            $heading = $this->calcBearingBetweenPoints->execute($depAirport->lat, $depAirport->lon, $arrAirport->lat, $arrAirport->lon, $depAirport->magnetic_variance);
+            $heading = $depAirport->bearingTo($arrAirport);
 
             // cargo info
             $cargo = [
