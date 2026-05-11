@@ -11,6 +11,7 @@ use App\Models\Enums\PirepState;
 use App\Models\Fleet;
 use App\Models\Pirep;
 use App\Models\Tour;
+use App\Models\TourUser;
 use App\Models\User;
 use Database\Seeders\CargoTypesSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -249,6 +250,82 @@ class ShowDispatchTest extends TestCase
                 ->component('Dispatch/Dispatch')
                 ->has('airport') // Just verify airport data exists
                 ->has('aircraft') // Aircraft array exists (might not be empty due to controller logic)
+        );
+    }
+
+    public function test_suggestions_includes_nearest_hub()
+    {
+        $hub = Airport::factory()->create([
+            'identifier' => 'PHUB',
+            'is_hub' => true,
+            'hub_in_progress' => false,
+            'lat' => $this->origin->lat + 1,
+            'lon' => $this->origin->lon + 1,
+        ]);
+
+        $response = $this->actingAs($this->user)->get('/dispatch');
+
+        $response->assertInertia(
+            fn (AssertableInertia $page) => $page
+                ->component('Dispatch/Dispatch')
+                ->where('suggestions', function ($suggestions) use ($hub) {
+                    $hubSuggestion = collect($suggestions)->first(fn ($s) => $s['type'] === 'hub');
+                    return $hubSuggestion && $hubSuggestion['identifier'] === $hub->identifier;
+                })
+        );
+    }
+
+    public function test_suggestions_includes_previous_departure()
+    {
+        $departureAirport = Airport::factory()->create(['identifier' => 'PPREV']);
+
+        Pirep::factory()->create([
+            'user_id' => $this->user->id,
+            'aircraft_id' => $this->aircraft->id,
+            'departure_airport_id' => $departureAirport->id,
+            'arrival_airport_id' => $this->origin->id,
+            'state' => PirepState::ACCEPTED,
+            'submitted_at' => now(),
+        ]);
+
+        $response = $this->actingAs($this->user)->get('/dispatch');
+
+        $response->assertInertia(
+            fn (AssertableInertia $page) => $page
+                ->component('Dispatch/Dispatch')
+                ->where('suggestions', function ($suggestions) use ($departureAirport) {
+                    $prev = collect($suggestions)->first(fn ($s) => $s['type'] === 'previous');
+                    return $prev && $prev['identifier'] === $departureAirport->identifier;
+                })
+        );
+    }
+
+    public function test_suggestions_includes_tour_next_checkpoint()
+    {
+        $checkpointAirport = Airport::factory()->create(['identifier' => 'PTOUR']);
+
+        $tour = Tour::factory()->create([
+            'is_published' => true,
+            'start_airport_id' => $this->origin->id,
+        ]);
+
+        // Create participant so the tour appears in the dispatch query
+        TourUser::factory()->create([
+            'user_id' => $this->user->id,
+            'tour_id' => $tour->id,
+            'next_airport_id' => $checkpointAirport->id,
+            'is_completed' => false,
+        ]);
+
+        $response = $this->actingAs($this->user)->get('/dispatch');
+
+        $response->assertInertia(
+            fn (AssertableInertia $page) => $page
+                ->component('Dispatch/Dispatch')
+                ->where('suggestions', function ($suggestions) use ($checkpointAirport) {
+                    $tourSuggestion = collect($suggestions)->first(fn ($s) => $s['type'] === 'tour');
+                    return $tourSuggestion && $tourSuggestion['identifier'] === $checkpointAirport->identifier;
+                })
         );
     }
 }

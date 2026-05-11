@@ -12,7 +12,14 @@ import {
 import axios from 'axios'
 import React, { useState } from 'react'
 
-const Destination = (props) => {
+const SECTIONS = [
+  { type: 'previous', label: 'Previous' },
+  { type: 'hub', label: 'Nearest Hub' },
+  { type: 'cargo', label: 'Cargo' },
+  { type: 'tour', label: 'Next Tour' },
+]
+
+const Destination = ({ suggestions = [], ...props }) => {
   const [airportError, setAirportError] = useState(null)
   const [distance, setDistance] = useState(null)
   const [airport, setAirport] = useState('')
@@ -22,12 +29,15 @@ const Destination = (props) => {
     setIcao(e.target.value)
   }
 
-  async function getAirport() {
+  async function getAirport(overrideIcao = null) {
     setAirportError(null)
     setAirport(null)
     setDistance(null)
-    if (icao.length >= 3) {
-      const response = await axios.get(`/api/airport/search/${icao}?user=1`)
+    const lookupIcao = overrideIcao ?? icao
+    if (lookupIcao.length >= 3) {
+      const response = await axios.get(
+        `/api/airport/search/${lookupIcao}?user=1`
+      )
       if (response.data.airport) {
         props.updateDestinationValue(response.data.airport.identifier)
         setAirportError(null)
@@ -49,13 +59,53 @@ const Destination = (props) => {
     }
   }
 
+  function handleSuggestionClick(suggestion) {
+    setIcao(suggestion.identifier)
+    getAirport(suggestion.identifier)
+  }
+
+  const sections = SECTIONS.map(({ type, label }) => ({
+    label,
+    items: suggestions.filter((s) => s.type === type),
+  })).filter((s) => s.items.length > 0)
+
   return (
     <Box>
       <Card>
-        <CardHeader>
+        <CardHeader pb={0}>
           <Heading size="md">Destination (ICAO)</Heading>
         </CardHeader>
         <CardBody>
+          {sections.length > 0 && (
+            <Box mb={3}>
+              {sections.map((section) => (
+                <Flex key={section.label} align="baseline" gap={2} mb={1}>
+                  <Text
+                    fontSize="xs"
+                    color="gray.500"
+                    minW="80px"
+                    flexShrink={0}
+                  >
+                    {section.label}
+                  </Text>
+                  <Flex gap={3} wrap="wrap">
+                    {section.items.map((s) => (
+                      <Button
+                        key={s.identifier}
+                        variant="link"
+                        size="xs"
+                        fontWeight="normal"
+                        onClick={() => handleSuggestionClick(s)}
+                        title={s.name}
+                      >
+                        {s.identifier}
+                      </Button>
+                    ))}
+                  </Flex>
+                </Flex>
+              ))}
+            </Box>
+          )}
           <Flex gap={1}>
             <Input
               id="icao"

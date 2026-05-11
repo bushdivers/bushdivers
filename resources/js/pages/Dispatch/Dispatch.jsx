@@ -16,7 +16,7 @@ import {
 } from '@chakra-ui/react'
 import { router, usePage } from '@inertiajs/react'
 import { Anchor, Package } from 'lucide-react'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 
 import Aircraft from '../../components/dispatch/Aircraft'
 import Cargo from '../../components/dispatch/Cargo'
@@ -26,7 +26,14 @@ import Fuel from '../../components/dispatch/Fuel'
 import AppLayout from '../../components/layout/AppLayout'
 import { SimTypeNames } from '../../helpers/simtype.helpers.js'
 
-const Dispatch = ({ cargo, aircraft, airport, tours, lastPirep }) => {
+const Dispatch = ({
+  cargo,
+  aircraft,
+  airport,
+  tours,
+  lastPirep,
+  suggestions,
+}) => {
   const { auth } = usePage().props
   const toast = useToast()
   const [personWeight] = useState(170.0)
@@ -282,6 +289,36 @@ const Dispatch = ({ cargo, aircraft, airport, tours, lastPirep }) => {
     }
   }
 
+  const cargoSuggestions = useMemo(() => {
+    if (selectedCargo.length === 0) return []
+    return selectedCargo
+      .filter((c) => c.arr_airport)
+      .filter(
+        (c, idx) =>
+          selectedCargo.findIndex(
+            (sc) => sc.arr_airport?.id === c.arr_airport?.id
+          ) === idx
+      )
+      .sort((a, b) => a.distance - b.distance)
+      .map((c) => ({
+        type: 'cargo',
+        identifier: c.arr_airport.identifier,
+        name: c.arr_airport.name,
+      }))
+  }, [selectedCargo])
+
+  const destinationSuggestions = useMemo(() => {
+    const staticFiltered = (suggestions ?? []).filter((s) => {
+      if (s.type === 'tour') {
+        return (
+          flightType === 'tour' && selectedTour && s.tour_id === selectedTour.id
+        )
+      }
+      return true
+    })
+    return [...staticFiltered, ...cargoSuggestions]
+  }, [suggestions, cargoSuggestions, flightType, selectedTour])
+
   useEffect(() => {
     if (flightType === 'tour') {
       setSelectedTour(tours[0])
@@ -409,6 +446,7 @@ const Dispatch = ({ cargo, aircraft, airport, tours, lastPirep }) => {
             <Destination
               currentAirport={auth.user.location.identifier}
               updateDestinationValue={setDestination}
+              suggestions={destinationSuggestions}
             />
             <Fuel
               airport={airport}

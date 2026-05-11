@@ -14,6 +14,7 @@ use App\Models\Pirep;
 use App\Models\PirepCargo;
 use App\Models\Rental;
 use App\Models\Tour;
+use App\Models\TourUser;
 use App\Services\Dispatch\CalcCargoWeight;
 use App\Services\Dispatch\CalcFuelWeight;
 use App\Services\Dispatch\CalcPassengerCount;
@@ -94,11 +95,14 @@ class ShowDispatchController extends Controller
             ->get();
 
         // Supply last pirep for new flight prefill if we're still at that location
-        $lastPirep = Auth::user()->latestPirep()->first();
-        if ($lastPirep && Auth::user()->current_airport_id != $lastPirep->arrival_airport_id)
+        $lastPirep = Auth::user()->latestPirep()->with('depAirport')->first();
+        if ($lastPirep && Auth::user()->current_airport_id != $lastPirep->arrival_airport_id) {
             $lastPirep = null;
+        }
 
-        return Inertia::render('Dispatch/Dispatch', ['cargo' => $cargo, 'aircraft' => $aircraft, 'airport' => $currentAirport, 'tours' => $tours, 'lastPirep' => $lastPirep]);
+        $suggestions = $this->buildSuggestions($currentAirport, $lastPirep, $tours, Auth::user()->id);
+
+        return Inertia::render('Dispatch/Dispatch', ['cargo' => $cargo, 'aircraft' => $aircraft, 'airport' => $currentAirport, 'tours' => $tours, 'lastPirep' => $lastPirep, 'suggestions' => $suggestions]);
     }
 
     protected function getCargoForDispatch(Airport $currentLocation, $userId): array
@@ -153,5 +157,54 @@ class ShowDispatchController extends Controller
             ->get();
 
         return $aircraft->merge($rentalAc);
+    }
+
+    protected function buildSuggestions(Airport $currentAirport, ?Pirep $lastPirep, $tours, $userId): array
+    {
+        $suggestions = [];
+
+        // Previous departure airport
+        if ($lastPirep && $lastPirep->depAirport && $lastPirep->depAirport->id !== $currentAirport->id) {
+            $suggestions[] = [
+                'type' => 'previous',
+                'identifier' => $lastPirep->depAirport->identifier,
+                'name' => $lastPirep->depAirport->name,
+            ];
+        }
+
+        // Nearest hub
+        $nearestHub = Airport::hub()
+            ->withRangeTo($currentAirport)
+            ->where('id', '!=', $currentAirport->id)
+            ->orderBy('distance')
+            ->first();
+        if ($nearestHub) {
+            $suggestions[] = [
+                'type' => 'hub',
+                'identifier' => $nearestHub->identifier,
+                'name' => $nearestHub->name,
+            ];
+        }
+
+        // Tour next checkpoints
+        if ($tours->isNotEmpty()) {
+            $tourUsers = TourUser::where('user_id', $userId)
+                ->whereIn('tour_id', $tours->pluck('id'))
+                ->whereNotNull('next_airport_id')
+                ->with('nextAirport')
+                ->get();
+            foreach ($tourUsers as $tu) {
+                if ($tu->nextAirport) {
+                    $suggestions[] = [
+                        'type' => 'tour',
+                        'tour_id' => $tu->tour_id,
+                        'identifier' => $tu->nextAirport->identifier,
+                        'name' => $tu->nextAirport->name,
+                    ];
+                }
+            }
+        }
+
+        return $suggestions;
     }
 }
