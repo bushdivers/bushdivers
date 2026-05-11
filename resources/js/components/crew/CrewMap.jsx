@@ -1,13 +1,14 @@
-import { Box, Card, CardBody } from '@chakra-ui/react'
+import { Box } from '@chakra-ui/react'
 import maplibre from 'maplibre-gl'
 import React, { useState } from 'react'
-import Map, { Marker, Popup } from 'react-map-gl'
+import Map, { Marker } from 'react-map-gl'
 
 import {
   mapboxToken,
   parseMapStyle,
   transformRequest,
 } from '../../helpers/geo.helpers'
+import { AirportPopoverPanel } from '../airport/AirportLabel'
 
 const CrewMap = (props) => {
   const [selectedMarker, setSelectedMarker] = useState(null)
@@ -46,16 +47,14 @@ const CrewMap = (props) => {
               />
             ))}
           {selectedMarker && (
-            <Popup
+            <Marker
               longitude={Number(selectedMarker.lon)}
               latitude={Number(selectedMarker.lat)}
               anchor="top"
-              onClose={() => setSelectedMarker(null)}
+              offset={[0, -12]}
             >
-              <Card>
-                <CardBody>{selectedMarker.identifier}</CardBody>
-              </Card>
-            </Popup>
+              <AirportPopoverPanel airport={selectedMarker} showICAO={true} />
+            </Marker>
           )}
         </Map>
       </Box>

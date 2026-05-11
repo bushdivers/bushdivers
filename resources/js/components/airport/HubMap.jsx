@@ -62,7 +62,7 @@ const HubMap = ({ hubs, onIsVisible }) => {
             anchor="top"
             offset={[0, -12]}
           >
-            <AirportPopoverPanel airport={selectedMarker} />
+            <AirportPopoverPanel airport={selectedMarker} showICAO={true} />
           </Marker>
         )}
       </Map>

@@ -20,7 +20,7 @@ import React from 'react'
 import { runwaySurface } from '../../helpers/airport.helpers.js'
 import { SimTypeColors } from '../../helpers/simtype.helpers.js'
 
-const AirportPopoverDetails = ({ airport }) => {
+const AirportPopoverDetails = ({ airport, showICAO }) => {
   const isWater = airport.longest_runway_surface === 'W'
   const hasRunwayDetail = airport.longest_runway_length != null
   const hasFuel = airport.has_avgas || airport.has_jetfuel
@@ -37,6 +37,7 @@ const AirportPopoverDetails = ({ airport }) => {
         <Flex justifyContent="space-between" alignItems="center" gap={2}>
           <Flex direction="column" minW={0}>
             <Text fontSize="sm" fontWeight="bold" noOfLines={1}>
+              {showICAO && `${airport.identifier} `}
               {airport.name}
             </Text>
             {airport.country && (
@@ -153,7 +154,7 @@ const AirportPopoverDetails = ({ airport }) => {
   )
 }
 
-export const AirportPopoverPanel = ({ airport }) => {
+export const AirportPopoverPanel = ({ airport, showICAO }) => {
   return (
     <Box
       fontSize="xs"
@@ -166,12 +167,12 @@ export const AirportPopoverPanel = ({ airport }) => {
       _dark={{ bg: 'gray.700' }}
       onClick={(e) => e.stopPropagation()}
     >
-      <AirportPopoverDetails airport={airport} />
+      <AirportPopoverDetails airport={airport} showICAO={showICAO} />
     </Box>
   )
 }
 
-export const AirportPopoverContent = ({ airport }) => {
+export const AirportPopoverContent = ({ airport, showICAO }) => {
   return (
     <PopoverContent
       fontSize="xs"
@@ -182,7 +183,7 @@ export const AirportPopoverContent = ({ airport }) => {
       onClick={(e) => e.stopPropagation()}
     >
       <PopoverArrow />
-      <AirportPopoverDetails airport={airport} />
+      <AirportPopoverDetails airport={airport} showICAO={showICAO} />
     </PopoverContent>
   )
 }
