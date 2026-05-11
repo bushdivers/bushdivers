@@ -13,7 +13,8 @@ use Location\Coordinate;
 
 class Airport extends Model implements IsLocatable
 {
-    use HasFactory, HasLocation;
+    use HasFactory;
+    use HasLocation;
 
     protected $fillable = [
         'identifier',
@@ -65,8 +66,12 @@ class Airport extends Model implements IsLocatable
         return $this->hasMany(Aircraft::class, 'hub_id');
     }
 
-    public function scopeWithRangeTo(Builder $query, Airport|Coordinate $to)
+    public function scopeWithRangeTo(Builder $query, Airport|Coordinate|null $to)
     {
+        if (!$to) {
+            return $query;
+        }
+
         // Distances in NM
 
         // Duplicating the calc fields keeps it as simple select without subqueries, etc

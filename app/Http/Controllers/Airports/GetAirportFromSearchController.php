@@ -26,6 +26,9 @@ class GetAirportFromSearchController extends Controller
         )->when(
             $request->input('user', false) && Auth::user(),
             fn (Builder $q) => $q->forUser(Auth::user())
+        )->when(
+            $request->input('distanceFrom', false),
+            fn (Builder $q) => $q->withRangeTo(Airport::find($request->input('distanceFrom')))
         )->where('identifier', $search)->first();
 
         return response()->json(['airport' => $airport]);

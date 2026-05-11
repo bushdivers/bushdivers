@@ -9,6 +9,7 @@ import {
   Input,
   Text,
 } from '@chakra-ui/react'
+import { usePage } from '@inertiajs/react'
 import axios from 'axios'
 import React, { useState } from 'react'
 
@@ -25,6 +26,8 @@ const Destination = ({ suggestions = [], ...props }) => {
   const [airport, setAirport] = useState('')
   const [icao, setIcao] = useState('')
 
+  const userLocationId = usePage().props.auth.user.location.id ?? 0
+
   async function handleDestinationChange(e) {
     setIcao(e.target.value)
   }
@@ -36,22 +39,15 @@ const Destination = ({ suggestions = [], ...props }) => {
     const lookupIcao = overrideIcao ?? icao
     if (lookupIcao.length >= 3) {
       const response = await axios.get(
-        `/api/airport/search/${lookupIcao}?user=1`
+        `/api/airport/search/${lookupIcao}?user=1&distanceFrom=${userLocationId}`
       )
       if (response.data.airport) {
         props.updateDestinationValue(response.data.airport.identifier)
         setAirportError(null)
-        const disResp = await axios.get(
-          `/api/flights/distance/${props.currentAirport}/${response.data.airport.identifier}`
+        setDistance(Math.round(response.data.airport.distance))
+        setAirport(
+          `${response.data.airport.identifier} - ${response.data.airport.name}`
         )
-        if (disResp.status === 200) {
-          setAirport(
-            `${response.data.airport.identifier} - ${response.data.airport.name}`
-          )
-          setDistance(disResp.data.distance)
-        } else {
-          setAirportError('Cannot calculate distance')
-        }
       } else {
         props.updateDestinationValue('')
         setAirportError('No airport found')
