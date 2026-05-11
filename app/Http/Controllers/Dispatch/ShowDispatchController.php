@@ -205,6 +205,25 @@ class ShowDispatchController extends Controller
             }
         }
 
+        // Nearest fuel — only when current airport has no permanent fuel facilities
+        if (!$currentAirport->has_avgas && !$currentAirport->has_jetfuel) {
+            $nearestFuel = Airport::where(function ($q) {
+                $q->where('has_avgas', true)->orWhere('has_jetfuel', true);
+            })
+                ->withRangeTo($currentAirport)
+                ->where('id', '!=', $currentAirport->id)
+                ->orderBy('distance')
+                ->limit(3)
+                ->get();
+            foreach ($nearestFuel as $ap) {
+                $suggestions[] = [
+                    'type' => 'fuel',
+                    'identifier' => $ap->identifier,
+                    'name' => $ap->name,
+                ];
+            }
+        }
+
         return $suggestions;
     }
 }

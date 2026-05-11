@@ -328,4 +328,53 @@ class ShowDispatchTest extends TestCase
                 })
         );
     }
+
+    public function test_suggestions_includes_nearest_fuel_when_current_airport_has_no_permanent_fuel()
+    {
+        // Make origin have no permanent facilities (but may have delivered qty)
+        $this->origin->has_avgas = false;
+        $this->origin->has_jetfuel = false;
+        $this->origin->avgas_qty = 500;
+        $this->origin->saveQuietly();
+
+        $fuelAirport = Airport::factory()->create([
+            'identifier' => 'PFUEL',
+            'has_avgas' => true,
+            'lat' => $this->origin->lat + 0.5,
+            'lon' => $this->origin->lon + 0.5,
+        ]);
+
+        $response = $this->actingAs($this->user)->get('/dispatch');
+
+        $response->assertInertia(
+            fn (AssertableInertia $page) => $page
+                ->component('Dispatch/Dispatch')
+                ->where('suggestions', function ($suggestions) use ($fuelAirport) {
+                    return collect($suggestions)->contains(
+                        fn ($s) => $s['type'] === 'fuel' && $s['identifier'] === $fuelAirport->identifier
+                    );
+                })
+        );
+    }
+
+    public function test_suggestions_excludes_fuel_when_current_airport_has_permanent_fuel()
+    {
+        // origin already has has_avgas=true from factory defaults
+        Airport::factory()->create([
+            'identifier' => 'PFUEL',
+            'has_avgas' => true,
+            'lat' => $this->origin->lat + 0.5,
+            'lon' => $this->origin->lon + 0.5,
+        ]);
+
+        $response = $this->actingAs($this->user)->get('/dispatch');
+
+        $response->assertInertia(
+            fn (AssertableInertia $page) => $page
+                ->component('Dispatch/Dispatch')
+                ->where('suggestions', function ($suggestions) {
+                    return collect($suggestions)->where('type', 'fuel')->isEmpty();
+                })
+        );
+    }
 }

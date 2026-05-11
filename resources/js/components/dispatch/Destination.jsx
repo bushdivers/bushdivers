@@ -16,6 +16,7 @@ import React, { useState } from 'react'
 const SECTIONS = [
   { type: 'previous', label: 'Previous' },
   { type: 'hub', label: 'Nearest Hub' },
+  { type: 'fuel', label: 'Nearest Fuel' },
   { type: 'cargo', label: 'Cargo' },
   { type: 'tour', label: 'Next Tour' },
 ]
