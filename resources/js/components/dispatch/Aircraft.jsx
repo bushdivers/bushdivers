@@ -7,7 +7,6 @@ import {
   Heading,
   Icon,
   Table,
-  TableContainer,
   Tag,
   Tbody,
   Td,
@@ -38,98 +37,92 @@ const Aircraft = (props) => {
   return (
     <Box>
       <Card>
-        <CardHeader>
+        <CardHeader pb={0}>
           <Heading size="md">Select Aircraft</Heading>
         </CardHeader>
         <CardBody>
           {props.aircraft.length === 0 ? (
             <NoContent content={<EmptyData content="Aircraft" />} />
           ) : (
-            <TableContainer>
-              <Table colorScheme="blackAlpha" size="sm" variant="simple">
-                <Thead>
-                  <Tr>
-                    <Th>Registration</Th>
-                    <Th>Type</Th>
-                    <Th>Current Fuel</Th>
-                    <Th>Condition</Th>
+            <Table colorScheme="blackAlpha" size="sm" variant="simple">
+              <Thead>
+                <Tr>
+                  <Th>Registration</Th>
+                  <Th>Type</Th>
+                  <Th textAlign={'right'}>Fuel</Th>
+                  <Th>Condition</Th>
+                </Tr>
+              </Thead>
+              <Tbody>
+                {props.aircraft.map((ac) => (
+                  <Tr
+                    key={ac.id}
+                    onClick={() => props.handleAircraftSelect(ac)}
+                    bgColor={
+                      props.selectedAircraft.registration === ac.registration
+                        ? selectedCol
+                        : ''
+                    }
+                  >
+                    <Td style={{ whiteSpace: 'nowrap' }}>
+                      <Tooltip content={`Hub: ${ac.hub_id}`} direction="right">
+                        <Flex alignItems="center">
+                          {ac.hub_id && (
+                            <Link href={`/aircraft/${ac.id}`}>
+                              {ac.registration}
+                            </Link>
+                          )}
+                          {ac.is_ferry && (
+                            <Box mx={2}>
+                              <Box color="orange.400">
+                                <Icon as={Ship} />
+                              </Box>
+                            </Box>
+                          )}
+                          {ac.maintenance_status && (
+                            <Box mx={2}>
+                              <Box color="orange.400">
+                                <Icon as={Wrench} />
+                              </Box>
+                            </Box>
+                          )}
+                          {ac.rental_airport_id && (
+                            <span>{ac.registration}</span>
+                          )}
+                          {ac.owner_id === auth.user.id ? (
+                            <Box mx={2}>
+                              <Tag size="sm">Private</Tag>
+                            </Box>
+                          ) : (
+                            <></>
+                          )}
+                          {ac.rental_airport_id && (
+                            <Box mx={2}>
+                              <Tag size="sm">Rental</Tag>
+                            </Box>
+                          )}
+                        </Flex>
+                      </Tooltip>
+                    </Td>
+                    <Td pr={0}>
+                      {ac.fleet.manufacturer} {ac.fleet.name} ({ac.fleet.type})
+                    </Td>
+                    <Td textAlign={'right'} pl={0}>
+                      {ac.fuel_onboard.toLocaleString(navigator.language)}
+                    </Td>
+                    <Td>
+                      {ac.rental_airport_id ? (
+                        'N/A'
+                      ) : (
+                        <AircraftCondition
+                          aircraftCondition={ac.total_condition}
+                        />
+                      )}
+                    </Td>
                   </Tr>
-                </Thead>
-                <Tbody>
-                  {props.aircraft.map((ac) => (
-                    <Tr
-                      key={ac.id}
-                      onClick={() => props.handleAircraftSelect(ac)}
-                      bgColor={
-                        props.selectedAircraft.registration === ac.registration
-                          ? selectedCol
-                          : ''
-                      }
-                    >
-                      <Td>
-                        <Tooltip
-                          content={`Hub: ${ac.hub_id}`}
-                          direction="right"
-                        >
-                          <Flex alignItems="center">
-                            {ac.hub_id && (
-                              <Link href={`/aircraft/${ac.id}`}>
-                                {ac.registration}
-                              </Link>
-                            )}
-                            {ac.is_ferry && (
-                              <Box mx={2}>
-                                <Box color="orange.400">
-                                  <Icon as={Ship} />
-                                </Box>
-                              </Box>
-                            )}
-                            {ac.maintenance_status && (
-                              <Box mx={2}>
-                                <Box color="orange.400">
-                                  <Icon as={Wrench} />
-                                </Box>
-                              </Box>
-                            )}
-                            {ac.rental_airport_id && (
-                              <span>{ac.registration}</span>
-                            )}
-                            {ac.owner_id === auth.user.id ? (
-                              <Box mx={2}>
-                                <Tag>Private</Tag>
-                              </Box>
-                            ) : (
-                              <></>
-                            )}
-                            {ac.rental_airport_id && (
-                              <Box mx={2}>
-                                <Tag>Rental</Tag>
-                              </Box>
-                            )}
-                          </Flex>
-                        </Tooltip>
-                      </Td>
-                      <Td>
-                        {ac.fleet.manufacturer} {ac.fleet.name} ({ac.fleet.type}
-                        )
-                      </Td>
-                      <Td>
-                        {ac.fuel_onboard.toLocaleString(navigator.language)}
-                      </Td>
-                      <Td>
-                        {ac.rental_airport_id ? (
-                          'N/A'
-                        ) : (
-                          <AircraftCondition
-                            aircraftCondition={ac.total_condition}
-                          />
-                        )}
-                      </Td>
-                    </Tr>
-                  ))}
-                </Tbody>
-              </Table>
-            </TableContainer>
+                ))}
+              </Tbody>
+            </Table>
           )}
         </CardBody>
       </Card>

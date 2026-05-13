@@ -78,9 +78,9 @@ const Destination = ({ suggestions = [], ...props }) => {
               {sections.map((section) => (
                 <Flex key={section.label} align="baseline" gap={2} mb={1}>
                   <Text
-                    fontSize="xs"
-                    color="gray.500"
-                    minW="80px"
+                    fontSize="sm"
+                    color="gray.400"
+                    minW="7rem"
                     flexShrink={0}
                   >
                     {section.label}
@@ -90,7 +90,7 @@ const Destination = ({ suggestions = [], ...props }) => {
                       <Button
                         key={s.identifier}
                         variant="link"
-                        size="xs"
+                        size="sm"
                         fontWeight="normal"
                         onClick={() => handleSuggestionClick(s)}
                         title={s.name}
@@ -107,6 +107,7 @@ const Destination = ({ suggestions = [], ...props }) => {
             <Input
               id="icao"
               type="text"
+              placeholder="ICAO code"
               value={icao}
               onChange={handleDestinationChange}
             />

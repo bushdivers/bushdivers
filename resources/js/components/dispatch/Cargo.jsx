@@ -46,7 +46,7 @@ import {
 import React, { useState } from 'react'
 
 import { displayNumber } from '../../helpers/number.helpers.js'
-import AvailableFuel from '../airport/AvailableFuel.jsx'
+import { AirportPopoverContent } from '../airport/AirportLabel.jsx'
 import CustomContract from '../contracts/CustomContract'
 import NoContent from '../elements/NoContent'
 
@@ -158,7 +158,7 @@ const Cargo = (props) => {
   return (
     <Box mt={2}>
       <Card>
-        <CardHeader>
+        <CardHeader pb={0}>
           <Heading size="md">Select Cargo</Heading>
         </CardHeader>
         <CardBody>
@@ -193,13 +193,11 @@ const Cargo = (props) => {
                   <Table colorScheme="blackAlpha" size="sm" variant="simple">
                     <Thead>
                       <Tr>
-                        <Th></Th>
-                        <Th>Current</Th>
+                        <Th px={0}></Th>
                         <Th>Arrival</Th>
-                        <Th>Distance</Th>
-                        <Th>Bearing</Th>
+                        <Th>Dist / Hdg</Th>
                         <Th>Cargo</Th>
-                        <Th>Value</Th>
+                        <Th textAlign="right">Value</Th>
                         <Th></Th>
                       </Tr>
                     </Thead>
@@ -213,7 +211,7 @@ const Cargo = (props) => {
                               : ''
                           }
                         >
-                          <Td>
+                          <Td px={0}>
                             <Checkbox
                               isChecked={props.selectedCargo.some(
                                 (s) => s.id === detail.id
@@ -222,36 +220,39 @@ const Cargo = (props) => {
                             />
                           </Td>
                           <Td>
-                            {props.currentAirport.identifier}{' '}
-                            {props.currentAirport.longest_runway_surface ===
-                              'W' && <Icon as={Anchor} color="blue.500" />}
-                            {props.currentAirport.is_thirdparty && (
-                              <Icon as={Package} color="green.500" />
-                            )}
-                          </Td>
-                          <Td>
-                            <Flex alignItems="center" gap={2}>
-                              {detail.arr_airport.identifier}{' '}
+                            <Flex
+                              alignItems="center"
+                              gap={1}
+                              whiteSpace="nowrap"
+                            >
+                              <Popover
+                                trigger="hover"
+                                isLazy
+                                placement="top"
+                                strategy="fixed"
+                              >
+                                <PopoverTrigger>
+                                  <Text display="inline" cursor="pointer">
+                                    {detail.arr_airport.identifier}
+                                  </Text>
+                                </PopoverTrigger>
+                                <AirportPopoverContent
+                                  airport={detail.arr_airport}
+                                />
+                              </Popover>
                               {detail.arr_airport.longest_runway_surface ===
                                 'W' && <Icon as={Anchor} color="blue.500" />}
                               {detail.arr_airport.is_thirdparty && (
                                 <Icon as={Package} color="green.500" />
                               )}
-                              <AvailableFuel
-                                airport={detail.arr_airport}
-                                stack={true}
-                              />
                             </Flex>
                           </Td>
-                          <Td>
-                            {detail.distance.toLocaleString(navigator.language)}{' '}
-                            nm
-                          </Td>
-                          <Td>
-                            <Flex alignItems="center">
-                              <Box className="mr-2">
-                                {String(detail.heading).padStart(3, '0')}
-                              </Box>
+                          <Td whiteSpace="nowrap">
+                            <Flex alignItems="center" gap={1}>
+                              {detail.distance.toLocaleString(
+                                navigator.language
+                              )}
+                              nm
                               <Box
                                 style={{
                                   transform: `rotate(${detail.heading}deg)`,
@@ -259,9 +260,18 @@ const Cargo = (props) => {
                               >
                                 <Icon as={ArrowUp} />
                               </Box>
+                              {String(detail.heading).padStart(3, '0')}°
                             </Flex>
                           </Td>
-                          <Td>
+                          <Td
+                            title={
+                              detail.min_cargo_split > 1
+                                ? `Min split: ${detail.min_cargo_split} ${
+                                    detail.cargo_type === 1 ? 'lbs' : 'pax'
+                                  }`
+                                : undefined
+                            }
+                          >
                             {detail.cargo_type === 1 ? (
                               <div>
                                 <span>
@@ -285,13 +295,23 @@ const Cargo = (props) => {
                             )}
                             {detail.is_fuel ? <Tag size="sm">Fuel</Tag> : <></>}
                           </Td>
-                          <Td>${displayNumber(detail.contract_value, true)}</Td>
-                          <Td>
+                          <Td textAlign="right">
+                            ${displayNumber(detail.contract_value, true, true)}
+                          </Td>
+                          <Td pl={0}>
                             <Flex align="center" gap={1}>
-                              {detail.is_shared ? <Tag>Shared</Tag> : <></>}
-                              {detail.hub_airport_id ? <Tag>Hub</Tag> : <></>}
+                              {detail.is_shared ? (
+                                <Tag size="sm">Shared</Tag>
+                              ) : (
+                                <></>
+                              )}
+                              {detail.hub_airport_id ? (
+                                <Tag size="sm">Hub</Tag>
+                              ) : (
+                                <></>
+                              )}
                               {detail.community_job_contract_id ? (
-                                <Tag>Community</Tag>
+                                <Tag size="sm">Community</Tag>
                               ) : (
                                 <></>
                               )}
@@ -441,17 +461,15 @@ const Cargo = (props) => {
           )}
           {props.cargo.cargoElsewhere && (
             <div>
-              <Heading mt={2} size="sm">
+              <Heading mt={4} size="sm">
                 Cargo Elsewhere
               </Heading>
               <TableContainer mt={2}>
                 <Table colorScheme="blackAlpha" size="sm" variant="simple">
                   <Thead>
                     <Tr>
-                      <Th>Current</Th>
-                      <Th>Arrival</Th>
-                      <Th>Distance</Th>
-                      <Th>Bearing</Th>
+                      <Th pl={0}>Route</Th>
+                      <Th>Dist / Hdg</Th>
                       <Th>Cargo</Th>
                       <Th></Th>
                     </Tr>
@@ -459,33 +477,67 @@ const Cargo = (props) => {
                   <Tbody>
                     {props.cargo.cargoElsewhere.map((detail) => (
                       <Tr key={detail.id}>
-                        <Td>
-                          {detail.current_airport.identifier}{' '}
-                          {detail.current_airport.longest_runway_surface ===
-                            'W' && <Icon as={Anchor} color="blue.500" />}
-                          {detail.current_airport.is_thirdparty && (
-                            <Icon as={Package} color="green.500" />
-                          )}
-                        </Td>
-                        <Td>
-                          <Flex alignItems="center" gap={2}>
-                            {detail.arr_airport.identifier}{' '}
-                            {detail.arr_airport.longest_runway_surface ===
-                              'W' && <Icon as={Anchor} color="blue.500" />}
-                            {detail.arr_airport.is_thirdparty && (
-                              <Icon as={Package} color="green.500" />
-                            )}
+                        <Td pl={0}>
+                          <Flex direction="column" gap={0.5}>
+                            <Flex
+                              alignItems="center"
+                              gap={1}
+                              whiteSpace="nowrap"
+                            >
+                              <Popover
+                                trigger="hover"
+                                isLazy
+                                placement="top"
+                                strategy="fixed"
+                              >
+                                <PopoverTrigger>
+                                  <Text display="inline" cursor="pointer">
+                                    {detail.current_airport.identifier}
+                                  </Text>
+                                </PopoverTrigger>
+                                <AirportPopoverContent
+                                  airport={detail.current_airport}
+                                />
+                              </Popover>
+                              {detail.current_airport.longest_runway_surface ===
+                                'W' && <Icon as={Anchor} color="blue.500" />}
+                              {detail.current_airport.is_thirdparty && (
+                                <Icon as={Package} color="green.500" />
+                              )}
+                            </Flex>
+                            <Flex
+                              alignItems="center"
+                              gap={1}
+                              whiteSpace="nowrap"
+                            >
+                              <Text color="gray.400">→</Text>
+                              <Popover
+                                trigger="hover"
+                                isLazy
+                                placement="top"
+                                strategy="fixed"
+                              >
+                                <PopoverTrigger>
+                                  <Text display="inline" cursor="pointer">
+                                    {detail.arr_airport.identifier}
+                                  </Text>
+                                </PopoverTrigger>
+                                <AirportPopoverContent
+                                  airport={detail.arr_airport}
+                                />
+                              </Popover>
+                              {detail.arr_airport.longest_runway_surface ===
+                                'W' && <Icon as={Anchor} color="blue.500" />}
+                              {detail.arr_airport.is_thirdparty && (
+                                <Icon as={Package} color="green.500" />
+                              )}
+                            </Flex>
                           </Flex>
                         </Td>
-                        <Td>
-                          {detail.distance.toLocaleString(navigator.language)}{' '}
-                          nm
-                        </Td>
-                        <Td>
-                          <Flex alignItems="center">
-                            <Box className="mr-2">
-                              {String(detail.heading).padStart(3, '0')}
-                            </Box>
+                        <Td whiteSpace="nowrap">
+                          <Flex alignItems="center" gap={1}>
+                            {detail.distance.toLocaleString(navigator.language)}
+                            nm
                             <Box
                               style={{
                                 transform: `rotate(${detail.heading}deg)`,
@@ -493,6 +545,7 @@ const Cargo = (props) => {
                             >
                               <Icon as={ArrowUp} />
                             </Box>
+                            {String(detail.heading).padStart(3, '0')}°
                           </Flex>
                         </Td>
                         <Td>
@@ -514,11 +567,15 @@ const Cargo = (props) => {
                           )}
                         </Td>
                         <Td>
-                          <Flex gap={1}>
-                            {detail.is_shared ? <Tag>Shared</Tag> : <></>}
-                            {detail.airport ? <Tag>Hub</Tag> : <></>}
+                          <Flex gap={1} flexWrap="wrap">
+                            {detail.is_shared ? (
+                              <Tag size="sm">Shared</Tag>
+                            ) : (
+                              <></>
+                            )}
+                            {detail.airport ? <Tag size="sm">Hub</Tag> : <></>}
                             {detail.community_job_contract_id ? (
-                              <Tag>Community</Tag>
+                              <Tag size="sm">Community</Tag>
                             ) : (
                               <></>
                             )}

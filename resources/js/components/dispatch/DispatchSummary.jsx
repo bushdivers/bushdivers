@@ -17,7 +17,7 @@ const DispatchSummary = (props) => {
   return (
     <Box>
       <Card title="Dispatch Summary">
-        <CardHeader>
+        <CardHeader pb={0}>
           <Flex justifyContent="space-between" alignItems="center">
             <Heading size="md">Dispatch Summary</Heading>
             {!props.isActive && (
@@ -54,7 +54,7 @@ const DispatchSummary = (props) => {
               </Flex>
             )}
           </Box>
-          <div className="mt-2">
+          <Box mt={2}>
             <Heading size="sm">Payload:</Heading>
             <Box my={1}>
               {props.deadHead ? (
@@ -63,10 +63,13 @@ const DispatchSummary = (props) => {
                 <Box></Box>
               )}
             </Box>
-            <Box my={1}>
-              <Text>Pilot & payload weight (inc. fuel): </Text>
+            <Flex justifyContent="space-between" alignItems="baseline" my={1}>
+              <Text fontSize="sm" color="gray.400">
+                Pilot & payload (inc. fuel)
+              </Text>
               {props.selectedAircraft && (
                 <Text
+                  fontSize="sm"
                   color={
                     props.selectedAircraft &&
                     props.personWeight + props.fuelWeight + props.cargoWeight >
@@ -79,16 +82,18 @@ const DispatchSummary = (props) => {
                     props.personWeight +
                     props.fuelWeight +
                     props.cargoWeight
-                  ).toFixed(2)}{' '}
-                  lbs / {(props.variant?.mtow ?? 0) - (props.variant?.zfw ?? 0)}{' '}
-                  lbs
+                  ).toFixed(0)}{' '}
+                  / {(props.variant?.mtow ?? 0) - (props.variant?.zfw ?? 0)} lbs
                 </Text>
               )}
-            </Box>
-            <Box my={1}>
-              <Text>Cargo payload: </Text>
+            </Flex>
+            <Flex justifyContent="space-between" alignItems="baseline" my={1}>
+              <Text fontSize="sm" color="gray.400">
+                Cargo payload
+              </Text>
               {props.selectedAircraft && (
                 <Text
+                  fontSize="sm"
                   color={
                     props.selectedAircraft &&
                     props.cargoWeight > (props.variant?.cargo_capacity ?? 0)
@@ -96,15 +101,17 @@ const DispatchSummary = (props) => {
                       : ''
                   }
                 >
-                  {props.cargoWeight} lbs / {props.variant?.cargo_capacity ?? 0}{' '}
-                  lbs
+                  {props.cargoWeight} / {props.variant?.cargo_capacity ?? 0} lbs
                 </Text>
               )}
-            </Box>
-            <Box my={1}>
-              <Text>Passenger count: </Text>
+            </Flex>
+            <Flex justifyContent="space-between" alignItems="baseline" my={1}>
+              <Text fontSize="sm" color="gray.400">
+                Passengers
+              </Text>
               {props.selectedAircraft && (
                 <Text
+                  fontSize="sm"
                   color={
                     props.selectedAircraft &&
                     props.passengerCount > (props.variant?.pax_capacity ?? 0)
@@ -115,11 +122,13 @@ const DispatchSummary = (props) => {
                   {props.passengerCount} / {props.variant?.pax_capacity ?? 0}
                 </Text>
               )}
-            </Box>
-            <Box my={1}>
-              <Text mt={1}>Fuel: </Text>
+            </Flex>
+            <Flex justifyContent="space-between" alignItems="baseline" my={1}>
+              <Text fontSize="sm" color="gray.400">
+                Fuel
+              </Text>
               {props.pirep ? (
-                <Text>
+                <Text fontSize="sm">
                   {props.pirep.planned_fuel} gal |{' '}
                   {parseFloat(props.fuelWeight).toLocaleString(undefined, {
                     maximumFractionDigits: 2,
@@ -127,7 +136,7 @@ const DispatchSummary = (props) => {
                   lbs
                 </Text>
               ) : (
-                <Text>
+                <Text fontSize="sm">
                   {props.fuel} gal |{' '}
                   {parseFloat(props.fuelWeight).toLocaleString(undefined, {
                     maximumFractionDigits: 2,
@@ -135,8 +144,8 @@ const DispatchSummary = (props) => {
                   lbs
                 </Text>
               )}
-            </Box>
-          </div>
+            </Flex>
+          </Box>
         </CardBody>
       </Card>
     </Box>

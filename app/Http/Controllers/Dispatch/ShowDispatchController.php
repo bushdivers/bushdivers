@@ -174,6 +174,7 @@ class ShowDispatchController extends Controller
 
         // Nearest hub
         $nearestHub = Airport::hub()
+            ->forUser(Auth::user())
             ->withRangeTo($currentAirport)
             ->where('id', '!=', $currentAirport->id)
             ->orderBy('distance')

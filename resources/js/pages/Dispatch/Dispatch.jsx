@@ -371,8 +371,8 @@ const Dispatch = ({
         {airport.is_thirdparty && <Icon as={Package} color="green.500" />}
       </Heading>
       <Flex justifyContent="space-between" mt={4}>
-        <Grid templateColumns="repeat(5, 1fr)" gap={4}>
-          <GridItem colSpan={3}>
+        <Grid templateColumns="repeat(8, 1fr)" gap={4}>
+          <GridItem colSpan={5}>
             <Card mb={2}>
               <CardBody>
                 <FormControl>
@@ -442,7 +442,7 @@ const Dispatch = ({
               handleDeadHead={handleDeadHead}
             />
           </GridItem>
-          <GridItem colStart={4} colEnd={6}>
+          <GridItem colStart={6} colEnd={9}>
             <Destination
               currentAirport={auth.user.location.identifier}
               updateDestinationValue={setDestination}

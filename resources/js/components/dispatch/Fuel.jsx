@@ -171,7 +171,7 @@ const Fuel = (props) => {
   return (
     <Box my={2}>
       <Card>
-        <CardHeader>
+        <CardHeader pb={0}>
           <Flex justifyContent="space-between" alignItems="start">
             <Heading size="md">Fuel</Heading>
             <AvailableFuel airport={props.airport} />
@@ -179,112 +179,102 @@ const Fuel = (props) => {
         </CardHeader>
         <CardBody>
           <Box>
-            <Text>Useable Fuel (gal): {props.variant?.fuel_capacity ?? 0}</Text>
-            <Flex justifyContent="space-between" alignItems="end">
-              <Box>
-                <Flex alignItems="center" gap={2}>
-                  <Text
-                    color={
-                      props.fuel > (props.variant?.fuel_capacity ?? Infinity)
-                        ? 'red.500'
-                        : undefined
-                    }
+            <Flex justifyContent="space-between" alignItems="baseline">
+              <Text fontSize="sm" color="gray.400">
+                Fuel capacity
+              </Text>
+              <Text fontSize="sm">
+                {displayNumber(props.variant?.fuel_capacity ?? 0, true, true)}{' '}
+                gal
+              </Text>
+            </Flex>
+            <Flex justifyContent="space-between" alignItems="baseline" mt={1}>
+              <Text fontSize="sm" color="gray.400">
+                Current fuel
+              </Text>
+              <Text
+                fontSize="sm"
+                color={
+                  props.fuel > (props.variant?.fuel_capacity ?? Infinity)
+                    ? 'red.300'
+                    : ''
+                }
+              >
+                {displayNumber(
+                  props.fuel !== null ? props.fuel : '',
+                  true,
+                  true
+                )}{' '}
+                gal
+              </Text>
+            </Flex>
+            <Flex justifyContent="space-between" alignItems="baseline" mt={1}>
+              <Text fontSize="sm" color="gray.400">
+                Fuel weight
+              </Text>
+              <Text fontSize="sm" color="green.400">
+                {props.fuelWeight !== null
+                  ? displayNumber(parseFloat(props.fuelWeight), true, true) +
+                    ' lbs'
+                  : '—'}
+              </Text>
+            </Flex>
+            {props.selectedAircraft && shouldWeRenderAddFuel() && (
+              <Box mt={3}>
+                <Text fontSize="sm" fontWeight="medium">
+                  Adjust Fuel (
+                  {props.selectedAircraft.fleet.fuel_type === 1
+                    ? '100LL'
+                    : 'Jet Fuel'}
+                  )
+                </Text>
+                <Text fontSize="xs" as="i" color="gray.400">
+                  Fuel will be charged when dispatching
+                </Text>
+                <Slider
+                  value={sliderValue}
+                  my={2}
+                  min={0}
+                  max={100}
+                  step={1}
+                  aria-label="slider-ex-6"
+                  focusThumbOnChange={false}
+                  onChange={(val) => onSliderChange(val)}
+                >
+                  <SliderTrack>
+                    <SliderFilledTrack />
+                  </SliderTrack>
+                  <SliderThumb />
+                </Slider>
+                <Flex alignItems="center" gap={2} mt={2}>
+                  <NumberInput
+                    flex={1}
+                    value={fuelAmount}
+                    min={5}
+                    max={maxFuel}
+                    precision={2}
+                    onChange={(val) => onNumberChange(val)}
+                    allowMouseWheel
+                    size="sm"
                   >
-                    Current Fuel (gal):{' '}
-                    {displayNumber(props.fuel !== null ? props.fuel : '')}
-                  </Text>
-                  {shouldWeRenderAddFuel() ? (
-                    <Popover>
-                      <PopoverTrigger>
-                        <Button
-                          size="xs"
-                          variant="link"
-                          data-testid="btn-add-fuel"
-                        >
-                          Add fuel
-                        </Button>
-                      </PopoverTrigger>
-                      <PopoverContent>
-                        <PopoverArrow />
-                        <PopoverCloseButton />
-                        <PopoverHeader>
-                          <Heading size="sm">
-                            Adjust Fuel{' '}
-                            {props.selectedAircraft?.fleet?.fuel_type === 1
-                              ? '(100LL)'
-                              : '(Jet Fuel)'}
-                          </Heading>
-                        </PopoverHeader>
-                        <PopoverBody>
-                          <Text fontSize="xs" as="i">
-                            The fuel will be charged when dispatching flight
-                          </Text>
-                          <Slider
-                            value={sliderValue}
-                            my={2}
-                            min={0}
-                            max={100}
-                            step={1}
-                            aria-label="slider-ex-6"
-                            focusThumbOnChange={false}
-                            onChange={(val) => onSliderChange(val)}
-                          >
-                            <SliderTrack>
-                              <SliderFilledTrack />
-                            </SliderTrack>
-                            <SliderThumb />
-                          </Slider>
-                          <NumberInput
-                            value={fuelAmount}
-                            min={5}
-                            max={maxFuel}
-                            precision={2}
-                            onChange={(val) => onNumberChange(val)}
-                            allowMouseWheel
-                          >
-                            <NumberInputField />
-                            <NumberInputStepper>
-                              <NumberIncrementStepper />
-                              <NumberDecrementStepper />
-                            </NumberInputStepper>
-                          </NumberInput>
-                        </PopoverBody>
-                        <PopoverFooter>
-                          <Text mx={2} fontSize="xs" color="red.500">
-                            {props.error}
-                          </Text>
-                          <Flex justifyContent="space-between" alignItems="end">
-                            <Button
-                              onClick={() =>
-                                props.handleUpdateFuel(fuelAmount, fuelPrice)
-                              }
-                              size="sm"
-                            >
-                              Refuel
-                            </Button>
-                            <Flex direction="column" gap={1}>
-                              <Text>{displayNumber(fuelAmount)} gal</Text>
-                              <Text>${displayNumber(fuelPrice)}</Text>
-                            </Flex>
-                          </Flex>
-                        </PopoverFooter>
-                      </PopoverContent>
-                    </Popover>
-                  ) : (
-                    <></>
-                  )}
-                </Flex>
-                <Flex alignItems="center" gap={2}>
-                  <Text fontSize="xs" color="green.500">
-                    {props.fuelWeight !== null
-                      ? parseFloat(props.fuelWeight).toLocaleString(undefined, {
-                          maximumFractionDigits: 2,
-                        })
-                      : ''}{' '}
-                    lbs (estimated)
+                    <NumberInputField data-testid="btn-add-fuel" />
+                    <NumberInputStepper>
+                      <NumberIncrementStepper />
+                      <NumberDecrementStepper />
+                    </NumberInputStepper>
+                  </NumberInput>
+                  <Text pl={6} fontSize="sm" color="gray.400">
+                    ${displayNumber(fuelPrice, true, true)}
                   </Text>
                 </Flex>
+                {props.error && (
+                  <Text fontSize="xs" color="red.500" mt={1}>
+                    {props.error}
+                  </Text>
+                )}
               </Box>
+            )}
+            <Flex justifyContent="space-between" alignItems="center" mt={3}>
               {shouldWeRenderCreateFuelCargo() ? (
                 <Popover>
                   <PopoverTrigger>
@@ -362,7 +352,15 @@ const Fuel = (props) => {
                   </PopoverContent>
                 </Popover>
               ) : (
-                <></>
+                <Box />
+              )}
+              {props.selectedAircraft && shouldWeRenderAddFuel() && (
+                <Button
+                  onClick={() => props.handleUpdateFuel(fuelAmount, fuelPrice)}
+                  size="sm"
+                >
+                  Refuel
+                </Button>
               )}
             </Flex>
           </Box>
