@@ -36,6 +36,7 @@ const AppLayout = ({ children, title, heading, isFullSize = false }) => {
             <Heading size="lg" mb={4}>
               {heading}
             </Heading>
+            <FlashSection />
             {children}
           </Container>
         ) : (
@@ -43,6 +44,7 @@ const AppLayout = ({ children, title, heading, isFullSize = false }) => {
             <Heading size="lg" mb={4}>
               {heading}
             </Heading>
+            <FlashSection />
             {children}
           </Box>
         )}
