@@ -80,6 +80,8 @@ class GetActiveDispatchController extends Controller
             ->select('contracts.id', 'cargo_type as contract_type_id', 'cargo_qty', 'cargo', DB::raw('current_airport.identifier AS current_airport_id'), DB::raw('arr_airport.identifier AS arr_airport_id'), DB::raw("(CASE WHEN cargo_type = '1' THEN 'Cargo' ELSE 'Passengers' END) as contract_type"))
             ->get();
 
+        $payloadWeight = $cargoWeight + ($passengerCount + 1) * WeightConsts::PERSON_WEIGHT; // +1 for the pilot
+
         $data = [
             'id' => $dispatch->id,
             'departure_airport_id' => $dispatch->depAirport->identifier,
@@ -99,7 +101,8 @@ class GetActiveDispatchController extends Controller
             'fuel_type' => $dispatch->is_rental ? $dispatch->rental->fleet->fuel_type : $dispatch->aircraft->fleet->fuel_type,
             'cargo_weight' => $cargoWeight,
             'passenger_count' => $passengerCount,
-            'total_payload' => $cargoWeight + ($passengerCount + 1) * WeightConsts::PERSON_WEIGHT, // +1 for the pilot
+            'total_payload' => $payloadWeight,
+            'payload_capacity' => max($payloadWeight, ($dispatch->variant?->mtow - $dispatch->variant?->zfw) ?? 0),
             'is_empty' => $dispatch->is_empty,
             'tour' => $dispatch->tour->title ?? null,
             'cargo' => $cargo
