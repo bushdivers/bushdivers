@@ -2,16 +2,12 @@
 
 namespace App\Console;
 
-use App\Models\Enums\FinancialConsts;
 use App\Services\Airports\ResupplyFuel;
-use App\Services\Airports\UpdateFuelAtAirport;
 use App\Services\Contracts\CheckForExpiry;
-use App\Services\Contracts\CreateCommunityContract;
 use App\Services\Contracts\GenerateRecurringCommunityJobs;
 use App\Services\Finance\CalcMonthlyFees;
 use App\Services\Pireps\FindInactivePireps;
 use App\Services\Pireps\RemoveSinglePirep;
-use App\Services\Rentals\EndRental;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Contracts\Foundation\Application;
@@ -38,8 +34,7 @@ class Kernel extends ConsoleKernel
         CheckForExpiry $checkForExpiry,
         ResupplyFuel $resupplyFuel,
         GenerateRecurringCommunityJobs $generateRecurringCommunityJobs
-    )
-    {
+    ) {
         parent::__construct($app, $events);
         $this->findInactivePireps = $findInactivePireps;
         $this->removeSinglePirep = $removeSinglePirep;
@@ -67,7 +62,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('inspire')->hourly();
-         //removed inactive pireps to clear up booked planes
+        //removed inactive pireps to clear up booked planes
         $schedule->call(function () {
             $inactivePireps = $this->findInactivePireps->execute();
             foreach ($inactivePireps as $inactivePirep) {

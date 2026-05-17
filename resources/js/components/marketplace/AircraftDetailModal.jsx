@@ -162,7 +162,7 @@ const AircraftDetailModal = ({ fleet, isOpen, onClose, actions }) => {
               </Text>
               <SpecRow
                 label="Cruise speed"
-                value={`${fleet.cruise_speed} KIAS`}
+                value={`${fleet.cruise_speed} KTAS`}
               />
               <SpecRow
                 label="Service ceiling"

@@ -26,7 +26,7 @@ const theme = extendTheme(
       },
       Link: {
         defaultProps: {
-          color: 'orange.500', //mode('orange.500', 'orange.300'),
+          color: mode('orange.500', 'orange.400'),
         },
       },
     },
@@ -39,7 +39,7 @@ const theme = extendTheme(
           lineHeight: 'base',
         },
         a: {
-          color: 'orange.500', // mode('orange.500', 'orange.300')(props),
+          color: mode('orange.500', 'orange.400')(props),
         },
       }),
     },

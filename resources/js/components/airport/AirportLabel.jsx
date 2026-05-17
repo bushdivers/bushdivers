@@ -196,7 +196,8 @@ const AirportLabel = ({ airport, size = 'md' }) => {
       <Popover trigger="hover" isLazy placement="top" strategy="fixed">
         <PopoverTrigger>
           <ChakraLink
-            color="orange.400"
+            color="orange.500"
+            _dark={{ color: 'orange.400' }}
             as={Link}
             href={`/airports/${airport.identifier}`}
             onClick={(e) => e.stopPropagation()}
