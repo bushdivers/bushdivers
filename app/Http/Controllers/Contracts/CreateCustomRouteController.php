@@ -45,7 +45,7 @@ class CreateCustomRouteController extends Controller
         }
 
         try {
-            $this->createCustomRoute->execute(strtoupper($request->departure), strtoupper($request->arrival), Auth::user());
+            $this->createCustomRoute->execute(strtoupper($request->departure), strtoupper($request->arrival), Auth::user(), $request->type);
             return redirect()->back()->with(['success' => 'Custom route created and added to "My Contracts"']);
         } catch (ModelNotFoundException $exception) {
             return redirect()->back()->with(['error' => 'Airport not found']);

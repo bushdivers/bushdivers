@@ -5,6 +5,7 @@ namespace App\Services\Contracts;
 use App\Models\Airport;
 use App\Models\CommunityJobContract;
 use App\Models\Contract;
+use App\Models\Enums\CargoType;
 use App\Models\Enums\ContractType;
 use App\Models\User;
 
@@ -40,7 +41,8 @@ class StoreContracts
             $contract->hub_airport_id = $airport;
             $contract->is_shared = $isShared;
             $contract->community_job_contract_id = $jobId->id ?? null;
-            if ($contractInfo['cargo_type'] == 1) {
+
+            if ($contractInfo['cargo_type'] == 1 || $contractInfo['cargo_type'] == CargoType::Cargo) {
                 $contract->payload = $contractInfo['cargo_qty'];
             } else {
                 $contract->pax = $contractInfo['cargo_qty'];

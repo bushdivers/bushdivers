@@ -56,7 +56,22 @@ class CreateCustomContractTest extends TestCase
             'dep_airport_id' => $this->airport1->id,
             'arr_airport_id' => $this->airport2->id,
             'is_available' => 0,
-            'user_id' => $this->user->id
+            'user_id' => $this->user->id,
+            'cargo_type' => 1,
+            'payload' => 300,
+        ]);
+    }
+
+    public function test_passenger_contract_generates_successfully()
+    {
+        $this->createCustomRoute->execute($this->airport1->identifier, $this->airport2->identifier, $this->user, 'passenger');
+        $this->assertDatabaseHas('contracts', [
+            'dep_airport_id' => $this->airport1->id,
+            'arr_airport_id' => $this->airport2->id,
+            'is_available' => 0,
+            'user_id' => $this->user->id,
+            'cargo_type' => 2,
+            'pax' => 1,
         ]);
     }
 }

@@ -4,6 +4,7 @@ namespace Tests\Feature\Contracts;
 
 use App\Models\Airport;
 use App\Models\Contract;
+use App\Models\Enums\CargoType;
 use App\Models\Enums\ContractType;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -32,12 +33,32 @@ class CreateCustomRouteTest extends TestCase
             ->post(route('contracts.custom'), [
                 'departure' => 'AYMR',
                 'arrival' => 'AYMN',
+                'type' => 'cargo',
             ]);
 
         $response->assertRedirect()->assertSessionHas('success');
         $this->assertDatabaseHas('contracts', [
             'user_id' => $this->user->id,
             'is_custom' => true,
+            'cargo_type' => CargoType::Cargo->value,
+        ]);
+    }
+
+    public function test_creates_custom_passenger_contract_successfully(): void
+    {
+        $response = $this->actingAs($this->user)
+            ->post(route('contracts.custom'), [
+                'departure' => 'AYMR',
+                'arrival' => 'AYMN',
+                'type' => 'passenger',
+            ]);
+
+        $response->assertRedirect()->assertSessionHas('success');
+        $this->assertDatabaseHas('contracts', [
+            'user_id' => $this->user->id,
+            'is_custom' => true,
+            'cargo_type' => CargoType::Passenger->value,
+            'pax' => 1,
         ]);
     }
 
@@ -47,6 +68,7 @@ class CreateCustomRouteTest extends TestCase
             ->post(route('contracts.custom'), [
                 'departure' => 'AYMR',
                 'arrival' => 'AYMR',
+                'type' => 'cargo',
             ]);
 
         $response->assertRedirect()->assertSessionHas('error');
@@ -68,6 +90,7 @@ class CreateCustomRouteTest extends TestCase
             ->post(route('contracts.custom'), [
                 'departure' => 'AYMR',
                 'arrival' => 'AYMN',
+                'type' => 'cargo',
             ]);
 
         $response->assertRedirect()->assertSessionHas('error');
@@ -80,6 +103,7 @@ class CreateCustomRouteTest extends TestCase
             ->post(route('contracts.custom'), [
                 'departure' => 'XXXX',
                 'arrival' => 'YYYY',
+                'type' => 'cargo',
             ]);
 
         $response->assertRedirect()->assertSessionHas('error');

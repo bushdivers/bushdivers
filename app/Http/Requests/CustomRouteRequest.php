@@ -25,7 +25,8 @@ class CustomRouteRequest extends FormRequest
     {
         return [
             'departure' => 'required',
-            'arrival' => 'required'
+            'arrival' => 'required',
+            'type' => 'required|in:cargo,passenger',
         ];
     }
 }

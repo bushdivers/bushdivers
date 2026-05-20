@@ -21,7 +21,7 @@ class CreateCustomRoute
         $this->calcContractValue = $calcContractValue;
     }
 
-    public function execute(string $dep, string $arr, User $user)
+    public function execute(string $dep, string $arr, User $user, string $type = 'cargo')
     {
         try {
             $depAirport = Airport::where('identifier', $dep)->whereNull('user_id')->firstOrFail();
@@ -32,11 +32,18 @@ class CreateCustomRoute
             $heading = $depAirport->bearingTo($arrAirport);
 
             // cargo info
-            $cargo = [
-                'type' => CargoType::Cargo,
-                'qty' => 300,
-                'name' => 'Second hand goods'
-            ];
+            $cargo = match ($type) {
+                'passenger' => [
+                    'type' => CargoType::Passenger,
+                    'qty' => 1,
+                    'name' => 'Passenger',
+                ],
+                default => [
+                    'type' => CargoType::Cargo,
+                    'qty' => 300,
+                    'name' => 'Second hand goods',
+                ],
+            };
 
             $value = $this->calcContractValue->execute($cargo['type'], $cargo['qty'], $distance);
 
