@@ -23,7 +23,7 @@ class ShowFinancesController extends Controller
     public function __invoke(Request $request): Response
     {
         $accounts = AccountLedger::with('pirep')->orderBy('created_at', 'desc')->paginate(15);
-        $balance = AccountLedger::all();
+        $balance = AccountLedger::sum('total');
 
         $largeAc = Aircraft::with(['fleet'])
             ->where('owner_id', 0)
@@ -72,7 +72,7 @@ class ShowFinancesController extends Controller
 
         return Inertia::render('General/CompanyFinances', [
             'accounts' => $accounts,
-            'balance' => $balance->sum('total'),
+            'balance' => $balance,
             'aircraftStorage' => $aircraftStorage,
             'aircraftOps' => $aircraftOps,
             'hubs' => $hubRental

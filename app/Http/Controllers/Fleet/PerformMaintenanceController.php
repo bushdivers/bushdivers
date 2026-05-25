@@ -91,7 +91,7 @@ class PerformMaintenanceController extends Controller
         }
 
         if ($aircraft->owner_id == 0) {
-            $balance = AccountLedger::all()->sum('total');
+            $balance = AccountLedger::sum('total');
 
             if ($cost > $balance) {
                 return redirect()->back()->with(['error' => 'Insufficient funds to perform maintenance']);
