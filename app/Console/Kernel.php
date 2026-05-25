@@ -6,7 +6,6 @@ use App\Services\Airports\ResupplyFuel;
 use App\Services\Contracts\CheckForExpiry;
 use App\Services\Contracts\GenerateRecurringCommunityJobs;
 use App\Services\Finance\CalcMonthlyFees;
-use App\Services\Pireps\FindInactivePireps;
 use App\Services\Pireps\RemoveSinglePirep;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Contracts\Events\Dispatcher;
@@ -16,7 +15,6 @@ use Illuminate\Support\Facades\Log;
 
 class Kernel extends ConsoleKernel
 {
-    protected FindInactivePireps $findInactivePireps;
     protected RemoveSinglePirep $removeSinglePirep;
     protected CalcMonthlyFees $calcMonthlyFees;
     protected CheckForExpiry $checkForExpiry;
@@ -28,7 +26,6 @@ class Kernel extends ConsoleKernel
     public function __construct(
         Application $app,
         Dispatcher $events,
-        FindInactivePireps $findInactivePireps,
         RemoveSinglePirep $removeSinglePirep,
         CalcMonthlyFees $calcMonthlyFees,
         CheckForExpiry $checkForExpiry,
@@ -36,7 +33,6 @@ class Kernel extends ConsoleKernel
         GenerateRecurringCommunityJobs $generateRecurringCommunityJobs
     ) {
         parent::__construct($app, $events);
-        $this->findInactivePireps = $findInactivePireps;
         $this->removeSinglePirep = $removeSinglePirep;
         $this->calcMonthlyFees = $calcMonthlyFees;
         $this->checkForExpiry = $checkForExpiry;
@@ -64,7 +60,7 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')->hourly();
         //removed inactive pireps to clear up booked planes
         $schedule->call(function () {
-            $inactivePireps = $this->findInactivePireps->execute();
+            $inactivePireps = \App\Models\Pirep::inactive()->get();
             foreach ($inactivePireps as $inactivePirep) {
                 $this->removeSinglePirep->execute($inactivePirep);
             }

@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\Enums\PirepState;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -11,6 +13,17 @@ class Pirep extends Model
 
     public $incrementing = false;
     protected $keyType = 'string';
+
+    public function scopeInactive(Builder $query)
+    {
+        return $query->where(function ($q) {
+            $q->where('state', PirepState::DISPATCH)
+                ->where('updated_at', '<', now()->subHours(8));
+        })->orWhere(function ($q) {
+            $q->where('state', PirepState::IN_PROGRESS)
+                ->where('updated_at', '<', now()->subHours(2));
+        });
+    }
 
     public function pilot()
     {
@@ -56,4 +69,6 @@ class Pirep extends Model
     {
         return $this->belongsTo(FleetVariant::class, 'fleet_variant_id');
     }
+
+
 }

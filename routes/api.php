@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -59,7 +58,6 @@ Route::middleware(['web', 'auth'])->group(function () {
 });
 
 //Route::middleware('auth.schedule')->group(function () {
-//    Route::post('/schedule/pireps/clean', \App\Http\Controllers\Scheduler\Pireps\CleanPirepsController::class);
 //    Route::post('/schedule/contracts/clean', \App\Http\Controllers\Scheduler\Contracts\CheckForExpiredContractsController::class);
 //    Route::post('/schedule/rentals/charge', \App\Http\Controllers\Scheduler\Rentals\ProcessDailyRentalsController::class);
 //    Route::post('/schedule/finance/fees', \App\Http\Controllers\Scheduler\Finance\ProcessAirlineFeesController::class);
@@ -73,4 +71,3 @@ Route::middleware(['web', 'auth'])->group(function () {
 //    Route::get('/bot/treasure/clue/{nextClueNo}', [\App\Http\Controllers\Bot\BotController::class, 'getTreasureHuntClue']);
 //    Route::get('/metar/{icao}', \App\Http\Controllers\Bot\GetMetarController::class);
 //});
-
