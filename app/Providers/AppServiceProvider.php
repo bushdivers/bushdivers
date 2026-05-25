@@ -3,8 +3,11 @@
 namespace App\Providers;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
+use Symfony\Component\Mailer\Bridge\Mailjet\Transport\MailjetTransportFactory;
+use Symfony\Component\Mailer\Transport\Dsn;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -35,5 +38,20 @@ class AppServiceProvider extends ServiceProvider
             $this->app->register(\Laravel\Telescope\TelescopeServiceProvider::class);
             $this->app->register(\App\Providers\TelescopeServiceProvider::class);
         }
+
+        Mail::extend('mailjet', function (array $config) {
+            // Construct the native Symfony Mailjet DSN string using your config keys
+            $dsn = new Dsn(
+                'mailjet+api',
+                'default',
+                $config['key'] ?? '',
+                $config['secret'] ?? ''
+            );
+
+            // Instantiate the official Symfony Mailjet factory handler
+            $factory = new MailjetTransportFactory();
+
+            return $factory->create($dsn);
+        });
     }
 }
