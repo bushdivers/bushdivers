@@ -13,4 +13,9 @@ class AccountLedger extends Model
     {
         return $this->belongsTo(Pirep::class);
     }
+
+    public static function balance(): float
+    {
+        return static::sum('total');
+    }
 }

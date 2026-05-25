@@ -14,7 +14,6 @@ use App\Services\Airports\CalcCostOfHub;
 use App\Services\Contracts\GenerateContractDetails;
 use App\Services\Contracts\StoreContracts;
 use App\Services\Finance\AddAirlineTransaction;
-use App\Services\Finance\GetAirlineBalance;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -25,21 +24,18 @@ class CreateHubController extends Controller
     protected StoreContracts $storeContracts;
     protected AddAirlineTransaction $addAirlineTransaction;
     protected CalcCostOfHub $calcCostOfHub;
-    protected GetAirlineBalance $getAirlineBalance;
     public function __construct(
         GenerateAircraftDetails $generateAircraftDetails,
         GenerateContractDetails $generateContractDetails,
         StoreContracts $storeContracts,
         AddAirlineTransaction $addAirlineTransaction,
-        CalcCostOfHub $calcCostOfHub,
-        GetAirlineBalance $getAirlineBalance
+        CalcCostOfHub $calcCostOfHub
     ) {
         $this->generateAircraftDetails = $generateAircraftDetails;
         $this->generateContractDetails = $generateContractDetails;
         $this->storeContracts = $storeContracts;
         $this->addAirlineTransaction = $addAirlineTransaction;
         $this->calcCostOfHub = $calcCostOfHub;
-        $this->getAirlineBalance = $getAirlineBalance;
     }
 
     public function __invoke(Request $request): \Illuminate\Http\RedirectResponse
@@ -54,7 +50,7 @@ class CreateHubController extends Controller
         $airport = Airport::base()->where('identifier', $request->identifier)->first();
 
         $cost = $this->calcCostOfHub->execute($request->aircraft);
-        $balance = $this->getAirlineBalance->execute();
+        $balance = \App\Models\AccountLedger::balance();
         if ($balance < $cost) {
             return redirect()->back()->with('error', 'Insufficient funds');
         }
