@@ -23,10 +23,6 @@ class ShowJumpseatController extends Controller
     {
         $user = User::with('location')->find(Auth::user()->id);
 
-        $balance = DB::table('user_accounts')
-            ->where('user_id', Auth::user()->id)
-            ->sum('total');
-
-        return Inertia::render('Crew/Jumpseat', ['user' => $user, 'balance' => $balance]);
+        return Inertia::render('Crew/Jumpseat', ['user' => $user]);
     }
 }

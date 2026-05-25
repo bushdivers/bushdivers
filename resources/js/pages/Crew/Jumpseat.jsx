@@ -23,7 +23,7 @@ import React, { useState } from 'react'
 import AppLayout from '../../components/layout/AppLayout'
 import { displayNumber } from '../../helpers/number.helpers'
 
-const Jumpseat = ({ user, balance }) => {
+const Jumpseat = ({ user }) => {
   const bg = useColorModeValue('gray.100', 'gray.500')
   const [airport, setAirport] = useState('')
   const [icao, setIcao] = useState('')
@@ -70,7 +70,7 @@ const Jumpseat = ({ user, balance }) => {
       setError('Please specify an airport to transfer to')
       return
     }
-    if (balance < price) {
+    if (user.balance < price) {
       setError('You do not have sufficient funds to transfer here')
       return
     }
@@ -136,7 +136,7 @@ const Jumpseat = ({ user, balance }) => {
               )}
             </Flex>
           </Flex>
-          {distance && price >= 0 && (
+          {distance > 0 && price >= 0 && (
             <Box mt={2}>
               <Flex mt={2} justifyContent="center" alignItems="center" gap={3}>
                 <Text>
@@ -160,7 +160,7 @@ const Jumpseat = ({ user, balance }) => {
           {distance && price >= 0 ? (
             <>
               <Flex mt={2} justifyContent="end">
-                <Heading size="lg">${displayNumber(price, true)}</Heading>
+                <Heading size="lg">${displayNumber(price, true, true)}</Heading>
               </Flex>
               <Flex mt={2} justifyContent="end">
                 <Button mt={2} onClick={() => processJumpseat()}>

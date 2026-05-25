@@ -81,9 +81,7 @@ class PerformMaintenanceController extends Controller
         }
 
         if ($aircraft->owner_id > 0) {
-            $userBalance = $balance = DB::table('user_accounts')
-                ->where('user_id', Auth::user()->id)
-                ->sum('total');
+            $userBalance = Auth::user()->balance();
 
             if ($cost > $userBalance) {
                 return redirect()->back()->with(['error' => 'Insufficient funds to perform maintenance']);

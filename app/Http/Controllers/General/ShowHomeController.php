@@ -26,15 +26,17 @@ class ShowHomeController extends Controller
             return redirect()->route('dashboard');
         }
 
-        $flights = Pirep::where('state', PirepState::ACCEPTED)->get();
-        $flightCount = $flights->count();
-        $hours = $flights->sum('flight_time');
+        $flightCount = Pirep::where('state', PirepState::ACCEPTED)
+            //->selectRaw('COUNT(*) as count, SUM(flight_time) as total_time')
+            ->count();
+        //$flightCount = $flights->count;
+        //$hours = $flights->total_time;
         $pilots = User::where('is_active', true)->count();
         $hubs = Airport::where('is_hub', true)->count();
 
         return Inertia::render('Home', ['stats' => [
             'flights' => $flightCount,
-            'hours' => $hours,
+            //'hours' => $hours,
             'pilots' => $pilots,
             'hubs' => $hubs
         ]]);

@@ -108,6 +108,11 @@ class User extends Authenticatable
 
     public function getBalanceAttribute()
     {
+        return $this->balance();
+    }
+
+    public function balance(): float
+    {
         return DB::table('user_accounts')
             ->where('user_id', $this->id)
             ->sum('total');

@@ -9,7 +9,6 @@ use App\Models\Fleet;
 use App\Models\Rental;
 use App\Services\Aircraft\FindAvailableRegistration;
 use App\Services\Finance\AddUserTransaction;
-use App\Services\Finance\GetUserBalance;
 use Illuminate\Support\Facades\Auth;
 
 class StartRental
