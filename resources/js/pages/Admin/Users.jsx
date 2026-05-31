@@ -157,8 +157,7 @@ const Users = ({ users, roles }) => {
                   <Tr>
                     <Th>Pilot ID</Th>
                     <Th>Name</Th>
-                    <Th>Discord Name</Th>
-                    <Th>MSFS Name</Th>
+                    <Th>Discord/MSFS</Th>
                     <Th>Admin</Th>
                     <Th>Roles</Th>
                     <Th>Actions</Th>
@@ -168,9 +167,12 @@ const Users = ({ users, roles }) => {
                   {users.map((user) => (
                     <Tr key={user.id}>
                       <Td>{user.pilot_id}</Td>
-                      <Td>{user.name}</Td>
-                      <Td>{user.discord_username ?? '-'}</Td>
-                      <Td>{user.msfs_username ?? '-'}</Td>
+                      <Td>{user.private_name}</Td>
+                      <Td>
+                        {user.discord_username ?? '-'}
+                        <br />
+                        {user.msfs_username ?? '-'}
+                      </Td>
                       <Td>
                         {user.is_admin ? (
                           <Badge colorScheme="red">Yes</Badge>
