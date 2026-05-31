@@ -292,10 +292,12 @@ Route::middleware('auth')->group(function () {
             ->name('admin.pireps');
         Route::get('/admin/users', \App\Http\Controllers\Admin\Users\ShowUsersController::class)
             ->name('admin.users');
-        Route::get('/admin/users/admin/{userId}', \App\Http\Controllers\Admin\Users\SetAdminController::class)
-            ->name('admin.users.admin');
         Route::get('/admin/users/active/{userId}', \App\Http\Controllers\Admin\Users\SetStatusController::class)
             ->name('admin.users.active');
+        Route::get('/admin/users/lookup/{userId}', \App\Http\Controllers\Admin\Users\LookupUserController::class)
+            ->name('admin.users.lookup');
+        Route::post('/admin/users/{userId}/privileges', \App\Http\Controllers\Admin\Users\UpdateUserPrivilegesController::class)
+            ->name('admin.users.privileges');
         Route::post('/pireps/approve', \App\Http\Controllers\Pireps\ApprovePirepController::class)
             ->name('pireps.approve');
         Route::get('/admin/resources', \App\Http\Controllers\Admin\Resources\ShowResourcesController::class)
