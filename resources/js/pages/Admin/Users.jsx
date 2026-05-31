@@ -263,6 +263,7 @@ const Users = ({ users, roles }) => {
                   mb={4}
                   p={3}
                   bg="gray.50"
+                  _dark={{ bg: 'gray.600' }}
                   borderRadius="md"
                 >
                   <Text fontSize="sm">
@@ -275,7 +276,7 @@ const Users = ({ users, roles }) => {
                     <Text as="span" fontWeight="semibold">
                       Name:{' '}
                     </Text>
-                    {selectedUser.name}
+                    {selectedUser.private_name}
                   </Text>
                   <Text fontSize="sm">
                     <Text as="span" fontWeight="semibold">

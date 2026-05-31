@@ -19,7 +19,7 @@ class ShowUsersController extends Controller
             ->orderBy('id', 'asc')
             ->get();
 
-        $users->makeVisible(['name', 'msfs_username', 'discord_username', 'is_admin', 'user_roles']);
+        $users->makeVisible(['msfs_username', 'discord_username', 'is_admin', 'user_roles']);
 
         $roles = Role::orderBy('role')->get();
 

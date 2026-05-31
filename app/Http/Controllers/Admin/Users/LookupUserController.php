@@ -23,7 +23,7 @@ class LookupUserController extends Controller
         return response()->json([
             'id'               => $user->id,
             'pilot_id'         => $user->pilot_id,
-            'name'             => $user->name,
+            'private_name'     => $user->private_name,
             'discord_username' => $user->discord_username,
             'msfs_username'    => $user->msfs_username,
             'is_admin'         => (bool) $user->is_admin,
