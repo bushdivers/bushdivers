@@ -56,18 +56,3 @@ Route::middleware(['web', 'auth'])->group(function () {
 
     Route::post('/contracts/split', \App\Http\Controllers\Contracts\SplitContractController::class)->name('contracts.split');
 });
-
-//Route::middleware('auth.schedule')->group(function () {
-//    Route::post('/schedule/contracts/clean', \App\Http\Controllers\Scheduler\Contracts\CheckForExpiredContractsController::class);
-//    Route::post('/schedule/rentals/charge', \App\Http\Controllers\Scheduler\Rentals\ProcessDailyRentalsController::class);
-//    Route::post('/schedule/finance/fees', \App\Http\Controllers\Scheduler\Finance\ProcessAirlineFeesController::class);
-//    Route::post('/schedule/finance/loans', \App\Http\Controllers\Scheduler\Finance\CollectLoanPaymentsController::class);
-//});
-
-//Route::middleware('auth.bot')->group(function () {
-//    Route::post('/bot/treasure/add', [\App\Http\Controllers\Bot\BotController::class, 'addParticipantToTreasureHunt']);
-//    Route::get('/bot/treasure/pirep/{pirepId}', [\App\Http\Controllers\Bot\BotController::class, 'getTreasureHuntPirep']);
-//    Route::post('/bot/treasure/result', [\App\Http\Controllers\Bot\BotController::class, 'comparePirepToTreasureHuntClue']);
-//    Route::get('/bot/treasure/clue/{nextClueNo}', [\App\Http\Controllers\Bot\BotController::class, 'getTreasureHuntClue']);
-//    Route::get('/metar/{icao}', \App\Http\Controllers\Bot\GetMetarController::class);
-//});
