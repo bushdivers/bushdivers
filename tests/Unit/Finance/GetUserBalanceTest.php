@@ -27,7 +27,7 @@ class GetUserBalanceTest extends TestCase
      */
     public function test_get_user_balance_returns_zero_when_nothing()
     {
-        $total = $this->user->balance();
+        $total = $this->user->balance;
         $this->assertEquals(0, $total);
     }
 
@@ -38,7 +38,7 @@ class GetUserBalanceTest extends TestCase
             ['user_id' => $this->user->id, 'type' => TransactionTypes::Bonus, 'total' => 800]
         ]);
 
-        $total = $this->user->balance();
+        $total = $this->user->balance;
         $this->assertEquals(800-250, $total);
     }
 }

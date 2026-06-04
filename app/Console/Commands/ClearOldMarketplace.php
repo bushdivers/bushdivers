@@ -37,5 +37,7 @@ class ClearOldMarketplace extends Command
         //
         $deleted = $this->removeUnusedMarketplaceItems->execute();
         $this->info('Deleted ' . $deleted . ' marketplace aircraft');
+
+        return 0;
     }
 }

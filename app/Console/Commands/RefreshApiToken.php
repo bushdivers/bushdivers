@@ -44,5 +44,7 @@ class RefreshApiToken extends Command
     {
         $user = User::find($this->argument('user'));
         $this->createApiToken->execute($user);
+
+        return 0;
     }
 }

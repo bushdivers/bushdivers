@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -23,8 +24,10 @@ class AircraftEngine extends Model
         return $this->belongsTo(Aircraft::class);
     }
 
-    public function setWearAttribute($value)
+    public function wear(): Attribute
     {
-        $this->attributes['wear'] = max(0, min(100, $value));
+        return Attribute::make(
+            set: fn ($value) => max(0, min(100, $value)),
+        );
     }
 }

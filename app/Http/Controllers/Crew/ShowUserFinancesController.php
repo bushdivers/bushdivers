@@ -20,7 +20,7 @@ class ShowUserFinancesController extends Controller
     public function __invoke(Request $request): Response
     {
         $accounts = DB::table('user_accounts')->where('user_id', Auth::user()->id)->orderBy('created_at', 'desc')->paginate(15);
-        $balance = Auth::user()->balance();
+        $balance = Auth::user()->balance;
         $loanAvailable = (50000 + (($balance - Auth::user()->loan)* 0.4)) - Auth::user()->loan;
         if ($loanAvailable < 0) $loanAvailable = 0;
         return Inertia::render('Crew/MyFinances', ['accounts' => $accounts, 'balance' => $balance, 'loanAvailable' => $loanAvailable]);

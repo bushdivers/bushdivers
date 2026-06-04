@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -110,16 +111,13 @@ class User extends Authenticatable
         return $this->is_admin || in_array($role, $this->user_roles);
     }
 
-    public function getBalanceAttribute()
+    protected function balance(): Attribute
     {
-        return $this->balance();
-    }
-
-    public function balance(): float
-    {
-        return DB::table('user_accounts')
-            ->where('user_id', $this->id)
-            ->sum('total');
+        return Attribute::make(
+            get: fn () => DB::table('user_accounts')
+                ->where('user_id', $this->id)
+                ->sum('total'),
+        );
     }
 
     public function rank(): BelongsTo
@@ -140,11 +138,6 @@ class User extends Authenticatable
     public function roles(): BelongsToMany
     {
         return $this->belongsToMany(Role::class);
-    }
-
-    public function loans(): BelongsToMany
-    {
-        return $this->belongsToMany(Loan::class);
     }
 
     public function latestPirep(): HasOne

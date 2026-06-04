@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Contracts\IsLocatable;
 use App\Models\Concerns\HasLocation;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -68,9 +69,11 @@ class Aircraft extends Model implements IsLocatable
         return $this->hasMany(MaintenanceLog::class)->orderBy('created_at', 'desc');
     }
 
-    public function setWearAttribute($value)
+    public function wear(): Attribute
     {
-        $this->attributes['wear'] = max(0, min(100, $value));
+        return Attribute::make(
+            set: fn ($value) => max(0, min(100, $value)),
+        );
     }
 
     public function setFuelOnboardAttribute($value)

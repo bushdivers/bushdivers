@@ -40,7 +40,7 @@ class CreateDispatchController extends Controller
 
         // Generate contract details
         $contractDetails = $this->generateContractDetails->execute($origin, $destination, ['name' => $cargo->text, 'type' => $cargo->type, 'qty' => $cargoQty]);
-        if (!$contractDetails || empty($contractDetails)) {
+        if (empty($contractDetails)) {
             return redirect()->back()->with(['error' => 'Failed to generate contract details']);
         }
 

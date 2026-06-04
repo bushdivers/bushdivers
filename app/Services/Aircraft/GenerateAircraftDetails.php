@@ -40,6 +40,7 @@ class GenerateAircraftDetails
         $ac->is_ferry = $ferry ?: false;
         $ac->save();
         $e = 1;
+        $engineMultiplier = 0;
         while ($e <= $fleet->number_of_engines) {
             $engine = new AircraftEngine();
             $engine->aircraft_id = $ac->id;
