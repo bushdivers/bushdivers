@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class AircraftEngine extends Model
 {
@@ -17,7 +18,7 @@ class AircraftEngine extends Model
         'mins_since_100hr',
     ];
 
-    public function aircraft()
+    public function aircraft(): BelongsTo
     {
         return $this->belongsTo(Aircraft::class);
     }

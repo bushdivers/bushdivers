@@ -6,6 +6,9 @@ use App\Models\Enums\PirepState;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Pirep extends Model
 {
@@ -25,47 +28,47 @@ class Pirep extends Model
         });
     }
 
-    public function pilot()
+    public function pilot(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
-    public function aircraft()
+    public function aircraft(): BelongsTo
     {
         return $this->belongsTo(Aircraft::class);
     }
 
-    public function rental()
+    public function rental(): BelongsTo
     {
         return $this->belongsTo(Rental::class, 'aircraft_id', 'id');
     }
 
-    public function logs()
+    public function logs(): HasMany
     {
         return $this->hasMany(FlightLog::class);
     }
 
-    public function latestLog()
+    public function latestLog(): HasOne
     {
         return $this->hasOne(FlightLog::class)->latestOfMany();
     }
 
-    public function depAirport()
+    public function depAirport(): BelongsTo
     {
         return $this->belongsTo(Airport::class, 'departure_airport_id', 'id');
     }
 
-    public function arrAirport()
+    public function arrAirport(): BelongsTo
     {
         return $this->belongsTo(Airport::class, 'arrival_airport_id', 'id');
     }
 
-    public function tour()
+    public function tour(): BelongsTo
     {
         return $this->belongsTo(Tour::class);
     }
 
-    public function variant()
+    public function variant(): BelongsTo
     {
         return $this->belongsTo(FleetVariant::class, 'fleet_variant_id');
     }

@@ -6,6 +6,7 @@ use App\Models\Enums\CargoType;
 use App\Models\Enums\ContractType as ContractTypEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Contract extends Model
 {
@@ -28,32 +29,32 @@ class Contract extends Model
         'days_updated'
     ];
 
-    public function type()
+    public function type(): BelongsTo
     {
         return $this->belongsTo(ContractType::class, 'contract_type_id');
     }
 
-    public function depAirport()
+    public function depAirport(): BelongsTo
     {
         return $this->belongsTo(Airport::class, 'dep_airport_id');
     }
 
-    public function arrAirport()
+    public function arrAirport(): BelongsTo
     {
         return $this->belongsTo(Airport::class, 'arr_airport_id');
     }
 
-    public function currentAirport()
+    public function currentAirport(): BelongsTo
     {
         return $this->belongsTo(Airport::class, 'current_airport_id');
     }
 
-    public function aircraft()
+    public function aircraft(): BelongsTo
     {
         return $this->belongsTo(Aircraft::class);
     }
 
-    public function communityJobContract()
+    public function communityJobContract(): BelongsTo
     {
         return $this->belongsTo(CommunityJobContract::class);
     }

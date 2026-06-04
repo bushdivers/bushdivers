@@ -5,6 +5,8 @@ namespace App\Models;
 use App\Models\Enums\CargoType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class CommunityJobContract extends Model
 {
@@ -15,22 +17,23 @@ class CommunityJobContract extends Model
         'is_recurring' => 'boolean',
         'cargo_type' => CargoType::class
     ];
-    public function contracts()
+
+    public function contracts(): HasMany
     {
         return $this->hasMany(Contract::class);
     }
 
-    public function communityJob()
+    public function communityJob(): BelongsTo
     {
         return $this->belongsTo(CommunityJob::class);
     }
 
-    public function departureAirport()
+    public function departureAirport(): BelongsTo
     {
         return $this->belongsTo(Airport::class, 'dep_airport_id');
     }
 
-    public function arrivalAirport()
+    public function arrivalAirport(): BelongsTo
     {
         return $this->belongsTo(Airport::class, 'arr_airport_id');
     }

@@ -2,17 +2,21 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens;
+    use HasFactory;
+    use Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -85,7 +89,7 @@ class User extends Authenticatable
         return 'BDV'.$number;
     }
 
-    public function getRank()
+    public function getRank(): ?Rank
     {
         return Rank::find($this->rank_id);
 
@@ -118,37 +122,37 @@ class User extends Authenticatable
             ->sum('total');
     }
 
-    public function rank()
+    public function rank(): BelongsTo
     {
         return $this->belongsTo(Rank::class);
     }
 
-    public function awards()
+    public function awards(): BelongsToMany
     {
         return $this->belongsToMany(Award::class, 'award_user')->orderBy('awards.type')->orderBy('awards.value');
     }
 
-    public function location()
+    public function location(): BelongsTo
     {
         return $this->belongsTo(Airport::class, 'current_airport_id');
     }
 
-    public function roles()
+    public function roles(): BelongsToMany
     {
         return $this->belongsToMany(Role::class);
     }
 
-    public function loans()
+    public function loans(): BelongsToMany
     {
         return $this->belongsToMany(Loan::class);
     }
 
-    public function latestPirep()
+    public function latestPirep(): HasOne
     {
         return $this->hasOne(Pirep::class)->latestOfMany('submitted_at');
     }
 
-    public function pireps()
+    public function pireps(): HasMany
     {
         return $this->hasMany(Pirep::class)->orderBy('submitted_at', 'desc');
     }

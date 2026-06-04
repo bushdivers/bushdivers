@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\AsEnumCollection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Location\Coordinate;
 
 class Airport extends Model implements IsLocatable
@@ -56,12 +57,12 @@ class Airport extends Model implements IsLocatable
 
     }
 
-    public function hubContracts()
+    public function hubContracts(): HasMany
     {
         return $this->hasMany(Contract::class, 'hub_airport_id');
     }
 
-    public function ferryFlights()
+    public function ferryFlights(): HasMany
     {
         return $this->hasMany(Aircraft::class, 'hub_id');
     }

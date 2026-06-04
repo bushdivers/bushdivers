@@ -7,11 +7,14 @@ use App\Models\Concerns\HasLocation;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Location\Coordinate;
 
 class Aircraft extends Model implements IsLocatable
 {
-    use HasFactory, HasLocation;
+    use HasFactory;
+    use HasLocation;
 
     protected $appends = [
         'maintenance_status',
@@ -30,37 +33,37 @@ class Aircraft extends Model implements IsLocatable
         'is_ferry' => 'boolean'
     ];
 
-    public function fleet()
+    public function fleet(): BelongsTo
     {
         return $this->belongsTo(Fleet::class);
     }
 
-    public function lastVariant()
+    public function lastVariant(): BelongsTo
     {
         return $this->belongsTo(FleetVariant::class, 'fleet_variant_id');
     }
 
-    public function location()
+    public function location(): BelongsTo
     {
         return $this->belongsTo(Airport::class, 'current_airport_id');
     }
 
-    public function hub()
+    public function hub(): BelongsTo
     {
         return $this->belongsTo(Airport::class, 'hub_id');
     }
 
-    public function pireps()
+    public function pireps(): HasMany
     {
         return $this->hasMany(Pirep::class, 'aircraft_id', 'id')->orderBy('submitted_at', 'desc');
     }
 
-    public function engines()
+    public function engines(): HasMany
     {
         return $this->hasMany(AircraftEngine::class);
     }
 
-    public function maintenance()
+    public function maintenance(): HasMany
     {
         return $this->hasMany(MaintenanceLog::class)->orderBy('created_at', 'desc');
     }

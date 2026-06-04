@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class CommunityJob extends Model
 {
@@ -15,7 +16,7 @@ class CommunityJob extends Model
         'allow_private' => 'boolean'
     ];
 
-    public function jobs()
+    public function jobs(): HasMany
     {
         return $this->hasMany(CommunityJobContract::class);
     }
