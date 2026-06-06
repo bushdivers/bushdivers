@@ -4,7 +4,6 @@ namespace Tests\Unit\Services\User;
 
 use App\Models\User;
 use App\Services\User\UpdateUserHours;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -13,7 +12,7 @@ class UpdatePilotHoursTest extends TestCase
     use RefreshDatabase;
 
     protected UpdateUserHours $updateUserHours;
-    protected Model $user;
+    protected User $user;
 
     protected function setUp(): void
     {

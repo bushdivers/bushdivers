@@ -33,9 +33,6 @@ class PurchaseController extends Controller
 
     /**
      * Handle the incoming request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return RedirectResponse
      */
     public function __invoke(Request $request, $buyer)
     {

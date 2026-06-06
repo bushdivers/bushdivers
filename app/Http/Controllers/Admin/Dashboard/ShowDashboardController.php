@@ -13,13 +13,10 @@ class ShowDashboardController extends Controller
 {
     /**
      * Handle the incoming request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
     public function __invoke(Request $request): Response
     {
-        $days = intval($request->get('days', 7));
+        $days = intval($request->input('days', 7));
         if ($days == 0) {
             $days = 7;
         }

@@ -51,9 +51,6 @@ class ProcessPirepSubmissionController extends Controller
 
     /**
      * Handle a manual pirep submission
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
     public function __invoke(ManualPirepRequest $request): RedirectResponse
     {
