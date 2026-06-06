@@ -7,6 +7,9 @@ use App\Models\Fleet;
 use App\Models\FleetVariant;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ *  @extends Factory<Fleet>
+ */
 class FleetFactory extends Factory
 {
     /**

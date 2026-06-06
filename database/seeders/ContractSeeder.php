@@ -23,7 +23,7 @@ class ContractSeeder extends Seeder
                 'distance' => 60,
                 'heading' => 63,
                 'contract_value' => 400,
-                'expires_at' => Carbon::today()->addYear(1),
+                'expires_at' => Carbon::today()->addYear(),
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],
@@ -34,7 +34,7 @@ class ContractSeeder extends Seeder
                 'distance' => 28,
                 'heading' => 63,
                 'contract_value' => 400,
-                'expires_at' => Carbon::today()->addYear(1),
+                'expires_at' => Carbon::today()->addYear(),
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ]

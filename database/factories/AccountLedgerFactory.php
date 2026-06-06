@@ -5,6 +5,9 @@ namespace Database\Factories;
 use App\Models\AccountLedger;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ *  @extends Factory<AccountLedger>
+ */
 class AccountLedgerFactory extends Factory
 {
     /**

@@ -7,6 +7,9 @@ use App\Models\Airport;
 use App\Models\Fleet;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ *  @extends Factory<Aircraft>
+ */
 class AircraftFactory extends Factory
 {
     /**

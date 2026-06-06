@@ -2,14 +2,17 @@
 
 namespace Database\Factories;
 
+use App\Models\CommunityJobContract;
 use App\Models\Enums\CargoType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\CommunityJobContract>
+ * @extends Factory<CommunityJobContract>
  */
 class CommunityJobContractFactory extends Factory
 {
+    protected $model = CommunityJobContract::class;
+
     /**
      * Define the model's default state.
      *

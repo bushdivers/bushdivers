@@ -2,13 +2,16 @@
 
 namespace Database\Factories;
 
+use App\Models\TourUser;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\TourUser>
+ *  @extends Factory<TourUser>
  */
 class TourUserFactory extends Factory
 {
+    protected $model = TourUser::class;
+
     /**
      * Define the model's default state.
      *

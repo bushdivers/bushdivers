@@ -2,13 +2,16 @@
 
 namespace Database\Factories;
 
+use App\Models\TourCheckpointUser;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\TourCheckpointUser>
+ *  @extends Factory<TourCheckpointUser>
  */
 class TourCheckpointUserFactory extends Factory
 {
+    protected $model = TourCheckpointUser::class;
+
     /**
      * Define the model's default state.
      *

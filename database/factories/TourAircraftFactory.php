@@ -2,13 +2,16 @@
 
 namespace Database\Factories;
 
+use App\Models\TourAircraft;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\TourAircraft>
+ *  @extends Factory<TourAircraft>
  */
 class TourAircraftFactory extends Factory
 {
+    protected $model = TourAircraft::class;
+
     /**
      * Define the model's default state.
      *

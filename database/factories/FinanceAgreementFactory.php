@@ -2,11 +2,17 @@
 
 namespace Database\Factories;
 
+use App\Models\FinanceAgreement;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ *  @extends Factory<FinanceAgreement>
+ */
 class FinanceAgreementFactory extends Factory
 {
+    protected $model = FinanceAgreement::class;
+
     /**
      * Define the model's default state.
      *

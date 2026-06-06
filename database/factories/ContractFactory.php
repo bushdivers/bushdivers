@@ -9,6 +9,9 @@ use App\Models\Enums\ContractType;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ *  @extends Factory<Contract>
+ */
 class ContractFactory extends Factory
 {
     /**

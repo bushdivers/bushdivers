@@ -2,14 +2,17 @@
 
 namespace Database\Factories;
 
+use App\Models\Fleet;
 use App\Models\FleetVariant;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<FleetVariant>
+ *  @extends Factory<FleetVariant>
  */
 class FleetVariantFactory extends Factory
 {
+    protected $model = FleetVariant::class;
+
     /**
      * Define the model's default state.
      *
@@ -18,7 +21,7 @@ class FleetVariantFactory extends Factory
     public function definition(): array
     {
         return [
-            'fleet_id' => \App\Models\Fleet::factory(),
+            'fleet_id' => Fleet::factory(),
             'name' => 'Standard',
             'is_default' => true,
             'pax_capacity' => 7,

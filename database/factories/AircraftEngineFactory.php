@@ -5,6 +5,9 @@ namespace Database\Factories;
 use App\Models\AircraftEngine;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ *  @extends Factory<AircraftEngine>
+ */
 class AircraftEngineFactory extends Factory
 {
     /**

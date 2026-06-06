@@ -2,13 +2,15 @@
 
 namespace Database\Factories;
 
+use App\Models\CommunityJob;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\CommunityJob>
+ *  @extends Factory<CommunityJob>
  */
 class CommunityJobFactory extends Factory
 {
+    protected $model = CommunityJob::class;
     /**
      * Define the model's default state.
      *

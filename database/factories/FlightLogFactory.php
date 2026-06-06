@@ -6,6 +6,9 @@ use App\Models\FlightLog;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ *  @extends Factory<FlightLog>
+ */
 class FlightLogFactory extends Factory
 {
     /**

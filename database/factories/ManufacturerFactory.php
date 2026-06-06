@@ -6,7 +6,7 @@ use App\Models\Manufacturer;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<Manufacturer>
+ *  @extends Factory<Manufacturer>
  */
 class ManufacturerFactory extends Factory
 {

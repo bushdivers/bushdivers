@@ -5,6 +5,9 @@ namespace Database\Factories;
 use App\Models\Airport;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ *  @extends Factory<Airport>
+ */
 class AirportFactory extends Factory
 {
     /**
