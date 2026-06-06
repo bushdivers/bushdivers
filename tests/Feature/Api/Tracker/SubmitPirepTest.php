@@ -530,7 +530,7 @@ class SubmitPirepTest extends TestCase
         $this->assertDatabaseHas('contracts', [
             'id' => $this->contract->id,
             'is_completed' => true,
-            'current_airport_id' => $this->aymn->id ?? $this->pirep->destination_airport_id
+            'current_airport_id' => $this->aymn->id
         ]);
     }
 

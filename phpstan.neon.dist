@@ -3,7 +3,7 @@ includes:
     - vendor/nesbot/carbon/extension.neon
 
 parameters:
-    level: 1
+    level: 2
 
     paths:
         - app/
@@ -11,6 +11,7 @@ parameters:
         - database/
         - routes/
         - tests/
+
 
 #    ignoreErrors:
 #        - '#PHPDoc tag @var#'

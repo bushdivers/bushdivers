@@ -11,6 +11,7 @@ use App\Services\Airports\GetMetarForAirport;
 use App\Services\Contracts\GenerateContracts;
 use App\Services\Contracts\GetNumberToGenerate;
 use App\Services\Contracts\StoreContracts;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -89,7 +90,10 @@ class ShowAirportController extends Controller
         $user = Auth::user();
         // Filter dest to user preferences. Current/dep doesn't matter since either the user is already there (regardless of choice), or they haven't found the airport to fly to
         return Contract::with(['depAirport', 'currentAirport', 'arrAirport'])
-            ->whereHas('arrAirport', fn ($q) => $q->forUser($user))
+            ->whereHas('arrAirport', function (Builder $q) use ($user) {
+                /** @var Builder<Airport> $q */
+                return $q->forUser($user);
+            })
             ->where('dep_airport_id', $airport->id)
             ->where('is_available', true)
             ->whereRaw('expires_at >= Now()')

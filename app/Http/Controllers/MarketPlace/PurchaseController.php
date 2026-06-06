@@ -12,7 +12,6 @@ use App\Services\Aircraft\CreateAircraft;
 use App\Services\Aircraft\GenerateAircraft;
 use App\Services\Finance\AddAirlineTransaction;
 use App\Services\Finance\AddUserTransaction;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -78,7 +77,7 @@ class PurchaseController extends Controller
             }
             $aircraft = $this->createAircraft->execute($request->all(), $buyer === 'admin' ? null : Auth::user(), $currentAirport);
         } else {
-            $aircraft = Aircraft::with('location')->find($request->id);
+            $aircraft = Aircraft::with('location')->findOrFail($request->id);
             if ($request->reg != $aircraft->registration) {
                 $aircraftCount = Aircraft::where('registration', $request->reg)
                     ->count();

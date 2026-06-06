@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Enums\PirepState;
+use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -17,7 +18,8 @@ class Pirep extends Model
     public $incrementing = false;
     protected $keyType = 'string';
 
-    public function scopeInactive(Builder $query)
+    #[Scope]
+    protected function inactive(Builder $query)
     {
         return $query->where(function ($q) {
             $q->where('state', PirepState::DISPATCH)

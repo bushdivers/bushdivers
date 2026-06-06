@@ -44,7 +44,7 @@ class CheckAircraftMaintenanceStatusTest extends TestCase
         $this->aircraft2 = Aircraft::factory()->create([
             'registration' => 'P2-TEST',
             'fleet_id' => $this->fleet->id,
-            'last_inspected_at' => Carbon::now()->subMonth(1)
+            'last_inspected_at' => Carbon::now()->subMonth()
         ]);
 
         $this->aircraft2Engine = AircraftEngine::factory()->create([

@@ -78,7 +78,7 @@ class UpdateAircraftDataTest extends TestCase
             'user_id' => $this->user->id,
             'arrival_airport_id' => $this->contract->arr_airport_id,
             'departure_airport_id' => $this->contract->dep_airport_id,
-            'aircraft_id' => $this->aircraft
+            'aircraft_id' => $this->aircraft->id
         ]);
 
         $this->pirepCargo = PirepCargo::factory()->create([
@@ -145,7 +145,7 @@ class UpdateAircraftDataTest extends TestCase
         $icao = Airport::factory()->create(['identifier' => 'EGLL']);
         $lat = -6.14617;
         $lon = 143.65733;
-        $this->pirep->arrAirport = $icao;
+        $this->pirep->arrAirport()->associate($icao);
         $this->pirep->current_lat = $lat;
         $this->pirep->current_lon = $lon;
         $this->updateAircraftAfterFlight->execute($this->aircraft, $this->pirep);

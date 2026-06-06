@@ -16,9 +16,9 @@ class RemoveResourceCategoryController extends Controller
     public function __invoke(Request $request, $id): RedirectResponse
     {
         $cat = ResourceCategory::findOrFail($id);
-        $resources = Resource::where('category_id', $id)->get();
+        $resourceCount = Resource::where('category_id', $id)->count();
 
-        if ($resources->count > 0) {
+        if ($resourceCount > 0) {
             return redirect()->back()->with(['error' => 'Cannot remove category as it is currently assigned resources']);
         }
 

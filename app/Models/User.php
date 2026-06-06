@@ -111,6 +111,9 @@ class User extends Authenticatable
         return $this->is_admin || in_array($role, $this->user_roles);
     }
 
+    /**
+     * @return Attribute<float, never>
+     */
     protected function balance(): Attribute
     {
         return Attribute::make(

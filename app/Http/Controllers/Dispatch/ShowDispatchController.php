@@ -45,7 +45,7 @@ class ShowDispatchController extends Controller
      */
     public function __invoke(Request $request): Response
     {
-        // check for existing Pirep
+        /** @var Pirep */
         $pirep = Pirep::with(['tour', 'variant', 'depAirport', 'arrAirport'])
             ->where('user_id', Auth::user()->id)
             ->whereNotIn('state', [PirepState::ACCEPTED, PirepState::REVIEW])
@@ -104,6 +104,8 @@ class ShowDispatchController extends Controller
 
     protected function getCargoForDispatch(Airport $currentLocation, $userId): array
     {
+        $minSplits = CargoType::pluck('min_cargo_split', 'text');
+
         $cargoAtAirport = Contract::with('arrAirport', 'communityJobContract.communityJob')
             ->where('current_airport_id', $currentLocation->id)
             ->where('is_completed', false)
@@ -111,14 +113,14 @@ class ShowDispatchController extends Controller
                 $q->where('is_shared', true)
                     ->orWhere('user_id', $userId);
             })
-            ->orderBy('heading')
-            ->orderBy('arr_airport_id')
-            ->get();
-
-        $minSplits = CargoType::pluck('min_cargo_split', 'text');
-        $cargoAtAirport->each(function ($contract) use ($minSplits) {
-            $contract->min_cargo_split = $minSplits->get($contract->cargo, 1);
-        });
+            ->orderBy('heading', 'asc')
+            ->orderBy('arr_airport_id', 'asc')
+            ->get()
+            ->map(function (Contract $contract) use ($minSplits) {
+                $contract = $contract->toArray();
+                $contract['min_cargo_split'] = $minSplits->get($contract['cargo'], 1);
+                return $contract;
+            });
 
         $cargoElsewhere = Contract::with('currentAirport', 'arrAirport')
             ->where('current_airport_id', '<>', $currentLocation->id)

@@ -97,6 +97,16 @@ class Aircraft extends Model implements IsLocatable
         );
     }
 
+    /**
+     * @return Attribute<float, float>
+     */
+    public function fuelOnboard(): Attribute
+    {
+        return Attribute::make(
+            set: fn ($value) => max(0, $value),
+        );
+    }
+
     public function setFuelOnboardAttribute($value)
     {
         $this->attributes['fuel_onboard'] = max(0, $value);

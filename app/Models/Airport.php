@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Contracts\IsLocatable;
 use App\Models\Enums\SimType;
 use App\Models\Concerns\HasLocation;
+use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\AsEnumCollection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -73,7 +74,8 @@ class Airport extends Model implements IsLocatable
         return $this->hasMany(Aircraft::class, 'hub_id');
     }
 
-    public function scopeWithRangeTo(Builder $query, Airport|Coordinate|null $to)
+    #[Scope]
+    protected function withRangeTo(Builder $query, Airport|Coordinate|null $to)
     {
         if (!$to) {
             return $query;
@@ -92,7 +94,11 @@ class Airport extends Model implements IsLocatable
                  SIN(RADIANS(?)) * SIN(RADIANS(lat))) as distance', [$lat, $lon, $lat]);
     }
 
-    public function scopeInRangeOf(Builder $query, Airport|Coordinate $from, $min, $max)
+    /**
+     * @param Builder<Airport>  $query
+     */
+    #[Scope]
+    protected function inRangeOf(Builder $query, Airport|Coordinate $from, $min, $max)
     {
         $max = max($min, $max - 0.001);
 
@@ -103,7 +109,6 @@ class Airport extends Model implements IsLocatable
         // Approximate bounding box to reduce
         $latRange = $max / 60; // 1 degree latitude is ~60 NM, so convert to degrees for lat range
 
-
         $query->withRangeTo($from)
             ->whereBetween('lat', [$lat - $latRange, $lat + $latRange])
             ->when(abs($lat) < 85, function ($q) use ($lon, $lat, $max) {
@@ -113,22 +118,26 @@ class Airport extends Model implements IsLocatable
             ->whereRaw('3440 * ACOS(COS(RADIANS(?)) * COS(RADIANS(lat)) * COS(RADIANS(?) - RADIANS(lon)) + SIN(RADIANS(?)) * SIN(RADIANS(lat))) between ? AND ?', [$lat, $lon, $lat, $min, $max]);
     }
 
-    public function scopeHub(Builder $query)
+    #[Scope]
+    protected function hub(Builder $query)
     {
         $query->where('is_hub', true)->where('hub_in_progress', false);
     }
 
-    public function scopeFuel(Builder $query)
+    #[Scope]
+    protected function fuel(Builder $query)
     {
         $query->where('has_avgas', true)->orWhere('has_jetfuel', true);
     }
 
-    public function scopeThirdParty(Builder $query)
+    #[Scope]
+    protected function thirdParty(Builder $query)
     {
         $query->where('is_thirdparty', true);
     }
 
-    public function scopeForUser(Builder $query, User $user)
+    #[Scope]
+    protected function forUser(Builder $query, User $user)
     {
         // If we're not allowing third party airports
         if (!$user->allow_thirdparty_airport) {
@@ -153,7 +162,8 @@ class Airport extends Model implements IsLocatable
      * Scope a query to only include base airports (not third party, no user).
      * If user provided, optionally enable hub based on user settings.
      */
-    public function scopeBase(Builder $query, User|null $user = null)
+    #[Scope]
+    protected function base(Builder $query, User|null $user = null)
     {
         $query->whereNull('user_id');
 
