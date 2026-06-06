@@ -61,7 +61,7 @@ class PurchaseController extends Controller
         }
         // check balance & process funds
         if ($buyer === 'admin') {
-            $balance = AccountLedger::balance();
+            $balance = AccountLedger::getBalance();
             if ($request->total > $balance) {
                 return redirect()->back()->with(['error' => 'Insufficient funds']);
             }

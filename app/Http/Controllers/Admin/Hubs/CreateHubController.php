@@ -50,7 +50,7 @@ class CreateHubController extends Controller
         $airport = Airport::base()->where('identifier', $request->identifier)->first();
 
         $cost = $this->calcCostOfHub->execute($request->aircraft);
-        $balance = \App\Models\AccountLedger::balance();
+        $balance = \App\Models\AccountLedger::getBalance();
         if ($balance < $cost) {
             return redirect()->back()->with('error', 'Insufficient funds');
         }

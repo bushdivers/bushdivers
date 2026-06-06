@@ -20,7 +20,7 @@ class ShowFinancesController extends Controller
     public function __invoke(Request $request): Response
     {
         $accounts = AccountLedger::with('pirep')->orderBy('created_at', 'desc')->paginate(15);
-        $balance = AccountLedger::balance();
+        $balance = AccountLedger::getBalance();
 
         $largeAc = Aircraft::with(['fleet'])
             ->where('owner_id', 0)
