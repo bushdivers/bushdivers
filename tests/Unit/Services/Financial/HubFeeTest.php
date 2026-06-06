@@ -8,7 +8,6 @@ use App\Models\Airport;
 use App\Models\Enums\AirlineTransactionTypes;
 use App\Models\Fleet;
 use App\Services\Finance\CalcHubFees;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -17,9 +16,9 @@ class HubFeeTest extends TestCase
     use RefreshDatabase;
 
     protected CalcHubFees $calcHubFees;
-    protected Model $airport;
-    protected Model $airlineFees;
-    protected Model $fleet;
+    protected Airport $airport;
+    protected AirlineFees $airlineFees;
+    protected Fleet $fleet;
 
     protected function setUp(): void
     {

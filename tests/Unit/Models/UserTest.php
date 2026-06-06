@@ -3,14 +3,13 @@
 namespace Tests\Unit\Models;
 
 use App\Models\User;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class UserTest extends TestCase
 {
     use RefreshDatabase;
-    protected Model $user;
+    protected User $user;
 
     protected function setUp(): void
     {

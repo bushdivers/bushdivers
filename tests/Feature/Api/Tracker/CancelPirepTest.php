@@ -12,7 +12,6 @@ use App\Models\Pirep;
 use App\Models\PirepCargo;
 use App\Models\User;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Laravel\Sanctum\Sanctum;
@@ -22,13 +21,13 @@ class CancelPirepTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected Model $user;
-    protected Model $pirep;
-    protected Model $flight;
-    protected Model $fleet;
-    protected Model $aircraft;
-    protected Model $booking;
-    protected Model $contract;
+    protected User $user;
+    protected Pirep $pirep;
+    protected FlightLog $flight;
+    protected Fleet $fleet;
+    protected Aircraft $aircraft;
+    protected Pirep $booking;
+    protected Contract $contract;
 
     public function setUp(): void
     {

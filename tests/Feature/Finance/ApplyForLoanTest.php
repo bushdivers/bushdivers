@@ -4,16 +4,14 @@ namespace Tests\Feature\Finance;
 
 use App\Models\Enums\TransactionTypes;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class ApplyForLoanTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected Model $user;
+    protected User $user;
 
     protected function setUp(): void
     {

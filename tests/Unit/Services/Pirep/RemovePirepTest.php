@@ -5,12 +5,12 @@ namespace Tests\Unit\Services\Pirep;
 use App\Models\Aircraft;
 use App\Models\Airport;
 use App\Models\Contract;
+use App\Models\Fleet;
 use App\Models\Pirep;
 use App\Models\PirepCargo;
 use App\Models\User;
 use App\Services\Pireps\RemoveSinglePirep;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
@@ -19,13 +19,13 @@ class RemovePirepTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected Model $user;
-    protected Model $pirep;
-    protected Model $pirepCargo;
-    protected Model $contract;
-    protected Model $fleet;
-    protected Model $aircraft;
-    protected Model $booking;
+    protected User $user;
+    protected Pirep $pirep;
+    protected PirepCargo $pirepCargo;
+    protected Contract $contract;
+    protected Fleet $fleet;
+    protected Aircraft $aircraft;
+    protected Pirep $booking;
     protected RemoveSinglePirep $removeSinglePirep;
 
     public function setUp(): void

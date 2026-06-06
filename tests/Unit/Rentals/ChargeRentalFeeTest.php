@@ -2,7 +2,6 @@
 
 namespace Tests\Unit\Rentals;
 
-use App\Models\Aircraft;
 use App\Models\Enums\TransactionTypes;
 use App\Models\Fleet;
 use App\Models\Pirep;
@@ -10,7 +9,6 @@ use App\Models\Rental;
 use App\Models\User;
 use App\Services\Rentals\ChargeRentalFee;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -18,9 +16,9 @@ class ChargeRentalFeeTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected Model $fleet;
-    protected Model $aircraft;
-    protected Model $user;
+    protected Fleet $fleet;
+    protected Rental $aircraft;
+    protected User $user;
     protected ChargeRentalFee $chargeRentalFee;
 
     protected function setUp(): void

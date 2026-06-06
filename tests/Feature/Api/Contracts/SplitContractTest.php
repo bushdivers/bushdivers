@@ -6,7 +6,6 @@ use App\Models\Airport;
 use App\Models\CargoType;
 use App\Models\Contract;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Sanctum\Sanctum;
 use Ramsey\Uuid\Uuid;
@@ -15,9 +14,9 @@ use Tests\TestCase;
 class SplitContractTest extends TestCase
 {
     use RefreshDatabase;
-    protected Model $contract;
-    protected Model $paxContract;
-    protected Model $user;
+    protected Contract $contract;
+    protected Contract $paxContract;
+    protected User $user;
 
     protected function setUp(): void
     {

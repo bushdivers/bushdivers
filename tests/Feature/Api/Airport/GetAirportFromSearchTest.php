@@ -4,7 +4,6 @@ namespace Tests\Feature\Api\Airport;
 
 use App\Models\Airport;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -12,7 +11,7 @@ class GetAirportFromSearchTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected Model $airport;
+    protected Airport $airport;
     protected User $user;
 
     protected function setUp(): void

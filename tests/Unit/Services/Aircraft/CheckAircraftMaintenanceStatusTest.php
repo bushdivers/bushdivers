@@ -7,7 +7,6 @@ use App\Models\AircraftEngine;
 use App\Models\Fleet;
 use App\Services\Aircraft\CheckAircraftMaintenanceStatus;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -16,11 +15,11 @@ class CheckAircraftMaintenanceStatusTest extends TestCase
     use RefreshDatabase;
 
     protected CheckAircraftMaintenanceStatus $checkAircraftMaintenanceStatus;
-    protected Model $aircraft1;
-    protected Model $aircraft1Engine;
-    protected Model $aircraft2;
-    protected Model $aircraft2Engine;
-    protected Model $fleet;
+    protected Aircraft $aircraft1;
+    protected AircraftEngine $aircraft1Engine;
+    protected Aircraft $aircraft2;
+    protected AircraftEngine $aircraft2Engine;
+    protected Fleet $fleet;
 
     protected function setUp(): void
     {

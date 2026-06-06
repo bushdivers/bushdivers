@@ -5,19 +5,15 @@ namespace Tests\Feature\Api\Fleet;
 use App\Models\Aircraft;
 use App\Models\Airport;
 use App\Models\Fleet;
-use App\Models\User;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
 class GetAvailableAircraftTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected Model $aircraft;
-    protected Model $fleet;
+    protected Aircraft $aircraft;
+    protected Fleet $fleet;
 
     public function setUp(): void
     {
@@ -60,6 +56,6 @@ class GetAvailableAircraftTest extends TestCase
         ]);
         $response = $this->getJson('/api/aircraft/'.'EGLL');
 
-        $response->assertJsonCount(0, 'aircraft' );
+        $response->assertJsonCount(0, 'aircraft');
     }
 }

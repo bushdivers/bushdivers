@@ -9,7 +9,6 @@ use App\Models\Fleet;
 use App\Models\Rental;
 use App\Models\User;
 use App\Services\Rentals\StartRental;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
@@ -18,12 +17,12 @@ class StartRentalTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected Model $aircraft;
-    protected Model $fleet;
-    protected Model $user;
+    protected Aircraft $aircraft;
+    protected Fleet $fleet;
+    protected User $user;
     protected StartRental $startRental;
-    protected Model $usHub;
-    protected Model $pngHub;
+    protected Airport $usHub;
+    protected Airport $pngHub;
 
     protected function setUp(): void
     {

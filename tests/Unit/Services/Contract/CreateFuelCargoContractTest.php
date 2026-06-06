@@ -7,16 +7,15 @@ use App\Models\Enums\CargoType;
 use App\Models\User;
 use App\Services\Contracts\CalcContractValue;
 use App\Services\Contracts\CreateFuelContract;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class CreateFuelCargoContractTest extends TestCase
 {
     use RefreshDatabase;
-    protected Model $airport1;
-    protected Model $airport2;
-    protected Model $user;
+    protected Airport $airport1;
+    protected Airport $airport2;
+    protected User $user;
     protected CreateFuelContract $createFuelContract;
     protected CalcContractValue $calcContractValue;
 

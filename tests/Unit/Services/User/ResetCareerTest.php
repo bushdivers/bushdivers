@@ -7,7 +7,6 @@ use App\Models\Fleet;
 use App\Models\Rental;
 use App\Models\User;
 use App\Services\User\ResetCareer;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
@@ -16,9 +15,9 @@ class ResetCareerTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected Model $user;
-    protected Model $aircraft;
-    protected Model $fleet;
+    protected User $user;
+    protected Aircraft $aircraft;
+    protected Fleet $fleet;
     protected ResetCareer $resetCareer;
 
     protected function setUp(): void

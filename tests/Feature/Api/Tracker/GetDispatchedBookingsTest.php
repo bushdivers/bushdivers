@@ -10,7 +10,6 @@ use App\Models\Pirep;
 use App\Models\PirepCargo;
 use App\Models\Rental;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Laravel\Sanctum\Sanctum;
@@ -20,14 +19,14 @@ class GetDispatchedBookingsTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected Model $user;
-    protected Model $aircraft;
-    protected Model $contract;
-    protected Model $contractCargo;
-    protected Model $booking;
-    protected Model $pirep;
-    protected Model $pirepCargo;
-    protected Model $fleet;
+    protected User $user;
+    protected Aircraft $aircraft;
+    protected Contract $contract;
+    protected PirepCargo $contractCargo;
+    protected Pirep $booking;
+    protected Pirep $pirep;
+    protected PirepCargo $pirepCargo;
+    protected Fleet $fleet;
 
     public function setUp(): void
     {

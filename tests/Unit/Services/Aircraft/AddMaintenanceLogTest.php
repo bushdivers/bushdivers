@@ -9,7 +9,6 @@ use App\Models\Enums\MaintenanceTypes;
 use App\Models\Fleet;
 use App\Models\User;
 use App\Services\Aircraft\AddMaintenanceLog;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -17,10 +16,10 @@ class AddMaintenanceLogTest extends TestCase
 {
     use RefreshDatabase;
     protected AddMaintenanceLog $addMaintenanceLog;
-    protected Model $user;
-    protected Model $aircraft;
-    protected Model $fleet;
-    protected Model $airport;
+    protected User $user;
+    protected Aircraft $aircraft;
+    protected Fleet $fleet;
+    protected Airport $airport;
 
     protected function setUp(): void
     {

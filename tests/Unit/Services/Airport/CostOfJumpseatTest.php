@@ -4,7 +4,6 @@ namespace Tests\Unit\Services\Airport;
 
 use App\Models\Airport;
 use App\Services\Airports\CalcCostOfJumpseat;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -13,8 +12,8 @@ class CostOfJumpseatTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected Model $fromAirport;
-    protected Model $toAirport;
+    protected Airport $fromAirport;
+    protected Airport $toAirport;
     protected CalcCostOfJumpseat $calcCostOfJumpseat;
 
     protected function setUp(): void

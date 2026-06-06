@@ -5,7 +5,6 @@ namespace Tests\Unit\Services\Contract;
 use App\Models\Airport;
 use App\Models\Enums\CargoType;
 use App\Services\Contracts\GenerateContractDetails;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
@@ -15,9 +14,9 @@ class GenerateContractDetailsTest extends TestCase
     use RefreshDatabase;
 
     protected GenerateContractDetails $generateContractDetails;
-    protected Model $airport1;
-    protected Model $airport2;
-    protected Model $origin;
+    protected Airport $airport1;
+    protected Airport $airport2;
+    protected Airport $origin;
 
     protected function setUp(): void
     {

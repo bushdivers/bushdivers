@@ -5,9 +5,7 @@ namespace Tests\Feature\Api\Airport;
 use App\Models\Airport;
 use App\Models\User;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
@@ -15,9 +13,9 @@ class GetCostOfJumpseatTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected Model $fromAirport;
-    protected Model $toAirport;
-    protected Model $user;
+    protected Airport $fromAirport;
+    protected Airport $toAirport;
+    protected User $user;
 
     protected function setUp(): void
     {
@@ -64,7 +62,7 @@ class GetCostOfJumpseatTest extends TestCase
     public function test_cost_is_correct()
     {
         $response = $this->getJson('/api/jumpseat/cost/'.$this->fromAirport->identifier.'/AYMN');
-        $cost = round(71.4 * 0.25,2);
+        $cost = round(71.4 * 0.25, 2);
         $response->assertJson(['cost' => $cost]);
     }
 

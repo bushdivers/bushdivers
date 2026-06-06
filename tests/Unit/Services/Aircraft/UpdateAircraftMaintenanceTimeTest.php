@@ -6,18 +6,16 @@ use App\Models\Aircraft;
 use App\Models\AircraftEngine;
 use App\Models\Fleet;
 use App\Services\Aircraft\UpdateAircraftMaintenanceTimes;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class UpdateAircraftMaintenanceTimeTest extends TestCase
 {
-
     use RefreshDatabase;
 
-    protected Model $aircraft;
-    protected Model $aircraftEngine;
-    protected Model $fleet;
+    protected Aircraft $aircraft;
+    protected AircraftEngine $aircraftEngine;
+    protected Fleet $fleet;
     protected UpdateAircraftMaintenanceTimes $updateAircraftMaintenanceTimes;
 
     protected function setUp(): void

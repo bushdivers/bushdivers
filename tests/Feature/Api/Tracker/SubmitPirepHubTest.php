@@ -16,7 +16,6 @@ use App\Models\PirepCargo;
 use App\Models\User;
 use Carbon\Carbon;
 use Database\Seeders\ContractTypeSeeder;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
@@ -27,13 +26,13 @@ class SubmitPirepHubTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected Model $user;
-    protected Model $pirep;
-    protected Model $pirepCargo;
-    protected Model $contract;
-    protected Model $fleet;
-    protected Model $aircraft;
-    protected Model $aircraftEngine;
+    protected User $user;
+    protected Pirep $pirep;
+    protected PirepCargo $pirepCargo;
+    protected Contract $contract;
+    protected Fleet $fleet;
+    protected Aircraft $aircraft;
+    protected AircraftEngine $aircraftEngine;
 
     public function setUp(): void
     {

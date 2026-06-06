@@ -6,7 +6,6 @@ use App\Models\Aircraft;
 use App\Models\Airport;
 use App\Models\Fleet;
 use App\Services\Aircraft\GenerateAircraft;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -15,7 +14,7 @@ class GenerateAircraftTest extends TestCase
     use RefreshDatabase;
 
     protected GenerateAircraft $generateAircraft;
-    protected Model $currentAirport;
+    protected Airport $currentAirport;
 
     protected function setUp(): void
     {

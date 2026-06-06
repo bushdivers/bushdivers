@@ -7,7 +7,6 @@ use App\Models\Airport;
 use App\Models\Fleet;
 use App\Models\User;
 use App\Services\Aircraft\UpdateAircraftFerry;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -15,7 +14,7 @@ class UpdateAircraftFerryTest extends TestCase
 {
     use RefreshDatabase;
     protected UpdateAircraftFerry $updateAircraftFerry;
-    protected Model $user;
+    protected User $user;
 
     protected function setUp(): void
     {

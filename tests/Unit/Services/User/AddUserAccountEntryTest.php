@@ -5,7 +5,6 @@ namespace Tests\Unit\Services\User;
 use App\Models\Enums\TransactionTypes;
 use App\Models\User;
 use App\Services\Finance\AddUserTransaction;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -14,7 +13,7 @@ class AddUserAccountEntryTest extends TestCase
     use RefreshDatabase;
 
     protected AddUserTransaction $addUserTransaction;
-    protected Model $user;
+    protected User $user;
 
     protected function setUp(): void
     {

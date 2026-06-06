@@ -7,7 +7,6 @@ use App\Models\Airport;
 use App\Models\Fleet;
 use App\Services\Aircraft\GenerateAircraft;
 use App\Services\Aircraft\RemoveUnusedMarketplaceItems;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -15,9 +14,9 @@ class RemoveUnusedMarketplaceItemsTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected Model $aircraft;
-    protected Model $aircraftEngine;
-    protected Model $fleet;
+    protected Aircraft $aircraft;
+    protected Aircraft $aircraftEngine;
+    protected Fleet $fleet;
     protected RemoveUnusedMarketplaceItems $removeUnusedMarketplaceItems;
     protected GenerateAircraft $generateAircraft;
 

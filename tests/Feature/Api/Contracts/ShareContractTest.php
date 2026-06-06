@@ -5,9 +5,7 @@ namespace Tests\Feature\Api\Contracts;
 use App\Models\Contract;
 use App\Models\Enums\CargoType;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Ramsey\Uuid\Uuid;
 use Tests\TestCase;
 
@@ -15,8 +13,8 @@ class ShareContractTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected Model $contract;
-    protected Model $user;
+    protected Contract $contract;
+    protected User $user;
 
     protected function setUp(): void
     {

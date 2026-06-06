@@ -9,7 +9,6 @@ use App\Models\TourCheckpointUser;
 use App\Models\TourUser;
 use App\Models\User;
 use App\Services\Tours\CheckTourProgress;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -17,16 +16,16 @@ class CheckTourProgressTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected Model $tour;
-    protected Model $user;
-    protected Model $anotherUser;
-    protected Model $tourUser;
-    protected Model $anotherTourUser;
-    protected Model $tourCheckpointUser;
-    protected Model $tourCheckpointUser1;
+    protected Tour $tour;
+    protected User $user;
+    protected User $anotherUser;
+    protected TourUser $tourUser;
+    protected TourUser $anotherTourUser;
+    protected TourCheckpointUser $tourCheckpointUser;
+    protected TourCheckpointUser $tourCheckpointUser1;
 
-    protected Model $anotherTourCheckpointUser;
-    protected Model $anotherTourCheckpointUser1;
+    protected TourCheckpointUser $anotherTourCheckpointUser;
+    protected TourCheckpointUser $anotherTourCheckpointUser1;
 
     protected Airport $aymr;
     protected Airport $aymn;
@@ -34,7 +33,7 @@ class CheckTourProgressTest extends TestCase
     protected Airport $wavg;
     protected Airport $ayym;
 
-    protected Model $pirep;
+    protected Pirep $pirep;
 
     protected CheckTourProgress $checkTourProgress;
 

@@ -5,17 +5,16 @@ namespace Tests\Feature\Api\Contracts;
 use App\Models\Airport;
 use App\Models\Contract;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class BidForContractTest extends TestCase
 {
     use RefreshDatabase;
-    protected Model $contract;
-    protected Model $arrAirport;
-    protected Model $depAirport;
-    protected Model $user;
+    protected Contract $contract;
+    protected Airport $arrAirport;
+    protected Airport $depAirport;
+    protected User $user;
 
     protected function setUp(): void
     {

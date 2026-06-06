@@ -12,7 +12,6 @@ use App\Models\Pirep;
 use App\Models\Rental;
 use App\Models\User;
 use App\Services\Finance\CalcLandingFee;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -21,14 +20,14 @@ class LandingFeeTest extends TestCase
     use RefreshDatabase;
 
     protected CalcLandingFee $calcLandingFee;
-    protected Model $pirep;
-    protected Model $fleetSmall;
-    protected Model $fleetMedium;
-    protected Model $fleetLarge;
-    protected Model $aircraftSmall;
-    protected Model $aircraftMedium;
-    protected Model $aircraftLarge;
-    protected Model $airport;
+    protected Pirep $pirep;
+    protected Fleet $fleetSmall;
+    protected Fleet $fleetMedium;
+    protected Fleet $fleetLarge;
+    protected Aircraft $aircraftSmall;
+    protected Aircraft $aircraftMedium;
+    protected Aircraft $aircraftLarge;
+    protected Airport $airport;
 
     protected function setUp(): void
     {

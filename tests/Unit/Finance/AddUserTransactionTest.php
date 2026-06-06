@@ -5,16 +5,14 @@ namespace Tests\Unit\Finance;
 use App\Models\Enums\TransactionTypes;
 use App\Models\User;
 use App\Services\Finance\AddUserTransaction;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
 class AddUserTransactionTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected Model $user;
+    protected User $user;
     protected AddUserTransaction $addUserTransaction;
 
     protected function setUp(): void

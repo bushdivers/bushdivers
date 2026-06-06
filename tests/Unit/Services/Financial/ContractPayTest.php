@@ -16,7 +16,6 @@ use App\Models\User;
 use App\Services\Finance\CalcContractPay;
 use App\Services\Finance\ProcessPirepFinancials;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -26,14 +25,14 @@ class ContractPayTest extends TestCase
 
     protected CalcContractPay $calcContractPay;
     protected ProcessPirepFinancials $processPirepFinancials;
-    protected Model $contract;
-    protected Model $pirep;
-    protected Model $pirepCargo;
-    protected Model $fleet;
-    protected Model $aircraft;
-    protected Model $aircraftPrivate;
-    protected Model $user;
-    protected Model $airport;
+    protected Contract $contract;
+    protected Pirep $pirep;
+    protected PirepCargo $pirepCargo;
+    protected Fleet $fleet;
+    protected Aircraft $aircraft;
+    protected Aircraft $aircraftPrivate;
+    protected User $user;
+    protected Airport $airport;
 
     protected function setUp(): void
     {

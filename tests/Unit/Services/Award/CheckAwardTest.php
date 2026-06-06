@@ -8,7 +8,6 @@ use App\Models\User;
 use App\Services\Awards\AddAwardToUser;
 use App\Services\Awards\CheckAwardStatus;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
@@ -18,7 +17,7 @@ class CheckAwardTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected Model $user;
+    protected User $user;
     protected AddAwardToUser $addAwardToUser;
     protected CheckAwardStatus $checkAwardStatus;
 
@@ -86,18 +85,6 @@ class CheckAwardTest extends TestCase
         $this->assertEquals(1, $awards->count());
     }
 
-//    public function test_airport_award_is_added()
-//    {
-//
-//        Pirep::factory()->count(52)->create([
-//            'destination_airport_id' => $this->generateRandomICAO(),
-//            'user_id' => $this->user->id,
-//            'state' => PirepState::ACCEPTED
-//        ]);
-//        $this->checkAwardStatus->execute($this->user->id);
-//        $awards = DB::table('award_user')->where('award_id', 13)->where('user_id', $this->user->id)->get();
-//        $this->assertEquals(1, $awards->count());;
-//    }
 
     public function test_distance_award_is_added()
     {
@@ -108,7 +95,7 @@ class CheckAwardTest extends TestCase
         ]);
         $this->checkAwardStatus->execute($this->user->id);
         $awards = DB::table('award_user')->where('award_id', 17)->where('user_id', $this->user->id)->get();
-        $this->assertEquals(1, $awards->count());;
+        $this->assertEquals(1, $awards->count());
     }
 
     protected function generateRandomICAO(): string

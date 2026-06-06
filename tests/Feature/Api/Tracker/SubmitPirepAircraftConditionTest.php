@@ -14,7 +14,6 @@ use App\Models\Pirep;
 use App\Models\PirepCargo;
 use App\Models\User;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
@@ -25,14 +24,14 @@ class SubmitPirepAircraftConditionTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected Model $user;
-    protected Model $pirep;
-    protected Model $pirepCargo;
-    protected Model $contract;
-    protected Model $contractCargo;
-    protected Model $fleet;
-    protected Model $aircraft;
-    protected Model $engine;
+    protected User $user;
+    protected Pirep $pirep;
+    protected PirepCargo $pirepCargo;
+    protected Contract $contract;
+    protected PirepCargo $contractCargo;
+    protected Fleet $fleet;
+    protected Aircraft $aircraft;
+    protected AircraftEngine $engine;
 
     protected function setUp(): void
     {

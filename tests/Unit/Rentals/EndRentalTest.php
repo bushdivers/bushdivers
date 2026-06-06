@@ -2,14 +2,11 @@
 
 namespace Tests\Unit\Rentals;
 
-use App\Models\Aircraft;
 use App\Models\Airport;
-use App\Models\Enums\TransactionTypes;
 use App\Models\Fleet;
 use App\Models\Rental;
 use App\Models\User;
 use App\Services\Rentals\EndRental;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -17,10 +14,10 @@ class EndRentalTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected Model $fleet;
-    protected Model $aircraftHome;
-    protected Model $aircraftAway;
-    protected Model $user;
+    protected Fleet $fleet;
+    protected Rental $aircraftHome;
+    protected Rental $aircraftAway;
+    protected User $user;
     protected EndRental $endRental;
 
     protected function setUp(): void

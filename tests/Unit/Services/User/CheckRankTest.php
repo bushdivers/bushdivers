@@ -2,10 +2,8 @@
 
 namespace Tests\Unit\Services\User;
 
-use App\Models\Rank;
 use App\Models\User;
 use App\Services\User\CheckUserRank;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
 use Tests\TestCase;
@@ -15,7 +13,7 @@ class CheckRankTest extends TestCase
     use RefreshDatabase;
 
     protected CheckUserRank $checkUserRank;
-    protected Model $user;
+    protected User $user;
 
     protected function setUp(): void
     {

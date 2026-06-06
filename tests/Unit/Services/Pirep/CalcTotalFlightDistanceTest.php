@@ -8,7 +8,6 @@ use App\Models\FlightLog;
 use App\Models\Pirep;
 use App\Models\PirepCargo;
 use App\Services\Pireps\CalculateTotalFlightDistance;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -17,11 +16,11 @@ class CalcTotalFlightDistanceTest extends TestCase
     use RefreshDatabase;
 
     protected CalculateTotalFlightDistance $calculateTotalFlightDistance;
-    protected Model $flightLog;
-    protected Model $pirep;
-    protected Model $pirepCargo;
-    protected Model $contract;
-    protected Model $airport;
+    protected FlightLog $flightLog;
+    protected Pirep $pirep;
+    protected PirepCargo $pirepCargo;
+    protected Contract $contract;
+    protected Airport $airport;
 
     protected function setUp(): void
     {

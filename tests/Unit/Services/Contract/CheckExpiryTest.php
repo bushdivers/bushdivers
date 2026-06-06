@@ -6,7 +6,6 @@ use App\Models\Contract;
 use App\Models\User;
 use App\Services\Contracts\CheckForExpiry;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Ramsey\Uuid\Uuid;
 use Tests\TestCase;
@@ -15,7 +14,7 @@ class CheckExpiryTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected Model $user;
+    protected User $user;
     protected CheckForExpiry $checkForExpiry;
 
     protected function setUp(): void

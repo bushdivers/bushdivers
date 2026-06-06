@@ -5,7 +5,6 @@ namespace Tests\Unit\Services\User;
 use App\Models\Airport;
 use App\Models\User;
 use App\Services\User\UpdateUserLocation;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -14,7 +13,7 @@ class UpdatePilotLocationTest extends TestCase
     use RefreshDatabase;
 
     protected UpdateUserLocation $updateUserLocation;
-    protected Model $user;
+    protected User $user;
 
     protected function setUp(): void
     {

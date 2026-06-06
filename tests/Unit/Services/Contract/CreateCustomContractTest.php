@@ -5,7 +5,6 @@ namespace Tests\Unit\Services\Contract;
 use App\Models\Airport;
 use App\Models\User;
 use App\Services\Contracts\CreateCustomRoute;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -14,8 +13,8 @@ class CreateCustomContractTest extends TestCase
     use RefreshDatabase;
 
     protected CreateCustomRoute $createCustomRoute;
-    protected Model $airport1;
-    protected Model $airport2;
+    protected Airport $airport1;
+    protected Airport $airport2;
     protected User $user;
 
     protected function setUp(): void

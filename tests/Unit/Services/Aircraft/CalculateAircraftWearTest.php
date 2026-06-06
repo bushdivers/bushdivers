@@ -7,7 +7,6 @@ use App\Models\AircraftEngine;
 use App\Models\Airport;
 use App\Models\Fleet;
 use App\Services\Aircraft\CalculateAircraftWear;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -15,9 +14,9 @@ class CalculateAircraftWearTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected Model $aircraft;
-    protected Model $aircraftEngine;
-    protected Model $fleet;
+    protected Aircraft $aircraft;
+    protected AircraftEngine $aircraftEngine;
+    protected Fleet $fleet;
     protected CalculateAircraftWear $calculateAircraftWear;
 
     protected function setUp(): void

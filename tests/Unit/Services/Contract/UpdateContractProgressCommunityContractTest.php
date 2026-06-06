@@ -10,7 +10,6 @@ use App\Models\Enums\CargoType;
 use App\Models\Enums\ContractType;
 use App\Models\Pirep;
 use App\Services\Contracts\UpdateContractCargoProgress;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -19,7 +18,7 @@ class UpdateContractProgressCommunityContractTest extends TestCase
     use RefreshDatabase;
 
     protected UpdateContractCargoProgress $updateContractCargoProgress;
-    protected Model $communityJob;
+    protected CommunityJob $communityJob;
     protected Airport $aymr;
     protected Airport $aymn;
     protected Pirep $pirep;

@@ -14,7 +14,6 @@ use App\Models\PirepCargo;
 use App\Models\Rental;
 use App\Models\User;
 use App\Services\Finance\CalcCargoHandlingFee;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -23,15 +22,15 @@ class CargoHandlingFeeTest extends TestCase
     use RefreshDatabase;
 
     protected CalcCargoHandlingFee $calcCargoHandlingFee;
-    protected Model $contract;
-    protected Model $pirep;
-    protected Model $pirepCargo;
-    protected Model $fleet;
-    protected Model $airport;
-    protected Model $aircraft;
-    protected Model $aircraftRental;
-    protected Model $aircraftPrivate;
-    protected Model $user;
+    protected Contract $contract;
+    protected Pirep $pirep;
+    protected PirepCargo $pirepCargo;
+    protected Fleet $fleet;
+    protected Airport $airport;
+    protected Aircraft $aircraft;
+    protected Rental $aircraftRental;
+    protected Aircraft $aircraftPrivate;
+    protected User $user;
 
     protected function setUp(): void
     {

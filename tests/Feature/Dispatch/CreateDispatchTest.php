@@ -9,7 +9,6 @@ use App\Models\Fleet;
 use App\Models\FleetVariant;
 use App\Models\Pirep;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -18,12 +17,12 @@ class CreateDispatchTest extends TestCase
     use RefreshDatabase;
 
     protected User $user;
-    protected Model $aircraftOrigin;
-    protected Model $aircraftDestination;
+    protected Aircraft $aircraftOrigin;
+    protected Aircraft $aircraftDestination;
 
-    protected Model $origin;
-    protected Model $destination;
-    protected Model $alternate;
+    protected Airport $origin;
+    protected Airport $destination;
+    protected Airport $alternate;
     protected FleetVariant $variantOrigin;
     protected FleetVariant $variantDestination;
 

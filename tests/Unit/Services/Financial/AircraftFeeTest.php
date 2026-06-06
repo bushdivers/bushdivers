@@ -4,11 +4,9 @@ namespace Tests\Unit\Services\Financial;
 
 use App\Models\Aircraft;
 use App\Models\AirlineFees;
-use App\Models\Airport;
 use App\Models\Enums\AirlineTransactionTypes;
 use App\Models\Fleet;
 use App\Services\Finance\CalcAircraftFees;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -17,12 +15,12 @@ class AircraftFeeTest extends TestCase
     use RefreshDatabase;
 
     protected CalcAircraftFees $calcAircraftFees;
-    protected Model $fleetSmall;
-    protected Model $fleetMedium;
-    protected Model $fleetLarge;
-    protected Model $aircraftSmall;
-    protected Model $aircraftMedium;
-    protected Model $aircraftLarge;
+    protected Fleet $fleetSmall;
+    protected Fleet $fleetMedium;
+    protected Fleet $fleetLarge;
+    protected Aircraft $aircraftSmall;
+    protected Aircraft $aircraftMedium;
+    protected Aircraft $aircraftLarge;
 
     protected function setUp(): void
     {

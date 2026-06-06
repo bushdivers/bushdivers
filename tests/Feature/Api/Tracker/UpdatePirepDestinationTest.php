@@ -7,7 +7,6 @@ use App\Models\Airport;
 use App\Models\Pirep;
 use App\Models\User;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
@@ -16,10 +15,10 @@ class UpdatePirepDestinationTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected Model $user;
-    protected Model $pirep;
-    protected Model $airport1;
-    protected Model $airport2;
+    protected User $user;
+    protected Pirep $pirep;
+    protected Airport $airport1;
+    protected Airport $airport2;
 
     protected function setUp(): void
     {

@@ -6,7 +6,6 @@ use App\Models\Airport;
 use App\Models\CommunityJob;
 use App\Models\CommunityJobContract;
 use App\Services\Contracts\CreateCommunityContract;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -14,8 +13,8 @@ class CreateCommunityContractTest extends TestCase
 {
     use RefreshDatabase;
     protected CreateCommunityContract $createCommunityContract;
-    protected Model $communityJob;
-    protected Model $communityJobContract;
+    protected CommunityJob $communityJob;
+    protected CommunityJobContract $communityJobContract;
 
     protected function setUp(): void
     {

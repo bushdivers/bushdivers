@@ -4,16 +4,14 @@ namespace Tests\Feature\Api\Contracts;
 
 use App\Models\Contract;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class AssignContractTest extends TestCase
 {
     use RefreshDatabase;
-    protected Model $contract;
-    protected Model $user;
+    protected Contract $contract;
+    protected User $user;
 
     protected function setUp(): void
     {

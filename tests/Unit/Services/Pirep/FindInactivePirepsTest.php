@@ -9,7 +9,6 @@ use App\Models\Enums\PirepState;
 use App\Models\Pirep;
 use App\Models\User;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -17,12 +16,12 @@ class FindInactivePirepsTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected Model $user;
-    protected Model $pirep;
-    protected Model $contract;
-    protected Model $aircraft;
-    protected Model $aymr;
-    protected Model $aymn;
+    protected User $user;
+    protected Pirep $pirep;
+    protected Contract $contract;
+    protected Aircraft $aircraft;
+    protected Airport $aymr;
+    protected Airport $aymn;
 
     public function setUp(): void
     {

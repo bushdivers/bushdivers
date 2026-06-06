@@ -17,7 +17,6 @@ use App\Models\Pirep;
 use App\Models\PirepCargo;
 use App\Models\User;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
@@ -28,16 +27,16 @@ class SubmitPirepPrivateOwnerTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected Model $user;
-    protected Model $pirep;
-    protected Model $pirepCargo;
-    protected Model $contract;
-    protected Model $contractCargo;
-    protected Model $fleet;
-    protected Model $aircraft;
-    protected Model $booking;
-    protected Model $aymr;
-    protected Model $aymn;
+    protected User $user;
+    protected Pirep $pirep;
+    protected PirepCargo $pirepCargo;
+    protected Contract $contract;
+    protected PirepCargo $contractCargo;
+    protected Fleet $fleet;
+    protected Aircraft $aircraft;
+    protected Pirep $booking;
+    protected Airport $aymr;
+    protected Airport $aymn;
 
     public function setUp(): void
     {
