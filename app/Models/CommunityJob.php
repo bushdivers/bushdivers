@@ -16,6 +16,9 @@ class CommunityJob extends Model
         'allow_private' => 'boolean'
     ];
 
+    /**
+     * @return HasMany<CommunityJobContract, $this>
+     */
     public function jobs(): HasMany
     {
         return $this->hasMany(CommunityJobContract::class);

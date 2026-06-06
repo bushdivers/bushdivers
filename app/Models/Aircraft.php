@@ -34,36 +34,57 @@ class Aircraft extends Model implements IsLocatable
         'is_ferry' => 'boolean'
     ];
 
+    /**
+     * @return BelongsTo<Fleet, $this>
+     */
     public function fleet(): BelongsTo
     {
         return $this->belongsTo(Fleet::class);
     }
 
+    /**
+     * @return BelongsTo<FleetVariant, $this>
+     */
     public function lastVariant(): BelongsTo
     {
         return $this->belongsTo(FleetVariant::class, 'fleet_variant_id');
     }
 
+    /**
+     * @return BelongsTo<Airport, $this>
+     */
     public function location(): BelongsTo
     {
         return $this->belongsTo(Airport::class, 'current_airport_id');
     }
 
+    /**
+     * @return BelongsTo<Airport, $this>
+     */
     public function hub(): BelongsTo
     {
         return $this->belongsTo(Airport::class, 'hub_id');
     }
 
+    /**
+     * @return HasMany<Pirep, $this>
+     */
     public function pireps(): HasMany
     {
         return $this->hasMany(Pirep::class, 'aircraft_id', 'id')->orderBy('submitted_at', 'desc');
     }
 
+    /**
+     * @return HasMany<AircraftEngine, $this>
+     */
     public function engines(): HasMany
     {
         return $this->hasMany(AircraftEngine::class);
     }
 
+    /**
+     * @return HasMany<MaintenanceLog, $this>
+     */
     public function maintenance(): HasMany
     {
         return $this->hasMany(MaintenanceLog::class)->orderBy('created_at', 'desc');

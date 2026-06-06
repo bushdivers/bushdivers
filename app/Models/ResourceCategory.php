@@ -12,6 +12,9 @@ class ResourceCategory extends Model
 
     public $timestamps = false;
 
+    /**
+     * @return HasMany<Resource, $this>
+     */
     public function resources(): HasMany
     {
         return $this->hasMany(Resource::class, 'category_id', 'id');

@@ -19,6 +19,9 @@ class AircraftEngine extends Model
         'mins_since_100hr',
     ];
 
+    /**
+     * @return BelongsTo<Aircraft, $this>
+     */
     public function aircraft(): BelongsTo
     {
         return $this->belongsTo(Aircraft::class);

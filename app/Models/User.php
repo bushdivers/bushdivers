@@ -120,31 +120,49 @@ class User extends Authenticatable
         );
     }
 
+    /**
+     * @return BelongsTo<Rank, User>
+     */
     public function rank(): BelongsTo
     {
         return $this->belongsTo(Rank::class);
     }
 
+    /**
+     * @return BelongsToMany<Award, $this>
+     */
     public function awards(): BelongsToMany
     {
         return $this->belongsToMany(Award::class, 'award_user')->orderBy('awards.type')->orderBy('awards.value');
     }
 
+    /**
+     * @return BelongsTo<Airport, $this>
+     */
     public function location(): BelongsTo
     {
         return $this->belongsTo(Airport::class, 'current_airport_id');
     }
 
+    /**
+     * @return BelongsToMany<Role, $this>
+     */
     public function roles(): BelongsToMany
     {
         return $this->belongsToMany(Role::class);
     }
 
+    /**
+     * @return HasOne<Pirep, $this>
+     */
     public function latestPirep(): HasOne
     {
         return $this->hasOne(Pirep::class)->latestOfMany('submitted_at');
     }
 
+    /**
+     * @return HasMany<Pirep, $this>
+     */
     public function pireps(): HasMany
     {
         return $this->hasMany(Pirep::class)->orderBy('submitted_at', 'desc');

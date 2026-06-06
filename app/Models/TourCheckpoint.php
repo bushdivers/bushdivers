@@ -10,6 +10,9 @@ class TourCheckpoint extends Model
 {
     use HasFactory;
 
+    /**
+     * @return BelongsTo<Airport, $this>
+     */
     public function airport(): BelongsTo
     {
         return $this->belongsTo(Airport::class, 'checkpoint_airport_id');

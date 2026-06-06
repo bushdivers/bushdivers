@@ -18,21 +18,33 @@ class CommunityJobContract extends Model
         'cargo_type' => CargoType::class
     ];
 
+    /**
+     * @return HasMany<Contract, $this>
+     */
     public function contracts(): HasMany
     {
         return $this->hasMany(Contract::class);
     }
 
+    /**
+     * @return BelongsTo<CommunityJob, $this>
+     */
     public function communityJob(): BelongsTo
     {
         return $this->belongsTo(CommunityJob::class);
     }
 
+    /**
+     * @return BelongsTo<Airport, $this>
+     */
     public function departureAirport(): BelongsTo
     {
         return $this->belongsTo(Airport::class, 'dep_airport_id');
     }
 
+    /**
+     * @return BelongsTo<Airport, $this>
+     */
     public function arrivalAirport(): BelongsTo
     {
         return $this->belongsTo(Airport::class, 'arr_airport_id');

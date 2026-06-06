@@ -17,6 +17,9 @@ class TourCheckpointUser extends Model
         'checkpoint_airport_id'
     ];
 
+    /**
+     * @return BelongsTo<Airport, $this>
+     */
     public function airport(): BelongsTo
     {
         return $this->belongsTo(Airport::class, 'checkpoint_airport_id');

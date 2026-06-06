@@ -13,16 +13,25 @@ class TourUser extends Model
 
     protected $fillable = ['tour_id', 'user_id', 'next_airport_id'];
 
+    /**
+     * @return BelongsTo<User, $this>
+     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
+    /**
+     * @return HasMany<Tour, $this>
+     */
     public function tours(): HasMany
     {
         return $this->hasMany(Tour::class);
     }
 
+    /**
+     * @return BelongsTo<Airport, $this>
+     */
     public function nextAirport(): BelongsTo
     {
         return $this->belongsTo(Airport::class, 'next_airport_id');

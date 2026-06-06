@@ -10,6 +10,9 @@ class AccountLedger extends Model
 {
     use HasFactory;
 
+    /**
+     * @return BelongsTo<Pirep, $this>
+     */
     public function pirep(): BelongsTo
     {
         return $this->belongsTo(Pirep::class);

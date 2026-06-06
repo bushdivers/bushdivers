@@ -57,11 +57,17 @@ class Airport extends Model implements IsLocatable
 
     }
 
+    /**
+     * @return HasMany<Contract, $this>
+     */
     public function hubContracts(): HasMany
     {
         return $this->hasMany(Contract::class, 'hub_airport_id');
     }
 
+    /**
+     * @return HasMany<Aircraft, $this>
+     */
     public function ferryFlights(): HasMany
     {
         return $this->hasMany(Aircraft::class, 'hub_id');

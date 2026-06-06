@@ -29,31 +29,49 @@ class Contract extends Model
         'days_updated'
     ];
 
+    /**
+     * @return BelongsTo<ContractType, $this>
+     */
     public function type(): BelongsTo
     {
         return $this->belongsTo(ContractType::class, 'contract_type_id');
     }
 
+    /**
+     * @return BelongsTo<Airport, $this>
+     */
     public function depAirport(): BelongsTo
     {
         return $this->belongsTo(Airport::class, 'dep_airport_id');
     }
 
+    /**
+     * @return BelongsTo<Airport, $this>
+     */
     public function arrAirport(): BelongsTo
     {
         return $this->belongsTo(Airport::class, 'arr_airport_id');
     }
 
+    /**
+     * @return BelongsTo<Airport, $this>
+     */
     public function currentAirport(): BelongsTo
     {
         return $this->belongsTo(Airport::class, 'current_airport_id');
     }
 
+    /**
+     * @return BelongsTo<Aircraft, $this>
+     */
     public function aircraft(): BelongsTo
     {
         return $this->belongsTo(Aircraft::class);
     }
 
+    /**
+     * @return BelongsTo<CommunityJobContract, $this>
+     */
     public function communityJobContract(): BelongsTo
     {
         return $this->belongsTo(CommunityJobContract::class);

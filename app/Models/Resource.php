@@ -36,11 +36,17 @@ class Resource extends Model
         return $size;
     }
 
+    /**
+     * @return BelongsTo<ResourceCategory, $this>
+     */
     public function category(): BelongsTo
     {
         return $this->belongsTo(ResourceCategory::class);
     }
 
+    /**
+     * @return BelongsTo<User, $this>
+     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

@@ -12,11 +12,17 @@ class PirepCargo extends Model
 
     public $timestamps = false;
 
+    /**
+     * @return BelongsTo<Pirep, $this>
+     */
     public function pirep(): BelongsTo
     {
         return $this->belongsTo(Pirep::class);
     }
 
+    /**
+     * @return BelongsTo<Contract, $this>
+     */
     public function cargo(): BelongsTo
     {
         return $this->belongsTo(Contract::class);

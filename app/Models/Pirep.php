@@ -28,46 +28,73 @@ class Pirep extends Model
         });
     }
 
+    /**
+     * @return BelongsTo<User, $this>
+     */
     public function pilot(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
+    /**
+     * @return BelongsTo<Aircraft, $this>
+     */
     public function aircraft(): BelongsTo
     {
         return $this->belongsTo(Aircraft::class);
     }
 
+    /**
+     * @return BelongsTo<Rental, $this>
+     */
     public function rental(): BelongsTo
     {
         return $this->belongsTo(Rental::class, 'aircraft_id', 'id');
     }
 
+    /**
+     * @return HasMany<FlightLog, $this>
+     */
     public function logs(): HasMany
     {
         return $this->hasMany(FlightLog::class);
     }
 
+    /**
+     * @return HasOne<FlightLog, $this>
+     */
     public function latestLog(): HasOne
     {
         return $this->hasOne(FlightLog::class)->latestOfMany();
     }
 
+    /**
+     * @return BelongsTo<Airport, $this>
+     */
     public function depAirport(): BelongsTo
     {
         return $this->belongsTo(Airport::class, 'departure_airport_id', 'id');
     }
 
+    /**
+     * @return BelongsTo<Airport, $this>
+     */
     public function arrAirport(): BelongsTo
     {
         return $this->belongsTo(Airport::class, 'arrival_airport_id', 'id');
     }
 
+    /**
+     * @return BelongsTo<Tour, $this>
+     */
     public function tour(): BelongsTo
     {
         return $this->belongsTo(Tour::class);
     }
 
+    /**
+     * @return BelongsTo<FleetVariant, $this>
+     */
     public function variant(): BelongsTo
     {
         return $this->belongsTo(FleetVariant::class, 'fleet_variant_id');

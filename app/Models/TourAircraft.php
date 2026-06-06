@@ -10,6 +10,9 @@ class TourAircraft extends Model
 {
     use HasFactory;
 
+    /**
+     * @return BelongsTo<Fleet, $this>
+     */
     public function fleet(): BelongsTo
     {
         return $this->belongsTo(Fleet::class);

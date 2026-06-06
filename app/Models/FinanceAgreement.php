@@ -14,6 +14,9 @@ class FinanceAgreement extends Model
         'last_payment_at' => 'datetime'
     ];
 
+    /**
+     * @return BelongsTo<Aircraft, $this>
+     */
     public function aircraft(): BelongsTo
     {
         return $this->belongsTo(Aircraft::class);
