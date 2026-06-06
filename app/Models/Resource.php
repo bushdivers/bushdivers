@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -20,20 +21,27 @@ class Resource extends Model
         'calculated_file_size'
     ];
 
-    public function getCalculatedFileSizeAttribute()
+    /**
+     * @return Attribute<string, never>
+     */
+    protected function calculatedFileSize(): Attribute
     {
-        $originalSize = $this->file_size / 1024;
-        $size = round($originalSize, 2).'kb';
-        if ($originalSize >= 1024) {
-            $originalSize = $originalSize / 1024;
-            $size = round($originalSize, 2).'mb';
-            if ($originalSize >= 1024) {
-                $originalSize = $originalSize / 1024;
-                $size = round($originalSize, 2).'gb';
-            }
-        }
+        return Attribute::make(
+            get: function () {
+                $originalSize = $this->file_size / 1024;
+                $size = round($originalSize, 2).'kb';
+                if ($originalSize >= 1024) {
+                    $originalSize = $originalSize / 1024;
+                    $size = round($originalSize, 2).'mb';
+                    if ($originalSize >= 1024) {
+                        $originalSize = $originalSize / 1024;
+                        $size = round($originalSize, 2).'gb';
+                    }
+                }
 
-        return $size;
+                return $size;
+            }
+        );
     }
 
     /**

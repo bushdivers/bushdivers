@@ -90,7 +90,10 @@ class Aircraft extends Model implements IsLocatable
         return $this->hasMany(MaintenanceLog::class)->orderBy('created_at', 'desc');
     }
 
-    public function wear(): Attribute
+    /**
+     * @return Attribute<int, int>
+     */
+    protected function wear(): Attribute
     {
         return Attribute::make(
             set: fn ($value) => max(0, min(100, $value)),
@@ -100,44 +103,53 @@ class Aircraft extends Model implements IsLocatable
     /**
      * @return Attribute<float, float>
      */
-    public function fuelOnboard(): Attribute
+    protected function fuelOnboard(): Attribute
     {
         return Attribute::make(
             set: fn ($value) => max(0, $value),
         );
     }
 
-    public function setFuelOnboardAttribute($value)
+    /**
+     * @return Attribute<bool, never>
+     */
+    protected function maintenanceStatus(): Attribute
     {
-        $this->attributes['fuel_onboard'] = max(0, $value);
+        return Attribute::make(
+            get: function () {
+                $oneYearAgo = Carbon::now()->subYear();
+                if ($this->last_inspected_at && $this->last_inspected_at->lessThan($oneYearAgo)) {
+                    return true;
+                }
+
+                // check tbo and 100hr
+                foreach ($this->engines as $engine) {
+                    if ($engine->mins_since_tbo >= $this->fleet->tbo_mins) {
+                        return true;
+                    }
+                    if ($engine->mins_since_100hr >= (100 * 60)) {
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+        );
     }
 
-    public function getMaintenanceStatusAttribute()
+    /**
+     * @return Attribute<float, never>
+     */
+    protected function totalCondition(): Attribute
     {
-        $oneYearAgo = Carbon::now()->subYear();
-        if ($this->last_inspected_at && $this->last_inspected_at->lessThan($oneYearAgo)) {
-            return true;
-        }
-
-        // check tbo and 100hr
-        foreach ($this->engines as $engine) {
-            if ($engine->mins_since_tbo >= $this->fleet->tbo_mins) {
-                return true;
+        return Attribute::make(
+            get: function () {
+                $numEngines = $this->engines->count();
+                $totalEngineWear = $this->engines->sum('wear');
+                $total = $this->wear + $totalEngineWear;
+                return round($total / ($numEngines + 1));
             }
-            if ($engine->mins_since_100hr >= (100 * 60)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public function getTotalConditionAttribute()
-    {
-        $numEngines = $this->engines->count();
-        $totalEngineWear = $this->engines->sum('wear');
-        $total = $this->wear + $totalEngineWear;
-        return round($total / ($numEngines + 1));
+        );
     }
 
     public function getCoordinate(): Coordinate

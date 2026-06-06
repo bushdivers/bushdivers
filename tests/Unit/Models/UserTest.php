@@ -27,13 +27,13 @@ class UserTest extends TestCase
         $firstName = strstr($this->user->name, ' ', true);
         $lastName = substr($this->user->name, strpos($this->user->name, ' ') + 1);
         $expected = $firstName.' '.$lastName[0];
-        $this->assertEquals($expected, $this->user->getPrivateNameAttribute());
+        $this->assertEquals($expected, $this->user->private_name);
     }
 
     public function test_pilot_id_attribute()
     {
         $expected = str_pad($this->user->id, 4, "0", STR_PAD_LEFT);
-        $this->assertEquals('BDV'.$expected, $this->user->getPilotIdAttribute());
+        $this->assertEquals('BDV'.$expected, $this->user->pilot_id);
     }
 
 }

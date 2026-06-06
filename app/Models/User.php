@@ -58,21 +58,35 @@ class User extends Authenticatable
         'balance'
     ];
 
-    public function getPrivateNameAttribute()
+    /**
+     * @return Attribute<string, never>
+     */
+    protected function privateName(): Attribute
     {
-        $split = explode(' ', $this->name);
+        return Attribute::make(
+            get: function () {
+                $split = explode(' ', $this->name);
 
-        if (count($split) >= 2) {
-            return $split[0] . ' ' . mb_substr($split[1], 0, 1);
-        } else {
-            return $this->name;
-        }
+                if (count($split) >= 2) {
+                    return $split[0] . ' ' . mb_substr($split[1], 0, 1);
+                } else {
+                    return $this->name;
+                }
+            }
+        );
     }
 
-    public function getPilotIdAttribute()
+    /**
+     * @return Attribute<string, never>
+     */
+    protected function pilotId(): Attribute
     {
-        $number = str_pad($this->id, 4, "0", STR_PAD_LEFT);
-        return 'BDV'.$number;
+        return Attribute::make(
+            get: function () {
+                $number = str_pad($this->id, 4, "0", STR_PAD_LEFT);
+                return 'BDV'.$number;
+            }
+        );
     }
 
     public function getRank(): ?Rank
@@ -81,14 +95,21 @@ class User extends Authenticatable
 
     }
 
-    public function getUserRolesAttribute()
+    /**
+     * @return Attribute<array<int, string>, never>
+     */
+    protected function userRoles(): Attribute
     {
-        $r = [];
-        foreach ($this->roles as $role) {
-            $r[] = $role->role;
-        }
+        return Attribute::make(
+            get: function () {
+                $r = [];
+                foreach ($this->roles as $role) {
+                    $r[] = $role->role;
+                }
 
-        return $r;
+                return $r;
+            }
+        );
     }
 
     public function hasRole(string $role): bool

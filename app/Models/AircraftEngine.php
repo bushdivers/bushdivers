@@ -27,7 +27,10 @@ class AircraftEngine extends Model
         return $this->belongsTo(Aircraft::class);
     }
 
-    public function wear(): Attribute
+    /**
+     * @return Attribute<int, int>
+     */
+    protected function wear(): Attribute
     {
         return Attribute::make(
             set: fn ($value) => max(0, min(100, $value)),
