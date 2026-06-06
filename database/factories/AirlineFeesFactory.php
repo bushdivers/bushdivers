@@ -12,8 +12,6 @@ class AirlineFeesFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
-     *
-     * @var string
      */
     protected $model = AirlineFees::class;
 

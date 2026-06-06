@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Enums\CargoType;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -50,9 +51,14 @@ class CommunityJobContract extends Model
         return $this->belongsTo(Airport::class, 'arr_airport_id');
     }
 
-    public function setRemainingPayloadAttribute($value)
+    /**
+     * @return Attribute<int, int>
+     */
+    protected function remainingPayload(): Attribute
     {
-        $this->attributes['remaining_payload'] = max($value, 0);
+        return Attribute::make(
+            set: fn ($value) => max($value, 0)
+        );
     }
 
 }

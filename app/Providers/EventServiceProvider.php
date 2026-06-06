@@ -3,7 +3,6 @@
 namespace App\Providers;
 
 use App\Events\PirepFiled;
-use App\Listeners\CalculatePay;
 use App\Listeners\CalculatePoints;
 use App\Listeners\CheckPilotAwards;
 use App\Listeners\CheckPilotRank;
@@ -17,7 +16,7 @@ class EventServiceProvider extends ServiceProvider
     /**
      * The event listener mappings for the application.
      *
-     * @var array
+     * @var array<string, array<int, string>>
      */
     protected $listen = [
         PirepFiled::class => [

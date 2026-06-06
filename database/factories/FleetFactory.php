@@ -14,8 +14,6 @@ class FleetFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
-     *
-     * @var string
      */
     protected $model = Fleet::class;
 
@@ -32,8 +30,6 @@ class FleetFactory extends Factory
             'manufacturer' => 'Cessna',
             'powerplants' => 'Pratt and Whitney',
             'number_of_engines' => 1,
-            'crew_required' => 1,
-            'cabin_crew_required' => 0,
             'size' => $this->faker->randomElement(['S', 'M', 'L']),
             'fuel_type' => 1,
             'fuel_consumption' => 16.00,

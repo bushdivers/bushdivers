@@ -72,16 +72,14 @@ class CreateHubController extends Controller
                         $i++;
                     }
                 }
-            }
-            catch (\Exception $e) {
+            } catch (\Exception $e) {
                 Log::error("Unable to create all aircraft for hub. Error: ".$e->getMessage());
             }
 
             $createdAC = Aircraft::where('hub_id', $airport->identifier)->where('is_ferry', true)->get();
             foreach ($createdAC as $ac) {
                 $currentLocation = Airport::where('identifier', $ac->current_airport_id)->first();
-                $distance = $currentLocation->distanceTo($ac);
-                $ac->ferry_distance = $distance;
+                $ac->ferry_distance = (int)$currentLocation->distanceTo($ac);
                 $ac->save();
                 $this->addAirlineTransaction->execute(AirlineTransactionTypes::GeneralExpenditure, $ac->sale_price, 'AC Purchase '.$ac->registration, null, 'debit');
             }

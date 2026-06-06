@@ -26,8 +26,6 @@ class UpdateFleetController extends Controller
         $fleet->has_floats = $request->has_floats;
         $fleet->powerplants = $request->powerplants;
         $fleet->number_of_engines = $request->engines;
-        $fleet->crew_required = 1;
-        $fleet->cabin_crew_required = 0;
         $fleet->fuel_type = $request->fuel;
         $fleet->service_ceiling = $request->ceiling;
         $fleet->cruise_speed = $request->cruise;

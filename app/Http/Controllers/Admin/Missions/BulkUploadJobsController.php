@@ -18,13 +18,14 @@ class BulkUploadJobsController extends Controller
 
     public function __construct(
         private CreateCommunityContract $contractService
-    ) {}
+    ) {
+    }
 
     public function __invoke(Request $request, $id)
     {
         return $this->handleBulkUpload(
             $request,
-            fn($file, $request) => $this->processJobsFile($file, $request, $id),
+            fn ($file, $request) => $this->processJobsFile($file, $request, $id),
             "/admin/missions/{$id}",
             ['inject_immediately' => 'boolean']
         );
@@ -80,7 +81,7 @@ class BulkUploadJobsController extends Controller
             $file,
             ['departure_icao', 'arrival_icao', 'cargo_type', 'cargo', 'qty', 'is_recurring'],
             $validationRules,
-            fn($validatedData) => $this->processJobRow($validatedData, $mission, $injectImmediately, $airportCache),
+            fn ($validatedData) => $this->processJobRow($validatedData, $mission, $injectImmediately, $airportCache),
             [
                 'cargo_type' => 'The cargo_type field must be either 1 (cargo) or 2 (pax).',
                 'is_recurring' => 'The is_recurring field must be true or false.'
@@ -98,7 +99,7 @@ class BulkUploadJobsController extends Controller
         $job = new CommunityJobContract();
         $job->dep_airport_id = $depAirport->id;
         $job->arr_airport_id = $arrAirport->id;
-        $job->cargo_type = (int) $row['cargo_type'];
+        $job->cargo_type = CargoType::from($row['cargo_type']);
         if ($job->cargo_type == CargoType::Cargo) {
             $job->payload = (int) $row['qty'];
             $job->remaining_payload = $job->cargo_type == CargoType::Cargo ? (int) $row['qty'] : null;
