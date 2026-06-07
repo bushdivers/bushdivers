@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Contracts;
 use App\Http\Controllers\Controller;
 use App\Models\Airport;
 use App\Models\Contract;
-use App\Services\Airports\UpdateFuelAtAirport;
 use App\Services\Contracts\GenerateContracts;
 use App\Services\Contracts\StoreContracts;
 use Illuminate\Http\JsonResponse;
@@ -18,13 +17,12 @@ class BidForContractController extends Controller
     /**
      * Handle the incoming request.
      */
-    public function __invoke(Request $request, UpdateFuelAtAirport $updateFuelAtAirport, GenerateContracts $generateContracts, StoreContracts $storeContracts): JsonResponse
+    public function __invoke(Request $request, GenerateContracts $generateContracts, StoreContracts $storeContracts): JsonResponse
     {
         $contract = Contract::with(['depAirport'])->findOrFail($request->id);
         if ($request->action == 'remove') {
             if ($contract->is_fuel) {
-                $updateFuelAtAirport->execute($contract->depAirport, $contract->fuel_qty, $contract->fuel_type,
-                    'increment');
+                $contract->depAirport->adjustFuel($contract->fuel_type, $contract->fuel_qty);
                 $contract->delete();
                 return \response()->json(['message' => 'Contract updated']);
             }

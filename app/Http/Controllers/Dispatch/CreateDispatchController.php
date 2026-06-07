@@ -16,7 +16,6 @@ use App\Models\FleetVariant;
 use App\Models\Pirep;
 use App\Models\PirepCargo;
 use App\Models\Rental;
-use App\Services\Airports\UpdateFuelAtAirport;
 use App\Services\Finance\AddAirlineTransaction;
 use App\Services\Finance\AddUserTransaction;
 use Illuminate\Http\RedirectResponse;
@@ -29,7 +28,7 @@ class CreateDispatchController extends Controller
     /**
      * Handle the incoming request.
      */
-    public function __invoke(Request $request, UpdateFuelAtAirport $updateFuelAtAirport, AddUserTransaction $addUserTransaction, AddAirlineTransaction $addAirlineTransaction): RedirectResponse
+    public function __invoke(Request $request, AddUserTransaction $addUserTransaction, AddAirlineTransaction $addAirlineTransaction): RedirectResponse
     {
         // check aircraft is available
         $isRental = false;
@@ -139,7 +138,7 @@ class CreateDispatchController extends Controller
                 $addAirlineTransaction->execute(AirlineTransactionTypes::FuelFees, -$request->fuel_price, 'Fuel '.$actualFuelAdded.' at '.Auth::user()->location->identifier, null, 'debit');
             }
             // decrement fuel from airport
-            $updateFuelAtAirport->execute($currentLocation, $actualFuelAdded, $aircraft->fleet->fuel_type, 'decrement');
+            $currentLocation->adjustFuel($aircraft->fleet->fuel_type, (int)round(-$actualFuelAdded));
         }
 
         // update aircraft for user and fuel

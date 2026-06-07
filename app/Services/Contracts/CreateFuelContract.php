@@ -5,7 +5,6 @@ namespace App\Services\Contracts;
 use App\Models\Airport;
 use App\Models\Enums\CargoType;
 use App\Models\User;
-use App\Services\Airports\UpdateFuelAtAirport;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -14,17 +13,14 @@ class CreateFuelContract
     protected StoreContracts $storeContract;
     protected CalcContractValue $calcContractValue;
 
-    protected UpdateFuelAtAirport $updateFuelAtAirport;
-
     public function __construct(
         StoreContracts $storeContract,
-        CalcContractValue $calcContractValue,
-        UpdateFuelAtAirport $updateFuelAtAirport
+        CalcContractValue $calcContractValue
     ) {
         $this->storeContract = $storeContract;
         $this->calcContractValue = $calcContractValue;
-        $this->updateFuelAtAirport = $updateFuelAtAirport;
     }
+
     public function execute(Airport $depAirport, Airport $arrAirport, int $qty, int $fuelType, int $weight, ?User $userId): void
     {
         try {
@@ -65,7 +61,7 @@ class CreateFuelContract
                 'fuel_qty' => $qty,
                 'fuel_type' => $fuelType
             ]];
-            $this->updateFuelAtAirport->execute($depAirport, $qty, $fuelType, 'decrement');
+            $depAirport->adjustFuel($fuelType, -$qty);
             $this->storeContract->execute($data, false, false, $userId);
         } catch (ModelNotFoundException $e) {
             throw new ModelNotFoundException();

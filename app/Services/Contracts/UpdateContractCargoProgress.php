@@ -8,16 +8,12 @@ use App\Models\CommunityJobContract;
 use App\Models\Contract;
 use App\Models\Enums\CargoType;
 use App\Models\Pirep;
-use App\Services\Airports\UpdateFuelAtAirport;
 use Carbon\Carbon;
 
 class UpdateContractCargoProgress
 {
-    protected UpdateFuelAtAirport $updateFuelAtAirport;
-
-    public function __construct(UpdateFuelAtAirport $updateFuelAtAirport)
+    public function __construct()
     {
-        $this->updateFuelAtAirport = $updateFuelAtAirport;
     }
 
     public function execute(Contract $contractCargo, Airport $airport, Pirep $pirep)
@@ -33,7 +29,7 @@ class UpdateContractCargoProgress
             $contractCargo->completed_at = Carbon::now();
 
             if ($contractCargo->is_fuel) {
-                $this->updateFuelAtAirport->execute($airport, $contractCargo->fuel_qty, $contractCargo->fuel_type, 'increment');
+                $airport->adjustFuel($contractCargo->fuel_type, $contractCargo->fuel_qty);
             }
             if ($contractCargo->community_job_contract_id != null) {
                 $communityJobCargo = CommunityJobContract::find($contractCargo->community_job_contract_id);

@@ -3,15 +3,18 @@
 namespace App\Models;
 
 use App\Contracts\IsLocatable;
+use App\Models\Enums\FuelType;
 use App\Models\Enums\SimType;
 use App\Models\Concerns\HasLocation;
 use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\AsEnumCollection;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Location\Coordinate;
+use Override;
 
 class Airport extends Model implements IsLocatable
 {
@@ -42,6 +45,7 @@ class Airport extends Model implements IsLocatable
         'point'
     ];
 
+    #[Override]
     protected function casts(): array
     {
         return [
@@ -176,8 +180,50 @@ class Airport extends Model implements IsLocatable
         });
     }
 
+    /**
+     * @return Attribute<int|null, int|null>
+     */
+    protected function avgasQty(): Attribute
+    {
+        return Attribute::make(
+            set: fn ($value) => $value === null ? null : max(0, $value)
+        );
+    }
+
+    /**
+     * @return Attribute<int|null, int|null>
+     */
+    protected function jetfuelQty(): Attribute
+    {
+        return Attribute::make(
+            set: fn ($value) => $value === null ? null : max(0, $value)
+        );
+    }
+
     public function getCoordinate(): Coordinate
     {
         return new Coordinate($this->lat, $this->lon);
+    }
+
+    /**
+     * Adjust airport fuel reserves
+     * @param int $type
+     * @param int $quantity (positive to add, negative to remove)
+     */
+    public function adjustFuel(int $type, int $quantity)
+    {
+        if ($this->is_hub || $quantity == 0) return;
+
+        /**
+         * @todo FuelType enum
+         */
+        $column = match ($type) {
+            FuelType::AVGAS => 'avgas_qty',
+            FuelType::JET => 'jetfuel_qty',
+            default => throw new \InvalidArgumentException('Invalid fuel type'),
+        };
+
+        $this->{$column} += $quantity;
+        $this->save();
     }
 }
