@@ -70,10 +70,6 @@ class AdminCreateAirportRequest extends FormRequest
      * Get the validated data from the request with default values.
      *
      * @return array
-    /**
-     * Get the validated data from the request with default values.
-     *
-     * @return array
      */
     public function validatedWithDefaults()
     {
@@ -82,7 +78,7 @@ class AdminCreateAirportRequest extends FormRequest
         $validated['is_thirdparty'] = true;
         $validated['magnetic_variance'] = $validated['magnetic_variance'] ?? 0;
         $validated['identifier'] = strtoupper($validated['identifier']);
-        $validated['flag'] = Airport::where('country_code', $validated['country_code'] ?? '')->first()?->flag ?? null;
+        $validated['flag'] = Airport::where('country_code', $validated['country_code'] ?? '')->first()?->flag;
 
         return $validated;
     }

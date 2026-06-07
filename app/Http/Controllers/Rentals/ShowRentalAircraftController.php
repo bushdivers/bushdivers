@@ -20,23 +20,20 @@ class ShowRentalAircraftController extends Controller
      */
     public function __invoke(Request $request): Response
     {
-        $currentLocation = Airport::find(Auth::user()->current_airport_id);
+        $currentLocation = Airport::findOrFail(Auth::user()->current_airport_id);
         $with = ['defaultVariant', 'manufacturer'];
-        $aircraft = null;
-        if ($currentLocation->has_avgas && $currentLocation->has_jetfuel) {
-            $aircraft = Fleet::with($with)->whereHas('variants')->where('is_rental', true)->get();
-        } elseif ($currentLocation->has_avgas && !$currentLocation->has_jetfuel) {
-            $aircraft = Fleet::with($with)->whereHas('variants')->where('is_rental', true)
-                ->where('fuel_type', FuelType::AVGAS)
-                ->get();
-        } elseif ($currentLocation->has_jetfuel && !$currentLocation->has_avgas) {
-            $aircraft = Fleet::with($with)->whereHas('variants')->where('is_rental', true)
-                ->where('fuel_type', FuelType::JET)
-                ->get();
-        }
+        $aircraft = Fleet::with($with)
+            ->whereHas('variants')
+            ->where('is_rental', true)
+            ->when($currentLocation->has_avgas && !$currentLocation->has_jetfuel, function ($query) {
+                $query->where('fuel_type', FuelType::AVGAS);
+            })
+            ->when($currentLocation->has_jetfuel && !$currentLocation->has_avgas, function ($query) {
+                $query->where('fuel_type', FuelType::JET);
+            })
+             ->get();
 
-        if ($aircraft)
-            $aircraft->makeHidden(['used_low_price', 'used_high_price', 'can_purchase_new', 'new_price']);
+        $aircraft->makeHidden(['used_low_price', 'used_high_price', 'can_purchase_new', 'new_price']);
 
         $myRentals = Rental::with(['fleet', 'location', 'hub'])
             ->where('user_id', Auth::user()->id)

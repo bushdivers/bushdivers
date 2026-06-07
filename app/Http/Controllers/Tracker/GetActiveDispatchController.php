@@ -99,7 +99,7 @@ class GetActiveDispatchController extends Controller
             'cargo_weight' => $cargoWeight,
             'passenger_count' => $passengerCount,
             'total_payload' => $payloadWeight,
-            'payload_capacity' => max($payloadWeight, ($dispatch->variant?->mtow - $dispatch->variant?->zfw) ?? 0),
+            'payload_capacity' => max($payloadWeight, $dispatch->variant ? $dispatch->variant->mtow - $dispatch->variant->zfw : 0),
             'is_empty' => $dispatch->is_empty,
             'tour' => $dispatch->tour->title ?? null,
             'cargo' => $cargo

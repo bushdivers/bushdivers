@@ -45,7 +45,7 @@ class ShowDispatchController extends Controller
      */
     public function __invoke(Request $request): Response
     {
-        /** @var Pirep */
+        /** @var Pirep|null $pirep */
         $pirep = Pirep::with(['tour', 'variant', 'depAirport', 'arrAirport'])
             ->where('user_id', Auth::user()->id)
             ->whereNotIn('state', [PirepState::ACCEPTED, PirepState::REVIEW])
@@ -64,8 +64,6 @@ class ShowDispatchController extends Controller
             } else {
                 $aircraft = Aircraft::with('fleet')->find($pirep->aircraft_id);
             }
-
-            $variant = $pirep->variant;
 
             $cargoWeight = $this->calcCargoWeight->execute($cargo);
             $passengerCount = $this->calcPassengerCount->execute($cargo);

@@ -186,7 +186,7 @@ class BulkUploadAirportsController extends Controller
         // Set flag from existing airport with same country code
         if (! empty($data['country_code'])) {
             $airportData['flag'] = Airport::where('country_code', $data['country_code'])
-                ->first()?->flag ?? null;
+                ->first()?->flag;
         }
 
         Airport::create($airportData);

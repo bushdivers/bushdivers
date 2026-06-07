@@ -41,11 +41,11 @@ class PirepLiveMapResource extends JsonResource
                 'fleet' => $this->aircraft->fleet ? $this->aircraft->fleet->only(['id', 'name', 'type', 'manufacturer']) : null,
             ] : null,
 
-            'logs' => $this->logs ? $this->logs->map(fn ($log) => [
+            'logs' => $this->logs->map(fn ($log) => [
                 'id' => $log->id,
                 'lat' => $log->lat,
                 'lon' => $log->lon,
-            ]) : null
+            ])
         ];
     }
 }

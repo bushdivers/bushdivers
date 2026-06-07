@@ -78,7 +78,7 @@ class CreateDispatchController extends Controller
         $contracts = Contract::with(['communityJobContract.communityJob'])->find($request->cargo) ?? [];
         foreach ($contracts as $contract) {
             $isCommunity = $contract->communityJobContract != null;
-            $isPrivateAllowed = $contract->communityJobContract?->communityJob?->allow_private ?? false;
+            $isPrivateAllowed = $contract->communityJobContract->communityJob->allow_private ?? false;
             if ($isCommunity && !$isPrivateAllowed) {
                 if ($aircraft->owner_id !== 0) {
                     return redirect()->back()->with(['error' => 'This community contract can only be used with fleet aircraft.']);
