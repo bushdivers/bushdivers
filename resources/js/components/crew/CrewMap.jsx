@@ -43,7 +43,6 @@ const CrewMap = (props) => {
                 scale={0.75}
                 longitude={loc.lon}
                 latitude={loc.lat}
-                anchor="bottom"
               />
             ))}
           {selectedMarker && (
@@ -51,7 +50,7 @@ const CrewMap = (props) => {
               longitude={Number(selectedMarker.lon)}
               latitude={Number(selectedMarker.lat)}
               anchor="top"
-              offset={[0, -12]}
+              offset={[0, 12]}
             >
               <AirportPopoverPanel airport={selectedMarker} showICAO={true} />
             </Marker>

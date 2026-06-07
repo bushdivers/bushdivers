@@ -81,7 +81,6 @@ const LiveFlightMap = () => {
                 scale={0.75}
                 longitude={flight.current_lon}
                 latitude={flight.current_lat}
-                anchor="center"
                 rotation={flight.current_heading}
               >
                 <Image boxSize="30px" src={renderAircraftIcon(flight)} />
