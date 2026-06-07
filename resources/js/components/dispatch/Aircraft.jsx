@@ -56,7 +56,7 @@ const Aircraft = (props) => {
               <Tbody>
                 {props.aircraft.map((ac) => (
                   <Tr
-                    key={ac.id}
+                    key={ac.id + ac.registration}
                     onClick={() => props.handleAircraftSelect(ac)}
                     bgColor={
                       props.selectedAircraft.registration === ac.registration

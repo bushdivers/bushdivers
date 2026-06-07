@@ -83,8 +83,8 @@ class User extends Authenticatable
     {
         return Attribute::make(
             get: function () {
-                $number = str_pad($this->id, 4, "0", STR_PAD_LEFT);
-                return 'BDV'.$number;
+                $number = \sprintf('BDV%04d', $this->id);
+                return $number;
             }
         );
     }

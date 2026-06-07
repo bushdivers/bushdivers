@@ -87,7 +87,7 @@ class UsersControllerTest extends TestCase
     public function test_lookup_accepts_pilot_id_format()
     {
         $user = User::factory()->create(['is_admin' => false]);
-        $pilotId = 'BDV' . str_pad($user->id, 4, '0', STR_PAD_LEFT);
+        $pilotId = sprintf('BDV%04d', $user->id);
 
         $response = $this->actingAs($this->admin)->getJson("/admin/users/lookup/{$pilotId}");
 

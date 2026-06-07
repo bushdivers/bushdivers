@@ -32,8 +32,8 @@ class UserTest extends TestCase
 
     public function test_pilot_id_attribute()
     {
-        $expected = str_pad($this->user->id, 4, "0", STR_PAD_LEFT);
-        $this->assertEquals('BDV'.$expected, $this->user->pilot_id);
+        $expected = sprintf('BDV%04d', $this->user->id);
+        $this->assertEquals($expected, $this->user->pilot_id);
     }
 
 }

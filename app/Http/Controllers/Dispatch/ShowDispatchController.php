@@ -153,7 +153,7 @@ class ShowDispatchController extends Controller
             ->where('current_airport_id', $currentLocation->id)
             ->get();
 
-        return $aircraft->merge($rentalAc);
+        return $aircraft->concat($rentalAc);
     }
 
     protected function buildSuggestions(Airport $currentAirport, ?Pirep $lastPirep, $tours, $userId): array

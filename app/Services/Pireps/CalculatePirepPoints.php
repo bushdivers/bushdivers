@@ -54,7 +54,7 @@ class CalculatePirepPoints
 //        $this->addPointsEntry($pirep->id, PointsType::ONE_HOUR_LABEL, PointsType::ONE_HOUR * $hours);
 
         // distance
-        $distance = floor($pirep->distance / 50);
+        $distance = (int) floor($pirep->distance / 50);
         $this->storePirepPointsEntry->execute($pirep->id, PointsType::FIFTY_MILES_LABEL, PointsType::FIFTY_MILES * $distance);
 
         // TODO: flaps
