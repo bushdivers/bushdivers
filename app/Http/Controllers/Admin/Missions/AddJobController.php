@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Admin\Missions;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AdminMissionJobRequest;
 use App\Models\Airport;
 use App\Models\CommunityJob;
 use App\Models\CommunityJobContract;
 use App\Models\Enums\CargoType;
 use App\Services\Contracts\CreateCommunityContract;
-use Illuminate\Http\Request;
 
 class AddJobController extends Controller
 {
@@ -22,41 +22,38 @@ class AddJobController extends Controller
     /**
      * Handle the incoming request.
      */
-    public function __invoke(Request $request, $id)
+    public function __invoke(AdminMissionJobRequest $request, $id)
     {
+        $validated = $request->validated();
         $mission = CommunityJob::findOrFail($id);
-        $from = Airport::where('identifier', $request->departure)->firstOrFail();
-        $to = Airport::where('identifier', $request->destination)->firstOrFail();
+        $from = Airport::where('identifier', $validated['departure'])->base()->firstOrFail();
+        $to = Airport::where('identifier', $validated['destination'])->base()->firstOrFail();
 
-        if (!$from) {
-            return redirect()->back()->with(['error' => 'Departure airport not found.']);
-        }
-        if (!$to) {
-            return redirect()->back()->with(['error' => 'Destination airport not found.']);
-        }
-
-        $cargo_type = CargoType::tryFrom($request->cargo_type);
-        if (!$cargo_type) {
-            return redirect()->back()->with(['error' => 'Invalid cargo type.']);
-        }
+        $cargoType = CargoType::from($validated['cargo_type']);
 
         $job = new CommunityJobContract();
         $job->dep_airport_id = $from->id;
         $job->arr_airport_id = $to->id;
-        $job->cargo_type = $cargo_type;
-        $job->payload = $cargo_type == CargoType::Cargo ? $request->qty : null;
-        $job->pax = $cargo_type == CargoType::Passenger ? $request->qty : null;
-        $job->remaining_payload = $cargo_type == CargoType::Cargo ? $request->qty : null;
-        $job->remaining_pax = $cargo_type == CargoType::Passenger ? $request->qty : null;
-        $job->cargo = $request->cargo;
-        $job->is_recurring = $request->recurring;
+        $job->cargo_type = $cargoType;
+        $job->forceFill(match ($cargoType) {
+            CargoType::Cargo => [
+                 'payload' => (int) $validated['qty'],
+                 'remaining_payload' => (int) $validated['qty'],
+            ],
+            CargoType::Passenger => [
+                'pax' => (int) $validated['qty'],
+                'remaining_pax' => (int) $validated['qty'],
+            ],
+        });
+        $job->cargo = $validated['cargo'];
+        $job->is_recurring = $validated['recurring'] ?? false;
         $job->community_job_id = $id;
         $job->save();
 
         $message = 'Job added.';
 
         // If mission is published and inject_immediately is checked, inject into contracts
-        if ($mission->is_published && $request->inject_immediately) {
+        if ($mission->is_published && ($validated['inject_immediately'] ?? false)) {
             try {
                 $this->createCommunityContract->execute($job);
                 $message = 'Job added and injected into contracts successfully.';

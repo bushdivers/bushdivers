@@ -172,6 +172,26 @@ class CommunityMissionJobTest extends TestCase
         $this->assertEquals(0, Contract::count());
     }
 
+    public function test_add_job_validation_returns_errors_for_unknown_airport()
+    {
+        $jobData = [
+            'departure' => 'ZZZZ',
+            'destination' => 'AYMN',
+            'cargo_type' => CargoType::Cargo->value,
+            'cargo' => 'Medical Supplies',
+            'qty' => 1000,
+            'recurring' => 0,
+            'inject_immediately' => false,
+        ];
+
+        $response = $this->actingAs($this->admin)
+            ->from('/admin/missions/'.$this->publishedMission->id)
+            ->post("/admin/missions/{$this->publishedMission->id}/jobs", $jobData);
+
+        $response->assertStatus(302)
+            ->assertSessionHasErrors(['departure']);
+    }
+
     public function test_admin_can_add_passenger_job_with_injection()
     {
         $jobData = [

@@ -6,6 +6,7 @@ import {
   Checkbox,
   Flex,
   FormControl,
+  FormErrorMessage,
   FormLabel,
   Heading,
   Icon,
@@ -31,8 +32,7 @@ import {
   VStack,
   useDisclosure,
 } from '@chakra-ui/react'
-import { router } from '@inertiajs/react'
-import axios from 'axios'
+import { router, useForm } from '@inertiajs/react'
 import { Anchor, Package } from 'lucide-react'
 import React, { useState } from 'react'
 import showdown from 'showdown'
@@ -43,7 +43,6 @@ import { useMessageBox } from '../../components/elements/MessageBoxProvider.jsx'
 import AdminLayout from '../../components/layout/AdminLayout.jsx'
 
 const MissionDetails = ({ mission, jobs, bulkUploadResults }) => {
-  const [newJobError, setNewJobError] = useState(null)
   const [missionError, setMissionError] = useState(null)
   const messageBox = useMessageBox()
   const [missionDetails, setMissionDetails] = useState({
@@ -51,12 +50,12 @@ const MissionDetails = ({ mission, jobs, bulkUploadResults }) => {
     description: mission.description,
     allow_private: mission.allow_private,
   })
-  const [jobDetails, setJobDetails] = useState({
+  const jobForm = useForm({
     departure: '',
     destination: '',
     cargo_type: '',
     cargo: '',
-    qty: 0,
+    qty: '',
     recurring: '0',
     inject_immediately: false,
   })
@@ -83,10 +82,7 @@ const MissionDetails = ({ mission, jobs, bulkUploadResults }) => {
     const value =
       e.target.type === 'checkbox' ? e.target.checked : e.target.value
 
-    setJobDetails({
-      ...jobDetails,
-      [e.target.id]: value,
-    })
+    jobForm.setData(e.target.id, value)
   }
 
   async function saveMission() {
@@ -115,16 +111,8 @@ const MissionDetails = ({ mission, jobs, bulkUploadResults }) => {
   }
 
   function clearForm() {
-    setJobDetails({
-      departure: '',
-      destination: '',
-      cargo_type: '',
-      cargo: '',
-      qty: 0,
-      recurring: '0',
-      inject_immediately: false,
-    })
-    setNewJobError(null)
+    jobForm.reset()
+    jobForm.clearErrors()
     onClose()
   }
 
@@ -142,39 +130,15 @@ const MissionDetails = ({ mission, jobs, bulkUploadResults }) => {
     }
   }
 
-  async function addJob() {
-    setNewJobError('')
-    if (
-      jobDetails.departure === '' ||
-      jobDetails.destination === '' ||
-      jobDetails.cargo === '' ||
-      jobDetails.cargo_type === '' ||
-      jobDetails.qty === 0 ||
-      jobDetails.qty === ''
-    ) {
-      setNewJobError('Please ensure all fields are filled in')
-      return
-    }
+  function addJob(e) {
+    e.preventDefault()
 
-    const depAirportResponse = await axios.get(
-      `/api/airport/search/${jobDetails.departure}?base=1`
-    )
-    const arrAirportResponse = await axios.get(
-      `/api/airport/search/${jobDetails.destination}?base=1`
-    )
-
-    if (!depAirportResponse.data.airport) {
-      setNewJobError('Departure airport not found')
-      return
-    }
-
-    if (!arrAirportResponse.data.airport) {
-      setNewJobError('Destination airport not found')
-      return
-    }
-
-    router.post(`/admin/missions/${mission.id}/jobs`, jobDetails)
-    clearForm()
+    jobForm.post(`/admin/missions/${mission.id}/jobs`, {
+      preserveScroll: true,
+      onSuccess: () => {
+        clearForm()
+      },
+    })
   }
 
   async function completeMission() {
@@ -376,18 +340,28 @@ const MissionDetails = ({ mission, jobs, bulkUploadResults }) => {
           <ModalHeader>Add Job</ModalHeader>
           <ModalCloseButton />
           <ModalBody pb={6}>
-            {newJobError ? <Text color="red.500">{newJobError}</Text> : null}
-            <FormControl>
+            <FormControl isInvalid={!!jobForm.errors.departure} mb={3}>
               <FormLabel>Departure ICAO</FormLabel>
-              <Input onChange={handleJobChange} id="departure" />
+              <Input
+                value={jobForm.data.departure}
+                onChange={handleJobChange}
+                id="departure"
+              />
+              <FormErrorMessage>{jobForm.errors.departure}</FormErrorMessage>
             </FormControl>
-            <FormControl>
+            <FormControl isInvalid={!!jobForm.errors.destination} mb={3}>
               <FormLabel>Arrival ICAO</FormLabel>
-              <Input onChange={handleJobChange} id="destination" />
+              <Input
+                value={jobForm.data.destination}
+                onChange={handleJobChange}
+                id="destination"
+              />
+              <FormErrorMessage>{jobForm.errors.destination}</FormErrorMessage>
             </FormControl>
-            <FormControl>
+            <FormControl isInvalid={!!jobForm.errors.cargo_type} mb={3}>
               <FormLabel>Cargo Type</FormLabel>
               <Select
+                value={jobForm.data.cargo_type}
                 onChange={handleJobChange}
                 id="cargo_type"
                 placeholder="Select option"
@@ -395,27 +369,44 @@ const MissionDetails = ({ mission, jobs, bulkUploadResults }) => {
                 <option value="1">Cargo</option>
                 <option value="2">Passengers</option>
               </Select>
+              <FormErrorMessage>{jobForm.errors.cargo_type}</FormErrorMessage>
             </FormControl>
-            <FormControl>
+            <FormControl isInvalid={!!jobForm.errors.cargo} mb={3}>
               <FormLabel>Cargo Text</FormLabel>
-              <Input onChange={handleJobChange} id="cargo" />
+              <Input
+                value={jobForm.data.cargo}
+                onChange={handleJobChange}
+                id="cargo"
+              />
+              <FormErrorMessage>{jobForm.errors.cargo}</FormErrorMessage>
             </FormControl>
-            <FormControl>
+            <FormControl isInvalid={!!jobForm.errors.qty} mb={3}>
               <FormLabel>Cargo Qty</FormLabel>
-              <Input onChange={handleJobChange} id="qty" type="number" />
+              <Input
+                value={jobForm.data.qty}
+                onChange={handleJobChange}
+                id="qty"
+                type="number"
+              />
+              <FormErrorMessage>{jobForm.errors.qty}</FormErrorMessage>
             </FormControl>
-            <FormControl>
+            <FormControl isInvalid={!!jobForm.errors.recurring} mb={3}>
               <FormLabel>Recurs Daily?</FormLabel>
-              <Select onChange={handleJobChange} id="recurring">
+              <Select
+                value={jobForm.data.recurring}
+                onChange={handleJobChange}
+                id="recurring"
+              >
                 <option value="0">No</option>
                 <option value="1">Yes</option>
               </Select>
+              <FormErrorMessage>{jobForm.errors.recurring}</FormErrorMessage>
             </FormControl>
             {mission.is_published && (
               <FormControl mt={3}>
                 <Checkbox
                   id="inject_immediately"
-                  isChecked={jobDetails.inject_immediately}
+                  isChecked={jobForm.data.inject_immediately}
                   onChange={handleJobChange}
                 >
                   Immediately create new contract for this job
@@ -425,7 +416,7 @@ const MissionDetails = ({ mission, jobs, bulkUploadResults }) => {
           </ModalBody>
 
           <ModalFooter>
-            <Button onClick={() => addJob()} mr={3}>
+            <Button onClick={addJob} mr={3} isLoading={jobForm.processing}>
               Save
             </Button>
             <Button

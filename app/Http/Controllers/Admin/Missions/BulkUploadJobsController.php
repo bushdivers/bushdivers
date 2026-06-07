@@ -96,17 +96,23 @@ class BulkUploadJobsController extends Controller
         $arrAirport = $airportCache->get($row['arrival_icao']);
 
         // Create the job contract
+        $cargoType = CargoType::from($row['cargo_type']);
         $job = new CommunityJobContract();
+
         $job->dep_airport_id = $depAirport->id;
         $job->arr_airport_id = $arrAirport->id;
-        $job->cargo_type = CargoType::from($row['cargo_type']);
-        if ($job->cargo_type == CargoType::Cargo) {
-            $job->payload = (int) $row['qty'];
-            $job->remaining_payload = $job->cargo_type == CargoType::Cargo ? (int) $row['qty'] : null;
-        } else {
-            $job->pax = (int) $row['qty'];
-            $job->remaining_pax = $job->cargo_type == CargoType::Passenger ? (int) $row['qty'] : null;
-        }
+        $job->cargo_type = $cargoType;
+
+        $job->forceFill(match ($cargoType) {
+            CargoType::Cargo => [
+                 'payload' => (int) $row['qty'],
+                 'remaining_payload' => (int) $row['qty'],
+            ],
+            CargoType::Passenger => [
+                'pax' => (int) $row['qty'],
+                'remaining_pax' => (int) $row['qty'],
+            ],
+        });
 
         $job->cargo = $row['cargo'];
         $job->is_recurring = strtolower($row['is_recurring']) == 'true';
