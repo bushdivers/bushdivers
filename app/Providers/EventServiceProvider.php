@@ -20,7 +20,6 @@ class EventServiceProvider extends ServiceProvider
      */
     protected $listen = [
         PirepFiled::class => [
-            // CalculatePoints::class,
             UpdatePilotFlights::class,
             UpdateAircraft::class,
             CheckPilotRank::class,
