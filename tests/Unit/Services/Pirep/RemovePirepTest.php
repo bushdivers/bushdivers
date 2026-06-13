@@ -87,19 +87,19 @@ class RemovePirepTest extends TestCase
      *
      * @return void
      */
-    public function test_pirep_is_removed()
+    public function test_pirep_is_removed(): void
     {
         $this->removeSinglePirep->execute($this->pirep);
         $this->assertDatabaseMissing('pireps', ['id' => $this->pirep->id]);
     }
 
-    public function test_pirep_cargo_is_removed()
+    public function test_pirep_cargo_is_removed(): void
     {
         $this->removeSinglePirep->execute($this->pirep);
         $this->assertDatabaseMissing('pirep_cargos', ['pirep_id' => $this->pirep->id]);
     }
 
-    public function test_contract_cargo_reset()
+    public function test_contract_cargo_reset(): void
     {
         $this->removeSinglePirep->execute($this->pirep);
         $this->assertDatabaseHas('contracts', [

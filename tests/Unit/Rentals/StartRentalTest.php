@@ -57,13 +57,13 @@ class StartRentalTest extends TestCase
      * @return void
      */
 
-    public function test_successful_process_returns_true()
+    public function test_successful_process_returns_true(): void
     {
         $result = $this->startRental->execute($this->fleet->id, $this->user->id, 'AYMR');
         $this->assertTrue($result);
     }
 
-    public function test_aircraft_assigned_to_user()
+    public function test_aircraft_assigned_to_user(): void
     {
         $this->startRental->execute($this->fleet->id, $this->user->id, 'AYMR');
         $this->assertDatabaseHas('rentals', [
@@ -71,7 +71,7 @@ class StartRentalTest extends TestCase
         ]);
     }
 
-    public function test_registration_generated_usa()
+    public function test_registration_generated_usa(): void
     {
         $this->startRental->execute($this->fleet->id, $this->user->id, 'PAMX');
         $rental = Rental::where('user_id', $this->user->id)->first();
@@ -79,7 +79,7 @@ class StartRentalTest extends TestCase
         $this->assertStringEndsWith('-R', $rental->registration);
     }
 
-    public function test_registration_generated_png()
+    public function test_registration_generated_png(): void
     {
         $this->startRental->execute($this->fleet->id, $this->user->id, 'AYMR');
         $rental = Rental::where('user_id', $this->user->id)->first();

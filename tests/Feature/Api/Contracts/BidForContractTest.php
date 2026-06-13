@@ -46,13 +46,13 @@ class BidForContractTest extends TestCase
      *
      * @return void
      */
-    public function test_returns_success_response()
+    public function test_returns_success_response(): void
     {
         $response = $this->postJson('/api/contracts/bid', ['id' => $this->contract->id, 'userId' => $this->user->id]);
         $response->assertStatus(200);
     }
 
-    public function test_contract_made_unavailable()
+    public function test_contract_made_unavailable(): void
     {
         $this->contract->refresh();
         $this->assertEquals(true, $this->contract->is_available);
@@ -61,13 +61,13 @@ class BidForContractTest extends TestCase
         $this->assertEquals(false, $this->contract->is_available);
     }
 
-    public function test_returns_not_found_response_when_invalid()
+    public function test_returns_not_found_response_when_invalid(): void
     {
         $response = $this->postJson('/api/contracts/bid', ['id' => 2, 'userId' => $this->user->id]);
         $response->assertStatus(404);
     }
 
-    public function test_fuel_contract_returns_fuel_to_airport()
+    public function test_fuel_contract_returns_fuel_to_airport(): void
     {
         $airport = Airport::factory()->create([
             'identifier' => 'WAZO',
@@ -85,7 +85,7 @@ class BidForContractTest extends TestCase
         $this->assertEquals(110, $airport->avgas_qty);
     }
 
-    public function test_fuel_contract_is_removed()
+    public function test_fuel_contract_is_removed(): void
     {
         $contract = Contract::factory()->create([
             'dep_airport_id' => $this->arrAirport->id,

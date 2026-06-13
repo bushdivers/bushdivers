@@ -126,7 +126,7 @@ class SubmitPirepPrivateOwnerTest extends TestCase
         ]);
     }
 
-    public function test_pirep_submitted_successfully()
+    public function test_pirep_submitted_successfully(): void
     {
         Artisan::call('db:seed --class=RankSeeder');
         Sanctum::actingAs(
@@ -149,7 +149,7 @@ class SubmitPirepPrivateOwnerTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function test_return_home_bonus_not_given_for_private()
+    public function test_return_home_bonus_not_given_for_private(): void
     {
         Sanctum::actingAs(
             $this->user,
@@ -177,7 +177,7 @@ class SubmitPirepPrivateOwnerTest extends TestCase
         ]);
     }
 
-    public function test_fees_charged_to_pilot_for_private()
+    public function test_fees_charged_to_pilot_for_private(): void
     {
         Sanctum::actingAs(
             $this->user,
@@ -214,7 +214,7 @@ class SubmitPirepPrivateOwnerTest extends TestCase
         ]);
     }
 
-    public function test_aircraft_position_updated()
+    public function test_aircraft_position_updated(): void
     {
         Sanctum::actingAs(
             $this->user,
@@ -243,7 +243,7 @@ class SubmitPirepPrivateOwnerTest extends TestCase
         ]);
     }
 
-    public function test_user_position_updated()
+    public function test_user_position_updated(): void
     {
         Sanctum::actingAs(
             $this->user,
@@ -274,7 +274,7 @@ class SubmitPirepPrivateOwnerTest extends TestCase
         ]);
     }
 
-    public function test_cargo_pision_updated()
+    public function test_cargo_pision_updated(): void
     {
         Sanctum::actingAs(
             $this->user,
@@ -306,7 +306,7 @@ class SubmitPirepPrivateOwnerTest extends TestCase
         ]);
     }
 
-    public function test_pilot_pay_correct()
+    public function test_pilot_pay_correct(): void
     {
         Sanctum::actingAs(
             $this->user,

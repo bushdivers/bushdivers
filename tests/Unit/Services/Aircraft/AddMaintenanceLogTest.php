@@ -42,7 +42,7 @@ class AddMaintenanceLogTest extends TestCase
      *
      * @return void
      */
-    public function test_maintenance_log_added()
+    public function test_maintenance_log_added(): void
     {
         $this->addMaintenanceLog->execute($this->aircraft->id, MaintenanceTypes::GeneralMaintenance, $this->user->id, 200);
         $this->assertDatabaseHas('maintenance_logs', [
@@ -52,7 +52,7 @@ class AddMaintenanceLogTest extends TestCase
         ]);
     }
 
-    public function test_engine_maintenance_log_added()
+    public function test_engine_maintenance_log_added(): void
     {
         $engine = AircraftEngine::factory()->create([
             'aircraft_id' => $this->aircraft->id

@@ -29,7 +29,7 @@ class LiveryUploadTest extends TestCase
         $this->fleet = Fleet::factory()->create();
     }
 
-    public function test_can_create_livery_with_external_url()
+    public function test_can_create_livery_with_external_url(): void
     {
         $response = $this->actingAs($this->user)->post(
             route('admin.fleet.livery.store', $this->fleet->id),
@@ -53,7 +53,7 @@ class LiveryUploadTest extends TestCase
         ]);
     }
 
-    public function test_can_create_livery_with_file_upload()
+    public function test_can_create_livery_with_file_upload(): void
     {
         Storage::fake('s3');
 
@@ -81,7 +81,7 @@ class LiveryUploadTest extends TestCase
         Storage::disk('s3')->assertExists('liveries/' . $filename);
     }
 
-    public function test_create_livery_requires_url_or_file()
+    public function test_create_livery_requires_url_or_file(): void
     {
         $response = $this->actingAs($this->user)->post(
             route('admin.fleet.livery.store', $this->fleet->id),
@@ -93,7 +93,7 @@ class LiveryUploadTest extends TestCase
         $response->assertSessionHasErrors(['url', 'uploaded_file']);
     }
 
-    public function test_create_livery_requires_valid_url()
+    public function test_create_livery_requires_valid_url(): void
     {
         $response = $this->actingAs($this->user)->post(
             route('admin.fleet.livery.store', $this->fleet->id),
@@ -106,7 +106,7 @@ class LiveryUploadTest extends TestCase
         $response->assertSessionHasErrors('url');
     }
 
-    public function test_can_update_livery_metadata()
+    public function test_can_update_livery_metadata(): void
     {
         $upload = $this->fleet->uploads()->create([
             'url' => 'https://flightsim.to/file/12345/livery',
@@ -134,7 +134,7 @@ class LiveryUploadTest extends TestCase
         ]);
     }
 
-    public function test_update_livery_requires_display_name()
+    public function test_update_livery_requires_display_name(): void
     {
         $upload = $this->fleet->uploads()->create([
             'url' => 'https://flightsim.to/file/12345/livery',
@@ -152,7 +152,7 @@ class LiveryUploadTest extends TestCase
         $response->assertSessionHasErrors('display_name');
     }
 
-    public function test_unauthenticated_user_cannot_create_livery()
+    public function test_unauthenticated_user_cannot_create_livery(): void
     {
         $response = $this->post(
             route('admin.fleet.livery.store', $this->fleet->id),

@@ -16,7 +16,7 @@ class RefreshApiTokenTest extends TestCase
      *
      * @return void
      */
-    public function test_runs_successfully()
+    public function test_runs_successfully(): void
     {
         $user = User::factory()->create([
             'api_token' => 'dasdasdasdasdasdadas'

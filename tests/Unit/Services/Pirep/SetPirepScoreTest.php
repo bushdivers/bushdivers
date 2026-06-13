@@ -92,7 +92,7 @@ class SetPirepScoreTest extends TestCase
      *
      * @return void
      */
-    public function test_pirep_score_calculates()
+    public function test_pirep_score_calculates(): void
     {
         $this->calculatePirepPoints->execute($this->pirep);
         $this->setPirepTotalScore->execute($this->pirep);

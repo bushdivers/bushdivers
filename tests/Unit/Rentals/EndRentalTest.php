@@ -61,7 +61,7 @@ class EndRentalTest extends TestCase
      *
      * @return void
      */
-    public function test_rental_made_inactive()
+    public function test_rental_made_inactive(): void
     {
         $this->endRental->execute($this->aircraftHome->id, $this->user->id);
         $this->aircraftHome->refresh();

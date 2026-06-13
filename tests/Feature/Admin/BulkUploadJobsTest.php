@@ -45,7 +45,7 @@ class BulkUploadJobsTest extends TestCase
         ]);
     }
 
-    public function test_bulk_upload_creates_jobs_successfully()
+    public function test_bulk_upload_creates_jobs_successfully(): void
     {
         $csvContent = "departure_icao,arrival_icao,cargo_type,cargo,qty,is_recurring\n";
         $csvContent .= "KJFK,KLAX,1,Electronics,500,false\n";
@@ -76,7 +76,7 @@ class BulkUploadJobsTest extends TestCase
         $this->assertTrue($job2->is_recurring);
     }
 
-    public function test_bulk_upload_handles_invalid_airports()
+    public function test_bulk_upload_handles_invalid_airports(): void
     {
         $csvContent = "departure_icao,arrival_icao,cargo_type,cargo,qty,is_recurring\n";
         $csvContent .= "INVALID,KLAX,1,Electronics,500,false\n";
@@ -101,7 +101,7 @@ class BulkUploadJobsTest extends TestCase
         $this->assertCount(2, $results['errors']);
     }
 
-    public function test_bulk_upload_mixed_success_and_errors()
+    public function test_bulk_upload_mixed_success_and_errors(): void
     {
         $csvContent = "departure_icao,arrival_icao,cargo_type,cargo,qty,is_recurring\n";
         $csvContent .= "KJFK,KLAX,1,Electronics,500,false\n"; // Valid
@@ -128,7 +128,7 @@ class BulkUploadJobsTest extends TestCase
         $this->assertEquals(3, $results['errors'][0]['row']); // The row with INVALID airport
     }
 
-    public function test_bulk_upload_requires_valid_file()
+    public function test_bulk_upload_requires_valid_file(): void
     {
         $response = $this->actingAs($this->user)
             ->post("/admin/missions/{$this->mission->id}/jobs/bulk-upload", [
@@ -138,7 +138,7 @@ class BulkUploadJobsTest extends TestCase
         $response->assertSessionHasErrors(['file']);
     }
 
-    public function test_bulk_upload_requires_tour_admin_role()
+    public function test_bulk_upload_requires_tour_admin_role(): void
     {
         /** @var User */
         $regularUser = User::factory()->create();
@@ -154,7 +154,7 @@ class BulkUploadJobsTest extends TestCase
         $response->assertSessionHas('error');
     }
 
-    public function test_bulk_upload_with_immediate_injection()
+    public function test_bulk_upload_with_immediate_injection(): void
     {
         $this->mission->is_published = true;
         $this->mission->save();

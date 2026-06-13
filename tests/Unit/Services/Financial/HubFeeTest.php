@@ -42,7 +42,7 @@ class HubFeeTest extends TestCase
      *
      * @return void
      */
-    public function test_fee_is_calculated_for_hub_rental()
+    public function test_fee_is_calculated_for_hub_rental(): void
     {
         $this->calcHubFees->execute();
         $this->assertDatabaseHas('account_ledgers', [

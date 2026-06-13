@@ -96,7 +96,7 @@ class CalculatePointsTest extends TestCase
      *
      * @return void
      */
-    public function test_completed_flight_points()
+    public function test_completed_flight_points(): void
     {
         $this->calculatePirepPoints->execute($this->pirep);
         $this->assertDatabaseHas('points', [
@@ -106,7 +106,7 @@ class CalculatePointsTest extends TestCase
         ]);
     }
 
-    public function test_hub_points_for_flight_inc_hub()
+    public function test_hub_points_for_flight_inc_hub(): void
     {
         //        $pirep = Pirep::factory()->create([
         //            'user_id' => $this->user->id,
@@ -120,7 +120,7 @@ class CalculatePointsTest extends TestCase
         ]);
     }
 
-    public function test_hub_bonus_for_flight_inc_hub()
+    public function test_hub_bonus_for_flight_inc_hub(): void
     {
         //        $pirep = Pirep::factory()->create([
         //            'user_id' => $this->user->id,
@@ -140,7 +140,7 @@ class CalculatePointsTest extends TestCase
         ]);
     }
 
-    public function test_hub_points_for_flight_inc_hub_not_added_for_rental()
+    public function test_hub_points_for_flight_inc_hub_not_added_for_rental(): void
     {
         $aircraft = Rental::factory()->create([
             'fleet_id' => $this->fleet->id,
@@ -160,7 +160,7 @@ class CalculatePointsTest extends TestCase
         ]);
     }
 
-    public function test_hub_bonus_for_flight_inc_hub_not_added_for_rental()
+    public function test_hub_bonus_for_flight_inc_hub_not_added_for_rental(): void
     {
         $aircraft = Rental::factory()->create([
             'fleet_id' => $this->fleet->id,
@@ -186,7 +186,7 @@ class CalculatePointsTest extends TestCase
         ]);
     }
 
-    public function test_hub_points_for_flight_exc_hub()
+    public function test_hub_points_for_flight_exc_hub(): void
     {
         $egss = Airport::factory()->create([
             'identifier' => 'EGSS',
@@ -223,7 +223,7 @@ class CalculatePointsTest extends TestCase
         ]);
     }
 
-    public function test_distance_points_under_50()
+    public function test_distance_points_under_50(): void
     {
         $pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,
@@ -241,7 +241,7 @@ class CalculatePointsTest extends TestCase
         ]);
     }
 
-    public function test_distance_points_100()
+    public function test_distance_points_100(): void
     {
         $pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,
@@ -259,7 +259,7 @@ class CalculatePointsTest extends TestCase
         ]);
     }
 
-    public function test_distance_points_200()
+    public function test_distance_points_200(): void
     {
         $pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,
@@ -277,7 +277,7 @@ class CalculatePointsTest extends TestCase
         ]);
     }
 
-    public function test_engine_active_start_penalty()
+    public function test_engine_active_start_penalty(): void
     {
         $pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,
@@ -294,7 +294,7 @@ class CalculatePointsTest extends TestCase
         ]);
     }
 
-    public function test_engine_active_start_penalty_not_added()
+    public function test_engine_active_start_penalty_not_added(): void
     {
         $pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,

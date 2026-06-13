@@ -22,7 +22,7 @@ class CalculateContractValueTest extends TestCase
      *
      * @return void
      */
-    public function test_value_of_cargo_contract()
+    public function test_value_of_cargo_contract(): void
     {
         $value = $this->calcContractValue->execute(CargoType::Cargo, 200, 100);
         $cargoPay = 200 * ContractValueTypes::CARGO_VALUE;
@@ -31,7 +31,7 @@ class CalculateContractValueTest extends TestCase
         $this->assertEquals($expected, $value);
     }
 
-    public function test_value_of_pax_contract()
+    public function test_value_of_pax_contract(): void
     {
         $value = $this->calcContractValue->execute(CargoType::Passenger, 8, 100);
         $cargoPay = 8 * ContractValueTypes::PAX_VALUE;

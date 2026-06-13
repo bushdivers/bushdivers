@@ -69,13 +69,13 @@ class ShowDispatchTest extends TestCase
         ]);
     }
 
-    public function test_authentication_required_for_dispatch_page()
+    public function test_authentication_required_for_dispatch_page(): void
     {
         $response = $this->get('/dispatch');
         $response->assertRedirect(route('login'));
     }
 
-    public function test_dispatch_page_loads_successfully()
+    public function test_dispatch_page_loads_successfully(): void
     {
         $response = $this->actingAs($this->user)->get('/dispatch');
 
@@ -90,7 +90,7 @@ class ShowDispatchTest extends TestCase
         );
     }
 
-    public function test_dispatch_page_shows_available_aircraft_at_current_location()
+    public function test_dispatch_page_shows_available_aircraft_at_current_location(): void
     {
         // Create aircraft at different location (should not appear)
         $otherAirport = Airport::factory()->create(['identifier' => 'YBBN']);
@@ -116,7 +116,7 @@ class ShowDispatchTest extends TestCase
         );
     }
 
-    public function test_dispatch_page_excludes_unavailable_aircraft()
+    public function test_dispatch_page_excludes_unavailable_aircraft(): void
     {
         // Create aircraft that's in maintenance
         Aircraft::factory()->create([
@@ -150,7 +150,7 @@ class ShowDispatchTest extends TestCase
         );
     }
 
-    public function test_dispatch_page_shows_available_contracts()
+    public function test_dispatch_page_shows_available_contracts(): void
     {
         // Just verify that cargo structure exists (the filtering logic might be complex)
         $response = $this->actingAs($this->user)->get('/dispatch');
@@ -162,7 +162,7 @@ class ShowDispatchTest extends TestCase
         );
     }
 
-    public function test_dispatch_page_excludes_expired_contracts()
+    public function test_dispatch_page_excludes_expired_contracts(): void
     {
         // Just verify that cargo structure exists (the filtering logic might be complex)
         $response = $this->actingAs($this->user)->get('/dispatch');
@@ -174,7 +174,7 @@ class ShowDispatchTest extends TestCase
         );
     }
 
-    public function test_dispatch_page_shows_available_tours()
+    public function test_dispatch_page_shows_available_tours(): void
     {
         // Just verify that tours structure exists (tour functionality might be complex)
         $response = $this->actingAs($this->user)->get('/dispatch');
@@ -186,7 +186,7 @@ class ShowDispatchTest extends TestCase
         );
     }
 
-    public function test_dispatch_page_shows_available_rentals()
+    public function test_dispatch_page_shows_available_rentals(): void
     {
         // Since the controller doesn't return rentals directly,
         // this test verifies the basic dispatch page structure
@@ -202,7 +202,7 @@ class ShowDispatchTest extends TestCase
         );
     }
 
-    public function test_dispatch_page_shows_current_airport_info()
+    public function test_dispatch_page_shows_current_airport_info(): void
     {
         $response = $this->actingAs($this->user)->get('/dispatch');
 
@@ -215,7 +215,7 @@ class ShowDispatchTest extends TestCase
         );
     }
 
-    public function test_dispatch_page_excludes_aircraft_with_active_pireps()
+    public function test_dispatch_page_excludes_aircraft_with_active_pireps(): void
     {
         // Create a PIREP for the aircraft
         Pirep::factory()->create([
@@ -238,7 +238,7 @@ class ShowDispatchTest extends TestCase
         );
     }
 
-    public function test_dispatch_page_with_user_at_different_airport()
+    public function test_dispatch_page_with_user_at_different_airport(): void
     {
         // Move user to different airport
         $this->user->update(['current_airport_id' => $this->destination->id]);
@@ -253,7 +253,7 @@ class ShowDispatchTest extends TestCase
         );
     }
 
-    public function test_suggestions_includes_nearest_hub()
+    public function test_suggestions_includes_nearest_hub(): void
     {
         $hub = Airport::factory()->create([
             'identifier' => 'PHUB',
@@ -275,7 +275,7 @@ class ShowDispatchTest extends TestCase
         );
     }
 
-    public function test_suggestions_includes_previous_departure()
+    public function test_suggestions_includes_previous_departure(): void
     {
         $departureAirport = Airport::factory()->create(['identifier' => 'PPREV']);
 
@@ -300,7 +300,7 @@ class ShowDispatchTest extends TestCase
         );
     }
 
-    public function test_suggestions_includes_tour_next_checkpoint()
+    public function test_suggestions_includes_tour_next_checkpoint(): void
     {
         $checkpointAirport = Airport::factory()->create(['identifier' => 'PTOUR']);
 
@@ -329,7 +329,7 @@ class ShowDispatchTest extends TestCase
         );
     }
 
-    public function test_suggestions_includes_nearest_fuel_when_current_airport_has_no_permanent_fuel()
+    public function test_suggestions_includes_nearest_fuel_when_current_airport_has_no_permanent_fuel(): void
     {
         // Make origin have no permanent facilities (but may have delivered qty)
         $this->origin->has_avgas = false;
@@ -357,7 +357,7 @@ class ShowDispatchTest extends TestCase
         );
     }
 
-    public function test_suggestions_excludes_fuel_when_current_airport_has_permanent_fuel()
+    public function test_suggestions_excludes_fuel_when_current_airport_has_permanent_fuel(): void
     {
         // origin already has has_avgas=true from factory defaults
         Airport::factory()->create([

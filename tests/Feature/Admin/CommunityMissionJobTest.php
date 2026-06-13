@@ -63,7 +63,7 @@ class CommunityMissionJobTest extends TestCase
         ]);
     }
 
-    public function test_admin_can_add_job_to_published_mission_without_injection()
+    public function test_admin_can_add_job_to_published_mission_without_injection(): void
     {
         $jobData = [
             'departure' => 'AYMR',
@@ -100,7 +100,7 @@ class CommunityMissionJobTest extends TestCase
         $this->assertEquals(1000, $job->payload);
     }
 
-    public function test_admin_can_add_job_to_published_mission_with_injection()
+    public function test_admin_can_add_job_to_published_mission_with_injection(): void
     {
         $jobData = [
             'departure' => 'AYMR',
@@ -143,7 +143,7 @@ class CommunityMissionJobTest extends TestCase
         $this->assertEquals($job->id, $contract->community_job_contract_id);
     }
 
-    public function test_admin_can_add_job_to_unpublished_mission_injection_ignored()
+    public function test_admin_can_add_job_to_unpublished_mission_injection_ignored(): void
     {
         $jobData = [
             'departure' => 'AYMR',
@@ -172,7 +172,7 @@ class CommunityMissionJobTest extends TestCase
         $this->assertEquals(0, Contract::count());
     }
 
-    public function test_add_job_validation_returns_errors_for_unknown_airport()
+    public function test_add_job_validation_returns_errors_for_unknown_airport(): void
     {
         $jobData = [
             'departure' => 'ZZZZ',
@@ -192,7 +192,7 @@ class CommunityMissionJobTest extends TestCase
             ->assertSessionHasErrors(['departure']);
     }
 
-    public function test_admin_can_add_passenger_job_with_injection()
+    public function test_admin_can_add_passenger_job_with_injection(): void
     {
         $jobData = [
             'departure' => 'AYMR',

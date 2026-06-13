@@ -66,7 +66,7 @@ class CalcTotalFlightDistanceTest extends TestCase
      *
      * @return void
      */
-    public function test_flight_distance_is_calculated()
+    public function test_flight_distance_is_calculated(): void
     {
         $distance = $this->calculateTotalFlightDistance->execute($this->pirep);
         $this->assertEquals(28.6, $distance);

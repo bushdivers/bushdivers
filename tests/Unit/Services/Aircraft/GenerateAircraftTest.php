@@ -33,7 +33,7 @@ class GenerateAircraftTest extends TestCase
      *
      * @return void
      */
-    public function test_aircraft_low_popularity_generated_successfully()
+    public function test_aircraft_low_popularity_generated_successfully(): void
     {
         $fleet = Fleet::factory()->create([
             'popularity' => 1,
@@ -54,7 +54,7 @@ class GenerateAircraftTest extends TestCase
         $this->assertDatabaseCount('aircraft', 10);
     }
 
-    public function test_aircraft_medium_popularity_generated_successfully()
+    public function test_aircraft_medium_popularity_generated_successfully(): void
     {
         $fleet = Fleet::factory()->create([
             'popularity' => 2,
@@ -75,7 +75,7 @@ class GenerateAircraftTest extends TestCase
         $this->assertDatabaseCount('aircraft', 13);
     }
 
-    public function test_aircraft_high_popularity_generated_successfully()
+    public function test_aircraft_high_popularity_generated_successfully(): void
     {
         $fleet = Fleet::factory()->create([
             'popularity' => 3,
@@ -96,7 +96,7 @@ class GenerateAircraftTest extends TestCase
         $this->assertDatabaseCount('aircraft', 15);
     }
 
-    public function test_aircraft_generated_based_on_available_aircraft_successfully()
+    public function test_aircraft_generated_based_on_available_aircraft_successfully(): void
     {
         $airport = Airport::factory()->create([
             'identifier' => 'AYMN',

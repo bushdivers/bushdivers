@@ -139,7 +139,7 @@ class SubmitPirepHubTest extends TestCase
      *
      * @return void
      */
-    public function test_pirep_submitted_successfully()
+    public function test_pirep_submitted_successfully(): void
     {
         $this->withExceptionHandling();
         Artisan::call('db:seed --class=RankSeeder');

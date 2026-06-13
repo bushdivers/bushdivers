@@ -42,7 +42,7 @@ class ChargeRentalFeeTest extends TestCase
      *
      * @return void
      */
-    public function test_fee_charged_for_2_hours()
+    public function test_fee_charged_for_2_hours(): void
     {
         $pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,
@@ -61,7 +61,7 @@ class ChargeRentalFeeTest extends TestCase
         ]);
     }
 
-    public function test_fee_charged_for_1_hour()
+    public function test_fee_charged_for_1_hour(): void
     {
         $pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,
@@ -80,7 +80,7 @@ class ChargeRentalFeeTest extends TestCase
         ]);
     }
 
-    public function test_fee_charged_for_30_mins()
+    public function test_fee_charged_for_30_mins(): void
     {
         $pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,

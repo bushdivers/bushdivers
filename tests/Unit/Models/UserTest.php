@@ -22,7 +22,7 @@ class UserTest extends TestCase
      *
      * @return void
      */
-    public function test_private_name_attribute()
+    public function test_private_name_attribute(): void
     {
         $firstName = strstr($this->user->name, ' ', true);
         $lastName = substr($this->user->name, strpos($this->user->name, ' ') + 1);
@@ -30,7 +30,7 @@ class UserTest extends TestCase
         $this->assertEquals($expected, $this->user->private_name);
     }
 
-    public function test_pilot_id_attribute()
+    public function test_pilot_id_attribute(): void
     {
         $expected = sprintf('BDV%04d', $this->user->id);
         $this->assertEquals($expected, $this->user->pilot_id);

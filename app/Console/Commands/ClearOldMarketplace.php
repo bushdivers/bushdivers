@@ -32,7 +32,7 @@ class ClearOldMarketplace extends Command
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle(): int
     {
         //
         $deleted = $this->removeUnusedMarketplaceItems->execute();

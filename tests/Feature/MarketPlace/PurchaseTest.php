@@ -35,7 +35,7 @@ class PurchaseTest extends TestCase
      *
      * @return void
      */
-    public function test_purchase_success()
+    public function test_purchase_success(): void
     {
         DB::table('user_accounts')->insert([
             'user_id' => $this->user->id,
@@ -67,7 +67,7 @@ class PurchaseTest extends TestCase
         // assert aircraft is created
     }
 
-    public function test_purchase_not_processed_with_insufficient_funds()
+    public function test_purchase_not_processed_with_insufficient_funds(): void
     {
         DB::table('user_accounts')->insert([
             'user_id' => $this->user->id,

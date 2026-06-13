@@ -67,7 +67,7 @@ class AirportTest extends TestCase
         $this->assertEquals(1, Airport::inRangeOf($this->baseAirport, 1, 200)->hub()->count());
     }
 
-    public function test_nearest_airport()
+    public function test_nearest_airport(): void
     {
         $coord = new Coordinate(-6.36323, 143.24665);
         $airport = Airport::inRangeOf($coord, 0, 50)->orderBy('distance')->first();
@@ -78,7 +78,7 @@ class AirportTest extends TestCase
         $this->assertEquals('AYMH', $airport->identifier);
     }
 
-    public function test_none_returned_if_not_found()
+    public function test_none_returned_if_not_found(): void
     {
         $lat = 51.47750;
         $lon = -0.46139;
@@ -87,7 +87,7 @@ class AirportTest extends TestCase
         $this->assertEquals(null, $airport);
     }
 
-    public function test_has_fuel_scope()
+    public function test_has_fuel_scope(): void
     {
         $airport = Airport::factory()->create([
             'identifier' => 'AYMH_',
@@ -111,7 +111,7 @@ class AirportTest extends TestCase
     }
 
 
-    public function test_scopes()
+    public function test_scopes(): void
     {
         $user = User::factory()->create();
 

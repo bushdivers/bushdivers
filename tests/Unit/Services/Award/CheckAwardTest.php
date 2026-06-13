@@ -38,7 +38,7 @@ class CheckAwardTest extends TestCase
 
     }
 
-    public function test_award_added_to_db()
+    public function test_award_added_to_db(): void
     {
         $this->addAwardToUser->execute($this->user->id, 3);
         $this->assertDatabaseHas('award_user', [
@@ -47,7 +47,7 @@ class CheckAwardTest extends TestCase
         ]);
     }
 
-    public function test_flight_number_award_is_added()
+    public function test_flight_number_award_is_added(): void
     {
         $this->checkAwardStatus->execute($this->user->id);
         $this->assertDatabaseHas('award_user', [
@@ -56,7 +56,7 @@ class CheckAwardTest extends TestCase
         ]);
     }
 
-    public function test_flight_hours_award_is_added()
+    public function test_flight_hours_award_is_added(): void
     {
         $this->checkAwardStatus->execute($this->user->id);
         $this->assertDatabaseHas('award_user', [
@@ -65,7 +65,7 @@ class CheckAwardTest extends TestCase
         ]);
     }
 
-    public function test_service_award_is_added()
+    public function test_service_award_is_added(): void
     {
         $this->checkAwardStatus->execute($this->user->id);
         $this->assertDatabaseHas('award_user', [
@@ -74,7 +74,7 @@ class CheckAwardTest extends TestCase
         ]);
     }
 
-    public function test_award_not_given_if_already_awarded()
+    public function test_award_not_given_if_already_awarded(): void
     {
         DB::table('award_user')->insert([
             'user_id' => $this->user->id,
@@ -86,7 +86,7 @@ class CheckAwardTest extends TestCase
     }
 
 
-    public function test_distance_award_is_added()
+    public function test_distance_award_is_added(): void
     {
         Pirep::factory()->create([
             'distance' => 600,

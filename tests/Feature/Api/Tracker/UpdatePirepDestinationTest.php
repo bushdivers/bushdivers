@@ -70,7 +70,7 @@ class UpdatePirepDestinationTest extends TestCase
      *
      * @return void
      */
-    public function test_response_is_successful()
+    public function test_response_is_successful(): void
     {
         $lat = -6.36323;
         $lon = 143.24665;
@@ -90,7 +90,7 @@ class UpdatePirepDestinationTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function test_response_icao_is_moro()
+    public function test_response_icao_is_moro(): void
     {
         $lat = -6.36323;
         $lon = 143.24665;
@@ -110,7 +110,7 @@ class UpdatePirepDestinationTest extends TestCase
         $response->assertJsonFragment(['icao' => 'AYMR']);
     }
 
-    public function test_pirep_destination_updated_to_moro()
+    public function test_pirep_destination_updated_to_moro(): void
     {
         $lat = -6.36323;
         $lon = 143.24665;
@@ -133,7 +133,7 @@ class UpdatePirepDestinationTest extends TestCase
         ]);
     }
 
-    public function test_airport_not_found_fails_gracefully()
+    public function test_airport_not_found_fails_gracefully(): void
     {
         $lat = -14.264383;
         $lon = -7.145881;
@@ -152,7 +152,7 @@ class UpdatePirepDestinationTest extends TestCase
         $response->assertStatus(404);
     }
 
-    public function test_fleet_only_at_base_airport()
+    public function test_fleet_only_at_base_airport(): void
     {
         $this->airport1->is_thirdparty = true;
         $this->airport1->is_hub = false;
@@ -176,7 +176,7 @@ class UpdatePirepDestinationTest extends TestCase
         $response->assertStatus(404);
     }
 
-    public function test_thirdparty_cannot_be_used()
+    public function test_thirdparty_cannot_be_used(): void
     {
         $lat = -6.36323;
         $lon = 143.24665;

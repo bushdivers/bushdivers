@@ -35,7 +35,7 @@ class CalculateAircraftWearTest extends TestCase
      *
      * @return void
      */
-    public function test_new_aircraft_wear()
+    public function test_new_aircraft_wear(): void
     {
         $aircraft = Aircraft::factory()->create([
             'fleet_id' => $this->fleet->id,
@@ -51,7 +51,7 @@ class CalculateAircraftWearTest extends TestCase
         $this->assertEquals(0.7, $wear);
     }
 
-    public function test_low_aircraft_wear()
+    public function test_low_aircraft_wear(): void
     {
         $aircraft = Aircraft::factory()->create([
             'fleet_id' => $this->fleet->id,
@@ -67,7 +67,7 @@ class CalculateAircraftWearTest extends TestCase
         $this->assertEquals(1, $wear);
     }
 
-    public function test_mid_aircraft_wear()
+    public function test_mid_aircraft_wear(): void
     {
         $aircraft = Aircraft::factory()->create([
             'fleet_id' => $this->fleet->id,
@@ -83,7 +83,7 @@ class CalculateAircraftWearTest extends TestCase
         $this->assertEquals(1.6, $wear);
     }
 
-    public function test_poor_aircraft_wear()
+    public function test_poor_aircraft_wear(): void
     {
         $aircraft = Aircraft::factory()->create([
             'fleet_id' => $this->fleet->id,
@@ -99,7 +99,7 @@ class CalculateAircraftWearTest extends TestCase
         $this->assertEquals(2.2, $wear);
     }
 
-    public function test_old_aircraft_wear()
+    public function test_old_aircraft_wear(): void
     {
         $aircraft = Aircraft::factory()->create([
             'fleet_id' => $this->fleet->id,

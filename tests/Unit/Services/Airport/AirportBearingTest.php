@@ -14,7 +14,7 @@ class AirportBearingTest extends TestCase
      *
      * @return void
      */
-    public function test_bearing_between_moro_and_MH()
+    public function test_bearing_between_moro_and_MH(): void
     {
         $moro = Airport::factory()->create([
             'identifier' => 'AYMR',
@@ -37,7 +37,7 @@ class AirportBearingTest extends TestCase
         $this->assertEquals(63, $heading); // 63.3
     }
 
-    public function test_bearing_between_ayfo_and_aymr()
+    public function test_bearing_between_ayfo_and_aymr(): void
     {
         $ayfo = Airport::factory()->create([
             'identifier' => 'AYFO',

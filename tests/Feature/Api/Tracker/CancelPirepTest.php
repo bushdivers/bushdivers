@@ -90,7 +90,7 @@ class CancelPirepTest extends TestCase
      *
      * @return void
      */
-    public function test_pirep_is_cancelled()
+    public function test_pirep_is_cancelled(): void
     {
         Sanctum::actingAs(
             $this->user,
@@ -102,7 +102,7 @@ class CancelPirepTest extends TestCase
         $this->assertDatabaseHas('pireps', ['id' => $this->pirep->id, 'state' => PirepState::DISPATCH]);
     }
 
-    public function test_pirep_has_no_logs()
+    public function test_pirep_has_no_logs(): void
     {
 
         $log = new FlightLog();

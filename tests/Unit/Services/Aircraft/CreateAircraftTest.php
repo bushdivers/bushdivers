@@ -38,7 +38,7 @@ class CreateAircraftTest extends TestCase
      *
      * @return void
      */
-    public function test_aircraft_is_created()
+    public function test_aircraft_is_created(): void
     {
         $fleet = Fleet::factory()->create();
         $data = [
@@ -53,7 +53,7 @@ class CreateAircraftTest extends TestCase
         ]);
     }
 
-    public function test_single_engine_created()
+    public function test_single_engine_created(): void
     {
         $fleet = Fleet::factory()->create();
         $data = [
@@ -69,7 +69,7 @@ class CreateAircraftTest extends TestCase
         $this->assertDatabaseCount('aircraft_engines', 1);
     }
 
-    public function test_multi_engine_created()
+    public function test_multi_engine_created(): void
     {
         $fleet = Fleet::factory()->create([
             'number_of_engines' => 2

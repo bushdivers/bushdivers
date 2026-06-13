@@ -49,13 +49,13 @@ class CreateDispatchTest extends TestCase
         $this->user = User::factory()->create(['current_airport_id' => $this->origin->id]);
     }
 
-    public function test_authentication_required()
+    public function test_authentication_required(): void
     {
         $response = $this->post(route('dispatch.create'));
         $response->assertRedirectToRoute('login');
     }
 
-    public function test_aircraft_location()
+    public function test_aircraft_location(): void
     {
         $body = [
             'aircraft' => $this->aircraftDestination->registration,
@@ -76,7 +76,7 @@ class CreateDispatchTest extends TestCase
         $response->assertSessionHas('success');
     }
 
-    public function test_aircraft_owner()
+    public function test_aircraft_owner(): void
     {
         $body = [
             'aircraft' => $this->aircraftOrigin->registration,
@@ -106,7 +106,7 @@ class CreateDispatchTest extends TestCase
         $response->assertSessionHas('success');
     }
 
-    public function test_avgas_refuel()
+    public function test_avgas_refuel(): void
     {
         $body = [
             'aircraft' => $this->aircraftOrigin->registration,
@@ -135,7 +135,7 @@ class CreateDispatchTest extends TestCase
         $response->assertSessionHas('success');
     }
 
-    public function test_jetfuel_refuel()
+    public function test_jetfuel_refuel(): void
     {
         $body = [
             'aircraft' => $this->aircraftOrigin->registration,
@@ -171,7 +171,7 @@ class CreateDispatchTest extends TestCase
 
     }
 
-    public function test_invalid_variant_rejected()
+    public function test_invalid_variant_rejected(): void
     {
         $body = [
             'aircraft' => $this->aircraftOrigin->registration,
@@ -187,7 +187,7 @@ class CreateDispatchTest extends TestCase
         $response->assertSessionHas('error');
     }
 
-    public function test_variant_stored_on_pirep()
+    public function test_variant_stored_on_pirep(): void
     {
         $body = [
             'aircraft' => $this->aircraftOrigin->registration,
@@ -206,7 +206,7 @@ class CreateDispatchTest extends TestCase
         $this->assertEquals($this->variantOrigin->id, $pirep->fleet_variant_id);
     }
 
-    public function test_aircraft_remembers_variant_after_dispatch()
+    public function test_aircraft_remembers_variant_after_dispatch(): void
     {
         $body = [
             'aircraft' => $this->aircraftOrigin->registration,
@@ -226,7 +226,7 @@ class CreateDispatchTest extends TestCase
         ]);
     }
 
-    public function test_rental_remembers_variant_after_dispatch()
+    public function test_rental_remembers_variant_after_dispatch(): void
     {
         $fleet = Fleet::factory()->create(['fuel_type' => FuelType::AVGAS, 'type' => 'RN01']);
         $variant = $fleet->variants()->first();

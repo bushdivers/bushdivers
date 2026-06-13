@@ -41,7 +41,7 @@ class ShareContractTest extends TestCase
         ]);
     }
 
-    public function test_share_contract_on_active_pirep_fails()
+    public function test_share_contract_on_active_pirep_fails(): void
     {
         $id = Uuid::uuid4();
         $c = Contract::factory()->create([

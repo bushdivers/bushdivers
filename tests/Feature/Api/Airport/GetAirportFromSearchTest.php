@@ -28,25 +28,25 @@ class GetAirportFromSearchTest extends TestCase
      *
      * @return void
      */
-    public function test_airport_search_is_successful()
+    public function test_airport_search_is_successful(): void
     {
         $response = $this->getJson('api/airport/search/'.$this->airport->identifier);
         $response->assertStatus(200);
     }
 
-    public function test_airport_search_returns_airport()
+    public function test_airport_search_returns_airport(): void
     {
         $response = $this->getJson('api/airport/search/'.$this->airport->identifier);
         $response->assertJsonFragment(['identifier' => $this->airport->identifier]);
     }
 
-    public function test_airport_search_handled_when_no_airport_found()
+    public function test_airport_search_handled_when_no_airport_found(): void
     {
         $response = $this->getJson('api/airport/search/EGLL');
         $response->assertStatus(200);
     }
 
-    public function test_airport_thirdparty_search_scopes()
+    public function test_airport_thirdparty_search_scopes(): void
     {
         $tpAirport = Airport::factory()->create([
             'is_thirdparty' => true,
@@ -60,7 +60,7 @@ class GetAirportFromSearchTest extends TestCase
         $response->assertJsonFragment(['identifier' => $tpAirport->identifier]);
     }
 
-    public function test_airport_thirdparty_user_preference_scope()
+    public function test_airport_thirdparty_user_preference_scope(): void
     {
         $tpAirport = Airport::factory()->create([
             'is_thirdparty' => true,

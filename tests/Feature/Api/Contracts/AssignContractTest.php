@@ -24,33 +24,33 @@ class AssignContractTest extends TestCase
      *
      * @return void
      */
-    public function test_returns_success_response()
+    public function test_returns_success_response(): void
     {
         $response = $this->postJson('/api/contracts/assign', ['id' => $this->contract->id, 'action' => 'assign', 'userId' => $this->user->id, 'qty' => $this->contract->cargo_qty]);
         $response->assertStatus(200);
     }
 
-    public function test_contract_assigned()
+    public function test_contract_assigned(): void
     {
         $response = $this->postJson('/api/contracts/assign', ['id' => $this->contract->id, 'action' => 'assign', 'userId' => $this->user->id, 'qty' => $this->contract->cargo_qty]);
         $this->contract->refresh();
         $this->assertEquals($this->user->id, $this->contract->user_id);
     }
 
-    public function test_contract_made_unavailable()
+    public function test_contract_made_unavailable(): void
     {
         $response = $this->postJson('/api/contracts/assign', ['id' => $this->contract->id, 'action' => 'cancel']);
         $this->contract->refresh();
         $this->assertEquals(null, $this->contract->user_id);
     }
 
-    public function test_contract_split()
+    public function test_contract_split(): void
     {
         $response = $this->postJson('/api/contracts/assign', ['id' => $this->contract->id, 'action' => 'assign', 'userId' => $this->user->id, 'qty' => 50]);
         $response->assertStatus(200);
     }
 
-    public function test_contract_split_creates_new_contract()
+    public function test_contract_split_creates_new_contract(): void
     {
         $response = $this->postJson('/api/contracts/assign', ['id' => $this->contract->id, 'action' => 'assign', 'userId' => $this->user->id, 'qty' => 60]);
         $this->assertDatabaseHas('contracts', [
@@ -59,7 +59,7 @@ class AssignContractTest extends TestCase
         ]);
     }
 
-    public function test_contract_split_updates_contract()
+    public function test_contract_split_updates_contract(): void
     {
         $response = $this->postJson('/api/contracts/assign', ['id' => $this->contract->id, 'action' => 'assign', 'userId' => $this->user->id, 'qty' => 60]);
         $this->contract->refresh();

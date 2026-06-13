@@ -7,7 +7,7 @@ use App\Models\User;
 
 class CheckUserRank
 {
-    public function execute(int $userId)
+    public function execute(int $userId): void
     {
         $user = User::find($userId);
         // get users rank

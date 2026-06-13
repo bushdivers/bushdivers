@@ -78,7 +78,7 @@ class AircraftFeeTest extends TestCase
      *
      * @return void
      */
-    public function test_small_transaction_calculated()
+    public function test_small_transaction_calculated(): void
     {
         $this->calcAircraftFees->execute();
         $this->assertDatabaseHas('account_ledgers', [
@@ -94,7 +94,7 @@ class AircraftFeeTest extends TestCase
         ]);
     }
 
-    public function test_medium_transaction_calculated()
+    public function test_medium_transaction_calculated(): void
     {
         $this->calcAircraftFees->execute();
         $this->assertDatabaseHas('account_ledgers', [
@@ -110,7 +110,7 @@ class AircraftFeeTest extends TestCase
         ]);
     }
 
-    public function test_large_transaction_calculated()
+    public function test_large_transaction_calculated(): void
     {
         $this->calcAircraftFees->execute();
         $this->assertDatabaseHas('account_ledgers', [

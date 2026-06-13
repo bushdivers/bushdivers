@@ -28,7 +28,7 @@ class AddUserTransactionTest extends TestCase
      *
      * @return void
      */
-    public function test_credit_is_added()
+    public function test_credit_is_added(): void
     {
         $this->addUserTransaction->execute($this->user->id, TransactionTypes::Bonus, 500);
         $this->assertDatabaseHas('user_accounts', [
@@ -38,7 +38,7 @@ class AddUserTransactionTest extends TestCase
         ]);
     }
 
-    public function test_debit_is_added()
+    public function test_debit_is_added(): void
     {
         $this->addUserTransaction->execute($this->user->id, TransactionTypes::Jumpseat, -500);
         $this->assertDatabaseHas('user_accounts', [

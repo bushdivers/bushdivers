@@ -62,7 +62,7 @@ class FindInactivePirepsTest extends TestCase
      *
      * @return void
      */
-    public function test_pirep_not_returned_when_created_recently()
+    public function test_pirep_not_returned_when_created_recently(): void
     {
         $this->pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,
@@ -79,7 +79,7 @@ class FindInactivePirepsTest extends TestCase
         $this->assertEquals(0, $pireps->count());
     }
 
-    public function test_pirep_not_returned_when_active_flight_had_recent_update()
+    public function test_pirep_not_returned_when_active_flight_had_recent_update(): void
     {
         $pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,
@@ -95,7 +95,7 @@ class FindInactivePirepsTest extends TestCase
         $this->assertEquals(0, $pireps->count());
     }
 
-    public function test_pirep_returned_when_active_flight_and_no_update_for_a_while()
+    public function test_pirep_returned_when_active_flight_and_no_update_for_a_while(): void
     {
         $this->pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,
@@ -112,7 +112,7 @@ class FindInactivePirepsTest extends TestCase
         $this->assertEquals(1, $pireps->count());
     }
 
-    public function test_pireps_will_be_removed()
+    public function test_pireps_will_be_removed(): void
     {
         $this->pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,

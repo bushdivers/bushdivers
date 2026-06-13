@@ -25,7 +25,7 @@ class AirportTest extends TestCase
 
     }
 
-    public function test_airport_manager_can_view_third_party_airports_list()
+    public function test_airport_manager_can_view_third_party_airports_list(): void
     {
         // Create some third-party airports
         Airport::factory()->create([
@@ -59,7 +59,7 @@ class AirportTest extends TestCase
         );
     }
 
-    public function test_airport_manager_can_create_third_party_airport()
+    public function test_airport_manager_can_create_third_party_airport(): void
     {
         $airportData = [
             'identifier' => 'NEW01',
@@ -91,7 +91,7 @@ class AirportTest extends TestCase
         ]);
     }
 
-    public function test_airport_manager_can_update_third_party_airport()
+    public function test_airport_manager_can_update_third_party_airport(): void
     {
         $airport = Airport::factory()->create([
             'identifier' => 'UPD01',
@@ -129,7 +129,7 @@ class AirportTest extends TestCase
         ]);
     }
 
-    public function test_airport_manager_can_delete_third_party_airport()
+    public function test_airport_manager_can_delete_third_party_airport(): void
     {
         $airport = Airport::factory()->create([
             'identifier' => 'DEL01',
@@ -148,7 +148,7 @@ class AirportTest extends TestCase
         ]);
     }
 
-    public function test_airport_manager_cannot_delete_regular_airport()
+    public function test_airport_manager_cannot_delete_regular_airport(): void
     {
         $airport = Airport::factory()->create([
             'identifier' => 'REG01',
@@ -166,7 +166,7 @@ class AirportTest extends TestCase
         ]);
     }
 
-    public function test_validation_errors_for_required_fields()
+    public function test_validation_errors_for_required_fields(): void
     {
         $response = $this->actingAs($this->user)
             ->post('/admin/airports/create', []);
@@ -174,7 +174,7 @@ class AirportTest extends TestCase
         $response->assertSessionHasErrors(['identifier', 'name', 'lat', 'lon']);
     }
 
-    public function test_third_party_scope_works_correctly()
+    public function test_third_party_scope_works_correctly(): void
     {
         // Create airports with different is_thirdparty values
         Airport::factory()->create(['identifier' => 'TP01', 'is_thirdparty' => true]);

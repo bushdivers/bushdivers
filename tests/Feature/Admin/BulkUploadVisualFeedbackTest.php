@@ -14,8 +14,8 @@ class BulkUploadVisualFeedbackTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected $user;
-    protected $mission;
+    protected User $user;
+    protected CommunityJob $mission;
 
     protected function setUp(): void
     {
@@ -37,7 +37,7 @@ class BulkUploadVisualFeedbackTest extends TestCase
         Airport::factory()->create(['identifier' => 'KLAX']);
     }
 
-    public function test_bulk_upload_session_data_is_passed_to_frontend()
+    public function test_bulk_upload_session_data_is_passed_to_frontend(): void
     {
         // Create CSV content with both valid and invalid data
         $csvContent = "departure_icao,arrival_icao,cargo_type,cargo,qty,is_recurring\n";
@@ -75,7 +75,7 @@ class BulkUploadVisualFeedbackTest extends TestCase
         $this->assertCount(2, $results['errors']);
     }
 
-    public function test_bulk_upload_results_are_cleared_after_first_view()
+    public function test_bulk_upload_results_are_cleared_after_first_view(): void
     {
         // Upload a file
         $csvContent = "departure_icao,arrival_icao,cargo_type,cargo,qty,is_recurring\n";

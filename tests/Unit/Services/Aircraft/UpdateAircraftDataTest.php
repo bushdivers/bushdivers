@@ -93,7 +93,7 @@ class UpdateAircraftDataTest extends TestCase
      *
      * @return void
      */
-    public function test_aircraft_state_reset()
+    public function test_aircraft_state_reset(): void
     {
         $this->aircraft->state = AircraftState::IN_USE;
         $this->updateAircraftAfterFlight->execute($this->aircraft, $this->pirep);
@@ -103,7 +103,7 @@ class UpdateAircraftDataTest extends TestCase
         ]);
     }
 
-    public function test_aircraft_fuel_updated()
+    public function test_aircraft_fuel_updated(): void
     {
         $this->pirep->fuel_used = 20;
         $this->aircraft->fuel_onboard = 50;
@@ -114,7 +114,7 @@ class UpdateAircraftDataTest extends TestCase
         ]);
     }
 
-    public function test_aircraft_fuel_remains_0_when_0_fuel()
+    public function test_aircraft_fuel_remains_0_when_0_fuel(): void
     {
         $aircraft = Aircraft::factory()->create([
             'fleet_id' => $this->fleet->id,
@@ -129,7 +129,7 @@ class UpdateAircraftDataTest extends TestCase
         ]);
     }
 
-    public function test_aircraft_hours_updated()
+    public function test_aircraft_hours_updated(): void
     {
         $this->pirep->flight_time = 20;
         $this->aircraft->flight_time_mins = 100;
@@ -140,7 +140,7 @@ class UpdateAircraftDataTest extends TestCase
         ]);
     }
 
-    public function test_aircraft_location_updated()
+    public function test_aircraft_location_updated(): void
     {
         $icao = Airport::factory()->create(['identifier' => 'EGLL']);
         $lat = -6.14617;
@@ -157,7 +157,7 @@ class UpdateAircraftDataTest extends TestCase
         ]);
     }
 
-    public function test_aircraft_last_flight_updated()
+    public function test_aircraft_last_flight_updated(): void
     {
         $date = Carbon::now();
         $this->pirep->submitted_at = $date;

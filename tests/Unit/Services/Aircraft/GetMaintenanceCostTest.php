@@ -23,43 +23,43 @@ class GetMaintenanceCostTest extends TestCase
      *
      * @return void
      */
-    public function test_cost_is_returned_for_100hr()
+    public function test_cost_is_returned_for_100hr(): void
     {
         $cost = $this->getMaintenanceCost->execute(MaintenanceTypes::Maintenance100hr, 'S');
         $this->assertEquals(MaintenanceCosts::Cost100hr, $cost);
     }
 
-    public function test_cost_is_returned_for_annual()
+    public function test_cost_is_returned_for_annual(): void
     {
         $cost = $this->getMaintenanceCost->execute(MaintenanceTypes::Annual, 'S');
         $this->assertEquals(MaintenanceCosts::CostAnnual, $cost);
     }
 
-    public function test_cost_is_returned_for_tbo_s()
+    public function test_cost_is_returned_for_tbo_s(): void
     {
         $cost = $this->getMaintenanceCost->execute(MaintenanceTypes::MaintenanceTBO, 'S');
         $this->assertEquals(MaintenanceCosts::CostTBOSmall, $cost);
     }
 
-    public function test_cost_is_returned_for_tbo_m()
+    public function test_cost_is_returned_for_tbo_m(): void
     {
         $cost = $this->getMaintenanceCost->execute(MaintenanceTypes::MaintenanceTBO, 'M');
         $this->assertEquals(MaintenanceCosts::CostTBOMedium, $cost);
     }
 
-    public function test_cost_is_returned_for_tbo_l()
+    public function test_cost_is_returned_for_tbo_l(): void
     {
         $cost = $this->getMaintenanceCost->execute(MaintenanceTypes::MaintenanceTBO, 'L');
         $this->assertEquals(MaintenanceCosts::CostTBOLarge, $cost);
     }
 
-    public function test_cost_is_returned_for_general_maintenance()
+    public function test_cost_is_returned_for_general_maintenance(): void
     {
         $cost = $this->getMaintenanceCost->execute(MaintenanceTypes::GeneralMaintenance, 'S');
         $this->assertEquals(MaintenanceCosts::CostGeneral, $cost);
     }
 
-    public function test_cost_is_returned_for_engine_maintenance()
+    public function test_cost_is_returned_for_engine_maintenance(): void
     {
         $cost = $this->getMaintenanceCost->execute(MaintenanceTypes::EngineMaintenance, 'S');
         $this->assertEquals(MaintenanceCosts::CostEngine, $cost);

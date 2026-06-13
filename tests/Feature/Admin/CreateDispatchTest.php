@@ -37,7 +37,7 @@ class CreateDispatchTest extends TestCase
 
     }
 
-    public function test_create_dispatch_page_accessible_to_admins()
+    public function test_create_dispatch_page_accessible_to_admins(): void
     {
         $response = $this->actingAs($this->admin)->get(route('admin.dispatch.create'));
         $response->assertStatus(200);
@@ -47,7 +47,7 @@ class CreateDispatchTest extends TestCase
         );
     }
 
-    public function test_inaccessible_to_non_admins()
+    public function test_inaccessible_to_non_admins(): void
     {
         $response = $this->actingAs($this->user)->get(route('admin.dispatch.create'));
         $response->assertRedirect();
@@ -62,7 +62,7 @@ class CreateDispatchTest extends TestCase
         $response->assertSessionHas('error');
     }
 
-    public function test_create_contract()
+    public function test_create_contract(): void
     {
         // Simulate form submission
         $response = $this->actingAs($this->admin)->post(route('admin.dispatch.create'), [
@@ -80,7 +80,7 @@ class CreateDispatchTest extends TestCase
         ]);
     }
 
-    public function test_create_contract_with_invalid_data()
+    public function test_create_contract_with_invalid_data(): void
     {
         // Simulate form submission with invalid data
         $response = $this->actingAs($this->admin)->post(route('admin.dispatch.create'), [

@@ -122,7 +122,7 @@ class SubmitPirepRentalTest extends TestCase
         ]);
     }
 
-    public function test_pirep_submitted_successfully()
+    public function test_pirep_submitted_successfully(): void
     {
         Artisan::call('db:seed --class=RankSeeder');
         Sanctum::actingAs(
@@ -146,7 +146,7 @@ class SubmitPirepRentalTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function test_fees_charged_to_pilot_for_rental()
+    public function test_fees_charged_to_pilot_for_rental(): void
     {
         Sanctum::actingAs(
             $this->user,
@@ -178,7 +178,7 @@ class SubmitPirepRentalTest extends TestCase
         ]);
     }
 
-    public function test_rental_pilot_pay_correct()
+    public function test_rental_pilot_pay_correct(): void
     {
         Sanctum::actingAs(
             $this->user,

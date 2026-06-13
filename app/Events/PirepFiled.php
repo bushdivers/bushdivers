@@ -17,24 +17,22 @@ class PirepFiled
     use InteractsWithSockets;
     use SerializesModels;
 
-    public $pirep;
-
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct(Pirep $pirep)
+    public function __construct(public Pirep $pirep)
     {
-        $this->pirep = $pirep;
+        //
     }
 
     /**
      * Get the channels the event should broadcast on.
      *
-     * @return \Illuminate\Broadcasting\Channel|array
+     * @return Channel|array<Channel>
      */
-    public function broadcastOn()
+    public function broadcastOn(): Channel|array
     {
         return new PrivateChannel('channel-name');
     }

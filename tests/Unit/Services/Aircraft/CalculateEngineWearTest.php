@@ -30,7 +30,7 @@ class CalculateEngineWearTest extends TestCase
      *
      * @return void
      */
-    public function test_new_engine_wear()
+    public function test_new_engine_wear(): void
     {
         $aircraft = Aircraft::factory()->create([
             'fleet_id' => $this->fleet->id,
@@ -46,7 +46,7 @@ class CalculateEngineWearTest extends TestCase
         $this->assertEquals(0.5, $wear);
     }
 
-    public function test_low_engine_wear()
+    public function test_low_engine_wear(): void
     {
         $aircraft = Aircraft::factory()->create([
             'fleet_id' => $this->fleet->id,
@@ -62,7 +62,7 @@ class CalculateEngineWearTest extends TestCase
         $this->assertEquals(0.8, $wear);
     }
 
-    public function test_mid_engine_wear()
+    public function test_mid_engine_wear(): void
     {
         $aircraft = Aircraft::factory()->create([
             'fleet_id' => $this->fleet->id,
@@ -78,7 +78,7 @@ class CalculateEngineWearTest extends TestCase
         $this->assertEquals(1.4, $wear);
     }
 
-    public function test_poor_engine_wear()
+    public function test_poor_engine_wear(): void
     {
         $aircraft = Aircraft::factory()->create([
             'fleet_id' => $this->fleet->id,

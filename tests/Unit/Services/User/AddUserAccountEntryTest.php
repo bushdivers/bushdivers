@@ -26,7 +26,7 @@ class AddUserAccountEntryTest extends TestCase
      *
      * @return void
      */
-    public function test_positive_entry_gets_added()
+    public function test_positive_entry_gets_added(): void
     {
         $this->addUserTransaction->execute($this->user->id, TransactionTypes::FlightPay, 30);
         $this->assertDatabaseHas('user_accounts', [
@@ -36,7 +36,7 @@ class AddUserAccountEntryTest extends TestCase
         ]);
     }
 
-    public function test_negative_entry_gets_added()
+    public function test_negative_entry_gets_added(): void
     {
         $this->addUserTransaction->execute($this->user->id, TransactionTypes::Jumpseat, -50);
         $this->assertDatabaseHas('user_accounts', [

@@ -74,7 +74,7 @@ class CancelDispatchTest extends TestCase
         ]);
     }
 
-    public function test_authentication_required_for_cancel_dispatch()
+    public function test_authentication_required_for_cancel_dispatch(): void
     {
         $response = $this->post(route('dispatch.cancel'), [
             'pirep' => $this->pirep->id
@@ -83,7 +83,7 @@ class CancelDispatchTest extends TestCase
         $response->assertRedirect(route('login'));
     }
 
-    public function test_can_cancel_own_dispatch()
+    public function test_can_cancel_own_dispatch(): void
     {
         $response = $this->actingAs($this->user)->post(route('dispatch.cancel'), [
             'pirep' => $this->pirep->id
@@ -97,7 +97,7 @@ class CancelDispatchTest extends TestCase
         ]);
     }
 
-    public function test_cannot_cancel_nonexistent_pirep()
+    public function test_cannot_cancel_nonexistent_pirep(): void
     {
         $response = $this->actingAs($this->user)->post(route('dispatch.cancel'), [
             'pirep' => 99999
@@ -107,7 +107,7 @@ class CancelDispatchTest extends TestCase
         $response->assertSessionHas('error', 'Flight already cancelled or no longer exists');
     }
 
-    public function test_cannot_cancel_other_users_dispatch()
+    public function test_cannot_cancel_other_users_dispatch(): void
     {
         $response = $this->actingAs($this->otherUser)->post(route('dispatch.cancel'), [
             'pirep' => $this->pirep->id
@@ -121,7 +121,7 @@ class CancelDispatchTest extends TestCase
         ]);
     }
 
-    public function test_cannot_cancel_accepted_pirep()
+    public function test_cannot_cancel_accepted_pirep(): void
     {
         $this->pirep->state = PirepState::ACCEPTED;
         $this->pirep->save();
@@ -140,7 +140,7 @@ class CancelDispatchTest extends TestCase
         ]);
     }
 
-    public function test_cannot_cancel_rejected_pirep()
+    public function test_cannot_cancel_rejected_pirep(): void
     {
         $this->pirep->state = PirepState::REJECTED;
         $this->pirep->save();
@@ -159,7 +159,7 @@ class CancelDispatchTest extends TestCase
         ]);
     }
 
-    public function test_can_cancel_in_progress_pirep()
+    public function test_can_cancel_in_progress_pirep(): void
     {
         $this->pirep->state = PirepState::IN_PROGRESS;
         $this->pirep->save();
@@ -177,7 +177,7 @@ class CancelDispatchTest extends TestCase
         ]);
     }
 
-    public function test_cancel_dispatch_without_pirep_parameter()
+    public function test_cancel_dispatch_without_pirep_parameter(): void
     {
         $response = $this->actingAs($this->user)->post(route('dispatch.cancel'));
 
@@ -185,7 +185,7 @@ class CancelDispatchTest extends TestCase
         $response->assertSessionHas('error', 'Flight already cancelled or no longer exists');
     }
 
-    public function test_cancel_dispatch_with_empty_pirep_parameter()
+    public function test_cancel_dispatch_with_empty_pirep_parameter(): void
     {
         $response = $this->actingAs($this->user)->post(route('dispatch.cancel'), [
             'pirep' => ''
@@ -195,7 +195,7 @@ class CancelDispatchTest extends TestCase
         $response->assertSessionHas('error', 'Flight already cancelled or no longer exists');
     }
 
-    public function test_cancel_dispatch_with_null_pirep_parameter()
+    public function test_cancel_dispatch_with_null_pirep_parameter(): void
     {
         $response = $this->actingAs($this->user)->post(route('dispatch.cancel'), [
             'pirep' => null

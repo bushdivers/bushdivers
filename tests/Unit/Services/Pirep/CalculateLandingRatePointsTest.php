@@ -21,56 +21,56 @@ class CalculateLandingRatePointsTest extends TestCase
      *
      * @return void
      */
-    public function test_landing_rate_over_400()
+    public function test_landing_rate_over_400(): void
     {
         $expected = PointsType::LANDING_RATE_OVER_400;
         $actual = $this->calculateLandingRatePoints->execute(500.24);
         $this->assertEquals($expected, $actual['points']);
     }
 
-    public function test_landing_rate_300()
+    public function test_landing_rate_300(): void
     {
         $expected = PointsType::LANDING_RATE_181_400;
         $actual = $this->calculateLandingRatePoints->execute(300.56);
         $this->assertEquals($expected, $actual['points']);
     }
 
-    public function test_landing_rate_100()
+    public function test_landing_rate_100(): void
     {
         $expected = PointsType::LANDING_RATE_61_180;
         $actual = $this->calculateLandingRatePoints->execute(100.21);
         $this->assertEquals($expected, $actual['points']);
     }
 
-    public function test_landing_rate_60()
+    public function test_landing_rate_60(): void
     {
         $expected = PointsType::LANDING_RATE_PERFECT_60;
         $actual = $this->calculateLandingRatePoints->execute(60.00);
         $this->assertEquals($expected, $actual['points']);
     }
 
-    public function test_landing_rate_45()
+    public function test_landing_rate_45(): void
     {
         $expected = PointsType::LANDING_RATE_40_59;
         $actual = $this->calculateLandingRatePoints->execute(45.01);
         $this->assertEquals($expected, $actual['points']);
     }
 
-    public function test_landing_rate_6()
+    public function test_landing_rate_6(): void
     {
         $expected = PointsType::LANDING_RATE_3_39;
         $actual = $this->calculateLandingRatePoints->execute(6.45);
         $this->assertEquals($expected, $actual['points']);
     }
 
-    public function test_landing_rate_1()
+    public function test_landing_rate_1(): void
     {
         $expected = PointsType::LANDING_RATE_0_2;
         $actual = $this->calculateLandingRatePoints->execute(1.89);
         $this->assertEquals($expected, $actual['points']);
     }
 
-    public function test_landing_rate_minus()
+    public function test_landing_rate_minus(): void
     {
         $expected = PointsType::LANDING_RATE_BELOW_ZERO;
         $actual = $this->calculateLandingRatePoints->execute(-5.32);

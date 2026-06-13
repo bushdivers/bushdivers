@@ -26,7 +26,7 @@ class GetMetarTest extends TestCase
      *
      * @return void
      */
-    public function test_returned_for_valid_icao()
+    public function test_returned_for_valid_icao(): void
     {
         Http::preventStrayRequests();
         Http::fake([
@@ -40,7 +40,7 @@ class GetMetarTest extends TestCase
         $this->assertNotEmpty($metar);
     }
 
-    public function test_empty_string_is_returned_for_invalid_icao()
+    public function test_empty_string_is_returned_for_invalid_icao(): void
     {
         Http::preventStrayRequests();
         Http::fake([

@@ -15,7 +15,7 @@ class GetResourcesTest extends TestCase
      *
      * @return void
      */
-    public function test_resources_returned()
+    public function test_resources_returned(): void
     {
         DB::table('resource_categories')->insert([
             'id' => 1,
@@ -31,14 +31,14 @@ class GetResourcesTest extends TestCase
         $response->assertJsonCount(1, 'resources');
     }
 
-    public function test_resources_returns_empty_successfully()
+    public function test_resources_returns_empty_successfully(): void
     {
         $response = $this->getJson('/api/resources');
         $response->assertStatus(200);
         $response->assertJsonCount(0, 'resources');
     }
 
-    public function test_resources_dependencies_returned()
+    public function test_resources_dependencies_returned(): void
     {
         DB::table('resource_categories')->insert([
             'id' => 1,

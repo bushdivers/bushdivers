@@ -96,7 +96,7 @@ class ContractPayTest extends TestCase
      *
      * @return void
      */
-    public function test_company_pay_is_added_to_ledger()
+    public function test_company_pay_is_added_to_ledger(): void
     {
         $expectedPay = $this->contract->contract_value;
 
@@ -107,7 +107,7 @@ class ContractPayTest extends TestCase
         ]);
     }
 
-    public function test_pilot_pay_is_returned()
+    public function test_pilot_pay_is_returned(): void
     {
         $expectedPay = (FinancialConsts::PilotPay / 100) * $this->contract->contract_value;
         $companyPay = $this->contract->contract_value;
@@ -116,7 +116,7 @@ class ContractPayTest extends TestCase
         $this->assertEquals($companyPay, $this->contract->contract_value);
     }
 
-    public function test_pilot_pay_is_returned_for_private()
+    public function test_pilot_pay_is_returned_for_private(): void
     {
         $expectedPay = (FinancialConsts::PrivatePilotPay / 100) * $this->contract->contract_value;
         $companyPay = $this->contract->contract_value;
@@ -125,7 +125,7 @@ class ContractPayTest extends TestCase
         $this->assertEquals($companyPay, $this->contract->contract_value);
     }
 
-    public function test_pilot_pay_is_returned_for_rental()
+    public function test_pilot_pay_is_returned_for_rental(): void
     {
         $expectedPay = (FinancialConsts::PrivatePilotPay / 100) * $this->contract->contract_value;
         $companyPay = $this->contract->contract_value;
@@ -134,7 +134,7 @@ class ContractPayTest extends TestCase
         $this->assertEquals($companyPay, $this->contract->contract_value);
     }
 
-    public function test_contract_company_pay_is_made_as_part_of_pirep_process()
+    public function test_contract_company_pay_is_made_as_part_of_pirep_process(): void
     {
         $companyPay = $this->contract->contract_value;
 
@@ -145,7 +145,7 @@ class ContractPayTest extends TestCase
         ]);
     }
 
-    public function test_contract_company_pilot_pay_is_made_as_part_of_pirep_process()
+    public function test_contract_company_pilot_pay_is_made_as_part_of_pirep_process(): void
     {
         $pilotPay = (FinancialConsts::PilotPay / 100) * $this->contract->contract_value;
 
@@ -156,7 +156,7 @@ class ContractPayTest extends TestCase
         ]);
     }
 
-    public function test_contract_pilot_pay_is_made_as_part_of_pirep_process()
+    public function test_contract_pilot_pay_is_made_as_part_of_pirep_process(): void
     {
         $pilotPay = (FinancialConsts::PilotPay / 100) * $this->contract->contract_value;
 

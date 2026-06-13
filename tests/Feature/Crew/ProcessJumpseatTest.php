@@ -40,7 +40,7 @@ class ProcessJumpseatTest extends TestCase
      *
      * @return void
      */
-    public function test_user_moves_to_new_destination()
+    public function test_user_moves_to_new_destination(): void
     {
         $data = [
             'cost' => 2.00,
@@ -51,7 +51,7 @@ class ProcessJumpseatTest extends TestCase
         $this->assertEquals($this->fromAirport->id, $this->user->current_airport_id);
     }
 
-    public function test_cost_added_to_user_transactions()
+    public function test_cost_added_to_user_transactions(): void
     {
         Airport::factory()->create([
             'identifier' => 'PANC',
@@ -69,7 +69,7 @@ class ProcessJumpseatTest extends TestCase
         ]);
     }
 
-    public function test_no_cost_added_to_user_transactions_if_between_hq()
+    public function test_no_cost_added_to_user_transactions_if_between_hq(): void
     {
         $fromAirport = Airport::factory()->create([
             'identifier' => 'AYMG',

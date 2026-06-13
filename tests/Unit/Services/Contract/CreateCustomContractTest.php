@@ -48,7 +48,7 @@ class CreateCustomContractTest extends TestCase
      *
      * @return void
      */
-    public function test_contract_generates_successfully()
+    public function test_contract_generates_successfully(): void
     {
         $this->createCustomRoute->execute($this->airport1->identifier, $this->airport2->identifier, $this->user);
         $this->assertDatabaseHas('contracts', [
@@ -61,7 +61,7 @@ class CreateCustomContractTest extends TestCase
         ]);
     }
 
-    public function test_passenger_contract_generates_successfully()
+    public function test_passenger_contract_generates_successfully(): void
     {
         $this->createCustomRoute->execute($this->airport1->identifier, $this->airport2->identifier, $this->user, 'passenger');
         $this->assertDatabaseHas('contracts', [

@@ -87,7 +87,7 @@ class InjectJobToContractsTest extends TestCase
         ]);
     }
 
-    public function test_admin_can_inject_published_mission_job_to_contracts()
+    public function test_admin_can_inject_published_mission_job_to_contracts(): void
     {
         // Ensure no contracts exist initially
         $this->assertEquals(0, Contract::count());
@@ -112,7 +112,7 @@ class InjectJobToContractsTest extends TestCase
         $this->assertEquals($this->publishedJob->id, $contract->community_job_contract_id);
     }
 
-    public function test_admin_cannot_inject_unpublished_mission_job_to_contracts()
+    public function test_admin_cannot_inject_unpublished_mission_job_to_contracts(): void
     {
         // Ensure no contracts exist initially
         $this->assertEquals(0, Contract::count());
@@ -129,7 +129,7 @@ class InjectJobToContractsTest extends TestCase
         $this->assertEquals(0, Contract::count());
     }
 
-    public function test_non_admin_user_cannot_inject_job_to_contracts()
+    public function test_non_admin_user_cannot_inject_job_to_contracts(): void
     {
         // Make request as regular user
         $response = $this->actingAs($this->regularUser)
@@ -144,7 +144,7 @@ class InjectJobToContractsTest extends TestCase
         $this->assertEquals(0, Contract::count());
     }
 
-    public function test_unauthenticated_user_cannot_inject_job_to_contracts()
+    public function test_unauthenticated_user_cannot_inject_job_to_contracts(): void
     {
         // Make request without authentication
         $response = $this->post("/admin/missions/jobs/{$this->publishedJob->id}/inject");
@@ -156,7 +156,7 @@ class InjectJobToContractsTest extends TestCase
         $this->assertEquals(0, Contract::count());
     }
 
-    public function test_inject_job_returns_404_for_non_existent_job()
+    public function test_inject_job_returns_404_for_non_existent_job(): void
     {
         $nonExistentJobId = 99999;
 
@@ -171,7 +171,7 @@ class InjectJobToContractsTest extends TestCase
         $this->assertEquals(0, Contract::count());
     }
 
-    public function test_inject_job_works_for_passenger_cargo_type()
+    public function test_inject_job_works_for_passenger_cargo_type(): void
     {
         // Create a passenger job
         $passengerJob = CommunityJobContract::factory()->create([

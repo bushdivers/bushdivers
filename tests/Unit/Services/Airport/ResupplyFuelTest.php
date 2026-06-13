@@ -49,7 +49,7 @@ class ResupplyFuelTest extends TestCase
 
     }
 
-    public function test_hubs_are_not_resupplied()
+    public function test_hubs_are_not_resupplied(): void
     {
         $airport = Airport::factory()->create([
             'identifier' => 'AYMG',
@@ -63,7 +63,7 @@ class ResupplyFuelTest extends TestCase
         $this->assertNull($airport->avgas_qty);
     }
 
-    public function test_airports_without_fuel_are_not_resupplied()
+    public function test_airports_without_fuel_are_not_resupplied(): void
     {
         $airport = Airport::factory()->create([
             'identifier' => 'AYMG',

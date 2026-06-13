@@ -30,7 +30,7 @@ class CheckExpiryTest extends TestCase
      * @return void
      */
 
-    public function test_old_contract_is_closed()
+    public function test_old_contract_is_closed(): void
     {
         $contract = Contract::factory()->create([
             'is_available' => false,
@@ -42,7 +42,7 @@ class CheckExpiryTest extends TestCase
     }
 
 
-    public function test_in_progress_contract_is_not_closed()
+    public function test_in_progress_contract_is_not_closed(): void
     {
         $contract = Contract::factory()->create([
             'is_available' => false,
@@ -55,7 +55,7 @@ class CheckExpiryTest extends TestCase
         $this->assertDatabaseCount('contracts', 1);
     }
 
-    public function test_assigned_contract_is_not_closed()
+    public function test_assigned_contract_is_not_closed(): void
     {
         $userId = User::factory()->create()->id;
         $contract = Contract::factory()->create([

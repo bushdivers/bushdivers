@@ -38,14 +38,14 @@ class UpdateAircraftMaintenanceTimeTest extends TestCase
      *
      * @return void
      */
-    public function test_tbo_time_is_updated()
+    public function test_tbo_time_is_updated(): void
     {
         $this->updateAircraftMaintenanceTimes->execute($this->aircraft, 32);
         $this->aircraftEngine->refresh();
         $this->assertEquals(32, $this->aircraftEngine->mins_since_tbo);
     }
 
-    public function test_100hr_time_is_updated()
+    public function test_100hr_time_is_updated(): void
     {
         $this->updateAircraftMaintenanceTimes->execute($this->aircraft, 32);
         $this->aircraftEngine->refresh();

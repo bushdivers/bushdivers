@@ -47,7 +47,7 @@ class ToggleJobRecurringTest extends TestCase
         ]);
     }
 
-    public function test_admin_can_toggle_job_recurring_status_from_false_to_true()
+    public function test_admin_can_toggle_job_recurring_status_from_false_to_true(): void
     {
         // Ensure job is not recurring initially
         $this->assertFalse($this->job->is_recurring);
@@ -71,7 +71,7 @@ class ToggleJobRecurringTest extends TestCase
         $this->assertTrue($this->job->is_recurring);
     }
 
-    public function test_admin_can_toggle_job_recurring_status_from_true_to_false()
+    public function test_admin_can_toggle_job_recurring_status_from_true_to_false(): void
     {
         // Set job as recurring initially
         $this->job->is_recurring = true;
@@ -97,7 +97,7 @@ class ToggleJobRecurringTest extends TestCase
         $this->assertFalse($this->job->is_recurring);
     }
 
-    public function test_admin_can_toggle_job_recurring_status_even_after_mission_is_published()
+    public function test_admin_can_toggle_job_recurring_status_even_after_mission_is_published(): void
     {
         // Publish the mission
         $this->mission->is_published = true;
@@ -121,7 +121,7 @@ class ToggleJobRecurringTest extends TestCase
         ]);
     }
 
-    public function test_non_admin_user_cannot_toggle_job_recurring_status()
+    public function test_non_admin_user_cannot_toggle_job_recurring_status(): void
     {
         // Make request as regular user with a referrer URL
         $response = $this->actingAs($this->regularUser)
@@ -139,7 +139,7 @@ class ToggleJobRecurringTest extends TestCase
         ]);
     }
 
-    public function test_unauthenticated_user_cannot_toggle_job_recurring_status()
+    public function test_unauthenticated_user_cannot_toggle_job_recurring_status(): void
     {
         // Make request without authentication
         $response = $this->post("/admin/missions/jobs/{$this->job->id}/toggle-recurring");
@@ -154,7 +154,7 @@ class ToggleJobRecurringTest extends TestCase
         ]);
     }
 
-    public function test_toggle_job_recurring_returns_404_for_non_existent_job()
+    public function test_toggle_job_recurring_returns_404_for_non_existent_job(): void
     {
         $nonExistentJobId = 99999;
 
@@ -166,7 +166,7 @@ class ToggleJobRecurringTest extends TestCase
         $response->assertStatus(404);
     }
 
-    public function test_multiple_toggles_work_correctly()
+    public function test_multiple_toggles_work_correctly(): void
     {
         // Initial state: not recurring
         $this->assertFalse($this->job->is_recurring);

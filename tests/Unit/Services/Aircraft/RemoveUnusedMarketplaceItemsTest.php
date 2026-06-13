@@ -33,7 +33,7 @@ class RemoveUnusedMarketplaceItemsTest extends TestCase
      *
      * @return void
      */
-    public function test_aircraft_cleared()
+    public function test_aircraft_cleared(): void
     {
         $this->assertEquals(0, Aircraft::count());
 

@@ -37,10 +37,8 @@ class RefreshApiToken extends Command
 
     /**
      * Execute the console command.
-     *
-     * @return int
      */
-    public function handle()
+    public function handle(): int
     {
         $user = User::find($this->argument('user'));
         $this->createApiToken->execute($user);

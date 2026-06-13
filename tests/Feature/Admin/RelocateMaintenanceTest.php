@@ -59,7 +59,7 @@ class RelocateMaintenanceTest extends TestCase
         $this->fleetManager->roles()->attach($fleetManagerRole);
     }
 
-    public function test_fleet_manager_can_relocate_available_aircraft()
+    public function test_fleet_manager_can_relocate_available_aircraft(): void
     {
         $response = $this->actingAs($this->fleetManager)
             ->from('/some-page')
@@ -78,7 +78,7 @@ class RelocateMaintenanceTest extends TestCase
         $this->assertEquals($this->destinationAirport->lon, $this->aircraft->last_lon);
     }
 
-    public function test_fleet_manager_can_relocate_with_lowercase_destination()
+    public function test_fleet_manager_can_relocate_with_lowercase_destination(): void
     {
         $response = $this->actingAs($this->fleetManager)
             ->from('/some-page')
@@ -95,7 +95,7 @@ class RelocateMaintenanceTest extends TestCase
         $this->assertEquals($this->destinationAirport->id, $this->aircraft->current_airport_id);
     }
 
-    public function test_cannot_relocate_aircraft_in_use()
+    public function test_cannot_relocate_aircraft_in_use(): void
     {
         // First, verify the aircraft starts as available
         $this->assertEquals(AircraftState::AVAILABLE, $this->aircraft->state);
@@ -119,7 +119,7 @@ class RelocateMaintenanceTest extends TestCase
         $this->assertEquals($this->sourceAirport->id, $this->aircraft->current_airport_id);
     }
 
-    public function test_cannot_relocate_booked_aircraft()
+    public function test_cannot_relocate_booked_aircraft(): void
     {
         // Update to booked using direct property assignment
         $this->aircraft->state = AircraftState::BOOKED;
@@ -140,7 +140,7 @@ class RelocateMaintenanceTest extends TestCase
         $this->assertEquals($this->sourceAirport->id, $this->aircraft->current_airport_id);
     }
 
-    public function test_cannot_relocate_to_nonexistent_airport()
+    public function test_cannot_relocate_to_nonexistent_airport(): void
     {
         $response = $this->actingAs($this->fleetManager)
             ->from('/some-page')
@@ -157,7 +157,7 @@ class RelocateMaintenanceTest extends TestCase
         $this->assertEquals($this->sourceAirport->id, $this->aircraft->current_airport_id);
     }
 
-    public function test_cannot_relocate_nonexistent_aircraft()
+    public function test_cannot_relocate_nonexistent_aircraft(): void
     {
         $response = $this->actingAs($this->fleetManager)
             ->from('/some-page')
@@ -170,7 +170,7 @@ class RelocateMaintenanceTest extends TestCase
         $response->assertSessionHas('error');
     }
 
-    public function test_regular_user_cannot_access_relocate_endpoint()
+    public function test_regular_user_cannot_access_relocate_endpoint(): void
     {
         $response = $this->actingAs($this->regularUser)
             ->from('/some-page') // Set a referrer URL for redirect()->back()
@@ -184,7 +184,7 @@ class RelocateMaintenanceTest extends TestCase
         $response->assertSessionHas('error');
     }
 
-    public function test_unauthenticated_user_cannot_access_relocate_endpoint()
+    public function test_unauthenticated_user_cannot_access_relocate_endpoint(): void
     {
         $response = $this->post(route('aircraft.relocate'), [
             'aircraft' => $this->aircraft->id,
@@ -195,7 +195,7 @@ class RelocateMaintenanceTest extends TestCase
         $response->assertRedirect(route('login.index'));
     }
 
-    public function test_relocate_handles_missing_aircraft_parameter()
+    public function test_relocate_handles_missing_aircraft_parameter(): void
     {
         $response = $this->actingAs($this->fleetManager)
             ->from('/some-page')
@@ -207,7 +207,7 @@ class RelocateMaintenanceTest extends TestCase
         $response->assertSessionHas('error');
     }
 
-    public function test_relocate_handles_missing_destination_parameter()
+    public function test_relocate_handles_missing_destination_parameter(): void
     {
         $response = $this->actingAs($this->fleetManager)
             ->from('/some-page')

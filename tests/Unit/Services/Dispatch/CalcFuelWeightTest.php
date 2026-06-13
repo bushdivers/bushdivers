@@ -21,14 +21,14 @@ class CalcFuelWeightTest extends TestCase
      *
      * @return void
      */
-    public function test_fuel_weight_returned_correctly_for_avgas()
+    public function test_fuel_weight_returned_correctly_for_avgas(): void
     {
         $expected = WeightConsts::AVGAS_WEIGHT * 100;
         $actual = $this->calcFuelWeight->execute(1, 100);
         $this->assertEquals($expected, $actual);
     }
 
-    public function test_fuel_weight_returned_correctly_for_jetfuel()
+    public function test_fuel_weight_returned_correctly_for_jetfuel(): void
     {
         $expected = WeightConsts::JET_FUEL_WEIGHT * 100;
         $actual = $this->calcFuelWeight->execute(2, 100);

@@ -29,7 +29,7 @@ class UpdatePilotHoursTest extends TestCase
      *
      * @return void
      */
-    public function test_pilot_flight_time_updated()
+    public function test_pilot_flight_time_updated(): void
     {
         ;
         $this->updateUserHours->execute(30, $this->user->id);
@@ -38,7 +38,7 @@ class UpdatePilotHoursTest extends TestCase
         ]);
     }
 
-    public function test_pilot_flights_count_updated()
+    public function test_pilot_flights_count_updated(): void
     {
         ;
         $this->updateUserHours->execute(30, $this->user->id);

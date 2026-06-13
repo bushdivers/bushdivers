@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Hash;
 
 class CreateUser
 {
-    public function execute($name, $email, $password): User
+    public function execute(string $name, string $email, string $password): User
     {
         $user = new User();
         $user->name = $name;

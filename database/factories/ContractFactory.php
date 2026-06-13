@@ -22,9 +22,9 @@ class ContractFactory extends Factory
     /**
      * Define the model's default state.
      *
-     * @return array
+     * @return array<string, mixed>
      */
-    public function definition()
+    public function definition(): array
     {
         $ap = Airport::inRandomOrder()->first();
         $dest = $ap ? Airport::whereNot('id', $ap->id)->inRandomOrder()->first() : null;

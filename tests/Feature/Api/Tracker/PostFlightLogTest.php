@@ -85,7 +85,7 @@ class PostFlightLogTest extends TestCase
      *
      * @return void
      */
-    public function test_add_new_log_success()
+    public function test_add_new_log_success(): void
     {
         Sanctum::actingAs(
             $this->user,
@@ -110,7 +110,7 @@ class PostFlightLogTest extends TestCase
         $response->assertStatus(201);
     }
 
-    public function test_add_new_log_stores_data()
+    public function test_add_new_log_stores_data(): void
     {
         Sanctum::actingAs(
             $this->user,
@@ -139,7 +139,7 @@ class PostFlightLogTest extends TestCase
         ]);
     }
 
-    public function test_add_new_log_missing_data_fails_gracefully()
+    public function test_add_new_log_missing_data_fails_gracefully(): void
     {
         Sanctum::actingAs(
             $this->user,

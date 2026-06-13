@@ -28,7 +28,7 @@ class ResetAircraftMaintenanceTimesTest extends TestCase
      *
      * @return void
      */
-    public function test_reset_100hr()
+    public function test_reset_100hr(): void
     {
         $aircraft = Aircraft::factory()->create([
             'fleet_id' => Fleet::factory()
@@ -42,7 +42,7 @@ class ResetAircraftMaintenanceTimesTest extends TestCase
         $this->assertEquals(0, $aircraftEngine->mins_since_100hr);
     }
 
-    public function test_reset_tbo()
+    public function test_reset_tbo(): void
     {
         $aircraft = Aircraft::factory()->create([
             'fleet_id' => Fleet::factory()
@@ -58,7 +58,7 @@ class ResetAircraftMaintenanceTimesTest extends TestCase
         $this->assertEquals(100, $aircraftEngine->wear);
     }
 
-    public function test_reset_annual()
+    public function test_reset_annual(): void
     {
         $aircraft = Aircraft::factory()->create([
             'fleet_id' => Fleet::factory(),

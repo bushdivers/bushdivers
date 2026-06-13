@@ -20,9 +20,9 @@ class AircraftFactory extends Factory
     /**
      * Define the model's default state.
      *
-     * @return array
+     * @return array<string, mixed>
      */
-    public function definition()
+    public function definition(): array
     {
         return [
             'current_airport_id' => fn () => Airport::factory()->create(['name' => 'Factory Airport', 'is_hub' => true]),

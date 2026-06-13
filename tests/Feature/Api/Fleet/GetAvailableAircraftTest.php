@@ -34,21 +34,21 @@ class GetAvailableAircraftTest extends TestCase
      *
      * @return void
      */
-    public function test_aircraft_returned_ok()
+    public function test_aircraft_returned_ok(): void
     {
         $response = $this->getJson('/api/aircraft/'.'AYMR');
 
         $response->assertStatus(200);
     }
 
-    public function test_aircraft_details_returned()
+    public function test_aircraft_details_returned(): void
     {
         $response = $this->getJson('/api/aircraft/'.'AYMR');
 
         $response->assertJsonFragment(['id' => $this->aircraft->id]);
     }
 
-    public function test_aircraft_details_not_available_for_icao_with_no_aircraft()
+    public function test_aircraft_details_not_available_for_icao_with_no_aircraft(): void
     {
         Airport::factory()->create([
             'identifier' => 'EGLL',

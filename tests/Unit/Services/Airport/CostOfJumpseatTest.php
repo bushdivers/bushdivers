@@ -40,14 +40,14 @@ class CostOfJumpseatTest extends TestCase
      *
      * @return void
      */
-    public function test_jumpseat_calculated()
+    public function test_jumpseat_calculated(): void
     {
         $data = $this->calcCostOfJumpseat->execute('AYMR', 'AYMH');
         $expected = round(71.4 * 0.25, 2);
         $this->assertEquals($expected, $data['cost']);
     }
 
-    public function test_jumpseat_calculated_between_hubs_free()
+    public function test_jumpseat_calculated_between_hubs_free(): void
     {
         $fromAirport = Airport::factory()->create([
             'identifier' => 'AYMG',
@@ -64,7 +64,7 @@ class CostOfJumpseatTest extends TestCase
         $this->assertEquals(0.00, $data['cost']);
     }
 
-    public function test_jumpseat_invalid_icao_handled()
+    public function test_jumpseat_invalid_icao_handled(): void
     {
         $this->expectException(ModelNotFoundException::class);
         $this->calcCostOfJumpseat->execute('AYMR', 'EGLL');

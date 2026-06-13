@@ -25,13 +25,13 @@ class GetUserBalanceTest extends TestCase
      *
      * @return void
      */
-    public function test_get_user_balance_returns_zero_when_nothing()
+    public function test_get_user_balance_returns_zero_when_nothing(): void
     {
         $total = $this->user->balance;
         $this->assertEquals(0, $total);
     }
 
-    public function test_get_user_balance_returns_correct_value()
+    public function test_get_user_balance_returns_correct_value(): void
     {
         DB::table('user_accounts')->insert([
             ['user_id' => $this->user->id, 'type' => TransactionTypes::Jumpseat, 'total' => -250],

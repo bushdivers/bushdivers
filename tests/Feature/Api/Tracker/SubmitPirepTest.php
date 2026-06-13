@@ -148,7 +148,7 @@ class SubmitPirepTest extends TestCase
      *
      * @return void
      */
-    public function test_pirep_submitted_successfully()
+    public function test_pirep_submitted_successfully(): void
     {
         $this->withExceptionHandling();
 
@@ -173,7 +173,7 @@ class SubmitPirepTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function test_deadhead_pirep_submitted_successfully()
+    public function test_deadhead_pirep_submitted_successfully(): void
     {
         Sanctum::actingAs(
             $this->user,
@@ -211,7 +211,7 @@ class SubmitPirepTest extends TestCase
         ]);
     }
 
-    public function test_pirep_submitted_with_flight_time()
+    public function test_pirep_submitted_with_flight_time(): void
     {
         Sanctum::actingAs(
             $this->user,
@@ -238,7 +238,7 @@ class SubmitPirepTest extends TestCase
         ]);
     }
 
-    public function test_pirep_submitted_with_landing_data()
+    public function test_pirep_submitted_with_landing_data(): void
     {
         Sanctum::actingAs(
             $this->user,
@@ -268,7 +268,7 @@ class SubmitPirepTest extends TestCase
         ]);
     }
 
-    public function test_pirep_submitted_with_distance()
+    public function test_pirep_submitted_with_distance(): void
     {
         Sanctum::actingAs(
             $this->user,
@@ -298,7 +298,7 @@ class SubmitPirepTest extends TestCase
         ]);
     }
 
-    public function test_pilot_calcs_peformed_when_pirep_submitted()
+    public function test_pilot_calcs_peformed_when_pirep_submitted(): void
     {
         Event::fake();
 
@@ -323,7 +323,7 @@ class SubmitPirepTest extends TestCase
         Event::assertDispatched(PirepFiled::class);
     }
 
-    public function test_pilot_pay_calc_when_pirep_submitted()
+    public function test_pilot_pay_calc_when_pirep_submitted(): void
     {
         Sanctum::actingAs(
             $this->user,
@@ -351,7 +351,7 @@ class SubmitPirepTest extends TestCase
         ]);
     }
 
-    public function test_pilot_points_when_pirep_submitted()
+    public function test_pilot_points_when_pirep_submitted(): void
     {
         Sanctum::actingAs(
             $this->user,
@@ -385,7 +385,7 @@ class SubmitPirepTest extends TestCase
         ]);
     }
 
-    public function test_pilot_location_and_flights_updated()
+    public function test_pilot_location_and_flights_updated(): void
     {
         Sanctum::actingAs(
             $this->user,
@@ -415,7 +415,7 @@ class SubmitPirepTest extends TestCase
         ]);
     }
 
-    public function test_aircraft_location_and_state_updated()
+    public function test_aircraft_location_and_state_updated(): void
     {
         Sanctum::actingAs(
             $this->user,
@@ -455,7 +455,7 @@ class SubmitPirepTest extends TestCase
         ]);
     }
 
-    public function test_pilot_gets_rank_upgraded()
+    public function test_pilot_gets_rank_upgraded(): void
     {
         Sanctum::actingAs(
             $this->user,
@@ -481,7 +481,7 @@ class SubmitPirepTest extends TestCase
         ]);
     }
 
-    public function test_pilot_gets_award_added()
+    public function test_pilot_gets_award_added(): void
     {
         Sanctum::actingAs(
             $this->user,
@@ -507,7 +507,7 @@ class SubmitPirepTest extends TestCase
         ]);
     }
 
-    public function test_contract_cargo_completed()
+    public function test_contract_cargo_completed(): void
     {
         Sanctum::actingAs(
             $this->user,
@@ -534,7 +534,7 @@ class SubmitPirepTest extends TestCase
         ]);
     }
 
-    public function test_contract_cargo_not_completed()
+    public function test_contract_cargo_not_completed(): void
     {
         $pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,
@@ -575,7 +575,7 @@ class SubmitPirepTest extends TestCase
         ]);
     }
 
-    public function test_contract_completed_and_paid()
+    public function test_contract_completed_and_paid(): void
     {
         Sanctum::actingAs(
             $this->user,
@@ -602,7 +602,7 @@ class SubmitPirepTest extends TestCase
         ]);
     }
 
-    public function test_multiple_items_for_different_contract_completed()
+    public function test_multiple_items_for_different_contract_completed(): void
     {
         $contract1 = Contract::factory()->create([
             'contract_value' => 250.00,
@@ -664,7 +664,7 @@ class SubmitPirepTest extends TestCase
         ]);
     }
 
-    public function test_multiple_items_for_different_contract_not_completed()
+    public function test_multiple_items_for_different_contract_not_completed(): void
     {
         $contract1 = Contract::factory()->create([
             'contract_value' => 250.00,
@@ -724,7 +724,7 @@ class SubmitPirepTest extends TestCase
         ]);
     }
 
-    public function test_multiple_items_for_different_contract_one_completed_one_not_completed()
+    public function test_multiple_items_for_different_contract_one_completed_one_not_completed(): void
     {
         $contract1 = Contract::factory()->create([
             'contract_value' => 250.00,
@@ -784,7 +784,7 @@ class SubmitPirepTest extends TestCase
         ]);
     }
 
-    public function test_pirep_fails_gracefully_with_invalid_date()
+    public function test_pirep_fails_gracefully_with_invalid_date(): void
     {
         Sanctum::actingAs(
             $this->user,
@@ -807,7 +807,7 @@ class SubmitPirepTest extends TestCase
         $response->assertStatus(400);
     }
 
-    public function test_pirep_fails_and_rolls_back()
+    public function test_pirep_fails_and_rolls_back(): void
     {
         Sanctum::actingAs(
             $this->user,
@@ -830,7 +830,7 @@ class SubmitPirepTest extends TestCase
         $response->assertStatus(400);
     }
 
-    public function test_aircraft_maintenance_times_are_updated()
+    public function test_aircraft_maintenance_times_are_updated(): void
     {
         Sanctum::actingAs(
             $this->user,

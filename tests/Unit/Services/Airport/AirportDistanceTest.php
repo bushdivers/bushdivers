@@ -32,7 +32,7 @@ class AirportDistanceTest extends TestCase
      *
      * @return void
      */
-    public function test_short_distance_between_moro_and_MH()
+    public function test_short_distance_between_moro_and_MH(): void
     {
         /** @var Airport  */
         $mh = Airport::factory()->create([
@@ -49,7 +49,7 @@ class AirportDistanceTest extends TestCase
         $this->assertEquals(71.4, $distance);
     }
 
-    public function test_mid_distance_between_moro_and_aypy()
+    public function test_mid_distance_between_moro_and_aypy(): void
     {
         /** @var Airport  */
         $aypy = Airport::factory()->create([
@@ -66,7 +66,7 @@ class AirportDistanceTest extends TestCase
         $this->assertEquals(300.7, $distance);
     }
 
-    public function test_mid_distance_between_moro_and_heathrow()
+    public function test_mid_distance_between_moro_and_heathrow(): void
     {
         /** @var Airport  */
         $heathrow = Airport::factory()->create([

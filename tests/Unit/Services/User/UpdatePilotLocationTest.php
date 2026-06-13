@@ -27,7 +27,7 @@ class UpdatePilotLocationTest extends TestCase
      *
      * @return void
      */
-    public function test_pilot_location_updates_correctly()
+    public function test_pilot_location_updates_correctly(): void
     {
         $icao = 'EGLL';
         $ap = Airport::factory()->create(['identifier' => $icao]);

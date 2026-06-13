@@ -97,7 +97,7 @@ class UpdatePirepStatusTest extends TestCase
      *
      * @return void
      */
-    public function test_pirep_status_added_successfully()
+    public function test_pirep_status_added_successfully(): void
     {
         Sanctum::actingAs(
             $this->user,

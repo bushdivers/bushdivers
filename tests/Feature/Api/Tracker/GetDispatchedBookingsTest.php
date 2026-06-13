@@ -71,7 +71,7 @@ class GetDispatchedBookingsTest extends TestCase
      * @return void
      */
 
-    public function test_returns_bookings_only_from_current_location()
+    public function test_returns_bookings_only_from_current_location(): void
     {
         $this->pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,
@@ -95,7 +95,7 @@ class GetDispatchedBookingsTest extends TestCase
         $response->assertJsonFragment(['departure_airport_id' => $this->pirep->depAirport->identifier]);
     }
 
-    public function test_returns_bookings_when_dead_heading()
+    public function test_returns_bookings_when_dead_heading(): void
     {
         $this->pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,
@@ -115,7 +115,7 @@ class GetDispatchedBookingsTest extends TestCase
         $response->assertJson(['is_empty' => '1']);
     }
 
-    public function test_returns_cargo_for_booking()
+    public function test_returns_cargo_for_booking(): void
     {
         $this->pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,
@@ -139,7 +139,7 @@ class GetDispatchedBookingsTest extends TestCase
         $response->assertJsonCount(1);
     }
 
-    public function test_returns_cargo_type_for_booking()
+    public function test_returns_cargo_type_for_booking(): void
     {
         $this->pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,
@@ -163,7 +163,7 @@ class GetDispatchedBookingsTest extends TestCase
         $response->assertJsonFragment(['contract_type' => 'Cargo']);
     }
 
-    public function test_returns_multiple_bookings()
+    public function test_returns_multiple_bookings(): void
     {
         $this->pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,
@@ -196,7 +196,7 @@ class GetDispatchedBookingsTest extends TestCase
         $response->assertJsonCount(2);
     }
 
-    public function test_returns_zero_bookings()
+    public function test_returns_zero_bookings(): void
     {
         Sanctum::actingAs(
             User::factory()->create(),
@@ -207,7 +207,7 @@ class GetDispatchedBookingsTest extends TestCase
         $response->assertStatus(204);
     }
 
-    public function test_returns_bookings_for_rental_aircraft()
+    public function test_returns_bookings_for_rental_aircraft(): void
     {
         $rental = Rental::factory()->create([
             'current_airport_id' => $this->contract->dep_airport_id,

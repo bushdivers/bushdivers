@@ -39,7 +39,7 @@ class SetCargoCompleteTest extends TestCase
      *
      * @return void
      */
-    public function test_cargo_is_completed()
+    public function test_cargo_is_completed(): void
     {
         $this->updateContractCargoProgress->execute($this->contract, $this->contract->arrAirport, $this->pirep);
         $this->assertDatabaseHas('contracts', [
@@ -49,7 +49,7 @@ class SetCargoCompleteTest extends TestCase
         ]);
     }
 
-    public function test_cargo_is_not_completed_when_at_different_airport()
+    public function test_cargo_is_not_completed_when_at_different_airport(): void
     {
         $otherAirport = Airport::factory()->create();
         $this->updateContractCargoProgress->execute($this->contract, $otherAirport, $this->pirep);
@@ -59,7 +59,7 @@ class SetCargoCompleteTest extends TestCase
         ]);
     }
 
-    public function test_cargo_location_is_updated()
+    public function test_cargo_location_is_updated(): void
     {
         $otherAirport = Airport::factory()->create();
         $this->updateContractCargoProgress->execute($this->contract, $otherAirport, $this->pirep);

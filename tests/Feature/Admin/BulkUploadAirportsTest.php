@@ -13,7 +13,7 @@ class BulkUploadAirportsTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected $user;
+    protected User $user;
 
     protected function setUp(): void
     {
@@ -25,7 +25,7 @@ class BulkUploadAirportsTest extends TestCase
         $this->user->roles()->attach($role);
     }
 
-    public function test_can_bulk_upload_airports_with_valid_data()
+    public function test_can_bulk_upload_airports_with_valid_data(): void
     {
         // Create CSV content with all required fields
         $csvContent = "identifier,name,location,country,country_code,lat,lon,magnetic_variance,altitude,size,longest_runway_length,longest_runway_width,longest_runway_surface,has_avgas,has_jetfuel\n"
@@ -78,7 +78,7 @@ class BulkUploadAirportsTest extends TestCase
         $this->assertEquals(2, $results['total_rows']);
     }
 
-    public function test_validates_required_fields()
+    public function test_validates_required_fields(): void
     {
         // CSV with missing required fields
         $csvContent = "identifier,name,location,country,country_code,lat,lon,magnetic_variance,altitude,size,longest_runway_length,longest_runway_width,longest_runway_surface,has_avgas,has_jetfuel\n"
@@ -102,7 +102,7 @@ class BulkUploadAirportsTest extends TestCase
         $this->assertCount(2, $results['errors']);
     }
 
-    public function test_validates_unique_identifiers()
+    public function test_validates_unique_identifiers(): void
     {
         // Create existing airport
         Airport::factory()->create(['identifier' => 'EXISTING']);
@@ -127,7 +127,7 @@ class BulkUploadAirportsTest extends TestCase
         $this->assertCount(1, $results['errors']);
     }
 
-    public function test_validates_coordinate_ranges()
+    public function test_validates_coordinate_ranges(): void
     {
         $csvContent = "identifier,name,location,country,country_code,lat,lon,magnetic_variance,altitude,size,longest_runway_length,longest_runway_width,longest_runway_surface,has_avgas,has_jetfuel\n"
             . 'TEST,Test Airport,Test Location,United States,US,91,181,0,14,3,2500,75,ASPHALT,true,false';
@@ -149,7 +149,7 @@ class BulkUploadAirportsTest extends TestCase
         $this->assertCount(1, $results['errors']);
     }
 
-    public function test_detects_duplicate_identifiers_in_file()
+    public function test_detects_duplicate_identifiers_in_file(): void
     {
         $csvContent = "identifier,name,location,country,country_code,lat,lon,magnetic_variance,altitude,size,longest_runway_length,longest_runway_width,longest_runway_surface,has_avgas,has_jetfuel\n"
             . "DUPE,Test Airport 1,Test Location 1,United States,US,-33.9469,18.6017,0,14,3,2500,75,ASPHALT,true,false\n"
@@ -172,7 +172,7 @@ class BulkUploadAirportsTest extends TestCase
         $this->assertCount(1, $results['errors']); // Second row should fail
     }
 
-    public function test_validates_coordinates_not_within_2nm_in_file()
+    public function test_validates_coordinates_not_within_2nm_in_file(): void
     {
         // Create CSV with airports very close to each other (< 2nm apart)
         // Using coordinates that are approximately 0.5nm apart
@@ -197,7 +197,7 @@ class BulkUploadAirportsTest extends TestCase
         $this->assertCount(1, $results['errors']); // Second row should fail
     }
 
-    public function test_validates_runway_surface_enum_values()
+    public function test_validates_runway_surface_enum_values(): void
     {
         // Create CSV with invalid runway surface
         $csvContent = "identifier,name,location,country,country_code,lat,lon,magnetic_variance,altitude,size,longest_runway_length,longest_runway_width,longest_runway_surface,has_avgas,has_jetfuel\n"
@@ -220,7 +220,7 @@ class BulkUploadAirportsTest extends TestCase
         $this->assertCount(1, $results['errors']); // Should have one error
     }
 
-    public function test_accepts_valid_runway_surface_enum_values()
+    public function test_accepts_valid_runway_surface_enum_values(): void
     {
         // Create CSV with valid runway surfaces (testing case insensitivity)
         $csvContent = "identifier,name,location,country,country_code,lat,lon,magnetic_variance,altitude,size,longest_runway_length,longest_runway_width,longest_runway_surface,has_avgas,has_jetfuel\n"

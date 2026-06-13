@@ -130,7 +130,7 @@ class SplitContractTest extends TestCase
         ]);
     }
 
-    public function test_split_on_contract_in_progress_fails()
+    public function test_split_on_contract_in_progress_fails(): void
     {
         $id = Uuid::uuid4();
         $c = Contract::factory()->create([
@@ -150,7 +150,7 @@ class SplitContractTest extends TestCase
         $response->assertJson(['message' => 'Contract is in progress']);
     }
 
-    public function test_only_split_own_contracts()
+    public function test_only_split_own_contracts(): void
     {
         $otherUser = User::factory()->create();
         $data = [

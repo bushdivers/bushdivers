@@ -31,7 +31,7 @@ class CheckRankTest extends TestCase
      *
      * @return void
      */
-    public function test_rank_gets_updated()
+    public function test_rank_gets_updated(): void
     {
         $this->checkUserRank->execute($this->user->id);
         $this->assertDatabaseHas('users', [
@@ -40,7 +40,7 @@ class CheckRankTest extends TestCase
         ]);
     }
 
-    public function test_rank_does_not_get_updated()
+    public function test_rank_does_not_get_updated(): void
     {
         $user = User::factory()->create([
             'rank_id' => 1,

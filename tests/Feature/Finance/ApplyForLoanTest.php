@@ -24,7 +24,7 @@ class ApplyForLoanTest extends TestCase
      *
      * @return void
      */
-    public function test_apply_for_loan_adds_loan()
+    public function test_apply_for_loan_adds_loan(): void
     {
         $this->withExceptionHandling();
         $data = [
@@ -38,7 +38,7 @@ class ApplyForLoanTest extends TestCase
         ]);
     }
 
-    public function test_repay_loan_removes_loan()
+    public function test_repay_loan_removes_loan(): void
     {
         $user = User::factory()->create([
             'loan' => 500.00
@@ -54,7 +54,7 @@ class ApplyForLoanTest extends TestCase
         ]);
     }
 
-    public function test_apply_for_loan_adds_user_transaction()
+    public function test_apply_for_loan_adds_user_transaction(): void
     {
         $data = [
             'loanAmount' => 2000,
@@ -68,7 +68,7 @@ class ApplyForLoanTest extends TestCase
         ]);
     }
 
-    public function test_repay_loan_adds_user_transaction()
+    public function test_repay_loan_adds_user_transaction(): void
     {
         $user = User::factory()->create([
             'loan' => 500.00

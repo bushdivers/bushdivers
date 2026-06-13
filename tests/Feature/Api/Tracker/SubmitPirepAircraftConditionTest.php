@@ -129,7 +129,7 @@ class SubmitPirepAircraftConditionTest extends TestCase
      *
      * @return void
      */
-    public function test_basic_wear_is_recorded()
+    public function test_basic_wear_is_recorded(): void
     {
         Artisan::call('db:seed --class=RankSeeder');
         Sanctum::actingAs(
@@ -160,7 +160,7 @@ class SubmitPirepAircraftConditionTest extends TestCase
         ]);
     }
 
-    public function test_gear_wear_is_recorded()
+    public function test_gear_wear_is_recorded(): void
     {
         Artisan::call('db:seed --class=RankSeeder');
         Sanctum::actingAs(
@@ -191,7 +191,7 @@ class SubmitPirepAircraftConditionTest extends TestCase
         ]);
     }
 
-    public function test_heavy_gear_wear_is_recorded()
+    public function test_heavy_gear_wear_is_recorded(): void
     {
         Artisan::call('db:seed --class=RankSeeder');
         Sanctum::actingAs(

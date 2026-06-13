@@ -53,20 +53,20 @@ class GetCostOfJumpseatTest extends TestCase
      *
      * @return void
      */
-    public function test_cost_returned_successfully()
+    public function test_cost_returned_successfully(): void
     {
         $response = $this->getJson('/api/jumpseat/cost/'.$this->fromAirport->identifier.'/'.$this->toAirport->identifier);
         $response->assertStatus(200);
     }
 
-    public function test_cost_is_correct()
+    public function test_cost_is_correct(): void
     {
         $response = $this->getJson('/api/jumpseat/cost/'.$this->fromAirport->identifier.'/AYMN');
         $cost = round(71.4 * 0.25, 2);
         $response->assertJson(['cost' => $cost]);
     }
 
-    public function test_invalid_airport_fails()
+    public function test_invalid_airport_fails(): void
     {
         $response = $this->getJson('/api/jumpseat/cost/'.$this->fromAirport->identifier.'/AAAA');
         $response->assertStatus(404);

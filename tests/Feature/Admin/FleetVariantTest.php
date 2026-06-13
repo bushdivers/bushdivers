@@ -31,7 +31,7 @@ class FleetVariantTest extends TestCase
         $this->variant = $this->fleet->variants()->first();
     }
 
-    public function test_can_view_create_form()
+    public function test_can_view_create_form(): void
     {
         $response = $this->actingAs($this->user)
             ->get(route('admin.fleet.variant.create', $this->fleet->id));
@@ -44,7 +44,7 @@ class FleetVariantTest extends TestCase
         );
     }
 
-    public function test_can_create_variant()
+    public function test_can_create_variant(): void
     {
         $response = $this->actingAs($this->user)->post(
             route('admin.fleet.variant.store', $this->fleet->id),
@@ -68,7 +68,7 @@ class FleetVariantTest extends TestCase
         ]);
     }
 
-    public function test_creating_default_variant_clears_other_defaults()
+    public function test_creating_default_variant_clears_other_defaults(): void
     {
         // Ensure the factory-created variant is the default
         $this->assertTrue($this->variant->is_default);
@@ -91,7 +91,7 @@ class FleetVariantTest extends TestCase
         $this->assertDatabaseHas('fleet_variants', ['id' => $this->variant->id, 'is_default' => false]);
     }
 
-    public function test_can_update_variant()
+    public function test_can_update_variant(): void
     {
         $response = $this->actingAs($this->user)->post(
             route('admin.fleet.variant.update', [$this->fleet->id, $this->variant->id]),
@@ -115,7 +115,7 @@ class FleetVariantTest extends TestCase
         ]);
     }
 
-    public function test_can_delete_variant_when_multiple_exist()
+    public function test_can_delete_variant_when_multiple_exist(): void
     {
         $second = FleetVariant::factory()->create(['fleet_id' => $this->fleet->id, 'is_default' => false]);
 
@@ -126,7 +126,7 @@ class FleetVariantTest extends TestCase
         $this->assertDatabaseMissing('fleet_variants', ['id' => $second->id]);
     }
 
-    public function test_cannot_delete_last_variant()
+    public function test_cannot_delete_last_variant(): void
     {
         $response = $this->actingAs($this->user)
             ->get(route('admin.fleet.variant.delete', [$this->fleet->id, $this->variant->id]));
@@ -135,7 +135,7 @@ class FleetVariantTest extends TestCase
         $this->assertDatabaseHas('fleet_variants', ['id' => $this->variant->id]);
     }
 
-    public function test_cannot_delete_variant_with_active_dispatch()
+    public function test_cannot_delete_variant_with_active_dispatch(): void
     {
         $second = FleetVariant::factory()->create(['fleet_id' => $this->fleet->id, 'is_default' => false]);
 

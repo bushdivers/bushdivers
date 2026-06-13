@@ -30,7 +30,7 @@ class StoreContractTest extends TestCase
      *
      * @return void
      */
-    public function test_contract_details_stored()
+    public function test_contract_details_stored(): void
     {
         $data = [
             [
@@ -53,7 +53,7 @@ class StoreContractTest extends TestCase
         ]);
     }
 
-    public function test_multiple_contract_details_stored()
+    public function test_multiple_contract_details_stored(): void
     {
         $data = [
             [
@@ -85,7 +85,7 @@ class StoreContractTest extends TestCase
         $this->assertDatabaseCount('contracts', 2);
     }
 
-    public function test_fuel_contract_details_stored()
+    public function test_fuel_contract_details_stored(): void
     {
         $data = [
             [

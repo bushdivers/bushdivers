@@ -74,7 +74,7 @@ class LandingFeeTest extends TestCase
      *
      * @return void
      */
-    public function test_small_landing_fee_calculated()
+    public function test_small_landing_fee_calculated(): void
     {
         $pirep = Pirep::factory()->create([
             'aircraft_id' => $this->aircraftSmall->id,
@@ -89,7 +89,7 @@ class LandingFeeTest extends TestCase
         ]);
     }
 
-    public function test_small_landing_fee_not_calculated_rental()
+    public function test_small_landing_fee_not_calculated_rental(): void
     {
         $user = User::factory()->create();
 
@@ -115,7 +115,7 @@ class LandingFeeTest extends TestCase
         ]);
     }
 
-    public function test_small_landing_fee_not_calculated_private()
+    public function test_small_landing_fee_not_calculated_private(): void
     {
         $aircraft = Aircraft::factory()->create([
             'fleet_id' => $this->fleetSmall->id,
@@ -138,7 +138,7 @@ class LandingFeeTest extends TestCase
         ]);
     }
 
-    public function test_medium_landing_fee_calculated()
+    public function test_medium_landing_fee_calculated(): void
     {
         $pirep = Pirep::factory()->create([
             'aircraft_id' => $this->aircraftMedium->id,
@@ -153,7 +153,7 @@ class LandingFeeTest extends TestCase
         ]);
     }
 
-    public function test_large_landing_fee_calculated()
+    public function test_large_landing_fee_calculated(): void
     {
         $pirep = Pirep::factory()->create([
             'aircraft_id' => $this->aircraftLarge->id,
@@ -168,7 +168,7 @@ class LandingFeeTest extends TestCase
         ]);
     }
 
-    public function test_landing_fee_not_calculated_at_small_afield()
+    public function test_landing_fee_not_calculated_at_small_afield(): void
     {
         $airport = Airport::factory()->create([
             'identifier' => 'AYMN',

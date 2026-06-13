@@ -30,7 +30,7 @@ class ProcessWearTest extends TestCase
      *
      * @return void
      */
-    public function test_aircraft_wear_successful()
+    public function test_aircraft_wear_successful(): void
     {
         $aircraft = Aircraft::factory()->create([
             'fleet_id' => $this->fleet->id,

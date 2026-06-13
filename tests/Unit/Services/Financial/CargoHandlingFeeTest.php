@@ -81,7 +81,7 @@ class CargoHandlingFeeTest extends TestCase
      *
      * @return void
      */
-    public function test_cargo_calculated()
+    public function test_cargo_calculated(): void
     {
         $cost = $this->contract->cargo_qty * 0.15;
         $this->calcCargoHandlingFee->execute($this->pirep);
@@ -93,7 +93,7 @@ class CargoHandlingFeeTest extends TestCase
         ]);
     }
 
-    public function test_cargo_calculated_for_rental()
+    public function test_cargo_calculated_for_rental(): void
     {
         $pirep = Pirep::factory()->create([
             'arrival_airport_id' => $this->airport->id,
@@ -117,7 +117,7 @@ class CargoHandlingFeeTest extends TestCase
         ]);
     }
 
-    public function test_cargo_calculated_for_private()
+    public function test_cargo_calculated_for_private(): void
     {
         $pirep = Pirep::factory()->create([
             'arrival_airport_id' => $this->airport->id,
@@ -140,7 +140,7 @@ class CargoHandlingFeeTest extends TestCase
         ]);
     }
 
-    public function test_cargo_not_calculated_for_small_airport()
+    public function test_cargo_not_calculated_for_small_airport(): void
     {
         $airport = Airport::factory()->create([
             'size' => 1
