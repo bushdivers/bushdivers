@@ -21,6 +21,7 @@ import { Link, usePage } from '@inertiajs/react'
 import { Globe, Wrench } from 'lucide-react'
 import React from 'react'
 
+import { formatDate } from '../../helpers/date.helpers.js'
 import { displayFileSize } from '../../helpers/generic.helpers.js'
 import {
   displayDurationHrMin,
@@ -219,7 +220,8 @@ const FleetCardContent = ({ fleet }) => {
                 <Tr>
                   <Th scope="col">Registration</Th>
                   <Th scope="col">Hub</Th>
-                  <Th scope="col">Current Location</Th>
+                  <Th scope="col">Location</Th>
+                  <Th scope="col">Last Flight</Th>
                   <Th scope="col">Flight Time</Th>
                   <Th scope="col">Status</Th>
                   <Th scope="col">Condition</Th>
@@ -239,6 +241,11 @@ const FleetCardContent = ({ fleet }) => {
                     </Td>
                     <Td>
                       <AirportLabel airport={aircraft.location} />
+                    </Td>
+                    <Td>
+                      {aircraft.last_pirep
+                        ? formatDate(aircraft.last_pirep.submitted_at)
+                        : 'N/A'}
                     </Td>
                     <Td>{displayDurationHrMin(aircraft.flight_time_mins)}</Td>
                     <Td>

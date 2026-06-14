@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Location\Coordinate;
 
 class Aircraft extends Model implements IsLocatable
@@ -79,6 +80,14 @@ class Aircraft extends Model implements IsLocatable
     public function pireps(): HasMany
     {
         return $this->hasMany(Pirep::class, 'aircraft_id', 'id')->orderBy('submitted_at', 'desc');
+    }
+
+    /**
+     * @return HasOne<Pirep, $this>
+     */
+    public function lastPirep(): HasOne
+    {
+        return $this->hasOne(Pirep::class, 'aircraft_id', 'id')->latestOfMany('submitted_at');
     }
 
     /**
