@@ -12,6 +12,13 @@ parameters:
         - routes/
         - tests/
 
+    ignoreErrors:
+        -
+            message: '#Unable to resolve the template type TKey in call to function collect#'
+            path: tests/*
+        -
+            message: '#Unable to resolve the template type TValue in call to function collect#'
+            path: tests/*
 
 #    ignoreErrors:
 #        - '#PHPDoc tag @var#'

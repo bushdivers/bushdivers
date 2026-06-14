@@ -11,7 +11,7 @@ class Resource extends Model
 {
     // INFO: filename = package name
 
-    use HasFactory;
+    //use HasFactory;
 
     protected $casts = [
         'dependencies' => 'array'

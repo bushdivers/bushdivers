@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class TourCheckpointUser extends Model
 {
+    /**
+     * @use HasFactory<\Database\Factories\TourCheckpointUserFactory>
+     */
     use HasFactory;
 
     protected $fillable = [

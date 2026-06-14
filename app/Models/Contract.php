@@ -10,6 +10,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Contract extends Model
 {
+    /**
+    * @use HasFactory<\Database\Factories\ContractFactory>
+    */
     use HasFactory;
 
     protected $casts = [

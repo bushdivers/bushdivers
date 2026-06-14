@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class FinanceAgreement extends Model
 {
+    /**
+     * @use HasFactory<\Database\Factories\FinanceAgreementFactory>
+     */
     use HasFactory;
 
     protected $casts = [

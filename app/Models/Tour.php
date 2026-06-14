@@ -9,6 +9,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Tour extends Model
 {
+    /**
+     * @use HasFactory<\Database\Factories\TourFactory>
+     */
     use HasFactory;
 
     /**

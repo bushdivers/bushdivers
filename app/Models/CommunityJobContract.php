@@ -11,6 +11,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class CommunityJobContract extends Model
 {
+    /**
+     * @use HasFactory<\Database\Factories\CommunityJobContractFactory>
+     */
     use HasFactory;
 
     protected $casts = [

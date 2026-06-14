@@ -9,6 +9,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class AircraftEngine extends Model
 {
+    /**
+     * @use HasFactory<\Database\Factories\AircraftEngineFactory>
+     */
     use HasFactory;
 
     protected $fillable = [

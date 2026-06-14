@@ -12,6 +12,9 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Fleet extends Model
 {
+    /**
+     * @use HasFactory<\Database\Factories\FleetFactory>
+     */
     use HasFactory;
 
     protected $casts = [

@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Manufacturer extends Model
 {
+    /**
+     * @use HasFactory<\Database\Factories\ManufacturerFactory>
+     */
     use HasFactory;
 
     protected $fillable = ['name', 'logo_url'];

@@ -18,6 +18,9 @@ use Override;
 
 class Airport extends Model implements IsLocatable
 {
+    /**
+     * @use HasFactory<\Database\Factories\AirportFactory>
+     */
     use HasFactory;
     use HasLocation;
 
@@ -70,6 +73,9 @@ class Airport extends Model implements IsLocatable
         return $this->hasMany(Aircraft::class, 'hub_id');
     }
 
+    /**
+     * @param Builder<Airport>  $query
+     */
     #[Scope]
     protected function withRangeTo(Builder $query, Airport|Coordinate|null $to)
     {

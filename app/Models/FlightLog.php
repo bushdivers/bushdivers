@@ -10,7 +10,11 @@ use Location\Coordinate;
 
 class FlightLog extends Model implements IsLocatable
 {
-    use HasFactory, HasLocation;
+    /**
+     * @use HasFactory<\Database\Factories\FlightLogFactory>
+     */
+    use HasFactory;
+    use HasLocation;
 
     public function getCoordinate(): Coordinate
     {

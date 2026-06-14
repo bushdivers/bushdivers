@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class Upload extends Model
 {
-    use HasFactory;
+    //use HasFactory;
 
     protected $fillable = [
         'url',

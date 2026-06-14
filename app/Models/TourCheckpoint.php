@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class TourCheckpoint extends Model
 {
+    /**
+     * @use HasFactory<\Database\Factories\TourCheckpointFactory>
+     */
     use HasFactory;
 
     /**

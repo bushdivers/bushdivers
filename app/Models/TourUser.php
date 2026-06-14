@@ -9,6 +9,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class TourUser extends Model
 {
+    /**
+     * @use HasFactory<\Database\Factories\TourUserFactory>
+     */
     use HasFactory;
 
     protected $fillable = ['tour_id', 'user_id', 'next_airport_id'];

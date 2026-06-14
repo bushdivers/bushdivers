@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class PirepCargo extends Model
 {
+    /**
+     * @use HasFactory<\Database\Factories\PirepCargoFactory>
+     */
     use HasFactory;
 
     public $timestamps = false;

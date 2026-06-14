@@ -10,6 +10,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class FleetVariant extends Model
 {
+    /**
+     * @use HasFactory<\Database\Factories\FleetVariantFactory>
+     */
     use HasFactory;
     protected $fillable = [
         'fleet_id',

@@ -16,6 +16,9 @@ use Location\Coordinate;
 
 class Aircraft extends Model implements IsLocatable
 {
+    /**
+     * @use HasFactory<\Database\Factories\AircraftFactory>
+     */
     use HasFactory;
     use HasLocation;
 

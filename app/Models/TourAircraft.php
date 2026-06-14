@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class TourAircraft extends Model
 {
+    /**
+     * @use HasFactory<\Database\Factories\TourAircraftFactory>
+     */
     use HasFactory;
 
     /**

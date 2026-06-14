@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class ResourceCategory extends Model
 {
-    use HasFactory;
+    //use HasFactory;
 
     public $timestamps = false;
 

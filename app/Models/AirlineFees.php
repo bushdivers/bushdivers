@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class AirlineFees extends Model
 {
+    /**
+     * @use HasFactory<\Database\Factories\AirlineFeesFactory>
+     */
     use HasFactory;
 
     public $timestamps = false;

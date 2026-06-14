@@ -9,6 +9,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class CommunityJob extends Model
 {
+    /**
+     * @use HasFactory<\Database\Factories\CommunityJobFactory>
+     */
     use HasFactory;
 
     protected $fillable = [

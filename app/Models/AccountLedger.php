@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class AccountLedger extends Model
 {
+    /**
+     * @use HasFactory<\Database\Factories\AccountLedgerFactory>
+     */
     use HasFactory;
 
     /**

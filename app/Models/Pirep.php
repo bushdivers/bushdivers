@@ -13,6 +13,9 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Pirep extends Model
 {
+    /**
+     * @use HasFactory<\Database\Factories\PirepFactory>
+     */
     use HasFactory;
 
     public $incrementing = false;
