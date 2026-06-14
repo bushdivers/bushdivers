@@ -91,7 +91,7 @@ const Missions = ({ missions }) => {
   async function completeMission(id) {
     const accepted = await messageBox.confirm({
       title: 'Complete Mission',
-      description: 'Are you sure you want to complete this mission?',
+      description: 'Are you sure you want to mark this mission as completed?',
       status: 'warning',
       confirmText: 'Complete',
     })

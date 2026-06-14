@@ -45,6 +45,15 @@ class CompleteMissionController extends Controller
                 $hubAirport->jetfuel_qty = null;
                 $hubAirport->save();
             }
+
+            // Find remaining ferry flights and remove ferry status
+            $ferryFlights = $hubAirport->ferryFlights()->where('is_ferry', true)->get();
+            foreach ($ferryFlights as $flight) {
+                $flight->is_ferry = false;
+                $flight->ferry_user_id = null;
+                $flight->ferry_distance = null;
+                $flight->save();
+            }
         }
 
         // find recurring

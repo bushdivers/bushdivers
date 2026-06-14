@@ -32,6 +32,9 @@ class UpdateFerryController extends Controller
         ]);
 
         $aircraft->is_ferry = $validated['is_ferry'];
+        if (!$validated['is_ferry'] || $validated['ferry_user_id'] != $aircraft->ferry_user_id)
+            $aircraft->ferry_distance = null;
+
         $aircraft->ferry_user_id = $validated['is_ferry'] ? $validated['ferry_user_id'] : null;
         $aircraft->save();
 
