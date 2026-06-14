@@ -4,16 +4,11 @@ namespace App\Http\Controllers\Tracker;
 
 use App\Events\PirepFiled;
 use App\Http\Controllers\Controller;
-use App\Models\AccountLedger;
 use App\Models\Contract;
-use App\Models\ContractCargo;
 use App\Models\Enums\PirepState;
 use App\Models\Enums\PirepStatus;
 use App\Models\Pirep;
 use App\Models\PirepCargo;
-use App\Models\Point;
-use App\Models\User;
-use App\Services\Airports\CheckHubProgress;
 use App\Services\Contracts\UpdateContractCargoProgress;
 use App\Services\Finance\ProcessPirepFinancials;
 use App\Services\Pireps\CalculatePirepPoints;
@@ -34,22 +29,19 @@ class SubmitPirepController extends Controller
     protected CalculatePirepPoints $calculatePirepPoints;
     protected SetPirepTotalScore $setPirepTotalScore;
     protected CheckTourProgress $checkTourProgress;
-    protected CheckHubProgress $checkHubProgress;
 
     public function __construct(
         UpdateContractCargoProgress $updateContractCargoProgress,
         ProcessPirepFinancials $processPirepFinancials,
         CalculatePirepPoints $calculatePirepPoints,
         SetPirepTotalScore $setPirepTotalScore,
-        CheckTourProgress $checkTourProgress,
-        CheckHubProgress $checkHubProgress
+        CheckTourProgress $checkTourProgress
     ) {
         $this->updateContractCargoProgress = $updateContractCargoProgress;
         $this->processPirepFinancials = $processPirepFinancials;
         $this->calculatePirepPoints = $calculatePirepPoints;
         $this->setPirepTotalScore = $setPirepTotalScore;
         $this->checkTourProgress = $checkTourProgress;
-        $this->checkHubProgress = $checkHubProgress;
     }
 
     /**
@@ -57,13 +49,13 @@ class SubmitPirepController extends Controller
      */
     public function __invoke(Request $request): JsonResponse
     {
-        try
-        {
+        try {
             $pirep = Pirep::with(['arrAirport'])->where('user_id', Auth::id())->findOrFail($request->pirep_id);
 
             $agent = $request->userAgent();
-            if (!preg_match('/^\w+\/\d{1,2}\.\d{1,2}\.\d{1,2}\.\d{1,2}$/', $agent))
+            if (!preg_match('/^\w+\/\d{1,2}\.\d{1,2}\.\d{1,2}\.\d{1,2}$/', $agent)) {
                 $agent = null;
+            }
 
             DB::transaction(function () use ($request, $pirep, $agent) {
 
@@ -98,11 +90,11 @@ class SubmitPirepController extends Controller
                         $contractCargo = Contract::find($c->contract_cargo_id);
                         $this->updateContractCargoProgress->execute($contractCargo, $pirep->arrAirport, $pirep);
                     }
-                    $this->checkHubProgress->execute($pirep->arrAirport);
                 }
 
-                if ($pirep->tour_id)
+                if ($pirep->tour_id) {
                     $this->checkTourProgress->execute($pirep);
+                }
 
                 // process points and financials
                 $this->processPirepFinancials->execute($pirep);
@@ -115,13 +107,9 @@ class SubmitPirepController extends Controller
             PirepFiled::dispatch($pirep);
 
             return response()->json(['message' => 'Pirep successfully submitted']);
-        }
-        catch (ModelNotFoundException $e)
-        {
+        } catch (ModelNotFoundException $e) {
             return response()->json(['message' => 'Pirep not found'], 404);
-        }
-        catch (\Exception $e)
-        {
+        } catch (\Exception $e) {
             Log::error($e->getMessage(), $e->getTrace());
             return response()->json(['message' => 'An error occurred: ' . $e->getMessage()], 400);
         }

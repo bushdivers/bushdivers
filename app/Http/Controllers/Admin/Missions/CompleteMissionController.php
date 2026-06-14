@@ -34,6 +34,19 @@ class CompleteMissionController extends Controller
         $mission->completed_at = Carbon::now();
         $mission->save();
 
+        // If this is a hub event, unlock the hub
+        if ($mission->hub_airport_id) {
+            $hubAirport = $mission->hubAirport;
+            if ($hubAirport) {
+                $hubAirport->hub_in_progress = false;
+                $hubAirport->has_avgas = true;
+                $hubAirport->has_jetfuel = true;
+                $hubAirport->avgas_qty = null;
+                $hubAirport->jetfuel_qty = null;
+                $hubAirport->save();
+            }
+        }
+
         // find recurring
         $jobs = CommunityJobContract::where('community_job_id', $request->id)->get();
         foreach ($jobs as $job) {
@@ -46,11 +59,12 @@ class CompleteMissionController extends Controller
 
             foreach ($jobContracts as $contract) {
                 $userId = $contract->user_id;
-                if ($userId == 0)
+                if ($userId == 0) {
                     continue;
+                }
 
-                $this->addAirlineTransaction->execute(AirlineTransactionTypes::ContractExpenditure, round($contract->contract_value/2), 'Community Bonus');
-                $this->addUserTransaction->execute($userId, TransactionTypes::Bonus, round($contract->contract_value/2));
+                $this->addAirlineTransaction->execute(AirlineTransactionTypes::ContractExpenditure, round($contract->contract_value / 2), 'Community Bonus');
+                $this->addUserTransaction->execute($userId, TransactionTypes::Bonus, round($contract->contract_value / 2));
             }
         }
 

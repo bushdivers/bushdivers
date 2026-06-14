@@ -15,6 +15,9 @@ class ShowMissionsController extends Controller
     public function __invoke(Request $request)
     {
         $missions = CommunityJob::all();
-        return Inertia::render('Admin/Missions', ['missions' => $missions]);
+
+        return Inertia::render('Admin/Missions', [
+            'missions' => $missions,
+        ]);
     }
 }

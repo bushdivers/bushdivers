@@ -40,6 +40,6 @@ class CreateCommunityContract
             'expires_at' => Carbon::now()->addDays(7),
             'is_fuel' => false
         ]];
-        $this->storeContracts->execute($data, false, false, null, ContractType::Community, null, true, $job);
+        $this->storeContracts->execute($data, false, false, null, ContractType::Community, true, $job);
     }
 }

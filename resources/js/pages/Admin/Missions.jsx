@@ -2,6 +2,7 @@ import {
   Button,
   Card,
   CardBody,
+  Checkbox,
   Flex,
   FormControl,
   FormLabel,
@@ -25,35 +26,39 @@ import {
   Tr,
   useDisclosure,
 } from '@chakra-ui/react'
-import { Link, router } from '@inertiajs/react'
-import React, { useState } from 'react'
+import { Link, router, useForm, usePage } from '@inertiajs/react'
+import React from 'react'
 
 import { useMessageBox } from '../../components/elements/MessageBoxProvider.jsx'
 import AdminLayout from '../../components/layout/AdminLayout.jsx'
 
 const Missions = ({ missions }) => {
+  const { auth } = usePage().props
+
   const { isOpen, onOpen, onClose } = useDisclosure()
   const messageBox = useMessageBox()
-  const [newMissionError, setNewMissionError] = useState(null)
-  const [newMission, setNewMission] = useState({
+  const form = useForm({
     name: '',
+    is_hub_event: false,
+    hub_airport_icao: '',
   })
 
   function handleChange(e) {
-    setNewMission({
-      ...newMission,
-      [e.target.id]: e.target.value,
-    })
+    const value =
+      e.target.type === 'checkbox' ? e.target.checked : e.target.value
+    form.setData(e.target.id, value)
   }
-  function createMission() {
-    setNewMissionError(null)
-    if (newMission.name === '') {
-      setNewMissionError('Please ensure all fields are filled in')
-      return
-    }
 
-    router.post('/admin/missions', newMission)
+  function resetForm() {
     onClose()
+    form.reset()
+  }
+
+  function createMission(e) {
+    e.preventDefault()
+    form.post('/admin/missions', {
+      onSuccess: () => resetForm(),
+    })
   }
 
   async function deleteMission(mission) {
@@ -115,6 +120,7 @@ const Missions = ({ missions }) => {
                   <Tr>
                     <Th>Mission #</Th>
                     <Th>Name</Th>
+                    <Th>Type</Th>
                     <Th>Status</Th>
                     <Th>Actions</Th>
                   </Tr>
@@ -124,6 +130,13 @@ const Missions = ({ missions }) => {
                     <Tr key={mission.id}>
                       <Td>{mission.id}</Td>
                       <Td>{mission.name}</Td>
+                      <Td>
+                        {mission.hub_airport_id ? (
+                          <Tag colorScheme="purple">Hub Event</Tag>
+                        ) : (
+                          <Tag>Regular Mission</Tag>
+                        )}
+                      </Td>
                       <Td>
                         {mission.is_completed ? (
                           <Tag colorScheme="green">Completed</Tag>
@@ -178,40 +191,67 @@ const Missions = ({ missions }) => {
         </CardBody>
       </Card>
 
-      <Modal
-        isOpen={isOpen}
-        onClose={() => {
-          onClose()
-          setNewMissionError(null)
-        }}
-      >
+      <Modal isOpen={isOpen} onClose={resetForm}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Create a new mission</ModalHeader>
           <ModalCloseButton />
-          <ModalBody pb={6}>
-            {newMissionError ? (
-              <Text color="red.500">{newMissionError}</Text>
-            ) : null}
-            <FormControl>
-              <FormLabel>Mission Name</FormLabel>
-              <Input onChange={handleChange} id="name" />
-            </FormControl>
-          </ModalBody>
+          <form onSubmit={createMission}>
+            <ModalBody pb={6}>
+              <FormControl mb={3} isInvalid={!!form.errors.name}>
+                <FormLabel>Mission Name</FormLabel>
+                <Input
+                  onChange={handleChange}
+                  id="name"
+                  value={form.data.name}
+                />
+                {form.errors.name && (
+                  <Text color="red.500" fontSize="sm" mt={1}>
+                    {form.errors.name}
+                  </Text>
+                )}
+              </FormControl>
+              {auth.user.is_admin && (
+                <FormControl mb={3}>
+                  <Checkbox
+                    id="is_hub_event"
+                    isChecked={form.data.is_hub_event}
+                    onChange={handleChange}
+                  >
+                    This is a Hub Event
+                  </Checkbox>
+                </FormControl>
+              )}
+              {auth.user.is_admin && form.data.is_hub_event && (
+                <FormControl mb={3} isInvalid={!!form.errors.hub_airport_icao}>
+                  <FormLabel>Hub Airport (ICAO)</FormLabel>
+                  <Input
+                    placeholder="Type ICAO code (e.g., KJFK)"
+                    onChange={handleChange}
+                    id="hub_airport_icao"
+                    value={form.data.hub_airport_icao}
+                  />
+                  {form.errors.hub_airport_icao && (
+                    <Text color="red.500" fontSize="sm" mt={1}>
+                      {form.errors.hub_airport_icao}
+                    </Text>
+                  )}
+                </FormControl>
+              )}
+            </ModalBody>
 
-          <ModalFooter>
-            <Button onClick={() => createMission()} mr={3}>
-              Save
-            </Button>
-            <Button
-              onClick={() => {
-                onClose()
-                setNewMissionError(null)
-              }}
-            >
-              Cancel
-            </Button>
-          </ModalFooter>
+            <ModalFooter>
+              <Button
+                type="submit"
+                mr={3}
+                isLoading={form.processing}
+                disabled={form.processing}
+              >
+                Save
+              </Button>
+              <Button onClick={resetForm}>Cancel</Button>
+            </ModalFooter>
+          </form>
         </ModalContent>
       </Modal>
     </AdminLayout>

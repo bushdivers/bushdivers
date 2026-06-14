@@ -11,7 +11,7 @@ use App\Models\User;
 
 class StoreContracts
 {
-    public function execute($data, $isAvailable = true, $isCustom = false, ?User $user = null, ContractType $type = ContractType::General, ?Airport $airport = null, $isShared = false, ?CommunityJobContract $jobId = null)
+    public function execute($data, $isAvailable = true, $isCustom = false, ?User $user = null, ContractType $type = ContractType::General, bool $isShared = false, ?CommunityJobContract $jobId = null)
     {
         foreach ($data as $contractInfo) {
             if (!$contractInfo) {
@@ -21,9 +21,6 @@ class StoreContracts
             // TODO: migrate to a more rigid structure
             $depAirport = $contractInfo['departure'] instanceof Airport ? $contractInfo['departure'] : Airport::where('identifier', $contractInfo['departure'])->first();
             $arrAirport = $contractInfo['destination'] instanceof Airport ? $contractInfo['destination'] : Airport::where('identifier', $contractInfo['destination'])->first();
-            if ($airport != null) {
-                $airport = Airport::where('identifier', $airport)->first()->id;
-            }
 
             $contract = new Contract();
             $contract->contract_type_id = $type;
@@ -38,7 +35,6 @@ class StoreContracts
             $contract->heading = $contractInfo['heading'];
             $contract->expires_at = $contractInfo['expires_at'];
             $contract->is_available = $isAvailable;
-            $contract->hub_airport_id = $airport;
             $contract->is_shared = $isShared;
             $contract->community_job_contract_id = $jobId->id ?? null;
 

@@ -269,6 +269,8 @@ Route::middleware('auth')->group(function () {
             ->name('admin.mission.publish');
         Route::post('/admin/missions/{id}/complete', \App\Http\Controllers\Admin\Missions\CompleteMissionController::class)
             ->name('admin.mission.complete');
+        Route::post('/admin/aircraft/{aircraft}/ferry', \App\Http\Controllers\Admin\Missions\UpdateFerryController::class)
+            ->name('admin.aircraft.ferry.update');
     });
 
     Route::middleware('role:dispatcher')->group(function () {
@@ -310,8 +312,6 @@ Route::middleware('auth')->group(function () {
             ->name('admin.resources.reject');
         Route::get('/admin/hubs', \App\Http\Controllers\Admin\Hubs\ShowHubsController::class)
             ->name('admin.hubs');
-        Route::post('/admin/hubs/create', \App\Http\Controllers\Admin\Hubs\CreateHubController::class)
-            ->name('admin.hubs.create');
     });
 
 });

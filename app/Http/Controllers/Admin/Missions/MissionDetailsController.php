@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin\Missions;
 
 use App\Http\Controllers\Controller;
+use App\Models\Aircraft;
 use App\Models\CommunityJob;
 use App\Models\CommunityJobContract;
 use Illuminate\Http\Request;
@@ -15,12 +16,31 @@ class MissionDetailsController extends Controller
      */
     public function __invoke($id, Request $request)
     {
-        $mission = CommunityJob::find($id);
+        $mission = CommunityJob::with('hubAirport')->find($id);
         $jobs = CommunityJobContract::with(['departureAirport', 'arrivalAirport'])->where('community_job_id', $id)->get();
+
+        $hubAircraft = [];
+        if ($mission->hub_airport_id ?? false) {
+            $hubAircraft = Aircraft::with(['fleet', 'location'])
+                ->isFleet()
+                ->where('hub_id', $mission->hub_airport_id)
+                ->get()
+                ->map(function ($aircraft) {
+                    return [
+                        'id' => $aircraft->id,
+                        'registration' => $aircraft->registration,
+                        'is_ferry' => $aircraft->is_ferry,
+                        'ferry_user_id' => $aircraft->ferry_user_id,
+                        'fleet' => $aircraft->fleet,
+                        'location' => $aircraft->location,
+                    ];
+                });
+        }
 
         $data = [
             'mission' => $mission,
-            'jobs' => $jobs
+            'jobs' => $jobs,
+            'hubAircraft' => $hubAircraft,
         ];
 
         // Pass bulk upload results if they exist

@@ -61,8 +61,8 @@ class CreateDispatchController extends Controller
         if (!$destAirport) {
             return redirect()->back()->with(['error' => 'Destination airport not found']);
         } elseif (!$isRental && $aircraft->owner_id == 0) {
-            // if not rental and not owner (ie, it's fleet), can't send to custom airports
-            if ($destAirport->user_id > 0 || $destAirport->is_thirdparty) {
+            // if not rental and not owner (ie, it's fleet), can't send to non-hub custom airports
+            if (($destAirport->user_id > 0 || $destAirport->is_thirdparty) && !$destAirport->is_hub) {
                 return redirect()->back()->with(['error' => 'Can only dispatch fleet aircraft to base airports']);
             }
         }

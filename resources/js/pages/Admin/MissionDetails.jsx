@@ -42,7 +42,7 @@ import BulkUploadResults from '../../components/elements/BulkUploadResults.jsx'
 import { useMessageBox } from '../../components/elements/MessageBoxProvider.jsx'
 import AdminLayout from '../../components/layout/AdminLayout.jsx'
 
-const MissionDetails = ({ mission, jobs, bulkUploadResults }) => {
+const MissionDetails = ({ mission, jobs, bulkUploadResults, hubAircraft }) => {
   const [missionError, setMissionError] = useState(null)
   const messageBox = useMessageBox()
   const [missionDetails, setMissionDetails] = useState({
@@ -59,6 +59,15 @@ const MissionDetails = ({ mission, jobs, bulkUploadResults }) => {
     recurring: '0',
     inject_immediately: false,
   })
+  const [ferryAircraft, setFerryAircraft] = useState(
+    hubAircraft?.reduce((acc, ac) => {
+      acc[ac.id] = {
+        is_ferry: ac.is_ferry || false,
+        ferry_user_id: ac.ferry_user_id || '',
+      }
+      return acc
+    }, {}) || {}
+  )
 
   const { isOpen, onOpen, onClose } = useDisclosure()
   const {
@@ -92,10 +101,12 @@ const MissionDetails = ({ mission, jobs, bulkUploadResults }) => {
     }
     setMissionError(null)
     const converter = new showdown.Converter()
-    missionDetails.description = await converter.makeHtml(
-      missionDetails.description
-    )
-    router.post(`/admin/missions/${mission.id}`, missionDetails)
+    const dataToSend = {
+      name: missionDetails.name,
+      description: await converter.makeHtml(missionDetails.description),
+      allow_private: missionDetails.allow_private,
+    }
+    router.post(`/admin/missions/${mission.id}`, dataToSend)
   }
   async function publishMission() {
     const accepted = await messageBox.confirm({
@@ -172,6 +183,29 @@ const MissionDetails = ({ mission, jobs, bulkUploadResults }) => {
     }
   }
 
+  async function updateFerryAircraft(aircraftId) {
+    const data = ferryAircraft[aircraftId]
+
+    try {
+      await router.post(`/admin/aircraft/${aircraftId}/ferry`, {
+        is_ferry: data.is_ferry,
+        ferry_user_id: data.is_ferry ? parseInt(data.ferry_user_id, 10) : null,
+      })
+    } catch (error) {
+      // Error will be displayed by Inertia
+    }
+  }
+
+  function handleFerryChange(aircraftId, field, value) {
+    setFerryAircraft((prev) => ({
+      ...prev,
+      [aircraftId]: {
+        ...prev[aircraftId],
+        [field]: value,
+      },
+    }))
+  }
+
   return (
     <>
       <Card>
@@ -186,6 +220,12 @@ const MissionDetails = ({ mission, jobs, bulkUploadResults }) => {
               Complete
             </Button>
           )}
+          {mission.hub_airport_id && mission.hub_airport ? (
+            <Heading size="sm" mt={4} ml={2} mb={2}>
+              Hub Event {mission.hub_airport.identifier} -{' '}
+              {mission.hub_airport.name}
+            </Heading>
+          ) : null}
           <SimpleGrid columns={2} gap={4}>
             <Box p={2}>
               {missionError ? (
@@ -328,6 +368,90 @@ const MissionDetails = ({ mission, jobs, bulkUploadResults }) => {
           )}
         </CardBody>
       </Card>
+      {mission.hub_airport && hubAircraft && hubAircraft.length > 0 && (
+        <Card mt={2}>
+          <CardBody>
+            <Heading size="md" mb={4}>
+              Ferry Assignments - {mission.hub_airport.identifier}
+            </Heading>
+            <TableContainer>
+              <Table size="sm">
+                <Thead>
+                  <Tr>
+                    <Th>Aircraft</Th>
+                    <Th>Location</Th>
+                    <Th>Ferry?</Th>
+                    <Th>Pilot BDV ID</Th>
+                    <Th>Actions</Th>
+                  </Tr>
+                </Thead>
+                <Tbody>
+                  {hubAircraft.map((aircraft) => (
+                    <Tr key={aircraft.id}>
+                      <Td>
+                        {aircraft.registration} - {aircraft.fleet.type}
+                      </Td>
+                      <Td>{aircraft.location?.identifier || 'Unknown'}</Td>
+                      <Td>
+                        <Checkbox
+                          isChecked={
+                            ferryAircraft[aircraft.id]?.is_ferry || false
+                          }
+                          onChange={(e) =>
+                            handleFerryChange(
+                              aircraft.id,
+                              'is_ferry',
+                              e.target.checked
+                            )
+                          }
+                        />
+                      </Td>
+                      <Td>
+                        {ferryAircraft[aircraft.id]?.is_ferry ? (
+                          <Input
+                            type="number"
+                            size="xs"
+                            width="120px"
+                            value={
+                              ferryAircraft[aircraft.id]?.ferry_user_id || ''
+                            }
+                            onChange={(e) =>
+                              handleFerryChange(
+                                aircraft.id,
+                                'ferry_user_id',
+                                e.target.value
+                              )
+                            }
+                            placeholder="Pilot ID"
+                          />
+                        ) : (
+                          <Text fontSize="sm" color="gray.500">
+                            -
+                          </Text>
+                        )}
+                      </Td>
+                      <Td>
+                        <Button
+                          size="xs"
+                          onClick={() => updateFerryAircraft(aircraft.id)}
+                          isDisabled={
+                            ferryAircraft[aircraft.id]?.is_ferry ===
+                              aircraft.is_ferry &&
+                            ferryAircraft[aircraft.id]?.ferry_user_id ===
+                              (aircraft.ferry_user_id || '')
+                          }
+                        >
+                          Update
+                        </Button>
+                      </Td>
+                    </Tr>
+                  ))}
+                </Tbody>
+              </Table>
+            </TableContainer>
+          </CardBody>
+        </Card>
+      )}
       <Modal
         closeOnOverlayClick={false}
         isOpen={isOpen}

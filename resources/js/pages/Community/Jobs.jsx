@@ -1,24 +1,19 @@
 import { Card, CardBody } from '@chakra-ui/react'
 import React from 'react'
 
-import HubJob from '../../components/community/HubJob.jsx'
-import MissionJob from '../../components/community/MissionJob.jsx'
+import CommunityJob from '../../components/community/CommunityJob.jsx'
 import AppLayout from '../../components/layout/AppLayout.jsx'
 
-const Jobs = ({ hub, mission, fleet }) => {
-  return (
-    <>
-      {hub ? (
-        <HubJob hub={hub} />
-      ) : mission ? (
-        <MissionJob mission={mission} fleet={fleet} />
-      ) : (
-        <Card>
-          <CardBody>No current missions, come back soon!</CardBody>
-        </Card>
-      )}
-    </>
-  )
+const Jobs = ({ hub, mission }) => {
+  if (!hub && !mission) {
+    return (
+      <Card>
+        <CardBody>No current jobs, come back soon!</CardBody>
+      </Card>
+    )
+  }
+
+  return <CommunityJob hub={hub} mission={mission} />
 }
 
 Jobs.layout = (page) => (

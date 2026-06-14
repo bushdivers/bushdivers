@@ -5,6 +5,8 @@ namespace App\Models;
 use App\Contracts\IsLocatable;
 use App\Models\Concerns\HasLocation;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -26,7 +28,9 @@ class Aircraft extends Model implements IsLocatable
         'owner_id',
         'fleet_id',
         'current_airport_id',
-        'wear'
+        'wear',
+        'is_ferry',
+        'ferry_user_id'
     ];
 
     protected $casts = [
@@ -88,6 +92,24 @@ class Aircraft extends Model implements IsLocatable
     public function maintenance(): HasMany
     {
         return $this->hasMany(MaintenanceLog::class)->orderBy('created_at', 'desc');
+    }
+
+    /**
+     * @param Builder<Aircraft>  $query
+     */
+    #[Scope]
+    protected function isFleet(Builder $query): void
+    {
+        $query->where('owner_id', 0);
+    }
+
+    /**
+     * @param Builder<Aircraft>  $query
+     */
+    #[Scope]
+    protected function isPrivate(Builder $query): void
+    {
+        $query->where('owner_id', '!=', 0);
     }
 
     /**

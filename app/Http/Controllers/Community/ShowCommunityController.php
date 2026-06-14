@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Aircraft;
 use App\Models\Airport;
 use App\Models\CommunityJob;
-use App\Models\Contract;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -17,30 +16,34 @@ class ShowCommunityController extends Controller
      */
     public function __invoke(Request $request)
     {
-        // current community jobs
-        // hubs
-        $hub = Airport::with(['hubContracts' => function($query) {
-                $query->where('contract_type_id', 5)
-                    ->with(['depAirport', 'arrAirport', 'currentAirport']);
-            },
-            'ferryFlights' => function($query) {
-                $query->where('is_ferry', true);
-            }, 'ferryFlights.fleet', 'ferryFlights.location'])
-        ->where('is_hub', true)
-        ->where('hub_in_progress', true)
-        ->first();
+        // Find active mission (either regular mission or hub event)
+        $mission = CommunityJob::with(['jobs', 'jobs.departureAirport', 'jobs.arrivalAirport'])
+            ->where('is_published', 1)
+            ->where('is_completed', 0)
+            ->first();
 
-        $mission  = CommunityJob::with(['jobs', 'jobs.departureAirport', 'jobs.arrivalAirport'])->where('is_published', 1)->where('is_completed', 0)->first();
-        $fleet = null;
+        $hub = null;
+
         if ($mission) {
-            $fleet = Aircraft::where('owner_id', 0)->with(['fleet' => function($q) {
+            // If this mission is a hub event, fetch hub airport data
+            if ($mission->hub_airport_id) {
+                $hub = Airport::with(['ferryFlights' => function ($query) {
+                    $query->where('is_ferry', true);
+                }, 'ferryFlights.fleet', 'ferryFlights.location', 'ferryFlights.engines'])
+                ->where('id', $mission->hub_airport_id)
+                ->first();
+            }
+
+            // For all missions (hub or regular), load available fleet
+            /*$fleet = Aircraft::where('owner_id', 0)->with(['fleet' => function ($q) {
                 $q->orderBy('type', 'asc');
-            }, 'location'])
+            }, 'location', 'engines'])
                 ->withAggregate('location', 'identifier')
                 ->orderBy('location_identifier', 'asc')
                 ->orderBy('fleet_id', 'asc')
-                ->get();
+                ->get();*/
         }
-        return Inertia::render('Community/Jobs', ['hub' => $hub, 'mission' => $mission, 'fleet' => $fleet]);
+
+        return Inertia::render('Community/Jobs', ['hub' => $hub, 'mission' => $mission]);
     }
 }

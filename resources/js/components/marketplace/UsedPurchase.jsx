@@ -49,7 +49,8 @@ const UsedPurchase = ({
                   <option>Please select hub</option>
                   {hubs.map((hub) => (
                     <option key={hub.identifier} value={hub.identifier}>
-                      {hub.identifier}
+                      {hub.identifier}{' '}
+                      {!!hub.hub_in_progress && '(In Progress)'}
                     </option>
                   ))}
                 </Select>

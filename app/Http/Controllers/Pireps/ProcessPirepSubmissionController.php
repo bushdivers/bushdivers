@@ -9,7 +9,6 @@ use App\Models\Enums\PirepState;
 use App\Models\Enums\PirepStatus;
 use App\Models\Pirep;
 use App\Models\PirepCargo;
-use App\Services\Airports\CheckHubProgress;
 use App\Services\Contracts\UpdateContractCargoProgress;
 use App\Services\Finance\ProcessPirepFinancials;
 use App\Services\Pireps\CalculatePirepPoints;
@@ -31,7 +30,6 @@ class ProcessPirepSubmissionController extends Controller
     protected SetPirepTotalScore $setPirepTotalScore;
 
     protected CheckTourProgress $checkTourProgress;
-    protected CheckHubProgress $checkHubProgress;
 
     public function __construct(
         UpdateContractCargoProgress $updateContractCargoProgress,
@@ -39,14 +37,12 @@ class ProcessPirepSubmissionController extends Controller
         CalculatePirepPoints $calculatePirepPoints,
         SetPirepTotalScore $setPirepTotalScore,
         CheckTourProgress $checkTourProgress,
-        CheckHubProgress $checkHubProgress
     ) {
         $this->updateContractCargoProgress = $updateContractCargoProgress;
         $this->processPirepFinancials = $processPirepFinancials;
         $this->calculatePirepPoints = $calculatePirepPoints;
         $this->setPirepTotalScore = $setPirepTotalScore;
         $this->checkTourProgress = $checkTourProgress;
-        $this->checkHubProgress = $checkHubProgress;
     }
 
     /**
@@ -88,7 +84,6 @@ class ProcessPirepSubmissionController extends Controller
                 foreach ($pc as $c) {
                     $contractCargo = Contract::find($c->contract_cargo_id);
                     $this->updateContractCargoProgress->execute($contractCargo, $pirep->arrAirport, $pirep);
-                    $this->checkHubProgress->execute($pirep->arrAirport);
                 }
 
                 // process points and financials

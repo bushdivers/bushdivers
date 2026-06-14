@@ -63,14 +63,6 @@ class Airport extends Model implements IsLocatable
     }
 
     /**
-     * @return HasMany<Contract, $this>
-     */
-    public function hubContracts(): HasMany
-    {
-        return $this->hasMany(Contract::class, 'hub_airport_id');
-    }
-
-    /**
      * @return HasMany<Aircraft, $this>
      */
     public function ferryFlights(): HasMany
@@ -212,7 +204,9 @@ class Airport extends Model implements IsLocatable
      */
     public function adjustFuel(int $type, int $quantity)
     {
-        if ($this->is_hub || $quantity == 0) return;
+        if ($this->is_hub || $quantity == 0) {
+            return;
+        }
 
         /**
          * @todo FuelType enum

@@ -87,7 +87,6 @@ class SubmitPirepHubTest extends TestCase
             'dep_airport_id' => $aymr->id,
             'arr_airport_id' => $aymn->id,
             'current_airport_id' => $aymr->id,
-            'hub_airport_id' => $aymn->id
         ]);
 
         $this->pirep = Pirep::factory()->create([
@@ -163,10 +162,6 @@ class SubmitPirepHubTest extends TestCase
         $this->assertDatabaseHas('aircraft', [
             'is_ferry' => false,
             'ferry_user_id' => null
-        ]);
-        $this->assertDatabaseHas('airports', [
-            'identifier' => 'AYMN',
-            'hub_in_progress' => false
         ]);
         $response->assertStatus(200);
     }
