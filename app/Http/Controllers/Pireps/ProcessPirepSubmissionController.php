@@ -51,6 +51,9 @@ class ProcessPirepSubmissionController extends Controller
     public function __invoke(ManualPirepRequest $request): RedirectResponse
     {
         try {
+            /**
+             * @var Pirep
+             */
             $pirep = Pirep::with(['arrAirport'])
                 ->where('id', $request->pirep_id)
                 ->where('user_id', Auth::user()->id)
@@ -65,6 +68,10 @@ class ProcessPirepSubmissionController extends Controller
                 $pirep->fuel_used = abs($request->fuel_used);
                 $pirep->distance = $request->distance;
                 $pirep->flight_time = $request->flight_time_mins;
+
+                $pirep->current_lat = $pirep->arrAirport->lat;
+                $pirep->current_lon = $pirep->arrAirport->lon;
+
                 $pirep->landing_rate = 0;
                 $pirep->landing_pitch = 0;
                 $pirep->landing_bank = 0;

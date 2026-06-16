@@ -38,6 +38,12 @@ class ProcessManualPirepTest extends TestCase
             ]);
 
         $response->assertSessionHas('success');
+        $this->assertDatabaseHas('aircraft', [
+            'id' => $pirep->aircraft_id,
+            'current_airport_id' => $pirep->arrival_airport_id,
+            'last_lat' => $pirep->arrAirport->lat,
+            'last_lon' => $pirep->arrAirport->lon,
+        ]);
 
     }
 

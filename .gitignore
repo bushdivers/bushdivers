@@ -14,6 +14,7 @@ npm-debug.log
 yarn-error.log
 /.idea
 /.vscode
+/.github/instructions/user*
 phpstan.neon
 
 package-lock.json
