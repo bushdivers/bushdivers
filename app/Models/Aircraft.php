@@ -130,6 +130,7 @@ class Aircraft extends Model implements IsLocatable
     protected function wear(): Attribute
     {
         return Attribute::make(
+            get: fn ($value) => $value,
             set: fn ($value) => max(0, min(100, $value)),
         );
     }
@@ -140,6 +141,7 @@ class Aircraft extends Model implements IsLocatable
     protected function fuelOnboard(): Attribute
     {
         return Attribute::make(
+            get: fn ($value) => $value,
             set: fn ($value) => max(0, $value),
         );
     }

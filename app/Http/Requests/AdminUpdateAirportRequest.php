@@ -20,9 +20,9 @@ class AdminUpdateAirportRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array
+     * @return array<string, mixed>
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'name' => ['required', 'string', 'max:255'],
@@ -43,9 +43,9 @@ class AdminUpdateAirportRequest extends FormRequest
     /**
      * Get the validated data from the request with default values.
      *
-     * @return array
+     * @return array<string, mixed>
      */
-    public function validatedWithDefaults()
+    public function validatedWithDefaults(): array
     {
         $validated = $this->validated();
 

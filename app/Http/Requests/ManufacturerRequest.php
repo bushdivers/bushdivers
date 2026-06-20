@@ -12,6 +12,11 @@ class ManufacturerRequest extends FormRequest
         return $this->user()->hasRole('fleet_admin') || $this->user()->is_admin;
     }
 
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array<string, mixed>
+     */
     public function rules(): array
     {
         return [

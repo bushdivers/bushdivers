@@ -50,9 +50,9 @@ return [
         'discord' => [
             'driver' => 'monolog',
             'level' => 'error',
-            'handler' => App\Logging\DiscordLogger::class,
+            'handler' => \App\Logging\DiscordLogger::class,
             'handler_with' => [
-                'webhook' => env('LOG_DISCORD_WEBHOOK_URL'),
+                'webhook' => env('LOG_DISCORD_WEBHOOK_URL', ''),
             ],
         ],
 

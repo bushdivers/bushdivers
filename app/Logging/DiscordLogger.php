@@ -9,9 +9,9 @@ use Monolog\LogRecord;
 
 class DiscordLogger extends AbstractProcessingHandler {
 
-    protected $webhookUrl;
+    protected string $webhookUrl;
 
-    public function __construct($webhook, $level = 'error', $bubble = true)
+    public function __construct(string $webhook, \Monolog\Level $level = \Monolog\Level::Error, bool $bubble = true)
     {
         $this->webhookUrl = $webhook;
 
