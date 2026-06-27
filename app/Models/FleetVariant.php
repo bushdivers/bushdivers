@@ -35,6 +35,9 @@ class FleetVariant extends Model
         ];
     }
 
+    /**
+     * @return BelongsTo<Fleet, $this>
+     */
     public function fleet(): BelongsTo
     {
         return $this->belongsTo(Fleet::class);

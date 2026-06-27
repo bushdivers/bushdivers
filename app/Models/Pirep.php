@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Override;
 
 class Pirep extends Model
 {
@@ -21,10 +22,23 @@ class Pirep extends Model
     public $incrementing = false;
     protected $keyType = 'string';
 
-    #[Scope]
-    protected function inactive(Builder $query)
+    #[Override]
+    protected function casts(): array
     {
-        return $query->where(function ($q) {
+        return [
+            'is_rental' => 'boolean',
+            'is_manual' => 'boolean',
+            'is_empty' => 'boolean',
+        ];
+    }
+
+    /**
+     * @param Builder<Pirep>  $query
+     */
+    #[Scope]
+    protected function inactive(Builder $query): void
+    {
+        $query->where(function ($q) {
             $q->where('state', PirepState::DISPATCH)
                 ->where('updated_at', '<', now()->subHours(8));
         })->orWhere(function ($q) {

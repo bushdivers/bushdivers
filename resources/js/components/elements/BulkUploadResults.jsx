@@ -42,9 +42,18 @@ const BulkUploadResults = ({
         borderRadius="md"
         border="1px solid"
         borderColor="gray.200"
+        _dark={{
+          bg: 'gray.700',
+          borderColor: 'gray.600',
+        }}
       >
         <Flex justify="space-between" align="center" mb={3}>
-          <Text fontWeight="semibold" color="gray.700" fontSize="sm">
+          <Text
+            fontWeight="semibold"
+            color="gray.700"
+            _dark={{ color: 'gray.200' }}
+            fontSize="sm"
+          >
             📊 {title}
           </Text>
           <Button
@@ -95,6 +104,7 @@ const BulkUploadResults = ({
                 maxHeight="120px"
                 overflowY="auto"
                 bg="red.50"
+                _dark={{ bg: 'red.900' }}
                 p={2}
                 borderRadius="sm"
                 fontSize="xs"

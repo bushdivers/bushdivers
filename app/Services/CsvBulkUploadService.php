@@ -2,21 +2,32 @@
 
 namespace App\Services;
 
-use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use League\Csv\Reader;
 
+/**
+ * @phpstan-type CsvRecord array<string, string>
+ * @phpstan-type CsvError array{row: int, message: string}
+ * @phpstan-type CsvProcessingResult array{success: bool, data?: mixed, errors?: array<CsvError>}
+ * @phpstan-type CsvResult array{
+ *     total_rows: int,
+ *     successful: int,
+ *     errors: array<CsvError>,
+ *     data: array<mixed>
+ * }
+ * @phpstan-type CallbackContext array<string, mixed>
+ * @phpstan-type CsvRowProcessor callable(CsvRecord $record, int $rowNumber, CallbackContext $context): CsvProcessingResult
+ */
 class CsvBulkUploadService
 {
     /**
      * Process a CSV file and execute a callback for each row
      *
      * @param UploadedFile $file The uploaded CSV file
-     * @param callable $rowProcessor Callback that processes each row: function(array $record, int $rowNumber, array $context): array
-     *                               Should return ['success' => bool, 'data' => mixed, 'errors' => array]
-     * @param array $context Additional context to pass to the row processor
-     * @param array $requiredColumns Array of required column names
-     * @return array Results with total_rows, successful, errors
+     * @param CsvRowProcessor $rowProcessor Callback that processes each row
+     * @param CallbackContext $context Additional context to pass to the row processor
+     * @param array<string> $requiredColumns Array of required column names
+     * @return CsvResult
      * @throws \Exception
      */
     public function processFile(
@@ -25,7 +36,7 @@ class CsvBulkUploadService
         array $context = [],
         array $requiredColumns = []
     ): array {
-        $csv = Reader::createFromPath($file->getRealPath(), 'r');
+        $csv = Reader::from($file->getRealPath(), 'r');
         $csv->setHeaderOffset(0);
 
         $records = $csv->getRecords();
@@ -76,6 +87,11 @@ class CsvBulkUploadService
 
     /**
      * Validate that required fields are present and not empty
+     *
+     * @param CsvRecord $record
+     * @param array<string> $requiredFields
+     * @param int $rowNumber
+     * @return array<CsvError>
      */
     public function validateRequiredFields(array $record, array $requiredFields, int $rowNumber): array
     {

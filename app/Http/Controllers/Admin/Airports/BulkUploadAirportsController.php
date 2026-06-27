@@ -6,27 +6,36 @@ use App\Http\Controllers\Controller;
 use App\Traits\HandlesBulkUpload;
 use App\Models\Airport;
 use App\Models\Enums\AirportRunwaySurface;
-use App\Models\Enums\DistanceConsts;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Validator;
 use Location\Coordinate;
 
+/**
+ * @phpstan-import-type CsvResult from \App\Services\CsvBulkUploadService
+ */
 class BulkUploadAirportsController extends Controller
 {
     use HandlesBulkUpload;
 
-    public function __construct( ) {}
+    public function __construct()
+    {
+    }
 
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): RedirectResponse
     {
         return $this->handleBulkUpload(
             $request,
-            fn ($file, $request) => $this->processAirportsFile($file, $request),
+            $this->processAirportsFile(...),
             '/admin/airports'
         );
     }
 
-    private function processAirportsFile($file, Request $request): array
+    /**
+     * @return CsvResult
+     */
+    private function processAirportsFile(UploadedFile $file, Request $request): array
     {
         // Shared caches that will persist across all row validations
         $sharedState = (object) [
@@ -80,7 +89,7 @@ class BulkUploadAirportsController extends Controller
 
                             try {
                                 $coordKey = "{$value},{$lon}";
-                                $currentCoord = new Coordinate($value, $lon);
+                                $currentCoord = new Coordinate((float)$value, (float)$lon);
 
                                 // Check if coordinates already used in this file
                                 if ($sharedState->coordinateCache->has($coordKey)) {
@@ -168,6 +177,9 @@ class BulkUploadAirportsController extends Controller
         );
     }
 
+    /**
+     * @param array<string, mixed> $data
+     */
     private function createAirport(array $data): void
     {
         // Convert runway surface name/label to enum value

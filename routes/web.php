@@ -263,7 +263,7 @@ Route::middleware('auth')->group(function () {
             ->name('admin.mission.job.toggle.recurring');
         Route::post('/admin/missions/jobs/{id}/inject', \App\Http\Controllers\Admin\Missions\InjectJobToContractsController::class)
             ->name('admin.mission.job.inject');
-        Route::post('/admin/missions/{id}/jobs/bulk-upload', \App\Http\Controllers\Admin\Missions\BulkUploadJobsController::class)
+        Route::post('/admin/missions/{communityJob}/jobs/bulk-upload', \App\Http\Controllers\Admin\Missions\BulkUploadJobsController::class)
             ->name('admin.mission.jobs.bulk.upload');
         Route::post('/admin/missions/{id}/publish', \App\Http\Controllers\Admin\Missions\PublishMissionController::class)
             ->name('admin.mission.publish');

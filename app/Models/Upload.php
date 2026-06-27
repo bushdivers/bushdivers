@@ -30,6 +30,9 @@ class Upload extends Model
         ];
     }
 
+    /**
+     * @return MorphTo<Model, $this>
+     */
     public function uploadable(): MorphTo
     {
         return $this->morphTo('uploadable');

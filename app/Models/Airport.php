@@ -77,10 +77,10 @@ class Airport extends Model implements IsLocatable
      * @param Builder<Airport>  $query
      */
     #[Scope]
-    protected function withRangeTo(Builder $query, Airport|Coordinate|null $to)
+    protected function withRangeTo(Builder $query, Airport|Coordinate|null $to): void
     {
         if (!$to) {
-            return $query;
+            return;
         }
 
         // Distances in NM
@@ -89,7 +89,7 @@ class Airport extends Model implements IsLocatable
         $lat = $to instanceof Coordinate ? $to->getLat() : $to->lat;
         $lon = $to instanceof Coordinate ? $to->getLng() : $to->lon;
 
-        return $query
+        $query
             ->selectRaw('airports.*,
              3440 * ACOS(
                 COS(RADIANS(?)) * COS(RADIANS(lat)) * COS(RADIANS(?) - RADIANS(lon)) +
@@ -100,7 +100,7 @@ class Airport extends Model implements IsLocatable
      * @param Builder<Airport>  $query
      */
     #[Scope]
-    protected function inRangeOf(Builder $query, Airport|Coordinate $from, $min, $max)
+    protected function inRangeOf(Builder $query, Airport|Coordinate $from, float $min, float $max): void
     {
         $max = max($min, $max - 0.001);
 
@@ -120,26 +120,38 @@ class Airport extends Model implements IsLocatable
             ->whereRaw('3440 * ACOS(COS(RADIANS(?)) * COS(RADIANS(lat)) * COS(RADIANS(?) - RADIANS(lon)) + SIN(RADIANS(?)) * SIN(RADIANS(lat))) between ? AND ?', [$lat, $lon, $lat, $min, $max]);
     }
 
+    /**
+     * @param Builder<Airport>  $query
+     */
     #[Scope]
-    protected function hub(Builder $query)
+    protected function hub(Builder $query): void
     {
         $query->where('is_hub', true)->where('hub_in_progress', false);
     }
 
+    /**
+     * @param Builder<Airport>  $query
+     */
     #[Scope]
-    protected function fuel(Builder $query)
+    protected function fuel(Builder $query): void
     {
         $query->where('has_avgas', true)->orWhere('has_jetfuel', true);
     }
 
+    /**
+     * @param Builder<Airport>  $query
+     */
     #[Scope]
-    protected function thirdParty(Builder $query)
+    protected function thirdParty(Builder $query): void
     {
         $query->where('is_thirdparty', true);
     }
 
+    /**
+     * @param Builder<Airport>  $query
+     */
     #[Scope]
-    protected function forUser(Builder $query, User $user)
+    protected function forUser(Builder $query, User $user): void
     {
         // If we're not allowing third party airports
         if (!$user->allow_thirdparty_airport) {
@@ -163,9 +175,10 @@ class Airport extends Model implements IsLocatable
     /**
      * Scope a query to only include base airports (not third party, no user).
      * If user provided, optionally enable hub based on user settings.
+     * @param Builder<Airport>  $query
      */
     #[Scope]
-    protected function base(Builder $query, User|null $user = null)
+    protected function base(Builder $query, User|null $user = null): void
     {
         $query->whereNull('user_id');
 
@@ -184,6 +197,7 @@ class Airport extends Model implements IsLocatable
     protected function avgasQty(): Attribute
     {
         return Attribute::make(
+            get: fn ($value) => $value,
             set: fn ($value) => $value === null ? null : max(0, $value)
         );
     }
@@ -194,6 +208,7 @@ class Airport extends Model implements IsLocatable
     protected function jetfuelQty(): Attribute
     {
         return Attribute::make(
+            get: fn ($value) => $value,
             set: fn ($value) => $value === null ? null : max(0, $value)
         );
     }
@@ -208,7 +223,7 @@ class Airport extends Model implements IsLocatable
      * @param int $type
      * @param int $quantity (positive to add, negative to remove)
      */
-    public function adjustFuel(int $type, int $quantity)
+    public function adjustFuel(int $type, int $quantity): void
     {
         if ($this->is_hub || $quantity == 0) {
             return;

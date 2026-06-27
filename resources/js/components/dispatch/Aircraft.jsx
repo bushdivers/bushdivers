@@ -59,7 +59,7 @@ const Aircraft = (props) => {
                     key={ac.id + ac.registration}
                     onClick={() => props.handleAircraftSelect(ac)}
                     bgColor={
-                      props.selectedAircraft.registration === ac.registration
+                      props.selectedAircraft?.registration === ac.registration
                         ? selectedCol
                         : ''
                     }
