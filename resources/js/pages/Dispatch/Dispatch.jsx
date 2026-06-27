@@ -188,7 +188,21 @@ const Dispatch = ({
       is_empty: deadHead,
       tour: selectedTour?.id,
     }
-    router.post('/dispatch', data)
+
+    router.post('/dispatch', data, {
+      onSuccess: (page) => {
+        if (page.props.flash?.error) {
+          // Get list of cargo that no longer exists
+          const missingCargo = selectedCargo.filter(
+            (c) =>
+              !page.props.cargo.cargoAtAirport?.find((pc) => pc.id === c.id)
+          )
+
+          if (missingCargo.length > 0)
+            missingCargo.forEach((c) => handleCargoSelect(c))
+        }
+      },
+    })
   }
 
   async function handleSubmitDispatch() {

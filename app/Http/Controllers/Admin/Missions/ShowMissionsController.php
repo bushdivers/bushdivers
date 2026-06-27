@@ -6,13 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Models\CommunityJob;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class ShowMissionsController extends Controller
 {
     /**
      * Handle the incoming request.
      */
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): Response
     {
         $missions = CommunityJob::all();
 

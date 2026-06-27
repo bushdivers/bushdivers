@@ -100,7 +100,11 @@ class ShowDispatchController extends Controller
         return Inertia::render('Dispatch/Dispatch', ['cargo' => $cargo, 'aircraft' => $aircraft, 'airport' => $currentAirport, 'tours' => $tours, 'lastPirep' => $lastPirep, 'suggestions' => $suggestions]);
     }
 
-    protected function getCargoForDispatch(Airport $currentLocation, $userId): array
+    /**
+     * Find available cargo options
+     * @return array{cargoAtAirport: mixed, cargoElsewhere: mixed}
+     */
+    protected function getCargoForDispatch(Airport $currentLocation, int $userId): array
     {
         $minSplits = CargoType::pluck('min_cargo_split', 'text');
 
@@ -108,7 +112,7 @@ class ShowDispatchController extends Controller
             ->where('current_airport_id', $currentLocation->id)
             ->where('is_completed', false)
             ->where(function ($q) use ($userId) {
-                $q->where('is_shared', true)
+                $q->where(fn ($q) => $q->where('is_shared', true)->whereNull('active_pirep'))
                     ->orWhere('user_id', $userId);
             })
             ->orderBy('heading', 'asc')
@@ -135,6 +139,9 @@ class ShowDispatchController extends Controller
         return ['cargoAtAirport' => $cargoAtAirport, 'cargoElsewhere' => $cargoElsewhere];
     }
 
+    /**
+     * @return Collection<int, Aircraft|Rental>
+     */
     protected function getAircraftForDispatch(Airport $currentLocation): Collection
     {
         $aircraft = Aircraft::with(['fleet.variants', 'engines'])
@@ -156,7 +163,12 @@ class ShowDispatchController extends Controller
         return $aircraft->concat($rentalAc);
     }
 
-    protected function buildSuggestions(Airport $currentAirport, ?Pirep $lastPirep, $tours, $userId): array
+    /**
+     * Retrieve array of suggested airports for dispatch
+     * @param Collection<int, Tour> $tours
+     * @return array<int, mixed>
+     */
+    protected function buildSuggestions(Airport $currentAirport, ?Pirep $lastPirep, Collection $tours, int $userId): array
     {
         $suggestions = [];
 

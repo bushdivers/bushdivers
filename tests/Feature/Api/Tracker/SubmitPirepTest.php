@@ -96,6 +96,8 @@ class SubmitPirepTest extends TestCase
             'dep_airport_id' => $this->aymr->id,
             'arr_airport_id' => $this->aymn->id,
             'current_airport_id' => $this->aymr->id,
+            'is_available' => false,
+            'user_id' => $this->user->id,
         ]);
 
         $this->pirep = Pirep::factory()->create([
@@ -569,9 +571,9 @@ class SubmitPirepTest extends TestCase
 
         $this->assertDatabaseHas('contracts', [
             'id' => $this->contract->id,
-            'is_completed' => false,
+            'is_completed' => 0,
+            'active_pirep' => null,
             'current_airport_id' => $this->ayte->id,
-            'user_id' => null
         ]);
     }
 

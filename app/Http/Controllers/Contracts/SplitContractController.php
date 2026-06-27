@@ -59,7 +59,7 @@ class SplitContractController extends Controller
         $contract->cargo_qty = $remainingQty;
         $contract->heading = $existingContract->heading;
         $contract->expires_at = $existingContract->expires_at;
-        $contract->is_available = false;
+        $contract->is_available = $existingContract->is_available;
         $contract->is_shared = $existingContract->is_shared;
         if ($existingContract->cargo_type == CargoTypeEnum::Cargo) {
             $existingContract->payload = $newQty;

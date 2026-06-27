@@ -21,6 +21,10 @@ class BidForContractController extends Controller
     {
         $contract = Contract::with(['depAirport'])->findOrFail($request->id);
         if ($request->action == 'remove') {
+            if ($contract->user_id > 0 && $contract->user_id != $request->userId) {
+                return \response()->json(['message' => 'You do not own this contract'], 403);
+            }
+
             if ($contract->is_fuel) {
                 $contract->depAirport->adjustFuel($contract->fuel_type, $contract->fuel_qty);
                 $contract->delete();
@@ -32,6 +36,9 @@ class BidForContractController extends Controller
             $contract->save();
             Cache::forget($contract->depAirport->id.'-contracts');
         } else {
+            if ($contract->user_id > 0 && $contract->user_id != $request->userId) {
+                return \response()->json(['message' => 'This contract has been taken by another pilot'], 403);
+            }
 
             // update contract for user
             $contract->is_available = false;

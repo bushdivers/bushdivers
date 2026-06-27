@@ -83,6 +83,11 @@ class CreateDispatchController extends Controller
                     return redirect()->back()->with(['error' => 'This community contract can only be used with fleet aircraft.']);
                 }
             }
+
+            // One day this will be tidied up
+            if ($contract->user_id > 0 && $contract->user_id != Auth::user()->id) {
+                return redirect()->back()->with(['error' => 'One or more selected contracts are no longer available.']);
+            }
         }
 
         // create draft pirep with destination and detail

@@ -29,6 +29,9 @@ class RemoveSinglePirep
             if (!$cc)
                 continue; // In case contract already cleaned
             $cc->active_pirep = null;
+            if ($cc->is_shared) {
+                $cc->user_id = null;
+            }
             $cc->save();
         }
 

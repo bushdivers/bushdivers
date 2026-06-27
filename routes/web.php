@@ -166,8 +166,6 @@ Route::middleware('auth')->group(function () {
         ->name('dispatch.create');
     Route::post('/dispatch/cancel', \App\Http\Controllers\Dispatch\CancelDispatchController::class)
         ->name('dispatch.cancel');
-    //    Route::post('/contracts/bid', \App\Http\Controllers\Contracts\BidForContractController::class)
-    //        ->name('contracts.bid');
     Route::post('/contracts/custom', \App\Http\Controllers\Contracts\CreateCustomRouteController::class)
         ->name('contracts.custom');
     Route::post('/contracts/fuel', \App\Http\Controllers\Contracts\CreateFuelCargoContractController::class)

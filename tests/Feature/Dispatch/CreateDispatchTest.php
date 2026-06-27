@@ -4,6 +4,7 @@ namespace Tests\Feature\Dispatch;
 
 use App\Models\Aircraft;
 use App\Models\Airport;
+use App\Models\Contract;
 use App\Models\Enums\FuelType;
 use App\Models\Fleet;
 use App\Models\FleetVariant;
@@ -257,4 +258,58 @@ class CreateDispatchTest extends TestCase
         ]);
     }
 
+    public function test_shared_contract_cannot_be_dispatched_by_multiple_users(): void
+    {
+        $contract = Contract::factory()->create([
+            'current_airport_id' => $this->origin->id,
+            'dep_airport_id' => $this->origin->id,
+            'arr_airport_id' => $this->destination->id,
+            'is_shared' => true,
+            'is_available' => true,
+        ]);
+
+        $body = [
+            'aircraft' => $this->aircraftOrigin->registration,
+            'fleet_variant_id' => $this->variantOrigin->id,
+            'fuel' => 0,
+            'fuel_price' => 1.00,
+            'destination' => $this->destination->identifier,
+            'is_empty' => false,
+            'tour' => null,
+            'cargo' => [$contract->id],
+        ];
+
+        // First user dispatches the contract successfully
+        $response = $this->actingAs($this->user)->post(route('dispatch.create'), $body);
+        $response->assertSessionHas('success');
+
+        $contract->refresh();
+        $this->assertEquals(0, $contract->is_available);
+        $this->assertNotNull($contract->user_id);
+        $this->assertEquals($this->user->id, $contract->user_id);
+
+        // Second user cannot dispatch the same contract
+        $otherUser = User::factory()->create(['current_airport_id' => $this->origin->id]);
+        $otherAircraft = Aircraft::factory()->create([
+            'fleet_id' => $this->aircraftOrigin->fleet_id,
+            'registration' => 'VH-OTR',
+            'fuel_onboard' => 0,
+            'current_airport_id' => $this->origin->id,
+            'owner_id' => 0,
+        ]);
+
+        $otherBody = [
+            'aircraft' => $otherAircraft->registration,
+            'fleet_variant_id' => $this->variantOrigin->id,
+            'fuel' => 0,
+            'fuel_price' => 1.00,
+            'destination' => $this->destination->identifier,
+            'is_empty' => false,
+            'tour' => null,
+            'cargo' => [$contract->id],
+        ];
+
+        $response = $this->actingAs($otherUser)->post(route('dispatch.create'), $otherBody);
+        $response->assertSessionHas('error');
+    }
 }

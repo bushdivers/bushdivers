@@ -7,6 +7,7 @@ use App\Models\Enums\ContractType as ContractTypEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Override;
 
 class Contract extends Model
 {
@@ -15,16 +16,26 @@ class Contract extends Model
     */
     use HasFactory;
 
-    protected $casts = [
-        'expires_at' => 'datetime',
-        'completed_at' => 'datetime',
-        'contract_type_id' => ContractTypEnum::class,
-        'cargo_type' => CargoType::class
-    ];
-
     protected $fillable = [
         'contract_value',
     ];
+
+    #[Override]
+    protected function casts(): array
+    {
+        return [
+            'expires_at' => 'datetime',
+            'completed_at' => 'datetime',
+            'contract_type_id' => ContractTypEnum::class,
+            'cargo_type' => CargoType::class,
+            'is_available' => 'boolean',
+            'is_completed' => 'boolean',
+            'is_custom' => 'boolean',
+            'is_shared' => 'boolean',
+            'is_fuel' => 'boolean',
+            'is_paid' => 'boolean',
+        ];
+    }
 
     /**
      * @return BelongsTo<ContractType, $this>
