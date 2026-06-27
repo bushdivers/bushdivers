@@ -77,17 +77,20 @@ class Airport extends Model implements IsLocatable
      * @param Builder<Airport>  $query
      */
     #[Scope]
-    protected function withRangeTo(Builder $query, Airport|Coordinate|null $to): void
+    protected function withRangeTo(Builder $query, IsLocatable|Coordinate|null $to): void
     {
         if (!$to) {
             return;
         }
 
         // Distances in NM
+        if ($to instanceof IsLocatable) {
+            $to = $to->getCoordinate();
+        }
 
         // Duplicating the calc fields keeps it as simple select without subqueries, etc
-        $lat = $to instanceof Coordinate ? $to->getLat() : $to->lat;
-        $lon = $to instanceof Coordinate ? $to->getLng() : $to->lon;
+        $lat = $to->getLat();
+        $lon = $to->getLng();
 
         $query
             ->selectRaw('airports.*,
@@ -100,13 +103,17 @@ class Airport extends Model implements IsLocatable
      * @param Builder<Airport>  $query
      */
     #[Scope]
-    protected function inRangeOf(Builder $query, Airport|Coordinate $from, float $min, float $max): void
+    protected function inRangeOf(Builder $query, IsLocatable|Coordinate $from, float $min, float $max): void
     {
         $max = max($min, $max - 0.001);
 
+        if ($from instanceof IsLocatable) {
+            $from = $from->getCoordinate();
+        }
+
         // Duplicating the calc fields keeps it as simple select without subqueries, etc
-        $lat = $from instanceof Coordinate ? $from->getLat() : $from->lat;
-        $lon = $from instanceof Coordinate ? $from->getLng() : $from->lon;
+        $lat = $from->getLat();
+        $lon = $from->getLng();
 
         // Approximate bounding box to reduce
         $latRange = $max / 60; // 1 degree latitude is ~60 NM, so convert to degrees for lat range
