@@ -15,6 +15,9 @@ class WelcomeEmail extends Notification
         $this->user = $user;
     }
 
+    /**
+     * @return string[]
+     */
     public function via(object $notifiable): array
     {
         return ['mail'];
@@ -22,7 +25,7 @@ class WelcomeEmail extends Notification
 
     public function toMail(object $notifiable): MailMessage
     {
-        return (new MailMessage)
+        return (new MailMessage())
             ->greeting('Welcome!')
             ->line('Welcome ' . $this->user->name . ' to the Bush Divers community!')
             ->line('You are now a pilot for the Bush Divers virtual airline. Your pilot ID is ' . $this->user->pilot_id)

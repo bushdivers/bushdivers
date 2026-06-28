@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class AddUserTransaction
 {
-    public function execute($userId, $type, $value, $flightId = null)
+    public function execute($userId, $type, $value, $flightId = null): void
     {
         DB::table('user_accounts')->insert([
             'user_id' => $userId,

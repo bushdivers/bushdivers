@@ -7,7 +7,7 @@ use Carbon\Carbon;
 
 class CheckForExpiry
 {
-    public function execute()
+    public function execute(): void
     {
         $contracts = Contract::where('expires_at', '<', Carbon::now())
             ->where('is_completed', false)

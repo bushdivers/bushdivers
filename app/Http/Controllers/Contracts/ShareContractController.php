@@ -11,7 +11,7 @@ class ShareContractController extends Controller
     /**
      * Handle the incoming request.
      */
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): \Illuminate\Http\JsonResponse
     {
         $contract = Contract::find($request->id);
         if ($contract->active_pirep) {

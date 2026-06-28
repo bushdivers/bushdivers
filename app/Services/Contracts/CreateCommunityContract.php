@@ -16,7 +16,7 @@ class CreateCommunityContract
     ) {
     }
 
-    public function execute(CommunityJobContract $job)
+    public function execute(CommunityJobContract $job): void
     {
         $depAirport = Airport::find($job->dep_airport_id);
         $arrAirport = Airport::find($job->arr_airport_id);

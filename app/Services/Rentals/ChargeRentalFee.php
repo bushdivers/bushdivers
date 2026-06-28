@@ -2,7 +2,6 @@
 
 namespace App\Services\Rentals;
 
-use App\Models\Aircraft;
 use App\Models\Enums\TransactionTypes;
 use App\Models\Fleet;
 use App\Models\Pirep;
@@ -18,7 +17,7 @@ class ChargeRentalFee
         $this->addUserTransaction = $addUserTransaction;
     }
 
-    public function execute($pirepId)
+    public function execute($pirepId): void
     {
         $pirep = Pirep::find($pirepId);
         $aircraft = Rental::find($pirep->aircraft_id);

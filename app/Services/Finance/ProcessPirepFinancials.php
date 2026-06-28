@@ -4,12 +4,11 @@ namespace App\Services\Finance;
 
 use App\Models\Aircraft;
 use App\Models\Contract;
-use App\Models\ContractCargo;
 use App\Models\Enums\FinancialConsts;
 use App\Models\Enums\TransactionTypes;
+use App\Models\Pirep;
 use App\Models\PirepCargo;
 use App\Services\Rentals\ChargeRentalFee;
-use Carbon\Carbon;
 
 class ProcessPirepFinancials
 {
@@ -25,8 +24,7 @@ class ProcessPirepFinancials
         CalcContractPay $calcContractPay,
         AddUserTransaction $addUserTransaction,
         ChargeRentalFee $chargeRentalFee
-    )
-    {
+    ) {
         $this->calcLandingFee = $calcLandingFee;
         $this->calcCargoHandlingFee = $calcCargoHandlingFee;
         $this->calcContractPay = $calcContractPay;
@@ -34,10 +32,10 @@ class ProcessPirepFinancials
         $this->chargeRentalFee = $chargeRentalFee;
     }
 
-    public function execute($pirep)
+    public function execute(Pirep $pirep): void
     {
         if (!$pirep->is_rental) {
-            $aircraft = Aircraft::find($pirep->aircraft_id);
+            $aircraft = Aircraft::findOrFail($pirep->aircraft_id);
         }
 
         $this->calcLandingFee->execute($pirep);
@@ -58,7 +56,7 @@ class ProcessPirepFinancials
                         $privatePlane = false;
                     }
 
-                    $pp = $this->calcContractPay->execute($contract->id, $pirep->id, $pirep->is_rental, $privatePlane);
+                    $pp = $this->calcContractPay->execute($contract, $pirep->id, $pirep->is_rental, $privatePlane);
                     // $totalCargo = $cc->sum('cargo_qty');
 
                     if ($privatePlane || $pirep->is_rental) {

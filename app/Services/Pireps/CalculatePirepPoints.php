@@ -23,15 +23,14 @@ class CalculatePirepPoints
         AddUserTransaction $addUserTransaction,
         AddAirlineTransaction $addAirlineTransaction,
         CalculateLandingRatePoints $calculateLandingRatePoints
-    )
-    {
+    ) {
         $this->storePirepPointsEntry = $storePirepPointsEntry;
         $this->addUserTransaction = $addUserTransaction;
         $this->addAirlineTransaction = $addAirlineTransaction;
         $this->calculateLandingRatePoints = $calculateLandingRatePoints;
     }
 
-    public function execute(Pirep $pirep)
+    public function execute(Pirep $pirep): void
     {
         // completed flight
         $this->storePirepPointsEntry->execute($pirep->id, PointsType::COMPLETED_FLIGHT_LABEL, PointsType::COMPLETED_FLIGHT);
@@ -41,17 +40,25 @@ class CalculatePirepPoints
             $aircraft = Aircraft::find($pirep->aircraft_id);
             if ($pirep->arrAirport->id == $aircraft->hub_id && $aircraft->owner_id == 0) {
                 $this->storePirepPointsEntry->execute($pirep->id, PointsType::HOME_HUB_LABEL, PointsType::HOME_HUB);
-                $this->addUserTransaction->execute($pirep->user_id, TransactionTypes::Bonus, FinancialConsts::HubBonus,
-                    $pirep->id);
-                $this->addAirlineTransaction->execute(AirlineTransactionTypes::ContractExpenditure,
-                    FinancialConsts::HubBonus, 'Returned aircraft home', $pirep->id);
+                $this->addUserTransaction->execute(
+                    $pirep->user_id,
+                    TransactionTypes::Bonus,
+                    FinancialConsts::HubBonus,
+                    $pirep->id
+                );
+                $this->addAirlineTransaction->execute(
+                    AirlineTransactionTypes::ContractExpenditure,
+                    FinancialConsts::HubBonus,
+                    'Returned aircraft home',
+                    $pirep->id
+                );
             }
         }
 
 
         // time
-//        $hours = floor($pirep->flight_time / 60);
-//        $this->addPointsEntry($pirep->id, PointsType::ONE_HOUR_LABEL, PointsType::ONE_HOUR * $hours);
+        //        $hours = floor($pirep->flight_time / 60);
+        //        $this->addPointsEntry($pirep->id, PointsType::ONE_HOUR_LABEL, PointsType::ONE_HOUR * $hours);
 
         // distance
         $distance = (int) floor($pirep->distance / 50);
@@ -62,17 +69,18 @@ class CalculatePirepPoints
         // TODO: overspeed
 
         // landing rate
-        $landing_rate = $this->calculateLandingRatePoints->execute($pirep->landing_rate);
-        if ($landing_rate['points'] > 0) {
-            $this->storePirepPointsEntry->execute($pirep->id, $landing_rate['type'], $landing_rate['points']);
+        if ($pirep->landing_rate !== null) {
+            $landing_rate = $this->calculateLandingRatePoints->execute($pirep->landing_rate);
+            if ($landing_rate['points'] > 0) {
+                $this->storePirepPointsEntry->execute($pirep->id, $landing_rate['type'], $landing_rate['points']);
+            }
         }
 
         // TODO: exceed 250 under 10,000ft
 
         // TODO: time compression penalty
 
-        if ($pirep->engine_active_start)
-        {
+        if ($pirep->engine_active_start) {
             $this->storePirepPointsEntry->execute($pirep->id, PointsType::ENGINE_ACTIVE_STARTUP_LABEL, PointsType::ENGINE_ACTIVE_STARTUP);
         }
     }

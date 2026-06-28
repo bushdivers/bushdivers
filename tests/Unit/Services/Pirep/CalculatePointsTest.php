@@ -150,6 +150,7 @@ class CalculatePointsTest extends TestCase
         $pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,
             'aircraft_id' => $aircraft->id,
+            'landing_rate' => 54.5,
             'is_rental' => true
         ]);
         $this->calculatePirepPoints->execute($pirep);
@@ -170,7 +171,8 @@ class CalculatePointsTest extends TestCase
         $pirep = Pirep::factory()->create([
             'user_id' => $this->user->id,
             'aircraft_id' => $aircraft->id,
-            'is_rental' => true
+            'is_rental' => true,
+            'landing_rate' => 54.5
         ]);
         $this->calculatePirepPoints->execute($pirep);
         $this->assertDatabaseMissing('user_accounts', [

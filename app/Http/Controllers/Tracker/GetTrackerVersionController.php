@@ -7,18 +7,19 @@ use App\Services\General\TrackerUrl;
 
 class GetTrackerVersionController extends Controller
 {
-    public function __invoke(TrackerUrl $trackerUrl)
+    public function __invoke(TrackerUrl $trackerUrl): \Illuminate\Http\Response
     {
         // Cache the version data for 12 hours, but refresh after 6
         $verData = $trackerUrl->execute();
 
-        if (empty($verData) || !isset($verData['version']))
+        if (empty($verData)) {
             return response()->noContent(404);
+        }
 
         $verNum = $verData['version'];
         $url = $verData['url'];
 
-    $body = <<<XMLBODY
+        $body = <<<XMLBODY
 <?xml version="1.0" encoding="UTF-8"?>
 <item>
     <version>$verNum</version>

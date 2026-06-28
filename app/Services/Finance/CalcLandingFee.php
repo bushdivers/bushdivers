@@ -22,7 +22,7 @@ class CalcLandingFee
         $this->addUserTransaction = $addUserTransaction;
     }
 
-    public function execute(Pirep $pirep)
+    public function execute(Pirep $pirep): void
     {
         $pirep->loadMissing('arrAirport');
         $airport = $pirep->arrAirport;

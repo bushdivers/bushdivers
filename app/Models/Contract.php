@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\Enums\CargoType;
+use App\Models\Enums\CargoType as CargoTypeEnum;
 use App\Models\Enums\ContractType as ContractTypEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -27,7 +27,7 @@ class Contract extends Model
             'expires_at' => 'datetime',
             'completed_at' => 'datetime',
             'contract_type_id' => ContractTypEnum::class,
-            'cargo_type' => CargoType::class,
+            'cargo_type' => CargoTypeEnum::class,
             'is_available' => 'boolean',
             'is_completed' => 'boolean',
             'is_custom' => 'boolean',

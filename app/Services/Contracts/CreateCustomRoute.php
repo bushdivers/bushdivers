@@ -21,7 +21,10 @@ class CreateCustomRoute
         $this->calcContractValue = $calcContractValue;
     }
 
-    public function execute(string $dep, string $arr, User $user, string $type = 'cargo')
+    /**
+     * @param 'cargo'|'passenger' $type
+     */
+    public function execute(string $dep, string $arr, User $user, string $type = 'cargo'): void
     {
         try {
             $depAirport = Airport::where('identifier', $dep)->whereNull('user_id')->firstOrFail();

@@ -10,7 +10,11 @@ use App\Models\Enums\AircraftStatus;
 
 class GetFinanceData
 {
-    public function execute()
+    /**
+     * Retrieve finance data for display
+     * @return array{accounts: \Illuminate\Pagination\LengthAwarePaginator<int, AccountLedger>, aircraftOps: float|int, aircraftStorage: float|int, balance: float, hubs: float|int}
+     */
+    public function execute(): array
     {
         $accounts = AccountLedger::with('pirep')->orderBy('created_at', 'desc')->paginate(15);
         $balance = AccountLedger::getBalance();

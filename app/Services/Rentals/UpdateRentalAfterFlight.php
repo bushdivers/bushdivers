@@ -7,7 +7,7 @@ use App\Models\Rental;
 
 class UpdateRentalAfterFlight
 {
-    public function execute($id, $fuel, $location)
+    public function execute($id, $fuel, $location): void
     {
         $rental = Rental::find($id);
         $rental->fuel_onboard = $rental->fuel_onboard - $fuel;

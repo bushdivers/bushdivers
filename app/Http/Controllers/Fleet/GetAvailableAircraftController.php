@@ -13,10 +13,10 @@ class GetAvailableAircraftController extends Controller
     /**
      * Handle the incoming request.
      */
-    public function __invoke(Request $request, $icao): JsonResponse
+    public function __invoke(Request $request, string $icao): JsonResponse
     {
         $aircraft = Aircraft::with(['fleet', 'location'])
-            ->whereHas('location', fn($q) => $q->where('identifier', $icao))
+            ->whereHas('location', fn ($q) => $q->where('identifier', $icao))
             ->where('state', AircraftState::AVAILABLE)
             ->orderBy('fleet_id')
             ->get();

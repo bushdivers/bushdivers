@@ -6,9 +6,13 @@ use App\Models\Enums\PointsType;
 
 class CalculateLandingRatePoints
 {
-    public function execute($landingRate): array
+    /**
+     * Calculate points based on landing rate
+     * @return array{points: int, type: string}
+     */
+    public function execute(float $landingRate): array
     {
-        $points = 0.00;
+        $points = 0;
         $type = '';
         switch (true) {
             case $landingRate < 0.00:

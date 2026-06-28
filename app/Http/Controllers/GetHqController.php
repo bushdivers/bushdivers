@@ -14,7 +14,7 @@ class GetHqController extends Controller
     /**
      * Handle the incoming request.
      */
-    public function __invoke(Request $request, GetFinanceData $getFinanceData)
+    public function __invoke(Request $request, GetFinanceData $getFinanceData): \Inertia\Response
     {
         $finances = $getFinanceData->execute();
 
@@ -30,15 +30,16 @@ class GetHqController extends Controller
 
         $hubs = Airport::hub();
         return Inertia::render('General/BushDivers', [
-            'fleet' => function() use ($fleet) {
+            'fleet' => function () use ($fleet) {
                 $fleets = $fleet->get();
                 $fleets->each(
                     function ($f) {
                         $f->aircraft->each->setRelation('fleet', $f);
-                    });
+                    }
+                );
                 return $fleets;
             },
-            'hubs' => fn() => $hubs->get(),
+            'hubs' => fn () => $hubs->get(),
             'finances' => $finances]);
     }
 }

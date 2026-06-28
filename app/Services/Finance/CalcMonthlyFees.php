@@ -10,13 +10,12 @@ class CalcMonthlyFees
     public function __construct(
         CalcHubFees $calcHubFees,
         CalcAircraftFees $calcAircraftFees
-    )
-    {
+    ) {
         $this->calcHubFees = $calcHubFees;
         $this->calcAircraftFees = $calcAircraftFees;
     }
 
-    public function execute()
+    public function execute(): void
     {
         $this->calcHubFees->execute();
         $this->calcAircraftFees->execute();

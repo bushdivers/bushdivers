@@ -14,7 +14,7 @@ class ShowCommunityController extends Controller
     /**
      * Handle the incoming request.
      */
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): \Inertia\Response
     {
         // Find active mission (either regular mission or hub event)
         $mission = CommunityJob::with(['jobs', 'jobs.departureAirport', 'jobs.arrivalAirport'])

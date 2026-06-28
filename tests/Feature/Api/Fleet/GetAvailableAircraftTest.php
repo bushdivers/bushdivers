@@ -27,6 +27,8 @@ class GetAvailableAircraftTest extends TestCase
             'fleet_id' => $this->fleet->id,
             'current_airport_id' => $airport->id
         ]);
+
+        $this->markTestSkipped('Testing removal of aircraft API');
     }
 
     /**

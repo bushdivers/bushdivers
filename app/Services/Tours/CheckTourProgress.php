@@ -18,7 +18,7 @@ class CheckTourProgress
         $this->addAwardToUser = $addAwardToUser;
     }
 
-    public function execute(Pirep $pirep)
+    public function execute(Pirep $pirep): void
     {
         // get tour
         $pirep->loadMissing('arrAirport');

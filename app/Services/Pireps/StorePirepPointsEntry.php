@@ -6,7 +6,7 @@ use App\Models\Point;
 
 class StorePirepPointsEntry
 {
-    public function execute(string $pirepId, string $type, int $points)
+    public function execute(string $pirepId, string $type, int $points): void
     {
         $entry = new Point();
         $entry->pirep_id = $pirepId;

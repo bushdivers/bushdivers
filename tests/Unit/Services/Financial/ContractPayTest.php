@@ -100,7 +100,7 @@ class ContractPayTest extends TestCase
     {
         $expectedPay = $this->contract->contract_value;
 
-        $p = $this->calcContractPay->execute($this->contract->id);
+        $p = $this->calcContractPay->execute($this->contract);
         $this->assertDatabaseHas('account_ledgers', [
             'transaction_type' => AirlineTransactionTypes::ContractIncome,
             'total' => $expectedPay
@@ -111,7 +111,7 @@ class ContractPayTest extends TestCase
     {
         $expectedPay = (FinancialConsts::PilotPay / 100) * $this->contract->contract_value;
         $companyPay = $this->contract->contract_value;
-        $pay = $this->calcContractPay->execute($this->contract->id);
+        $pay = $this->calcContractPay->execute($this->contract);
         $this->assertEquals($expectedPay, $pay);
         $this->assertEquals($companyPay, $this->contract->contract_value);
     }
@@ -120,7 +120,7 @@ class ContractPayTest extends TestCase
     {
         $expectedPay = (FinancialConsts::PrivatePilotPay / 100) * $this->contract->contract_value;
         $companyPay = $this->contract->contract_value;
-        $pay = $this->calcContractPay->execute($this->contract->id, null, false, true);
+        $pay = $this->calcContractPay->execute($this->contract, null, false, true);
         $this->assertEquals($expectedPay, $pay);
         $this->assertEquals($companyPay, $this->contract->contract_value);
     }
@@ -129,7 +129,7 @@ class ContractPayTest extends TestCase
     {
         $expectedPay = (FinancialConsts::PrivatePilotPay / 100) * $this->contract->contract_value;
         $companyPay = $this->contract->contract_value;
-        $pay = $this->calcContractPay->execute($this->contract->id, null, true, false);
+        $pay = $this->calcContractPay->execute($this->contract, null, true, false);
         $this->assertEquals($expectedPay, $pay);
         $this->assertEquals($companyPay, $this->contract->contract_value);
     }

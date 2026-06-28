@@ -6,7 +6,7 @@ use App\Models\User;
 
 class UpdateUserHours
 {
-    public function execute($flightHours, $userId)
+    public function execute($flightHours, $userId): void
     {
         $user = User::find($userId);
         $user->flights_time += $flightHours;

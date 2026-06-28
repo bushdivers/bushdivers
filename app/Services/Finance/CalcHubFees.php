@@ -15,7 +15,7 @@ class CalcHubFees
         $this->addAirlineTransaction = $addAirlineTransaction;
     }
 
-    public function execute()
+    public function execute(): void
     {
         $fee = AirlineFees::where('fee_type', AirlineTransactionTypes::HubRentalFees)->first();
         $hubs = Airport::where('is_hub', true)->get();

@@ -3,7 +3,6 @@
 namespace App\Services\Finance;
 
 use App\Models\Contract;
-use App\Models\ContractCargo;
 use App\Models\Enums\AirlineTransactionTypes;
 use App\Models\Enums\FinancialConsts;
 use Carbon\Carbon;
@@ -17,23 +16,22 @@ class CalcContractPay
         $this->addAirlineTransaction = $addAirlineTransaction;
     }
 
-    public function execute($contractId, $pirep = null, $rental = false, $privatePlane = false): float
+    public function execute(Contract $contract, $pirep = null, $rental = false, $privatePlane = false): float
     {
-        $contract = Contract::find($contractId);
         $companyPay = $contract->contract_value;
         if (Carbon::now()->greaterThan($contract->expires_at)) {
-            $companyPay = round($companyPay - ($companyPay * FinancialConsts::ExpiryMultiplier),2);
+            $companyPay = round($companyPay - ($companyPay * FinancialConsts::ExpiryMultiplier), 2);
         }
 
         // company pay
-        $this->addAirlineTransaction->execute(AirlineTransactionTypes::ContractIncome, $companyPay, 'Contract Pay: '. $contractId, $pirep, 'credit');
+        $this->addAirlineTransaction->execute(AirlineTransactionTypes::ContractIncome, $companyPay, 'Contract Pay: '. $contract->id, $pirep, 'credit');
         // pilot pay
         if ($rental || $privatePlane) {
             $pilotPay = (FinancialConsts::PrivatePilotPay / 100) * $companyPay;
         } else {
             $pilotPay = (FinancialConsts::PilotPay / 100) * $companyPay;
         }
-        $this->addAirlineTransaction->execute(AirlineTransactionTypes::ContractExpenditure, $pilotPay, 'Pilot Pay: '. $contractId, $pirep);
+        $this->addAirlineTransaction->execute(AirlineTransactionTypes::ContractExpenditure, $pilotPay, 'Pilot Pay: '. $contract->id, $pirep);
         return $pilotPay;
     }
 }

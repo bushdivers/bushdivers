@@ -13,10 +13,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/aircraft/{icao}', \App\Http\Controllers\Fleet\GetAvailableAircraftController::class)
-    ->name('fleet.available.aircraft');
-Route::get('/flights/distance/{from}/{to}', \App\Http\Controllers\Dispatch\GetFlightDistanceController::class)
-    ->name('flights.distance');
+/*Route::get('/aircraft/{icao}', \App\Http\Controllers\Fleet\GetAvailableAircraftController::class)
+    ->name('fleet.available.aircraft');*/
+/*Route::get('/flights/distance/{from}/{to}', \App\Http\Controllers\Dispatch\GetFlightDistanceController::class)
+    ->name('flights.distance');*/
 Route::get('/liveflights', \App\Http\Controllers\Pireps\GetLiveFlightsController::class)
     ->name('flights.live');
 Route::get('/whazzup', [\App\Http\Controllers\Pireps\GetLiveFlightsController::class, 'whazzup'])

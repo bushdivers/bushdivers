@@ -10,12 +10,13 @@ use Illuminate\Http\Request;
 class GetFlightDistanceController extends Controller
 {
     public function __construct()
-    { }
+    {
+    }
 
     /**
      * Handle the incoming request.
      */
-    public function __invoke(Request $request, $from, $to): JsonResponse
+    public function __invoke(Request $request, string $from, string $to): JsonResponse
     {
         $dep = Airport::where('identifier', $from)->firstOrFail();
         $arr = Airport::where('identifier', $to)->firstOrFail();

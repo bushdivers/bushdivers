@@ -7,7 +7,7 @@ use App\Models\User;
 
 class UpdateUserLocation
 {
-    public function execute($icao, $userId)
+    public function execute($icao, $userId): void
     {
         $user = User::find($userId);
         $user->current_airport_id = Airport::whereIdentifier($icao)->first()->id;

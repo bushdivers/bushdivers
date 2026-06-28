@@ -19,8 +19,7 @@ class ProcessJumpseatController extends Controller
     public function __construct(
         UpdateUserLocation $updateUserLocation,
         AddUserTransaction $addUserTransaction
-    )
-    {
+    ) {
         $this->updateUserLocation = $updateUserLocation;
         $this->addUserTransaction = $addUserTransaction;
     }
@@ -34,7 +33,7 @@ class ProcessJumpseatController extends Controller
 
         $isCost = true;
 
-        $hubs = Airport::where('is_hub', true)->get();
+        $hubs = Airport::hub()->get();
         $hubs = $hubs->pluck('icao');
         if ($hubs->contains(Auth::user()->location->identifier) && $hubs->contains($request->icao)) {
             $isCost = false;
