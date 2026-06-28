@@ -10,6 +10,9 @@ class CalcCostOfJumpseat
     public function __construct()
     { }
 
+    /**
+     * @return array{cost: float, distance: float}
+     */
     public function execute(string $fromIcao, string $toIcao): array
     {
         $start = Airport::where('identifier', $fromIcao)->firstOrFail();

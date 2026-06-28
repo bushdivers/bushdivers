@@ -53,19 +53,20 @@ class ProcessJumpseatTest extends TestCase
 
     public function test_cost_added_to_user_transactions(): void
     {
+        $calc = new \App\Services\Airports\CalcCostOfJumpseat();
+
         Airport::factory()->create([
             'identifier' => 'PANC',
             'is_hub' => false,
         ]);
 
         $data = [
-            'cost' => 2.00,
             'icao' => 'PANC'
         ];
         $this->actingAs($this->user)->post('/jumpseat', $data);
         $this->assertDatabaseHas('user_accounts', [
             'user_id' => $this->user->id,
-            'total' => -2.00
+            'total' => -$calc->execute($this->user->location->identifier, 'PANC')['cost']
         ]);
     }
 
