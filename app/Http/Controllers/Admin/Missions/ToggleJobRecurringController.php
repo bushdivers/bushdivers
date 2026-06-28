@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\Missions;
 
 use App\Http\Controllers\Controller;
 use App\Models\CommunityJobContract;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class ToggleJobRecurringController extends Controller
@@ -11,13 +12,12 @@ class ToggleJobRecurringController extends Controller
     /**
      * Handle the incoming request.
      */
-    public function __invoke(Request $request, $id)
+    public function __invoke(Request $request, CommunityJobContract $communityJobContract): RedirectResponse
     {
-        $job = CommunityJobContract::findOrFail($id);
-        $job->is_recurring = !$job->is_recurring;
-        $job->save();
+        $communityJobContract->is_recurring = !$communityJobContract->is_recurring;
+        $communityJobContract->save();
 
-        $status = $job->is_recurring ? 'enabled' : 'disabled';
+        $status = $communityJobContract->is_recurring ? 'enabled' : 'disabled';
 
         return redirect()->back()->with(['success' => "Job recurring status {$status} successfully"]);
     }

@@ -11,6 +11,7 @@ use App\Models\Enums\TransactionTypes;
 use App\Services\Finance\AddAirlineTransaction;
 use App\Services\Finance\AddUserTransaction;
 use Carbon\Carbon;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class CompleteMissionController extends Controller
@@ -27,16 +28,15 @@ class CompleteMissionController extends Controller
     /**
      * Handle the incoming request.
      */
-    public function __invoke(Request $request)
+    public function __invoke(Request $request, CommunityJob $communityJob): RedirectResponse
     {
-        $mission = CommunityJob::find($request->id);
-        $mission->is_completed = 1;
-        $mission->completed_at = Carbon::now();
-        $mission->save();
+        $communityJob->is_completed = 1;
+        $communityJob->completed_at = Carbon::now();
+        $communityJob->save();
 
         // If this is a hub event, unlock the hub
-        if ($mission->hub_airport_id) {
-            $hubAirport = $mission->hubAirport;
+        if ($communityJob->hub_airport_id) {
+            $hubAirport = $communityJob->hubAirport;
             if ($hubAirport) {
                 $hubAirport->hub_in_progress = false;
                 $hubAirport->has_avgas = true;
@@ -57,7 +57,7 @@ class CompleteMissionController extends Controller
         }
 
         // find recurring
-        $jobs = CommunityJobContract::where('community_job_id', $request->id)->get();
+        $jobs = CommunityJobContract::where('community_job_id', $communityJob->id)->get();
         foreach ($jobs as $job) {
             if ($job->is_recurring) {
                 $job->is_completed = 1;
@@ -76,8 +76,6 @@ class CompleteMissionController extends Controller
                 $this->addUserTransaction->execute($userId, TransactionTypes::Bonus, round($contract->contract_value / 2));
             }
         }
-
-
 
         return redirect()->back()->with(['success' => 'Mission completed.']);
     }

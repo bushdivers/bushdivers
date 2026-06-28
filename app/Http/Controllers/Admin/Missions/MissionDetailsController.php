@@ -14,16 +14,15 @@ class MissionDetailsController extends Controller
     /**
      * Handle the incoming request.
      */
-    public function __invoke($id, Request $request)
+    public function __invoke(Request $request, CommunityJob $communityJob): \Inertia\Response
     {
-        $mission = CommunityJob::with('hubAirport')->find($id);
-        $jobs = CommunityJobContract::with(['departureAirport', 'arrivalAirport'])->where('community_job_id', $id)->get();
+        $jobs = CommunityJobContract::with(['departureAirport', 'arrivalAirport'])->where('community_job_id', $communityJob->id)->get();
 
         $hubAircraft = [];
-        if ($mission->hub_airport_id ?? false) {
+        if ($communityJob->hub_airport_id ?? false) {
             $hubAircraft = Aircraft::with(['fleet', 'location'])
                 ->isFleet()
-                ->where('hub_id', $mission->hub_airport_id)
+                ->where('hub_id', $communityJob->hub_airport_id)
                 ->get()
                 ->map(function ($aircraft) {
                     return [
@@ -38,7 +37,7 @@ class MissionDetailsController extends Controller
         }
 
         $data = [
-            'mission' => $mission,
+            'mission' => $communityJob,
             'jobs' => $jobs,
             'hubAircraft' => $hubAircraft,
         ];

@@ -9,6 +9,7 @@ use App\Models\CommunityJob;
 use App\Models\CommunityJobContract;
 use App\Models\Enums\CargoType;
 use App\Services\Contracts\CreateCommunityContract;
+use Illuminate\Http\RedirectResponse;
 
 class AddJobController extends Controller
 {
@@ -22,10 +23,9 @@ class AddJobController extends Controller
     /**
      * Handle the incoming request.
      */
-    public function __invoke(AdminMissionJobRequest $request, $id)
+    public function __invoke(AdminMissionJobRequest $request, CommunityJob $communityJob): RedirectResponse
     {
         $validated = $request->validated();
-        $mission = CommunityJob::findOrFail($id);
         $from = Airport::where('identifier', $validated['departure'])->base()->firstOrFail();
         $to = Airport::where('identifier', $validated['destination'])->base()->firstOrFail();
 
@@ -47,13 +47,13 @@ class AddJobController extends Controller
         });
         $job->cargo = $validated['cargo'];
         $job->is_recurring = $validated['recurring'] ?? false;
-        $job->community_job_id = $id;
+        $job->community_job_id = $communityJob->id;
         $job->save();
 
         $message = 'Job added.';
 
         // If mission is published and inject_immediately is checked, inject into contracts
-        if ($mission->is_published && ($validated['inject_immediately'] ?? false)) {
+        if ($communityJob->is_published && ($validated['inject_immediately'] ?? false)) {
             try {
                 $this->createCommunityContract->execute($job);
                 $message = 'Job added and injected into contracts successfully.';

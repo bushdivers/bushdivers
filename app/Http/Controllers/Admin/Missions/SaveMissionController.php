@@ -11,14 +11,13 @@ class SaveMissionController extends Controller
     /**
      * Handle the incoming request.
      */
-    public function __invoke(Request $request, $id)
+    public function __invoke(Request $request, CommunityJob $communityJob): \Illuminate\Http\RedirectResponse
     {
-        $mission = CommunityJob::find($id);
-        $mission->name = $request->name;
-        $mission->description = $request->description;
-        $mission->allow_private = $request->allow_private ?? false;
+        $communityJob->name = $request->name;
+        $communityJob->description = $request->description;
+        $communityJob->allow_private = $request->allow_private ?? false;
         // hub_airport_id is immutable after creation - set only during CreateMissionsController
-        $mission->save();
+        $communityJob->save();
 
         return redirect()->back()->with('success', 'Mission updated successfully');
     }

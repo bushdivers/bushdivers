@@ -19,17 +19,17 @@ class InjectJobToContractsController extends Controller
     /**
      * Handle the incoming request.
      */
-    public function __invoke(Request $request, $id)
+    public function __invoke(Request $request, CommunityJobContract $communityJobContract): \Illuminate\Http\RedirectResponse
     {
-        $job = CommunityJobContract::with('communityJob')->findOrFail($id);
+        $communityJobContract->load('communityJob');
 
         // Only allow injection for published missions
-        if (!$job->communityJob->is_published) {
+        if (!$communityJobContract->communityJob->is_published) {
             return redirect()->back()->with(['error' => 'Can only dispatch jobs for published missions']);
         }
 
         try {
-            $this->createCommunityContract->execute($job);
+            $this->createCommunityContract->execute($communityJobContract);
 
             return redirect()->back()->with(['success' => 'Job successfully dispatched']);
         } catch (\Exception $e) {

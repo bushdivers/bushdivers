@@ -11,10 +11,9 @@ class DeleteMissionController extends Controller
     /**
      * Handle the incoming request.
      */
-    public function __invoke(Request $request, $id)
+    public function __invoke(Request $request, CommunityJob $communityJob): \Illuminate\Http\RedirectResponse
     {
-        $mission = CommunityJob::findOrFail($id);
-        $mission->delete();
+        $communityJob->delete();
         return redirect()->back()->with('success', 'Mission deleted successfully');
     }
 }

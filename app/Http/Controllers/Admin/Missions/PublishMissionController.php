@@ -30,7 +30,7 @@ class PublishMissionController extends Controller
     /**
      * Handle the incoming request.
      */
-    public function __invoke(Request $request): \Illuminate\Http\RedirectResponse
+    public function __invoke(Request $request, CommunityJob $communityJob): \Illuminate\Http\RedirectResponse
     {
         $existingMission = CommunityJob::where('is_completed', 0)->where('is_published', 1)->count();
         $hubInProgress = Airport::where('hub_in_progress', 1)->count();
@@ -38,11 +38,9 @@ class PublishMissionController extends Controller
             return redirect()->back()->with(['error' => 'A community mission already in progress.']);
         }
 
-        $mission = CommunityJob::find($request->id);
-
         // If this is a hub event, check hub airport and funds
-        if ($mission->hub_airport_id) {
-            $hubAirport = Airport::find($mission->hub_airport_id);
+        if ($communityJob->hub_airport_id) {
+            $hubAirport = Airport::find($communityJob->hub_airport_id);
             if (!$hubAirport) {
                 return redirect()->back()->with(['error' => 'Hub airport not found.']);
             }
@@ -59,14 +57,14 @@ class PublishMissionController extends Controller
         }
 
         // create contracts from mission jobs
-        $jobs = CommunityJobContract::where('community_job_id', $request->id)->get();
+        $jobs = CommunityJobContract::where('community_job_id', $communityJob->id)->get();
         foreach ($jobs as $job) {
             $this->createCommunityContract->execute($job);
         }
 
         // If this is a hub event, activate hub and charge supplies cost
-        if ($mission->hub_airport_id) {
-            $hubAirport = Airport::find($mission->hub_airport_id);
+        if ($communityJob->hub_airport_id) {
+            $hubAirport = Airport::find($communityJob->hub_airport_id);
             $hubAirport->is_hub = true;
             $hubAirport->hub_in_progress = true;
             $hubAirport->save();
@@ -81,8 +79,8 @@ class PublishMissionController extends Controller
             );
         }
 
-        $mission->is_published = 1;
-        $mission->save();
+        $communityJob->is_published = 1;
+        $communityJob->save();
         return redirect()->back()->with(['success' => 'Mission published.']);
     }
 }

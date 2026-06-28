@@ -10,7 +10,7 @@ use Illuminate\Validation\ValidationException;
 
 class UpdateFerryController extends Controller
 {
-    public function __invoke(Request $request, Aircraft $aircraft)
+    public function __invoke(Request $request, Aircraft $aircraft): \Illuminate\Http\RedirectResponse
     {
         // Check if aircraft has an active pirep
         $activePirep = $aircraft->pireps()
@@ -32,8 +32,9 @@ class UpdateFerryController extends Controller
         ]);
 
         $aircraft->is_ferry = $validated['is_ferry'];
-        if (!$validated['is_ferry'] || $validated['ferry_user_id'] != $aircraft->ferry_user_id)
+        if (!$validated['is_ferry'] || $validated['ferry_user_id'] != $aircraft->ferry_user_id) {
             $aircraft->ferry_distance = null;
+        }
 
         $aircraft->ferry_user_id = $validated['is_ferry'] ? $validated['ferry_user_id'] : null;
         $aircraft->save();
