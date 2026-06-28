@@ -100,7 +100,7 @@ class GetActiveDispatchController extends Controller
             'passenger_count' => $passengerCount,
             'total_payload' => $payloadWeight,
             'payload_capacity' => max($payloadWeight, $dispatch->variant ? $dispatch->variant->mtow - $dispatch->variant->zfw : 0),
-            'is_empty' => $dispatch->is_empty,
+            'is_empty' => $dispatch->is_empty ? 1 : 0, // Tracker expects int, not bool
             'tour' => $dispatch->tour->title ?? null,
             'cargo' => $cargo
         ];
