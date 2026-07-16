@@ -5,6 +5,7 @@ namespace Tests\Unit\Services\Contract;
 use App\Models\Airport;
 use App\Models\Contract;
 use App\Models\Pirep;
+use App\Models\User;
 use App\Services\Contracts\UpdateContractCargoProgress;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -50,6 +51,19 @@ class UpdateContractProgressTest extends TestCase
         $this->updateContractCargoProgress->execute($contract, $this->aymh, $this->pirep);
         $contract->refresh();
         $this->assertEquals(false, $contract->is_completed);
+    }
+
+    public function test_incomplete_shared_contract_is_available(): void
+    {
+        $contract = Contract::factory()-> create([
+            'arr_airport_id' => Airport::factory()->create()->id,
+            'is_shared' => true,
+            'user_id' => User::factory()->create()->id
+        ]);
+        $this->updateContractCargoProgress->execute($contract, $this->aymh, $this->pirep);
+        $contract->refresh();
+        $this->assertEquals(false, $contract->is_completed);
+        $this->assertNull($contract->user_id);
     }
 
     public function test_completed_fuel_contract_adds_fuel(): void

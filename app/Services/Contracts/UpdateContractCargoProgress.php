@@ -21,6 +21,11 @@ class UpdateContractCargoProgress
         $contractCargo->current_airport_id = $airport->id;
         $contractCargo->active_pirep = null;
 
+        // Unassign shared contracts
+        if ($contractCargo->is_shared) {
+            $contractCargo->user_id = null;
+        }
+
         // check if cargo item is completed
 
         if ($airport->id == $contractCargo->arr_airport_id) {
