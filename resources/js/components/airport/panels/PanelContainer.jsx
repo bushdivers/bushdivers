@@ -28,6 +28,7 @@ const PanelContainer = ({ metar, fuel, currentAirport }) => {
           bg={colorMode === 'light' ? 'white' : 'gray.700'}
           py={4}
           px={3}
+          overflowY="auto"
           css={{ transform: 'translateY(-50%)' }}
         >
           {selectedMapPanel === PANELSTATE.WEATHER && (

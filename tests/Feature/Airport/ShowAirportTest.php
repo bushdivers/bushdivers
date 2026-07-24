@@ -5,6 +5,7 @@ namespace Tests\Feature\Airport;
 use App\Models\Airport;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Config;
 use Tests\TestCase;
 
 class ShowAirportTest extends TestCase
@@ -16,6 +17,9 @@ class ShowAirportTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+
+        Config::set('services.checkwx.key', 'test-key');
+        Config::set('services.checkwx.url', 'https://example.com');
 
         $this->user = User::factory()->create();
         $this->actingAs($this->user);

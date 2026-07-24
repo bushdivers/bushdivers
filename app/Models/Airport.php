@@ -42,6 +42,9 @@ class Airport extends Model implements IsLocatable
         'has_avgas',
         'has_jetfuel',
         'is_thirdparty',
+        'primary_metar',
+        'secondary_metar',
+        'metar_added_at',
     ];
 
     protected $hidden = [

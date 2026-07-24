@@ -3,7 +3,7 @@ import React from 'react'
 
 const WeatherItem = ({ heading, children }) => {
   return (
-    <Flex direction="column" alignItems="center" gap={2}>
+    <Flex direction="column" alignItems="center" gap={2} flex="1">
       <Heading size="sm">{heading}</Heading>
       {children}
     </Flex>

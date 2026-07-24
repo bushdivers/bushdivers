@@ -7,10 +7,10 @@ use App\Models\Aircraft;
 use App\Models\Airport;
 use App\Models\Contract;
 use App\Models\Enums\AircraftStatus;
-use App\Services\Airports\GetMetarForAirport;
 use App\Services\Contracts\GenerateContracts;
 use App\Services\Contracts\GetNumberToGenerate;
 use App\Services\Contracts\StoreContracts;
+use App\Services\Weather\GetMetarForAirport;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -79,7 +79,7 @@ class ShowAirportController extends Controller
             'airport' => $airport,
             'aircraft' => $aircraft,
             'contracts' => $contracts,
-            'metar' => Inertia::defer(fn () => $this->getMetarForAirport->execute($icao)),
+            'metar' => Inertia::defer(fn () => $this->getMetarForAirport->getPrimaryMetar($airport) ?? null),
             'fuel' => $nearestFuel,
             'userContracts' => $userContracts,
         ]);
