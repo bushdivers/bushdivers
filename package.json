@@ -11,15 +11,15 @@
     },
     "devDependencies": {
         "@trivago/prettier-plugin-sort-imports": "^4.3.0",
-        "@vitejs/plugin-react": "^4.2.1",
+        "@vitejs/plugin-react": "^6.0.2",
         "axios": "^1.6.4",
         "eslint": "^8.56.0",
         "eslint-plugin-react": "^7.33.2",
         "husky": "^9.0.11",
-        "laravel-vite-plugin": "^1.0.1",
+        "laravel-vite-plugin": "^3.1.0",
         "lint-staged": "^15.2.2",
         "prettier": "3.1.1",
-        "vite": "^6.3.5"
+        "vite": "^8.0.16"
     },
     "dependencies": {
         "@chakra-ui/react": "^2.8.2",
