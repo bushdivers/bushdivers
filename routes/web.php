@@ -135,6 +135,8 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/aircraft/maintenance', \App\Http\Controllers\Fleet\PerformMaintenanceController::class)
         ->name('aircraft.maintenance');
+    Route::post('/aircraft/{aircraft}/hub', \App\Http\Controllers\Aircraft\UpdateAircraftHubController::class)
+        ->name('aircraft.hub.update');
 
     Route::get('/bushdivers-hq', \App\Http\Controllers\GetHqController::class)->name('hq');
 

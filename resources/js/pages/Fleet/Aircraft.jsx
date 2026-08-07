@@ -50,6 +50,14 @@ const Aircraft = ({ aircraft, maintenanceStatus, pireps }) => {
     }
   }
 
+  const canUpdateHub = () => {
+    return (
+      aircraft.owner_id === auth.user.id ||
+      (aircraft.owner_id === 0 &&
+        auth.user.user_roles.includes('fleet_manager'))
+    )
+  }
+
   const renderMaintenanceType = (maintenanceType) => {
     switch (maintenanceType) {
       case 1:
@@ -186,6 +194,25 @@ const Aircraft = ({ aircraft, maintenanceStatus, pireps }) => {
     }
 
     router.post('/aircraft/maintenance/relocate', data)
+  }
+
+  const handleUpdateHub = async (aircraft) => {
+    const hub = await messageBox.prompt({
+      title: 'Update Aircraft Hub',
+      description: 'Enter ICAO of the new home hub airport.',
+      label: 'Hub ICAO',
+      defaultValue: aircraft.hub?.identifier ?? '',
+      placeholder: 'e.g. CYVR',
+      requireValue: true,
+      confirmText: 'Update Hub',
+      status: 'info',
+    })
+
+    if (!hub || hub.length < 2) return
+
+    router.post(`/aircraft/${aircraft.id}/hub`, {
+      hub,
+    })
   }
 
   const handleGeneralMaintenance = async (
@@ -343,6 +370,15 @@ const Aircraft = ({ aircraft, maintenanceStatus, pireps }) => {
                             Annual Inspection
                           </Button>
                         </Flex>
+                        {canUpdateHub() && (
+                          <Button
+                            ml={3}
+                            size="sm"
+                            onClick={() => handleUpdateHub(aircraft)}
+                          >
+                            Update Hub
+                          </Button>
+                        )}
                         {auth.user.user_roles.includes('fleet_manager') && (
                           <Button
                             size="sm"
