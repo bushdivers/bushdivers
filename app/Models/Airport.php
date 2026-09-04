@@ -158,11 +158,18 @@ class Airport extends Model implements IsLocatable
     }
 
     /**
+     * Scope all available airports to a user
      * @param Builder<Airport>  $query
      */
     #[Scope]
-    protected function forUser(Builder $query, User $user): void
+    protected function forUser(Builder $query, User|null $user): void
     {
+        // If no user, only show base airports
+        if (!$user) {
+            $query->where('is_thirdparty', false)->whereNull('user_id');
+            return;
+        }
+
         // If we're not allowing third party airports
         if (!$user->allow_thirdparty_airport) {
             // If we're also not allowing third party hubs
