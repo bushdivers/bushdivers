@@ -34,24 +34,7 @@ class CheckWxClient
 
         Log::info("Fetching METARs for ICAOs: {$icaoList}");
 
-        $response = Http::withHeaders([
-            'X-API-Key' => $this->apiKey
-            ])
-            ->get("{$this->baseUrl}/metar/{$icaoList}/decoded");
-
-        if ($response->failed()) {
-            Cache::put('checkwx_failure', true, self::FAILURE_BACKOFF_SECONDS);
-            return null;
-        }
-
-        if ($response->json('results') === 0) {
-            return [];
-        }
-
-        // Returns keyed array: ['PAFA' => [...decoded data...], 'PABT' => [...]]
-        return collect($response->json('data', []))
-            ->keyBy(fn ($item) => strtoupper($item['icao'] ?? ''))
-            ->toArray();
+        return $this->sendRequest("metar/{$icaoList}/decoded");
     }
 
     /**
@@ -69,23 +52,41 @@ class CheckWxClient
 
         Log::info("Fetching METARs for coordinates: lat={$lat}, lon={$lon}");
 
-        $response = Http::withHeaders(['X-API-Key' => $this->apiKey])
-            ->get("{$this->baseUrl}/metar/lat/{$lat}/lon/{$lon}/decoded", [
-                'limit' => $limit,
-            ]);
+        return $this->sendRequest("metar/lat/{$lat}/lon/{$lon}/decoded", [
+            'limit' => $limit,
+        ]);
+    }
 
-        if ($response->failed()) {
-            Cache::put('checkwx_failure', true, self::FAILURE_BACKOFF_SECONDS);
+    protected function sendRequest(string $endpoint, array $queryParams = []): array|null
+    {
+        if (Cache::has('checkwx_failure')) {
             return null;
         }
 
-        if ($response->json('results') === 0) {
-            return [];
-        }
+        try {
+            $response = Http::withHeaders(['X-API-Key' => $this->apiKey])
+                ->get("{$this->baseUrl}/{$endpoint}", $queryParams);
 
-        // Returns keyed array: ['PAFA' => [...decoded data...], 'PABT' => [...]]
-        return collect($response->json('data', []))
-            ->keyBy(fn ($item) => strtoupper($item['icao'] ?? ''))
-            ->toArray();
+            if ($response->failed()) {
+                throw new \RuntimeException("CheckWX API request failed: {$response->status()} - {$response->body()}");
+            }
+
+            if ($response->json('results') === 0) {
+                return [];
+            }
+
+            return collect($response->json('data', []))
+                ->keyBy(fn ($item) => strtoupper($item['icao'] ?? ''))
+                ->toArray();
+        } catch (\Exception $e) {
+            Cache::put('checkwx_failure', true, self::FAILURE_BACKOFF_SECONDS);
+
+            Log::error('CheckWX API connection exception', [
+                'endpoint' => $endpoint,
+                'message' => $e->getMessage(),
+                'exception' => get_class($e),
+            ]);
+            return null;
+        }
     }
 }
