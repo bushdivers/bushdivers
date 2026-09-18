@@ -60,12 +60,8 @@ class Airport extends Model implements IsLocatable
             'is_hub' => 'boolean',
             'is_thirdparty' => 'boolean',
             'sim_type' => AsEnumCollection::of(SimType::class),
+            'closed' => 'boolean',
         ];
-    }
-
-    protected static function booted(): void
-    {
-
     }
 
     /**

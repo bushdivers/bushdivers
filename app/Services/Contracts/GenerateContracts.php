@@ -16,12 +16,16 @@ class GenerateContracts
 
     public function execute(Airport $airport, $numberToGenerate, $toHub = false): null|array
     {
+        if ($airport->closed) {
+            return null;
+        }
+
         $user = Auth::user();
         // get airports
         // user foruser to allow gen to any viable airport but filter-out future campground airports
-        $nearbyAirports = Airport::forUser($user)->whereNull('user_id')->inRangeof($airport, 2, 75)->when($toHub, fn ($q) => $q->hub())->get();
-        $midRangeAirports = Airport::forUser($user)->whereNull('user_id')->inRangeof($airport, 76, 250)->when($toHub, fn ($q) => $q->hub())->get();
-        $furtherAfieldAirports = Airport::forUser($user)->whereNull('user_id')->inRangeof($airport, 251, 650)->when($toHub, fn ($q) => $q->hub())->get();
+        $nearbyAirports = Airport::forUser($user)->whereNull('user_id')->whereClosed(false)->inRangeof($airport, 2, 75)->when($toHub, fn ($q) => $q->hub())->get();
+        $midRangeAirports = Airport::forUser($user)->whereNull('user_id')->whereClosed(false)->inRangeof($airport, 76, 250)->when($toHub, fn ($q) => $q->hub())->get();
+        $furtherAfieldAirports = Airport::forUser($user)->whereNull('user_id')->whereClosed(false)->inRangeof($airport, 251, 650)->when($toHub, fn ($q) => $q->hub())->get();
         $allAirports = $nearbyAirports->merge($midRangeAirports)->merge($furtherAfieldAirports);
 
         if ($allAirports->count() === 0) {

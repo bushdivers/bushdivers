@@ -57,7 +57,7 @@ class CreateDispatchController extends Controller
             return redirect()->back()->with(['error' => 'Invalid aircraft variant selected']);
         }
 
-        $destAirport = Airport::forUser(Auth::user())->where('identifier', $request->destination)->first();
+        $destAirport = Airport::forUser(Auth::user())->whereClosed(false)->where('identifier', $request->destination)->first();
         if (!$destAirport) {
             return redirect()->back()->with(['error' => 'Destination airport not found']);
         } elseif (!$isRental && $aircraft->owner_id == 0) {

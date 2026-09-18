@@ -4,7 +4,6 @@ namespace Tests\Unit\Services\Contract;
 
 use App\Models\Airport;
 use App\Services\Contracts\GetNumberToGenerate;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -96,6 +95,16 @@ class GetNumberToGenerateTest extends TestCase
         $airport = Airport::factory()->create([
             'size' => -1,
             'is_hub' => false
+        ]);
+        $number = $this->getNumberToGenerate->execute($airport, 15);
+        $this->assertEquals(0, $number);
+    }
+
+    public function test_nothing_generated_if_airport_closed(): void
+    {
+        $airport = Airport::factory()->create([
+            'closed' => true,
+            'size' => 3
         ]);
         $number = $this->getNumberToGenerate->execute($airport, 15);
         $this->assertEquals(0, $number);

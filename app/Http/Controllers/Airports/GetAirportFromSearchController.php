@@ -17,7 +17,7 @@ class GetAirportFromSearchController extends Controller
     public function __invoke(Request $request, $search): JsonResponse
     {
         // @TODO: depending on instance, sometimes may or may not want third-party airports
-        $airport = Airport::when(
+        $airport = Airport::whereClosed(false)->when(
             $request->input('base', false),
             fn (Builder $q) => $q->base(Auth::user())
         )->when(
