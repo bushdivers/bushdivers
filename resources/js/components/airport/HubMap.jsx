@@ -1,5 +1,4 @@
 import { Box, useColorMode } from '@chakra-ui/react'
-import maplibre from 'maplibre-gl'
 import React, { useEffect, useRef, useState } from 'react'
 import { Map, Marker } from 'react-map-gl'
 
@@ -29,7 +28,6 @@ const HubMap = ({ hubs, onIsVisible }) => {
     <Box className="map-container-large">
       <Map
         ref={mapRef}
-        mapLib={maplibre}
         mapboxAccessToken={mapboxToken}
         initialViewState={{
           longitude: 145.0,

@@ -2,7 +2,6 @@ import { Box, Image, useColorMode } from '@chakra-ui/react'
 import { usePage } from '@inertiajs/react'
 import axios from 'axios'
 import { useAtom } from 'jotai'
-import maplibre from 'maplibre-gl'
 import React, { useEffect, useState } from 'react'
 import Map, { Marker } from 'react-map-gl'
 
@@ -57,7 +56,6 @@ const LiveFlightMap = () => {
     <>
       <Box position="relative" className="map-container-full">
         <Map
-          mapLib={maplibre}
           mapboxAccessToken={mapboxToken}
           initialViewState={{
             longitude: auth.user.location.lon,

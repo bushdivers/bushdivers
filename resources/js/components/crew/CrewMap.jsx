@@ -1,5 +1,4 @@
 import { Box } from '@chakra-ui/react'
-import maplibre from 'maplibre-gl'
 import React, { useState } from 'react'
 import Map, { Marker } from 'react-map-gl'
 
@@ -21,7 +20,6 @@ const CrewMap = (props) => {
     <>
       <Box className={'map-container-full'} position="relative">
         <Map
-          mapLib={maplibre}
           mapboxAccessToken={mapboxToken}
           initialViewState={{
             longitude: 145.0,

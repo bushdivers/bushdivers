@@ -1,5 +1,4 @@
 import { Box, Card, CardBody, CardHeader, useColorMode } from '@chakra-ui/react'
-import maplibre from 'maplibre-gl'
 import React from 'react'
 import { Layer, Map, Marker, Source } from 'react-map-gl'
 
@@ -39,7 +38,6 @@ const PirepMap = (props) => {
       <CardBody>
         <Box className="map-container-small rounded`">
           <Map
-            mapLib={maplibre}
             mapboxAccessToken={mapboxToken}
             initialViewState={{
               longitude: props.pirep.arr_airport.lon,

@@ -1,5 +1,4 @@
 import { Box, useColorMode } from '@chakra-ui/react'
-import maplibre from 'maplibre-gl'
 import React from 'react'
 import Map, { Marker } from 'react-map-gl'
 
@@ -14,7 +13,6 @@ const AircraftMap = (props) => {
   return (
     <Box className="map-container-large">
       <Map
-        mapLib={maplibre}
         mapboxAccessToken={mapboxToken}
         initialViewState={{
           longitude: props.aircraft.last_lon,
