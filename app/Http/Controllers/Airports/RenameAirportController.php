@@ -20,8 +20,8 @@ class RenameAirportController extends Controller
 
         if (strlen($newIcao) < 2) {
             return redirect()->back()->with(['error' => 'You must enter a new ICAO code']);
-        } elseif (strlen($newIcao) > 5) {
-            return redirect()->back()->with(['error' => 'ICAO code must be less than 6 characters']);
+        } elseif (strlen($newIcao) > 8) {
+            return redirect()->back()->with(['error' => 'ICAO code must be less than 9 characters']);
         }
 
         if (Airport::where('identifier', $newIcao)->count() > 0) {
