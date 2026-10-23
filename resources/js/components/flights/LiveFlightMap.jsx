@@ -3,10 +3,9 @@ import { usePage } from '@inertiajs/react'
 import axios from 'axios'
 import { useAtom } from 'jotai'
 import React, { useEffect, useState } from 'react'
-import Map, { Marker } from 'react-map-gl'
+import Map, { Marker } from 'react-map-gl/maplibre'
 
 import {
-  mapboxToken,
   parseMapStyle,
   transformRequest,
 } from '../../helpers/geo.helpers'
@@ -56,7 +55,6 @@ const LiveFlightMap = () => {
     <>
       <Box position="relative" className="map-container-full">
         <Map
-          mapboxAccessToken={mapboxToken}
           initialViewState={{
             longitude: auth.user.location.lon,
             latitude: auth.user.location.lat,

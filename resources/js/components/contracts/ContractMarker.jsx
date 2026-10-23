@@ -1,7 +1,7 @@
 import { Flex, Icon, Tag, Text } from '@chakra-ui/react'
 import { useSetAtom } from 'jotai'
 import React from 'react'
-import { Marker } from 'react-map-gl'
+import { Marker } from 'react-map-gl/maplibre'
 
 import { selectedContractAtom } from '../../state/contract.state.js'
 

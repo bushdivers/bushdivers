@@ -1,9 +1,8 @@
 import { Box, useColorMode } from '@chakra-ui/react'
 import React, { useEffect, useRef, useState } from 'react'
-import { Map, Marker } from 'react-map-gl'
+import { Map, Marker } from 'react-map-gl/maplibre'
 
 import {
-  mapboxToken,
   parseMapStyle,
   transformRequest,
 } from '../../helpers/geo.helpers.js'
@@ -28,7 +27,6 @@ const HubMap = ({ hubs, onIsVisible }) => {
     <Box className="map-container-large">
       <Map
         ref={mapRef}
-        mapboxAccessToken={mapboxToken}
         initialViewState={{
           longitude: 145.0,
           latitude: -5.8,

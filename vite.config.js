@@ -8,6 +8,9 @@ export default defineConfig({
       refresh: true,
     }),
   ],
+  optimizeDeps: {
+    exclude: ['maplibre-gl'],
+  },
   build: {
     sourcemap: true,
     rollupOptions: {

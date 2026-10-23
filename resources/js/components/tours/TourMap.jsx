@@ -2,10 +2,9 @@ import { Box, Card, Tag, Text, useColorMode } from '@chakra-ui/react'
 import greatCircle from '@turf/great-circle'
 import { featureCollection, point } from '@turf/helpers'
 import React from 'react'
-import { Layer, Map, Marker, Source } from 'react-map-gl'
+import { Layer, Map, Marker, Source } from 'react-map-gl/maplibre'
 
 import {
-  mapboxToken,
   parseMapStyle,
   transformRequest,
 } from '../../helpers/geo.helpers.js'
@@ -41,7 +40,6 @@ const TourMap = ({ checkpoints, start }) => {
     <Card>
       <Box rounded="md" className="map-container-small">
         <Map
-          mapboxAccessToken={mapboxToken}
           initialViewState={{
             zoom: 0.75,
             latitude: start.lat,

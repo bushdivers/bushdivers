@@ -10,7 +10,7 @@ import {
 import { useAtom } from 'jotai'
 import { Fuel, MapPin } from 'lucide-react'
 import React, { useEffect } from 'react'
-import { useMap } from 'react-map-gl'
+import { useMap } from 'react-map-gl/maplibre'
 
 import { getDistance } from '../../helpers/geo.helpers.js'
 import { displayNumber } from '../../helpers/number.helpers.js'

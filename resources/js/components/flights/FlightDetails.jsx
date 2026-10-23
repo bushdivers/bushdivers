@@ -14,7 +14,7 @@ import { usePage } from '@inertiajs/react'
 import { useAtom } from 'jotai'
 import { Plane, Undo2 } from 'lucide-react'
 import React, { useEffect } from 'react'
-import { useMap } from 'react-map-gl'
+import { useMap } from 'react-map-gl/maplibre'
 
 import { getDistance } from '../../helpers/geo.helpers.js'
 import { selectedFlightAtom } from '../../state/flight.state.js'

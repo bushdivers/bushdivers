@@ -3,10 +3,9 @@ import { usePage } from '@inertiajs/react'
 import { useAtomValue } from 'jotai'
 import { PlaneLanding, PlaneTakeoff } from 'lucide-react'
 import React, { useEffect, useMemo, useState } from 'react'
-import Map, { Layer, Marker, Popup, Source } from 'react-map-gl'
+import Map, { Layer, Marker, Popup, Source } from 'react-map-gl/maplibre'
 
 import {
-  mapboxToken,
   parseMapStyle,
   transformRequest,
 } from '../../helpers/geo.helpers'
@@ -150,7 +149,6 @@ function AirportMap({
     <Box position="relative" className="map-container-full">
       <Map
         id="airportMap"
-        mapboxAccessToken={mapboxToken}
         initialViewState={{
           longitude: airport.lon,
           latitude: airport.lat,

@@ -1,6 +1,6 @@
 import { useAtomValue } from 'jotai'
 import React, { useEffect } from 'react'
-import { Layer, Source, useMap } from 'react-map-gl'
+import { Layer, Source, useMap } from 'react-map-gl/maplibre'
 
 import { selectedContractAtom } from '../../state/contract.state.js'
 import { contractMapLayersAtom } from '../../state/map.state.js'

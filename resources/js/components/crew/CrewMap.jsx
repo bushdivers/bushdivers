@@ -1,9 +1,8 @@
 import { Box } from '@chakra-ui/react'
 import React, { useState } from 'react'
-import Map, { Marker } from 'react-map-gl'
+import Map, { Marker } from 'react-map-gl/maplibre'
 
 import {
-  mapboxToken,
   parseMapStyle,
   transformRequest,
 } from '../../helpers/geo.helpers'
@@ -20,7 +19,6 @@ const CrewMap = (props) => {
     <>
       <Box className={'map-container-full'} position="relative">
         <Map
-          mapboxAccessToken={mapboxToken}
           initialViewState={{
             longitude: 145.0,
             latitude: -5.8,

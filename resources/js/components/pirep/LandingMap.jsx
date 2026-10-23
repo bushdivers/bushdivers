@@ -1,9 +1,8 @@
 import { Box, useColorMode } from '@chakra-ui/react'
 import React from 'react'
-import { Map, Marker } from 'react-map-gl'
+import { Map, Marker } from 'react-map-gl/maplibre'
 
 import {
-  mapboxToken,
   parseMapStyle,
   transformRequest,
 } from '../../helpers/geo.helpers'
@@ -14,7 +13,6 @@ const LandingMap = (props) => {
   return (
     <Box className="map-container-small rounded">
       <Map
-        mapboxAccessToken={mapboxToken}
         initialViewState={{
           longitude: props.pirep.landing_lon,
           latitude: props.pirep.landing_lat,

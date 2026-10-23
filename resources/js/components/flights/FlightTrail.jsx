@@ -1,6 +1,6 @@
 import { useAtomValue } from 'jotai'
 import React, { useEffect, useState } from 'react'
-import { Layer, Marker, Source } from 'react-map-gl'
+import { Layer, Marker, Source } from 'react-map-gl/maplibre'
 
 import { selectedFlightAtom } from '../../state/flight.state.js'
 
