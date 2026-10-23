@@ -11,6 +11,11 @@ import { postError } from './helpers/error.helpers'
 import Error from './pages/General/Error'
 import theme from './theme'
 
+import { setWorkerUrl } from 'maplibre-gl'
+import 'maplibre-gl/dist/maplibre-gl.css'
+import maplibreWorkerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url'
+setWorkerUrl(maplibreWorkerUrl)
+
 createInertiaApp({
   resolve: (name) => {
     const pages = import.meta.glob('./pages/**/*.jsx', { eager: true })
