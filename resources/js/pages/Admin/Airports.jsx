@@ -24,6 +24,7 @@ import {
 import { Link, router } from '@inertiajs/react'
 import React, { useRef } from 'react'
 
+import BaseAirportDialog from '../../components/admin/BaseAirportDialog.jsx'
 import BulkUploadModal from '../../components/elements/BulkUploadModal.jsx'
 import BulkUploadResults from '../../components/elements/BulkUploadResults.jsx'
 import AdminLayout from '../../components/layout/AdminLayout'
@@ -57,6 +58,7 @@ const Airports = ({ airports, bulkUploadResults }) => {
       subHeading="Airport List"
       actions={
         <Flex gap={2}>
+          <BaseAirportDialog />
           <Button onClick={onBulkUploadOpen} size="sm" variant="outline">
             Bulk Upload Airports
           </Button>

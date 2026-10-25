@@ -2,7 +2,9 @@
 
 namespace Tests\Feature\Admin;
 
+use App\Models\Aircraft;
 use App\Models\Airport;
+use App\Models\Pirep;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -51,7 +53,8 @@ class AirportTest extends TestCase
             ->get('/admin/airports');
 
         $response->assertStatus(200);
-        $response->assertInertia(fn ($assert) => $assert
+        $response->assertInertia(
+            fn ($assert) => $assert
             ->component('Admin/Airports')
             ->has('airports.data', 2)
             ->where('airports.data.0.identifier', 'TEST1')
@@ -174,18 +177,107 @@ class AirportTest extends TestCase
         $response->assertSessionHasErrors(['identifier', 'name', 'lat', 'lon']);
     }
 
-    public function test_third_party_scope_works_correctly(): void
+    public function test_base_airport_search_returns_nearest_five_open_base_airports(): void
     {
-        // Create airports with different is_thirdparty values
-        Airport::factory()->create(['identifier' => 'TP01', 'is_thirdparty' => true]);
-        Airport::factory()->create(['identifier' => 'REG01', 'is_thirdparty' => false]);
-        Airport::factory()->create(['identifier' => 'TP02', 'is_thirdparty' => true]);
+        Airport::factory()->create(['identifier' => 'AAAA', 'lat' => 0, 'lon' => 0]);
+        foreach (range(1, 6) as $i) {
+            Airport::factory()->create(['identifier' => "N{$i}", 'lat' => $i * 0.1, 'lon' => 0]);
+        }
+        Airport::factory()->create(['identifier' => 'CLSD', 'lat' => 0.05, 'lon' => 0, 'closed' => true]);
+        Airport::factory()->create(['identifier' => 'TPTY', 'lat' => 0.06, 'lon' => 0, 'is_thirdparty' => true]);
 
-        $thirdPartyAirports = Airport::thirdParty()->get();
+        $this->actingAs($this->user)
+            ->getJson('/admin/airports/base?icao=aaaa')
+            ->assertOk()
+            ->assertJsonPath('identifier', 'AAAA')
+            ->assertJsonCount(5, 'nearest')
+            ->assertJsonPath('nearest.0.identifier', 'N1')
+            ->assertJsonPath('nearest.4.identifier', 'N5');
+    }
 
-        $this->assertCount(2, $thirdPartyAirports);
-        $this->assertTrue($thirdPartyAirports->contains('identifier', 'TP01'));
-        $this->assertTrue($thirdPartyAirports->contains('identifier', 'TP02'));
-        $this->assertFalse($thirdPartyAirports->contains('identifier', 'REG01'));
+    public function test_base_airport_search_rejects_hubs_and_third_party(): void
+    {
+        Airport::factory()->create(['identifier' => 'HUB1', 'is_hub' => true]);
+        Airport::factory()->create(['identifier' => 'TPTY', 'is_thirdparty' => true]);
+
+        foreach (['HUB1' => 422, 'TPTY' => 422, 'NOPE' => 404] as $icao => $status) {
+            $this->actingAs($this->user)
+                ->getJson("/admin/airports/base?icao={$icao}")
+                ->assertStatus($status)
+                ->assertJsonStructure(['error']);
+        }
+    }
+
+    public function test_closing_airport_with_aircraft_requires_target(): void
+    {
+        $airport = Airport::factory()->create(['identifier' => 'AAAA']);
+        Aircraft::factory()->atAirport($airport)->create();
+
+        $this->actingAs($this->user)
+            ->post('/admin/airports/base/edit', ['icao' => 'AAAA', 'closed' => true])
+            ->assertSessionHasErrors('reassign_to');
+
+        $this->assertFalse($airport->fresh()->closed);
+    }
+
+    public function test_closing_airport_moves_aircraft_to_target(): void
+    {
+        $airport = Airport::factory()->create(['identifier' => 'AAAA']);
+        $target = Airport::factory()->create(['identifier' => 'BBBB']);
+        $aircraft = Aircraft::factory()->atAirport($airport)->create();
+
+        $this->actingAs($this->user)
+            ->post('/admin/airports/base/edit', ['icao' => 'AAAA', 'reassign_to' => $target->id, 'closed' => true])
+            ->assertSessionHasNoErrors();
+
+        $this->assertTrue($airport->fresh()->closed);
+        $this->assertEquals($target->id, $aircraft->fresh()->current_airport_id);
+        $this->assertEquals($target->id, $aircraft->fresh()->hub_id);
+    }
+
+    public function test_closed_airport_can_be_reopened(): void
+    {
+        $airport = Airport::factory()->create(['identifier' => 'AAAA', 'closed' => true]);
+
+        $this->actingAs($this->user)
+            ->post('/admin/airports/base/edit', ['icao' => 'AAAA', 'closed' => false])
+            ->assertSessionHasNoErrors();
+
+        $this->assertFalse($airport->fresh()->closed);
+    }
+
+    public function test_toggle_rejects_hub_airports(): void
+    {
+        Airport::factory()->create(['identifier' => 'HUB1', 'is_hub' => true]);
+
+        $this->actingAs($this->user)
+            ->post('/admin/airports/base/edit', ['icao' => 'HUB1', 'closed' => true])
+            ->assertSessionHasErrors('icao');
+    }
+
+    public function test_closing_airport_blocked_by_user(): void
+    {
+        $airport = Airport::factory()->create(['identifier' => 'AAAA']);
+        $target = Airport::factory()->create(['identifier' => 'BBBB']);
+        User::factory()->create(['current_airport_id' => $airport->id]);
+
+        $this->actingAs($this->user)
+            ->post('/admin/airports/base/edit', ['icao' => 'AAAA', 'reassign_to' => $target->id, 'closed' => true])
+            ->assertSessionHas('error');
+
+        $this->assertFalse($airport->fresh()->closed);
+    }
+
+    public function test_closing_airport_blocked_blocked_by_pirep(): void
+    {
+        $airport = Airport::factory()->create(['identifier' => 'AAAA']);
+        $target = Airport::factory()->create(['identifier' => 'BBBB']);
+        Pirep::factory()->inProgress()->create(['arrival_airport_id' => $airport->id]);
+
+        $this->actingAs($this->user)
+            ->post('/admin/airports/base/edit', ['icao' => 'AAAA', 'reassign_to' => $target->id, 'closed' => true])
+            ->assertSessionHas('error');
+
+        $this->assertFalse($airport->fresh()->closed);
     }
 }

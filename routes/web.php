@@ -109,6 +109,10 @@ Route::middleware('auth')->group(function () {
             ->name('admin.airports.update');
         Route::delete('/admin/airports/{id}', \App\Http\Controllers\Admin\Airports\DeleteAirportController::class)
             ->name('admin.airports.delete');
+        Route::get('/admin/airports/base', \App\Http\Controllers\Admin\Airports\ShowBaseAirportController::class)
+            ->name('admin.airports.base.show');
+        Route::post('/admin/airports/base/edit', \App\Http\Controllers\Admin\Airports\EditBaseAirportController::class)
+            ->name('admin.airports.base.edit');
     });
 
     // Tours

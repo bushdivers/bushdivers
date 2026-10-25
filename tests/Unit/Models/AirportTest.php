@@ -111,7 +111,7 @@ class AirportTest extends TestCase
     }
 
 
-    public function test_scopes(): void
+    public function test_user_scopes(): void
     {
         $user = User::factory()->create();
 
@@ -139,6 +139,21 @@ class AirportTest extends TestCase
 
         $this->assertEquals($baseCount, Airport::base($user)->count());
         $this->assertEquals($baseCount + 1, Airport::count());
+    }
+
+    public function test_third_party_scope(): void
+    {
+        // Create airports with different is_thirdparty values
+        Airport::factory()->create(['identifier' => 'TP01', 'is_thirdparty' => true]);
+        Airport::factory()->create(['identifier' => 'REG01', 'is_thirdparty' => false]);
+        Airport::factory()->create(['identifier' => 'TP02', 'is_thirdparty' => true]);
+
+        $thirdPartyAirports = Airport::thirdParty()->get();
+
+        $this->assertCount(2, $thirdPartyAirports);
+        $this->assertTrue($thirdPartyAirports->contains('identifier', 'TP01'));
+        $this->assertTrue($thirdPartyAirports->contains('identifier', 'TP02'));
+        $this->assertFalse($thirdPartyAirports->contains('identifier', 'REG01'));
     }
 
 
