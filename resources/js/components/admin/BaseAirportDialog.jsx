@@ -47,7 +47,7 @@ const BaseAirportDialog = () => {
     setTarget('')
     setSearchError(null)
     try {
-      const { data } = await axios.get('/admin/airports/base/search', {
+      const { data } = await axios.get('/admin/airports/base', {
         params: { icao: code },
       })
       setAirport(data)
@@ -64,7 +64,7 @@ const BaseAirportDialog = () => {
 
   const handleToggle = () => {
     router.post(
-      '/admin/airports/base/toggle',
+      '/admin/airports/base/edit',
       { icao: airport.identifier, reassign_to: target || null },
       {
         preserveScroll: true,
