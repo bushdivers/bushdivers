@@ -12,6 +12,7 @@ use App\Models\Rental;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class EditBaseAirportController extends Controller
 {
@@ -31,6 +32,12 @@ class EditBaseAirportController extends Controller
         }
 
         if ($airport->closed) {
+            if (Str::startsWith($airport->identifier, '[X]-')) {
+                $airport->identifier = substr($airport->identifier, 4);
+            }
+            else if (Str::startsWith($airport->identifier, '[X]')) {
+                $airport->identifier = substr($airport->identifier, 3);
+            }
             $airport->forceFill(['closed' => false])->save();
 
             return back()->with('success', "{$airport->identifier} reopened");
@@ -53,6 +60,10 @@ class EditBaseAirportController extends Controller
                 Aircraft::query()->where('current_airport_id', $airport->id)->update(['current_airport_id' => $targetId]);
                 Aircraft::query()->where('hub_id', $airport->id)->update(['hub_id' => $targetId]);
                 Rental::query()->where('current_airport_id', $airport->id)->update(['current_airport_id' => $targetId]);
+            }
+
+            if (Str::startsWith($airport->identifier, '[X]') === false) {
+                $airport->forceFill(['identifier' => '[X]' . $airport->identifier])->save();
             }
 
             $airport->forceFill(['closed' => true])->save();

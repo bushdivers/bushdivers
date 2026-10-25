@@ -65,11 +65,11 @@ const BaseAirportDialog = () => {
   const handleToggle = () => {
     router.post(
       '/admin/airports/base/edit',
-      { icao: airport.identifier, reassign_to: target || null },
+      { icao: airport.identifier, reassign_to: target || null, closed: !airport.closed },
       {
         preserveScroll: true,
         preserveState: true,
-        onSuccess: () => search(airport.identifier),
+        onSuccess: () => onClose(),
       }
     )
   }
