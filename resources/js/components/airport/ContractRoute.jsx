@@ -21,7 +21,8 @@ const ContractRoute = ({ routeData, airport }) => {
         selectedContract.arr_airport.lat,
       ]
       map.fitBounds([depLngLat, arrLngLat], {
-        padding: { top: 100, bottom: 100, right: 50, left: 400 },
+        padding: { top: 100, bottom: 100, right: 100, left: 400 },
+        absolutePadding: true
       })
     } else {
       map.flyTo({ center: [airport.lon, airport.lat], zoom: 7 })

@@ -35,6 +35,7 @@ function renderCargo(contract) {
 
 const ContractDetail = ({ contract, action = null, type }) => {
   const [selectedContract, setSelectedContract] = useAtom(selectedContractAtom)
+  const color = useColorModeValue('orange.300', 'orange.800')
   return (
     <Card
       my={2}
@@ -43,11 +44,11 @@ const ContractDetail = ({ contract, action = null, type }) => {
       cursor="pointer"
       bgColor={
         selectedContract && selectedContract.id === contract.id
-          ? useColorModeValue('orange.300', 'orange.800')
+          ? color
           : ''
       }
       onClick={() =>
-        setSelectedContract(contract === selectedContract ? null : contract)
+        setSelectedContract(contract.id === selectedContract?.id ? null : contract)
       }
     >
       <Box>
