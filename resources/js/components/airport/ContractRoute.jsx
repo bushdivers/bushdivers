@@ -12,15 +12,15 @@ const ContractRoute = ({ routeData, airport }) => {
 
   useEffect(() => {
     if (selectedContract !== null) {
-      const depLngLat = [
-        selectedContract.dep_airport.lon,
-        selectedContract.dep_airport.lat,
-      ]
-      const arrLngLat = [
-        selectedContract.arr_airport.lon,
-        selectedContract.arr_airport.lat,
-      ]
-      map.fitBounds([depLngLat, arrLngLat], {
+      const west = Math.min(selectedContract.dep_airport.lon, selectedContract.arr_airport.lon)
+      const east = Math.max(selectedContract.dep_airport.lon, selectedContract.arr_airport.lon)
+      const south = Math.min(selectedContract.dep_airport.lat, selectedContract.arr_airport.lat)
+      const north = Math.max(selectedContract.dep_airport.lat, selectedContract.arr_airport.lat)
+
+      map.fitBounds([
+        [west, south],
+        [east, north]
+      ], {
         padding: { top: 100, bottom: 100, right: 100, left: 400 },
         absolutePadding: true
       })
